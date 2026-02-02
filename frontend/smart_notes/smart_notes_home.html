@@ -1,0 +1,884 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Notes | IISER Edge</title>
+
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <style>
+        /* =========================================
+           1. SHARED DESIGN SYSTEM
+           ========================================= */
+        :root {
+            --primary: #4f46e5;
+            --primary-dark: #4338ca;
+            --primary-soft: #e0e7ff;
+            --secondary: #0f172a;
+
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --text-light: #94a3b8;
+
+            --bg-wash: #f8fafc;
+            --border: #e2e8f0;
+
+            --success: #10b981;
+            --radius-md: 12px;
+            --radius-lg: 24px;
+            --radius-pill: 100px;
+            --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+            --container-width: 1140px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            outline: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            color: var(--text-main);
+            background: var(--bg-wash);
+            line-height: 1.6;
+        }
+
+        .container {
+            width: 90%;
+            max-width: var(--container-width);
+            margin: 0 auto;
+        }
+
+        .btn {
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: none;
+            font-family: inherit;
+        }
+
+        /* =========================================
+           2. HEADER (Floating)
+           ========================================= */
+        header {
+            position: fixed;
+            top: 20px;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            display: flex;
+            justify-content: center;
+            pointer-events: none;
+            transition: top 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        header.scrolled {
+            top: 0;
+        }
+
+        .nav-container {
+            pointer-events: auto;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.08);
+            padding: 0.75rem 1.5rem;
+            border-radius: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 90%;
+            max-width: var(--container-width);
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        header.scrolled .nav-container {
+            width: 100%;
+            max-width: 100%;
+            border-radius: 0;
+            border-top: 0;
+            border-left: 0;
+            border-right: 0;
+            background: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            padding: 1rem 2rem;
+        }
+
+        .logo {
+            font-weight: 800;
+            color: var(--secondary);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* =========================================
+           3. PAGE HEADER & FILTERS
+           ========================================= */
+        .page-wrapper {
+            padding-top: 9rem;
+            padding-bottom: 5rem;
+        }
+
+        .notes-header {
+            text-align: center;
+            max-width: 700px;
+            margin: 0 auto 3rem;
+        }
+
+        .notes-header h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--secondary);
+            margin-bottom: 1rem;
+            letter-spacing: -0.03em;
+        }
+
+        .notes-header p {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+        }
+
+        /* Search Bar */
+        .search-container {
+            position: relative;
+            max-width: 500px;
+            margin: 0 auto 2.5rem;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 1rem 1rem 1rem 3rem;
+            border-radius: var(--radius-pill);
+            border: 1px solid var(--border);
+            font-size: 1rem;
+            color: var(--text-main);
+            box-shadow: var(--shadow-sm);
+            transition: 0.2s;
+        }
+
+        .search-input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px var(--primary-soft);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 1.2rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+        }
+
+        /* Filter Tabs */
+        .filter-scroll {
+            display: flex;
+            gap: 0.75rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 3rem;
+        }
+
+        .filter-btn {
+            padding: 0.6rem 1.5rem;
+            border-radius: var(--radius-pill);
+            font-weight: 600;
+            font-size: 0.9rem;
+            background: white;
+            border: 1px solid var(--border);
+            color: var(--text-muted);
+        }
+
+        .filter-btn:hover {
+            border-color: var(--text-muted);
+            color: var(--secondary);
+        }
+
+        .filter-btn.active {
+            background: var(--secondary);
+            color: white;
+            border-color: var(--secondary);
+        }
+
+        /* =========================================
+           4. NOTES GRID
+           ========================================= */
+        .notes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .note-card {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .note-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--primary-soft);
+        }
+
+        .note-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 1rem;
+        }
+
+        .subject-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        /* Subject Specific Colors */
+        .bg-phy {
+            background: #e0f2fe;
+            color: #0284c7;
+        }
+
+        /* Blue */
+        .bg-chem {
+            background: #fce7f3;
+            color: #db2777;
+        }
+
+        /* Pink */
+        .bg-math {
+            background: #ede9fe;
+            color: #7c3aed;
+        }
+
+        /* Purple */
+        .bg-bio {
+            background: #dcfce7;
+            color: #16a34a;
+        }
+
+        /* Green */
+
+        .badge {
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 0.25rem 0.75rem;
+            border-radius: 100px;
+            text-transform: uppercase;
+        }
+
+        .badge-free {
+            background: #dcfce7;
+            color: #15803d;
+        }
+
+        .badge-pro {
+            background: var(--secondary);
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .note-content h3 {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: var(--secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        .note-content p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            line-height: 1.5;
+            margin-bottom: 1.5rem;
+        }
+
+        .note-meta {
+            margin-top: auto;
+            padding-top: 1rem;
+            border-top: 1px dashed var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .file-info {
+            font-size: 0.85rem;
+            color: var(--text-light);
+            font-weight: 500;
+        }
+
+        .action-btn {
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius-pill);
+            font-weight: 600;
+            font-size: 0.85rem;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .btn-view {
+            background: var(--primary-soft);
+            color: var(--primary);
+        }
+
+        .btn-view:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-lock {
+            background: var(--bg-wash);
+            color: var(--text-muted);
+        }
+
+        /* =========================================
+           5. MODALS
+           ========================================= */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(15, 23, 42, 0.7);
+            backdrop-filter: blur(5px);
+            z-index: 2000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-box {
+            background: white;
+            width: 95%;
+            max-width: 900px;
+            height: 85vh;
+            border-radius: var(--radius-md);
+            display: flex;
+            flex-direction: column;
+            box-shadow: var(--shadow-lg);
+            overflow: hidden;
+        }
+
+        /* Upgrade Modal specifically */
+        .upgrade-box {
+            max-width: 450px;
+            height: auto;
+            padding: 2.5rem;
+            text-align: center;
+        }
+
+        .modal-header {
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--bg-wash);
+        }
+
+        .modal-close {
+            cursor: pointer;
+            padding: 0.5rem;
+            font-size: 1.5rem;
+            line-height: 1;
+            color: var(--text-muted);
+        }
+
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            background: #f1f5f9;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .filter-scroll {
+                overflow-x: auto;
+                padding-bottom: 0.5rem;
+                justify-content: flex-start;
+                white-space: nowrap;
+            }
+
+            .notes-header h1 {
+                font-size: 2rem;
+            }
+        }
+
+        /* AUTH SHEET (Login Prompt) */
+        #auth-sheet-overlay {
+            align-items: flex-end;
+            /* Align to bottom */
+        }
+
+        #auth-sheet-overlay .modal-box {
+            margin-bottom: 0;
+            border-radius: 24px 24px 0 0;
+            width: 100%;
+            max-width: 600px;
+            height: auto;
+            transform: translateY(100%);
+            transition: transform 0.3s ease;
+        }
+
+        #auth-sheet-overlay.active .modal-box {
+            transform: translateY(0);
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- 1. NAVIGATION -->
+    <header>
+        <div class="nav-container">
+            <a href="/frontend/index.html" class="logo">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                    <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+                </svg>
+                IISER Edge
+            </a>
+            <a href="/frontend/index.html" class="btn"
+                style="font-weight: 600; color: var(--text-muted); font-size: 0.9rem;">Back
+                Home</a>
+        </div>
+    </header>
+
+    <div class="page-wrapper container">
+
+        <!-- 2. HEADER & SEARCH -->
+        <div class="notes-header">
+            <h1>Smart Revision Notes</h1>
+            <p>High-yield cheat sheets, formula lists, and derivation summaries tailored for IAT 2026.</p>
+
+            <div class="search-container">
+                <svg class="search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                    stroke-width="2">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                </svg>
+                <input type="text" class="search-input" id="searchInput"
+                    placeholder="Search topics (e.g. 'Thermodynamics')..." onkeyup="filterNotes()">
+            </div>
+        </div>
+
+        <!-- 3. FILTER TABS -->
+        <div class="filter-scroll" id="filterContainer">
+            <button class="filter-btn active" onclick="setFilter('all', this)">All Subjects</button>
+            <button class="filter-btn" onclick="setFilter('phy', this)">Physics</button>
+            <button class="filter-btn" onclick="setFilter('chem', this)">Chemistry</button>
+            <button class="filter-btn" onclick="setFilter('math', this)">Mathematics</button>
+            <button class="filter-btn" onclick="setFilter('bio', this)">Biology</button>
+        </div>
+
+        <!-- 4. CONTENT GRID -->
+        <div class="notes-grid" id="notesGrid">
+
+            <!-- Physics Card (Free) -->
+            <div class="note-card" data-category="phy" data-title="Kinematics Cheat Sheet">
+                <div class="note-top">
+                    <div class="subject-icon bg-phy">⚛</div>
+                    <span class="badge badge-free">Free</span>
+                </div>
+                <div class="note-content">
+                    <h3>Kinematics Cheat Sheet</h3>
+                    <p>All essential formulas for 1D and 2D motion, projectile motion, and relative velocity.</p>
+                </div>
+                <div class="note-meta">
+                    <span class="file-info">PDF • 1.2 MB</span>
+                    <button onclick="openPreview('Kinematics', 'assets/dummy.pdf')" class="btn action-btn btn-view">View
+                        Note</button>
+                </div>
+            </div>
+
+            <!-- Biology Card (Free) -->
+            <div class="note-card" data-category="bio" data-title="Genetics Fundamentals">
+                <div class="note-top">
+                    <div class="subject-icon bg-bio">🧬</div>
+                    <span class="badge badge-free">Free</span>
+                </div>
+                <div class="note-content">
+                    <h3>Genetics Fundamentals</h3>
+                    <p>Mendelian inheritance, linkage, and molecular basis of inheritance summaries.</p>
+                </div>
+                <div class="note-meta">
+                    <span class="file-info">PDF • 2.4 MB</span>
+                    <button onclick="openPreview('Genetics', 'assets/dummy.pdf')" class="btn action-btn btn-view">View
+                        Note</button>
+                </div>
+            </div>
+
+            <!-- Math Card (Locked) -->
+            <div class="note-card" data-category="math" data-title="Calculus: Limits & Derivatives">
+                <div class="note-top">
+                    <div class="subject-icon bg-math">∫</div>
+                    <span class="badge badge-pro">🔒 Pro</span>
+                </div>
+                <div class="note-content">
+                    <h3>Calculus: Limits & Derivatives</h3>
+                    <p>Standard limits, L'Hospital's rule, and differentiation techniques.</p>
+                </div>
+                <div class="note-meta">
+                    <span class="file-info">PDF • 3.1 MB</span>
+                    <button onclick="checkAccess()" class="btn action-btn btn-lock">Unlock</button>
+                </div>
+            </div>
+
+            <!-- Chem Card (Locked) -->
+            <div class="note-card" data-category="chem" data-title="Thermodynamics & Equilibrium">
+                <div class="note-top">
+                    <div class="subject-icon bg-chem">🧪</div>
+                    <span class="badge badge-pro">🔒 Pro</span>
+                </div>
+                <div class="note-content">
+                    <h3>Thermodynamics & Equilibrium</h3>
+                    <p>Laws of thermodynamics, enthalpy, entropy, and chemical equilibrium constants.</p>
+                </div>
+                <div class="note-meta">
+                    <span class="file-info">PDF • 1.8 MB</span>
+                    <button onclick="checkAccess()" class="btn action-btn btn-lock">Unlock</button>
+                </div>
+            </div>
+
+            <!-- Physics Card (Locked) -->
+            <div class="note-card" data-category="phy" data-title="Electromagnetism High Yield">
+                <div class="note-top">
+                    <div class="subject-icon bg-phy">⚡</div>
+                    <span class="badge badge-pro">🔒 Pro</span>
+                </div>
+                <div class="note-content">
+                    <h3>Electromagnetism High Yield</h3>
+                    <p>Gauss law, capacitors, and magnetic effects of current summary.</p>
+                </div>
+                <div class="note-meta">
+                    <span class="file-info">PDF • 4.5 MB</span>
+                    <button onclick="checkAccess()" class="btn action-btn btn-lock">Unlock</button>
+                </div>
+            </div>
+
+            <!-- Bio Card (Locked) -->
+            <div class="note-card" data-category="bio" data-title="Cell Biology & Division">
+                <div class="note-top">
+                    <div class="subject-icon bg-bio">🦠</div>
+                    <span class="badge badge-pro">🔒 Pro</span>
+                </div>
+                <div class="note-content">
+                    <h3>Cell Biology & Division</h3>
+                    <p>Cell organelles, Mitosis vs Meiosis phases, and cell cycle regulation.</p>
+                </div>
+                <div class="note-meta">
+                    <span class="file-info">PDF • 1.5 MB</span>
+                    <button onclick="checkAccess()" class="btn action-btn btn-lock">Unlock</button>
+                </div>
+            </div>
+            <!-- Bio Card (Locked) -->
+            <div class="note-card" data-category="bio" data-title="Diversity In the Living World">
+                <div class="note-top">
+                    <div class="subject-icon bg-bio">🌿</div>
+                    <span class="badge badge-pro">🔒 Pro</span>
+                </div>
+                <div class="note-content">
+                    <h3>Diversity In the Living World</h3>
+                    <p>Taxonomic categories, five kingdom classification, and key features of Monera, Protista, and
+                        Fungi.</p>
+                </div>
+                <div class="note-meta">
+                    <span class="file-info">PDF • 2.8 MB</span>
+                    <button onclick="checkAccess()" class="btn action-btn btn-lock">Unlock</button>
+                </div>
+            </div>
+
+            <!-- Bio Card (Locked) -->
+            <div class="note-card" data-category="bio" data-title="Structural Organisation in Plants and Animals">
+                <div class="note-top">
+                    <div class="subject-icon bg-bio">🐸</div>
+                    <span class="badge badge-pro">🔒 Pro</span>
+                </div>
+                <div class="note-content">
+                    <h3>Structural Organisation in Plants and Animals</h3>
+                    <p>Morphology and anatomy of flowering plants, and animal tissues including epithelial and neural.
+                    </p>
+                </div>
+                <div class="note-meta">
+                    <span class="file-info">PDF • 3.2 MB</span>
+                    <button onclick="checkAccess()" class="btn action-btn btn-lock">Unlock</button>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+
+    <!-- =========================================
+       MODALS
+       ========================================= -->
+
+    <!-- PDF PREVIEW MODAL -->
+    <div id="previewModal" class="modal-overlay">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h3 id="previewTitle" style="color: var(--secondary);">Document Title</h3>
+                <span class="modal-close" onclick="closeModal('previewModal')">×</span>
+            </div>
+            <!-- Using a placeholder for demo purposes -->
+            <div
+                style="flex-grow: 1; display: flex; align-items: center; justify-content: center; flex-direction: column; background: #f1f5f9;">
+                <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                    <polyline points="14 2 14 8 20 8"></polyline>
+                    <line x1="16" y1="13" x2="8" y2="13"></line>
+                    <line x1="16" y1="17" x2="8" y2="17"></line>
+                    <polyline points="10 9 9 9 8 9"></polyline>
+                </svg>
+                <p style="color: var(--text-muted); margin-top: 1rem;">PDF Preview Loading...</p>
+                <a href="#" class="btn action-btn btn-view" style="margin-top: 1rem;">Download File</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- UPGRADE MODAL -->
+    <div id="upgradeModal" class="modal-overlay">
+        <div class="modal-box upgrade-box">
+            <div style="display: flex; justify-content: flex-end;"><span class="modal-close"
+                    onclick="closeModal('upgradeModal')">×</span></div>
+            <div style="font-size: 3rem; margin-bottom: 1rem;">💎</div>
+            <h2 style="color: var(--secondary); margin-bottom: 0.5rem;">Unlock Premium Notes</h2>
+            <p style="color: var(--text-muted); margin-bottom: 2rem;">Get access to over 50+ High Yield revision sheets
+                and formula books.</p>
+            <a href="index.html#pricing" class="btn"
+                style="background: var(--primary); color: white; padding: 0.75rem 2rem; border-radius: 100px; text-decoration: none; display: inline-block; font-weight: 600;">Upgrade
+                to Pro</a>
+        </div>
+    </div>
+
+    <!-- AUTH SHEET (Login Prompt) -->
+    <div id="auth-sheet-overlay" class="modal-overlay" onclick="closeAuthSheet()">
+        <div class="modal-box" onclick="event.stopPropagation()" style="padding: 2rem; text-align: center;">
+            <div style="width: 40px; height: 4px; background: #e2e8f0; border-radius: 10px; margin: 0 auto 1.5rem;">
+            </div>
+            <h3 style="font-size: 1.5rem; color: var(--secondary); margin-bottom: 0.5rem;">Authentication Required</h3>
+            <p style="color: var(--text-muted); margin-bottom: 2rem;">Please log in to unlock premium notes and save
+                your progress.</p>
+            <div style="display: flex; gap: 1rem; flex-direction: column;">
+                <button onclick="redirectToAuth('login')" class="btn"
+                    style="background: var(--primary); color: white; padding: 0.8rem; border-radius: 100px; width: 100%; font-weight: 600;">Log
+                    In</button>
+                <button onclick="redirectToAuth('signup')" class="btn"
+                    style="background: white; border: 1px solid var(--border); color: var(--text-main); padding: 0.8rem; border-radius: 100px; width: 100%; font-weight: 600;">Sign
+                    Up</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- Filter Logic ---
+        let currentFilter = 'all';
+
+        function setFilter(category, btn) {
+            // Update buttons
+            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+
+            currentFilter = category;
+            filterNotes();
+        }
+
+        function filterNotes() {
+            const search = document.getElementById('searchInput').value.toLowerCase();
+            const cards = document.querySelectorAll('.note-card');
+
+            cards.forEach(card => {
+                const category = card.getAttribute('data-category');
+                const title = card.getAttribute('data-title').toLowerCase();
+
+                const matchesCategory = (currentFilter === 'all') || (category === currentFilter);
+                const matchesSearch = title.includes(search);
+
+                if (matchesCategory && matchesSearch) {
+                    card.style.display = 'flex';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        // --- Access Logic (Synced with Backend) ---
+        const token = localStorage.getItem("IAT_TOKEN");
+
+        // 1. Initial Sync
+        syncPlanFromBackend();
+
+        async function syncPlanFromBackend() {
+            if (!token) return;
+
+            try {
+                const res = await fetch("http://localhost:5000/api/me", {
+                    headers: { "Authorization": "Bearer " + token }
+                });
+
+                if (!res.ok) return;
+
+                const user = await res.json();
+                localStorage.setItem("IAT_PLAN", user.plan);
+
+                if (user.plan === "PRO") {
+                    unlockUI();
+                }
+            } catch (e) {
+                console.error("Plan sync failed", e);
+            }
+        }
+
+        function unlockUI() {
+            // Find all locked buttons and unlock them
+            const lockedButtons = document.querySelectorAll('.btn-lock');
+            lockedButtons.forEach(btn => {
+                btn.classList.remove('btn-lock');
+                btn.classList.add('btn-view'); // Use primary/view style
+                btn.innerText = 'View Note';
+                btn.onclick = function () {
+                    // Get the parent card title or data attribute to determine note
+                    const card = this.closest('.note-card');
+                    const title = card.getAttribute('data-title');
+
+                    // Direct link for Diversity
+                    if (title === "Diversity In the Living World") {
+                        window.location.href = "subjects/biology/diversity-in-the-living-world/home.html";
+                    } else if (title === "Structural Organisation in Plants and Animals") {
+                        window.location.href = "subjects/biology/strucural-organism-in-plant-and-animal/unit-2-homepage-biology.html";
+                    } else {
+                        // For demo purposes, open preview for others
+                        openPreview(title, 'assets/dummy.pdf');
+                    }
+                };
+            });
+
+            // Update badges
+            const proBadges = document.querySelectorAll('.badge-pro');
+            proBadges.forEach(badge => {
+                badge.innerHTML = '✔ Unlocked';
+                badge.style.background = '#dcfce7';
+                badge.style.color = '#15803d';
+            });
+        }
+
+        function checkAccess() {
+            const token = localStorage.getItem("IAT_TOKEN");
+
+            // 1. Check if user is logged in
+            if (!token) {
+                openAuthSheet();
+                return;
+            }
+
+            // 2. Check if user is PRO
+            const isPro = localStorage.getItem("IAT_PLAN") === "PRO";
+            if (isPro) {
+                // Should be handled by unlockUI, but as fallback/race-condition handler
+                openPreview('Premium Note', 'assets/dummy.pdf');
+            } else {
+                document.getElementById('upgradeModal').classList.add('active');
+            }
+        }
+
+        // --- Auth Sheet Logic ---
+        function openAuthSheet() {
+            const sheet = document.getElementById('auth-sheet-overlay');
+            sheet.classList.add('active');
+            // Animate
+            setTimeout(() => {
+                // No specific transform needed here as CSS handles .active state, 
+                // but we need to ensure the transform transitions correctly.
+                // The CSS rule `#auth-sheet-overlay.active .modal-box` handles the translate(0).
+            }, 10);
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeAuthSheet() {
+            const sheet = document.getElementById('auth-sheet-overlay');
+            sheet.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        function redirectToAuth(mode) {
+            const currentUrl = encodeURIComponent(window.location.href);
+            // Assuming login.html is in the parent frontend directory based on file structure
+            // smart_notes_home.html is in frontend/smart_notes/
+            // login.html is likely in frontend/ or frontend/pages/
+            // Based on full_mock_test which was in frontend/mock_test/ and used "../login.html"
+            // smart_notes is in frontend/smart_notes/, so "../login.html" should be correct if login is in frontend/
+            const loginPath = "../login.html";
+            window.location.href = `${loginPath}?mode=${mode}&redirect=${currentUrl}`;
+        }
+
+        // --- Modal Logic ---
+        function openPreview(title, url) {
+            document.getElementById('previewTitle').innerText = title;
+            document.getElementById('previewModal').classList.add('active');
+            document.body.style.overflow = 'hidden'; // Stop background scrolling
+        }
+
+        function closeModal(id) {
+            document.getElementById(id).classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        // Close on outside click
+        window.onclick = function (event) {
+            if (event.target.classList.contains('modal-overlay')) {
+                event.target.classList.remove('active');
+                document.body.style.overflow = 'auto';
+            }
+        }
+
+        // --- Scroll Header Logic ---
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('header');
+            if (window.scrollY > 20) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+    </script>
+</body>
+
+</html>

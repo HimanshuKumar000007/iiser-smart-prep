@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us | IISER Smart Prep</title>
+    <meta name="description"
+        content="Get in touch with IISER Smart Prep team for support, academic queries, or feedback.">
+
+    <!-- Google Fonts: Plus Jakarta Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* =========================================
+           1. CORE STYLES (Copied from index.html)
+           ========================================= */
+        :root {
+            --primary: #6366f1;
+            --primary-light: #818cf8;
+            --primary-dark: #4f46e5;
+            --primary-soft: #e0e7ff;
+            --accent: #8b5cf6;
+            --secondary: #0f172a;
+            --text-main: #0f172a;
+            --text-muted: #475569;
+            --text-light: #94a3b8;
+            --bg-white: #ffffff;
+            --bg-wash: #f8fafc;
+            --border: #e2e8f0;
+            --radius-sm: 12px;
+            --radius-md: 16px;
+            --radius-lg: 24px;
+            --radius-pill: 100px;
+            --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            --container-width: 1200px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            color: var(--text-main);
+            background: var(--bg-wash);
+            line-height: 1.6;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        .container {
+            width: 90%;
+            max-width: var(--container-width);
+            margin: 0 auto;
+        }
+
+        /* Navigation */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+            padding: 1rem 0;
+        }
+
+        .nav-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            font-size: 1.25rem;
+            font-weight: 800;
+            color: var(--secondary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--text-muted);
+            transition: color 0.2s;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.5rem 1.2rem;
+            border-radius: var(--radius-pill);
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+            border: 1px solid var(--primary);
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--text-main);
+            border: 1px solid var(--border);
+        }
+
+        .btn-outline:hover {
+            border-color: var(--text-main);
+            background: var(--bg-wash);
+        }
+
+        /* =========================================
+           2. CONTACT PAGE STYLES
+           ========================================= */
+        main {
+            padding-top: 8rem;
+            padding-bottom: 5rem;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: var(--text-muted);
+            max-width: 600px;
+            margin: 0 auto 3rem;
+            font-size: 1.1rem;
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr;
+            gap: 2rem;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .card {
+            background: white;
+            padding: 2.5rem;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow-sm);
+        }
+
+        /* Form Styles */
+        form label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--secondary);
+            font-size: 0.9rem;
+            margin-top: 1rem;
+        }
+
+        form label:first-child {
+            margin-top: 0;
+        }
+
+        form input,
+        form textarea {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            font-family: inherit;
+            font-size: 0.95rem;
+            color: var(--text-main);
+            transition: all 0.2s;
+            background: var(--bg-wash);
+        }
+
+        form input:focus,
+        form textarea:focus {
+            border-color: var(--primary);
+            background: white;
+            box-shadow: 0 0 0 3px var(--primary-soft);
+            outline: none;
+        }
+
+        form textarea {
+            min-height: 150px;
+            resize: vertical;
+            margin-bottom: 1.5rem;
+        }
+
+        form button {
+            width: 100%;
+            padding: 1rem;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: var(--radius-sm);
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+            font-size: 1rem;
+        }
+
+        form button:hover {
+            background: var(--primary-dark);
+        }
+
+        /* Info Styles */
+        .info {
+            background: #f8fafc;
+            /* Slightly darker wash for info card */
+        }
+
+        .info p {
+            margin-bottom: 1.5rem;
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            line-height: 1.7;
+        }
+
+        .info strong {
+            color: var(--secondary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.25rem;
+            font-size: 1rem;
+        }
+
+        .note {
+            font-size: 0.85rem;
+            color: var(--text-light);
+            margin-top: 1.5rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border);
+        }
+
+        @media (max-width: 768px) {
+            .contact-grid {
+                grid-template-columns: 1fr;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+        }
+
+        /* Footer */
+        footer {
+            background: white;
+            border-top: 1px solid var(--border);
+            padding: 4rem 0 2rem;
+            margin-top: auto;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- NAVIGATION -->
+    <header>
+        <div class="container nav-container">
+            <a href="index.html" class="logo">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path
+                        d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z">
+                    </path>
+                </svg>
+                IISER Smart Prep
+            </a>
+
+            <nav class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="features.html">Features</a>
+                <a href="index.html#pricing">Pricing</a>
+                <a href="login.html?mode=signup" class="btn btn-primary" style="color: white;">Get Started</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- MAIN CONTENT -->
+    <main>
+        <div class="container">
+            <h1>Contact Us</h1>
+            <p class="subtitle">
+                Have a question, feedback, or facing an issue?
+                We’re here to help serious IAT aspirants.
+            </p>
+
+            <div class="contact-grid">
+
+                <!-- CONTACT FORM -->
+                <div class="card">
+                    <form onsubmit="event.preventDefault(); alert('Message sent! We will contact you shortly.');">
+                        <label for="name">Your Name</label>
+                        <input type="text" id="name" placeholder="Enter your name" required>
+
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" placeholder="Enter your email" required>
+
+                        <label for="message">Your Message</label>
+                        <textarea id="message" placeholder="Write your query or feedback here..." required></textarea>
+
+                        <button type="submit">Send Message</button>
+
+                        <p class="note" style="border: none; padding: 0;">
+                            We usually respond within <strong>24 hours</strong>.
+                        </p>
+                    </form>
+                </div>
+
+                <!-- CONTACT INFO -->
+                <div class="card info">
+                    <p><strong>📧 Email Support</strong><br>
+                        humanshuk8@gmail.com</p>
+
+                    <p><strong>⏰ Response Time</strong><br>
+                        Within 24 hours (Mon–Sat)</p>
+
+                    <p><strong>🎯 Academic Queries</strong><br>
+                        Doubts related to mocks, PYQs, analytics, or subscriptions</p>
+
+                    <p><strong>🔐 Account & Payment Issues</strong><br>
+                        Login, Pro access, Razorpay, password reset</p>
+
+                    <p class="note">
+                        ⚠️ We do not provide counseling or admission guarantees.
+                    </p>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="container">
+            <div style="text-align: center; color: var(--text-muted); font-size: 0.9rem;">
+                <div style="margin-bottom: 1rem;">
+                    <a href="index.html" style="margin: 0 10px;">Home</a>
+                    <a href="ai_tutor.html" style="margin: 0 10px;">AI Tutor</a>
+                    <a href="privacy.html" style="margin: 0 10px;">Privacy Policy</a>
+                </div>
+                &copy; 2026 IISER Smart Prep. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+</body>
+
+</html>

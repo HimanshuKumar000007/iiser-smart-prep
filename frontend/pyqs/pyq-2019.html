@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Question Paper View | IISER Smart Prep</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #4f46e5;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --bg-wash: #f8fafc;
+            --border: #e2e8f0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            color: var(--text-main);
+            background: var(--bg-wash);
+            margin: 0;
+            padding: 2rem;
+            line-height: 1.6;
+        }
+
+        .paper-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 3rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            border: 1px solid var(--border);
+        }
+
+        .header {
+            border-bottom: 2px solid var(--border);
+            padding-bottom: 1.5rem;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        h1 {
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .meta {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .question-block {
+            margin-bottom: 2rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .q-number {
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .solution-box {
+            background: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-top: 1rem;
+            display: none;
+            /* Initially hidden? Or show if "with solution" requested */
+        }
+
+        .solution-box.visible {
+            display: block;
+        }
+
+        .btn-back {
+            display: inline-block;
+            margin-bottom: 1rem;
+            color: var(--text-muted);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .btn-back:hover {
+            color: var(--primary);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="paper-container">
+        <a href="pyq.html" class="btn-back"><i class="fas fa-arrow-left"></i> Back to Archive</a>
+
+        <div class="header">
+            <h1 id="paperTitle">IAT 2019 - Question Paper</h1>
+            <p class="meta" id="paperMeta">Full Paper with Detailed Solutions</p>
+        </div>
+
+        <div id="contentPlaceholder">
+            <div class="question-block">
+                <div class="q-number">Question 1</div>
+                <p>This is a placeholder for the actual question paper content. The full HTML version of the paper would
+                    be rendered here.</p>
+                <div class="solution-box visible">
+                    <strong>Solution:</strong> <br>
+                    Detailed step-by-step solution would appear here.
+                </div>
+            </div>
+            <!-- More questions would be dynamically loaded or static -->
+        </div>
+
+        <div style="text-align: center; margin-top: 2rem;">
+            <p style="color: var(--text-muted);">End of Paper</p>
+        </div>
+    </div>
+
+    <script>
+        // Optional: dynamic year update if needed, but this file is named 2019
+        const urlParams = new URLSearchParams(window.location.search);
+        const year = urlParams.get('year') || '2019';
+        document.getElementById('paperTitle').textContent = `IAT ${year} - Question Paper`;
+    </script>
+</body>
+
+</html>

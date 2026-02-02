@@ -1,0 +1,2059 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IISER Smart Prep | AI-Powered IAT Preparation Platform</title>
+    <meta name="description"
+        content="The definitive AI-powered platform for IISER Aptitude Test preparation. Features adaptive mocks, AI tutor, detailed analytics, and smart revision notes.">
+
+    <!-- Google Fonts: Plus Jakarta Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <style>
+        /* =========================================
+           1. PREMIUM ROOT & RESET
+           ========================================= */
+        :root {
+            /* AI-Enhanced Palette: Indigo, Violet & Cyan Accents */
+            --primary: #6366f1;
+            --primary-light: #818cf8;
+            --primary-dark: #4f46e5;
+            --primary-soft: #e0e7ff;
+            --accent: #8b5cf6;
+            --accent-soft: #f3e8ff;
+            --ai-cyan: #06b6d4;
+            --ai-glow: rgba(6, 182, 212, 0.3);
+            --secondary: #0f172a;
+            --secondary-light: #1e293b;
+            --text-main: #0f172a;
+            --text-muted: #475569;
+            --text-light: #94a3b8;
+            --bg-white: #ffffff;
+            --bg-wash: #f8fafc;
+            --bg-gradient-start: #f0f9ff;
+            --border: #e2e8f0;
+
+            --radius-sm: 12px;
+            --radius-md: 16px;
+            --radius-lg: 24px;
+            --radius-pill: 100px;
+
+            /* Premium Shadows */
+            --shadow-xs: 0 1px 2px 0 rgba(0, 0, 0, 0.03);
+            --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+            --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -2px rgba(0, 0, 0, 0.04);
+            --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            --shadow-xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            --shadow-glow: 0 0 40px -10px rgba(99, 102, 241, 0.3);
+            --shadow-ai: 0 0 40px -10px rgba(6, 182, 212, 0.4);
+
+            --container-width: 1200px;
+            --nav-height: 80px;
+
+            /* Animation Curves */
+            --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            outline: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            font-size: 16px;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            color: var(--text-main);
+            background: var(--bg-white);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+            transition: all 0.2s ease;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        .container {
+            width: 90%;
+            max-width: var(--container-width);
+            margin: 0 auto;
+        }
+
+        /* Animations */
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0px) rotate(0deg);
+            }
+
+            50% {
+                transform: translateY(-20px) rotate(2deg);
+            }
+        }
+
+        @keyframes float-delayed {
+
+            0%,
+            100% {
+                transform: translateY(0px) rotate(0deg);
+            }
+
+            50% {
+                transform: translateY(-15px) rotate(-2deg);
+            }
+        }
+
+        @keyframes pulse-glow {
+
+            0%,
+            100% {
+                opacity: 0.4;
+                transform: scale(1);
+            }
+
+            50% {
+                opacity: 0.6;
+                transform: scale(1.05);
+            }
+        }
+
+        @keyframes gradient-shift {
+            0% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        @keyframes slide-up {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes ai-pulse {
+
+            0%,
+            100% {
+                box-shadow: 0 0 0 0 rgba(6, 182, 212, 0.4);
+            }
+
+            50% {
+                box-shadow: 0 0 20px 10px rgba(6, 182, 212, 0.1);
+            }
+        }
+
+        .fade-in-up {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s var(--ease-out-expo);
+        }
+
+        .fade-in-up.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* =========================================
+           2. MODERN COMPONENTS
+           ========================================= */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.75rem 1.75rem;
+            border-radius: var(--radius-pill);
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            gap: 0.5rem;
+            letter-spacing: -0.01em;
+            white-space: nowrap;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+            border: 1px solid var(--primary);
+            box-shadow: 0 4px 6px rgba(79, 70, 229, 0.2);
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px -5px rgba(79, 70, 229, 0.4);
+        }
+
+        .btn-ai {
+            background: linear-gradient(135deg, var(--ai-cyan), var(--primary));
+            color: white;
+            border: none;
+            box-shadow: 0 4px 15px rgba(6, 182, 212, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-ai:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px -5px rgba(6, 182, 212, 0.5);
+        }
+
+        .btn-ai::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: 0.5s;
+        }
+
+        .btn-ai:hover::before {
+            left: 100%;
+        }
+
+        .btn-secondary {
+            background: var(--secondary);
+            color: white;
+            border: 1px solid var(--secondary);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--text-main);
+            border: 1px solid var(--border);
+        }
+
+        .btn-outline:hover {
+            border-color: var(--text-main);
+            background: var(--bg-wash);
+        }
+
+        .section-header {
+            text-align: center;
+            max-width: 650px;
+            margin: 0 auto 4rem;
+            padding: 0 1rem;
+        }
+
+        .section-header .kicker {
+            color: var(--primary);
+            font-weight: 700;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .section-header h2 {
+            font-size: clamp(1.75rem, 4vw, 2.25rem);
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            margin-bottom: 1rem;
+            color: var(--secondary);
+        }
+
+        .section-header p {
+            font-size: 1.125rem;
+            color: var(--text-muted);
+            line-height: 1.7;
+        }
+
+        /* =========================================
+           3. FLOATING NAVIGATION
+           ========================================= */
+        header {
+            position: fixed;
+            top: 20px;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            display: flex;
+            justify-content: center;
+            pointer-events: none;
+            transition: top 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        header.scrolled {
+            top: 0;
+        }
+
+        .nav-container {
+            pointer-events: auto;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.08);
+            padding: 0.75rem 1.5rem;
+            border-radius: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 90%;
+            max-width: var(--container-width);
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        header.scrolled .nav-container {
+            width: 100%;
+            max-width: 100%;
+            border-radius: 0;
+            border-top: 0;
+            border-left: 0;
+            border-right: 0;
+            background: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            padding: 1rem 2rem;
+        }
+
+        .logo {
+            font-size: 1.25rem;
+            font-weight: 800;
+            color: var(--secondary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            letter-spacing: -0.02em;
+            z-index: 1002;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--text-muted);
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 2px;
+            bottom: -4px;
+            left: 0;
+            background-color: var(--primary);
+            transform: scaleX(0);
+            transform-origin: bottom right;
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        .nav-links a:hover::after {
+            transform: scaleX(1);
+            transform-origin: bottom left;
+        }
+
+        /* Fix: Ensure button text is white despite the generalized link styling above */
+        .nav-links a.btn-primary,
+        .nav-links a.btn-ai {
+            color: white !important;
+        }
+
+        .nav-links a.btn-primary::after,
+        .nav-links a.btn-ai::after {
+            display: none;
+        }
+
+        .nav-actions {
+            display: flex;
+            gap: 0.75rem;
+            align-items: center;
+        }
+
+        /* Mobile Menu Button */
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            cursor: pointer;
+            z-index: 1002;
+            padding: 0.5rem;
+        }
+
+        .hamburger-line {
+            display: block;
+            width: 24px;
+            height: 2px;
+            background-color: var(--secondary);
+            margin: 5px 0;
+            transition: all 0.3s ease;
+            border-radius: 2px;
+        }
+
+        /* =========================================
+           4. HERO SECTION (AI-Enhanced)
+           ========================================= */
+        .hero {
+            padding: 10rem 0 6rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            background: var(--bg-white);
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background:
+                radial-gradient(circle at 50% 50%, rgba(79, 70, 229, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(6, 182, 212, 0.1) 0%, transparent 40%),
+                radial-gradient(circle at 20% 80%, rgba(139, 92, 246, 0.08) 0%, transparent 40%);
+            z-index: 0;
+            pointer-events: none;
+            animation: gradient-shift 15s ease infinite;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .ai-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: linear-gradient(135deg, #eff6ff, #ecfeff);
+            color: var(--ai-cyan);
+            padding: 0.5rem 1.25rem;
+            border-radius: 100px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+            border: 1px solid rgba(6, 182, 212, 0.2);
+            box-shadow: 0 0 20px rgba(6, 182, 212, 0.1);
+            animation: ai-pulse 3s infinite;
+        }
+
+        .ai-badge svg {
+            width: 16px;
+            height: 16px;
+        }
+
+        .hero h1 {
+            font-size: clamp(2.5rem, 6vw, 4.5rem);
+            font-weight: 800;
+            line-height: 1.1;
+            letter-spacing: -0.04em;
+            margin-bottom: 1.5rem;
+            color: var(--secondary);
+        }
+
+        .hero h1 .gradient-text {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--ai-cyan) 50%, var(--accent) 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-size: 200% auto;
+            animation: gradient-shift 5s ease infinite;
+        }
+
+        .hero p {
+            font-size: clamp(1rem, 2vw, 1.25rem);
+            color: var(--text-muted);
+            max-width: 600px;
+            margin: 0 auto 2.5rem;
+            font-weight: 400;
+        }
+
+        .hero-btn-group {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 3rem;
+        }
+
+        .hero-features {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .hero-feature-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        .hero-feature-item svg {
+            width: 18px;
+            height: 18px;
+            color: var(--ai-cyan);
+        }
+
+        .hero-stats {
+            display: flex;
+            justify-content: center;
+            gap: 4rem;
+            margin-top: 5rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border);
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .stat h4 {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--secondary);
+            margin-bottom: 0.25rem;
+        }
+
+        .stat span {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            font-weight: 600;
+        }
+
+        /* Floating AI Assistant Preview */
+        .ai-preview {
+            position: absolute;
+            bottom: -50px;
+            right: 10%;
+            width: 280px;
+            background: white;
+            border-radius: var(--radius-md);
+            padding: 1.5rem;
+            box-shadow: var(--shadow-xl), var(--shadow-ai);
+            border: 1px solid rgba(6, 182, 212, 0.2);
+            animation: float 6s ease-in-out infinite;
+            display: none;
+        }
+
+        @media (min-width: 1200px) {
+            .ai-preview {
+                display: block;
+            }
+        }
+
+        .ai-preview-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .ai-avatar {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, var(--ai-cyan), var(--primary));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 0.75rem;
+        }
+
+        .ai-message {
+            background: var(--bg-wash);
+            padding: 0.75rem;
+            border-radius: var(--radius-sm);
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 0.5rem;
+        }
+
+        .typing-dot {
+            display: inline-block;
+            width: 6px;
+            height: 6px;
+            background: var(--ai-cyan);
+            border-radius: 50%;
+            margin-right: 3px;
+            animation: typing 1.4s infinite;
+        }
+
+        .typing-dot:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .typing-dot:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        @keyframes typing {
+
+            0%,
+            60%,
+            100% {
+                transform: translateY(0);
+            }
+
+            30% {
+                transform: translateY(-10px);
+            }
+        }
+
+        /* =========================================
+           5. FEATURES (Cards)
+           ========================================= */
+        .section-light {
+            padding: 6rem 0;
+            background: var(--bg-white);
+        }
+
+        .section-wash {
+            padding: 6rem 0;
+            background: var(--bg-wash);
+        }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+
+        .card {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: 2.5rem;
+            transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            cursor: default;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card-clickable {
+            cursor: pointer;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--ai-cyan));
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--primary-soft);
+        }
+
+        .card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .icon-box {
+            width: 48px;
+            height: 48px;
+            background: var(--bg-wash);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--primary);
+            border: 1px solid var(--border);
+            transition: all 0.3s ease;
+        }
+
+        .card:hover .icon-box {
+            transform: scale(1.1) rotate(5deg);
+            background: var(--primary-soft);
+            color: var(--primary-dark);
+        }
+
+        .card h3 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+            color: var(--secondary);
+            letter-spacing: -0.01em;
+        }
+
+        .card p {
+            color: var(--text-muted);
+            font-size: 1rem;
+            line-height: 1.6;
+            flex-grow: 1;
+            margin-bottom: 2rem;
+        }
+
+        .card-link {
+            font-weight: 600;
+            color: var(--primary);
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+            transition: gap 0.2s ease;
+        }
+
+        .card:hover .card-link {
+            gap: 0.5rem;
+        }
+
+        /* =========================================
+           6. DARK SECTION & PRICING
+           ========================================= */
+        .dark-section {
+            padding: 6rem 0;
+            background: var(--secondary);
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .dark-section::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at 50% 50%, rgba(99, 102, 241, 0.1) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        .dark-section .section-header h2 {
+            color: white;
+        }
+
+        .dark-section .section-header p {
+            color: var(--text-light);
+        }
+
+        .dark-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        .dark-card:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(255, 255, 255, 0.2);
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.5);
+        }
+
+        .dark-card h3 {
+            color: white;
+        }
+
+        .dark-card p {
+            color: var(--text-light);
+        }
+
+        .dark-card .icon-box {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: none;
+        }
+
+        .dark-card:hover .icon-box {
+            background: rgba(6, 182, 212, 0.2);
+            color: var(--ai-cyan);
+        }
+
+        /* AI Feature Card Special Styling */
+        .ai-card .icon-box {
+            background: linear-gradient(135deg, rgba(6, 182, 212, 0.2), rgba(99, 102, 241, 0.2));
+            color: var(--ai-cyan);
+            border: 1px solid rgba(6, 182, 212, 0.3);
+        }
+
+        .ai-card:hover .icon-box {
+            background: linear-gradient(135deg, var(--ai-cyan), var(--primary));
+            color: white;
+            box-shadow: 0 0 20px rgba(6, 182, 212, 0.4);
+        }
+
+        /* Pricing */
+        .pricing-card {
+            background: white;
+            border-radius: var(--radius-lg);
+            padding: 0;
+            max-width: 480px;
+            margin: 0 auto;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--border);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .pricing-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--ai-cyan), var(--accent));
+            background-size: 200% auto;
+            animation: gradient-shift 3s ease infinite;
+        }
+
+        .pricing-header {
+            padding: 3rem 2.5rem;
+            text-align: center;
+            background: var(--bg-wash);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .price-wrapper {
+            display: flex;
+            align-items: baseline;
+            justify-content: center;
+            gap: 0.5rem;
+            margin: 1rem 0;
+        }
+
+        .currency {
+            font-size: 1.5rem;
+            font-weight: 500;
+            color: var(--text-muted);
+        }
+
+        .amount {
+            font-size: 3.5rem;
+            font-weight: 800;
+            color: var(--secondary);
+            letter-spacing: -0.03em;
+        }
+
+        .billing {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+        }
+
+        .pricing-body {
+            padding: 2.5rem;
+        }
+
+        .feature-list li {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+            color: var(--text-main);
+            font-size: 1rem;
+        }
+
+        .check-icon {
+            width: 20px;
+            height: 20px;
+            background: #dcfce7;
+            color: #16a34a;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 1rem;
+            flex-shrink: 0;
+        }
+
+        .check-icon svg {
+            width: 12px;
+            height: 12px;
+        }
+
+        /* =========================================
+           7. NEW FEATURES GRID SECTION
+           ========================================= */
+        .features-grid-section {
+            padding: 6rem 0;
+            background: linear-gradient(180deg, var(--bg-white) 0%, var(--bg-wash) 100%);
+        }
+
+        .bento-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .bento-item {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: 2rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .bento-item:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-md);
+            border-color: var(--primary-soft);
+        }
+
+        .bento-item.large {
+            grid-column: span 2;
+            background: linear-gradient(135deg, var(--secondary) 0%, var(--secondary-light) 100%);
+            color: white;
+        }
+
+        .bento-item.large h3 {
+            color: white;
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .bento-item.large p {
+            color: var(--text-light);
+        }
+
+        .bento-item.ai-feature {
+            background: linear-gradient(135deg, #ecfeff 0%, #eff6ff 100%);
+            border-color: rgba(6, 182, 212, 0.2);
+        }
+
+        .bento-item.ai-feature .icon-box {
+            background: white;
+            color: var(--ai-cyan);
+            box-shadow: 0 4px 12px rgba(6, 182, 212, 0.15);
+        }
+
+        @media (max-width: 768px) {
+            .bento-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .bento-item.large {
+                grid-column: span 1;
+            }
+        }
+
+        /* =========================================
+           8. MODALS
+           ========================================= */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(4px);
+            z-index: 2000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            padding: 1rem;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-content {
+            background: white;
+            width: 100%;
+            max-width: 550px;
+            border-radius: var(--radius-lg);
+            padding: 2rem;
+            position: relative;
+            transform: scale(0.95) translateY(10px);
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .modal-overlay.active .modal-content {
+            transform: scale(1) translateY(0);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-header h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--secondary);
+        }
+
+        .close-modal {
+            background: var(--bg-wash);
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: var(--text-muted);
+            transition: 0.2s;
+            border: none;
+            font-size: 1.25rem;
+        }
+
+        .close-modal:hover {
+            background: #fee2e2;
+            color: #ef4444;
+        }
+
+        .modal-grid-box {
+            background: var(--bg-wash);
+            padding: 1rem;
+            border-radius: var(--radius-sm);
+            text-align: center;
+        }
+
+        .modal-grid-box h5 {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+            margin-bottom: 0.25rem;
+        }
+
+        .modal-grid-box p {
+            font-weight: 700;
+            color: var(--secondary);
+            font-size: 0.95rem;
+        }
+
+        /* =========================================
+           9. RESPONSIVE DESIGN (MOBILE)
+           ========================================= */
+        @media (max-width: 900px) {
+            header {
+                top: 10px;
+            }
+
+            .nav-container {
+                width: 95%;
+                padding: 0.75rem 1.25rem;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .nav-links {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100vh;
+                background: white;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                gap: 2rem;
+                transform: translateX(100%);
+                transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+                z-index: 999;
+                box-shadow: -10px 0 30px rgba(0, 0, 0, 0.1);
+            }
+
+            .nav-links.active {
+                transform: translateX(0);
+            }
+
+            .nav-links a {
+                font-size: 1.5rem;
+                font-weight: 600;
+                color: var(--secondary);
+            }
+
+            .auth-buttons {
+                flex-direction: column;
+                width: 80%;
+                gap: 1rem;
+            }
+
+            .auth-buttons .btn {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .hamburger-line.active:nth-child(1) {
+                transform: rotate(45deg) translate(5px, 5px);
+            }
+
+            .hamburger-line.active:nth-child(2) {
+                opacity: 0;
+            }
+
+            .hamburger-line.active:nth-child(3) {
+                transform: rotate(-45deg) translate(5px, -5px);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero {
+                padding: 8rem 0 4rem;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero-stats {
+                flex-direction: column;
+                gap: 2rem;
+                margin-top: 3rem;
+            }
+
+            .stat {
+                text-align: center;
+            }
+
+            .section-header {
+                margin-bottom: 3rem;
+            }
+
+            .card {
+                padding: 1.5rem;
+            }
+
+            footer .container>div {
+                flex-direction: column;
+                gap: 2rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- 1. NAVIGATION -->
+    <header>
+        <div class="nav-container">
+            <a href="#" class="logo">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path
+                        d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z">
+                    </path>
+                </svg>
+                IISER Smart Prep
+            </a>
+
+            <!-- Mobile Hamburger Button -->
+            <button class="mobile-menu-btn" onclick="toggleMenu()" aria-label="Toggle menu">
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+            </button>
+
+            <!-- Navigation Links -->
+            <nav class="nav-links" id="nav-links">
+                <a href="features.html">Features</a>
+                <a href="#analytics" onclick="toggleMenu()">AI Tutor</a>
+                <a href="#pricing" onclick="toggleMenu()">Pricing</a>
+
+                <!-- Unified Auth Buttons -->
+                <div class="auth-buttons" id="auth-buttons-container"
+                    style="display: flex; gap: 0.75rem; align-items: center;">
+                    <a href="login.html" class="btn btn-outline" style="padding: 0.5rem 1.2rem; font-size: 0.85rem;">Log
+                        In</a>
+                    <a href="login.html?mode=signup" class="btn btn-primary"
+                        style="padding: 0.5rem 1.2rem; font-size: 0.85rem;">Get Started</a>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- 2. HERO SECTION (AI-Enhanced) -->
+    <section class="hero">
+        <div class="container hero-content fade-in-up">
+            <div class="ai-badge">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+                    stroke-linejoin="round">
+                    <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
+                </svg>
+                AI-Powered Learning Platform
+            </div>
+
+            <h1>Master IAT with Your<br><span class="gradient-text">Personal AI Tutor</span></h1>
+            <p>Experience the future of exam preparation. Our AI adapts to your learning style, provides instant doubt
+                resolution, and creates personalized study plans to crack the IISER Aptitude Test.</p>
+
+            <div class="hero-btn-group">
+                <a href="#features" class="btn btn-ai">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                        stroke-linecap="round" stroke-linejoin="round" style="margin-right: 0.25rem;">
+                        <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+                    </svg>
+                    Try AI Assistant
+                </a>
+                <a href="#pricing" class="btn btn-outline">View Plans</a>
+            </div>
+
+            <div class="hero-features">
+                <div class="hero-feature-item">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                    <span>24/7 AI Doubt Solving</span>
+                </div>
+                <div class="hero-feature-item">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                    <span>Adaptive Mock Tests</span>
+                </div>
+                <div class="hero-feature-item">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                    <span>Smart Revision Notes</span>
+                </div>
+            </div>
+
+            <div class="hero-stats">
+                <div class="stat">
+                    <h4>15K+</h4>
+                    <span>Active Students</span>
+                </div>
+                <div class="stat">
+                    <h4>92%</h4>
+                    <span>Success Rate</span>
+                </div>
+                <div class="stat">
+                    <h4>4.9★</h4>
+                    <span>App Rating</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Floating AI Preview Card -->
+        <div class="ai-preview fade-in-up">
+            <div class="ai-preview-header">
+                <div class="ai-avatar">AI</div>
+                <div style="font-weight: 600; font-size: 0.9rem;">Study Assistant</div>
+            </div>
+            <div class="ai-message">
+                I noticed you struggled with Thermodynamics. Shall I generate a quick revision quiz on Work-Energy
+                concepts?
+            </div>
+            <div style="display: flex; gap: 0.5rem; margin-top: 0.5rem;">
+                <div class="typing-dot"></div>
+                <div class="typing-dot"></div>
+                <div class="typing-dot"></div>
+            </div>
+        </div>
+    </section>
+
+
+
+    <!-- 4. FEATURES (Core Tools) -->
+    <section id="features" class="section-light">
+        <div class="container">
+            <div class="section-header fade-in-up">
+                <span class="kicker">Exam Simulation</span>
+                <h2>Core Practice Tools</h2>
+                <p>We provide the exact digital environment you will face on exam day, engineered to build stamina and
+                    familiarity.</p>
+            </div>
+
+            <div class="grid-3">
+                <!-- CARD 1 -->
+                <a href="mock_test/full_mock_test_homepage.html" class="card card-clickable fade-in-up">
+                    <div class="icon-box">📝</div>
+                    <h3>Full Length Mocks</h3>
+                    <p>Replica of the TCS iON interface. 180 minutes, 60 questions, carefully balanced PCMB weightage.
+                    </p>
+                    <div class="card-link">
+                        Start Mock
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                            <polyline points="12 5 19 12 12 19"></polyline>
+                        </svg>
+                    </div>
+                </a>
+
+                <!-- CARD 2 -->
+                <article class="card card-clickable fade-in-up" onclick="openModal('modal-quick')">
+                    <div class="icon-box">⏱️</div>
+                    <h3>Quick Mock (15 Mins)</h3>
+                    <p>Short on time? Take a rapid 15-minute test with 15 high-yield questions to keep your prep sharp.
+                    </p>
+                    <div class="card-link">
+                        Start Quick Mock
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                            <polyline points="12 5 19 12 12 19"></polyline>
+                        </svg>
+                    </div>
+                </article>
+
+                <!-- CARD 3 -->
+                <a href="pyqs/pyq.html" class="card card-clickable fade-in-up">
+                    <div class="icon-box">🏛️</div>
+                    <h3>Digitized Archives</h3>
+                    <p>Solve 2017-2025 papers as live interactive tests. Get detailed comparative metrics against
+                        toppers.</p>
+                    <div class="card-link">
+                        Explore PYQs
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                            <polyline points="12 5 19 12 12 19"></polyline>
+                        </svg>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- 5. DARK SECTION (AI Features) -->
+    <section id="analytics" class="dark-section">
+        <div class="container">
+            <div class="section-header fade-in-up">
+                <span class="kicker" style="color: var(--ai-cyan);">Artificial Intelligence</span>
+                <h2>Your Personal AI Tutor</h2>
+                <p>Experience 24/7 personalized tutoring powered by advanced AI. Get instant explanations, custom
+                    quizzes, and adaptive learning paths.</p>
+            </div>
+
+            <div class="grid-3">
+                <!-- AI CARD 1: Replaces Instant Logic Breakdown -->
+                <article class="card dark-card ai-card card-clickable fade-in-up" onclick="openModal('modal-ai-tutor')">
+                    <div class="icon-box">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"></path>
+                            <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
+                            <line x1="12" y1="19" x2="12" y2="23"></line>
+                            <line x1="8" y1="23" x2="16" y2="23"></line>
+                        </svg>
+                    </div>
+                    <h3>AI Doubt Solver</h3>
+                    <p>Stuck on a concept? Ask our AI tutor anything. Get step-by-step explanations, visualizations, and
+                        analogies tailored to your understanding level.</p>
+                    <div class="card-link" style="color: var(--ai-cyan);">
+                        Ask AI Tutor
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                            <polyline points="12 5 19 12 12 19"></polyline>
+                        </svg>
+                    </div>
+                </article>
+
+                <!-- CARD 2 -->
+                <a href="smart_notes/smart_notes_home.html" class="card dark-card card-clickable fade-in-up"
+                    style="text-decoration: none;">
+                    <div class="icon-box">🧠</div>
+                    <h3>Smart Revision</h3>
+                    <p>Access high-yield cheat sheets, formula lists, and diversity notes tailored for IAT 2026.</p>
+                    <div class="card-link" style="color: #818cf8;">
+                        Explore Notes
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                            <polyline points="12 5 19 12 12 19"></polyline>
+                        </svg>
+                    </div>
+                </a>
+
+                <!-- CARD 3 -->
+                <article class="card dark-card card-clickable fade-in-up" onclick="openModal('modal-focus')">
+                    <div class="icon-box">🎯</div>
+                    <h3>Neuro-Focus Mode</h3>
+                    <p>Distraction-free UI with time-per-question tracking to build the mental stamina required for the
+                        exam.</p>
+                </article>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- 5. STUDENT REVIEWS -->
+    <section class="section-light" id="reviews">
+        <div class="container">
+            <div class="section-header fade-in-up">
+                <span class="kicker">Success Stories</span>
+                <h2>Trusted by Future Researchers</h2>
+                <p>See how serious aspirants are Cracking IAT with our platform.</p>
+            </div>
+
+            <div class="grid-3">
+                <div class="card fade-in-up">
+                    <p style="font-style: italic; margin-bottom: 1.5rem;">"The AI Rank Predictor was scary accurate. It
+                        told me I needed 3 more weeks of Chem practice, and that pushed my rank from 1200 to 250."</p>
+                    <div style="display: flex; align-items: center; gap: 1rem;">
+                        <div
+                            style="width: 40px; height: 40px; background: var(--primary); border-radius: 50%; color: white; display: flex; align-items: center; justify-content: center; font-weight: bold;">
+                            AR</div>
+                        <div>
+                            <h4 style="font-size: 0.95rem; font-weight: 700; color: var(--secondary);">Aditya R.</h4>
+                            <span style="font-size: 0.8rem; color: var(--text-muted);">IISER Pune (2025)</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card fade-in-up">
+                    <p style="font-style: italic; margin-bottom: 1.5rem;">"I wasted months on theory. This platform
+                        forced me to solve questions. The 'Quick Mock' habit changed everything."</p>
+                    <div style="display: flex; align-items: center; gap: 1rem;">
+                        <div
+                            style="width: 40px; height: 40px; background: var(--ai-cyan); border-radius: 50%; color: white; display: flex; align-items: center; justify-content: center; font-weight: bold;">
+                            SK</div>
+                        <div>
+                            <h4 style="font-size: 0.95rem; font-weight: 700; color: var(--secondary);">Sneha K.</h4>
+                            <span style="font-size: 0.8rem; color: var(--text-muted);">IISER Mohali (2025)</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card fade-in-up">
+                    <p style="font-style: italic; margin-bottom: 1.5rem;">"The doubt engine is better than my coaching
+                        teacher. Instant answers at 2 AM saved my sanity."</p>
+                    <div style="display: flex; align-items: center; gap: 1rem;">
+                        <div
+                            style="width: 40px; height: 40px; background: var(--accent); border-radius: 50%; color: white; display: flex; align-items: center; justify-content: center; font-weight: bold;">
+                            RV</div>
+                        <div>
+                            <h4 style="font-size: 0.95rem; font-weight: 700; color: var(--secondary);">Rahul V.</h4>
+                            <span style="font-size: 0.8rem; color: var(--text-muted);">IISER Kolkata (2024)</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 6. PRICING -->
+    <section id="pricing" class="section-wash">
+        <div class="container">
+            <div class="section-header fade-in-up">
+                <span class="kicker">Membership</span>
+                <h2>Transparent Pricing</h2>
+                <p>Invest in your future for less than the cost of a single textbook.</p>
+            </div>
+
+            <div class="pricing-card fade-in-up">
+                <div class="pricing-header">
+                    <h3>IAT 2026 Pass</h3>
+                    <div class="price-wrapper">
+                        <span class="currency">₹</span>
+                        <span class="amount">199</span>
+                    </div>
+                    <span class="billing">One-time payment • Valid until exam</span>
+                </div>
+                <div class="pricing-body">
+                    <ul class="feature-list" style="display: flex; flex-direction: column; gap: 1.5rem;">
+                        <li style="display: flex; align-items: flex-start;">
+                            <div class="check-icon" style="margin-top: 0.25rem;"><svg viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="3" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg></div>
+                            <div>
+                                <strong>Weekly Guided Full-Length Mocks (Unlimited Access)</strong>
+                                <p
+                                    style="font-size: 0.9rem; color: var(--text-muted); margin-top: 0.25rem; line-height: 1.4;">
+                                    Real exam interface, real timing, real analytics, AI Rank Predictor — follow a
+                                    structured weekly
+                                    schedule while having access to all mocks anytime.</p>
+                            </div>
+                        </li>
+                        <li style="display: flex; align-items: flex-start;">
+                            <div class="check-icon" style="margin-top: 0.25rem;"><svg viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="3" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg></div>
+                            <div>
+                                <strong>AI Tutor (Unlimited Queries)</strong>
+                                <p
+                                    style="font-size: 0.9rem; color: var(--text-muted); margin-top: 0.25rem; line-height: 1.4;">
+                                    Ask subject questions anytime. Short, exam-focused answers and step-by-step
+                                    solutions — never long theory dumps.</p>
+                            </div>
+                        </li>
+                        <li style="display: flex; align-items: flex-start;">
+                            <div class="check-icon" style="margin-top: 0.25rem;"><svg viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="3" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg></div>
+                            <div>
+                                <strong>AI-Generated Mock Tests (Personalized)</strong>
+                                <p
+                                    style="font-size: 0.9rem; color: var(--text-muted); margin-top: 0.25rem; line-height: 1.4;">
+                                    Create full-length mock tests using AI based on your weak topics, difficulty
+                                    preference, and time availability — all in a real exam interface with real-time
+                                    clock and detailed exam-level analytics.</p>
+                            </div>
+                        </li>
+                        <li style="display: flex; align-items: flex-start;">
+                            <div class="check-icon" style="margin-top: 0.25rem;"><svg viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="3" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg></div>
+                            <div>
+                                <strong>PYQ Vault + Exam-Mode Solutions</strong>
+                                <p
+                                    style="font-size: 0.9rem; color: var(--text-muted); margin-top: 0.25rem; line-height: 1.4;">
+                                    All previous-year papers with model solutions and an exam-mode version so you
+                                    practice PYQs exactly like the real test.</p>
+                            </div>
+                        </li>
+                        <li style="display: flex; align-items: flex-start;">
+                            <div class="check-icon" style="margin-top: 0.25rem;"><svg viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="3" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg></div>
+                            <div>
+                                <strong>Interactive PYQ Sessions</strong>
+                                <p
+                                    style="font-size: 0.9rem; color: var(--text-muted); margin-top: 0.25rem; line-height: 1.4;">
+                                    Scheduled live/automated sessions that run a PYQ in test-mode — get timed practice
+                                    and instant feedback.</p>
+                            </div>
+                        </li>
+                        <li style="display: flex; align-items: flex-start;">
+                            <div class="check-icon" style="margin-top: 0.25rem;"><svg viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="3" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg></div>
+                            <div>
+                                <strong>Quick Mock — Every 2 Days</strong>
+                                <p
+                                    style="font-size: 0.9rem; color: var(--text-muted); margin-top: 0.25rem; line-height: 1.4;">
+                                    A focused, 30–45 minute diagnostic every 48 hours to identify drift and fix it fast.
+                                </p>
+                            </div>
+                        </li>
+                        <li style="display: flex; align-items: flex-start;">
+                            <div class="check-icon" style="margin-top: 0.25rem;"><svg viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="3" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg></div>
+                            <div>
+                                <strong>Question of the Day</strong>
+                                <p
+                                    style="font-size: 0.9rem; color: var(--text-muted); margin-top: 0.25rem; line-height: 1.4;">
+                                    One carefully-picked micro-question daily — 5 minutes of high-signal practice to
+                                    keep momentum.</p>
+                            </div>
+                        </li>
+                        <li style="display: flex; align-items: flex-start;">
+                            <div class="check-icon" style="margin-top: 0.25rem;"><svg viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="3" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg></div>
+                            <div>
+                                <strong>AI Mock Result Analyzer</strong>
+                                <p
+                                    style="font-size: 0.9rem; color: var(--text-muted); margin-top: 0.25rem; line-height: 1.4;">
+                                    Per-question insights: conceptual weakness, timing pattern, mistake taxonomy, and
+                                    next-week study plan.</p>
+                            </div>
+                        </li>
+                        <li style="display: flex; align-items: flex-start;">
+                            <div class="check-icon" style="margin-top: 0.25rem;"><svg viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="3" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg></div>
+                            <div>
+                                <strong>Rank Predictor & Progress Roadmap</strong>
+                                <p
+                                    style="font-size: 0.9rem; color: var(--text-muted); margin-top: 0.25rem; line-height: 1.4;">
+                                    After each mock the Rank Predictor estimates percentile and tells you how many weeks
+                                    of focused work you need to hit your target.</p>
+                            </div>
+                        </li>
+                        <li style="display: flex; align-items: flex-start;">
+                            <div class="check-icon" style="margin-top: 0.25rem;"><svg viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="3" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg></div>
+                            <div>
+                                <strong>High-Quality Smart Notes (Exam-Focused)</strong>
+                                <p
+                                    style="font-size: 0.9rem; color: var(--text-muted); margin-top: 0.25rem; line-height: 1.4;">
+                                    Carefully curated, concept-wise notes designed specifically to crack the IAT — no
+                                    fluff, only what actually appears in the exam.</p>
+                            </div>
+                        </li>
+                        <li style="display: flex; align-items: flex-start;">
+                            <div class="check-icon" style="margin-top: 0.25rem;"><svg viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="3" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg></div>
+                            <div>
+                                <strong>24/7 Doubt Resolution</strong>
+                                <p
+                                    style="font-size: 0.9rem; color: var(--text-muted); margin-top: 0.25rem; line-height: 1.4;">
+                                    Hybrid: instant AI answers + mentor escalation for tricky questions.</p>
+                            </div>
+                        </li>
+                    </ul>
+                    <button onclick="buyPro()" class="btn btn-primary" style="width: 100%; margin-top: 2rem;">Get Access
+                        Now</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- 7. FAQ -->
+    <section class="section-light" id="faq">
+        <div class="container">
+            <div class="section-header fade-in-up">
+                <span class="kicker">Common Questions</span>
+                <h2>Frequently Asked Questions</h2>
+                <p>Everything you need to know about the platform and the exam.</p>
+            </div>
+
+            <div style="max-width: 800px; margin: 0 auto;">
+                <style>
+                    .faq-item {
+                        background: white;
+                        border: 1px solid var(--border);
+                        border-radius: 12px;
+                        margin-bottom: 1rem;
+                        overflow: hidden;
+                        transition: all 0.2s ease;
+                    }
+
+                    .faq-item:hover {
+                        border-color: var(--primary);
+                        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+                    }
+
+                    .faq-item[open] {
+                        border-color: var(--primary);
+                        background: #f8fafc;
+                    }
+
+                    .faq-summary {
+                        padding: 1.25rem;
+                        cursor: pointer;
+                        list-style: none;
+                        /* Removes default triangle */
+                        display: flex;
+                        align-items: center;
+                        justify-content: space-between;
+                        font-weight: 600;
+                        color: var(--secondary);
+                        font-size: 1.05rem;
+                    }
+
+                    .faq-summary::-webkit-details-marker {
+                        display: none;
+                        /* Removes chrome marker */
+                    }
+
+                    .faq-summary::after {
+                        content: '+';
+                        font-size: 1.5rem;
+                        font-weight: 300;
+                        color: var(--text-muted);
+                        transition: transform 0.2s ease;
+                    }
+
+                    .faq-item[open] .faq-summary::after {
+                        transform: rotate(45deg);
+                        background: var(--primary);
+                        color: white;
+                        width: 24px;
+                        height: 24px;
+                        border-radius: 50%;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        font-size: 1.2rem;
+                    }
+
+                    .faq-content {
+                        padding: 0 1.25rem 1.25rem;
+                        color: var(--text-muted);
+                        line-height: 1.6;
+                        font-size: 0.95rem;
+                        border-top: 1px solid transparent;
+                    }
+
+                    .faq-item[open] .faq-content {
+                        border-top-color: var(--border);
+                        padding-top: 1rem;
+                    }
+                </style>
+
+                <details class="faq-item fade-in-up">
+                    <summary class="faq-summary">Is this only for IAT 2026?</summary>
+                    <div class="faq-content">
+                        Yes, all our content, mock tests, and analytics are specifically curated for the 2026 syllabus
+                        and exam pattern.
+                    </div>
+                </details>
+
+                <details class="faq-item fade-in-up">
+                    <summary class="faq-summary">How does the AI Rank Predictor work?</summary>
+                    <div class="faq-content">
+                        It analyzes your mock scores against historical cutoff data and paper difficulty to give you a
+                        realistic percentile estimate.
+                    </div>
+                </details>
+
+                <details class="faq-item fade-in-up">
+                    <summary class="faq-summary">Can I re-attempt the mock tests?</summary>
+                    <div class="faq-content">
+                        Absolutely. You have unlimited re-attempts to practice different strategies and improve your
+                        time management.
+                    </div>
+                </details>
+
+                <details class="faq-item fade-in-up">
+                    <summary class="faq-summary">Are the Smart Notes downloadable?</summary>
+                    <div class="faq-content">
+                        Notes are view-only within the platform to ensure you always have access to the latest updated
+                        versions and corrections.
+                    </div>
+                </details>
+
+                <details class="faq-item fade-in-up">
+                    <summary class="faq-summary">What happens after I pay ₹199?</summary>
+                    <div class="faq-content">
+                        You get instant, full access to all features (Mocks, AI Tutor, Notes, Analytics) valid right up
+                        until the IAT exam date.
+                    </div>
+                </details>
+
+                <details class="faq-item fade-in-up">
+                    <summary class="faq-summary">Is there a refund policy?</summary>
+                    <div class="faq-content">
+                        Since this is a digital product with instant access, all sales are final. We recommend trying
+                        our free "Quick Mock" first!
+                    </div>
+                </details>
+            </div>
+        </div>
+    </section>
+
+    <!-- 8. FOOTER -->
+    <footer style="background: white; border-top: 1px solid var(--border); padding: 5rem 0 2rem;">
+        <div class="container">
+            <div
+                style="display: flex; flex-wrap: wrap; gap: 3rem; justify-content: space-between; margin-bottom: 3rem;">
+                <div style="max-width: 320px;">
+                    <a href="#" class="logo" style="margin-bottom: 1rem;">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path
+                                d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z">
+                            </path>
+                        </svg>
+                        IISER Smart Prep
+                    </a>
+                    <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 1rem;">Empowering scientific
+                        minds to reach India's premier research institutes through data and strategy.</p>
+                </div>
+
+                <div style="display: flex; gap: 4rem; flex-wrap: wrap;">
+                    <div>
+                        <h4 style="margin-bottom: 1rem; font-size: 0.9rem; font-weight: 700; color: var(--secondary);">
+                            Platform</h4>
+                        <ul style="display: flex; flex-direction: column; gap: 0.75rem;">
+                            <li><a href="ai_tutor.html" style="color: var(--text-muted); font-size: 0.9rem;">AI
+                                    Tutor</a></li>
+                            <li><a href="mock_test/full_mock_test_homepage.html"
+                                    style="color: var(--text-muted); font-size: 0.9rem;">Mock Tests</a></li>
+                            <li><a href="#" style="color: var(--text-muted); font-size: 0.9rem;">Pricing</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 style="margin-bottom: 1rem; font-size: 0.9rem; font-weight: 700; color: var(--secondary);">
+                            Support</h4>
+                        <ul style="display: flex; flex-direction: column; gap: 0.75rem;">
+                            <li><a href="#faq" style="color: var(--text-muted); font-size: 0.9rem;">FAQ</a></li>
+                            <li><a href="#" style="color: var(--text-muted); font-size: 0.9rem;">Contact</a></li>
+                            <li><a href="privacy.html" style="color: var(--text-muted); font-size: 0.9rem;">Privacy
+                                    Policy</a></li>
+                            <li><a href="terms.html" style="color: var(--text-muted); font-size: 0.9rem;">Terms &
+                                    Conditions</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div
+                style="text-align: center; border-top: 1px solid var(--border); padding-top: 2rem; color: var(--text-light); font-size: 0.85rem;">
+                &copy; 2026 IISER Smart Prep. All rights reserved. Not affiliated with IISERs Joint Admissions
+                Committee.
+            </div>
+        </div>
+    </footer>
+
+    <!-- =========================================
+       MODAL SYSTEM
+       ========================================= -->
+
+    <div id="modal-overlay" class="modal-overlay" onclick="closeModal()">
+
+        <!-- MODAL: QUICK MOCK -->
+        <div id="modal-quick" class="modal-content" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <h3>Quick Mock (15 Minutes)</h3>
+                <div class="close-modal" onclick="closeModal()">&times;</div>
+            </div>
+            <p style="color: var(--text-muted); margin-bottom: 1.5rem;">Designed for busy schedules. This mode generates
+                a balanced 15-question mini-test covering all subjects to test your speed and accuracy in a short burst.
+            </p>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                <div class="modal-grid-box">
+                    <h5>Duration</h5>
+                    <p>15 Minutes</p>
+                </div>
+                <div class="modal-grid-box">
+                    <h5>Questions</h5>
+                    <p>15 (Standard Mix)</p>
+                </div>
+            </div>
+            <button class="btn btn-primary" style="width: 100%; margin-top: 1.5rem;"
+                onclick="window.location.href='mock_test/quick_mock_homepage.html'">Start Quick Mock</button>
+        </div>
+
+        <!-- MODAL: AI TUTOR -->
+        <div id="modal-ai-tutor" class="modal-content" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <h3 style="display: flex; align-items: center; gap: 0.5rem;">
+                    <span style="color: var(--ai-cyan);">🤖</span> AI Doubt Solver
+                </h3>
+                <div class="close-modal" onclick="closeModal()">&times;</div>
+            </div>
+            <p style="color: var(--text-muted); margin-bottom: 1.5rem;">
+                Our AI tutor is trained on NCERT concepts and 8+ years of IAT PYQs. It doesn't just give answers—it
+                teaches you the concept using analogies, step-by-step derivations, and visual explanations.
+            </p>
+            <div
+                style="background: linear-gradient(135deg, #ecfeff, #eff6ff); padding: 1.5rem; border-radius: var(--radius-md); margin-bottom: 1.5rem; border: 1px solid rgba(6, 182, 212, 0.2);">
+                <div style="font-weight: 600; color: var(--secondary); margin-bottom: 0.5rem;">Example Query:</div>
+                <p style="color: var(--text-muted); font-size: 0.9rem; font-style: italic; margin-bottom: 1rem;">"Why
+                    does the energy of a photon depend on frequency and not intensity?"</p>
+                <div style="font-weight: 600; color: var(--ai-cyan); font-size: 0.9rem;">AI explains using the particle
+                    nature of light + analogy of raindrops vs. hailstones.</div>
+            </div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                <div class="modal-grid-box">
+                    <h5>Response Time</h5>
+                    <p>&lt; 2 Seconds</p>
+                </div>
+                <div class="modal-grid-box">
+                    <h5>Subjects</h5>
+                    <p>Physics, Chem, Math, Bio</p>
+                </div>
+            </div>
+            <button class="btn btn-ai" style="width: 100%; margin-top: 1.5rem;"
+                onclick="window.location.href='ai_tutor.html'">Try AI Tutor</button>
+        </div>
+
+        <!-- MODAL: NOTES -->
+        <div id="modal-notes" class="modal-content" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <h3>Smart Revision</h3>
+                <div class="close-modal" onclick="closeModal()">&times;</div>
+            </div>
+            <p style="color: var(--text-muted);">The platform compiles your incorrect attempts into a personalized PDF
+                revision sheet.</p>
+        </div>
+
+        <!-- MODAL: FOCUS -->
+        <div id="modal-focus" class="modal-content" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <h3>Neuro-Focus Mode</h3>
+                <div class="close-modal" onclick="closeModal()">&times;</div>
+            </div>
+            <p style="color: var(--text-muted);">A distraction-free interface that forces full-screen mode and tracks
+                time-per-question to simulate exam pressure.</p>
+        </div>
+
+    </div>
+
+    <script>
+        // --- Modal Logic ---
+        function openModal(modalId) {
+            const overlay = document.getElementById('modal-overlay');
+            const contents = document.querySelectorAll('.modal-content');
+            contents.forEach(el => el.style.display = 'none');
+
+            const target = document.getElementById(modalId);
+            if (target) {
+                target.style.display = 'block';
+                overlay.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            }
+        }
+
+        function closeModal() {
+            const overlay = document.getElementById('modal-overlay');
+            overlay.classList.remove('active');
+            setTimeout(() => {
+                document.body.style.overflow = 'auto';
+            }, 300);
+        }
+
+        document.addEventListener('keydown', function (event) {
+            if (event.key === "Escape") closeModal();
+        });
+
+        // --- Mobile Menu Logic ---
+        function toggleMenu() {
+            const navLinks = document.getElementById('nav-links');
+            const lines = document.querySelectorAll('.hamburger-line');
+            navLinks.classList.toggle('active');
+
+            lines.forEach(line => line.classList.toggle('active'));
+
+            if (navLinks.classList.contains('active')) {
+                document.body.style.overflow = 'hidden';
+            } else {
+                document.body.style.overflow = 'auto';
+            }
+        }
+
+        // --- Auth State Check ---
+        const token = localStorage.getItem("IAT_TOKEN");
+
+        function updateButtons() {
+            const container = document.getElementById("auth-buttons-container");
+            if (!container) return;
+
+            if (token) {
+                container.innerHTML = `
+                    <a href="mock_test/full_mock_test_homepage.html" class="btn btn-primary" style="padding: 0.5rem 1rem;">Dashboard</a>
+                    <button onclick="logout()" class="btn btn-outline" style="border:none; color: var(--text-muted);">Logout</button>
+                `;
+            }
+        }
+
+        updateButtons();
+
+        function logout() {
+            localStorage.clear();
+            window.location.href = "index.html";
+        }
+
+        // --- Scroll Animations ---
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: "0px 0px -50px 0px"
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-in-up').forEach(el => {
+            observer.observe(el);
+        });
+
+        // --- Scroll Header Transformation ---
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('header');
+            if (window.scrollY > 20) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+
+        // --- Mock AI Preview Animation ---
+        setInterval(() => {
+            const preview = document.querySelector('.ai-preview');
+            if (preview && Math.random() > 0.7) {
+                preview.style.animation = 'none';
+                setTimeout(() => {
+                    preview.style.animation = 'float 6s ease-in-out infinite';
+                }, 10);
+            }
+        }, 5000);
+    </script>
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <script src="payment.js"></script>
+</body>
+
+</html>

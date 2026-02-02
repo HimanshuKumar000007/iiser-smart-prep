@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login | IISER Smart Prep</title>
+  <!-- Google Fonts: Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --primary: #4f46e5;
+      --primary-dark: #4338ca;
+      --secondary: #0f172a;
+      --text-main: #1e293b;
+      --text-muted: #64748b;
+      --bg-wash: #f8fafc;
+      --radius-md: 12px;
+      --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Inter', sans-serif;
+    }
+
+    body {
+      background-color: var(--bg-wash);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      color: var(--text-main);
+    }
+
+    .auth-container {
+      background: white;
+      width: 100%;
+      max-width: 400px;
+      padding: 2.5rem;
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .brand {
+      text-align: center;
+      margin-bottom: 2rem;
+      color: var(--secondary);
+      font-weight: 800;
+      font-size: 1.5rem;
+    }
+
+    .brand span {
+      color: var(--primary);
+    }
+
+    h2 {
+      margin-bottom: 0.5rem;
+      font-size: 1.5rem;
+      color: var(--secondary);
+      text-align: center;
+    }
+
+    p.subtitle {
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      margin-bottom: 2rem;
+    }
+
+    .form-group {
+      margin-bottom: 1.25rem;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: var(--text-main);
+    }
+
+    input {
+      width: 100%;
+      padding: 0.75rem;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      transition: all 0.2s;
+    }
+
+    input:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+    }
+
+    .btn {
+      width: 100%;
+      padding: 0.75rem;
+      background: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+      margin-top: 1rem;
+    }
+
+    .btn:hover {
+      background: var(--primary-dark);
+    }
+
+    .toggle-link {
+      display: block;
+      text-align: center;
+      margin-top: 1.5rem;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+    }
+
+    .toggle-link a {
+      color: var(--primary);
+      text-decoration: none;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .error-msg {
+      color: #ef4444;
+      font-size: 0.85rem;
+      text-align: center;
+      margin-top: 1rem;
+      display: none;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="auth-container">
+    <div class="brand">
+      IISER <span>Smart Prep</span>
+    </div>
+
+    <h2 id="page-title">Welcome Back</h2>
+    <p class="subtitle" id="page-subtitle">Login to access your dashboard</p>
+
+    <form id="authForm">
+      <div class="form-group" id="name-group" style="display: none;">
+        <label for="name">Full Name</label>
+        <input type="text" id="name" placeholder="John Doe">
+      </div>
+
+      <div class="form-group">
+        <label for="email">Email Address</label>
+        <input type="email" id="email" required placeholder="you@example.com">
+      </div>
+
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" required placeholder="••••••••">
+        <div id="forgot-password-link" style="text-align: right; margin-top: 6px;">
+          <a href="forgot-password.html"
+            style="font-size: 0.85rem; color: #4f46e5; font-weight: 500; text-decoration: none;">
+            Forgot password?
+          </a>
+        </div>
+      </div>
+
+      <div class="form-group" id="confirm-password-group" style="display: none;">
+        <label for="confirm-password">Confirm Password</label>
+        <input type="password" id="confirm-password" placeholder="••••••••">
+      </div>
+
+      <button type="submit" class="btn" id="submit-btn">Log In</button>
+
+
+
+      <div class="error-msg" id="error-msg"></div>
+    </form>
+
+    <div class="toggle-link">
+      <span id="toggle-text">Don't have an account?</span>
+      <a id="toggle-btn" onclick="toggleMode()">Sign Up</a>
+    </div>
+
+    <div class="toggle-link" style="margin-top: 0.5rem;">
+      <a href="index.html" style="color: var(--text-muted); font-size: 0.85rem;">← Back to Home</a>
+    </div>
+  </div>
+
+  <script>
+    const API_BASE = 'http://localhost:5000/api'; // Or relative /api if served same origin
+    let isSignup = false;
+
+    // Check URL params for mode
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('mode') === 'signup') {
+      toggleMode();
+    }
+
+    function toggleMode() {
+      isSignup = !isSignup;
+      const title = document.getElementById('page-title');
+      const subtitle = document.getElementById('page-subtitle');
+      const btn = document.getElementById('submit-btn');
+      const toggleText = document.getElementById('toggle-text');
+      const toggleBtn = document.getElementById('toggle-btn');
+      const errorMsg = document.getElementById('error-msg');
+
+      const nameGroup = document.getElementById('name-group');
+      const confirmPasswordGroup = document.getElementById('confirm-password-group');
+      const forgotPasswordLink = document.getElementById('forgot-password-link');
+
+      errorMsg.style.display = 'none';
+
+      if (isSignup) {
+        title.textContent = 'Create Account';
+        subtitle.textContent = 'Join the smartest way to prep for IAT';
+        btn.textContent = 'Sign Up';
+        toggleText.textContent = 'Already have an account?';
+        toggleBtn.textContent = 'Log In';
+
+        nameGroup.style.display = 'block';
+        confirmPasswordGroup.style.display = 'block';
+        forgotPasswordLink.style.display = 'none'; // HIDE forgot password
+
+        // Make new fields required in signup mode
+        document.getElementById('name').required = true;
+        document.getElementById('confirm-password').required = true;
+      } else {
+        title.textContent = 'Welcome Back';
+        subtitle.textContent = 'Login to access your dashboard';
+        btn.textContent = 'Log In';
+        toggleText.textContent = "Don't have an account?";
+        toggleBtn.textContent = 'Sign Up';
+
+        nameGroup.style.display = 'none';
+        confirmPasswordGroup.style.display = 'none';
+        forgotPasswordLink.style.display = 'block'; // SHOW forgot password
+
+        // Remove required attribute
+        document.getElementById('name').required = false;
+        document.getElementById('confirm-password').required = false;
+      }
+    }
+
+    document.getElementById('authForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const name = document.getElementById('name').value;
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+      const confirmPassword = document.getElementById('confirm-password').value;
+
+      const errorMsg = document.getElementById('error-msg');
+      const btn = document.getElementById('submit-btn');
+
+      errorMsg.style.display = 'none';
+
+      if (isSignup) {
+        if (password !== confirmPassword) {
+          errorMsg.textContent = "Passwords do not match!";
+          errorMsg.style.display = 'block';
+          return;
+        }
+      }
+
+      btn.innerHTML = isSignup ? 'Creating Account...' : 'Logging In...';
+      btn.disabled = true;
+
+      const endpoint = isSignup ? `${API_BASE}/signup` : `${API_BASE}/login`;
+
+      const payload = isSignup ? { name, email, password } : { email, password };
+
+      try {
+        const response = await fetch(endpoint, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+          // Success
+          localStorage.setItem('IAT_TOKEN', data.token);
+          const plan = data.plan || (data.user && data.user.plan) || 'FREE';
+          localStorage.setItem('IAT_PLAN', plan);
+
+          // Redirect to Home Screen
+          window.location.href = 'index.html';
+        } else {
+          // Error
+          throw new Error(data.error || 'Authentication failed');
+        }
+      } catch (err) {
+        errorMsg.textContent = err.message;
+        errorMsg.style.display = 'block';
+        btn.innerHTML = isSignup ? 'Sign Up' : 'Log In';
+        btn.disabled = false;
+      }
+    });
+  </script>
+</body>
+
+</html>

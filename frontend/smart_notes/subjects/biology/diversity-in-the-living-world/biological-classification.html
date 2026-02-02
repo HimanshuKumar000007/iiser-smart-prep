@@ -1,0 +1,1456 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Biological Classification | Advanced Notes</title>
+
+    <!-- Google Fonts: Inter & JetBrains Mono -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap"
+        rel="stylesheet">
+
+    <style>
+        /* =========================================
+           1. DESIGN SYSTEM
+           ========================================= */
+        :root {
+            --primary: #4f46e5;
+            --primary-dark: #4338ca;
+            --primary-soft: #e0e7ff;
+            --secondary: #0f172a;
+
+            --text-main: #1e293b;
+            --text-muted: #475569;
+            --text-light: #94a3b8;
+
+            --bg-wash: #f8fafc;
+            --bg-white: #ffffff;
+            --border: #e2e8f0;
+
+            --accent-amber: #f59e0b;
+            --accent-amber-soft: #fffbeb;
+
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --radius-pill: 100px;
+
+            --container-width: 1200px;
+            --nav-height: 70px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            outline: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: 100px;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            color: var(--text-main);
+            background: var(--bg-wash);
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+
+        /* =========================================
+           2. HEADER & PROGRESS BAR
+           ========================================= */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border);
+            height: var(--nav-height);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .progress-bar {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: var(--primary);
+            width: 0%;
+            transition: width 0.1s;
+            z-index: 1001;
+        }
+
+        .header-inner {
+            width: 92%;
+            max-width: var(--container-width);
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-weight: 800;
+            color: var(--secondary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1.1rem;
+            text-decoration: none;
+        }
+
+        .btn-action {
+            padding: 0.5rem 1rem;
+            font-size: 0.85rem;
+            font-weight: 600;
+            border-radius: var(--radius-pill);
+            border: 1px solid var(--border);
+            color: var(--text-main);
+            background: white;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .btn-action:hover {
+            background: var(--bg-wash);
+        }
+
+        /* =========================================
+           3. LAYOUT (Sidebar + Main)
+           ========================================= */
+        .docs-container {
+            width: 92%;
+            max-width: var(--container-width);
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 260px 1fr;
+            gap: 4rem;
+            padding-top: calc(var(--nav-height) + 2rem);
+            padding-bottom: 6rem;
+        }
+
+        /* Sidebar (Desktop) */
+        .sidebar {
+            position: sticky;
+            top: calc(var(--nav-height) + 2rem);
+            height: calc(100vh - var(--nav-height) - 4rem);
+            overflow-y: auto;
+            padding-right: 1rem;
+            display: block;
+        }
+
+        /* Scrollbar Styling */
+        .sidebar::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .sidebar::-webkit-scrollbar-thumb {
+            background: var(--border);
+            border-radius: 4px;
+        }
+
+        .toc-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .toc-link {
+            display: block;
+            padding: 0.6rem 0.8rem;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            border-radius: 8px;
+            font-weight: 500;
+            text-decoration: none;
+            transition: 0.2s;
+        }
+
+        .toc-link:hover {
+            color: var(--primary);
+            background: var(--bg-white);
+        }
+
+        .toc-link.active {
+            color: var(--primary);
+            background: var(--primary-soft);
+            font-weight: 600;
+        }
+
+        .toc-header {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--text-light);
+            font-weight: 700;
+            margin: 1.5rem 0 0.5rem 0.5rem;
+        }
+
+        /* Main Content */
+        .content-area {
+            min-width: 0;
+        }
+
+        .chapter-title {
+            font-size: clamp(1.8rem, 5vw, 2.75rem);
+            font-weight: 800;
+            color: var(--secondary);
+            margin-bottom: 0.75rem;
+            letter-spacing: -0.03em;
+            line-height: 1.2;
+        }
+
+        .chapter-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 2.5rem;
+        }
+
+        .meta-pill {
+            background: white;
+            padding: 0.35rem 0.85rem;
+            border-radius: var(--radius-pill);
+            border: 1px solid var(--border);
+        }
+
+        /* Typography Styles */
+        h2 {
+            font-size: clamp(1.5rem, 3vw, 1.8rem);
+            font-weight: 700;
+            color: var(--secondary);
+            margin: 3.5rem 0 1.25rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        /* Purple mark next to H2 */
+        h2::before {
+            content: '';
+            width: 6px;
+            height: 24px;
+            background: var(--primary);
+            border-radius: 4px;
+        }
+
+        h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--secondary);
+            margin: 2rem 0 0.75rem;
+        }
+
+        p {
+            margin-bottom: 1.25rem;
+            font-size: 1.05rem;
+            color: var(--text-muted);
+        }
+
+        ul,
+        ol {
+            margin-bottom: 1.5rem;
+            padding-left: 1.5rem;
+            color: var(--text-muted);
+        }
+
+        li {
+            margin-bottom: 0.5rem;
+        }
+
+        /* =========================================
+           4. SPECIAL COMPONENTS
+           ========================================= */
+
+        /* Math/Formula Box */
+        .formula-box {
+            background: var(--secondary);
+            color: white;
+            padding: 1.5rem;
+            border-radius: var(--radius-md);
+            margin: 1.5rem 0;
+            font-family: 'JetBrains Mono', monospace;
+            overflow-x: auto;
+            border-left: 4px solid var(--primary);
+            box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.1);
+        }
+
+        .formula-desc {
+            font-size: 0.9rem;
+            color: var(--text-light);
+            margin-top: 0.75rem;
+            font-family: 'Inter', sans-serif;
+            opacity: 0.8;
+        }
+
+        /* Exam Tip Box */
+        .exam-tip {
+            background: var(--accent-amber-soft);
+            border: 1px solid rgba(245, 158, 11, 0.2);
+            padding: 1.25rem;
+            border-radius: var(--radius-md);
+            margin: 2rem 0;
+            display: flex;
+            gap: 1rem;
+            align-items: flex-start;
+        }
+
+        .exam-tip-icon {
+            color: var(--accent-amber);
+            font-size: 1.5rem;
+            flex-shrink: 0;
+            margin-top: -2px;
+        }
+
+        .exam-tip-content h4 {
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: #92400e;
+            margin-bottom: 0.25rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .exam-tip-content p {
+            color: #78350f;
+            font-size: 0.95rem;
+            margin: 0;
+        }
+
+        /* Responsive Table */
+        .table-container {
+            width: 100%;
+            overflow-x: auto;
+            margin: 2rem 0;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            background: white;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 600px;
+        }
+
+        th {
+            background: var(--bg-wash);
+            text-align: left;
+            padding: 1rem;
+            font-weight: 600;
+            color: var(--secondary);
+            border-bottom: 1px solid var(--border);
+            white-space: nowrap;
+        }
+
+        td {
+            padding: 1rem;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.95rem;
+            color: var(--text-muted);
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        /* Flashcards */
+        .flash-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .flashcard {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: 2rem;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            min-height: 160px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            perspective: 1000px;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .flashcard:active {
+            transform: scale(0.98);
+        }
+
+        .flash-front {
+            font-weight: 600;
+            color: var(--secondary);
+            font-size: 1.1rem;
+            transition: 0.3s;
+        }
+
+        .flash-back {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--primary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: 0.3s ease;
+            font-size: 1rem;
+            pointer-events: none;
+        }
+
+        .flashcard.flipped .flash-back {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto;
+        }
+
+        .flashcard.flipped .flash-front {
+            opacity: 0;
+            transform: translateY(-20px);
+        }
+
+        /* =========================================
+           5. MOBILE OPTIMIZATIONS
+           ========================================= */
+        /* Mobile TOC Button (Floating) */
+        .mobile-toc-btn {
+            display: none;
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: var(--secondary);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 100px;
+            font-weight: 600;
+            box-shadow: 0 4px 15px rgba(15, 23, 42, 0.3);
+            z-index: 100;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .mobile-toc-btn:active {
+            transform: scale(0.95);
+        }
+
+        /* Mobile Drawer */
+        .mobile-drawer-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 2000;
+            opacity: 0;
+            visibility: hidden;
+            transition: 0.3s;
+            backdrop-filter: blur(4px);
+        }
+
+        .mobile-drawer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 70vh;
+            background: white;
+            border-radius: 20px 20px 0 0;
+            padding: 1.5rem;
+            transform: translateY(100%);
+            transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .mobile-drawer-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .mobile-drawer-overlay.active .mobile-drawer {
+            transform: translateY(0);
+        }
+
+        .drawer-handle {
+            width: 40px;
+            height: 5px;
+            background: var(--border);
+            border-radius: 10px;
+            margin: 0 auto 1.5rem;
+            flex-shrink: 0;
+        }
+
+        @media (max-width: 900px) {
+            .docs-container {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+                width: 90%;
+            }
+
+            .sidebar {
+                display: none;
+            }
+
+            /* Hide Sidebar */
+            .mobile-toc-btn {
+                display: flex;
+            }
+
+            /* Show Float Button */
+
+            .chapter-title {
+                font-size: 2.2rem;
+            }
+
+            .content-area {
+                padding-bottom: 4rem;
+            }
+        }
+
+        /* Make header buttons responsive */
+        .header-inner {
+            width: 95%;
+        }
+
+        .btn-action {
+            font-size: 0.8rem;
+            padding: 0.45rem 0.85rem;
+        }
+
+        /* Adjust visual density for mobile */
+        @media (max-width: 480px) {
+            .logo {
+                font-size: 1rem;
+            }
+
+            .header-inner {
+                padding: 0 0.5rem;
+            }
+
+            .btn-action {
+                padding: 0.4rem 0.6rem;
+            }
+        }
+
+        /* Note Images */
+        .note-image {
+            width: 100%;
+            max-width: 600px;
+            height: auto;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border);
+            margin: 2rem auto;
+            display: block;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .image-caption {
+            text-align: center;
+            font-size: 0.9rem;
+            color: var(--text-light);
+            margin-top: -1.5rem;
+            margin-bottom: 2.5rem;
+            font-style: italic;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Header & Progress -->
+    <header>
+        <div class="progress-bar" id="progressBar"></div>
+        <div class="header-inner">
+            <a href="/frontend/index.html" class="logo">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
+                    <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
+                </svg>
+                IISER Smart Prep
+            </a>
+            <div style="display: flex; gap: 0.8rem; align-items: center;">
+                <button onclick="window.print()" class="btn-action"
+                    style="display: flex; align-items: center; gap: 0.4rem;">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                        <polyline points="7 10 12 15 17 10"></polyline>
+                        <line x1="12" y1="15" x2="12" y2="3"></line>
+                    </svg>
+                    PDF
+                </button>
+                <a href="/frontend/smart_notes/smart_notes_home.html" class="btn-action">Back</a>
+            </div>
+        </div>
+    </header>
+
+    <div class="docs-container">
+
+        <!-- DESKTOP SIDEBAR -->
+        <nav class="sidebar">
+            <div id="desktop-toc-content">
+                <!-- Content injected via JS for reuse -->
+            </div>
+        </nav>
+
+        <!-- MAIN CONTENT -->
+        <main class="content-area">
+
+            <div
+                style="font-size: 0.9rem; font-weight: 700; color: var(--primary); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.5rem;">
+                Diversity in the Living World</div>
+            <h1 class="chapter-title">Biological Classification</h1>
+            <div class="chapter-meta">
+                <span class="meta-pill">Comprehensive Note</span>
+                <span class="meta-pill">⏱️ 45 min read</span>
+                <span class="meta-pill">🎯 Exam Focus</span>
+            </div>
+
+            <section id="overview">
+                <h2>Overview & Conceptual Frame</h2>
+                <p><strong>Goal of classification:</strong> Organize biological diversity to reflect relationships, make
+                    prediction possible, and provide an operational framework for identification and communication.</p>
+                <p><strong>Key principles:</strong> Hierarchy (kingdom → phylum → class → order → family → genus →
+                    species), homology vs analogy, monophyly (groups containing an ancestor and all its descendants),
+                    paraphyly, and the use of molecular characters (DNA/RNA/proteins) to infer relationships.</p>
+
+                <h3>Practical decision tree for placing an organism:</h3>
+                <ul>
+                    <li><strong>Cell type:</strong> Prokaryote or eukaryote?</li>
+                    <li><strong>Cellularity:</strong> Unicellular or multicellular?</li>
+                    <li><strong>Nutrition:</strong> Autotroph (photosynthetic/chemosynthetic) or heterotroph
+                        (ingestive/absorptive)?</li>
+                    <li><strong>Cell wall:</strong> Present? Composition (peptidoglycan, cellulose, chitin, silica,
+                        none)?</li>
+                    <li><strong>Reproduction & life cycle complexity:</strong> Sexual/asexual, alternation of
+                        generations?</li>
+                    <li><strong>Other features:</strong> Motility structures, specialized tissues, symmetry, development
+                        mode.</li>
+                </ul>
+
+                <div class="exam-tip">
+                    <div class="exam-tip-icon">✨</div>
+                    <div class="exam-tip-content">
+                        <h4>Modern Note</h4>
+                        <p>The traditional five-kingdom system (Monera, Protista, Fungi, Plantae, Animalia) is
+                            pedagogically useful; the three-domain system (Bacteria, Archaea, Eukarya) reflects deep
+                            evolutionary splits. Where relevant, mention both.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="glossary">
+                <h2>Quick Glossary (Definitions)</h2>
+                <ul>
+                    <li><strong>Prokaryote:</strong> Cell lacking a membrane-bound nucleus; DNA in nucleoid.</li>
+                    <li><strong>Eukaryote:</strong> Cell with nucleus and membrane-bound organelles.</li>
+                    <li><strong>Autotroph:</strong> Produces organic molecules from inorganic sources (e.g.,
+                        photosynthesis).</li>
+                    <li><strong>Heterotroph:</strong> Obtains organic molecules from other organisms.</li>
+                    <li><strong>Saprotroph:</strong> Absorptive heterotroph that digests dead organic matter.</li>
+                    <li><strong>Thallus:</strong> Vegetative body in organisms without true tissues (algae, fungi,
+                        lichens).</li>
+                    <li><strong>Capsid:</strong> Protein coat of a virus.</li>
+                    <li><strong>Photobiont/Mycobiont:</strong> In lichens, the photosynthetic partner and fungal partner
+                        respectively.</li>
+                </ul>
+            </section>
+
+            <section id="comparison">
+                <h2>Quick Comparison of Kingdoms</h2>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Criterion</th>
+                                <th>Monera (Bacteria/Archaea)</th>
+                                <th>Protista</th>
+                                <th>Fungi</th>
+                                <th>Plantae</th>
+                                <th>Animalia</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Cell type</strong></td>
+                                <td>Prokaryotic</td>
+                                <td>Eukaryotic</td>
+                                <td>Eukaryotic</td>
+                                <td>Eukaryotic</td>
+                                <td>Eukaryotic</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Cellularity</strong></td>
+                                <td>Mostly unicellular</td>
+                                <td>Mostly unicellular / colonial</td>
+                                <td>Mostly multicellular (some unicellular yeasts)</td>
+                                <td>Multicellular</td>
+                                <td>Multicellular</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Cell wall</strong></td>
+                                <td>Peptidoglycan (bacteria), varied (archaea)</td>
+                                <td>Varied (cellulose, silica, none)</td>
+                                <td>Chitin</td>
+                                <td>Cellulose (with lignin in vascular plants)</td>
+                                <td>No cell wall</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Nutrition</strong></td>
+                                <td>Auto or heterotrophic; chemosynthesis</td>
+                                <td>Photo/hetero/mixotrophic</td>
+                                <td>Heterotrophic, absorptive</td>
+                                <td>Photoautotrophic</td>
+                                <td>Heterotrophic, ingestive</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Reproduction</strong></td>
+                                <td>Asexual (binary fission), HGT</td>
+                                <td>Asexual & sexual</td>
+                                <td>Spores (sexual & asexual)</td>
+                                <td>Alternation of generations</td>
+                                <td>Sexual (dominant) + asexual in some</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Tissue/organs</strong></td>
+                                <td>No</td>
+                                <td>No (simple)</td>
+                                <td>Mostly no true tissues</td>
+                                <td>True tissues, organs</td>
+                                <td>Complex tissues & organs</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <img src="https://res.cloudinary.com/dhb8qmnxt/image/upload/v1769673247/five_kingdoms_os8le7.jpg"
+                    alt="Five Kingdom Classification" class="note-image">
+                <p class="image-caption">Figure 1: The R.H. Whittaker Five Kingdom System</p>
+            </section>
+
+            <section id="monera">
+                <h2>2. Kingdom Monera (Traditional) — Conceptual Depth</h2>
+
+                <h3>Organismal Composition and Core Identity</h3>
+                <p>In the traditional five-kingdom classification system, Kingdom Monera encompasses all prokaryotic
+                    organisms. This includes two distinct domains of life: <strong>Bacteria</strong> and
+                    <strong>Archaea</strong>, which are grouped together based on their shared prokaryotic cell
+                    structure. The defining characteristic of prokaryotes is the absence of a membrane-bound nucleus and
+                    other membrane-bound organelles.
+                </p>
+
+                <h3>Key Morphological and Biochemical Features</h3>
+                <img src="https://res.cloudinary.com/dhb8qmnxt/image/upload/v1769673284/bacteria_shapes_hy3iud.jpg"
+                    alt="Shapes of Bacteria" class="note-image">
+                <p class="image-caption">Figure 2: Diversity in Bacterial Shapes</p>
+                <ul>
+                    <li><strong>Size and Genetic Material:</strong> Monerans are microscopic (typically 0.2 to 10
+                        &#181;m). Their genetic material consists of a single, circular chromosome located in the
+                        <strong>nucleoid</strong>. Additionally, they often possess <strong>plasmids</strong>—small,
+                        extrachromosomal DNA molecules that can carry genes for traits like antibiotic resistance.
+                    </li>
+                    <li><strong>Cell Wall Composition (A Key Diagnostic Feature):</strong>
+                        <ul>
+                            <li><strong>Bacteria:</strong> The cell wall is composed of <strong>peptidoglycan</strong>.
+                                This forms a thick, external layer in Gram-positive bacteria and a thin layer situated
+                                between two cell membranes in Gram-negative bacteria.</li>
+                            <li><strong>Archaea:</strong> The cell wall chemistry is distinct and <strong>lacks true
+                                    peptidoglycan</strong>. Instead, it may be composed of pseudopeptidoglycan or
+                                crystalline surface layers known as S-layers.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Membrane Lipid Structure (A Key Molecular Signature):</strong>
+                        <ul>
+                            <li><strong>Bacteria (and Eukarya):</strong> Membrane lipids are formed with <strong>ester
+                                    linkages</strong>.</li>
+                            <li><strong>Archaea:</strong> Membrane lipids are formed with <strong>ether
+                                    linkages</strong>. This is a fundamental biochemical difference that provides a
+                                clear molecular signature distinguishing Archaea from Bacteria.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Mechanisms of Genetic Exchange:</strong> Prokaryotes exhibit <strong>Horizontal Gene
+                            Transfer (HGT)</strong>, a process that allows for the transfer of genetic material between
+                        unrelated individuals. This is a primary driver of rapid adaptation (e.g., antibiotic
+                        resistance). The three main mechanisms are:
+                        <ul>
+                            <li><strong>Transformation:</strong> Uptake of free DNA from the environment.</li>
+                            <li><strong>Transduction:</strong> Transfer of DNA via a bacteriophage (virus).</li>
+                            <li><strong>Conjugation:</strong> Direct transfer of DNA (usually a plasmid) from one cell
+                                to another.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Metabolic Diversity:</strong> Monera exhibit the most extensive metabolic diversity of
+                        any kingdom. This includes photoautotrophy, chemoautotrophy, photoheterotrophy,
+                        chemoheterotrophy, and critical biogeochemical processes like nitrogen fixation.</li>
+                </ul>
+
+                <h3>Essential Mechanisms for Exam Focus</h3>
+
+                <h4>Population Growth (Binary Fission)</h4>
+                <p>Prokaryotic growth occurs via binary fission, leading to an exponential increase in population size.
+                    The growth can be modeled by the equation:</p>
+                <div class="formula-box">
+                    Nₜ = N₀ * eʳᵗ
+                    <div class="formula-desc">Where Nₜ is the population size at time t, N₀ is the initial population
+                        size, and r is the intrinsic rate of growth.</div>
+                </div>
+
+                <h4>Gram Staining Principle</h4>
+                <p>This differential staining technique is based on cell wall structure. The crystal violet-iodine
+                    complex is retained by the thick peptidoglycan layer of <strong>Gram-positive</strong> cells
+                    (appearing purple). In <strong>Gram-negative</strong> cells, the decolorizing agent dissolves the
+                    outer membrane and washes the stain out of the thin peptidoglycan layer, allowing them to be
+                    counterstained pink.</p>
+
+                <div class="exam-tip">
+                    <div class="exam-tip-icon">✨</div>
+                    <div class="exam-tip-content">
+                        <h4>Exam Insights and Common Pitfalls</h4>
+                        <p>A critical point of understanding for examinations is the ability to distinguish between
+                            structural criteria (e.g., the presence of peptidoglycan) and modern phylogenetic criteria
+                            (e.g., sequence data from 16S rRNA genes). It is a common error to equate all prokaryotes
+                            with Bacteria. It is essential to recognize that <strong>Archaea</strong> represent a
+                            distinct and ancient lineage of life, separate from Bacteria, despite their superficial
+                            structural similarities.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="protista">
+                <h2>3. Kingdom Protista — Conceptual Depth</h2>
+
+                <h3>Who They Are: The "Junk Drawer" of Eukaryotes</h3>
+                <p>Kingdom Protista is the incredibly diverse "catch-all" or "junk drawer" category for eukaryotes. If a
+                    eukaryotic organism isn't a plant, an animal, or a fungus, it gets placed in Protista. This means
+                    the group is not a true, single "family tree" branch (it's paraphyletic). Most protists are
+                    unicellular, but they are far from simple.</p>
+                <p>They are generally sorted into three main, informal groups:</p>
+                <ul>
+                    <li><strong>Algae:</strong> The plant-like, photosynthetic protists.</li>
+                    <li><strong>Protozoa:</strong> The animal-like, heterotrophic (eat other things) protists.</li>
+                    <li><strong>Slime Molds:</strong> The fungus-like, absorptive protists.</li>
+                </ul>
+
+                <h3>Key Features: The Hallmarks of a True Eukaryote</h3>
+                <ul>
+                    <li><strong>Complex Cell Organization:</strong> Protists were the first organisms to have a true
+                        nucleus containing their DNA. They also have a full toolkit of organelles like mitochondria (for
+                        energy) and, in the case of algae, chloroplasts (for photosynthesis).</li>
+                    <li><strong>Diverse Nutrition:</strong> They get their food in every way imaginable:
+                        <ul>
+                            <li><strong>Photoautotrophs:</strong> Make their own food using sunlight (like algae).</li>
+                            <li><strong>Heterotrophs:</strong> Hunt or absorb their food (like protozoa).</li>
+                            <li><strong>Mixotrophs:</strong> Can do both! They can photosynthesize in the light and hunt
+                                in the dark.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Mechanisms for Movement:</strong> They are masters of motility, using sophisticated
+                        structures like flagella (long whip-like tails), cilia (short, hair-like bristles), or
+                        pseudopodia (oozing, flowing "false feet").</li>
+                    <li><strong>Complex Reproduction:</strong> They can reproduce asexually (like through binary fission
+                        or budding) but many also have complex sexual life cycles.</li>
+                </ul>
+
+                <h3>Important Groups to Know (Common Examples)</h3>
+                <ul>
+                    <li><strong>Euglenoids:</strong> Famous mixotrophs with a flagellum for swimming and chloroplasts
+                        for making food.</li>
+                    <li><strong>Diatoms:</strong> The "jewels of the sea," these are algae that build intricate cell
+                        walls out of silica (glass). They are a huge and critical component of the world's
+                        phytoplankton.</li>
+                    <li><strong>Dinoflagellates:</strong> Known for their two flagella that make them spin as they move.
+                        They are responsible for phenomena like "red tides" and the beautiful bioluminescence seen in
+                        ocean waves at night.</li>
+                    <li><strong>Amoebozoa:</strong> The classic "blobs" that move and eat using flowing pseudopodia in a
+                        process called phagocytosis.</li>
+                    <li><strong>Ciliates (like Paramecium):</strong> A favorite for exams, these are complex cells
+                        covered in cilia. Their key feature is nuclear dimorphism—they have two types of nuclei: a large
+                        macronucleus that runs the cell's daily life, and one or more small micronuclei that are used
+                        for sexual reproduction.</li>
+                </ul>
+
+                <div class="exam-tip">
+                    <div class="exam-tip-icon">✨</div>
+                    <div class="exam-tip-content">
+                        <h4>The Big Conceptual Insight</h4>
+                        <p>The protists are a spectacular showcase of evolutionary innovation. They demonstrate how,
+                            within the confines of a single cell, an incredible diversity of complex structures and
+                            behaviors can evolve. They are living laboratories for understanding the origins of
+                            organelles and provide crucial clues about the evolutionary transition from single-celled
+                            life to the complex multicellularity of plants, animals, and fungi.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="fungi">
+                <h2>4. Kingdom Fungi — Conceptual Depth</h2>
+
+                <h3>Who They Are: Nature's Great Decomposers</h3>
+                <p>Kingdom Fungi is a group of eukaryotic organisms, which are mostly multicellular (like mushrooms and
+                    molds) but also include some unicellular forms (like yeasts). Their defining feature is absorptive
+                    nutrition—they don't eat or photosynthesize; they secrete digestive enzymes into their environment
+                    and absorb the nutrients.</p>
+
+                <h3>Key Structures and Vocabulary</h3>
+                <ul>
+                    <li><strong>Hyphae:</strong> The fundamental building blocks of a fungus. They are tiny, filamentous
+                        threads. They can be septate (divided by internal cross-walls) or coenocytic (long, continuous
+                        tubes without cross-walls).</li>
+                    <li><strong>Mycelium:</strong> A tangled, underground network of hyphae. This is the main vegetative
+                        body of the fungus—the part that does the feeding. The mushroom is just the temporary
+                        reproductive structure.</li>
+                    <li><strong>Thallus:</strong> The simple body of a fungus that lacks the true roots, stems, or
+                        leaves seen in plants.</li>
+                    <li><strong>Cell Wall:</strong> The cell walls of fungi are made primarily of
+                        <strong>chitin</strong>, a tough, flexible polysaccharide. This is the same material that makes
+                        up the exoskeletons of insects.
+                    </li>
+                </ul>
+
+                <h3>How Fungi Eat and Live</h3>
+                <p><strong>Extracellular Digestion:</strong> Fungi are the ultimate external digesters. They release
+                    powerful enzymes that break down complex organic matter outside their bodies, then absorb the
+                    resulting small molecules.</p>
+                <p><strong>Ecological Roles:</strong> They play three main roles in nature:</p>
+                <ul>
+                    <li><strong>Saprophytes:</strong> They are the world's most important decomposers, breaking down
+                        dead organic material and recycling nutrients back into the ecosystem.</li>
+                    <li><strong>Parasites:</strong> They absorb nutrients from living hosts, often causing diseases.
+                    </li>
+                    <li><strong>Mutualists:</strong> They live in a beneficial partnership with other organisms. The
+                        most famous example is <strong>mycorrhizae</strong>, a symbiotic relationship between fungi and
+                        plant roots that dramatically helps plants absorb water and nutrients.</li>
+                </ul>
+
+                <h3>The Fungal Life Cycle (A Key Concept)</h3>
+                <p>Fungi have complex reproductive cycles.</p>
+                <ul>
+                    <li><strong>Asexual:</strong> They can reproduce simply through fragmentation of the mycelium or by
+                        producing asexual spores called conidia.</li>
+                    <li><strong>Sexual:</strong> The sexual cycle is unique and a hallmark of the kingdom. It often
+                        involves these key steps:
+                        <ul>
+                            <li><strong>Plasmogamy:</strong> The cytoplasm of two parent cells fuses.</li>
+                            <li><strong>Dikaryotic Stage (n + n):</strong> This is a special phase, common in many
+                                fungi, where the two parent nuclei do not fuse right away. Instead, they coexist in the
+                                same cell, creating a "dikaryotic" (two-nucleus) state. This is a major distinguishing
+                                feature of fungi.</li>
+                            <li><strong>Karyogamy:</strong> Eventually, the two nuclei fuse to form a diploid zygote.
+                            </li>
+                            <li><strong>Meiosis:</strong> The zygote undergoes meiosis to produce genetically diverse
+                                haploid spores, which are then dispersed to colonize new habitats.</li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <div class="exam-tip">
+                    <div class="exam-tip-icon">✨</div>
+                    <div class="exam-tip-content">
+                        <h4>The Big Conceptual Insight & Exam Tip</h4>
+                        <p>For exams, the two most important and high-yield features that distinguish fungi from other
+                            kingdoms are:</p>
+                        <ul>
+                            <li>The presence of <strong>chitin</strong> in their cell walls (plants have cellulose;
+                                animals have no cell wall).</li>
+                            <li>The unique <strong>dikaryotic (n + n)</strong> stage in their life cycle.</li>
+                        </ul>
+                        <p>Remembering these two facts is a powerful way to correctly identify and classify fungi in a
+                            comparative context.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="plantae">
+                <h2>5. Kingdom Plantae — Conceptual Depth</h2>
+
+                <h3>Who They Are: The Planet's Green Engine</h3>
+                <p>Kingdom Plantae includes all the multicellular, eukaryotic organisms that are primarily
+                    photosynthetic. They are the foundation of most of the world's ecosystems, converting sunlight into
+                    chemical energy. Their two most defining features are cell walls made of <strong>cellulose</strong>
+                    and a life cycle that features an <strong>alternation of generations</strong>.</p>
+
+                <h3>The Major Groups: An Evolutionary Ladder</h3>
+                <p>The plant kingdom is often viewed as an evolutionary progression from simple, water-dependent forms
+                    to complex, seed-bearing powerhouses.</p>
+                <ul>
+                    <li><strong>Bryophytes (Mosses, Liverworts):</strong> The most primitive plants.
+                        <ul>
+                            <li><strong>Key Feature:</strong> They are <strong>non-vascular</strong>, meaning they lack
+                                the true roots, stems, and leaves that transport water. This is why they are small and
+                                must live in moist environments.</li>
+                            <li><strong>Life Cycle:</strong> The green, leafy part we see is the dominant
+                                <strong>gametophyte (haploid, n)</strong>. The sporophyte (diploid, 2n) is a small,
+                                dependent stalk that grows out of it.
+                            </li>
+                        </ul>
+                    </li>
+                    <li><strong>Pteridophytes (Ferns):</strong> The first major evolutionary step up.
+                        <ul>
+                            <li><strong>Key Feature:</strong> They have <strong>vascular tissue</strong> (xylem and
+                                phloem), allowing them to grow much larger and live in drier habitats than mosses.</li>
+                            <li><strong>Life Cycle:</strong> The large, leafy fern we see is the dominant
+                                <strong>sporophyte (diploid, 2n)</strong>. They still reproduce using spores, not seeds.
+                            </li>
+                        </ul>
+                    </li>
+                    <li><strong>Gymnosperms (Conifers, like pine trees):</strong> The first seed plants.
+                        <ul>
+                            <li><strong>Key Feature:</strong> They reproduce using "naked" seeds, which are not enclosed
+                                within a fruit (think of the seeds on the scales of a pine cone).</li>
+                            <li><strong>Life Cycle:</strong> The sporophyte (the tree itself) is completely dominant.
+                            </li>
+                        </ul>
+                    </li>
+                    <li><strong>Angiosperms (Flowering Plants):</strong> The most advanced and successful group of
+                        plants.
+                        <ul>
+                            <li><strong>Key Feature:</strong> They are flowering plants whose seeds are enclosed within
+                                a fruit. This provides extra protection and a mechanism for dispersal.</li>
+                            <li><strong>Life Cycle:</strong> They have a unique process called <strong>double
+                                    fertilization</strong>, where one sperm fertilizes the egg to create the embryo
+                                (2n), and another sperm fuses with other cells to create the endosperm (3n), a
+                                nutritious food supply for the embryo.</li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <h3>The Core Life Cycle: Alternation of Generations</h3>
+                <p>All plants live a "double life," alternating between two distinct forms:</p>
+                <ol>
+                    <li>The <strong>Sporophyte (diploid, 2n)</strong> is the plant that produces haploid spores through
+                        meiosis.</li>
+                    <li>These spores grow into a new plant, the <strong>Gametophyte (haploid, n)</strong>.</li>
+                    <li>The gametophyte produces gametes (sperm and egg) through mitosis.</li>
+                    <li>Fertilization of the gametes creates a diploid zygote (2n), which then grows into a new
+                        sporophyte, and the cycle continues.</li>
+                </ol>
+                <p>The big evolutionary trend in plants is the reduction of the gametophyte and the increasing dominance
+                    of the sporophyte.</p>
+
+                <div class="exam-tip">
+                    <div class="exam-tip-icon">✨</div>
+                    <div class="exam-tip-content">
+                        <h4>Key Formulas & Memory Tricks</h4>
+                        <p><strong>Simple Plant Identity:</strong><br>
+                            Plant = Eukaryote + Multicellular + Cellulose Wall + Photosynthesis</p>
+
+                        <p><strong>The Photosynthesis Equation:</strong><br>
+                            6CO₂ + 6H₂O --(Sunlight & Chlorophyll)--> C₆H₁₂O₆ (Glucose) + 6O₂</p>
+
+                        <p><strong>Memory Trick:</strong><br>
+                            Plants = Cellulose + Chlorophyll + Sun Food</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="animalia">
+                <h2>6. Kingdom Animalia — Conceptual Depth</h2>
+
+                <h3>Who They Are: The Movers and Eaters</h3>
+                <p>Kingdom Animalia includes all the multicellular, eukaryotic organisms that are ingestive
+                    heterotrophs. This means they get their energy by eating other organisms. Their cells are unique
+                    because they lack a rigid cell wall, which allows for the evolution of complex tissues and organs
+                    and, most notably, mobility at some stage of their life. Animal development is also unique,
+                    typically involving a hollow ball of cells called a blastula.</p>
+
+                <h3>The "Body Plan" Blueprint: How Animals are Classified</h3>
+                <p>Animals are sorted into different phyla based on a set of fundamental "body plan" characteristics
+                    that are established early in their development.</p>
+                <ul>
+                    <li><strong>Symmetry:</strong> Is the body plan <strong>asymmetrical</strong> (like a sponge),
+                        <strong>radially symmetric</strong> (like a jellyfish, with parts arranged around a central
+                        axis), or <strong>bilaterally symmetric</strong> (with a left and a right side, like a human)?
+                    </li>
+                    <li><strong>Tissue Layers (Germ Layers):</strong> Is the embryo <strong>diploblastic</strong> (with
+                        two layers: an outer ectoderm and an inner endoderm) or <strong>triploblastic</strong> (with a
+                        third middle layer, the mesoderm, which forms muscles and organs)?</li>
+                    <li><strong>Body Cavity (Coelom):</strong> Is the animal <strong>acoelomate</strong> (has no body
+                        cavity), <strong>pseudocoelomate</strong> (has a false cavity), or <strong>coelomate</strong>
+                        (has a true, fluid-filled body cavity that cushions organs)?</li>
+                    <li><strong>Embryonic Development:</strong> Is it a <strong>protostome</strong> (where the first
+                        opening in the embryo becomes the mouth) or a <strong>deuterostome</strong> (where the first
+                        opening becomes the anus)? This is a major dividing line in the animal kingdom.</li>
+                </ul>
+
+                <h3>A Quick Tour of the Major Phyla (The "Must-Knows")</h3>
+                <ul>
+                    <li><strong>Porifera (Sponges):</strong> The simplest animals; they have no true tissues and are
+                        filter feeders using specialized cells called choanocytes.</li>
+                    <li><strong>Cnidaria (Jellyfish, Corals):</strong> Have radial symmetry and specialized stinging
+                        cells called cnidocytes.</li>
+                    <li><strong>Platyhelminthes (Flatworms):</strong> The first animals with bilateral symmetry; they
+                        are acoelomate.</li>
+                    <li><strong>Nematoda (Roundworms):</strong> Extremely abundant; they are pseudocoelomate.</li>
+                    <li><strong>Annelida (Segmented Worms, like earthworms):</strong> Have a true coelom and a segmented
+                        body.</li>
+                    <li><strong>Arthropoda (Insects, Spiders, Crustaceans):</strong> The most successful phylum; defined
+                        by their tough exoskeleton made of chitin and their jointed appendages.</li>
+                    <li><strong>Mollusca (Snails, Clams, Octopuses):</strong> Soft-bodied animals, many of which have a
+                        shell; characterized by a muscular foot, a mantle, and a visceral mass.</li>
+                    <li><strong>Echinodermata (Starfish, Sea Urchins):</strong> Our closer relatives; they are
+                        deuterostomes and have a unique water vascular system for movement. Adults have a five-part
+                        (pentaradial) symmetry.</li>
+                    <li><strong>Chordata (Vertebrates and their kin):</strong> Our own phylum; defined by having four
+                        key features at some point in their life: a notochord, a dorsal hollow nerve cord, pharyngeal
+                        slits, and a post-anal tail.</li>
+                </ul>
+
+                <div class="exam-tip">
+                    <div class="exam-tip-icon">✨</div>
+                    <div class="exam-tip-content">
+                        <h4>The Big Conceptual Insight</h4>
+                        <p>The way an animal develops as an embryo (like the protostome vs. deuterostome split) often
+                            reveals more about its deep evolutionary history than what the adult animal looks like.
+                            These developmental patterns are incredibly stable over evolutionary time and are a powerful
+                            tool for figuring out the true "family tree" of the animal kingdom.</p>
+
+                        <h4>Core Formulas & Memory Tricks</h4>
+                        <p><strong>Simple Animal Identity:</strong><br>
+                            Animal = Eukaryote + Multicellular + No Cell Wall + Ingestive Heterotroph</p>
+
+                        <p><strong>Memory Trick:</strong><br>
+                            Animals = Eat → Digest → Absorb</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="viruses">
+                <h2>7. Viruses (and Sub-Viral Agents) — Conceptual Depth</h2>
+
+                <h3>Core Definition and Biological Status</h3>
+                <p>Viruses are <strong>obligate intracellular parasites</strong> and are classified as <strong>acellular
+                        infectious agents</strong>. Their fundamental structure consists of a nucleic acid genome
+                    (either DNA or RNA) encapsulated within a protective protein coat known as a capsid. Some viruses
+                    possess an outer lipid envelope derived from the host cell membrane. Critically, viruses lack the
+                    metabolic machinery and replication apparatus (e.g., ribosomes) necessary for independent existence
+                    and are entirely dependent on the host cell's biochemical infrastructure to replicate.</p>
+
+                <h3>Structural and Genomic Diversity</h3>
+                <p>Viruses exhibit a remarkable diversity in their genetic material and structural organization.</p>
+                <img src="https://res.cloudinary.com/dhb8qmnxt/image/upload/v1769673352/bacteriophage_eyhm8p.jpg"
+                    alt="Bacteriophage Structure" class="note-image">
+                <p class="image-caption">Figure 3: Structure of a Bacteriophage</p>
+                <ul>
+                    <li><strong>Genomic Architectures:</strong> The viral genome can be composed of:
+                        <ul>
+                            <li>Double-stranded DNA (dsDNA)</li>
+                            <li>Single-stranded DNA (ssDNA)</li>
+                            <li>Double-stranded RNA (dsRNA)</li>
+                            <li>Positive-sense single-stranded RNA ((+)ssRNA), which can function directly as mRNA.</li>
+                            <li>Negative-sense single-stranded RNA ((−)ssRNA), which must be transcribed into a
+                                positive-sense strand.</li>
+                            <li><strong>Retroviruses:</strong> which use reverse transcriptase to convert their RNA
+                                genome into a DNA intermediate.</li>
+                        </ul>
+                        The genome may also be linear, circular, or segmented.
+                    </li>
+                    <li><strong>Capsid Symmetries:</strong> The capsid is typically arranged in one of three symmetries:
+                        icosahedral, helical, or complex (as seen in many bacteriophages).</li>
+                    <li><strong>The Viral Envelope:</strong> When present, the envelope is derived from a host cell
+                        membrane (e.g., the plasma membrane or nuclear membrane) and is studded with viral-encoded
+                        glycoproteins. These glycoproteins are often critical for host cell recognition and entry. The
+                        envelope can aid in immune evasion but also renders the virus more susceptible to environmental
+                        factors like desiccation and detergents.</li>
+                </ul>
+
+                <h3>Replication Cycles: The Two Archetypal Strategies</h3>
+                <ul>
+                    <li><strong>The Lytic Cycle (Productive Infection):</strong> This cycle results in the rapid
+                        production of new virions and the destruction of the host cell. The canonical stages are:
+                        attachment, entry of the viral genome, replication of viral components using host machinery,
+                        assembly of new virions, and lysis (rupture) of the host cell to release the progeny.</li>
+                    <li><strong>The Lysogenic Cycle (Latent Infection):</strong> In this cycle, the viral genome
+                        persists within the host cell without initiating a productive infection. The viral DNA may
+                        integrate into the host chromosome (becoming a <strong>provirus</strong> or
+                        <strong>prophage</strong>) or exist as an episome. The host cell can survive and replicate,
+                        passing the viral genome to its daughter cells. Under certain conditions (e.g., cellular
+                        stress), the lysogenic cycle can be induced to switch to the lytic cycle.
+                    </li>
+                </ul>
+
+                <h3>Key Mechanisms for Exam Focus</h3>
+                <ul>
+                    <li><strong>Positive-sense (+) RNA Viruses:</strong> The viral genome itself can be directly
+                        translated by the host cell's ribosomes to produce viral proteins.</li>
+                    <li><strong>Negative-sense (−) RNA Viruses:</strong> The viral genome cannot be directly translated.
+                        These viruses must package their own RNA-dependent RNA polymerase enzyme within the virion to
+                        synthesize a complementary positive-sense strand upon entering the host.</li>
+                    <li><strong>Retroviruses:</strong> These viruses, such as HIV, package the enzyme <strong>reverse
+                            transcriptase</strong>, which synthesizes a DNA copy of the viral RNA genome. This DNA copy
+                        can then integrate into the host's chromosomal DNA.</li>
+                </ul>
+
+                <h3>Canonical Exam Examples</h3>
+                <ul>
+                    <li><strong>Bacteriophage T4:</strong> A complex dsDNA virus that undergoes a strictly lytic cycle.
+                    </li>
+                    <li><strong>Lambda (λ) Phage:</strong> A temperate dsDNA phage, the classic model for the switch
+                        between the lytic and lysogenic cycles.</li>
+                    <li><strong>Influenza Virus:</strong> A segmented (−)ssRNA virus known for antigenic drift (point
+                        mutations) and antigenic shift (reassortment of segments), which drive its rapid evolution.</li>
+                    <li><strong>HIV:</strong> A retrovirus that causes a latent infection by integrating its genome into
+                        host T-cells.</li>
+                </ul>
+
+                <div class="exam-tip">
+                    <div class="exam-tip-icon">✨</div>
+                    <div class="exam-tip-content">
+                        <h4>Central Conceptual Insight</h4>
+                        <p>Viral evolution is characterized by its extraordinary rapidity. This is driven by high
+                            mutation rates, particularly in RNA viruses (due to the lack of proofreading by RNA
+                            polymerases), and by reassortment in viruses with segmented genomes. These processes lead to
+                            significant antigenic variation, which is the core reason for the seasonal dynamics of
+                            influenza, the challenges in vaccine design, and the emergence of new viral strains.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="lichens">
+                <h2>8. Lichens — Conceptual Depth</h2>
+
+                <h3>Core Identity: A Composite Organism</h3>
+                <p>A <strong>lichen</strong> is not a single organism but a stable, self-sustaining <strong>symbiotic
+                        association</strong> between a fungal partner (mycobiont) and one or more photosynthetic
+                    partners (photobionts).</p>
+                <ul>
+                    <li><strong>Mycobiont:</strong> Predominantly an Ascomycete fungus. It provides the structural
+                        integrity of the lichen.</li>
+                    <li><strong>Photobiont:</strong> Typically a green alga (e.g., <em>Trebouxia</em>) or a
+                        cyanobacterium (e.g., <em>Nostoc</em>). Sometimes, both are present in a tripartite symbiosis.
+                    </li>
+                </ul>
+                <p><strong>Conceptual Framework:</strong> Functionally, a lichen is treated as a composite organism,
+                    exhibiting emergent properties not present in either partner alone.</p>
+
+                <h3>Anatomy and Morphological Diversity (Thallus Structure)</h3>
+                <p>The body of the lichen is a <strong>thallus</strong>, which is anatomically differentiated into
+                    layers formed by the fungal hyphae. A stratified thallus typically consists of an upper cortex, a
+                    photobiont layer, a medulla, and a lower cortex.</p>
+                <img src="https://res.cloudinary.com/dhb8qmnxt/image/upload/v1769673378/lichen_thallus_y6htvo.jpg"
+                    alt="Lichen Thallus Anatomy" class="note-image">
+                <p class="image-caption">Figure 4: Anatomy of a Lichen Thallus Cross-Section</p>
+                <p><strong>Morphotypes (Growth Forms):</strong></p>
+                <ul>
+                    <li><strong>Crustose:</strong> A flattened, crust-like thallus tightly adpressed to the substrate.
+                    </li>
+                    <li><strong>Foliose:</strong> A leafy, lobed thallus with distinct upper and lower surfaces, loosely
+                        attached to the substrate.</li>
+                    <li><strong>Fruticose:</strong> A shrubby, branching, or hair-like thallus, often erect or
+                        pendulous.</li>
+                </ul>
+
+                <h3>Physiology: The Symbiotic Exchange</h3>
+                <p>The symbiosis is a nutritional partnership:</p>
+                <ul>
+                    <li>The <strong>mycobiont</strong> provides the physical housing, protection from desiccation and UV
+                        radiation, and absorbs water and mineral nutrients from the substrate and atmosphere.</li>
+                    <li>The <strong>photobiont</strong> performs photosynthesis, providing the mycobiont with fixed
+                        carbon (carbohydrates, typically in the form of polyols like ribitol).</li>
+                    <li>If the photobiont is a <strong>cyanobacterium</strong>, it can also perform <strong>nitrogen
+                            fixation</strong>, providing a crucial source of nitrogen to the symbiosis and the
+                        surrounding ecosystem.</li>
+                </ul>
+
+                <h3>Reproduction and Dispersal</h3>
+                <ul>
+                    <li><strong>Asexual (Vegetative) Propagation:</strong> This is the most successful mode of
+                        dispersal, as it ensures both partners are transmitted together.
+                        <ul>
+                            <li><strong>Soredia:</strong> Microscopic, dust-like diaspores consisting of a few
+                                photobiont cells wrapped in fungal hyphae. They are easily dispersed by wind and water.
+                            </li>
+                            <li><strong>Isidia:</strong> Small, corticated outgrowths of the thallus that can break off.
+                            </li>
+                        </ul>
+                    </li>
+                    <li><strong>Sexual Reproduction:</strong> This is a function of the <strong>mycobiont
+                            alone</strong>. The fungus may produce sexual spores (ascospores). For a new lichen to form,
+                        a germinating spore must successfully encounter and capture a compatible, free-living
+                        photobiont. This process is far less reliable than vegetative propagation.</li>
+                </ul>
+
+                <h3>Ecological Significance and Applied Relevance</h3>
+                <ul>
+                    <li><strong>Pioneer Species:</strong> Lichens are quintessential pioneer organisms, capable of
+                        colonizing bare rock and other harsh, nutrient-poor substrates. They contribute to primary
+                        succession and pedogenesis (soil formation) through both physical and chemical weathering of the
+                        substrate.</li>
+                    <li><strong>Bioindicators:</strong> Many lichen species are extremely sensitive to atmospheric
+                        pollutants, particularly <strong>sulfur dioxide (SO₂)</strong>. The diversity and abundance of
+                        lichens in an area can therefore be used as a reliable bioindicator of air quality.</li>
+                </ul>
+
+                <div class="exam-tip">
+                    <div class="exam-tip-icon">✨</div>
+                    <div class="exam-tip-content">
+                        <h4>Model for Symbiosis</h4>
+                        <p>The lichen symbiosis is a classic textbook example of <strong>mutualism</strong>. However,
+                            modern research views it as a continuum. The relationship can range from mutualism (both
+                            benefit) to commensalism (one benefits, one is neutral) or even controlled parasitism (the
+                            fungus exploiting the photobiont), depending on the specific partners and environmental
+                            conditions.</p>
+                    </div>
+                </div>
+            </section>
+
+
+
+        </main>
+    </div>
+
+    <!-- Mobile TOC Button -->
+    <button class="mobile-toc-btn" onclick="toggleMobileDrawer()">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="8" y1="6" x2="21" y2="6"></line>
+            <line x1="8" y1="12" x2="21" y2="12"></line>
+            <line x1="8" y1="18" x2="21" y2="18"></line>
+            <line x1="3" y1="6" x2="3.01" y2="6"></line>
+            <line x1="3" y1="12" x2="3.01" y2="12"></line>
+            <line x1="3" y1="18" x2="3.01" y2="18"></line>
+        </svg>
+        Contents
+    </button>
+
+    <!-- Mobile Drawer -->
+    <div class="mobile-drawer-overlay" id="mobileDrawerOverlay" onclick="toggleMobileDrawer()">
+        <div class="mobile-drawer" id="mobileDrawerContent" onclick="event.stopPropagation()">
+            <div class="drawer-handle"></div>
+            <!-- Content injected via JS -->
+        </div>
+    </div>
+
+    <script>
+        // --- 1. TOC GENERATION ---
+        function generateTOC() {
+            const sections = document.querySelectorAll('main h2, main h3');
+            const tocList = document.createElement('ul');
+            tocList.className = 'toc-list';
+
+            if (sections.length === 0) return;
+
+            // Add Header
+            const header = document.createElement('li');
+            header.className = 'toc-header';
+            header.innerText = 'ON THIS PAGE';
+            tocList.appendChild(header);
+
+            sections.forEach((section, index) => {
+                if (!section.id) {
+                    section.id = `section-${index}`;
+                }
+
+                const li = document.createElement('li');
+                const a = document.createElement('a');
+                a.className = 'toc-link';
+                a.href = `#${section.id}`;
+                a.innerText = section.innerText.replace(/^\d+\.\s*/, ''); // Remove numbering for TOC
+
+                // Indent H3
+                if (section.tagName === 'H3') {
+                    a.style.paddingLeft = '1.5rem';
+                    a.style.fontSize = '0.85rem';
+                }
+
+                a.onclick = (e) => {
+                    e.preventDefault();
+                    document.getElementById(section.id).scrollIntoView({ behavior: 'smooth' });
+                    toggleMobileDrawer(false); // Close mobile drawer on click
+                };
+
+                li.appendChild(a);
+                tocList.appendChild(li);
+            });
+
+            // Inject into Desktop Sidebar
+            document.getElementById('desktop-toc-content').appendChild(tocList.cloneNode(true));
+
+            // Inject into Mobile Drawer
+            document.getElementById('mobileDrawerContent').appendChild(tocList.cloneNode(true));
+        }
+
+        // --- 2. SCROLL SPY ---
+        function scrollSpy() {
+            const sections = document.querySelectorAll('section');
+            const navLinks = document.querySelectorAll('.toc-link');
+
+            window.addEventListener('scroll', () => {
+                let current = '';
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop;
+                    const sectionHeight = section.clientHeight;
+                    if (pageYOffset >= (sectionTop - 150)) {
+                        current = section.getAttribute('id');
+                    }
+                });
+
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href').includes(current) && current !== '') {
+                        link.classList.add('active');
+                    }
+                });
+
+                // Progress Bar
+                const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+                const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+                const scrolled = (winScroll / height) * 100;
+                document.getElementById("progressBar").style.width = scrolled + "%";
+            });
+        }
+
+        // --- 3. MOBILE DRAWER ---
+        function toggleMobileDrawer(forceState) {
+            const overlay = document.getElementById('mobileDrawerOverlay');
+            if (typeof forceState !== 'undefined') {
+                if (forceState) overlay.classList.add('active');
+                else overlay.classList.remove('active');
+            } else {
+                overlay.classList.toggle('active');
+            }
+        }
+
+        // --- INIT ---
+        document.addEventListener('DOMContentLoaded', () => {
+            generateTOC();
+            scrollSpy();
+        });
+    </script>
+</body>
+
+</html>

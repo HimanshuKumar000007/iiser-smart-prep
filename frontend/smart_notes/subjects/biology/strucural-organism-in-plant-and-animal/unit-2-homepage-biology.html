@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unit 2: Structural Organisation in Plants and Animals | IISER Edge</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <style>
+        :root {
+            --primary: #4f46e5;
+            --primary-soft: #e0e7ff;
+            --secondary: #0f172a;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --bg-wash: #f8fafc;
+            --border: #e2e8f0;
+            --radius-md: 16px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-wash);
+            color: var(--text-main);
+            line-height: 1.5;
+        }
+
+        /* HEADER */
+        .unit-header {
+            background: white;
+            border-bottom: 1px solid var(--border);
+            padding: 8rem 1.5rem 3rem;
+            text-align: center;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .breadcrumb {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            font-weight: 500;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        h1 {
+            font-size: clamp(1.8rem, 4vw, 2.5rem);
+            color: var(--secondary);
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.02em;
+        }
+
+        p.subtitle {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* GRID */
+        .chapter-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            padding: 3rem 1.5rem;
+        }
+
+        /* CARD DESIGN */
+        .chapter-card {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            text-decoration: none;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            position: relative;
+            overflow: hidden;
+            height: 100%;
+        }
+
+        .chapter-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 24px -10px rgba(0, 0, 0, 0.1);
+            border-color: var(--primary-soft);
+        }
+
+        /* Icon styling */
+        .icon-box {
+            width: 50px;
+            height: 50px;
+            background: var(--bg-wash);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--primary);
+            transition: 0.3s;
+        }
+
+        .chapter-card:hover .icon-box {
+            background: var(--primary);
+            color: white;
+        }
+
+        /* Typography */
+        h2 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        p.desc {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            margin-bottom: 1.5rem;
+            flex-grow: 1;
+        }
+
+        /* Footer of card */
+        .card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid var(--border);
+            padding-top: 1rem;
+            margin-top: auto;
+        }
+
+        .status {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .arrow-btn {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: var(--bg-wash);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-main);
+            transition: 0.2s;
+        }
+
+        .chapter-card:hover .arrow-btn {
+            background: var(--secondary);
+            color: white;
+        }
+
+        /* HEADER (Fixed/Floating) */
+        header {
+            position: fixed;
+            top: 20px;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            display: flex;
+            justify-content: center;
+            pointer-events: none;
+            transition: top 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        header.scrolled {
+            top: 0;
+        }
+
+        .nav-container {
+            pointer-events: auto;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.08);
+            padding: 0.75rem 1.5rem;
+            border-radius: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 90%;
+            max-width: 1200px;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        header.scrolled .nav-container {
+            width: 100%;
+            max-width: 100%;
+            border-radius: 0;
+            border-top: 0;
+            border-left: 0;
+            border-right: 0;
+            background: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            padding: 0.75rem 2rem;
+        }
+
+        .logo {
+            font-weight: 800;
+            color: var(--secondary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1.1rem;
+            text-decoration: none;
+        }
+
+        .btn-action {
+            padding: 0.5rem 1rem;
+            font-size: 0.85rem;
+            font-weight: 600;
+            border-radius: 100px;
+            border: 1px solid var(--border);
+            color: var(--text-main);
+            background: white;
+            cursor: pointer;
+            text-decoration: none;
+            transition: 0.2s;
+        }
+
+        .btn-action:hover {
+            background: var(--bg-wash);
+        }
+
+        /* Mobile tweaks */
+        @media (max-width: 600px) {
+            .unit-header {
+                padding: 2rem 1.5rem;
+            }
+
+            .chapter-grid {
+                grid-template-columns: 1fr;
+                padding: 1.5rem;
+            }
+
+            .nav-container {
+                padding: 0.5rem 1rem;
+                width: 95%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Header -->
+    <header>
+        <div class="nav-container">
+            <a href="/frontend/index.html" class="logo">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
+                    <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
+                </svg>
+                IISER Smart Prep
+            </a>
+            <div style="display: flex; gap: 0.8rem; align-items: center;">
+                <a href="/frontend/smart_notes/smart_notes_home.html" class="btn-action">Back</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Unit Hero -->
+    <section class="unit-header">
+        <div class="container">
+            <div class="breadcrumb">Biology • Unit 02</div>
+            <h1>Structural Organisation</h1>
+            <p class="subtitle">Detailed study of plant and animal anatomy, morphology, and tissue systems.</p>
+        </div>
+    </section>
+
+    <!-- Chapter Grid -->
+    <div class="container">
+        <div class="chapter-grid">
+
+            <!-- Chapter 1 -->
+            <a href="morphology-flowering-plants.html" class="chapter-card">
+                <div class="icon-box">🌸</div>
+                <h2>Morphology of Flowering Plants</h2>
+                <p class="desc">Roots, stems, leaves, inflorescence, flowers, fruits, and seeds.</p>
+                <div class="card-footer">
+                    <span class="status">Coming Soon</span>
+                    <div class="arrow-btn">→</div>
+                </div>
+            </a>
+
+            <!-- Chapter 2 -->
+            <a href="anatomy-flowering-plants.html" class="chapter-card">
+                <div class="icon-box">🔬</div>
+                <h2>Anatomy of Flowering Plants</h2>
+                <p class="desc">Tissues, tissue systems, and secondary growth in dicots and monocots.</p>
+                <div class="card-footer">
+                    <span class="status">Coming Soon</span>
+                    <div class="arrow-btn">→</div>
+                </div>
+            </a>
+
+            <!-- Chapter 3 -->
+            <a href="structural-organisation-animals.html" class="chapter-card">
+                <div class="icon-box">🐸</div>
+                <h2>Structural Organisation in Animals</h2>
+                <p class="desc">Animal tissues (Epithelial, Connective, Muscular, Neural) and organ systems.</p>
+                <div class="card-footer">
+                    <span class="status">Coming Soon</span>
+                    <div class="arrow-btn">→</div>
+                </div>
+            </a>
+
+        </div>
+    </div>
+
+    <script>
+        // Header Scroll Effect
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('header');
+            if (window.scrollY > 20) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+    </script>
+
+</body>
+
+</html>

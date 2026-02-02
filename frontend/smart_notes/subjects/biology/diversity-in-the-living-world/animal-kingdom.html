@@ -1,0 +1,2854 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Animal Kingdom | Advanced Notes</title>
+
+    <!-- Google Fonts: Inter & JetBrains Mono -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap"
+        rel="stylesheet">
+
+    <style>
+        /* =========================================
+           1. DESIGN SYSTEM
+           ========================================= */
+        :root {
+            --primary: #4f46e5;
+            --primary-dark: #4338ca;
+            --primary-soft: #e0e7ff;
+            --secondary: #0f172a;
+
+            --text-main: #1e293b;
+            --text-muted: #475569;
+            --text-light: #94a3b8;
+
+            --bg-wash: #f8fafc;
+            --bg-white: #ffffff;
+            --border: #e2e8f0;
+
+            --accent-amber: #f59e0b;
+            --accent-amber-soft: #fffbeb;
+
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --radius-pill: 100px;
+
+            --container-width: 1200px;
+            --nav-height: 70px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            outline: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: 100px;
+        }
+
+        /* =========================================
+           PRINT STYLES FOR PDF EXPORT
+           ========================================= */
+        @media print {
+
+            /* Hide navigation elements */
+            header,
+            .sidebar,
+            .mobile-toc-btn,
+            .mobile-drawer-overlay {
+                display: none !important;
+            }
+
+            /* Full width content */
+            .docs-container {
+                grid-template-columns: 1fr;
+                width: 100%;
+                max-width: 100%;
+                padding: 0;
+                margin: 0;
+            }
+
+            .content-area {
+                max-width: 100%;
+                padding: 1rem;
+            }
+
+            /* Page breaks */
+            h2,
+            h3 {
+                page-break-after: avoid;
+            }
+
+            .exam-tip,
+            table,
+            img {
+                page-break-inside: avoid;
+            }
+
+            /* Better contrast for printing */
+            body {
+                background: white;
+                color: black;
+            }
+
+            .exam-tip {
+                border: 1px solid #333;
+            }
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            color: var(--text-main);
+            background: var(--bg-wash);
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+
+        /* =========================================
+           2. HEADER & PROGRESS BAR
+           ========================================= */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border);
+            height: var(--nav-height);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .progress-bar {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: var(--primary);
+            width: 0%;
+            transition: width 0.1s;
+            z-index: 1001;
+        }
+
+        .header-inner {
+            width: 92%;
+            max-width: var(--container-width);
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-weight: 800;
+            color: var(--secondary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1.1rem;
+            text-decoration: none;
+        }
+
+        .btn-action {
+            padding: 0.5rem 1rem;
+            font-size: 0.85rem;
+            font-weight: 600;
+            border-radius: var(--radius-pill);
+            border: 1px solid var(--border);
+            color: var(--text-main);
+            background: white;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .btn-action:hover {
+            background: var(--bg-wash);
+        }
+
+        /* =========================================
+           3. LAYOUT (Sidebar + Main)
+           ========================================= */
+        .docs-container {
+            width: 92%;
+            max-width: var(--container-width);
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 260px 1fr;
+            gap: 4rem;
+            padding-top: calc(var(--nav-height) + 2rem);
+            padding-bottom: 6rem;
+        }
+
+        /* Sidebar (Desktop) */
+        .sidebar {
+            position: sticky;
+            top: calc(var(--nav-height) + 2rem);
+            height: calc(100vh - var(--nav-height) - 4rem);
+            overflow-y: auto;
+            padding-right: 1rem;
+            display: block;
+        }
+
+        /* Scrollbar Styling */
+        .sidebar::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .sidebar::-webkit-scrollbar-thumb {
+            background: var(--border);
+            border-radius: 4px;
+        }
+
+        .toc-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .toc-link {
+            display: block;
+            padding: 0.6rem 0.8rem;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            border-radius: 8px;
+            font-weight: 500;
+            text-decoration: none;
+            transition: 0.2s;
+        }
+
+        .toc-link:hover {
+            color: var(--primary);
+            background: var(--bg-white);
+        }
+
+        .toc-link.active {
+            color: var(--primary);
+            background: var(--primary-soft);
+            font-weight: 600;
+        }
+
+        .toc-header {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--text-light);
+            font-weight: 700;
+            margin: 1.5rem 0 0.5rem 0.5rem;
+        }
+
+        /* Main Content */
+        .content-area {
+            min-width: 0;
+        }
+
+        .chapter-title {
+            font-size: clamp(1.8rem, 5vw, 2.75rem);
+            font-weight: 800;
+            color: var(--secondary);
+            margin-bottom: 0.75rem;
+            letter-spacing: -0.03em;
+            line-height: 1.2;
+        }
+
+        .chapter-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 2.5rem;
+        }
+
+        .meta-pill {
+            background: white;
+            padding: 0.35rem 0.85rem;
+            border-radius: var(--radius-pill);
+            border: 1px solid var(--border);
+        }
+
+        /* Typography Styles */
+        h2 {
+            font-size: clamp(1.5rem, 3vw, 1.8rem);
+            font-weight: 700;
+            color: var(--secondary);
+            margin: 3.5rem 0 1.25rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        /* Purple mark next to H2 */
+        h2::before {
+            content: '';
+            width: 6px;
+            height: 24px;
+            background: var(--primary);
+            border-radius: 4px;
+        }
+
+        h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--secondary);
+            margin: 2rem 0 0.75rem;
+        }
+
+        p {
+            margin-bottom: 1.25rem;
+            font-size: 1.05rem;
+            color: var(--text-muted);
+        }
+
+        ul,
+        ol {
+            margin-bottom: 1.5rem;
+            padding-left: 1.5rem;
+            color: var(--text-muted);
+        }
+
+        li {
+            margin-bottom: 0.5rem;
+        }
+
+        /* =========================================
+           4. SPECIAL COMPONENTS
+           ========================================= */
+
+        /* Math/Formula Box */
+        .formula-box {
+            background: var(--secondary);
+            color: white;
+            padding: 1.5rem;
+            border-radius: var(--radius-md);
+            margin: 1.5rem 0;
+            font-family: 'JetBrains Mono', monospace;
+            overflow-x: auto;
+            border-left: 4px solid var(--primary);
+            box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.1);
+        }
+
+        .formula-desc {
+            font-size: 0.9rem;
+            color: var(--text-light);
+            margin-top: 0.75rem;
+            font-family: 'Inter', sans-serif;
+            opacity: 0.8;
+        }
+
+        /* Exam Tip Box */
+        .exam-tip {
+            background: var(--accent-amber-soft);
+            border: 1px solid rgba(245, 158, 11, 0.2);
+            padding: 1.25rem;
+            border-radius: var(--radius-md);
+            margin: 2rem 0;
+            display: flex;
+            gap: 1rem;
+            align-items: flex-start;
+        }
+
+        .exam-tip-icon {
+            color: var(--accent-amber);
+            font-size: 1.5rem;
+            flex-shrink: 0;
+            margin-top: -2px;
+        }
+
+        .exam-tip-content h4 {
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: #92400e;
+            margin-bottom: 0.25rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .exam-tip-content p {
+            color: #78350f;
+            font-size: 0.95rem;
+            margin: 0;
+        }
+
+        /* Responsive Table */
+        .table-container {
+            width: 100%;
+            overflow-x: auto;
+            margin: 2rem 0;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            background: white;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 600px;
+        }
+
+        th {
+            background: var(--bg-wash);
+            text-align: left;
+            padding: 1rem;
+            font-weight: 600;
+            color: var(--secondary);
+            border-bottom: 1px solid var(--border);
+            white-space: nowrap;
+        }
+
+        td {
+            padding: 1rem;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.95rem;
+            color: var(--text-muted);
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        /* Flashcards */
+        .flash-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .flashcard {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: 2rem;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            min-height: 160px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            perspective: 1000px;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .flashcard:active {
+            transform: scale(0.98);
+        }
+
+        .flash-front {
+            font-weight: 600;
+            color: var(--secondary);
+            font-size: 1.1rem;
+            transition: 0.3s;
+        }
+
+        .flash-back {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--primary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: 0.3s ease;
+            font-size: 1rem;
+            pointer-events: none;
+        }
+
+        .flashcard.flipped .flash-back {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto;
+        }
+
+        .flashcard.flipped .flash-front {
+            opacity: 0;
+            transform: translateY(-20px);
+        }
+
+        /* =========================================
+           5. MOBILE OPTIMIZATIONS
+           ========================================= */
+        /* Mobile TOC Button (Floating) */
+        .mobile-toc-btn {
+            display: none;
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: var(--secondary);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 100px;
+            font-weight: 600;
+            box-shadow: 0 4px 15px rgba(15, 23, 42, 0.3);
+            z-index: 100;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .mobile-toc-btn:active {
+            transform: scale(0.95);
+        }
+
+        /* Mobile Drawer */
+        .mobile-drawer-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 2000;
+            opacity: 0;
+            visibility: hidden;
+            transition: 0.3s;
+            backdrop-filter: blur(4px);
+        }
+
+        .mobile-drawer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 70vh;
+            background: white;
+            border-radius: 20px 20px 0 0;
+            padding: 1.5rem;
+            transform: translateY(100%);
+            transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .mobile-drawer-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .mobile-drawer-overlay.active .mobile-drawer {
+            transform: translateY(0);
+        }
+
+        .drawer-handle {
+            width: 40px;
+            height: 5px;
+            background: var(--border);
+            border-radius: 10px;
+            margin: 0 auto 1.5rem;
+            flex-shrink: 0;
+        }
+
+        /* Responsive */
+        @media (max-width: 900px) {
+            .docs-container {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+                width: 90%;
+            }
+
+            .sidebar {
+                display: none;
+            }
+
+            /* Hide Sidebar */
+            .mobile-toc-btn {
+                display: flex;
+            }
+
+            /* Show Float Button */
+
+            .chapter-title {
+                font-size: 2.2rem;
+            }
+
+            .content-area {
+                padding-bottom: 4rem;
+            }
+
+            /* Make header buttons responsive */
+            .header-inner {
+                width: 95%;
+            }
+
+            .btn-action {
+                font-size: 0.8rem;
+                padding: 0.45rem 0.85rem;
+            }
+
+        }
+
+        /* Adjust visual density for mobile */
+        @media (max-width: 480px) {
+            .logo {
+                font-size: 1rem;
+            }
+
+            .header-inner {
+                padding: 0 0.5rem;
+            }
+
+            .btn-action {
+                padding: 0.4rem 0.6rem;
+            }
+        }
+
+        /* Note Images */
+        .note-image {
+            width: 100%;
+            max-width: 600px;
+            height: auto;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border);
+            margin: 2rem auto;
+            display: block;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .image-caption {
+            text-align: center;
+            font-size: 0.9rem;
+            color: var(--text-light);
+            margin-top: -1.5rem;
+            margin-bottom: 2.5rem;
+            font-style: italic;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Header & Progress -->
+    <header>
+        <div class="progress-bar" id="progressBar"></div>
+        <div class="header-inner">
+            <a href="/frontend/index.html" class="logo">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
+                    <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
+                </svg>
+                IISER Smart Prep
+            </a>
+            <div style="display: flex; gap: 0.8rem; align-items: center;">
+                <button onclick="window.print()" class="btn-action"
+                    style="display: flex; align-items: center; gap: 0.4rem;">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                        <polyline points="7 10 12 15 17 10"></polyline>
+                        <line x1="12" y1="15" x2="12" y2="3"></line>
+                    </svg>
+                    PDF
+                </button>
+                <a href="/frontend/smart_notes/smart_notes_home.html" class="btn-action">Back</a>
+            </div>
+        </div>
+    </header>
+
+    <div class="docs-container">
+
+        <!-- DESKTOP SIDEBAR -->
+        <nav class="sidebar">
+            <div id="desktop-toc-content">
+                <!-- Content injected via JS for reuse -->
+            </div>
+        </nav>
+
+        <!-- MAIN CONTENT -->
+        <main class="content-area">
+
+            <div
+                style="font-size: 0.9rem; font-weight: 700; color: var(--primary); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.5rem;">
+                Diversity in the Living World</div>
+            <h1 class="chapter-title">Animal Kingdom</h1>
+            <div class="chapter-meta">
+                <span class="meta-pill">Comprehensive Note</span>
+                <span class="meta-pill">⏱️ 60 min read</span>
+                <span class="meta-pill">🎯 Exam Focus</span>
+            </div>
+
+            <section id="preface">
+                <h2>1. Preface — How to think about classification</h2>
+                <p>Classification is a <strong>hypothesis</strong> about relationships among organisms. It organizes
+                    diversity to reflect evolutionary descent, common ancestry, and functional design.</p>
+                <p>It has two complementary aims:</p>
+                <ul>
+                    <li><strong>Descriptive:</strong> To provide a stable way to identify and name organisms.</li>
+                    <li><strong>Explanatory:</strong> To infer evolutionary relationships and functional transitions
+                        (e.g., evolution of coelom, segmentation, etc.).</li>
+                </ul>
+                <p>Good classification balances observable characters (morphology/anatomy) with developmental,
+                    molecular,
+                    and functional data.</p>
+                <div class="exam-tip">
+                    <div class="exam-tip-icon">🧠</div>
+                    <div class="exam-tip-content">
+                        <h4>Key Conceptual Lens</h4>
+                        <p>Ask for any trait — is it <strong>homologous</strong> (shared due to common ancestry) or
+                            <strong>analogous</strong> (similar due to convergent evolution)? This determines whether
+                            the trait should be used to infer relationships.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="basics">
+                <h2>2. Basis of Classification</h2>
+                <h3>1. Body Symmetry</h3>
+                <h4>1. Definition and Major Types</h4>
+                <p>Body symmetry refers to the geometric arrangement of body parts relative to an axis. It is a
+                    fundamental characteristic of an animal's bauplan (body plan).</p>
+                <ul>
+                    <li><strong>Asymmetry:</strong> The absence of any plane of symmetry. There is no way to divide the
+                        body into mirror-image halves.<br><em>Example:</em> Many species of sponges (Porifera) are
+                        asymmetrical, exhibiting an irregular growth form.</li>
+                    <li><strong>Radial Symmetry:</strong> The body is organized around a central oral-aboral axis.
+                        Multiple planes of symmetry can be drawn through this axis, each dividing the animal into
+                        mirror-image halves. This is analogous to the spokes of a wheel.<br>
+                        <em>Examples:</em> Cnidarians (jellyfish, sea anemones) are primarily radially symmetric. Adult
+                        echinoderms (starfish) exhibit a secondary, five-part pentaradial symmetry.
+                    </li>
+                    <li><strong>Bilateral Symmetry:</strong> The body can be divided into two mirror-image halves (left
+                        and right) by a single sagittal plane. This body plan is also associated with the
+                        differentiation of dorsal (top), ventral (bottom), anterior (front), and posterior (back)
+                        axes.<br>
+                        <em>Example:</em> The vast majority of animal phyla, including arthropods, annelids, and
+                        chordates, are bilaterally symmetric.
+                    </li>
+                </ul>
+                <img src="https://res.cloudinary.com/dhb8qmnxt/image/upload/v1769678212/unnamed_kg1u0u.jpg"
+                    alt="Comparison of radial, bilateral, and asymmetrical symmetry in animals with labeled examples"
+                    class="note-image">
+                <p class="image-caption">Figure: Types of Body Symmetry in Animals</p>
+                <!-- IMAGE PROMPT: Create a diagram showing three panels: 1) Radial symmetry (jellyfish/hydra with dotted lines showing multiple planes), 2) Bilateral symmetry (fish/human with single sagittal plane, labeled dorsal/ventral/anterior/posterior), 3) Asymmetrical (sponge). Clean educational style with labels. -->
+
+                <h4>2. Functional and Evolutionary Significance</h4>
+                <p>The type of body symmetry is strongly correlated with an animal's lifestyle and evolutionary history.
+                </p>
+                <ul>
+                    <li><strong>Radial symmetry</strong> is well-suited for a sessile (stationary) or sedentary
+                        lifestyle. It allows the animal to sense and respond to stimuli (food or threats) from all
+                        directions equally.</li>
+                    <li><strong>Bilateral symmetry</strong> is a crucial adaptation for active, directional locomotion.
+                        This body plan is inextricably linked with <strong>cephalization</strong>—the evolutionary trend
+                        towards the concentration of sensory organs, nervous tissue, and feeding structures at the
+                        anterior end of the body, forming a distinct head.
+                    </li>
+                </ul>
+
+                <div class="exam-tip">
+                    <div class="exam-tip-icon">✨</div>
+                    <div class="exam-tip-content">
+                        <h4>3. Core Conceptual Insight</h4>
+                        <p>The transition from radial to bilateral symmetry was one of the most profound events in
+                            animal evolution. Bilateral symmetry and cephalization allowed for a more active, predatory,
+                            and complex mode of existence, as it enabled animals to move through their environment
+                            head-first, with their sensory apparatus leading the way to find food and navigate.</p>
+                    </div>
+                </div>
+
+                <h3>2. Germ Layers and Embryology</h3>
+                <h4>1. Definition of Germ Layers</h4>
+                <p>Germ layers are the primary layers of cells that form during early embryonic development
+                    (gastrulation). These layers differentiate to give rise to all the tissues and organs of the adult
+                    animal.</p>
+
+                <h4>2. Major Organizational Grades</h4>
+                <p><strong>Diploblastic Organization:</strong></p>
+                <ul>
+                    <li><strong>Definition:</strong> The embryo possesses only two primary germ layers: an outer
+                        ectoderm and an inner endoderm. A non-cellular, gelatinous layer called the mesoglea may be
+                        present between them, but there is no true mesoderm.</li>
+                    <li><strong>Phylogenetic Distribution:</strong> Characteristic of the Cnidaria (jellyfish, corals)
+                        and Ctenophora (comb jellies).</li>
+                    <li><strong>Developmental Consequence:</strong> The absence of a mesoderm limits the potential for
+                        complex organogenesis.</li>
+                </ul>
+                <img src="https://res.cloudinary.com/dhb8qmnxt/image/upload/v1769678294/unnamed_xydcht.jpg"
+                    alt="Diploblastic vs Triploblastic organization showing ectoderm, mesoderm, and endoderm layers"
+                    class="note-image">
+                <p class="image-caption">Figure: Diploblastic and Triploblastic Organization</p>
+                <!-- IMAGE PROMPT: Two cross-sectional diagrams side-by-side: Left) Diploblastic (Cnidaria) showing ectoderm (outer), mesoglea (middle jelly layer), endoderm (inner lining gut). Right) Triploblastic (most animals) showing ectoderm, mesoderm (with muscles/organs), endoderm. Color-coded layers. -->
+                <p><strong>Triploblastic Organization:</strong></p>
+                <ul>
+                    <li><strong>Definition:</strong> The embryo possesses three primary germ layers: an outer ectoderm,
+                        an inner endoderm, and a middle layer, the mesoderm.</li>
+                    <li><strong>Phylogenetic Distribution:</strong> Characteristic of all Bilateria, from flatworms to
+                        chordates.</li>
+                    <li><strong>Developmental Consequence:</strong> The evolution of the mesoderm was a critical
+                        innovation. It gives rise to a wide array of complex structures, including true muscle tissue,
+                        circulatory systems, excretory systems, and the lining of the body cavity (coelom). This enabled
+                        the evolution of much larger and more complex body plans.</li>
+                </ul>
+
+                <h4>3. The Phylogenetic Significance of Embryology</h4>
+                <p>Early embryonic development provides some of the most reliable and informative characters for
+                    reconstructing deep evolutionary relationships (phylogeny). Key embryological features are often
+                    more conserved over evolutionary time than adult morphological traits.</p>
+                <p><strong>Gastrulation and the Blastopore:</strong> The process of gastrulation forms the primary gut
+                    (archenteron) and an opening called the blastopore. The developmental fate of this blastopore is a
+                    major diagnostic feature that divides the Bilateria into two great clades:</p>
+                <ul>
+                    <li><strong>Protostomes:</strong> The blastopore develops into the mouth.</li>
+                    <li><strong>Deuterostomes:</strong> The blastopore develops into the anus.</li>
+                </ul>
+
+                <div class="exam-tip">
+                    <div class="exam-tip-icon">✨</div>
+                    <div class="exam-tip-content">
+                        <h4>4. Core Conceptual Insight</h4>
+                        <p>The transition from a diploblastic to a triploblastic body plan was a watershed moment in
+                            animal evolution. The innovation of the mesoderm was the developmental prerequisite that
+                            allowed for the evolution of true organs, complex circulatory and excretory systems, and the
+                            sophisticated body plans that characterize the vast majority of the animal kingdom.
+                            Embryological data, such as the fate of the blastopore, often reveals deep evolutionary
+                            divergences that are not apparent from adult anatomy alone.</p>
+                    </div>
+                </div>
+
+                <h3>3. The Body Cavity (Coelom)</h3>
+                <h4>1. Definition and Developmental Origin</h4>
+                <p>The coelom is a fluid-filled body cavity that is located between the digestive tract and the outer
+                    body wall. Its presence and nature are defining features of the body plan in triploblastic animals,
+                    as its lining is derived from the mesoderm.</p>
+
+                <h4>2. Major Grades of Organization</h4>
+                <p><strong>Acoelomate Condition:</strong></p>
+                <ul>
+                    <li><strong>Definition:</strong> These animals lack a body cavity. The region between the ectoderm
+                        and the endoderm is completely filled with a solid mass of mesodermal tissue (parenchyma).</li>
+                    <li><strong>Example Phylum:</strong> Platyhelminthes (flatworms).</li>
+                </ul>
+                <p><strong>Pseudocoelomate Condition:</strong></p>
+                <ul>
+                    <li><strong>Definition:</strong> These animals possess a "false" body cavity, the pseudocoel. This
+                        cavity is derived from the embryonic blastocoel and is not completely lined by mesoderm. It is
+                        bounded by mesoderm only on the outer side (adjacent to the body wall), while the inner side is
+                        in direct contact with the endoderm of the gut.</li>
+                    <li><strong>Example Phyla:</strong> Nematoda (roundworms), Rotifera.</li>
+                </ul>
+                <p><strong>Coelomate (or Eucoelomate) Condition:</strong></p>
+                <ul>
+                    <li><strong>Definition:</strong> These animals possess a true coelom, a body cavity that is
+                        completely lined on all sides by a mesodermal peritoneum. This mesodermal lining forms
+                        mesenteries that suspend the internal organs.</li>
+                    <li><strong>Example Phyla:</strong> All other major bilaterian phyla, including Annelida, Mollusca,
+                        Arthropoda, Echinodermata, and Chordata.</li>
+                </ul>
+
+                <h4>3. Functional and Evolutionary Significance of a True Coelom</h4>
+                <p>The evolution of a true coelom was a major architectural innovation that enabled increased body size
+                    and complexity. Its key functional advantages include:</p>
+                <ul>
+                    <li><strong>Space for Organ Development:</strong> It provides a protected, fluid-filled space that
+                        allows internal organs to grow larger, become more complex, and change in shape and position.
+                    </li>
+                    <li><strong>Hydrostatic Skeleton:</strong> In many soft-bodied animals (like earthworms), the
+                        incompressible coelomic fluid acts as a hydrostatic skeleton, against which muscles can contract
+                        to produce movement.</li>
+                    <li><strong>Independent Movement:</strong> The coelom allows the internal organs and the gut to move
+                        and function independently of the outer body wall. For example, the gut can undergo peristalsis
+                        without interfering with locomotion.</li>
+                    <li><strong>Circulation and Transport:</strong> The coelomic fluid can serve as a simple circulatory
+                        medium for transporting nutrients, gases, and waste products throughout the body.</li>
+                </ul>
+
+                <div class="exam-tip">
+                    <div class="exam-tip-icon">✨</div>
+                    <div class="exam-tip-content">
+                        <h4>4. Core Conceptual Insight</h4>
+                        <p>The presence and nature of the body cavity is a fundamental feature of an animal's body plan.
+                            The evolution from an acoelomate to a coelomate condition was a critical step that provided
+                            the internal architecture necessary for the development of larger, more active, and more
+                            organ-systematically complex animals.</p>
+                    </div>
+                </div>
+
+                <h3>4. Segmentation (Metamerism): Structural Logic of the Animal Kingdom</h3>
+                <h4>1. The Fundamental Concept of Metamerism</h4>
+                <p><strong>Definition:</strong> In biological architecture, metamerism is not merely the repetition of
+                    body parts; it is the serial repetition of homologous structures along the longitudinal axis of the
+                    body. Each unit is called a <strong>metamere</strong> or <strong>somite</strong>.</p>
+                <div class="exam-tip">
+                    <div class="exam-tip-icon">🧬</div>
+                    <div class="exam-tip-content">
+                        <h4>Developmental Origin</h4>
+                        <p>True segmentation is established during embryogenesis, driven by oscillating genetic clocks
+                            (e.g., Notch signaling) and spatial patterning by <strong>Hox genes</strong>.</p>
+                    </div>
+                </div>
+                <p><strong>Why did segmentation evolve?</strong></p>
+                <ul>
+                    <li><strong>Locomotory Independence:</strong> In soft-bodied animals (like Annelids), segmentation
+                        allows different parts of the body to move independently. By isolating the coelomic fluid in
+                        compartments (hydrostatic skeleton), a worm can elongate one segment while contracting another.
+                    </li>
+                    <li><strong>Physiological Redundancy:</strong> If one segment fails (e.g., kidney/nephridia damage),
+                        adjacent segments can sustain life.</li>
+                    <li><strong>Morphological Plasticity:</strong> It provides a "modular template." Evolution can
+                        modify
+                        specific segments for specialized functions (feeding, walking, reproduction) without reinventing
+                        the whole organism.</li>
+                </ul>
+
+                <h4>2. True Metamerism vs. Pseudometamerism</h4>
+                <p>A critical distinction for Olympiad exams is determining what constitutes "true" segmentation.</p>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Feature</th>
+                                <th>True Metamerism (Eumetamerism)</th>
+                                <th>Pseudometamerism (Strobilization)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Definition</strong></td>
+                                <td>New segments added from posterior end (growth zone near anus).</td>
+                                <td>Body segmented into proglottids. New segments added from anterior end (neck).</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Coordination</strong></td>
+                                <td>Functionally integrated by nervous system.</td>
+                                <td>Minimal physiological cooperation; each proglottid is self-contained.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Example</strong></td>
+                                <td>Annelida, Arthropoda, Chordata.</td>
+                                <td>Class Cestoda (Tapeworms).</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <img src="https://res.cloudinary.com/dhb8qmnxt/image/upload/v1769678963/unnamed_yxymjk.jpg"
+                    alt="Acoelomate, Pseudocoelomate, and Coelomate body cavity organization" class="note-image">
+                <p class="image-caption">Figure: Evolution of Body Cavities - Acoelomate to Coelomate</p>
+                <!-- IMAGE PROMPT: Three cross-sectional circular diagrams comparing: 1) Acoelomate (flatworm) - solid mesoderm filling space between gut and body wall, 2) Pseudocoelomate (nematode) - cavity lined by mesoderm on outside only, endoderm on inside, 3) Eucoelomate (annelid) - cavity fully lined by mesoderm forming peritoneum. Label: ectoderm, mesoderm, endoderm, gut, cavity. -->
+                <div class="exam-tip">
+                    <div class="exam-tip-icon">🚆</div>
+                    <div class="exam-tip-content">
+                        <h4>Professor’s Analogy</h4>
+                        <p><strong>True Metamerism</strong> is like a train where cars are added to the back, and the
+                            engine (brain) controls the whole line.<br>
+                            <strong>Pseudometamerism</strong> is like a stack of plates pushed from the top; the bottom
+                            ones are old and eventually fall off (apolysis).
+                        </p>
+                    </div>
+                </div>
+
+                <h4>3. Evolutionary Trends in Segmentation</h4>
+                <ul>
+                    <li><strong>Homonomous Metamerism (Annelida):</strong> Segments are morphologically similar. Coelom
+                        divided by septa. Serial repetition of nephridia and ganglia.</li>
+                    <li><strong>Heteronomous Metamerism & Tagmatization (Arthropoda):</strong> Evolution favored the
+                        fusion of segments to create functional units called <strong>Tagmata</strong> (e.g., Head,
+                        Thorax, Abdomen). Internal segmentation is largely lost.</li>
+                    <li><strong>Internal Metamerism (Chordata):</strong> External skin is unsegmented, but internal
+                        segmentation is visible in vertebrae, ribs, myotomes (muscle blocks), and neuromeres.</li>
+                </ul>
+
+                <h4>4. High-Yield Comparative Analysis (Exam Optimized)</h4>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Feature</th>
+                                <th>Annelida</th>
+                                <th>Arthropoda</th>
+                                <th>Chordata</th>
+                                <th>Platyhelminthes</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Type</strong></td>
+                                <td>True, Homonomous</td>
+                                <td>True, Heteronomous</td>
+                                <td>True, Internal</td>
+                                <td>Pseudometamerism</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Origin</strong></td>
+                                <td>Posterior</td>
+                                <td>Posterior</td>
+                                <td>Posterior</td>
+                                <td>Anterior</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Coelom</strong></td>
+                                <td>Segmented</td>
+                                <td>Unsegmented (Hemocoel)</td>
+                                <td>Unsegmented (mostly)</td>
+                                <td>Acoelomate</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Driver</strong></td>
+                                <td>Hydrostatic Skeleton</td>
+                                <td>Exoskeleton & Legs</td>
+                                <td>Axial Support</td>
+                                <td>Repro. Efficiency</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="exam-tip">
+                    <div class="exam-tip-icon">🧬</div>
+                    <div class="exam-tip-content">
+                        <h4>Professor's Research Corner: Molecular Insights</h4>
+                        <p><strong>The Hox Gene Connection:</strong> The diversity of segmentation is controlled by Hox
+                            genes ("master switch" genes). A mutation in the <em>Ultrabithorax</em> gene in fruit flies
+                            can transform a balancing organ (haltere) into a second pair of wings! This proves that
+                            segmentation allows for modular evolution.</p>
+                    </div>
+                </div>
+
+                <h3>5. Developmental Dichotomy: Protostomia vs. Deuterostomia</h3>
+                <h4>1. The Embryological Split</h4>
+                <p>The Kingdom Animalia (specifically Grade Bilateria) is divided into two major super-phyla based on
+                    the fundamental mechanics of early embryogenesis. This central defining feature is the fate of the
+                    <strong>Blastopore</strong> (the first opening formed during gastrulation).
+                </p>
+                <ul>
+                    <li><strong>Protostomia ("First Mouth"):</strong>
+                        <ul>
+                            <li><em>Mechanism:</em> The blastopore develops into the mouth. The anus forms later.</li>
+                            <li><em>Taxa:</em> Annelida, Arthropoda, Mollusca, Platyhelminthes, Nematoda.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Deuterostomia ("Second Mouth"):</strong>
+                        <ul>
+                            <li><em>Mechanism:</em> The blastopore develops into the anus. The mouth forms later at the
+                                opposite end.</li>
+                            <li><em>Taxa:</em> Echinodermata, Hemichordata, Chordata.</li>
+                        </ul>
+                    </li>
+                </ul>
+                <div class="exam-tip">
+                    <div class="exam-tip-icon">✨</div>
+                    <div class="exam-tip-content">
+                        <h4>Evolutionary Context</h4>
+                        <p>This suggests that Echinoderms (starfish) are evolutionarily closer to Chordates (humans)
+                            than they are to Arthropods, despite appearances. We share a common "deuterostome ancestor."
+                        </p>
+                    </div>
+                </div>
+
+                <h4>2. The "Package Deal": Associated Developmental Traits</h4>
+                <p>Lines typically exhibit a triad of associated characteristics: Cleavage Pattern, Cell Fate, and
+                    Coelom Formation.</p>
+                <p><strong>I. Cleavage Patterns (Geometric Arrangement)</strong></p>
+                <ul>
+                    <li><strong>Spiral Cleavage (Protostomes):</strong> Planes of division are diagonal. New cells sit
+                        in the "grooves" between underlying cells.</li>
+                    <li><strong>Radial Cleavage (Deuterostomes):</strong> Planes are parallel/perpendicular. New cells
+                        sit directly on top of underlying cells (like a stack of plates).</li>
+                </ul>
+                <p><strong>II. Cell Fate (Genetic Potential)</strong></p>
+                <ul>
+                    <li><strong>Determinate Cleavage (Mosaic) – Protostomes:</strong> Fate is fixed early (2-4 cell
+                        stage). Separated blastomeres die or form partial embryos.</li>
+                    <li><strong>Indeterminate Cleavage (Regulative) – Deuterostomes:</strong> Blastomeres retain
+                        totipotency longer. Separated cells can form complete organisms (basis of Identical Twins).</li>
+                </ul>
+                <p><strong>III. Coelom Formation (Mesoderm Origin)</strong></p>
+                <ul>
+                    <li><strong>Schizocoely (Protostomes):</strong> Mesoderm splits to form coelom.</li>
+                    <li><strong>Enterocoely (Deuterostomes):</strong> Mesoderm forms as out-pocketings from the gut
+                        wall.</li>
+                </ul>
+
+                <h4>3. Comparative Summary Table (Exam Optimized)</h4>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Feature</th>
+                                <th>Protostomes</th>
+                                <th>Deuterostomes</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Blastopore Fate</strong></td>
+                                <td>Becomes Mouth</td>
+                                <td>Becomes Anus</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Cleavage Geometry</strong></td>
+                                <td>Spiral (Diagonal)</td>
+                                <td>Radial (Aligned)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Cell Fate</strong></td>
+                                <td>Determinate (Mosaic)</td>
+                                <td>Indeterminate (Regulative)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Coelom Origin</strong></td>
+                                <td>Schizocoely</td>
+                                <td>Enterocoely</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Examples</strong></td>
+                                <td>Insects, Earthworms, Molluscs</td>
+                                <td>Starfish, Vertebrates</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h4>4. Concept-Check: Mental Models</h4>
+                <div class="exam-tip">
+                    <div class="exam-tip-icon">🏗️</div>
+                    <div class="exam-tip-content">
+                        <h4>The Architecture Analogy</h4>
+                        <p><strong>Protostomes are like a Pre-Cast Concrete Building:</strong> Every block is made for a
+                            specific spot. If you lose one, you have a hole (Determinate).</p>
+                        <p><strong>Deuterostomes are like Clay Modeling:</strong> If you take a chunk from a large lump,
+                            you can reshape it into a mini-version of the whole. The material remains flexible
+                            (Indeterminate).</p>
+                    </div>
+                </div>
+
+                <h4>5. High-Yield Facts for IAT/NEST</h4>
+                <ul>
+                    <li><strong>The "Starfish" Trick:</strong> Echinoderms are Deuterostomes. A starfish is more closely
+                        related to you than to a lobster.</li>
+                    <li><strong>Embryonic Twinning:</strong> Only Deuterostomes (Indeterminate cleavage) allow for
+                        identical twins via blastomere separation.</li>
+                    <li><strong>Mnemonics:</strong>
+                        <br><strong>P-S-D:</strong> Protostome → Spiral → Determinate.
+                        <br><strong>D-R-I:</strong> Deuterostome → Radial → Indeterminate.
+                    </li>
+                </ul>
+
+                <h3>6. Skeletal Systems: Biomechanics and Structural Evolution</h3>
+                <h4>1. The Biological Role of a Skeleton</h4>
+                <p>A skeleton is not merely a collection of bones; it is any rigid or semi-rigid structure that provides
+                    <strong>integrity</strong> (shape), <strong>protection</strong> (shielding organs), and
+                    <strong>transduction of force</strong> (acting as levers for muscles). We classify skeletons based
+                    on
+                    their location and material mechanics.
+                </p>
+
+                <h4>2. Hydrostatic Skeleton (The Hydraulic Machine)</h4>
+                <p>Found in soft-bodied invertebrates, this system relies on <strong>Pascal’s Principle</strong>. The
+                    coelom is filled with incompressible fluid. When muscles contract, pressure changes shape without
+                    changing volume.</p>
+                <ul>
+                    <li><strong>Mechanism:</strong>
+                        <ul>
+                            <li><em>Circular Muscles:</em> Contraction elongates the body.</li>
+                            <li><em>Longitudinal Muscles:</em> Contraction shortens/widens the body.</li>
+                            <li><em>Locomotion:</em> Alternating contractions create peristaltic waves (e.g.,
+                                Earthworm).
+                            </li>
+                        </ul>
+                    </li>
+                    <li><strong>Phylum-Specific Mechanics:</strong>
+                        <ul>
+                            <li><em>Annelida:</em> Septa divide the coelom, allowing independent segment control.</li>
+                            <li><em>Nematoda:</em> High pressure fluid; lacks circular muscles, leading to thrashing
+                                motion.</li>
+                            <li><em>Cnidaria:</em> Gastrovascular cavity acts as a hydrostatic skeleton when closed.
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <h4>3. Exoskeleton (The External Armor)</h4>
+                <p>A rigid protective covering that limits growth.</p>
+                <p><strong>A. The Arthropod Exoskeleton (Cuticle)</strong></p>
+                <ul>
+                    <li><strong>Composition:</strong> Chitin matrix (reinforced with \(CaCO_3\) in crustaceans).</li>
+                    <li><strong>Growth (Ecdysis):</strong> Must molt to grow (controlled by Ecdysone). Vulnerable during
+                        soft phase.</li>
+                </ul>
+                <p><strong>B. The Molluscan Exoskeleton (Shell)</strong></p>
+                <ul>
+                    <li><strong>Composition:</strong> \(CaCO_3\) secreted by the Mantle.</li>
+                    <li><strong>Growth:</strong> Accretionary (adding layers to margins); no molting.</li>
+                </ul>
+                <div class="exam-tip">
+                    <div class="exam-tip-icon">🐘</div>
+                    <div class="exam-tip-content">
+                        <h4>Why aren't there ants the size of elephants?</h4>
+                        <p><strong>Weight:</strong> A thick enough exoskeleton would be too heavy.<br>
+                            <strong>Respiration:</strong> Tracheal diffusion is inefficient at large volumes (SA/V ratio
+                            drops).
+                        </p>
+                    </div>
+                </div>
+
+                <h4>4. Endoskeleton (The Internal Framework)</h4>
+                <p>Rigid elements embedded within soft tissues (mesodermal origin).</p>
+                <ul>
+                    <li><strong>Echinodermata:</strong> \(CaCO_3\) ossicles acting as an internal mesh. Mutable collagen
+                        allows "locking" posture.</li>
+                    <li><strong>Chordata (Vertebrates):</strong> Bone (calcium phosphate) and Cartilage. Grows with the
+                        animal.</li>
+                </ul>
+
+                <h4>5. Comparative Summary (Exam Optimized)</h4>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Feature</th>
+                                <th>Hydrostatic Skeleton</th>
+                                <th>Exoskeleton</th>
+                                <th>Endoskeleton</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Material</strong></td>
+                                <td>Fluid (Coelomic)</td>
+                                <td>Chitin or \(CaCO_3\)</td>
+                                <td>Bone, Cartilage, Calcite</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Location</strong></td>
+                                <td>Internal (cavity)</td>
+                                <td>External covering</td>
+                                <td>Internal (in tissue)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Growth</strong></td>
+                                <td>Continuous</td>
+                                <td>Discontinuous (Molt) or Accretion</td>
+                                <td>Continuous</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Examples</strong></td>
+                                <td>Annelida, Nematoda</td>
+                                <td>Arthropoda, Mollusca</td>
+                                <td>Chordata, Echinodermata</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h4>6. Conceptual Synthesis & Mental Models</h4>
+                <div class="exam-tip">
+                    <div class="exam-tip-icon">🏰</div>
+                    <div class="exam-tip-content">
+                        <h4>The Knight vs. The Skyscraper</h4>
+                        <p><strong>Exoskeleton (Knight):</strong> Plate armor offers great protection but is heavy and
+                            must be removed to grow (limit to size).</p>
+                        <p><strong>Endoskeleton (Skyscraper):</strong> Internal steel beams allow for massive size;
+                            walls
+                            are bolted to the outside.</p>
+                    </div>
+                </div>
+
+                <div class="exam-tip">
+                    <div class="exam-tip-icon">🐟</div>
+                    <div class="exam-tip-content">
+                        <h4>Evolutionary Trend: The Move to Land</h4>
+                        <p><strong>Water:</strong> Hydrostatic skeletons work (buoyancy).<br>
+                            <strong>Land:</strong> Hydrostatic fails. Arthropods succeeded due to Exoskeleton
+                            (anti-desiccation). Vertebrates succeeded due to Endoskeleton (gravity support).
+                        </p>
+                    </div>
+                </div>
+
+                <h3>7. Nervous Coordination: The Architecture of Awareness</h3>
+                <h4>1. Evolutionary Trajectory: From Diffusion to Centralization</h4>
+                <p>The evolution of the nervous system represents the shift from simple stimulus-response mechanisms to
+                    complex information processing. It parallels the change in body symmetry from Radial to Bilateral.
+                </p>
+                <ul>
+                    <li><strong>The Aneural State (Porifera):</strong> Sponges lack neurons entirely. They rely on
+                        independent effectors (pinacocytes).</li>
+                    <li><strong>The Diffuse Nerve Net (Cnidaria/Ctenophora):</strong> A web of interconnected neurons
+                        with no central control center. Features <em>apolar neurons</em> and <em>non-polarized
+                            synapses</em>.</li>
+                </ul>
+                <div class="exam-tip">
+                    <div class="exam-tip-icon">🕸️</div>
+                    <div class="exam-tip-content">
+                        <h4>Professor’s Analogy</h4>
+                        <p>Think of a Nerve Net like a rippling pond. If you throw a stone anywhere, the wave spreads
+                            out in all directions. There is no "switchboard" directing the traffic.</p>
+                    </div>
+                </div>
+
+                <h4>2. Centralization and the Bilaterian Revolution</h4>
+                <p>With the evolution of Bilateral Symmetry, animals began moving anteriorly, necessitating a CNS.</p>
+                <ul>
+                    <li><strong>Platyhelminthes (Ladder System):</strong> First true CNS. Two longitudinal nerve cords
+                        connected by transverse commissures. Appearance of cephalic ganglia (primitive brain).</li>
+                    <li><strong>Annelida & Arthropoda (Ventral Gangliated Cord):</strong> Solid, double, ventral nerve
+                        cord. Ganglia in each segment control local reflexes.</li>
+                </ul>
+
+                <h4>3. Cephalization: The Rise of the Head</h4>
+                <p><strong>Definition:</strong> The concentration of nervous tissue and sensory organs at the anterior
+                    end.</p>
+                <div class="exam-tip">
+                    <div class="exam-tip-icon">🧠</div>
+                    <div class="exam-tip-content">
+                        <h4>Why Anterior? (The "Pilot" Logic)</h4>
+                        <p>Since bilateral animals move head-first, it is bio-energetically efficient to have the
+                            processing unit (brain) close to the primary sensors (eyes) to minimize signal lag.</p>
+                    </div>
+                </div>
+
+                <h4>4. Vertebrate Nervous System (Chordata)</h4>
+                <p>A fundamental inversion of the body plan occurs here.</p>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Feature</th>
+                                <th>Invertebrates</th>
+                                <th>Vertebrates (Chordates)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Position</strong></td>
+                                <td>Ventral (Belly side)</td>
+                                <td>Dorsal (Back side)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Structure</strong></td>
+                                <td>Solid & Double</td>
+                                <td>Hollow & Single</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Ganglia</strong></td>
+                                <td>Segmental Ganglia present</td>
+                                <td>Ganglia mostly in PNS</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Origin</strong></td>
+                                <td>Ectoderm (Ventral midline)</td>
+                                <td>Ectoderm (Neural Plate folding)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h4>5. Sensory Systems: Transducers of Reality</h4>
+                <p>Sensory organs act as biological transducers, converting physical energy into electrochemical action
+                    potentials.</p>
+                <ul>
+                    <li><strong>Photoreception (Vision):</strong>
+                        <ul>
+                            <li><em>Compound Eyes (Arthropods):</em> Mosaic vision, high flicker fusion rate (motion
+                                detection).</li>
+                            <li><em>Camera Eyes (Cephalopods & Vertebrates):</em> Single lens focusing on retina
+                                (Convergent Evolution).</li>
+                        </ul>
+                    </li>
+                    <li><strong>Mechanoreception (Balance & Touch):</strong>
+                        <ul>
+                            <li><em>Statocysts:</em> Ancient gravity sensors (Found in Cnidaria, Mollusca).</li>
+                            <li><em>Lateral Line System:</em> Rheoreceptors in fish detecting water pressure.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Chemoreception (Smell/Taste):</strong>
+                        <ul>
+                            <li><em>Osphradium (Molluscs):</em> Tests water quality.</li>
+                            <li><em>Jacobson’s Organ (Reptiles):</em> Olfactory organ on the roof of the mouth.</li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <h3>8. Comparative Physiology: The Logistics of Life</h3>
+                <h4>1. Circulatory Systems: Hemodynamics and Transport</h4>
+                <p>The evolution of circulation overcomes the limitations of diffusion as animals increase in size.</p>
+                <ul>
+                    <li><strong>Open Circulatory System ("The Bathtub"):</strong>
+                        <ul>
+                            <li><em>Mechanism:</em> Hemolymph flowing into sinuses (Hemocoel). Direct tissue contact.
+                            </li>
+                            <li><em>Dynamics:</em> Low Pressure / High Volume. Sluggish flow.</li>
+                            <li><em>Taxa:</em> Arthropoda, Non-Cephalopod Molluscs.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Closed Circulatory System ("The Plumbing"):</strong>
+                        <ul>
+                            <li><em>Mechanism:</em> Blood confined to vessels. Distinct from interstitial fluid.</li>
+                            <li><em>Dynamics:</em> High Pressure / Low Volume. Supports high metabolic rates.</li>
+                            <li><em>Taxa:</em> Annelida, Cephalopoda (Squids - fast predators), Vertebrata.</li>
+                        </ul>
+                    </li>
+                </ul>
+                <div class="exam-tip">
+                    <div class="exam-tip-icon">🦑</div>
+                    <div class="exam-tip-content">
+                        <h4>Professor’s Insight</h4>
+                        <p><strong>Why do Squids have a closed system?</strong> Lifestyle. Squids are active predators.
+                            An open system is too slow for jet propulsion. Evolution forced the closure of the system
+                            for
+                            metabolic support.</p>
+                    </div>
+                </div>
+
+                <h4>2. Respiratory Systems: Maximizing Diffusion</h4>
+                <p>Follows <strong>Fick’s Law:</strong> Needs large surface area, thin membranes, steep gradient.</p>
+                <ul>
+                    <li><strong>Tracheal System (Insecta):</strong> Direct oxygen delivery to cells via tubes
+                        (tracheae). Uncouples respiration from circulation (blood is colorless). Limits insect size.
+                    </li>
+                    <li><strong>Gills (Branchial):</strong> Extensions into water. Use <strong>Counter-Current
+                            Exchange</strong> (blood opposes water flow) in fish to maximize diffusion (>80%
+                        extraction).</li>
+                    <li><strong>Pigments:</strong> Hemoglobin (Red, Fe) in Vertebrates/Earthworms; Hemocyanin (Blue, Cu)
+                        in Arthropods/Molluscs.</li>
+                </ul>
+
+                <h4>3. Excretory Systems: Osmoregulation & Waste Removal</h4>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>System</th>
+                                <th>Target Group</th>
+                                <th>Mechanism</th>
+                                <th>Waste Product</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Protonephridia</strong></td>
+                                <td>Flatworms (Platyhelminthes)</td>
+                                <td>Flame Cells (Solenocytes). Filtration via beating cilia.</td>
+                                <td>Ammonia</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Metanephridia</strong></td>
+                                <td>Annelida (Earthworms)</td>
+                                <td>Nephrostome funnel collects coelomic fluid.</td>
+                                <td>Urea / Ammonia</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Malpighian Tubules</strong></td>
+                                <td>Insects</td>
+                                <td>Active transport of wastes intotubules. Water reabsorbed in rectum (Water
+                                    Conservation).</td>
+                                <td>Uric Acid</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Nephrons</strong></td>
+                                <td>Vertebrates</td>
+                                <td>Glomerular Ultrafiltration.</td>
+                                <td>Urea / Uric Acid</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h4>4. Comparative Summary Table (Exam Optimized)</h4>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Animal Group</th>
+                                <th>Excretory Structure</th>
+                                <th>Nitrogen Waste</th>
+                                <th>Circulation</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Platyhelminthes</strong></td>
+                                <td>Flame Cells</td>
+                                <td>Ammonia</td>
+                                <td>None</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Annelida</strong></td>
+                                <td>Metanephridia</td>
+                                <td>Ammonia/Urea</td>
+                                <td>Closed</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Arthropoda</strong></td>
+                                <td>Malpighian Tubules</td>
+                                <td>Uric Acid</td>
+                                <td>Open</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Mollusca</strong></td>
+                                <td>Organ of Bojanus</td>
+                                <td>Ammonia</td>
+                                <td>Open (except Squids)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h3>9. Evo-Devo & Phylogenetics: The Hidden History of Life</h3>
+                <h4>1. The Principle of Recapitulation (Modern View)</h4>
+                <p>Consensus: Developmental stages reveal shared ancestry that adult forms often hide. Larvae are
+                    evolutionarily conservative (ancestral blueprint).</p>
+
+                <h4>2. Larval Forms as Clade Markers</h4>
+                <ul>
+                    <li><strong>The Trochophore (Lophotrochozoa):</strong> Top-shaped, ciliated larva uniting Annelida
+                        and Mollusca.</li>
+                    <li><strong>The Nauplius (Crustaceans):</strong> Triangular body, 3 appendage pairs. Proved
+                        Barnacles
+                        are Arthropods, not Molluscs.</li>
+                    <li><strong>The Dipleurula Concept (Deuterostomes):</strong> <em>Tornaria</em> (Hemichordata) and
+                        <em>Bipinnaria</em> (Echinodermata) are nearly identical, proving they are sister groups
+                        (Ambulacraria).
+                    </li>
+                </ul>
+                <div class="exam-tip">
+                    <div class="exam-tip-icon">🧬</div>
+                    <div class="exam-tip-content">
+                        <h4>Professor’s Insight: The Tunicate Twist</h4>
+                        <p><strong>Retrogressive Metamorphosis:</strong> The adult Tunicate is a sessile bag, but its
+                            larva (Ascidian Tadpole) has a notochord and dorsal nerve cord. This larva proves Tunicates
+                            are Chordates.</p>
+                    </div>
+                </div>
+
+                <h4>3. Molecular Markers: The Ultimate Fossil Record</h4>
+                <ul>
+                    <li><strong>18S rRNA (The "Deep Time" Clock):</strong> Codes for ribosome subunits. Extremely slow
+                        mutation rate. Used to define Phyla (e.g., Lophotrochozoa vs. Ecdysozoa).</li>
+                    <li><strong>mtDNA & CO1 (The "Recent History" Clock):</strong> Maternal inheritance, fast mutation.
+                        Used for Species Barcoding.</li>
+                    <li><strong>Hox Genes (The "Architects"):</strong> Determine Anterior-Posterior axis. Vertebrates
+                        have 4 clusters (gene duplication) vs 1 in invertebrates, allowing for complex brains/limbs.
+                    </li>
+                </ul>
+
+                <h4>4. Exam Optimized Summary Table</h4>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Marker</th>
+                                <th>Type</th>
+                                <th>Target Group</th>
+                                <th>Inference</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Trochophore</strong></td>
+                                <td>Larva</td>
+                                <td>Annelids, Molluscs</td>
+                                <td>Shared ancestry (Lophotrochozoa)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Nauplius</strong></td>
+                                <td>Larva</td>
+                                <td>Crustaceans</td>
+                                <td>Identifies Barnacles as Arthropods</td>
+                            </tr>
+                            <tr>
+                                <td><strong>18S rRNA</strong></td>
+                                <td>Gene</td>
+                                <td>All Eukaryotes</td>
+                                <td>Phylum-level relationships</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Hox Cluster</strong></td>
+                                <td>Gene Set</td>
+                                <td>Bilateria</td>
+                                <td>Complexity correlates with cluster duplication (1 → 4)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h4>5. Critical Synthesis for Olympiads: The "Ecdysozoa" Revolution</h4>
+                <p><strong>Old View:</strong> Annelids + Arthropods = Articulata (grouped by segmentation).<br>
+                    <strong>New View (Molecular):</strong>
+                    <br><strong>Lophotrochozoa:</strong> Trochophore larvae (Annelids, Molluscs).
+                    <br><strong>Ecdysozoa:</strong> Molting animals (Arthropods, Nematodes).
+                    <br><strong>Conclusion:</strong> Segmentation in Annelids and Arthropods is Convergent Evolution.
+                </p>
+
+                <h3>10. Practical Checklist for Phylum Assignment</h3>
+                <div class="exam-tip">
+                    <div class="exam-tip-icon">✅</div>
+                    <div class="exam-tip-content">
+                        <h4>Stepwise Identification Protocol</h4>
+                        <ol>
+                            <li><strong>Symmetry:</strong> Asymmetry / Radial / Bilateral.</li>
+                            <li><strong>Germ Layers:</strong> Diploblastic / Triploblastic.</li>
+                            <li><strong>Body Cavity:</strong> Acoelomate / Pseudocoelomate / Coelomate.</li>
+                            <li><strong>Segmentation:</strong> Present/Absent; Internal vs. External.</li>
+                            <li><strong>Skeleton:</strong> Hydrostatic / Exoskeleton / Endoskeleton.</li>
+                            <li><strong>Gut:</strong> Absent / Blind Sac / Tubular (Complete).</li>
+                            <li><strong>Development:</strong> Protostome (Spiral/Determinate) vs. Deuterostome
+                                (Radial/Indeterminate).</li>
+                            <li><strong>Appendages:</strong> Jointed, Parapodia, Tube Feet, Tentacles.</li>
+                            <li><strong>Special Markers:</strong> Cnidocytes, Choanocytes, Radula, Notochord.</li>
+                        </ol>
+                        <p><strong>Applying this checklist to diagnostic keys will solve 95% of classification
+                                problems.</strong></p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="non-chordates">
+                <h2>3. Phylum-by-phylum classification </h2>
+                <p>This section provides a detailed comparative analysis of the non-chordate phyla, focusing on their
+                    unique structural blueprints, physiological adaptations, and evolutionary significance.</p>
+
+
+
+                <h3>1. Phylum Porifera: The Foundation of Metazoa</h3>
+                <h4>1. Taxonomic Position and Fundamental Grade</h4>
+                <ul>
+                    <li><strong>Status:</strong> Basal Metazoa (Sister group to Eumetazoa). Sub-Kingdom Parazoa.</li>
+                    <li><strong>Grade:</strong> Cellular Level organization. No true tissues.</li>
+                    <li><strong>Symmetry:</strong> Primarily Asymmetrical (some Radial).</li>
+                    <li><strong>Germ Layers:</strong> Diploblastic-analogous (Pinacoderm + Choanoderm separated by
+                        Mesohyl).</li>
+                </ul>
+
+                <h4>2. The Hydraulic Engine: Canal System</h4>
+                <p>The sponge is a "living pump" driven by the Water Transport System.</p>
+                <div class="exam-tip">
+                    <div class="exam-tip-icon">🌊</div>
+                    <div class="exam-tip-content">
+                        <h4>Pathway of Water Flow</h4>
+                        <p><strong>Environment → Ostia (Inlet) → Spongocoel (Cavity) → Osculum (Outlet) →
+                                Environment</strong></p>
+                    </div>
+                </div>
+                <ul>
+                    <li><strong>Physics (Bernoulli’s Principle):</strong> Huge surface area of ostia = low velocity
+                        intake. Narrow osculum = high velocity exhaust (prevents waste recycling).</li>
+                    <li><strong>Functions:</strong> Food gathering, Gas exchange, Waste removal (Ammonia), Gamete
+                        transfer.</li>
+                    <li><strong>Complexity Grades:</strong>
+                        <ul>
+                            <li><em>Asconoid:</em> Simple. Choanocytes line Spongocoel.</li>
+                            <li><em>Syconoid:</em> Folded walls. Choanocytes line radial canals.</li>
+                            <li><em>Leuconoid:</em> Complex chambers. Maximizes size (e.g., Barrel Sponge).</li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <h4>3. Cellular Dynamics: The "Division of Labor"</h4>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Cell Type</th>
+                                <th>Function</th>
+                                <th>Note</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Choanocytes</strong></td>
+                                <td>Flagellated "Collar Cells" for water flow & feeding.</td>
+                                <td>Evolutionary link to Choanoflagellates.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Pinacocytes</strong></td>
+                                <td>Outer skin (Pinacoderm).</td>
+                                <td>Can be contractile (regulates pore size).</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Archaeocytes</strong></td>
+                                <td>Totipotent stem cells in Mesohyl.</td>
+                                <td>Regeneration & Gemmule formation.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Scleroblasts</strong></td>
+                                <td>Secrete skeleton.</td>
+                                <td>Calcoblasts (Lime), Silicoblasts (Glass).</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h4>4. Skeletal Architecture & Classification</h4>
+                <p>Taxonomy is based on the chemical nature of the skeleton.</p>
+                <ul>
+                    <li><strong>Class Calcarea:</strong> Calcareous spicules (\(CaCO_3\)). Marine, shallow. (e.g.,
+                        <em>Sycon</em>).
+                    </li>
+                    <li><strong>Class Hexactinellida:</strong> Siliceous 6-rayed spicules (Glass). Deep sea. (e.g.,
+                        <em>Euplectella</em>).
+                    </li>
+                    <li><strong>Class Demospongiae:</strong> Spongin fibers + Siliceous spicules. 90% of species.
+                        (e.g., <em>Spongilla</em>).</li>
+                </ul>
+
+                <h4>5. Evolutionary Insight: The Choanoflagellate Link</h4>
+                <div class="exam-tip">
+                    <div class="exam-tip-icon">🔬</div>
+                    <div class="exam-tip-content">
+                        <h4>Why do we believe animals evolved from protists?</h4>
+                        <p><strong>Morphology:</strong> Choanocytes are identical to Choanoflagellates.<br>
+                            <strong>Genetics:</strong> Sponges possess Cadherins/Integrins (adhesion genes) present in
+                            Choanoflagellates but absent in other protists.
+                        </p>
+                    </div>
+                </div>
+
+                <h4>6. Reproduction and Survival</h4>
+                <ul>
+                    <li><strong>Asexual:</strong> Fragmentation and <strong>Gemmules</strong> (Internal buds for
+                        overwintering in freshwater sponges).</li>
+                    <li><strong>Sexual:</strong> Hermaphroditic. Internal fertilization. Indirect development (Larvae:
+                        Amphiblastula, Parenchymula).</li>
+                </ul>
+
+                <h4>7. High-Yield Examples</h4>
+                <ul>
+                    <li><strong>Euplectella (Venus Flower Basket):</strong> Glass sponge. Wedding gift in Japan (shrimp
+                        symbiosis).</li>
+                    <li><strong>Spongilla:</strong> Freshwater sponge. Forms gemmules.</li>
+                    <li><strong>Euspongia (Bath Sponge):</strong> Spongin fibers only (soft).</li>
+                    <li><strong>Cliona (Boring Sponge):</strong> Bores into coral/shells (harmful).</li>
+                </ul>
+                <img src="https://res.cloudinary.com/dhb8qmnxt/image/upload/v1769678450/unnamed_kyaf0l.jpg"
+                    alt="Porifera sponge body structure showing asconoid, syconoid, and leuconoid types with labeled ostia, choanocytes, spongocoel, and osculum"
+                    class="note-image">
+                <p class="image-caption">Figure: Porifera Body Plans - Asconoid, Syconoid, and Leuconoid</p>
+                <!-- IMAGE PROMPT: Three sponge diagrams side-by-side showing: 1) Asconoid (simple tube with ostia->choanocyte layer->spongocoel->osculum), 2) Syconoid (folded with radial canals), 3) Leuconoid (complex with chambers). Label water flow arrows, choanocyte chambers, spicules. Clean cross-section view. -->
+
+                <h3>2. Phylum Cnidaria: The First Eumetazoans</h3>
+                <h4>1. Evolutionary Significance: The Tissue Revolution</h4>
+                <ul>
+                    <li><strong>Status:</strong> First Eumetazoa (True tissue animals).</li>
+                    <li><strong>Grade:</strong> Tissue Level. Cells form functional units with basement membranes.</li>
+                    <li><strong>Symmetry:</strong> Radial (Grade Radiata). Allows 360° sensory detection (ideal for
+                        sessile/planktonic life).</li>
+                </ul>
+
+                <h4>2. Structural Architecture</h4>
+                <ul>
+                    <li><strong>Diploblastic Histology:</strong>
+                        <ul>
+                            <li><em>Epidermis (Ectoderm):</em> Protection & Offense (Cnidocytes).</li>
+                            <li><em>Gastrodermis (Endoderm):</em> Digestion.</li>
+                            <li><em>Mesoglea:</em> Non-living gelatinous layer (Not true mesoderm). Thick in Jellyfish.
+                            </li>
+                        </ul>
+                    </li>
+                    <li><strong>Gastrovascular Cavity (Coelenteron):</strong>
+                        <ul>
+                            <li><em>Plan:</em> Blind Sac (Single opening: Mouth/Anus).</li>
+                            <li><em>Digestion:</em> <strong>Extracellular</strong> (in cavity) followed by
+                                <strong>Intracellular</strong> (in cells).
+                            </li>
+                            <li><em>Circulation:</em> Nutrients diffuse directly; no blood vessels.</li>
+                        </ul>
+                    </li>
+                </ul>
+                <img src="https://res.cloudinary.com/dhb8qmnxt/image/upload/v1769678521/unnamed_tj6com.jpg"
+                    alt="Cnidaria body forms showing polyp and medusa with labeled tentacles, gastrovascular cavity, and cnidocyte mechanism"
+                    class="note-image">
+                <p class="image-caption">Figure: Cnidaria Polymorphism - Polyp vs Medusa and Cnidocyte Structure</p>
+                <!-- IMAGE PROMPT: Top: Two forms side-by-side - Polyp (attached hydra with mouth up, tentacles) and Medusa (free-swimming jellyfish, m
+
+outh down). Bottom: Zoomed cnidocyte showing nematocyst coil, trigger (cnidocil), before/after discharge. Label epidermis, gastrodermis, mesoglea, gastrovascular cavity. -->
+
+                <h4>3. The Cnidocyte: Biological Ballistics</h4>
+                <p>Specialized explosive cells for anchorage, defense, and prey capture.</p>
+                <div class="exam-tip">
+                    <div class="exam-tip-icon">⚡</div>
+                    <div class="exam-tip-content">
+                        <h4>Mechanism of Action</h4>
+                        <p><strong>Trigger (Cnidocil) → Permeability Change → Water Rush (Osmotic Pressure ~140 atm) →
+                                Thread Ejection (40,000 Gs)</strong><br>
+                            Injects <strong>Hypnotoxin</strong> (Neurotoxin).</p>
+                    </div>
+                </div>
+
+                <h4>4. Polymorphism: Two Body Plans</h4>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Feature</th>
+                                <th>Polyp</th>
+                                <th>Medusa</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Shape</strong></td>
+                                <td>Cylindrical / Tubular</td>
+                                <td>Umbrella / Bell-shaped</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Lifestyle</strong></td>
+                                <td>Sessile</td>
+                                <td>Motile (Free-swimming)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Role</strong></td>
+                                <td>Asexual Reproduction / Feeding</td>
+                                <td>Sexual Reproduction / Dispersal</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Example</strong></td>
+                                <td>Hydra, Adamsia</td>
+                                <td>Aurelia</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <p><strong>Metagenesis:</strong> Alternation between Polyp and Medusa (e.g., <em>Obelia</em>). Polyp
+                    produces Medusa asexually; Medusa produces Polyp sexually. <strong>Note:</strong> Both are Diploid
+                    (2n), so it is not true Alternation of Generations.</p>
+
+                <h4>5. Classification (The "Big Three" Classes)</h4>
+                <ul>
+                    <li><strong>Hydrozoa:</strong> Polyp & Medusa both present (Metagenesis). Mesoglea acellular. (e.g.,
+                        <em>Hydra</em> [Polyp only], <em>Obelia</em>, <em>Physalia</em>).
+                    </li>
+                    <li><strong>Scyphozoa (True Jellyfish):</strong> Medusa dominant. Mesoglea cellular. (e.g.,
+                        <em>Aurelia</em>).
+                    </li>
+                    <li><strong>Anthozoa (Flower Animals):</strong> Polyp ONLY. Marine. GVC divided by septa. (e.g.,
+                        <em>Adamsia</em>, Corals).
+                    </li>
+                </ul>
+
+                <h4>6. High-Yield Facts</h4>
+                <ul>
+                    <li><strong>Nervous System:</strong> Diffuse Nerve Net (Non-polarized neurons). Primitive.</li>
+                    <li><strong>Corals:</strong> Secrete \(CaCO_3\). Symbiosis with Zooxanthellae (algae). Bleaching =
+                        Algae expulsion.</li>
+                    <li><strong>Mutualism:</strong> Hermit Crab + Sea Anemone (Defense/Transport). Clownfish + Anemone
+                        (Protection).</li>
+                    <li><strong>Physalia (Portuguese Man-of-War):</strong> Colony of zooids, not a single jelly. Gas
+                        float (Pneumatophore).</li>
+                </ul>
+
+                <h3>3. Phylum Ctenophora: The Bioluminescent Enigmas</h3>
+                <h4>1. Taxonomic Position & Identity</h4>
+                <ul>
+                    <li><strong>Common Names:</strong> Sea Walnuts, Comb Jellies.</li>
+                    <li><strong>Grade:</strong> Tissue Level (Diploblastic).</li>
+                    <li><strong>Symmetry:</strong> Biradial (Two tentacles create axis).</li>
+                    <li><strong>Habitat:</strong> Exclusively Marine.</li>
+                </ul>
+
+                <h4>2. The Ctenes (Comb Plates)</h4>
+                <p>Largest animals to move exclusively by cilia.</p>
+                <ul>
+                    <li><strong>Structure:</strong> 8 external rows of fused cilia stacks.</li>
+                    <li><strong>Movement:</strong> Metachronal rhythm (coordinated wave).</li>
+                    <li><strong>Rainbow Colors:</strong> Light diffraction (NOT bioluminescence).</li>
+                </ul>
+
+                <h4>3. Feeding: The "Glue" Strategy</h4>
+                <p><strong>Colloblast (Lasso Cell):</strong> Defining cell type. Releases adhesive glue to trap prey.
+                </p>
+                <div class="exam-tip">
+                    <div class="exam-tip-icon">🪼</div>
+                    <div class="exam-tip-content">
+                        <h4>Exception: Kleptocnidae</h4>
+                        <p><em>Haeckelia</em> steals nematocysts from jellyfish for its own defense!</p>
+                    </div>
+                </div>
+
+                <h4>4. Revolutionary Physiology</h4>
+                <ul>
+                    <li><strong>Through-Gut (2016 Discovery):</strong> Transient anal pores at aboral end. Waste exits
+                        separately from mouth.</li>
+                    <li><strong>Statocyst:</strong> Aboral sense organ with statolith (gravity sensor).</li>
+                    <li><strong>Bioluminescence:</strong> Blue-green light via calcium-activated photoproteins.</li>
+                    <li><strong>Neural Independence:</strong> Use different neurotransmitters than other animals (no
+                        serotonin/dopamine).</li>
+                </ul>
+
+                <h4>5. Comparative Table: Cnidaria vs. Ctenophora</h4>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Feature</th>
+                                <th>Cnidaria</th>
+                                <th>Ctenophora</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Symmetry</strong></td>
+                                <td>Radial</td>
+                                <td>Biradial</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Locomotion</strong></td>
+                                <td>Jet propulsion</td>
+                                <td>Ciliary beating</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Offense</strong></td>
+                                <td>Cnidocytes (Stinging)</td>
+                                <td>Colloblasts (Sticky)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Gut</strong></td>
+                                <td>Blind sac</td>
+                                <td>Complete (Anal pores)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h3>4. Phylum Platyhelminthes: The Bilateral Pioneers</h3>
+                <h4>1. Evolutionary Significance: The First Triploblasts</h4>
+                <ul>
+                    <li><strong>Breakthrough:</strong> First Bilateral Symmetry + Triploblasty (3 germ layers).</li>
+                    <li><strong>Mesoderm Revolution:</strong> Allows true muscle tissue and mesenchyme.</li>
+                    <li><strong>Acoelomate:</strong> No body cavity; space filled with parenchyma.</li>
+                    <li><strong>Dorso-ventral Flattening:</strong> Maximizes SA/V ratio for diffusion (no circulatory
+                        system).</li>
+                </ul>
+
+                <h4>2. Physiological Innovations</h4>
+                <ul>
+                    <li><strong>Digestive System:</strong>
+                        <ul>
+                            <li><em>Free-living (Planaria):</em> Incomplete gut (Blind sac). Highly branched intestine.
+                            </li>
+                            <li><em>Parasitic (Taenia):</em> Gut ABSENT. Absorb nutrients through tegument.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Flame Cell (Protonephridium):</strong> Cup-shaped cell with flickering cilia. Creates
+                        negative pressure for osmoregulation.</li>
+                    <li><strong>Ladder Nervous System:</strong> Two longitudinal cords + transverse commissures.
+                        Cephalization present (Ocelli, Auricles).</li>
+                </ul>
+
+                <h4>3. Classification</h4>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Class</th>
+                                <th>Lifestyle</th>
+                                <th>Key Features</th>
+                                <th>Example</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Turbellaria</strong></td>
+                                <td>Free-living</td>
+                                <td>Ciliated epidermis. Exceptional regeneration (Neoblasts).</td>
+                                <td><em>Planaria</em></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Trematoda</strong></td>
+                                <td>Parasites</td>
+                                <td>Suckers for attachment. Digenetic life cycle.</td>
+                                <td><em>Fasciola</em> (Liver Fluke)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Cestoda</strong></td>
+                                <td>Endoparasites</td>
+                                <td>Scolex (hooks/suckers). Proglottids (Pseudometamerism).</td>
+                                <td><em>Taenia</em> (Tapeworm)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h4>4. Parasitic Adaptations</h4>
+                <ul>
+                    <li><strong>Syncytial Tegument:</strong> Multinucleated outer layer. Enzyme/immune resistant.</li>
+                    <li><strong>Adhesive Organs:</strong> Hooks, suckers, spines (Scolex).</li>
+                    <li><strong>High Fecundity:</strong> Millions of eggs daily.</li>
+                    <li><strong>Anaerobic Respiration:</strong> Adaptation to low-oxygen gut environment.</li>
+                </ul>
+
+                <h4>5. Exam Traps & Clarity</h4>
+                <div class="exam-tip">
+                    <div class="exam-tip-icon">⚠️</div>
+                    <div class="exam-tip-content">
+                        <h4>Common Misconceptions</h4>
+                        <p><strong>Q:</strong> Is tapeworm segmentation same as earthworm?<br>
+                            <strong>A:</strong> NO. Tapeworms = Pseudometamerism (independent reproductive units).
+                            Earthworms = True metamerism.
+                        </p>
+                        <p><strong>Q:</strong> Do flatworms have an anus?<br>
+                            <strong>A:</strong> NO. Gastrovascular cavity is blind-ended. Undigested food exits via
+                            mouth.
+                        </p>
+                    </div>
+                </div>
+                <img src="https://res.cloudinary.com/dhb8qmnxt/image/upload/v1769679044/unnamed_yeufmb.jpg"
+                    alt="Platyhelminthes ladder-type nervous system with cephalic ganglia and flame cell excretion"
+                    class="note-image">
+                <p class="image-caption">Figure: Platyhelminthes - Ladder Nervous System and Protonephridia</p>
+                <!-- IMAGE PROMPT: Flatworm diagram showing: 1) Dorsal view with ladder-type nervous system (two longitudinal nerve cords + transverse commissures like rungs, cephalic ganglia as primitive brain), 2) Cross-section showing acoelomate body (solid parenchyma, no cavity), 3) Protonephridial flame cell with cilia beating, tubule, nephridiopore. Pharynx extending from ventral surface. -->
+
+                <h3>5. Phylum Nematoda (Aschelminthes): The Pressurized Tubes</h3>
+                <h4>1. Evolutionary Position: The Rise of the Pseudocoelom</h4>
+                <ul>
+                    <li><strong>Super-Phylum:</strong> Ecdysozoa (molt their cuticle).</li>
+                    <li><strong>Body Plan:</strong> Tube-within-a-tube. First <strong>Complete Digestive Tract</strong>
+                        (Mouth → Anus).</li>
+                    <li><strong>Pseudocoelom:</strong> Body cavity from blastocoel. Lined by mesoderm (outside) +
+                        endoderm (inside).</li>
+                </ul>
+
+                <h4>2. Structural Constraints</h4>
+                <ul>
+                    <li><strong>High-Pressure Hydrostatics:</strong> Pseudocoelomic fluid under extreme turgor pressure
+                        acts as hydrostatic skeleton.</li>
+                    <li><strong>Musculature Anomaly:</strong> ONLY Longitudinal muscles (no circular). Cannot perform
+                        peristalsis.</li>
+                    <li><strong>Locomotion:</strong> Characteristic S-shaped thrashing (undulatory motion).
+                        High-pressure
+                        cuticle acts as antagonist.</li>
+                    <li><strong>Syncytial Epidermis:</strong> Thick, non-living Collagen cuticle (NOT Chitin). Syncytial
+                        hypodermis resists host enzymes.</li>
+                </ul>
+
+                <h4>3. Physiological Systems</h4>
+                <ul>
+                    <li><strong>Digestion:</strong> Complete. Muscular Pharynx pumps food against high internal
+                        pressure.</li>
+                    <li><strong>Excretion:</strong> Renette Cells (primitive) or H-shaped canals (<em>Ascaris</em>).
+                        Ammonia waste.</li>
+                    <li><strong>Nervous System:</strong> Circum-pharyngeal nerve ring + dorsal/ventral cords.</li>
+                </ul>
+
+                <h4>4. Model Organism: <em>C. elegans</em></h4>
+                <div class="exam-tip">
+                    <div class="exam-tip-icon">🔬</div>
+                    <div class="exam-tip-content">
+                        <h4>Research Significance</h4>
+                        <p><strong>Eutely:</strong> Exactly 959 somatic cells (every cell fate mapped).<br>
+                            <strong>Apoptosis:</strong> Programmed cell death machinery discovered here (Nobel
+                            2002).<br>
+                            <strong>Genome:</strong> First multicellular organism fully sequenced.
+                        </p>
+                    </div>
+                </div>
+                <img src="https://res.cloudinary.com/dhb8qmnxt/image/upload/v1769679142/unnamed_nsy3mf.jpg"
+                    alt="Nematode cross-section showing pseudocoelom, cuticle layers, longitudinal muscles, and digestive tract"
+                    class="note-image">
+                <p class="image-caption">Figure: Nematoda - Pseudocoelomate Body Plan and High-Pressure System</p>
+                <!-- IMAGE PROMPT: Detailed cross-section of roundworm: Outer thick collagen cuticle (3-layered, non-living), syncytial hypodermis below, longitudinal muscle cells ONLY (quadrants, no circular muscles), pseudocoelom cavity (space between body wall and gut, not fully lined by mesoderm), complete digestive tract in center. High pressure arrows indicating turgor. Separate view showing S-shaped thrashing motion. -->
+
+                <h3>6. Phylum Annelida: The Engineering of Segmentation</h3>
+                <h4>1. Evolutionary Significance: True Metamerism</h4>
+                <ul>
+                    <li><strong>Super-Phylum:</strong> Lophotrochozoa (Protostomes).</li>
+                    <li><strong>Metamerism:</strong> Body divided into serial segments (somites). External grooves +
+                        internal septa.</li>
+                    <li><strong>Coelom:</strong> True Schizocoelom (split mesoderm). Compartmentalized for independent
+                        hydrostatic control.</li>
+                </ul>
+
+                <h4>2. Locomotion: The Peristaltic Machine</h4>
+                <ul>
+                    <li><strong>Muscles:</strong> BOTH Longitudinal + Circular (enables peristalsis).</li>
+                    <li><strong>Traction:</strong> Setae (chitinous bristles) anchor to ground. Parapodia (fleshy
+                        appendages) for swimming.</li>
+                </ul>
+
+                <h4>3. Physiological Advancements</h4>
+                <ul>
+                    <li><strong>Closed Circulatory System:</strong> First phylum with blood in vessels. Hemoglobin
+                        dissolved in plasma. Lateral hearts pump blood.</li>
+                    <li><strong>Metanephridia:</strong> Coiled tubules. Nephrostome (funnel in coelom) → Nephridiopore
+                        (external).</li>
+                    <li><strong>Chloragogen Cells:</strong> Analogous to vertebrate liver (store glycogen, synthesize
+                        urea).</li>
+                </ul>
+
+                <h4>4. Classification</h4>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Class</th>
+                                <th>Habitat</th>
+                                <th>Key Features</th>
+                                <th>Example</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Polychaeta</strong></td>
+                                <td>Marine</td>
+                                <td>Many bristles. Parapodia. Distinct head. Temporary gonads.</td>
+                                <td><em>Nereis</em></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Oligochaeta</strong></td>
+                                <td>Terrestrial/Freshwater</td>
+                                <td>Few bristles. No head. Clitellum (egg cocoon secretion).</td>
+                                <td><em>Pheretima</em></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Hirudinea</strong></td>
+                                <td>Ectoparasitic</td>
+                                <td>Fixed 33 segments. No setae. Hirudin (anticoagulant).</td>
+                                <td>Leeches</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h4>5. Comparative Analysis: Nematoda vs. Annelida</h4>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Feature</th>
+                                <th>Nematoda</th>
+                                <th>Annelida</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Coelom</strong></td>
+                                <td>Pseudocoelom</td>
+                                <td>Eucoelom</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Segmentation</strong></td>
+                                <td>Absent</td>
+                                <td>Present (Metamerism)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Muscles</strong></td>
+                                <td>Longitudinal ONLY</td>
+                                <td>Longitudinal + Circular</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Locomotion</strong></td>
+                                <td>Thrashing</td>
+                                <td>Peristalsis</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Circulation</strong></td>
+                                <td>Absent</td>
+                                <td>Closed System</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h4>6. Exam Traps</h4>
+                <div class="exam-tip">
+                    <div class="exam-tip-icon">⚠️</div>
+                    <div class="exam-tip-content">
+                        <h4>Common Misconceptions</h4>
+                        <p><strong>Q:</strong> Do Earthworms self-fertilize?<br>
+                            <strong>A:</strong> NO. Hermaphrodites but practice cross-fertilization (swap sperm).
+                        </p>
+                        <p><strong>Q:</strong> Is Nematode cuticle same as Arthropod?<br>
+                            <strong>A:</strong> NO. Nematode = Collagen (protein). Arthropod = Chitin
+                            (polysaccharide).
+                        </p>
+                    </div>
+                </div>
+                <img src="https://res.cloudinary.com/dhb8qmnxt/image/upload/v1769678585/unnamed_ig12hi.jpg"
+                    alt="Annelida segmented worm showing true metamerism with septa, chaetae, metanephridia, and closed circulatory system"
+                    class="note-image">
+                <p class="image-caption">Figure: Annelida - True Metamerism and Organ Systems</p>
+                <!-- IMAGE PROMPT: Earthworm diagram: 1) External view showing segments, setae, clitellum, 2) Internal longitudinal section showing repeated segments with septa dividing coelom, metanephridia in each segment, ventral nerve cord with ganglia, 3) Cross-section showing circular + longitudinal muscles, closed circulatory (dorsal/ventral vessels), nephrostome. Peristalsis arrows. -->
+
+                <h3>7. Phylum Arthropoda: The Conquerors of the Biosphere</h3>
+                <h4>1. Evolutionary Supremacy</h4>
+                <p>Arthropoda comprises over <strong>80% of all described species</strong>. Success attributed to three
+                    revolutions:</p>
+                <ul>
+                    <li><strong>Exoskeleton:</strong> Protective armor of Chitin + proteins. Sclerotized (insects) or
+                        Calcified (crustaceans).</li>
+                    <li><strong>Tagmatization:</strong> Regional specialization (Head, Thorax, Abdomen).</li>
+                    <li><strong>Jointed Appendages:</strong> Efficient locomotion via lever systems.</li>
+                </ul>
+
+                <h4>2. The Ecdysis Paradox</h4>
+                <p><strong>Molting (Ecdysis):</strong> Controlled by hormone Ecdysone. Animal sheds old cuticle,
+                    expands,
+                    then hardens. Vulnerable during "soft-shell" phase.</p>
+
+                <h4>3. Physiological Systems</h4>
+                <ul>
+                    <li><strong>Circulation:</strong> Open system. Hemolymph bathes organs in Hemocoel. Hemocyanin
+                        (Copper-based, blue) in Crustaceans.</li>
+                    <li><strong>Respiration:</strong> Gills (aquatic), Book Lungs (arachnids), Tracheal System (insects
+                        -
+                        bypasses blood).</li>
+                </ul>
+
+                <h4>4. Major Subphyla</h4>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Subphylum</th>
+                                <th>Key Features</th>
+                                <th>Example</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Chelicerata</strong></td>
+                                <td>No antennae. Chelicerae + Pedipalps + 4 pairs legs. Cephalothorax.</td>
+                                <td>Spiders, Limulus</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Myriapoda</strong></td>
+                                <td>Chilopoda (1 pair legs/segment). Diplopoda (2 pairs/segment).</td>
+                                <td>Centipedes, Millipedes</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Crustacea</strong></td>
+                                <td>2 pairs antennae. Biramous appendages. Nauplius larva.</td>
+                                <td>Crabs, Daphnia</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Hexapoda</strong></td>
+                                <td>3 pairs legs. Wings (2 pairs). Malpighian tubules. Only flying invertebrates.</td>
+                                <td>Insects</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <img src="https://res.cloudinary.com/dhb8qmnxt/image/upload/v1769679217/unnamed_p7wwls.jpg"
+                    alt="Arthropod exoskeleton layers and molting (ecdysis) process controlled by ecdysone"
+                    class="note-image">
+                <p class="image-caption">Figure: Arthropoda - Exoskeleton Structure and Ecdysis</p>
+                <!-- IMAGE PROMPT: Top: Cross-section through exoskeleton showing layers (epicuticle-waterproof waxy, exocuticle-hard chitin+protein, endocuticle-flexible chitin, epidermis-living cells secreting cuticle). Apodemes (internal projections for muscle attachment). Bottom: Molting sequence - 1) Old cuticle, 2) Apolysis (separation), 3) New cuticle secreted, 4) Ecdysis (old shed), 5) Expansion before hardening. Label ecdysone hormone trigger. -->
+
+                <h4>5. Insect Metamorphosis</h4>
+                <ul>
+                    <li><strong>Ametabolous:</strong> No metamorphosis (Silverfish).</li>
+                    <li><strong>Hemimetabolous:</strong> Incomplete. Egg → Nymph → Adult (Cockroach).</li>
+                    <li><strong>Holometabolous:</strong> Complete. Egg → Larva → Pupa → Adult (Butterfly). Niche
+                        separation (larvae/adults don't compete).</li>
+                </ul>
+
+                <h3>8. Phylum Mollusca: The Soft-Bodied Architects</h3>
+                <h4>1. The "HAM" Concept</h4>
+                <p>Hypothetical Ancestral Mollusc plan:</p>
+                <ul>
+                    <li><strong>Head-Foot:</strong> Ventral muscular mass (locomotion/sensory).</li>
+                    <li><strong>Visceral Mass:</strong> Dorsal hump (internal organs).</li>
+                    <li><strong>Mantle:</strong> Fold secreting shell. Creates Mantle Cavity (gills/lungs).</li>
+                </ul>
+
+                <h4>2. Key Innovations</h4>
+                <ul>
+                    <li><strong>Shell:</strong> Periostracum (outer) + Prismatic (\(CaCO_3\)) + Nacreous (Mother of
+                        Pearl).</li>
+                    <li><strong>Radula:</strong> File-like rasping organ with chitinous teeth. Absent in Bivalves.</li>
+                    <li><strong>Circulation:</strong> Open (general). <strong>Exception:</strong> Cephalopods have
+                        <em>Closed</em> system (high-speed predation).
+                    </li>
+                </ul>
+
+                <h4>3. Major Classes</h4>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Class</th>
+                                <th>Key Features</th>
+                                <th>Example</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Gastropoda</strong></td>
+                                <td>Torsion (180° rotation). Anus above head. Coiling ≠ Torsion.</td>
+                                <td>Snails, Slugs</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Bivalvia</strong></td>
+                                <td>Two shells hinged. No head. No radula. Filter feeders.</td>
+                                <td>Clams, Oysters</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Cephalopoda</strong></td>
+                                <td>Foot → Tentacles/Siphon. Jet propulsion. Chromatophores. Highly intelligent.</td>
+                                <td>Squid, Octopus</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <img src="https://res.cloudinary.com/dhb8qmnxt/image/upload/v1769679289/unnamed_bob5an.jpg"
+                    alt="Mollusca showing head-foot, visceral mass, mantle cavity with ctenidia, and radula feeding structure"
+                    class="note-image">
+                <p class="image-caption">Figure: Mollusca - HAM Body Plan and Class Diversity</p>
+                <!-- IMAGE PROMPT: Center: Hypothetical Ancestral Mollusc showing ventral muscular foot, dorsal visceral mass, mantle secreting shell, mantle cavity with ctenidia gills, radula in mouth. Surrounding: Class examples - Gastropod (snail with torsion 180° twist), Bivalve (clam with 2 shells, no head/radula, siphons), Cephalopod (squid with tentacles, siphon for jet propulsion, internal/no shell). -->
+
+                <h4>4. Larval Link</h4>
+                <div class="exam-tip">
+                    <div class="exam-tip-icon">🧠</div>
+                    <div class="exam-tip-content">
+                        <h4>Lophotrochozoa Connection</h4>
+                        <p>Molluscs and Annelids share <strong>Trochophore larva</strong>, linking them in
+                            Lophotrochozoa. Arthropods are in Ecdysozoa.</p>
+                    </div>
+                </div>
+
+                <h3>9. Phylum Echinodermata: The Hydraulic Engineers</h3>
+                <h4>1. The Symmetry Paradox</h4>
+                <ul>
+                    <li><strong>Larvae:</strong> Bilateral Symmetry (Bipinnaria).</li>
+                    <li><strong>Adults:</strong> Pentaradial Symmetry (5-part radial).</li>
+                    <li><strong>Why?</strong> Evolutionary return to sessile lifestyle (360° sensing).</li>
+                </ul>
+
+                <h4>2. The Endoskeleton</h4>
+                <ul>
+                    <li><strong>Composition:</strong> Calcareous Ossicles (\(CaCO_3\) plates). Mesodermal origin.</li>
+                    <li><strong>Pedicellariae:</strong> Tiny pincers for cleaning/defense.</li>
+                </ul>
+
+                <h4>3. Water Vascular System (Ambulacral)</h4>
+                <p><strong>Flow Pathway:</strong> Madreporite → Stone Canal → Ring Canal → Radial Canals → Tube
+                    Feet</p>
+                <ul>
+                    <li><strong>Mechanism:</strong> Ampulla squeezes water into tube foot (extends). Muscles contract
+                        (retracts).</li>
+                    <li><strong>Functions:</strong> Locomotion, Prey capture, Respiration.</li>
+                </ul>
+
+                <h4>4. Physiological Peculiarities</h4>
+                <ul>
+                    <li><strong>Excretion:</strong> Absent. Ammonia diffuses via Tube Feet/Dermal Branchiae.</li>
+                    <li><strong>Nervous System:</strong> No brain. Nerve ring around mouth.</li>
+                </ul>
+
+                <h4>5. Classification</h4>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Class</th>
+                                <th>Organism</th>
+                                <th>Key Features</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Asteroidea</strong></td>
+                                <td>Starfish</td>
+                                <td>Central disc blends into arms. Suckers on tube feet.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Ophiuroidea</strong></td>
+                                <td>Brittle Stars</td>
+                                <td>Distinct disc. Flexible arms. No suckers.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Echinoidea</strong></td>
+                                <td>Sea Urchins</td>
+                                <td>Fused Test (shell). Aristotle's Lantern (5-jawed).</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Holothuroidea</strong></td>
+                                <td>Sea Cucumbers</td>
+                                <td>Soft body. Microscopic ossicles. Respiratory trees.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Crinoidea</strong></td>
+                                <td>Sea Lilies</td>
+                                <td>Most primitive. Often sessile. Mouth faces up.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <img src="https://res.cloudinary.com/dhb8qmnxt/image/upload/v1769679386/unnamed_opu3wy.jpg"
+                    alt="Echinoderm water vascular system showing madreporite to tube feet hydraulic pathway"
+                    class="note-image">
+                <p class="image-caption">Figure: Echinodermata - Water Vascular System (Ambulacral System)</p>
+                <!-- IMAGE PROMPT: Starfish diagram showing complete ambulacral system: 1) Madreporite (aboral sieve plate filtering seawater), 2) Stone canal (descending), 3) Ring canal (circum-oral), 4) 5 Radial canals (into each arm), 5) Lateral canals with ampullae (muscular bulbs), 6) Tube feet/podia with suckers. Arrows showing water flow. Insert: Close-up of tube foot mechanism - ampulla contracts (foot extends), ampulla relaxes + foot muscles contract (foot retracts). Functions: locomotion, feeding, respiration. -->
+
+                <h3>10. Phylum Hemichordata: The Missing Link?</h3>
+                <h4>1. Taxonomic Identity</h4>
+                <ul>
+                    <li><strong>Former Status:</strong> Sub-phylum of Chordata.</li>
+                    <li><strong>Current:</strong> Separate Non-Chordate Phylum.</li>
+                    <li><strong>Why Removed?</strong> Stomochord (Buccal Diverticulum) ≠ True Notochord. Stomochord =
+                        Hollow, Endodermal. Notochord = Solid, Mesodermal.</li>
+                </ul>
+
+                <h4>2. Tripartite Body Plan</h4>
+                <ul>
+                    <li><strong>Proboscis:</strong> Burrowing/food collection.</li>
+                    <li><strong>Collar:</strong> Muscular connection.</li>
+                    <li><strong>Trunk:</strong> Gills and gut.</li>
+                </ul>
+
+                <h4>3. Evolutionary Affinities</h4>
+                <ul>
+                    <li><strong>Chordate Traits:</strong> Pharyngeal Gill Slits (homologous). Dorsal Nerve Cord
+                        (primitive).</li>
+                    <li><strong>Echinoderm Link:</strong> Tornaria Larva (Hemichordata) ≈ Bipinnaria Larva
+                        (Echinodermata). Forms clade <strong>Ambulacraria</strong>.</li>
+                </ul>
+
+                <h4>4. Comparative: Deuterostome Triangle</h4>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Feature</th>
+                                <th>Echinodermata</th>
+                                <th>Hemichordata</th>
+                                <th>Chordata</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Symmetry</strong></td>
+                                <td>Pentaradial (Adult)</td>
+                                <td>Bilateral</td>
+                                <td>Bilateral</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Notochord</strong></td>
+                                <td>Absent</td>
+                                <td>Absent (Stomochord)</td>
+                                <td>Present</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Pharyngeal Slits</strong></td>
+                                <td>Absent</td>
+                                <td>Present</td>
+                                <td>Present</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section id="comparative">
+                <h2>5. Comparative Physiology</h2>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Feature</th>
+                                <th>Pisces</th>
+                                <th>Amphibia</th>
+                                <th>Reptilia</th>
+                                <th>Aves</th>
+                                <th>Mammalia</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Heart</strong></td>
+                                <td>2-chambered</td>
+                                <td>3-chambered</td>
+                                <td>3-chambered (exc. Crocs)</td>
+                                <td>4-chambered</td>
+                                <td>4-chambered</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Respiration</strong></td>
+                                <td>Gills</td>
+                                <td>Gills/Lungs/Skin</td>
+                                <td>Lungs</td>
+                                <td>Lungs</td>
+                                <td>Lungs</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Excretion</strong></td>
+                                <td>Ammonotelic</td>
+                                <td>Ureotelic</td>
+                                <td>Uricotelic</td>
+                                <td>Uricotelic</td>
+                                <td>Ureotelic</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section id="insights">
+                <h2>6. Deeper Conceptual Insights</h2>
+                <h3>6.1 Evolutionary Comparative Anatomy</h3>
+                <h4>Homology vs. Analogy</h4>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Feature</th>
+                                <th>Homology</th>
+                                <th>Analogy</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Basis</strong></td>
+                                <td>Common Ancestry</td>
+                                <td>Common Function (Environment)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Evolution</strong></td>
+                                <td>Divergent (Adaptive Radiation)</td>
+                                <td>Convergent</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Anatomy</strong></td>
+                                <td>Similar internal plan</td>
+                                <td>Dissimilar internal plan</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Embryonic Origin</strong></td>
+                                <td>Same</td>
+                                <td>Different</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Example</strong></td>
+                                <td>Vertebrate Forelimbs</td>
+                                <td>Bird/Insect Wings</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <img src="https://res.cloudinary.com/dhb8qmnxt/image/upload/v1769679468/unnamed_ia5mzi.jpg"
+                    alt="Examples of homologous structures (vertebrate forelimbs) vs analogous structures (wings)"
+                    class="note-image">
+                <p class="image-caption">Figure: Homology (Divergent Evolution) vs Analogy (Convergent Evolution)</p>
+                <!-- IMAGE PROMPT: Top (Homology - Divergent Evolution): Vertebrate forelimbs compared - Human arm (grasping), Whale flipper (swimming), Bat wing (flying), Bird wing (flying), Horse leg (running) - all showing same bone pattern: 1 humerus, 2 radius/ulna, carpals, metacarpals, phalanges (color-matched). Label 'Same internal structure, different functions.' Bottom (Analogy - Convergent Evolution): Bird wing (bones + feathers, evolved from forelimb) vs Insect wing (chitinous membrane, evolved from body wall) vs Bat wing (skin membrane, evolved from forelimb). Label 'Different internal structures, same function (flight).' -->
+                <div class="exam-tip">
+                    <div class="exam-tip-icon">🔬</div>
+                    <div class="exam-tip-content">
+                        <h4>The Pentadactyl Limb</h4>
+                        <p><strong>Pattern:</strong> One bone (humerus) \u2192 Two bones (radius/ulna) \u2192 Carpals
+                            \u2192
+                            Phalanges.<br>
+                            <strong>Divergence:</strong> Human (grasping), Cheetah (running), Whale (swimming), Bat
+                            (flying).<br>
+                            <strong>Conclusion:</strong> Same architecture, different functions = Homology.
+                        </p>
+                    </div>
+                </div>
+
+                <h4>Molecular Homology</h4>
+                <ul>
+                    <li><strong>Orthologous Genes:</strong> Genes in different species from common ancestral gene (e.g.,
+                        Human vs Mouse Hemoglobin).</li>
+                    <li><strong>Deep Homology:</strong> Pax6 gene controls eye development in both flies (compound eyes)
+                        and humans (camera eyes). Genetic machinery is homologous, structures are analogous.</li>
+                </ul>
+
+                <h3>6.2 Ontogeny as a Window to Phylogeny</h3>
+                <p><strong>Core Concept:</strong> Developmental stages preserve ancestral traits modified/lost in
+                    adults.
+                </p>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Theory</th>
+                                <th>Claim</th>
+                                <th>Verdict</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Haeckel's Recapitulation</strong></td>
+                                <td>Ontogeny recapitulates phylogeny. Embryos pass through adult ancestral stages.</td>
+                                <td>\u274c Incorrect. Embryos don't have fish gills, only pharyngeal arches.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Von Baer's Laws</strong></td>
+                                <td>Development goes from general to specific. Embryos resemble ancestral
+                                    <em>embryos</em>,
+                                    not adults.
+                                </td>
+                                <td>\u2705 Correct. Modern view.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h4>Key Examples</h4>
+                <ul>
+                    <li><strong>Tunicate (Urochordata):</strong> Adult sessile, bag-like. Larva has notochord + nerve
+                        cord + tail. Larva reveals true Chordate ancestry.</li>
+                    <li><strong>Baleen Whales:</strong> Adults lack teeth. Embryos develop tooth buds (later
+                        reabsorbed).
+                        Proves descent from toothed ancestors.</li>
+                    <li><strong>Human Pharyngeal Arches:</strong> Embryonic structures homologous to fish gill arches.
+                        Reorganize into Eustachian tube/tonsils, NOT functional gills.</li>
+                </ul>
+
+                <h3>6.3 Character Weighting: Signal vs. Noise</h3>
+                <ul>
+                    <li><strong>High-Weight Characters:</strong> Complex innovations unlikely to evolve twice (e.g.,
+                        Notochord, Hox gene duplications). Low homoplasy.</li>
+                    <li><strong>Low-Weight Characters:</strong> Simple, easily modified traits (e.g., body size,
+                        pigmentation). High convergence rate.</li>
+                </ul>
+                <div class="exam-tip">
+                    <div class="exam-tip-icon">\u26a0\ufe0f</div>
+                    <div class="exam-tip-content">
+                        <h4>Parsimony Principle</h4>
+                        <p>Prefer phylogenetic trees requiring <strong>fewest evolutionary steps</strong>. Works for
+                            morphology but can fail with DNA (back-mutations, saturation). Advanced methods: Maximum
+                            Likelihood, Bayesian Inference.</p>
+                    </div>
+                </div>
+
+                <h4>Functional Adaptation vs. Phylogenetic Signal</h4>
+                <p><strong>Phylogenetic Signal:</strong> Features retained from history (Heritage). Example: Pentadactyl
+                    limb (5 digits not aerodynamically optimal for bats, but ancestral constraint).</p>
+                <p><strong>Functional Adaptation:</strong> Features molded by physics/survival (Habit). Example:
+                    Fusiform
+                    body (Shark/Dolphin/Ichthyosaur - streamlined due to hydrodynamics).</p>
+                <p><strong>Detection:</strong> Sub-optimal design reveals ancestry. Dolphins retain lungs (mammalian
+                    heritage) despite aquatic life - phylogenetic signal overrides functional optimum.</p>
+
+                <h3>Comparative Summary: Selected Phyla</h3>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Phylum</th>
+                                <th>Symmetry</th>
+                                <th>Germ Layers</th>
+                                <th>Coelom</th>
+                                <th>Segmentation</th>
+                                <th>Key Feature</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Porifera</strong></td>
+                                <td>Asymmetrical</td>
+                                <td>Cellular level</td>
+                                <td>None</td>
+                                <td>Absent</td>
+                                <td>Choanocytes, Ostia</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Cnidaria</strong></td>
+                                <td>Radial</td>
+                                <td>Diploblastic</td>
+                                <td>None</td>
+                                <td>Absent</td>
+                                <td>Cnidocytes, Polyp/Medusa</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Platyhelminthes</strong></td>
+                                <td>Bilateral</td>
+                                <td>Triploblastic</td>
+                                <td>Acoelomate</td>
+                                <td>Absent</td>
+                                <td>Protonephridia, Flattened</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Nematoda</strong></td>
+                                <td>Bilateral</td>
+                                <td>Triploblastic</td>
+                                <td>Pseudocoelom</td>
+                                <td>Absent</td>
+                                <td>Cuticle, Eutely</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Annelida</strong></td>
+                                <td>Bilateral</td>
+                                <td>Triploblastic</td>
+                                <td>Coelom</td>
+                                <td>Metameric</td>
+                                <td>Setae, Metanephridia</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Arthropoda</strong></td>
+                                <td>Bilateral</td>
+                                <td>Triploblastic</td>
+                                <td>Haemocoel</td>
+                                <td>Tagmatized</td>
+                                <td>Jointed appendages, Exoskeleton</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Mollusca</strong></td>
+                                <td>Bilateral</td>
+                                <td>Triploblastic</td>
+                                <td>Reduced coelom</td>
+                                <td>Limited</td>
+                                <td>Mantle, Radula</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Echinodermata</strong></td>
+                                <td>Pentaradial (Adult)</td>
+                                <td>Triploblastic</td>
+                                <td>Coelom</td>
+                                <td>Absent</td>
+                                <td>Water vascular system</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Chordata</strong></td>
+                                <td>Bilateral</td>
+                                <td>Triploblastic</td>
+                                <td>Coelom</td>
+                                <td>Metameric elements</td>
+                                <td>Notochord, Dorsal nerve cord</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <!-- Mobile TOC Button -->
+    <button class="mobile-toc-btn" onclick="toggleMobileDrawer()">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="8" y1="6" x2="21" y2="6"></line>
+            <line x1="8" y1="12" x2="21" y2="12"></line>
+            <line x1="8" y1="18" x2="21" y2="18"></line>
+            <line x1="3" y1="6" x2="3.01" y2="6"></line>
+            <line x1="3" y1="12" x2="3.01" y2="12"></line>
+            <line x1="3" y1="18" x2="3.01" y2="18"></line>
+        </svg>
+        Contents
+    </button>
+
+    <!-- Mobile Drawer -->
+    <div class="mobile-drawer-overlay" id="mobileDrawerOverlay" onclick="toggleMobileDrawer()">
+        <div class="mobile-drawer" id="mobileDrawerContent" onclick="event.stopPropagation()">
+            <div class="drawer-handle"></div>
+            <!-- Content injected via JS -->
+        </div>
+    </div>
+
+    <script>
+        // --- 1. TOC GENERATION ---
+        function generateTOC() {
+            const sections = document.querySelectorAll('main h2, main h3');
+            const tocList = document.createElement('ul');
+            tocList.className = 'toc-list';
+
+            if (sections.length === 0) return;
+
+            // Add Header
+            const header = document.createElement('li');
+            header.className = 'toc-header';
+            header.innerText = 'ON THIS PAGE';
+            tocList.appendChild(header);
+
+            sections.forEach((section, index) => {
+                if (!section.id) {
+                    section.id = `section-${index}`;
+                }
+
+                const li = document.createElement('li');
+                const a = document.createElement('a');
+                a.className = 'toc-link';
+                a.href = `#${section.id}`;
+                a.innerText = section.innerText.replace(/^\d+\.\s*/, ''); // Remove numbering for TOC
+
+                // Indent H3
+                if (section.tagName === 'H3') {
+                    a.style.paddingLeft = '1.5rem';
+                    a.style.fontSize = '0.85rem';
+                }
+
+                a.onclick = (e) => {
+                    e.preventDefault();
+                    document.getElementById(section.id).scrollIntoView({ behavior: 'smooth' });
+                    toggleMobileDrawer(false); // Close mobile drawer on click
+                };
+
+                li.appendChild(a);
+                tocList.appendChild(li);
+            });
+
+            // Inject into Desktop Sidebar
+            document.getElementById('desktop-toc-content').appendChild(tocList.cloneNode(true));
+
+            // Inject into Mobile Drawer
+            document.getElementById('mobileDrawerContent').appendChild(tocList.cloneNode(true));
+        }
+
+        // --- 2. SCROLL SPY ---
+        function scrollSpy() {
+            const sections = document.querySelectorAll('section');
+            const navLinks = document.querySelectorAll('.toc-link');
+
+            window.addEventListener('scroll', () => {
+                let current = '';
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop;
+                    const sectionHeight = section.clientHeight;
+                    if (pageYOffset >= (sectionTop - 150)) {
+                        current = section.getAttribute('id');
+                    }
+                });
+
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href').includes(current) && current !== '') {
+                        link.classList.add('active');
+                    }
+                });
+
+                // Progress Bar
+                const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+                const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+                const scrolled = (winScroll / height) * 100;
+                document.getElementById("progressBar").style.width = scrolled + "%";
+            });
+        }
+
+        // --- 3. MOBILE DRAWER ---
+        function toggleMobileDrawer(forceState) {
+            const overlay = document.getElementById('mobileDrawerOverlay');
+            if (typeof forceState !== 'undefined') {
+                if (forceState) overlay.classList.add('active');
+                else overlay.classList.remove('active');
+            } else {
+                overlay.classList.toggle('active');
+            }
+        }
+
+        // --- INIT ---
+        document.addEventListener('DOMContentLoaded', () => {
+            generateTOC();
+            scrollSpy();
+        });
+    </script>
+</body>
+
+</html>

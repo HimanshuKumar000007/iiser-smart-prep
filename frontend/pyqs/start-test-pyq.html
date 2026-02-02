@@ -1,0 +1,1328 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>IAT Premium Assessment | IISER Prep</title>
+
+    <!-- Professional Font: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <!-- Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+
+    <style>
+        /* ============================
+           1. PREMIUM DESIGN TOKENS
+           ============================ */
+        :root {
+            /* Palette: Deep Slate & Electric Indigo */
+            --primary: #4f46e5;
+            --primary-hover: #4338ca;
+            --primary-soft: #eef2ff;
+
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --purple: #8b5cf6;
+
+            --bg-body: #f8fafc;
+            /* Slate 50 */
+            --bg-surface: #ffffff;
+
+            --text-main: #0f172a;
+            /* Slate 900 */
+            --text-secondary: #64748b;
+            /* Slate 500 */
+
+            --border: #e2e8f0;
+            --border-hover: #cbd5e1;
+
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-float: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --radius-lg: 16px;
+            --radius-md: 12px;
+            --radius-sm: 8px;
+
+            --nav-height: 70px;
+            --footer-height: 80px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            color: var(--text-main);
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* ============================
+           2. GLASS HEADER
+           ============================ */
+        header {
+            height: var(--nav-height);
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 2rem;
+            z-index: 50;
+            flex-shrink: 0;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 700;
+            font-size: 1.25rem;
+            color: var(--text-main);
+            letter-spacing: -0.02em;
+        }
+
+        .brand-icon {
+            width: 32px;
+            height: 32px;
+            background: var(--primary);
+            color: white;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+        }
+
+        /* Timer Pill */
+        .timer-container {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: #1e293b;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 100px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .pulse-dot {
+            width: 8px;
+            height: 8px;
+            background: #ef4444;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        .timer-text {
+            font-family: 'Inter', monospace;
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(0.95);
+                box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7);
+            }
+
+            70% {
+                transform: scale(1);
+                box-shadow: 0 0 0 6px rgba(239, 68, 68, 0);
+            }
+
+            100% {
+                transform: scale(0.95);
+                box-shadow: 0 0 0 0 rgba(239, 68, 68, 0);
+            }
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .btn-header {
+            background: var(--text-main);
+            color: white;
+            border: none;
+            padding: 0.6rem 1.2rem;
+            border-radius: var(--radius-sm);
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .btn-header:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .menu-toggle {
+            display: none;
+            font-size: 1.5rem;
+            color: var(--text-main);
+            cursor: pointer;
+        }
+
+        /* ============================
+           3. MAIN LAYOUT
+           ============================ */
+        .layout {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* --- Question Area --- */
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+            scroll-behavior: smooth;
+            padding-bottom: calc(var(--footer-height) + 2rem);
+            /* Space for sticky footer */
+        }
+
+        /* Sticky Tabs */
+        .subject-bar {
+            background: var(--bg-surface);
+            border-bottom: 1px solid var(--border);
+            padding: 0 2rem;
+            display: flex;
+            gap: 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .subject-tab {
+            padding: 1rem 0;
+            color: var(--text-secondary);
+            font-weight: 500;
+            font-size: 0.95rem;
+            cursor: pointer;
+            position: relative;
+            transition: color 0.2s;
+        }
+
+        .subject-tab:hover {
+            color: var(--primary);
+        }
+
+        .subject-tab.active {
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        .subject-tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--primary);
+        }
+
+        /* Question Container */
+        .q-container {
+            max-width: 900px;
+            margin: 0 auto;
+            width: 100%;
+            padding: 2rem;
+        }
+
+        .q-card {
+            background: var(--bg-surface);
+            border-radius: var(--radius-lg);
+            padding: 3rem;
+            box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.08), 0 4px 12px -2px rgba(0, 0, 0, 0.04);
+            border: 1px solid white;
+            animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .q-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1.5rem;
+            align-items: center;
+        }
+
+        .q-number {
+            font-size: 0.85rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: var(--text-secondary);
+            letter-spacing: 0.05em;
+        }
+
+        .q-marks {
+            background: var(--bg-body);
+            padding: 6px 12px;
+            border-radius: 100px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--text-main);
+        }
+
+        .q-text {
+            font-size: 1.15rem;
+            line-height: 1.7;
+            color: var(--text-main);
+            font-weight: 500;
+            margin-bottom: 2rem;
+        }
+
+        /* Options */
+        .options-grid {
+            display: grid;
+            gap: 1rem;
+        }
+
+        .option-item {
+            display: flex;
+            align-items: center;
+            padding: 1.25rem 1.5rem;
+            border: 1.5px solid var(--border);
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            background: var(--bg-surface);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .option-item:hover {
+            border-color: var(--primary);
+            background: #fafafa;
+            transform: translateY(-2px);
+        }
+
+        .option-item.selected {
+            border-color: var(--primary);
+            background: var(--primary-soft);
+            box-shadow: 0 0 0 1px var(--primary);
+        }
+
+        .radio-ring {
+            width: 22px;
+            height: 22px;
+            border: 2px solid var(--text-secondary);
+            border-radius: 50%;
+            margin-right: 16px;
+            flex-shrink: 0;
+            position: relative;
+            transition: all 0.2s;
+        }
+
+        .option-item.selected .radio-ring {
+            border-color: var(--primary);
+            border-width: 6px;
+        }
+
+        .opt-text {
+            font-size: 1rem;
+            font-weight: 500;
+            color: var(--text-main);
+        }
+
+        /* --- Sidebar / Drawer --- */
+        .sidebar {
+            width: 360px;
+            background: var(--bg-surface);
+            border-left: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            z-index: 100;
+        }
+
+        .sidebar-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .sidebar-title {
+            font-weight: 700;
+            font-size: 1rem;
+            color: var(--text-main);
+        }
+
+        .palette-scroll {
+            flex: 1;
+            overflow-y: auto;
+            padding: 1.5rem;
+        }
+
+        .palette-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 12px;
+        }
+
+        .p-btn {
+            aspect-ratio: 1;
+            background: var(--bg-body);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            color: var(--text-secondary);
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .p-btn:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        /* Palette States */
+        .p-btn.answered {
+            background: var(--success);
+            color: white;
+            border-color: var(--success);
+        }
+
+        .p-btn.not-answered {
+            background: var(--danger);
+            color: white;
+            border-color: var(--danger);
+        }
+
+        .p-btn.review {
+            background: var(--purple);
+            color: white;
+            border-color: var(--purple);
+        }
+
+        .p-btn.current {
+            background: white;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+            box-shadow: 0 0 0 3px var(--primary-soft);
+            transform: scale(1.05);
+        }
+
+        .legend {
+            padding: 1rem 1.5rem;
+            background: var(--bg-body);
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.75rem;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            border-top: 1px solid var(--border);
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 500;
+        }
+
+        .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+        }
+
+        /* ============================
+           4. FLOATING FOOTER
+           ============================ */
+        .footer-controls {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 360px;
+            /* Subtract Sidebar width */
+            height: var(--footer-height);
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border-top: 1px solid var(--border);
+            padding: 0 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            z-index: 40;
+        }
+
+        .control-group {
+            display: flex;
+            gap: 12px;
+        }
+
+        .btn-action {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 0.75rem 1.5rem;
+            border-radius: var(--radius-sm);
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: 1px solid var(--border);
+            background: white;
+            color: var(--text-main);
+        }
+
+        .btn-action:hover {
+            background: var(--bg-body);
+        }
+
+        .btn-primary-action {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.25);
+        }
+
+        .btn-primary-action:hover {
+            background: var(--primary-hover);
+            transform: translateY(-1px);
+        }
+
+        .btn-icon-only {
+            padding: 0.75rem;
+            color: var(--text-secondary);
+            border: none;
+            background: transparent;
+        }
+
+        .btn-icon-only:hover {
+            color: var(--danger);
+            background: var(--bg-body);
+        }
+
+        /* ============================
+           5. MOBILE RESPONSIVE
+           ============================ */
+        @media (max-width: 1024px) {
+            header {
+                padding: 0 1rem;
+            }
+
+            .header-actions {
+                display: none;
+            }
+
+            .menu-toggle {
+                display: block;
+            }
+
+            .subject-bar {
+                padding: 0 1rem;
+                overflow-x: auto;
+                gap: 1.5rem;
+            }
+
+            .subject-tab {
+                white-space: nowrap;
+            }
+
+            .q-container {
+                padding: 1.5rem;
+                padding-bottom: 2rem;
+            }
+
+            .q-card {
+                padding: 1.5rem;
+            }
+
+            .q-text {
+                font-size: 1rem;
+            }
+
+            /* Sidebar becomes Drawer */
+            .sidebar {
+                position: fixed;
+                top: 0;
+                right: 0;
+                bottom: 0;
+                width: 85%;
+                max-width: 320px;
+                transform: translateX(100%);
+                transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+                box-shadow: -10px 0 30px rgba(0, 0, 0, 0.15);
+            }
+
+            .sidebar.open {
+                transform: translateX(0);
+            }
+
+            /* Footer adjustments */
+            .footer-controls {
+                right: 0;
+                padding: 0 1rem;
+            }
+
+            .btn-action span {
+                display: none;
+            }
+
+            /* Hide labels on small screens */
+            .btn-primary-action span {
+                display: inline;
+            }
+
+            /* Keep 'Save' label */
+            .btn-action {
+                padding: 0.75rem 1rem;
+            }
+
+            /* Mobile Submit in Drawer */
+            .mobile-submit-area {
+                padding: 1.5rem;
+                border-top: 1px solid var(--border);
+                display: block !important;
+            }
+        }
+
+        /* Backdrop */
+        .overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(15, 23, 42, 0.4);
+            backdrop-filter: blur(4px);
+            z-index: 90;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
+        }
+
+        .overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Utility for Mobile Submit */
+        .mobile-submit-area {
+            display: none;
+        }
+
+        /* --- 6. CUSTOM MODAL --- */
+        .modal-backdrop {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 200;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.2s;
+        }
+
+        .modal-backdrop.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal-card {
+            background: white;
+            border-radius: var(--radius-lg);
+            padding: 2rem;
+            width: 90%;
+            max-width: 400px;
+            box-shadow: var(--shadow-float);
+            transform: scale(0.95);
+            transition: transform 0.2s;
+            text-align: center;
+        }
+
+        .modal-backdrop.active .modal-card {
+            transform: scale(1);
+        }
+
+        .modal-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: var(--text-main);
+        }
+
+        .modal-body {
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+            line-height: 1.5;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+        }
+
+        .btn-modal {
+            flex: 1;
+            padding: 0.75rem;
+            border-radius: var(--radius-sm);
+            font-weight: 600;
+            cursor: pointer;
+            border: 1px solid transparent;
+        }
+
+        .btn-modal.cancel {
+            background: var(--bg-body);
+            color: var(--text-main);
+        }
+
+        .btn-modal.confirm {
+            background: var(--primary);
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- CUSTOM MODAL -->
+    <div class="modal-backdrop" id="customModal">
+        <div class="modal-card">
+            <div class="modal-title" id="modalTitle">Confirm Action</div>
+            <div class="modal-body" id="modalBody">Are you sure?</div>
+            <div class="modal-actions" id="modalActions">
+                <!-- Buttons injected via JS -->
+            </div>
+        </div>
+    </div>
+    <script src="../auth.js"></script>
+    <script>
+        // (async function protectTestAccess() {
+        //     // STRICT GUARD REMOVED to allow Free Test Access (2022-2024)
+        //     // The gatekeeping is now handled in pyq.html "Smart Access" logic.
+        //     // We trust the navigation source for now, or could implement a softer check.
+        // })();
+
+        // AUTH CHECK & BACKEND VERIFICATION
+        const currentMock = localStorage.getItem("CURRENT_MOCK") || 1;
+
+        async function verifyAccess() {
+            const token = localStorage.getItem("IAT_TOKEN");
+
+            // 1. Check Login
+            if (!token) {
+                alert("Please login first");
+                const currentUrl = encodeURIComponent(window.location.href);
+                window.location.href = `../login.html?redirect=${currentUrl}`;
+                return;
+            }
+
+            // 🔥 ROBUST SYNC: Always fetch latest plan
+            try {
+                const res = await fetch("http://localhost:5000/api/me", {
+                    headers: { "Authorization": "Bearer " + token }
+                });
+
+                if (res.ok) {
+                    const user = await res.json();
+                    // 🔥 Source of Truth
+                    localStorage.setItem("IAT_PLAN", user.plan);
+                } else {
+                    if (res.status === 401) {
+                        // Session expired
+                        // localStorage.removeItem("IAT_TOKEN"); // Don't wipe immediately, maybe just warn?
+                        // alert("Session expired. Please login again.");
+                        // window.location.href = "../login.html";
+                        // return;
+
+                        // Actually, if 401, we shouldn't proceed.
+                        localStorage.removeItem("IAT_TOKEN");
+                        alert("Session expired. Please login again.");
+                        window.location.href = "../login.html";
+                        return;
+                    }
+                    // For other errors (500 etc), we might want to let them thru if it's a free test?
+                    // But we don't know if it's free easily here without checking URL params or something.
+                    // Let's rely on the previous guard removal.
+                    console.warn("Sync failed, proceeding with local state.");
+                }
+            } catch (err) {
+                console.error("Sync failed, relying on local state if valid", err);
+                // Allow proceed if we have token, even if sync fails (offline mode or server dead)
+            }
+
+            const currentMock = localStorage.getItem("CURRENT_MOCK") || 1;
+            const updatedPlan = localStorage.getItem("IAT_PLAN");
+
+            // 2. Mock 1 is always accessible
+            if (currentMock == 1) {
+                return;
+            }
+
+            // 3. For Pro Mocks, Strict Check
+            if (updatedPlan !== "PRO") {
+                alert("This mock test is for PRO users only. Please upgrade.");
+                window.location.href = "full_mock_test_homepage.html";
+            }
+        }
+
+        // Run immediately
+        verifyAccess();
+    </script>
+
+    <!-- OVERLAY -->
+    <div class="overlay" id="overlay" onclick="closeDrawer()"></div>
+
+    <!-- HEADER -->
+    <header>
+        <div class="brand">
+            <div class="brand-icon"><i class="ri-flashlight-fill"></i></div>
+            IISER Prep
+        </div>
+
+        <div class="timer-container">
+            <div class="pulse-dot"></div>
+            <span class="timer-text" id="timer">03:00:00</span>
+        </div>
+
+        <div class="header-actions">
+            <button class="btn-header" onclick="submitTest()">Finish Assessment</button>
+        </div>
+        <div class="menu-toggle" onclick="toggleDrawer()"><i class="ri-menu-4-fill"></i></div>
+    </header>
+
+    <!-- LAYOUT -->
+    <div class="layout">
+
+        <!-- MAIN CONTENT -->
+        <div class="main-content">
+
+            <!-- Subject Bar -->
+            <div class="subject-bar">
+                <div class="subject-tab active" onclick="setSubject('Physics')">Physics</div>
+                <div class="subject-tab" onclick="setSubject('Chemistry')">Chemistry</div>
+                <div class="subject-tab" onclick="setSubject('Mathematics')">Mathematics</div>
+                <div class="subject-tab" onclick="setSubject('Biology')">Biology</div>
+            </div>
+
+            <!-- Question Area -->
+            <div class="q-container">
+                <div class="q-card" id="qCard">
+                    <!-- Dynamic Content -->
+                    <div class="q-header">
+                        <span class="q-number">Question <span id="qNum">1</span></span>
+                        <div class="q-marks">
+                            <span style="color:var(--success)">+4</span> / <span style="color:var(--danger)">-1</span>
+                        </div>
+                    </div>
+
+                    <div class="q-text" id="qText">
+                        Loading question content...
+                    </div>
+
+                    <div class="options-grid" id="optList">
+                        <!-- Options injected via JS -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SIDEBAR / DRAWER -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <span class="sidebar-title">Question Palette</span>
+                <button class="btn-icon-only" onclick="closeDrawer()" style="font-size: 1.25rem;"><i
+                        class="ri-close-line"></i></button>
+            </div>
+
+            <div class="palette-scroll">
+                <div class="palette-grid" id="paletteGrid">
+                    <!-- Grid Buttons -->
+                </div>
+            </div>
+
+            <div class="legend">
+                <div class="legend-item">
+                    <div class="dot" style="background:var(--success)"></div> Answered
+                </div>
+                <div class="legend-item">
+                    <div class="dot" style="background:var(--danger)"></div> Unanswered
+                </div>
+                <div class="legend-item">
+                    <div class="dot" style="background:var(--purple)"></div> Review
+                </div>
+                <div class="legend-item">
+                    <div class="dot" style="background:var(--border)"></div> Skipped
+                </div>
+            </div>
+
+            <div class="mobile-submit-area">
+                <button class="btn-header" style="width: 100%; background: var(--primary);"
+                    onclick="submitTest()">Submit Test</button>
+            </div>
+        </aside>
+
+    </div>
+
+    <!-- STICKY FOOTER -->
+    <div class="footer-controls">
+        <div class="control-group">
+            <button class="btn-action" onclick="markReview()">
+                <i class="ri-flag-line" style="color: var(--purple);"></i> <span>Review</span>
+            </button>
+            <button class="btn-icon-only" onclick="clearResp()" title="Clear Response">
+                <i class="ri-eraser-line"></i>
+            </button>
+        </div>
+
+        <div class="control-group">
+            <button class="btn-action" onclick="prevQ()">
+                <i class="ri-arrow-left-s-line"></i> <span>Prev</span>
+            </button>
+            <button class="btn-action btn-primary-action" onclick="saveNext()" id="btnNext">
+                <span>Save & Next</span> <i class="ri-arrow-right-s-line"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT -->
+    <script>
+        // --- 1. CONFIG & STATE ---
+        const totalQs = 60;
+        const TEST_DURATION_SECS = 180 * 60; // 3 hours
+        let questions = [];
+        let currentIdx = 0;
+        let timerInterval;
+
+        // --- 2. INIT & FETCH ---
+        window.onload = async () => {
+            try {
+                // Auth Check
+                const token = localStorage.getItem("IAT_TOKEN");
+                if (!token) {
+                    window.location.href = "../login.html";
+                    return;
+                }
+
+                // Get year from URL parameter
+                const urlParams = new URLSearchParams(window.location.search);
+                const year = urlParams.get('year') || '2024'; // Default to 2024
+
+                // Fetch Data from pyq-mock folder
+                const response = await fetch(`pyq-mock/mock-${year}.json`);
+                if (!response.ok) throw new Error(`Failed to load question data for year ${year}`);
+
+                const data = await response.json();
+
+                // Initialize Questions (Map JSON to App Structure)
+                questions = data.questions.map(q => ({
+                    ...q,
+                    text: q.question, // Map 'question' to 'text'
+                    selection: null,  // User's answer index
+                    status: 'not-visited'
+                }));
+
+                // Restore State if exists (use year as mock ID)
+                restoreState(year);
+
+                // Setup UI
+                renderPalette();
+                loadQ(currentIdx);
+                startTimer();
+
+                // Initial Tab
+                if (questions.length > 0) {
+                    updateSubjectTabs(questions[currentIdx].subject);
+                }
+
+            } catch (e) {
+                console.error("Init Error", e);
+                document.getElementById('qText').innerHTML = `<div style="color:var(--danger); text-align:center; padding: 2rem;">
+                    <h3>Error loading content</h3>
+                    <p>${e.message}</p>
+                    <button class="btn-action" onclick="location.reload()">Retry</button>
+                </div>`;
+            }
+        };
+
+        // --- 3. STATE MANAGEMENT (PERSISTENCE) ---
+        function saveState() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const year = urlParams.get('year') || '2024';
+            const state = {
+                answers: questions.map(q => ({ id: q.id, selection: q.selection, status: q.status })),
+                currentIdx: currentIdx,
+                timestamp: Date.now()
+            };
+            localStorage.setItem(`IAT_PYQ_SESSION_${year}`, JSON.stringify(state));
+        }
+
+        function restoreState(year) {
+            const saved = localStorage.getItem(`IAT_PYQ_SESSION_${year}`);
+            if (saved) {
+                try {
+                    const state = JSON.parse(saved);
+
+                    // Restore Answers & Status
+                    state.answers.forEach((savedQ, i) => {
+                        if (questions[i] && questions[i].id === savedQ.id) {
+                            questions[i].selection = savedQ.selection;
+                            questions[i].status = savedQ.status;
+                        }
+                    });
+
+                    // Restore Index
+                    currentIdx = state.currentIdx || 0;
+
+                    // Timer logic handled in startTimer() using a separate key
+                } catch (e) {
+                    console.warn("State restore failed", e);
+                }
+            }
+        }
+
+        // --- 4. ROBUST TIMER ---
+        function startTimer() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const year = urlParams.get('year') || '2024';
+            const endTimeKey = `IAT_PYQ_END_TIME_${year}`;
+
+            let endTime = localStorage.getItem(endTimeKey);
+
+            if (!endTime) {
+                // First start: Set end time X seconds from now
+                endTime = Date.now() + (TEST_DURATION_SECS * 1000);
+                localStorage.setItem(endTimeKey, endTime);
+            }
+
+            const el = document.getElementById('timer');
+
+            function tick() {
+                const now = Date.now();
+                let remaining = Math.ceil((endTime - now) / 1000);
+
+                if (remaining <= 0) {
+                    remaining = 0;
+                    clearInterval(timerInterval);
+                    autoSubmit();
+                }
+
+                // Format
+                const h = Math.floor(remaining / 3600).toString().padStart(2, '0');
+                const m = Math.floor((remaining % 3600) / 60).toString().padStart(2, '0');
+                const s = (remaining % 60).toString().padStart(2, '0');
+
+                el.innerText = `${h}:${m}:${s}`;
+
+                // Visual Warning
+                if (remaining < 300) { // Last 5 mins
+                    el.style.color = 'var(--danger)';
+                    el.parentElement.style.borderColor = 'var(--danger)';
+                }
+            }
+
+            tick(); // Immediate update
+            timerInterval = setInterval(tick, 1000);
+        }
+
+        // --- 5. RENDER LOGIC ---
+        function loadQ(idx) {
+            currentIdx = idx;
+            const q = questions[idx];
+
+            // Mark as visited if new
+            if (q.status === 'not-visited') {
+                q.status = 'not-answered';
+            }
+
+            // Save current position
+            saveState();
+
+            // UI Updates
+            updateSubjectTabs(q.subject);
+            highlightPalette(idx);
+            updatePaletteBtn(idx); // Update palette immediately for status change
+
+            // Animation
+            const card = document.getElementById('qCard');
+            card.style.animation = 'none';
+            card.offsetHeight;
+            card.style.animation = 'fadeIn 0.3s ease-out';
+
+            // Content
+            // Content
+            document.getElementById('qNum').innerText = q.id;
+
+            let contentHtml = q.text;
+            if (q.image) {
+                contentHtml += `<div style="margin-top: 1.5rem; text-align: center;">
+                    <img src="${q.image}" alt="Question Diagram" style="max-width: 100%; max-height: 400px; border-radius: 8px; border: 1px solid var(--border);">
+                </div>`;
+            }
+            document.getElementById('qText').innerHTML = contentHtml;
+
+            // Options
+            const list = document.getElementById('optList');
+            list.innerHTML = '';
+            q.options.forEach((opt, i) => {
+                const isSelected = q.selection === i ? 'selected' : '';
+                list.innerHTML += `
+                    <div class="option-item ${isSelected}" onclick="selectOpt(${i})">
+                        <div class="radio-ring"></div>
+                        <div class="opt-text">${opt}</div>
+                    </div>
+                `;
+            });
+
+            // Button Logic
+            const btnNext = document.getElementById('btnNext');
+            if (idx === totalQs - 1) {
+                btnNext.innerHTML = `<span>Submit Test</span> <i class="ri-check-double-line"></i>`;
+                btnNext.onclick = confirmSubmit;
+                btnNext.classList.remove('btn-primary-action');
+                btnNext.style.backgroundColor = 'var(--success)';
+                btnNext.style.color = 'white';
+            } else {
+                btnNext.innerHTML = `<span>Save & Next</span> <i class="ri-arrow-right-s-line"></i>`;
+                btnNext.onclick = saveNext;
+                btnNext.classList.add('btn-primary-action');
+                btnNext.style.backgroundColor = '';
+                btnNext.style.color = '';
+            }
+        }
+
+        function selectOpt(optIdx) {
+            questions[currentIdx].selection = optIdx;
+
+            // UI visual update only (cleaner than full re-render)
+            document.querySelectorAll('.option-item').forEach((el, i) => {
+                if (i === optIdx) el.classList.add('selected');
+                else el.classList.remove('selected');
+            });
+        }
+
+        function updateSubjectTabs(subject) {
+            document.querySelectorAll('.subject-tab').forEach(tab => {
+                if (tab.innerText === subject) tab.classList.add('active');
+                else tab.classList.remove('active');
+            });
+        }
+
+        // --- 6. NAVIGATION ACTIONS ---
+        function saveNext() {
+            const q = questions[currentIdx];
+            // Update status based on selection
+            if (q.selection !== null) {
+                if (q.status !== 'review') q.status = 'answered'; // Keep review status if set
+            } else {
+                if (q.status !== 'review') q.status = 'not-answered';
+            }
+
+            saveState();
+            updatePaletteBtn(currentIdx);
+
+            if (currentIdx < totalQs - 1) loadQ(currentIdx + 1);
+        }
+
+        function markReview() {
+            questions[currentIdx].status = 'review';
+            saveState();
+            updatePaletteBtn(currentIdx);
+            if (currentIdx < totalQs - 1) loadQ(currentIdx + 1);
+        }
+
+        function clearResp() {
+            questions[currentIdx].selection = null;
+            questions[currentIdx].status = 'not-answered';
+            saveState();
+            loadQ(currentIdx); // Re-render to clear selection UI
+        }
+
+        function prevQ() {
+            if (currentIdx > 0) loadQ(currentIdx - 1);
+        }
+
+        function setSubject(subj) {
+            const idx = questions.findIndex(q => q.subject === subj);
+            if (idx !== -1) {
+                loadQ(idx);
+                if (window.innerWidth <= 1024) closeDrawer();
+            }
+        }
+
+        // --- 7. PALETTE & DRAWER ---
+        function renderPalette() {
+            const grid = document.getElementById('paletteGrid');
+            grid.innerHTML = '';
+            questions.forEach((q, i) => {
+                const btn = document.createElement('div');
+                btn.className = `p-btn ${q.status}`;
+                btn.id = `p-btn-${i}`;
+                btn.innerText = q.id;
+                btn.onclick = () => { loadQ(i); if (window.innerWidth <= 1024) closeDrawer(); };
+                grid.appendChild(btn);
+            });
+        }
+
+        function updatePaletteBtn(i) {
+            const btn = document.getElementById(`p-btn-${i}`);
+            if (btn) {
+                btn.className = `p-btn ${questions[i].status}`;
+                if (i === currentIdx) btn.classList.add('current');
+            }
+        }
+
+        function highlightPalette(i) {
+            document.querySelectorAll('.p-btn').forEach(b => b.classList.remove('current'));
+            const btn = document.getElementById(`p-btn-${i}`);
+            if (btn) {
+                btn.classList.add('current');
+                btn.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });
+            }
+        }
+
+        function toggleDrawer() {
+            document.getElementById('sidebar').classList.toggle('open');
+            document.getElementById('overlay').classList.toggle('active');
+        }
+        function closeDrawer() {
+            document.getElementById('sidebar').classList.remove('open');
+            document.getElementById('overlay').classList.remove('active');
+        }
+
+        // --- 8. SUBMISSION & MODAL ---
+        function showModal(title, body, onConfirm) {
+            const modal = document.getElementById('customModal');
+            document.getElementById('modalTitle').innerText = title;
+            document.getElementById('modalBody').innerHTML = body;
+
+            const actions = document.getElementById('modalActions');
+            actions.innerHTML = `
+                <button class="btn-modal cancel" onclick="closeModal()">Cancel</button>
+                <button class="btn-modal confirm" id="modalConfirmBtn">Confirm</button>
+            `;
+
+            document.getElementById('modalConfirmBtn').onclick = () => {
+                closeModal();
+                onConfirm();
+            };
+
+            modal.classList.add('active');
+        }
+
+        function closeModal() {
+            document.getElementById('customModal').classList.remove('active');
+        }
+
+        function confirmSubmit() {
+            // Stats for Modal
+            const answered = questions.filter(q => q.selection !== null).length;
+            const review = questions.filter(q => q.status === 'review').length;
+            const remaining = totalQs - answered;
+
+            const msg = `
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:10px; text-align:left;">
+                    <div>Answered: <b>${answered}</b></div>
+                    <div>Review: <b>${review}</b></div>
+                    <div>Skipped: <b>${remaining}</b></div>
+                </div>
+                Are you ready to finish the test?
+            `;
+
+            showModal("Submit Assessment", msg, finishTest);
+        }
+
+        function autoSubmit() {
+            showModal("Time's Up!", "Your test time has ended. Submitting automatically...", finishTest);
+        }
+
+        function finishTest() {
+            // Calculate Score
+            let score = 0, correct = 0, wrong = 0, skipped = 0;
+            const sectionScore = { Physics: 0, Chemistry: 0, Mathematics: 0, Biology: 0 };
+
+            // Capture detailed responses
+            const userResponses = questions.map(q => ({
+                id: q.id,
+                subject: q.subject,
+                selection: q.selection,
+                correct: q.correct,
+                status: q.status
+            }));
+
+            questions.forEach(q => {
+                const isCorrect = q.selection === q.correct;
+                if (q.selection === null) {
+                    skipped++;
+                } else if (isCorrect) {
+                    score += 4; correct++;
+                    if (sectionScore[q.subject] !== undefined) sectionScore[q.subject] += 4;
+                } else {
+                    score -= 1; wrong++;
+                    if (sectionScore[q.subject] !== undefined) sectionScore[q.subject] -= 1;
+                }
+            });
+
+            // Save & Redirect (Include User Responses)
+            const urlParams = new URLSearchParams(window.location.search);
+            const year = urlParams.get('year') || '2024';
+
+            const resultData = {
+                score,
+                correct,
+                wrong,
+                skipped,
+                sectionScore,
+                userResponses, // Saved for detailed analysis
+                mockId: year, // Store year as mockId
+                timestamp: Date.now()
+            };
+
+            // Clear Session State (Timer & Answers)
+            localStorage.removeItem(`IAT_PYQ_SESSION_${year}`);
+            localStorage.removeItem(`IAT_PYQ_END_TIME_${year}`);
+
+            // Save Result
+            localStorage.setItem('mockTestResult', JSON.stringify(resultData));
+
+            // Redirect to PYQ result page
+            window.location.replace('result-pyq.html');
+        }
+
+    </script>
+</body>
+
+</html>

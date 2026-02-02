@@ -1,0 +1,1695 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PYQ Archive | IISER Smart Prep</title>
+    <meta name="description"
+        content="Download IAT previous year papers with solutions or take interactive tests. Complete 2017-2025 archive.">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --primary: #4f46e5;
+            --primary-dark: #4338ca;
+            --primary-soft: #e0e7ff;
+            --secondary: #0f172a;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --text-light: #94a3b8;
+            --bg-white: #ffffff;
+            --bg-wash: #f8fafc;
+            --border: #e2e8f0;
+            --success: #10b981;
+            --warning: #f59e0b;
+
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 24px;
+            --radius-pill: 100px;
+
+            --shadow-xs: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+            --shadow-xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            outline: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            font-size: 16px;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            color: var(--text-main);
+            background: var(--bg-white);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Animations */
+        .fade-in-up {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+
+        .fade-in-up.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.75rem 1.5rem;
+            border-radius: var(--radius-pill);
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            gap: 0.5rem;
+            border: none;
+            white-space: nowrap;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+            box-shadow: 0 4px 6px rgba(79, 70, 229, 0.2);
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px -5px rgba(79, 70, 229, 0.4);
+        }
+
+        .btn-secondary {
+            background: var(--bg-wash);
+            color: var(--text-main);
+            border: 1px solid var(--border);
+        }
+
+        .btn-secondary:hover {
+            background: var(--bg-white);
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--text-muted);
+            border: 1px solid var(--border);
+        }
+
+        .btn-outline:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+            background: var(--primary-soft);
+        }
+
+        .btn-success {
+            background: var(--success);
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #059669;
+            transform: translateY(-2px);
+        }
+
+        .btn-full {
+            width: 100%;
+        }
+
+        /* Navigation */
+        header {
+            position: fixed;
+            top: 20px;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            display: flex;
+            justify-content: center;
+            pointer-events: none;
+            transition: top 0.3s ease;
+        }
+
+        header.scrolled {
+            top: 0;
+        }
+
+        .nav-container {
+            pointer-events: auto;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.08);
+            padding: 0.75rem 1.5rem;
+            border-radius: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 90%;
+            max-width: 1200px;
+            transition: all 0.3s;
+        }
+
+        header.scrolled .nav-container {
+            width: 100%;
+            border-radius: 0;
+            background: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            padding: 1rem 2rem;
+        }
+
+        .logo {
+            font-size: 1.25rem;
+            font-weight: 800;
+            color: var(--secondary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--text-muted);
+            text-decoration: none;
+            position: relative;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            cursor: pointer;
+            z-index: 1002;
+        }
+
+        .hamburger-line {
+            display: block;
+            width: 24px;
+            height: 2px;
+            background-color: var(--secondary);
+            margin: 5px 0;
+            transition: all 0.3s;
+        }
+
+        /* Hero */
+        .hero-pyq {
+            padding: 10rem 0 4rem;
+            text-align: center;
+            background: linear-gradient(180deg, var(--bg-white) 0%, var(--bg-wash) 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-pyq::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at 50% 50%, rgba(79, 70, 229, 0.06) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .breadcrumb {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--text-muted);
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        .breadcrumb a:hover {
+            color: var(--primary);
+        }
+
+        .hero-pyq h1 {
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 800;
+            color: var(--secondary);
+            letter-spacing: -0.03em;
+            margin-bottom: 1rem;
+        }
+
+        .hero-pyq h1 span {
+            background: linear-gradient(135deg, var(--primary), #818cf8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-pyq p {
+            color: var(--text-muted);
+            font-size: 1.125rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .quick-stats {
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            margin-top: 3rem;
+        }
+
+        .stat-box {
+            text-align: center;
+            padding: 1.5rem 2rem;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--border);
+            backdrop-filter: blur(10px);
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--primary);
+            display: block;
+        }
+
+        .stat-label {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            font-weight: 600;
+        }
+
+        /* Filter */
+        .filter-bar {
+            background: var(--bg-white);
+            border-bottom: 1px solid var(--border);
+            padding: 1.5rem 0;
+            position: sticky;
+            top: 80px;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+        }
+
+        .filter-tabs {
+            display: flex;
+            gap: 0.5rem;
+            overflow-x: auto;
+            padding-bottom: 0.5rem;
+        }
+
+        .filter-tab {
+            padding: 0.5rem 1.25rem;
+            border: 1px solid var(--border);
+            background: var(--bg-white);
+            border-radius: var(--radius-pill);
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all 0.2s;
+        }
+
+        .filter-tab:hover,
+        .filter-tab.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        /* Grid */
+        .section-wash {
+            padding: 4rem 0 6rem;
+            background: var(--bg-wash);
+        }
+
+        .pyq-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+            gap: 1.5rem;
+        }
+
+        /* PYQ Card - Dual Action */
+        .pyq-card {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .pyq-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--primary-soft);
+        }
+
+        .card-header {
+            padding: 2rem 2rem 1rem;
+            position: relative;
+        }
+
+        .year-badge {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .year-icon {
+            width: 48px;
+            height: 48px;
+            background: var(--primary-soft);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .year-text {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--secondary);
+        }
+
+        .difficulty-badge {
+            position: absolute;
+            top: 2rem;
+            right: 2rem;
+            padding: 0.25rem 0.75rem;
+            border-radius: var(--radius-pill);
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .difficulty-easy {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .difficulty-medium {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .difficulty-hard {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .paper-info {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .info-tag {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.875rem;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        .paper-description {
+            color: var(--text-muted);
+            font-size: 0.9375rem;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+
+        .subject-bars {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .subj-segment {
+            height: 4px;
+            border-radius: 100px;
+            flex: 1;
+        }
+
+        .subj-phy {
+            background: #4f46e5;
+        }
+
+        .subj-chem {
+            background: #10b981;
+        }
+
+        .subj-math {
+            background: #f59e0b;
+        }
+
+        .subj-bio {
+            background: #ef4444;
+        }
+
+        .subj-labels {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.75rem;
+            color: var(--text-light);
+            font-weight: 600;
+        }
+
+        /* Dual Action Footer */
+        .card-actions {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            border-top: 1px solid var(--border);
+            margin-top: auto;
+        }
+
+        .action-btn {
+            padding: 1rem;
+            border: none;
+            background: transparent;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            color: var(--text-muted);
+        }
+
+        .action-btn:first-child {
+            border-right: 1px solid var(--border);
+        }
+
+        .action-btn:hover {
+            background: var(--bg-wash);
+            color: var(--primary);
+        }
+
+        .action-btn.primary {
+            color: var(--primary);
+        }
+
+        .action-btn.primary:hover {
+            background: var(--primary-soft);
+        }
+
+        .action-btn.success {
+            color: var(--success);
+        }
+
+        .action-btn.success:hover {
+            background: #dcfce7;
+        }
+
+        /* Locked State */
+        .pyq-card.locked {
+            opacity: 0.8;
+        }
+
+        .pyq-card.locked .year-icon {
+            opacity: 0.5;
+            background: var(--bg-wash);
+        }
+
+        .lock-strip {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(90deg, var(--warning), #fbbf24);
+            color: white;
+            text-align: center;
+            padding: 0.5rem;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        /* Modal */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(4px);
+            z-index: 2000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s;
+            padding: 1rem;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-content {
+            background: white;
+            width: 100%;
+            max-width: 600px;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-xl);
+            transform: scale(0.95) translateY(20px);
+            transition: all 0.3s;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-overlay.active .modal-content {
+            transform: scale(1) translateY(0);
+        }
+
+        .modal-header {
+            padding: 2rem;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--secondary);
+        }
+
+        .close-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border: none;
+            background: var(--bg-wash);
+            color: var(--text-muted);
+            cursor: pointer;
+            font-size: 1.25rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+
+        .close-btn:hover {
+            background: #fee2e2;
+            color: #ef4444;
+        }
+
+        .modal-body {
+            padding: 2rem;
+        }
+
+        .action-grid {
+            display: grid;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .action-card {
+            padding: 1.5rem;
+            border: 2px solid var(--border);
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .action-card:hover {
+            border-color: var(--primary);
+            background: var(--primary-soft);
+            transform: translateX(5px);
+        }
+
+        .action-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .action-details h4 {
+            font-size: 1.125rem;
+            font-weight: 700;
+            color: var(--secondary);
+            margin-bottom: 0.25rem;
+        }
+
+        .action-details p {
+            font-size: 0.875rem;
+            color: var(--text-muted);
+        }
+
+        .file-meta {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+            padding: 1rem;
+            background: var(--bg-wash);
+            border-radius: var(--radius-sm);
+            font-size: 0.875rem;
+            color: var(--text-muted);
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* Toast Notification */
+        .toast {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: var(--secondary);
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-xl);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.3s;
+            z-index: 3000;
+        }
+
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100vh;
+                background: white;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                gap: 2rem;
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .pyq-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .quick-stats {
+                flex-direction: column;
+                gap: 1rem;
+                padding: 0 2rem;
+            }
+
+            .card-actions {
+                grid-template-columns: 1fr;
+            }
+
+            .action-btn:first-child {
+                border-right: none;
+                border-bottom: 1px solid var(--border);
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <div class="nav-container">
+            <a href="../index.html" class="logo">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path
+                        d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z">
+                    </path>
+                </svg>
+                IISER Smart Prep
+            </a>
+
+            <nav class="nav-links">
+                <a href="../index.html">Home</a>
+                <a href="../features.html">Features</a>
+                <a href="../index.html#pricing">Pricing</a>
+                <a href="dashboard.html" class="btn btn-primary"
+                    style="padding: 0.5rem 1rem; font-size: 0.85rem; color: white;">Dashboard</a>
+            </nav>
+
+            <button class="mobile-menu-btn" onclick="toggleMenu()">
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+            </button>
+        </div>
+    </header>
+
+    <section class="hero-pyq">
+        <div class="container hero-content fade-in-up">
+            <div class="breadcrumb">
+                <a href="/frontend/index.html">Home</a>
+                <i class="fas fa-chevron-right" style="font-size: 0.75rem;"></i>
+                <span>Previous Year Papers</span>
+            </div>
+
+            <h1>Master the <span>Pattern</span></h1>
+            <p>Practice with interactive tests or download PDFs with detailed solutions. Every IAT paper from 2017-2025,
+                meticulously curated.</p>
+
+            <div class="quick-stats fade-in-up">
+                <div class="stat-box">
+                    <span class="stat-value">9</span>
+                    <div class="stat-label">Years</div>
+                </div>
+                <div class="stat-box">
+                    <span class="stat-value">540+</span>
+                    <div class="stat-label">Questions</div>
+                </div>
+                <div class="stat-box">
+                    <span class="stat-value">100%</span>
+                    <div class="stat-label">Solved</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="filter-bar">
+        <div class="container">
+            <div class="filter-tabs fade-in-up">
+                <button class="filter-tab active" onclick="filterPapers('all', this)">All Papers</button>
+                <button class="filter-tab" onclick="filterPapers('recent', this)">2022-2025</button>
+                <button class="filter-tab" onclick="filterPapers('legacy', this)">2017-2021</button>
+            </div>
+        </div>
+    </div>
+
+    <section class="section-wash">
+        <div class="container">
+            <div class="pyq-grid" id="pyqGrid">
+
+
+                <!-- 2024 Paper -->
+                <article class="pyq-card fade-in-up" data-year="2024" data-category="recent">
+                    <div class="card-header">
+
+                        <div class="year-badge">
+                            <div class="year-icon">📋</div>
+                            <div class="year-text">IAT 2024</div>
+                        </div>
+                        <div class="paper-info">
+                            <span class="info-tag"><i class="fas fa-clock"></i> 180 min</span>
+                            <span class="info-tag"><i class="fas fa-edit" style="color: var(--primary);"></i>
+                                Newest</span>
+                        </div>
+                        <p class="paper-description">
+                            Balanced difficulty with conceptual focus. Biology application-based questions dominated.
+                        </p>
+                        <div class="subject-bars">
+                            <div class="subj-segment subj-phy" style="flex: 1;"></div>
+                            <div class="subj-segment subj-chem" style="flex: 1;"></div>
+                            <div class="subj-segment subj-math" style="flex: 1;"></div>
+                            <div class="subj-segment subj-bio" style="flex: 1;"></div>
+                        </div>
+                        <div class="subj-labels">
+                            <span>Balanced</span>
+                            <span>NCERT Based</span>
+                        </div>
+                    </div>
+                    <div class="card-actions">
+                        <button class="action-btn primary" onclick="handlePaperClick('2024')">
+                            <i class="fas fa-play"></i> Start Test
+                        </button>
+                        <button class="action-btn success" onclick="handlePaperClick('2024')">
+                            <i class="fas fa-download"></i> PDF + Sol
+                        </button>
+                    </div>
+                </article>
+
+                <!-- 2023 Paper -->
+                <article class="pyq-card locked fade-in-up" data-year="2023" data-category="recent">
+                    <div class="lock-strip"><i class="fas fa-lock"></i> Premium Access Required</div>
+                    <div class="card-header" style="padding-top: 3rem;">
+
+                        <div class="year-badge">
+                            <div class="year-icon" style="background: var(--bg-wash); opacity: 0.5;">📊</div>
+                            <div class="year-text" style="color: var(--text-muted);">IAT 2023</div>
+                        </div>
+                        <div class="paper-info">
+                            <span class="info-tag"><i class="fas fa-clock"></i> 180 min</span>
+                            <span class="info-tag"><i class="fas fa-lock"></i> Locked</span>
+                        </div>
+                        <p class="paper-description" style="color: var(--text-light);">
+                            First NTA conduct year. Physics was calculation intensive with 12 numericals. Mathematics
+                            featured advanced calculus.
+                        </p>
+                        <div class="subject-bars">
+                            <div class="subj-segment subj-phy" style="flex: 1.4;"></div>
+                            <div class="subj-segment subj-chem" style="flex: 1;"></div>
+                            <div class="subj-segment subj-math" style="flex: 1.3;"></div>
+                            <div class="subj-segment subj-bio" style="flex: 0.9;"></div>
+                        </div>
+                        <div class="subj-labels">
+                            <span>Calc Heavy</span>
+                            <span>Physics Focus</span>
+                        </div>
+                    </div>
+                    <div class="card-actions">
+                        <button class="action-btn" style="grid-column: 1 / -1;" onclick="handlePaperClick('2023')">
+                            <i class="fas fa-unlock"></i> Unlock Access
+                        </button>
+                    </div>
+                </article>
+
+                <!-- 2022 Paper -->
+                <article class="pyq-card locked fade-in-up" data-year="2022" data-category="recent">
+                    <div class="lock-strip"><i class="fas fa-lock"></i> Premium Access Required</div>
+                    <div class="card-header" style="padding-top: 3rem;">
+
+                        <div class="year-badge">
+                            <div class="year-icon" style="background: var(--bg-wash); opacity: 0.5;">📝</div>
+                            <div class="year-text" style="color: var(--text-muted);">IAT 2022</div>
+                        </div>
+                        <div class="paper-info">
+                            <span class="info-tag"><i class="fas fa-clock"></i> 180 min</span>
+                            <span class="info-tag"><i class="fas fa-lock"></i> Locked</span>
+                        </div>
+                        <p class="paper-description" style="color: var(--text-light);">
+                            Post-pandemic pattern shift. Direct line-by-line NCERT questions in Biology. Good for
+                            confidence building.
+                        </p>
+                        <div class="subject-bars">
+                            <div class="subj-segment subj-phy" style="flex: 0.9;"></div>
+                            <div class="subj-segment subj-chem" style="flex: 1;"></div>
+                            <div class="subj-segment subj-math" style="flex: 0.9;"></div>
+                            <div class="subj-segment subj-bio" style="flex: 1.4;"></div>
+                        </div>
+                        <div class="subj-labels">
+                            <span>Theory Based</span>
+                            <span>High Scoring</span>
+                        </div>
+                    </div>
+                    <div class="card-actions">
+                        <button class="action-btn" style="grid-column: 1 / -1;" onclick="handlePaperClick('2022')">
+                            <i class="fas fa-unlock"></i> Unlock Access
+                        </button>
+                    </div>
+                </article>
+
+                <!-- 2021 Paper (Legacy/Locked) -->
+                <article class="pyq-card locked fade-in-up" data-year="2021" data-category="legacy">
+                    <div class="lock-strip"><i class="fas fa-lock"></i> Premium Access Required</div>
+                    <div class="card-header" style="padding-top: 3rem;">
+                        <div class="year-badge">
+                            <div class="year-icon" style="background: var(--bg-wash); opacity: 0.5;">📚</div>
+                            <div class="year-text" style="color: var(--text-muted);">IAT 2021</div>
+                        </div>
+                        <div class="paper-info">
+                            <span class="info-tag"><i class="fas fa-clock"></i> 180 min</span>
+                            <span class="info-tag"><i class="fas fa-lock"></i> Locked</span>
+                        </div>
+                        <p class="paper-description" style="color: var(--text-light);">
+                            IISER entrance before NTA takeover. Different marking scheme. Includes detailed video
+                            solutions.
+                        </p>
+                    </div>
+                    <div class="card-actions">
+                        <button class="action-btn" style="grid-column: 1 / -1;" onclick="handlePaperClick('2021')">
+                            <i class="fas fa-unlock"></i> Unlock Access
+                        </button>
+                    </div>
+                </article>
+
+                <!-- 2020 Paper (Legacy/Locked) -->
+                <article class="pyq-card locked fade-in-up" data-year="2020" data-category="legacy">
+                    <div class="lock-strip"><i class="fas fa-lock"></i> Premium Access Required</div>
+                    <div class="card-header" style="padding-top: 3rem;">
+                        <div class="year-badge">
+                            <div class="year-icon" style="background: var(--bg-wash); opacity: 0.5;">📚</div>
+                            <div class="year-text" style="color: var(--text-muted);">IAT 2020</div>
+                        </div>
+                        <div class="paper-info">
+                            <span class="info-tag"><i class="fas fa-clock"></i> 180 min</span>
+                            <span class="info-tag"><i class="fas fa-lock"></i> Locked</span>
+                        </div>
+                        <p class="paper-description" style="color: var(--text-light);">
+                            Online proctored format due to pandemic. Aptitude section included. Complete solution set
+                            available.
+                        </p>
+                    </div>
+                    <div class="card-actions">
+                        <button class="action-btn" style="grid-column: 1 / -1;" onclick="handlePaperClick('2020')">
+                            <i class="fas fa-unlock"></i> Unlock Access
+                        </button>
+                    </div>
+                </article>
+
+                <!-- 2019 Paper (Legacy/Locked) -->
+                <article class="pyq-card locked fade-in-up" data-year="2019" data-category="legacy">
+                    <div class="lock-strip"><i class="fas fa-lock"></i> Premium Access Required</div>
+                    <div class="card-header" style="padding-top: 3rem;">
+                        <div class="year-badge">
+                            <div class="year-icon" style="background: var(--bg-wash); opacity: 0.5;">📚</div>
+                            <div class="year-text" style="color: var(--text-muted);">IAT 2019</div>
+                        </div>
+                        <div class="paper-info">
+                            <span class="info-tag"><i class="fas fa-clock"></i> 180 min</span>
+                            <span class="info-tag"><i class="fas fa-lock"></i> Locked</span>
+                        </div>
+                        <p class="paper-description" style="color: var(--text-light);">
+                            Standard offline format. Balanced difficulty with good conceptual questions.
+                        </p>
+                    </div>
+                    <div class="card-actions">
+                        <button class="action-btn" style="grid-column: 1 / -1;" onclick="handlePaperClick('2019')">
+                            <i class="fas fa-unlock"></i> Unlock Access
+                        </button>
+                    </div>
+                </article>
+
+                <!-- 2018 Paper (New Addition) -->
+                <article class="pyq-card locked fade-in-up" data-year="2018" data-category="legacy">
+                    <div class="lock-strip"><i class="fas fa-lock"></i> Premium Access Required</div>
+                    <div class="card-header" style="padding-top: 3rem;">
+                        <div class="year-badge">
+                            <div class="year-icon" style="background: var(--bg-wash); opacity: 0.5;">📚</div>
+                            <div class="year-text" style="color: var(--text-muted);">IAT 2018</div>
+                        </div>
+                        <div class="paper-info">
+                            <span class="info-tag"><i class="fas fa-clock"></i> 180 min</span>
+                            <span class="info-tag"><i class="fas fa-lock"></i> Locked</span>
+                        </div>
+                        <p class="paper-description" style="color: var(--text-light);">
+                            Comprehensive paper covering diverse topics. Excellent for testing core concept application.
+                        </p>
+                    </div>
+                    <div class="card-actions">
+                        <button class="action-btn" style="grid-column: 1 / -1;" onclick="handlePaperClick('2018')">
+                            <i class="fas fa-unlock"></i> Unlock Access
+                        </button>
+                    </div>
+                </article>
+
+                <!-- 2017 Paper (New Addition) -->
+                <article class="pyq-card locked fade-in-up" data-year="2017" data-category="legacy">
+                    <div class="lock-strip"><i class="fas fa-lock"></i> Premium Access Required</div>
+                    <div class="card-header" style="padding-top: 3rem;">
+                        <div class="year-badge">
+                            <div class="year-icon" style="background: var(--bg-wash); opacity: 0.5;">📚</div>
+                            <div class="year-text" style="color: var(--text-muted);">IAT 2017</div>
+                        </div>
+                        <div class="paper-info">
+                            <span class="info-tag"><i class="fas fa-clock"></i> 180 min</span>
+                            <span class="info-tag"><i class="fas fa-lock"></i> Locked</span>
+                        </div>
+                        <p class="paper-description" style="color: var(--text-light);">
+                            The very first IAT paper. Essential for understanding the origins of the exam pattern.
+                        </p>
+                    </div>
+                    <div class="card-actions">
+                        <button class="action-btn" style="grid-column: 1 / -1;" onclick="handlePaperClick('2017')">
+                            <i class="fas fa-unlock"></i> Unlock Access
+                        </button>
+                    </div>
+                </article>
+
+                <!-- 2017-2019 Bundle -->
+                <article class="pyq-card locked fade-in-up" data-year="legacy" data-category="legacy">
+                    <div class="lock-strip" style="background: linear-gradient(90deg, #8b5cf6, #a78bfa);">
+                        <i class="fas fa-archive"></i> Legacy Bundle (2017-2024)
+                    </div>
+                    <div class="card-header" style="padding-top: 3rem;">
+                        <div class="year-badge">
+                            <div class="year-icon" style="background: #ede9fe; opacity: 0.8;">🏛️</div>
+                            <div class="year-text" style="color: var(--text-muted);">2017-2024</div>
+                        </div>
+                        <div class="paper-info">
+                            <span class="info-tag"><i class="fas fa-layer-group"></i> 6 Papers</span>
+                            <span class="info-tag"><i class="fas fa-file-pdf"></i> PDF Only</span>
+                        </div>
+                        <p class="paper-description" style="color: var(--text-light);">
+                            Classic IAT pattern. Essential for understanding the evolution of the exam. Bundle includes
+                            all papers + detailed solutions.
+                        </p>
+                    </div>
+                    <div class="card-actions">
+                        <button class="action-btn"
+                            style="grid-column: 1 / -1; background: linear-gradient(90deg, #8b5cf6, #a78bfa); color: white;"
+                            onclick="handlePaperClick('bundle')">
+                            <i class="fas fa-download"></i> Get Bundle (₹199)
+                        </button>
+                    </div>
+                </article>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Action Selection Modal -->
+    <div id="actionModal" class="modal-overlay" onclick="closeModal(event)">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <h3 class="modal-title" id="modalYearTitle">IAT 2025</h3>
+                <button class="close-btn" onclick="closeModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p style="color: var(--text-muted); margin-bottom: 1.5rem;">Choose how you want to practice this paper:
+                </p>
+
+                <div class="action-grid">
+                    <div class="action-card" onclick="startTest()">
+                        <div class="action-icon" style="color: var(--primary);">
+                            <i class="fas fa-laptop"></i>
+                        </div>
+                        <div class="action-details">
+                            <h4>Interactive Test</h4>
+                            <p>Timed simulation with instant scoring and analytics</p>
+                        </div>
+                        <i class="fas fa-arrow-right" style="color: var(--primary); margin-left: auto;"></i>
+                    </div>
+
+                    <a href="#" class="action-card" id="downloadLink" onclick="handleDownload(event)"
+                        style="text-decoration: none; color: inherit;">
+                        <div class="action-icon" style="color: var(--success);">
+                            <i class="fas fa-file-pdf"></i>
+                        </div>
+                        <div class="action-details">
+                            <h4>Download Question Paper</h4>
+                            <p>Download question paper with solution</p>
+                        </div>
+                        <i class="fas fa-download" style="color: var(--success); margin-left: auto;"></i>
+                    </a>
+                </div>
+
+                <div class="file-meta">
+                    <div class="meta-item">
+                        <i class="fas fa-file-alt"></i>
+                        <span>PDF size: ~2.4 MB</span>
+                    </div>
+                    <div class="meta-item">
+                        <i class="fas fa-clock"></i>
+                        <span>Last updated: Jan 2026</span>
+                    </div>
+                    <div class="meta-item">
+                        <i class="fas fa-check-circle"></i>
+                        <span>Verified by IISER Alumni</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- AUTH SHEET (Login Prompt) - Bottom Sheet Style -->
+    <div id="auth-sheet-overlay" class="modal-overlay" onclick="closeAuthSheet()" style="align-items: flex-end;">
+        <div class="modal-content"
+            style="margin: 0; border-radius: 24px 24px 0 0; width: 100%; max-width: 600px; transform: translateY(100%); transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1); padding: 2rem; text-align: center;">
+            <div style="width: 40px; height: 5px; background: #e2e8f0; border-radius: 10px; margin: 0 auto 1.5rem;">
+            </div>
+            <h3 class="modal-title" style="margin-bottom: 0.5rem; color: var(--secondary);">Authentication Required</h3>
+            <p style="color: var(--text-muted); margin-bottom: 2rem;">Please log in to attempt mock tests and download
+                PDFs.</p>
+            <div style="display: flex; gap: 1rem;">
+                <button onclick="redirectToAuth('login')" class="btn btn-primary btn-full" style="padding: 0.8rem;">Log
+                    In</button>
+                <button onclick="redirectToAuth('signup')" class="btn btn-outline btn-full"
+                    style="padding: 0.8rem;">Sign Up</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Premium Modal -->
+    <div id="premiumModal" class="modal-overlay" onclick="closeModal(event)">
+        <div class="modal-content" style="text-align: center; max-width: 450px;" onclick="event.stopPropagation()">
+            <div
+                style="width: 64px; height: 64px; background: var(--primary-soft); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem; color: var(--primary); font-size: 1.5rem;">
+                <i class="fas fa-crown"></i>
+            </div>
+            <h3 class="modal-title" style="margin-bottom: 0.5rem;">Unlock Complete Archive</h3>
+            <p style="color: var(--text-muted); margin-bottom: 1.5rem;">Get access to all PYQs from 2017-2021 with HD
+                solutions and video explanations.</p>
+
+            <div
+                style="background: var(--bg-wash); padding: 1.5rem; border-radius: var(--radius-md); margin-bottom: 1.5rem; border: 2px solid var(--primary-soft);">
+                <div style="font-size: 2.5rem; font-weight: 800; color: var(--primary);">₹199</div>
+                <div
+                    style="color: var(--text-muted); font-size: 0.875rem; text-decoration: line-through; margin-bottom: 0.5rem;">
+                    ₹499</div>
+                <div style="font-size: 0.875rem; color: var(--success); font-weight: 600;">60% off • Limited time</div>
+            </div>
+
+            <button class="btn btn-primary btn-upgrade-now" style="width: 100%; margin-bottom: 0.75rem;"
+                onclick="buyPro()">
+                Unlock Now
+            </button>
+            <button class="btn btn-outline" style="width: 100%;" onclick="closeModal()">
+                Maybe Later
+            </button>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast">
+        <i class="fas fa-info-circle"></i>
+        <span id="toastMessage">Notification</span>
+    </div>
+
+    <!-- Razorpay SDK -->
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast">
+        <i class="fas fa-circle-check"></i>
+        <span id="toastMessage">Downloading PDF...</span>
+    </div>
+
+    <!-- FOOTER -->
+    <footer style="background: white; border-top: 1px solid var(--border); padding: 5rem 0 2rem;">
+        <div class="container">
+            <div
+                style="display: flex; flex-wrap: wrap; gap: 3rem; justify-content: space-between; margin-bottom: 3rem;">
+                <div style="max-width: 320px;">
+                    <a href="../index.html" class="logo" style="margin-bottom: 1rem;">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path
+                                d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z">
+                            </path>
+                        </svg>
+                        IISER Smart Prep
+                    </a>
+                    <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 1rem;">Empowering scientific
+                        minds to reach India's premier research institutes through data and strategy.</p>
+                </div>
+
+                <div style="display: flex; gap: 4rem; flex-wrap: wrap;">
+                    <div>
+                        <h4 style="margin-bottom: 1rem; font-size: 0.9rem; font-weight: 700; color: var(--secondary);">
+                            Platform</h4>
+                        <ul style="display: flex; flex-direction: column; gap: 0.75rem;">
+                            <li><a href="../ai_tutor.html" style="color: var(--text-muted); font-size: 0.9rem;">AI
+                                    Tutor</a></li>
+                            <li><a href="../mock_test/full_mock_test_homepage.html"
+                                    style="color: var(--text-muted); font-size: 0.9rem;">Mock Tests</a></li>
+                            <li><a href="../index.html#pricing"
+                                    style="color: var(--text-muted); font-size: 0.9rem;">Pricing</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 style="margin-bottom: 1rem; font-size: 0.9rem; font-weight: 700; color: var(--secondary);">
+                            Support</h4>
+                        <ul style="display: flex; flex-direction: column; gap: 0.75rem;">
+                            <li><a href="../index.html#faq" style="color: var(--text-muted); font-size: 0.9rem;">FAQ</a>
+                            </li>
+                            <li><a href="/frontend/content.html"
+                                    style="color: var(--text-muted); font-size: 0.9rem;">Contact</a></li>
+                            <li><a href="../privacy.html" style="color: var(--text-muted); font-size: 0.9rem;">Privacy
+                                    Policy</a></li>
+                            <li><a href="../terms.html" style="color: var(--text-muted); font-size: 0.9rem;">Terms &
+                                    Conditions</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div
+                style="text-align: center; border-top: 1px solid var(--border); padding-top: 2rem; color: var(--text-light); font-size: 0.85rem;">
+                &copy; 2026 IISER Smart Prep. All rights reserved. Not affiliated with IISERs Joint Admissions
+                Committee.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        let currentYear = '';
+
+        // --- AUTH & PLAN STATE MANAGEMENT ---
+        const token = localStorage.getItem("IAT_TOKEN");
+
+        // 🔒 ALWAYS START LOCKED (Happens by HTML default)
+
+        // 🔄 THEN SYNC FROM BACKEND
+        syncPlanFromBackend();
+
+        async function syncPlanFromBackend() {
+            if (!token) return;
+
+            try {
+                const res = await fetch("http://localhost:5000/api/me", {
+                    headers: { "Authorization": "Bearer " + token }
+                });
+
+                if (!res.ok) return;
+
+                const user = await res.json();
+                localStorage.setItem("IAT_PLAN", user.plan);
+
+                if (user.plan === "PRO") {
+                    unlockUI();
+                }
+            } catch (e) {
+                console.error("Plan sync failed", e);
+            }
+        }
+
+        function unlockUI() {
+            const lockedCards = document.querySelectorAll('.pyq-card.locked');
+
+            lockedCards.forEach(card => {
+                const year = card.getAttribute('data-year');
+
+                // 1. Remove structure locks
+                card.classList.remove('locked');
+                const lockStrip = card.querySelector('.lock-strip');
+                if (lockStrip) lockStrip.remove();
+
+                // 2. Fix visuals
+                const yearIcon = card.querySelector('.year-icon');
+                if (yearIcon) {
+                    yearIcon.style.background = 'var(--primary-soft)';
+                    yearIcon.style.opacity = '1';
+                }
+
+                const yearText = card.querySelector('.year-text');
+                if (yearText) yearText.style.color = 'var(--secondary)';
+
+                const paperInfo = card.querySelector('.paper-info');
+                // Replace locked icon with clock if needed, or just remove lock text
+                // Simpler: Just refresh the innerHTML of paper-info for consistency if possible, 
+                // but modifying valid elements is safer.
+                // Let's just find the lock tag and remove/replace it.
+                if (paperInfo) {
+                    const lockTag = paperInfo.querySelector('.fa-lock');
+                    if (lockTag && lockTag.parentElement) {
+                        // Replace "Locked" with "Full Access" or valid time
+                        lockTag.parentElement.innerHTML = '<i class="fas fa-check-circle" style="color: var(--success);"></i> Unlocked';
+                    }
+                }
+
+                // 3. Replace Action Buttons
+                const actionContainer = card.querySelector('.card-actions');
+
+                if (year === 'legacy') {
+                    // Bundle
+                    actionContainer.innerHTML = `
+                        <button class="action-btn success" style="grid-column: 1 / -1;" onclick="openActionModal('bundle')">
+                            <i class="fas fa-download"></i> Download Bundle PDF
+                        </button>
+                    `;
+                } else {
+                    // 2021, 2020 etc
+                    actionContainer.innerHTML = `
+                        <button class="action-btn primary" onclick="openActionModal('${year}')">
+                            <i class="fas fa-play"></i> Start Test
+                        </button>
+                        <button class="action-btn success" onclick="openActionModal('${year}')">
+                            <i class="fas fa-download"></i> PDF + Sol
+                        </button>
+                    `;
+                }
+            });
+        }
+
+
+        // Intersection Observer for animations
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.fade-in-up').forEach(el => observer.observe(el));
+
+        // Header scroll
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('header');
+            if (window.scrollY > 20) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+
+        // Mobile menu
+        function toggleMenu() {
+            const nav = document.querySelector('.nav-links');
+            nav.classList.toggle('active');
+        }
+
+        // Filter papers
+        function filterPapers(category, btn) {
+            document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+            btn.classList.add('active');
+
+            const cards = document.querySelectorAll('.pyq-card');
+            cards.forEach(card => {
+                if (category === 'all') {
+                    card.style.display = 'flex';
+                } else {
+                    const cardCategory = card.getAttribute('data-category');
+                    if (cardCategory && cardCategory.includes(category)) {
+                        card.style.display = 'flex';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                }
+            });
+        }
+
+        // Handle Paper Click (Smart Access)
+        async function handlePaperClick(year) {
+            // 1. Auth Guard
+            const token = localStorage.getItem("IAT_TOKEN");
+            if (!token) {
+                openAuthSheet();
+                return;
+            }
+
+            // 2. Free Papers (2024 Only)
+            // If logic relies on year not being in locked set
+            const lockedYears = ['2023', '2022', '2021', '2020', '2019', '2018', '2017', 'bundle'];
+            if (!lockedYears.includes(year)) {
+                openActionModal(year);
+                return;
+            }
+
+            // 3. Locked Papers -> Live Check
+            // If already visually unlocked (e.g. from previous check), just open
+            // But unlockUI removes .locked class. We can check that?
+            // Safer to just check plan or re-verify. Live check is what was requested.
+
+            // Optimization: If local storage says PRO, maybe just open? 
+            // The request said "follow logic of full mock test" which implies checking logic.
+            // Full mock check does: startMock -> check token -> (if locked) -> fetch /api/me -> if PRO -> unlock & go.
+
+            showToast("Verifying Access...");
+
+            try {
+                const res = await fetch("http://localhost:5000/api/me", {
+                    headers: { "Authorization": "Bearer " + token }
+                });
+
+                if (res.ok) {
+                    const user = await res.json();
+                    // Update Local Source of Truth
+                    localStorage.setItem("IAT_PLAN", user.plan);
+
+                    if (user.plan === 'PRO') {
+                        unlockUI(); // Unlock everything for convenience
+                        if (year === 'bundle') {
+                            openActionModal('bundle');
+                        } else {
+                            openActionModal(year);
+                        }
+                    } else {
+                        window.location.href = "../index.html#pricing";
+                    }
+                } else {
+                    // Auth failed or server error
+                    window.location.href = "../index.html#pricing";
+                }
+            } catch (e) {
+                console.error("Access Verification Failed", e);
+                window.location.href = "../index.html#pricing";
+            }
+        }
+
+        // Open Action Modal
+        function openActionModal(year) {
+            currentYear = year;
+
+            if (year === 'bundle') {
+                // Bundle specific logic
+                document.getElementById('modalYearTitle').textContent = `Legacy Bundle (2017-2024)`;
+                // Maybe hide "Interactive Test" option for bundle if it's PDF only?
+                // For now, let's just point download link to a bundle file
+                const downloadLink = document.getElementById('downloadLink');
+                downloadLink.href = `https://collection.cloudinary.com/dhb8qmnxt/33f1a9d8e663061ea22eafae17c24140`; // Cloudinary Bundle Link
+
+                // Hide start test button for bundle if needed, or keep it if we have tests
+                // Assuming PDF only for bundle based on UI "PDF Only" tag
+                // We can hide the first child of action-grid
+                document.querySelector('.action-grid .action-card:first-child').style.display = 'none';
+            } else {
+                document.getElementById('modalYearTitle').textContent = `IAT ${year}`;
+                const downloadLink = document.getElementById('downloadLink');
+                downloadLink.href = `pyq-${year}.html`;
+
+                // Ensure start test is visible
+                document.querySelector('.action-grid .action-card:first-child').style.display = 'flex';
+            }
+
+
+            document.getElementById('actionModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        // Show Premium Modal
+        function showPremiumModal() {
+            document.getElementById('premiumModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        // Close Modal
+        function closeModal(e) {
+            if (!e || e.target.classList.contains('modal-overlay') || e.target.classList.contains('close-btn') || e.target.getAttribute('onclick') === 'closeModal()') {
+                document.querySelectorAll('.modal-overlay').forEach(m => m.classList.remove('active'));
+                document.body.style.overflow = 'auto';
+            }
+        }
+
+        // --- Auth Sheet Logic ---
+        function openAuthSheet() {
+            const sheet = document.getElementById('auth-sheet-overlay');
+            sheet.classList.add('active');
+            // Note: .active handles opacity/visibility from CSS
+            // We need to animate the card up.
+            setTimeout(() => {
+                sheet.querySelector('.modal-content').style.transform = 'translateY(0)';
+            }, 10);
+        }
+
+        function closeAuthSheet() {
+            const sheet = document.getElementById('auth-sheet-overlay');
+            sheet.querySelector('.modal-content').style.transform = 'translateY(100%)';
+            setTimeout(() => {
+                sheet.classList.remove('active');
+            }, 300);
+        }
+
+        function redirectToAuth(mode) {
+            const currentUrl = encodeURIComponent(window.location.href);
+            // Assuming login.html is one level up from pyqs/pyq.html -> ../login.html
+            window.location.href = `../login.html?mode=${mode}&redirect=${currentUrl}`;
+        }
+
+
+        // Start Test
+        function startTest() {
+            if (currentYear === 'bundle') return; // No test for bundle
+
+            // GUARD: Check Auth
+            const token = localStorage.getItem("IAT_TOKEN");
+            if (!token) {
+                // Close the action modal first if it's open, or just open auth sheet on top?
+                // Better to close action modal to avoid clutter, or stack them.
+                // Closing action modal feels cleaner.
+                document.getElementById('actionModal').classList.remove('active');
+                openAuthSheet();
+                return;
+            }
+
+            showToast(`Loading IAT ${currentYear} Test Environment...`);
+            setTimeout(() => {
+                window.location.href = `start-test-pyq.html?year=${currentYear}`;
+            }, 1000);
+        }
+
+        // 4. RAZORPAY PAYMENT LOGIC
+        async function buyPro() {
+            const token = localStorage.getItem("IAT_TOKEN");
+            if (!token) { closeModal(); openAuthSheet(); return; }
+
+            const btn = document.querySelector('.btn-upgrade-now');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+            btn.disabled = true;
+
+            try {
+                // Create Order
+                const res = await fetch("http://localhost:5000/api/create-order", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json", "Authorization": `Bearer ${token}` }
+                });
+                const order = await res.json();
+                if (order.error) throw new Error(order.error);
+
+                // Initialize Razorpay
+                const options = {
+                    key: "rzp_test_S6zF2Dd2liRsY6", // Test Key ID
+                    amount: order.amount,
+                    currency: "INR",
+                    order_id: order.id,
+                    name: "IISER Smart Prep",
+                    description: "Pro Plan Upgrade",
+                    handler: function (response) { verifyPayment(response, btn, originalText); },
+                    theme: { color: "#4f46e5" },
+                    modal: {
+                        ondismiss: function () {
+                            btn.innerHTML = originalText;
+                            btn.disabled = false;
+                        }
+                    }
+                };
+                const rzp = new Razorpay(options);
+                rzp.open();
+
+            } catch (err) {
+                alert("Payment Init Failed: " + err.message);
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+            }
+        }
+
+        async function verifyPayment(response, btn, originalText) {
+            const token = localStorage.getItem("IAT_TOKEN");
+            try {
+                const res = await fetch("http://localhost:5000/api/verify-payment", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json", "Authorization": `Bearer ${token}` },
+                    body: JSON.stringify(response)
+                });
+                const data = await res.json();
+                if (data.success) {
+                    localStorage.setItem("IAT_PLAN", "PRO");
+                    closeModal(); // Close premium modal
+                    unlockUI();   // Unlock content
+                    showToast("🎉 Welcome to Pro! All tests unlocked.");
+                } else {
+                    alert("Payment verification failed.");
+                    btn.innerHTML = originalText;
+                    btn.disabled = false;
+                }
+            } catch (e) {
+                console.error(e);
+                alert("Error verifying payment.");
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+            }
+        }
+
+        // Handle Download
+        function handleDownload(e) {
+            e.preventDefault(); // Stop default link behavior
+
+            const token = localStorage.getItem("IAT_TOKEN");
+            if (!token) {
+                document.getElementById('actionModal').classList.remove('active');
+                openAuthSheet();
+                return;
+            }
+
+            // Proceed with download
+            // We need to get the href from the element or from logic
+            const link = document.getElementById('downloadLink');
+            const href = link.href;
+
+            showToast("Starting Download...");
+            // Simulate download or redirect
+            setTimeout(() => {
+                window.location.href = href;
+            }, 500);
+        }
+
+        // Toast Notification
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toastMessage').textContent = message;
+            toast.classList.add('show');
+
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeModal();
+                closeAuthSheet();
+            }
+        });
+    </script>
+</body>
+
+</html>

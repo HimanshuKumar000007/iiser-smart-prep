@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Admin Dashboard</title>
+</head>
+
+<body>
+
+    <h2>Admin Dashboard</h2>
+    <table border="1" cellpadding="8">
+        <thead>
+            <tr>
+                <th>Email</th>
+                <th>Plan</th>
+                <th>Role</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody id="users"></tbody>
+    </table>
+
+    <script>
+        const token = localStorage.getItem("IAT_TOKEN");
+
+        // 🔒 PROTECT ADMIN PAGE
+        fetch("http://localhost:5000/api/me", {
+            headers: { Authorization: "Bearer " + token }
+        })
+            .then(res => res.json())
+            .then(user => {
+                if (user.role !== "admin") {
+                    alert("Access denied");
+                    window.location.href = "index.html";
+                }
+            });
+
+        async function loadUsers() {
+            const res = await fetch("http://localhost:5000/api/admin/users", {
+                headers: { Authorization: "Bearer " + token }
+            });
+
+            const users = await res.json();
+            const tbody = document.getElementById("users");
+
+            users.forEach(u => {
+                const tr = document.createElement("tr");
+                tr.innerHTML = `
+      <td>${u.email}</td>
+      <td>${u.plan}</td>
+      <td>${u.role}</td>
+      <td>
+        <button onclick="setPlan('${u.email}', 'PRO')">PRO</button>
+        <button onclick="setPlan('${u.email}', 'FREE')">FREE</button>
+      </td>
+    `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        async function setPlan(email, plan) {
+            await fetch("http://localhost:5000/api/admin/set-plan", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: "Bearer " + token
+                },
+                body: JSON.stringify({ email, plan })
+            });
+
+            alert("Updated!");
+            location.reload();
+        }
+
+        loadUsers();
+    </script>
+
+</body>
+
+</html>

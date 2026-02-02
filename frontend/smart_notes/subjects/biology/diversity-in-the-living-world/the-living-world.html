@@ -1,0 +1,1491 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Living World | Advanced Notes</title>
+
+    <!-- Google Fonts: Inter & JetBrains Mono -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap"
+        rel="stylesheet">
+
+    <style>
+        /* =========================================
+           1. DESIGN SYSTEM
+           ========================================= */
+        :root {
+            --primary: #4f46e5;
+            --primary-dark: #4338ca;
+            --primary-soft: #e0e7ff;
+            --secondary: #0f172a;
+
+            --text-main: #1e293b;
+            --text-muted: #475569;
+            --text-light: #94a3b8;
+
+            --bg-wash: #f8fafc;
+            --bg-white: #ffffff;
+            --border: #e2e8f0;
+
+            --accent-amber: #f59e0b;
+            --accent-amber-soft: #fffbeb;
+
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --radius-pill: 100px;
+
+            --container-width: 1200px;
+            --nav-height: 70px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            outline: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: 100px;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            color: var(--text-main);
+            background: var(--bg-wash);
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+
+        /* =========================================
+           2. HEADER & PROGRESS BAR
+           ========================================= */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border);
+            height: var(--nav-height);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .progress-bar {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: var(--primary);
+            width: 0%;
+            transition: width 0.1s;
+            z-index: 1001;
+        }
+
+        .header-inner {
+            width: 92%;
+            max-width: var(--container-width);
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-weight: 800;
+            color: var(--secondary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1.1rem;
+            text-decoration: none;
+        }
+
+        .btn-action {
+            padding: 0.5rem 1rem;
+            font-size: 0.85rem;
+            font-weight: 600;
+            border-radius: var(--radius-pill);
+            border: 1px solid var(--border);
+            color: var(--text-main);
+            background: white;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .btn-action:hover {
+            background: var(--bg-wash);
+        }
+
+        /* =========================================
+           3. LAYOUT (Sidebar + Main)
+           ========================================= */
+        .docs-container {
+            width: 92%;
+            max-width: var(--container-width);
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 260px 1fr;
+            gap: 4rem;
+            padding-top: calc(var(--nav-height) + 2rem);
+            padding-bottom: 6rem;
+        }
+
+        /* Sidebar (Desktop) */
+        .sidebar {
+            position: sticky;
+            top: calc(var(--nav-height) + 2rem);
+            height: calc(100vh - var(--nav-height) - 4rem);
+            overflow-y: auto;
+            padding-right: 1rem;
+            display: block;
+        }
+
+        /* Scrollbar Styling */
+        .sidebar::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .sidebar::-webkit-scrollbar-thumb {
+            background: var(--border);
+            border-radius: 4px;
+        }
+
+        .toc-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .toc-link {
+            display: block;
+            padding: 0.6rem 0.8rem;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            border-radius: 8px;
+            font-weight: 500;
+            text-decoration: none;
+            transition: 0.2s;
+        }
+
+        .toc-link:hover {
+            color: var(--primary);
+            background: var(--bg-white);
+        }
+
+        .toc-link.active {
+            color: var(--primary);
+            background: var(--primary-soft);
+            font-weight: 600;
+        }
+
+        .toc-header {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--text-light);
+            font-weight: 700;
+            margin: 1.5rem 0 0.5rem 0.5rem;
+        }
+
+        /* Main Content */
+        .content-area {
+            min-width: 0;
+        }
+
+        .chapter-title {
+            font-size: clamp(1.8rem, 5vw, 2.75rem);
+            font-weight: 800;
+            color: var(--secondary);
+            margin-bottom: 0.75rem;
+            letter-spacing: -0.03em;
+            line-height: 1.2;
+        }
+
+        .chapter-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 2.5rem;
+        }
+
+        .meta-pill {
+            background: white;
+            padding: 0.35rem 0.85rem;
+            border-radius: var(--radius-pill);
+            border: 1px solid var(--border);
+        }
+
+        /* Typography Styles */
+        h2 {
+            font-size: clamp(1.5rem, 3vw, 1.8rem);
+            font-weight: 700;
+            color: var(--secondary);
+            margin: 3.5rem 0 1.25rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        /* Purple mark next to H2 */
+        h2::before {
+            content: '';
+            width: 6px;
+            height: 24px;
+            background: var(--primary);
+            border-radius: 4px;
+        }
+
+        h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--secondary);
+            margin: 2rem 0 0.75rem;
+        }
+
+        p {
+            margin-bottom: 1.25rem;
+            font-size: 1.05rem;
+            color: var(--text-muted);
+        }
+
+        ul,
+        ol {
+            margin-bottom: 1.5rem;
+            padding-left: 1.5rem;
+            color: var(--text-muted);
+        }
+
+        li {
+            margin-bottom: 0.5rem;
+        }
+
+        /* =========================================
+           4. SPECIAL COMPONENTS
+           ========================================= */
+
+        /* Math/Formula Box */
+        .formula-box {
+            background: var(--secondary);
+            color: white;
+            padding: 1.5rem;
+            border-radius: var(--radius-md);
+            margin: 1.5rem 0;
+            font-family: 'JetBrains Mono', monospace;
+            overflow-x: auto;
+            border-left: 4px solid var(--primary);
+            box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.1);
+        }
+
+        .formula-desc {
+            font-size: 0.9rem;
+            color: var(--text-light);
+            margin-top: 0.75rem;
+            font-family: 'Inter', sans-serif;
+            opacity: 0.8;
+        }
+
+        /* Exam Tip Box */
+        .exam-tip {
+            background: var(--accent-amber-soft);
+            border: 1px solid rgba(245, 158, 11, 0.2);
+            padding: 1.25rem;
+            border-radius: var(--radius-md);
+            margin: 2rem 0;
+            display: flex;
+            gap: 1rem;
+            align-items: flex-start;
+        }
+
+        .exam-tip-icon {
+            color: var(--accent-amber);
+            font-size: 1.5rem;
+            flex-shrink: 0;
+            margin-top: -2px;
+        }
+
+        .exam-tip-content h4 {
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: #92400e;
+            margin-bottom: 0.25rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .exam-tip-content p {
+            color: #78350f;
+            font-size: 0.95rem;
+            margin: 0;
+        }
+
+        /* Responsive Table */
+        .table-container {
+            width: 100%;
+            overflow-x: auto;
+            margin: 2rem 0;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            background: white;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 600px;
+        }
+
+        th {
+            background: var(--bg-wash);
+            text-align: left;
+            padding: 1rem;
+            font-weight: 600;
+            color: var(--secondary);
+            border-bottom: 1px solid var(--border);
+            white-space: nowrap;
+        }
+
+        td {
+            padding: 1rem;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.95rem;
+            color: var(--text-muted);
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        /* Flashcards */
+        .flash-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .flashcard {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: 2rem;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            min-height: 160px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            perspective: 1000px;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .flashcard:active {
+            transform: scale(0.98);
+        }
+
+        .flash-front {
+            font-weight: 600;
+            color: var(--secondary);
+            font-size: 1.1rem;
+            transition: 0.3s;
+        }
+
+        .flash-back {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--primary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: 0.3s ease;
+            font-size: 1rem;
+            pointer-events: none;
+        }
+
+        .flashcard.flipped .flash-back {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto;
+        }
+
+        .flashcard.flipped .flash-front {
+            opacity: 0;
+            transform: translateY(-20px);
+        }
+
+        /* =========================================
+           5. MOBILE OPTIMIZATIONS
+           ========================================= */
+        /* Mobile TOC Button (Floating) */
+        .mobile-toc-btn {
+            display: none;
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: var(--secondary);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 100px;
+            font-weight: 600;
+            box-shadow: 0 4px 15px rgba(15, 23, 42, 0.3);
+            z-index: 100;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .mobile-toc-btn:active {
+            transform: scale(0.95);
+        }
+
+        /* Mobile Drawer */
+        .mobile-drawer-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 2000;
+            opacity: 0;
+            visibility: hidden;
+            transition: 0.3s;
+            backdrop-filter: blur(4px);
+        }
+
+        .mobile-drawer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 70vh;
+            background: white;
+            border-radius: 20px 20px 0 0;
+            padding: 1.5rem;
+            transform: translateY(100%);
+            transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .mobile-drawer-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .mobile-drawer-overlay.active .mobile-drawer {
+            transform: translateY(0);
+        }
+
+        .drawer-handle {
+            width: 40px;
+            height: 5px;
+            background: var(--border);
+            border-radius: 10px;
+            margin: 0 auto 1.5rem;
+            flex-shrink: 0;
+        }
+
+        @media (max-width: 900px) {
+            .docs-container {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+                width: 90%;
+            }
+
+            .sidebar {
+                display: none;
+            }
+
+            /* Hide Sidebar */
+            .mobile-toc-btn {
+                display: flex;
+            }
+
+            /* Show Float Button */
+
+            .chapter-title {
+                font-size: 2.2rem;
+            }
+
+            .content-area {
+                padding-bottom: 4rem;
+            }
+
+        }
+
+        /* Make header buttons responsive */
+        .header-inner {
+            width: 95%;
+        }
+
+        .btn-action {
+            font-size: 0.8rem;
+            padding: 0.45rem 0.85rem;
+        }
+
+        /* Adjust visual density for mobile */
+        @media (max-width: 480px) {
+            .logo {
+                font-size: 1rem;
+            }
+
+            .header-inner {
+                padding: 0 0.5rem;
+            }
+
+            .btn-action {
+                padding: 0.4rem 0.6rem;
+            }
+        }
+
+        /* Note Images */
+        .note-image {
+            width: 100%;
+            max-width: 600px;
+            height: auto;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border);
+            margin: 2rem auto;
+            display: block;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .image-caption {
+            text-align: center;
+            font-size: 0.9rem;
+            color: var(--text-light);
+            margin-top: -1.5rem;
+            margin-bottom: 2.5rem;
+            font-style: italic;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Header & Progress -->
+    <header>
+        <div class="progress-bar" id="progressBar"></div>
+        <div class="header-inner">
+            <a href="/frontend/index.html" class="logo">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
+                    <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
+                </svg>
+                IISER Smart Prep
+            </a>
+            <div style="display: flex; gap: 0.8rem; align-items: center;">
+                <button onclick="window.print()" class="btn-action"
+                    style="display: flex; align-items: center; gap: 0.4rem;">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                        <polyline points="7 10 12 15 17 10"></polyline>
+                        <line x1="12" y1="15" x2="12" y2="3"></line>
+                    </svg>
+                    PDF
+                </button>
+                <a href="/frontend/smart_notes/smart_notes_home.html" class="btn-action">Back</a>
+            </div>
+        </div>
+    </header>
+
+    <div class="docs-container">
+
+        <!-- DESKTOP SIDEBAR -->
+        <nav class="sidebar">
+            <div id="desktop-toc-content">
+                <!-- Content injected via JS for reuse -->
+            </div>
+        </nav>
+
+        <!-- MAIN CONTENT -->
+        <main class="content-area">
+
+            <div
+                style="font-size: 0.9rem; font-weight: 700; color: var(--primary); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.5rem;">
+                Diversity in the Living World</div>
+            <h1 class="chapter-title">The Living World</h1>
+            <div class="chapter-meta">
+                <span class="meta-pill">Advanced Lecture 01</span>
+                <span class="meta-pill">⏱️ 25 min read</span>
+                <span class="meta-pill">🎯 Exam Focus</span>
+            </div>
+
+            <section id="intro">
+                <h2>1. Why study biological diversity? (Big picture)</h2>
+                <p>At its core, biological diversity—or biodiversity—is the incredible variety of life on Earth. It
+                    isn't just about the number of different species, but about the variety at every single level, from
+                    the smallest differences in genes within a species, to the vast number of different species
+                    themselves, all the way up to the complex ecosystems they form, like rainforests and coral reefs.
+                </p>
+                <p>Studying this diversity is fundamentally important for a few big reasons:</p>
+                <ul>
+                    <li><strong>It's the Engine of Our Planet:</strong> Biodiversity is the foundation for how
+                        ecosystems work. Different species perform different jobs—like purifying water, pollinating
+                        crops, and cycling nutrients—that create a stable and resilient environment for all life,
+                        including us.</li>
+                    <li><strong>It's a Library of Solutions:</strong> This variety of life is a massive natural library
+                        of resources that humanity depends on. It provides us with everything from food and clean water
+                        to the chemical compounds that become life-saving medicines.</li>
+                    <li><strong>It's a History Book of Life:</strong> The patterns of diversity across the planet tell
+                        the story of Earth's history, showing us how life has evolved and adapted over millions of
+                        years.</li>
+                </ul>
+                <p>For a student of biology, studying diversity is about connecting the dots. It helps to uncover the
+                    processes that create life's variety (like mutation, natural selection, and geological isolation)
+                    and to see the patterns that result from these processes (like why certain species are only found in
+                    certain places). The science of naming and classifying life, taxonomy, is the essential language
+                    that allows us to read this history book and understand both the patterns and the processes.</p>
+            </section>
+
+            <section id="levels">
+                <h2>2. Levels of biological diversity</h2>
+                <p>Biological diversity isn't just one thing; it's a concept that exists at three distinct and
+                    interconnected levels, from the microscopic to the global.</p>
+
+                <div style="margin: 2rem 0; text-align: center;">
+                    <img src="https://res.cloudinary.com/dhb8qmnxt/image/upload/v1769675120/diversity_levels_pyramid_pzhdnh.jpg"
+                        alt="Levels of Biological Diversity" class="note-image">
+                    <p class="image-caption">Figure 1: Visualizing the three interconnected levels of biodiversity.</p>
+                </div>
+
+                <h3>Genetic Diversity (Variety Within a Species)</h3>
+                <p>This is the diversity happening at the smallest scale. It's the sum of all the different genes (and
+                    their variations, called alleles) within a single species. Think of it as all the different colors,
+                    sizes, and disease resistances found in a population of dogs or tomato plants. This genetic
+                    variation is the raw material for adaptation and evolution, allowing species to survive in a
+                    changing world.</p>
+
+                <h3>Species Diversity (Variety Among Species)</h3>
+                <p>This is the level most people think of when they hear "biodiversity." It has two main components:</p>
+                <ul>
+                    <li><strong>Richness:</strong> The total number of different species in a given area.</li>
+                    <li><strong>Evenness:</strong> The relative abundance of those species. An ecosystem with 20
+                        different species that all have similar population sizes is considered more diverse than one
+                        where 95% of the individuals belong to just one species.</li>
+                </ul>
+
+                <h3>Ecosystem Diversity (Variety of Environments)</h3>
+                <p>This is the diversity at the largest scale. It refers to the variety of different habitats,
+                    communities, and ecological processes on the planet. The difference between a desert, a wetland, a
+                    coral reef, and a mountain forest is a measure of ecosystem diversity.</p>
+
+                <div class="exam-tip">
+                    <div class="exam-tip-icon">🔗</div>
+                    <div class="exam-tip-content">
+                        <h4>The Key Connection</h4>
+                        <p>These levels are all linked. The processes that create variation at the genetic level (like
+                            mutation and recombination) are the ultimate source of the raw material that, over long
+                            evolutionary timescales, generates the diversity we see at the species and ecosystem levels.
+                            It all starts with the genes.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="math">
+                <h2>3. How to measure species diversity</h2>
+                <p>The measurement of species diversity is a quantitative endeavor that involves several key metrics and
+                    indices. These tools allow for the objective comparison of biodiversity across different communities
+                    and habitats.</p>
+
+                <h3>Fundamental Components of Diversity</h3>
+                <ul>
+                    <li><strong>Species Richness (S):</strong> The most fundamental measure of diversity, representing
+                        the total count of species present in a defined area or community. While simple to ascertain, it
+                        does not account for the relative abundances of those species.</li>
+                    <li><strong>Species Evenness:</strong> A measure of how equitably the individuals in a community are
+                        distributed among the different species. A community with high evenness has species with similar
+                        population sizes, whereas a community with low evenness is dominated by one or a few species.
+                    </li>
+                </ul>
+
+                <div class="table-container" style="margin: 1.5rem 0;">
+                    <h4 style="margin-bottom: 0.5rem; font-size: 1rem; color: var(--secondary);">Example: Richness vs.
+                        Evenness</h4>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Community</th>
+                                <th>Species A</th>
+                                <th>Species B</th>
+                                <th>Richness</th>
+                                <th>Evenness</th>
+                                <th>Diversity</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Forest X</strong></td>
+                                <td>50 trees</td>
+                                <td>50 trees</td>
+                                <td>2</td>
+                                <td>High</td>
+                                <td><strong>Higher</strong></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Forest Y</strong></td>
+                                <td>99 trees</td>
+                                <td>1 tree</td>
+                                <td>2</td>
+                                <td>Low</td>
+                                <td><strong>Lower</strong></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <p style="font-size: 0.9rem; margin-top: 0.5rem; color: var(--text-muted);"><em>Both forests have
+                            the same richness (2 species), but Forest X is more diverse because of higher evenness.</em>
+                    </p>
+                </div>
+
+                <h3>Scales of Diversity (Whittaker)</h3>
+                <p>Ecologist R.H. Whittaker described diversity on three geographic scales:</p>
+                <div class="formula-box" style="text-align: left;">
+                    <div style="margin-bottom: 1rem;">
+                        <strong style="font-size: 1.2rem;">&alpha; (Alpha) = Local Diversity</strong>
+                        <p style="margin: 0.2rem 0 0 0; opacity: 0.8;">Diversity <em>within</em> a specific community or
+                            habitat
+                            (e.g., one field).</p>
+                    </div>
+                    <div style="margin-bottom: 1rem;">
+                        <strong style="font-size: 1.2rem;">&beta; (Beta) = Turnover</strong>
+                        <p style="margin: 0.2rem 0 0 0; opacity: 0.8;">The change in species composition
+                            <em>between</em> two
+                            distinct communities (e.g., field vs. forest).
+                        </p>
+                    </div>
+                    <div>
+                        <strong style="font-size: 1.2rem;">&gamma; (Gamma) = Regional Diversity</strong>
+                        <p style="margin: 0.2rem 0 0 0; opacity: 0.8;">Total diversity of a landscape (combines &alpha;
+                            and &beta;).
+                        </p>
+                    </div>
+                </div>
+
+                <h3>The Species–Area Relationship</h3>
+                <img src="https://res.cloudinary.com/dhb8qmnxt/image/upload/v1769675176/species_area_curve_h0pixe.jpg"
+                    alt="Species-Area Relationship Graph" class="note-image">
+                <p class="image-caption">Figure 2: The Species-Area Relationship</p>
+                <p>The relationship between habitat area and species richness is a foundational concept in biogeography,
+                    mathematically described by the species–area relationship:</p>
+                <div class="formula-box">
+                    S = cA<sup>z</sup>
+                    <div class="formula-desc">
+                        Where <strong>S</strong> = number of species, <strong>A</strong> = area of the habitat, and
+                        <strong>c</strong> & <strong>z</strong> are empirically derived constants.
+                    </div>
+                </div>
+                <p><strong>Interpretation:</strong> The exponent <em>z</em> (the slope in a log-log plot) is a critical
+                    parameter. For isolated habitats such as islands, <em>z</em> values are typically steeper (ranging
+                    from 0.15 to 0.35), indicating that species richness is more sensitive to changes in area compared
+                    to contiguous continental habitats.</p>
+
+                <h3>Common Diversity Indices</h3>
+                <p>To combine richness and evenness into a single metric, ecologists use diversity indices.</p>
+
+                <h4>1. Simpson's Index (D)</h4>
+                <p>This index measures the probability that two individuals randomly selected from a sample will belong
+                    to the same species. A lower value of D indicates higher diversity.</p>
+                <div class="formula-box">
+                    D = &sum;(p<sub>i</sub>)<sup>2</sup>
+                    <div class="formula-desc">
+                        Where <strong>p<sub>i</sub></strong> is the proportion of individuals belonging to species
+                        <em>i</em>.
+                    </div>
+                </div>
+                <p><strong>Interpretation:</strong> The index is often reported as the <strong>Gini-Simpson Index (1 -
+                        D)</strong>, where a higher value signifies greater diversity.</p>
+                <div class="exam-tip">
+                    <div class="exam-tip-icon">🧮</div>
+                    <div class="exam-tip-content">
+                        <h4>Example Calculation</h4>
+                        <p>For a community with species counts of {40, 30, 20, 10} (Total = 100):<br>
+                            Proportions (p<sub>i</sub>): {0.4, 0.3, 0.2, 0.1}<br>
+                            D = (0.4)² + (0.3)² + (0.2)² + (0.1)² = 0.16 + 0.09 + 0.04 + 0.01 =
+                            <strong>0.30</strong>.<br>
+                            Gini-Simpson Index (1 - D) = <strong>0.70</strong>.
+                        </p>
+                    </div>
+                </div>
+
+                <h4>2. Shannon–Wiener Index (H')</h4>
+                <p>Derived from information theory, this index quantifies the uncertainty in predicting the species
+                    identity of an individual chosen at random from the community. Higher values indicate greater
+                    uncertainty and thus higher diversity.</p>
+                <div class="formula-box">
+                    H' = -&sum;(p<sub>i</sub>*ln(p<sub>i</sub>))
+                    <div class="formula-desc">
+                        Where <strong>p<sub>i</sub></strong> is the proportion of individuals belonging to species
+                        <em>i</em>, and <strong>ln</strong> is the natural logarithm.
+                    </div>
+                </div>
+                <p><strong>Interpretation:</strong> The Shannon–Wiener Index is particularly sensitive to the presence
+                    of rare species. It is a widely used metric for comparing the diversity of different ecological
+                    communities.</p>
+                <div class="exam-tip">
+                    <div class="exam-tip-icon">🧮</div>
+                    <div class="exam-tip-content">
+                        <h4>Example Calculation</h4>
+                        <p>For the same community proportions {0.4, 0.3, 0.2, 0.1}:<br>
+                            H' = -[ (0.4 × ln0.4) + (0.3 × ln0.3) + (0.2 × ln0.2) + (0.1 × ln0.1) ]<br>
+                            H' = -[ (0.4 × -0.916) + (0.3 × -1.204) + (0.2 × -1.609) + (0.1 × -2.303) ]<br>
+                            H' = -[ -0.366 - 0.361 - 0.322 - 0.230 ] = -(-1.279) ≈ <strong>1.28</strong>.</p>
+                    </div>
+                </div>
+
+                <div class="exam-tip">
+                    <div class="exam-tip-icon">✨</div>
+                    <div class="exam-tip-content">
+                        <h4>Exam Focus</h4>
+                        <p>For examinations, it is crucial to know the formulas for these indices, be able to compute
+                            them for small datasets, and, most importantly, understand their ecological
+                            interpretation—specifically, how changes in species richness and evenness affect the final
+                            index value.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="taxonomy">
+                <h2>4. Taxonomy — Purpose and Core Principles</h2>
+                <p>Taxonomy is the fundamental "filing system" for all of life. It's the science of identifying, naming,
+                    and classifying every living thing, from the smallest bacterium to the largest whale. Its purpose is
+                    to create a stable, organized, and informative framework that connects what an organism looks like
+                    (its phenotype), what its genes say (its genotype), and where it came from (its evolutionary
+                    history).</p>
+
+                <div style="margin: 2rem 0; text-align: center;">
+                    <img src="https://res.cloudinary.com/dhb8qmnxt/image/upload/v1769675213/taxonomic_hierarchy_igtudb.jpg"
+                        alt="Taxonomy Hierarchy" class="note-image">
+                    <p class="image-caption">Figure 3: The hierarchical system of classification.</p>
+                </div>
+
+                <h3>Taxonomy has three main jobs:</h3>
+                <ul>
+                    <li><strong>Recognize and Describe Species:</strong> The first job is to be the "librarian" of life,
+                        identifying and formally describing the basic units of biodiversity—the species.</li>
+                    <li><strong>Organize into a Family Tree:</strong> The second job is to arrange these species into a
+                        hierarchical system (like kingdom, phylum, class, etc.). This isn't just a random arrangement;
+                        it's designed to reflect the evolutionary "family tree" and show how different species are
+                        related to one another.</li>
+                    <li><strong>Give Everything a Stable Name:</strong> The third job is to provide a single, universal,
+                        and stable scientific name for every species. This nomenclature is crucial for scientists around
+                        the world to be able to communicate clearly without confusion.</li>
+                </ul>
+
+                <div class="exam-tip">
+                    <div class="exam-tip-icon">💡</div>
+                    <div class="exam-tip-content">
+                        <h4>The Key Insight</h4>
+                        <p>It's important to understand that taxonomy is not just about giving things a label. It's a
+                            dynamic science of building hypotheses about relationships. When a taxonomist places two
+                            species in the same group, they are making a testable prediction that these two species
+                            share a common ancestor. As new information becomes available—especially powerful new DNA
+                            (molecular) data—these "family trees" are constantly being tested and revised, giving us a
+                            clearer and more accurate picture of the history of life.</p>
+                    </div>
+                </div>
+
+                <div style="margin-top: 2rem;">
+                    <h3>Taxonomy vs. Systematics</h3>
+                    <p>While often used interchangeably, there is a subtle but important difference favored by
+                        examiners.</p>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Feature</th>
+                                    <th>Taxonomy</th>
+                                    <th>Systematics</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>Focus</strong></td>
+                                    <td>Naming & Classification</td>
+                                    <td>Evolutionary Relationships (Phylogeny)</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Nature</strong></td>
+                                    <td>Static (Rules of Naming)</td>
+                                    <td>Dynamic (Changes with new evolutionary data)</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Scope</strong></td>
+                                    <td>Part of Systematics</td>
+                                    <td>Broader (Taxonomy + Phylogeny)</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <section id="species-concepts">
+                <h2>5. Species — What is a species? (Multiple concepts)</h2>
+                <p>The question "What is a species?" seems simple, but it is one of the most debated topics in biology.
+                    There is no single, universal definition that works perfectly for every organism on Earth. Instead,
+                    biologists use several different "species concepts," each with its own strengths and weaknesses.</p>
+                <p>Here are the most important ones:</p>
+
+                <h3>1. The Biological Species Concept (BSC) - The "Reproduction" Rule</h3>
+                <p><strong>The Idea:</strong> This is the most famous definition. It says that a species is a group of
+                    individuals that can or could potentially interbreed in nature to produce fertile offspring, and
+                    they are reproductively isolated from other such groups.</p>
+                <ul>
+                    <li><strong>Strength:</strong> It provides a clear, natural explanation for why different species
+                        (like dogs and cats) remain distinct.</li>
+                    <li><strong>Weaknesses:</strong> It completely fails for asexual organisms (like bacteria) that
+                        don't interbreed, for fossils (which can't reproduce), and for populations that are
+                        geographically separated (how can we know if they could interbreed if they never meet?).</li>
+                </ul>
+
+                <h3>2. The Morphological Species Concept - The "Looks" Rule</h3>
+                <p><strong>The Idea:</strong> This is the oldest and most practical concept. It defines a species based
+                    on a set of consistent physical differences. If it looks, acts, and sounds different from other
+                    groups, it's a different species.</p>
+                <ul>
+                    <li><strong>Strength:</strong> It's incredibly useful for field identification and is the only
+                        concept that works for fossils.</li>
+                    <li><strong>Weaknesses:</strong> It can be misleading. Convergent evolution can make two unrelated
+                        species look very similar. Conversely, cryptic species are two or more distinct species that
+                        look identical but are genetically different and cannot interbreed.</li>
+                </ul>
+
+                <h3>3. The Phylogenetic Species Concept - The "Family Tree" Rule</h3>
+                <p><strong>The Idea:</strong> This modern, genetics-based concept defines a species as the smallest
+                    distinct branch on the evolutionary tree. It's a group that shares a unique, common ancestor and has
+                    a set of shared, derived characteristics that no other group has.</p>
+                <ul>
+                    <li><strong>Strength:</strong> It's a powerful concept because it is based on evolutionary history
+                        and works for all organisms, including asexual ones and fossils.</li>
+                    <li><strong>Weakness:</strong> Its application can sometimes lead to what some biologists call
+                        "oversplitting," where tiny, genetically distinct but otherwise similar populations are each
+                        declared a separate species.</li>
+                </ul>
+
+                <h3>4. The Ecological Species Concept - The "Job" Rule</h3>
+                <p><strong>The Idea:</strong> This concept defines a species by its unique ecological role or "job"
+                    (niche). A group of organisms that uses environmental resources in a distinct way from all other
+                    groups is considered a separate species.</p>
+
+                <div class="exam-tip">
+                    <div class="exam-tip-icon">✨</div>
+                    <div class="exam-tip-content">
+                        <h4>Exam Tip</h4>
+                        <p>Be prepared to compare and contrast these different concepts. It's important to know not just
+                            what they are, but also to be able to give an example of an organism or situation where one
+                            concept works well and another one fails.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="speciation">
+                <h2>6. Mechanisms Driving Origin of Species (Speciation)</h2>
+                <p>Speciation is the evolutionary process by which new biological species arise. For this to happen, two
+                    key ingredients are absolutely essential: there must be existing <strong>genetic variation</strong>
+                    within a population, and a barrier to reproduction (<strong>reproductive isolation</strong>) must
+                    emerge that stops gene flow.</p>
+                <p>The process of speciation is generally categorized into a few main "modes," based on the geography of
+                    the diverging populations.</p>
+
+                <h3>The Main Modes of Speciation</h3>
+                <ul>
+                    <li><strong>Allopatric Speciation (The "Different Homeland" Mode):</strong> This is the most common
+                        and intuitive mode. It happens when a population is split into two or more groups by a
+                        geographic barrier—like a new mountain range, a river, or a glacier. Once separated, the
+                        isolated populations begin to evolve independently due to genetic drift and natural selection,
+                        eventually becoming so different that they can no longer interbreed.</li>
+                    <li><strong>Peripatric Speciation (The "Founder" Mode):</strong> A special case of allopatric
+                        speciation. It occurs when a very small group breaks off from the main population and colonizes
+                        a new, isolated habitat. This small "founder" group can diverge very rapidly due to strong
+                        genetic drift (the founder effect) and new selective pressures.</li>
+                    <li><strong>Parapatric Speciation (The "Neighbor" Mode):</strong> This mode occurs when two
+                        populations are not completely separated but live right next to each other across a sharp
+                        environmental gradient (like the boundary between a polluted and a clean area). Even though
+                        there is some limited gene flow between them, strong selective pressures cause the neighboring
+                        populations to diverge.</li>
+                    <li><strong>Sympatric Speciation (The "Same Homeland" Mode):</strong> The most controversial but
+                        fascinating mode. It happens when a new species evolves from a single ancestral species while
+                        inhabiting the same geographic region. This can occur through mechanisms like a "host shift"
+                        (where a group of insects begins to feed on a new type of plant) or through polyploidy (a type
+                        of mutation involving whole sets of chromosomes, which is very common in plants).</li>
+                </ul>
+
+                <h3>The Barriers to Reproduction (Isolating Mechanisms)</h3>
+                <p>These are the "walls" that prevent two diverging groups from mixing their genes again. They come in
+                    two main types:</p>
+
+                <h4>1. Pre-zygotic Barriers (Before Fertilization)</h4>
+                <p>These barriers act before a zygote (fertilized egg) can be formed.</p>
+                <ul>
+                    <li><strong>Habitat Isolation:</strong> Live in different places.</li>
+                    <li><strong>Temporal Isolation:</strong> Breed at different times (day, season, year).</li>
+                    <li><strong>Behavioral Isolation:</strong> Different courtship rituals or calls.</li>
+                    <li><strong>Mechanical Isolation:</strong> Reproductive parts don't fit.</li>
+                    <li><strong>Gametic Isolation:</strong> Sperm and egg are incompatible.</li>
+                </ul>
+
+                <h4>2. Post-zygotic Barriers (After Fertilization)</h4>
+                <p>These barriers act after a zygote is formed, making offspring unviable or sterile.</p>
+                <ul>
+                    <li><strong>Hybrid Inviability:</strong> Dies before ends maturity.</li>
+                    <li><strong>Hybrid Sterility:</strong> Survives but is sterile (e.g., Mule).</li>
+                    <li><strong>Hybrid Breakdown:</strong> First gen fertile, next gen weak/sterile.</li>
+                </ul>
+
+                <div class="exam-tip">
+                    <div class="exam-tip-icon">⚡</div>
+                    <div class="exam-tip-content">
+                        <h4>Conceptual Strategy for Problems</h4>
+                        <p>When faced with a speciation problem, the key is to think like an evolutionary biologist. Ask
+                            three questions:</p>
+                        <ol>
+                            <li>Is there still gene flow, or are the populations geographically separated?</li>
+                            <li>What specific barriers to reproduction could be developing?</li>
+                            <li>What is different about their environments that could be causing them to diverge through
+                                natural selection or genetic drift?</li>
+                        </ol>
+                    </div>
+                </div>
+            </section>
+
+            <section id="taxonomic-categories">
+                <h2>7. Taxonomic Categories (Hierarchy) — Definitions + Examples</h2>
+                <div
+                    style="background: var(--primary-soft); color: var(--primary-dark); padding: 1.5rem; border-radius: var(--radius-md); text-align: center; margin-bottom: 2rem; border: 1px solid var(--primary);">
+                    <h3
+                        style="margin: 0 0 0.5rem 0; font-size: 1.1rem; text-transform: uppercase; letter-spacing: 0.05em;">
+                        Memory Aid (Mnemonic)</h3>
+                    <p style="font-size: 1.25rem; font-weight: 700; margin: 0;">“Dear King Philip Came Over For Good
+                        Soup”</p>
+                    <p style="font-size: 0.9rem; margin-top: 0.5rem; opacity: 0.8;">Domain → Kingdom → Phylum → Class →
+                        Order → Family → Genus → Species</p>
+                </div>
+
+                <div class="formula-box" style="text-align: center; margin-bottom: 2rem;">
+                    Kingdom → Phylum → Class → Order → Family → Genus → Species
+                </div>
+
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Rank</th>
+                                <th>Definition (what it groups)</th>
+                                <th>Typical Ending</th>
+                                <th>Example (Human)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Domain</strong></td>
+                                <td>Broadest, based on fundamental cell plan</td>
+                                <td>—</td>
+                                <td>Eukarya</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Kingdom</strong></td>
+                                <td>Major lineages (cell type, nutrition)</td>
+                                <td>—</td>
+                                <td>Animalia</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Phylum</strong> (Division)</td>
+                                <td>Major body plans/organizational grade</td>
+                                <td>-phyta (plants)</td>
+                                <td>Chordata</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Class</strong></td>
+                                <td>Subdivision of phylum</td>
+                                <td>-ia (varies)</td>
+                                <td>Mammalia</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Order</strong></td>
+                                <td>Grouping of related families</td>
+                                <td>-ales (plants)</td>
+                                <td>Primates</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Family</strong></td>
+                                <td>Related genera</td>
+                                <td>-idae (animals), -aceae (plants)</td>
+                                <td>Hominidae</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Genus</strong></td>
+                                <td>Closely related species; common ancestor</td>
+                                <td>—</td>
+                                <td><em>Homo</em></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Species</strong></td>
+                                <td>Basic unit; reproductively cohesive</td>
+                                <td>—</td>
+                                <td><em>Homo sapiens</em></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Subspecies</strong></td>
+                                <td>Geographic/morphological variant</td>
+                                <td>—</td>
+                                <td><em>H. s. sapiens</em></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="exam-tip">
+                    <div class="exam-tip-icon">🎓</div>
+                    <div class="exam-tip-content">
+                        <h4>Exam Nuance</h4>
+                        <p>Families often share morphological or molecular synapomorphies. <strong>Tip:</strong>
+                            Memorize typical family endings (-idae for animals, -aceae for plants) and one defining
+                            trait for common groups.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="binomial-nomenclature">
+                <h2>8. Binomial Nomenclature — The Rules of Naming</h2>
+                <div
+                    style="background: var(--bg-white); border: 1px solid var(--border); padding: 1.5rem; border-radius: var(--radius-md); margin-bottom: 2rem;">
+                    <h3 style="margin-top: 0; color: var(--secondary); font-size: 1.1rem;">Who started this?</h3>
+                    <p style="margin-bottom: 0;"><strong>Carolus Linnaeus</strong> is the father of taxonomy and the
+                        system of Binomial Nomenclature.</p>
+                </div>
+
+                <h3>The 4 Universal Rules</h3>
+                <ul>
+                    <li><strong>Latin Origin:</strong> Biological names are generally in Latin and written in italics.
+                        They are Latinised or derived from Latin irrespective of their origin.</li>
+                    <li><strong>Two Components:</strong> The first word representing the genus is called the
+                        <strong>Generic name</strong>. The second word identifying the species is called the
+                        <strong>Specific epithet</strong>.
+                    </li>
+                    <li><strong>Formatting (Handwritten vs. Typed):</strong>
+                        <ul>
+                            <li>When <em>handwritten</em>: Both words are <u>underlined separately</u>.</li>
+                            <li>When <em>printed</em>: Both words are in <em>italics</em>.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Capitalization:</strong>
+                        <ul>
+                            <li><strong>Genus:</strong> Starts with a <strong>Capital</strong> letter.</li>
+                            <li><strong>Species:</strong> Starts with a <strong>small</strong> letter.</li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <div class="exam-tip">
+                    <div class="exam-tip-icon">⚠️</div>
+                    <div class="exam-tip-content">
+                        <h4>Common Trap</h4>
+                        <p>Examiners love to swap the capitalization. <br>
+                            Correct: <em>Mangifera indica</em><br>
+                            Incorrect: <em>Mangifera Indica</em> (Capital 'I')<br>
+                            Incorrect: <em>mangifera indica</em> (Small 'm')</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="three-domains">
+                <h2>9. The 3-Domain System (Carl Woese)</h2>
+                <div
+                    style="background: var(--bg-white); border-left: 4px solid var(--accent-amber); padding: 1.5rem; border-radius: 4px; margin-bottom: 2rem; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);">
+                    <p style="margin: 0; font-size: 1.05rem;"><strong>Carl Woese (1990)</strong> proposed this system
+                        based on rRNA gene sequences. It replaces the older 5-Kingdom classification by splitting the
+                        Kingdom Monera into two domains.</p>
+                </div>
+
+                <h3>The Three Domains</h3>
+                <img src="https://res.cloudinary.com/dhb8qmnxt/image/upload/v1769675246/three_domains_life_bmz7j9.jpg"
+                    alt="Three Domains of Life" class="note-image">
+                <p class="image-caption">Figure 4: Phylogenetic Tree of the Three Domains</p>
+                <div class="flash-grid" style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));">
+                    <div class="flashcard"
+                        style="align-items: flex-start; text-align: left; height: auto; padding: 1.5rem; cursor: default;">
+                        <h4 style="margin-top: 0; color: var(--primary);">1. Domain Archaea</h4>
+                        <p style="font-size: 0.95rem; margin-bottom: 0;">Ancient, primitive bacteria (prokaryotes) that
+                            often live in extreme environments (extremophiles like halophiles, thermophiles). Unrelated
+                            to "true" bacteria.</p>
+                    </div>
+                    <div class="flashcard"
+                        style="align-items: flex-start; text-align: left; height: auto; padding: 1.5rem; cursor: default;">
+                        <h4 style="margin-top: 0; color: var(--primary);">2. Domain Bacteria</h4>
+                        <p style="font-size: 0.95rem; margin-bottom: 0;">True bacteria (prokaryotes). Includes
+                            pathogens, cyanobacteria, and beneficial gut flora. Cell walls contain peptidoglycan.</p>
+                    </div>
+                    <div class="flashcard"
+                        style="align-items: flex-start; text-align: left; height: auto; padding: 1.5rem; cursor: default;">
+                        <h4 style="margin-top: 0; color: var(--primary);">3. Domain Eukarya</h4>
+                        <p style="font-size: 0.95rem; margin-bottom: 0;">All organisms with eukaryotic cells (nucleus +
+                            organelles). Includes Protista, Fungi, Plantae, and Animalia.</p>
+                    </div>
+                </div>
+
+                <div class="exam-tip">
+                    <div class="exam-tip-icon">✨</div>
+                    <div class="exam-tip-content">
+                        <h4>IISER Exam Insight</h4>
+                        <p>Examiners prefer the <strong>3-Domain System</strong> over the traditional 5-Kingdom system
+                            because it more accurately reflects evolutionary history (phylogeny). Remember: Archaea are
+                            evolutionarily closer to Eukarya than to Bacteria!</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="phylogeny">
+                <h2>Reading Phylogenies</h2>
+                <p><strong>Cladogram vs Phylogram:</strong> Cladograms show branching order only. Phylograms add branch
+                    lengths proportional to time.</p>
+
+                <h3>Key Terms</h3>
+                <ul>
+                    <li><strong>Monophyletic (Clade):</strong> Ancestor + ALL descendants.</li>
+                    <li><strong>Paraphyletic:</strong> Ancestor + SOME descendants. (Avoid)</li>
+                    <li><strong>Synapomorphy:</strong> Shared <em>derived</em> character.</li>
+                </ul>
+            </section>
+
+            <section id="formula-sheet">
+                <h2>⚡ Quick Revision Formula Sheet</h2>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem;">
+
+                    <div
+                        style="background: var(--bg-white); padding: 1.5rem; border-radius: var(--radius-md); border: 1px solid var(--border);">
+                        <h4 style="margin-top: 0; color: var(--primary);">Diversity Indices</h4>
+                        <div style="margin-bottom: 1rem;">
+                            <strong>Shannon Index (H')</strong>
+                            <div class="formula-box" style="margin: 0.5rem 0; font-size: 1.1rem; padding: 0.8rem;">H' =
+                                -&sum; p<sub>i</sub> ln(p<sub>i</sub>)</div>
+                        </div>
+                        <div>
+                            <strong>Simpson's Index (D)</strong>
+                            <div class="formula-box" style="margin: 0.5rem 0; font-size: 1.1rem; padding: 0.8rem;">D =
+                                &sum; p<sub>i</sub><sup>2</sup></div>
+                            <small style="opacity: 0.8;">High D = Low Diversity</small>
+                        </div>
+                    </div>
+
+                    <div
+                        style="background: var(--bg-white); padding: 1.5rem; border-radius: var(--radius-md); border: 1px solid var(--border);">
+                        <h4 style="margin-top: 0; color: var(--primary);">Biogeography</h4>
+                        <div style="margin-bottom: 1rem;">
+                            <strong>Species-Area Relationship</strong>
+                            <div class="formula-box" style="margin: 0.5rem 0; font-size: 1.1rem; padding: 0.8rem;">S =
+                                cA<sup>z</sup></div>
+                            <div
+                                style="background: #f0fdf4; padding: 0.5rem; border-radius: 4px; font-size: 0.9rem; margin-top: 0.5rem;">
+                                <strong>Log Form:</strong><br>log S = log C + Z log A
+                            </div>
+                        </div>
+                        <div>
+                            <strong>Scales of Diversity</strong>
+                            <ul style="margin: 0.5rem 0 0 1.2rem; padding: 0; font-size: 0.95rem;">
+                                <li><strong>&alpha; (Alpha):</strong> Local Diversity</li>
+                                <li><strong>&beta; (Beta):</strong> Turnover (Change)</li>
+                                <li><strong>&gamma; (Gamma):</strong> Regional Total</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div
+                        style="background: var(--bg-white); padding: 1.5rem; border-radius: var(--radius-md); border: 1px solid var(--border);">
+                        <h4 style="margin-top: 0; color: var(--primary);">Taxonomy & Naming</h4>
+                        <div style="margin-bottom: 1rem;">
+                            <strong>Hierarchy Mnemonic</strong>
+                            <p style="margin: 0.5rem 0; font-weight: 600; color: var(--accent-amber);">"Dear King Philip
+                                Came Over For Good Soup"</p>
+                            <small>Domain &rarr; Kingdom &rarr; Phylum &rarr; Class &rarr; Order &rarr; Family &rarr;
+                                Genus &rarr; Species</small>
+                        </div>
+                        <div>
+                            <strong>Binomial Rules</strong>
+                            <p style="margin: 0.5rem 0;"><em>Genus species</em></p>
+                            <ul style="margin: 0 0 0 1.2rem; padding: 0; font-size: 0.9rem;">
+                                <li>Genus = Capitalized</li>
+                                <li>species = lowercase</li>
+                                <li>Italicized (or underlined)</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+
+            <section id="flashcards">
+                <h2>Rapid Revision</h2>
+                <p>Tap card to flip.</p>
+
+                <div class="flash-grid">
+                    <div class="flashcard" onclick="toggleFlip(this)">
+                        <div class="flash-front">Species concept for fossils?</div>
+                        <div class="flash-back">Morphological Species Concept</div>
+                    </div>
+
+                    <div class="flashcard" onclick="toggleFlip(this)">
+                        <div class="flash-front">Define "Monophyletic"</div>
+                        <div class="flash-back">Ancestor + All Descendants</div>
+                    </div>
+
+                    <div class="flashcard" onclick="toggleFlip(this)">
+                        <div class="flash-front">High Simpson's (1-D) means?</div>
+                        <div class="flash-back">High Diversity & Evenness</div>
+                    </div>
+
+                    <div class="flashcard" onclick="toggleFlip(this)">
+                        <div class="flash-front">Type Specimen</div>
+                        <div class="flash-back">Permanent name-bearing physical reference.</div>
+                    </div>
+
+                    <div class="flashcard" onclick="toggleFlip(this)">
+                        <div class="flash-front">Best data for deep phylogeny?</div>
+                        <div class="flash-back">Molecular (rRNA / Protein)</div>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <!-- MOBILE FLOATING TOC BUTTON -->
+    <button class="mobile-toc-btn" onclick="openDrawer()">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+            stroke-linecap="round" stroke-linejoin="round">
+            <line x1="8" y1="6" x2="21" y2="6"></line>
+            <line x1="8" y1="12" x2="21" y2="12"></line>
+            <line x1="8" y1="18" x2="21" y2="18"></line>
+            <line x1="3" y1="6" x2="3.01" y2="6"></line>
+            <line x1="3" y1="12" x2="3.01" y2="12"></line>
+            <line x1="3" y1="18" x2="3.01" y2="18"></line>
+        </svg>
+        Contents
+    </button>
+
+    <!-- MOBILE DRAWER -->
+    <div class="mobile-drawer-overlay" id="drawerOverlay" onclick="closeDrawer()">
+        <div class="mobile-drawer" onclick="event.stopPropagation()">
+            <div class="drawer-handle" onclick="closeDrawer()"></div>
+            <h3 style="margin: 0 0 1rem 0.5rem; font-size: 1.1rem;">Table of Contents</h3>
+            <div id="mobile-toc-content">
+                <!-- Content injected via JS -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- 1. TOC Data Source ---
+        const tocData = `
+            <div class="toc-header">Foundations</div>
+            <ul class="toc-list">
+                <li><a href="#intro" class="toc-link">Introduction</a></li>
+                <li><a href="#levels" class="toc-link">Levels of Diversity</a></li>
+                <li><a href="#math" class="toc-link">Measuring Diversity</a></li>
+            </ul>
+            <div class="toc-header">Taxonomy</div>
+            <ul class="toc-list">
+                <li><a href="#taxonomy" class="toc-link">Purpose & Principles</a></li>
+                <li><a href="#species-concepts" class="toc-link">Species Concepts</a></li>
+                <li><a href="#speciation" class="toc-link">Speciation Modes</a></li>
+                <li><a href="#taxonomic-categories" class="toc-link">Taxonomic Hierarchy</a></li>
+                <li><a href="#binomial-nomenclature" class="toc-link">Binomial Nomenclature</a></li>
+                <li><a href="#three-domains" class="toc-link">3-Domain System</a></li>
+                <li><a href="#phylogeny" class="toc-link">Phylogenetics</a></li>
+                <li><a href="#formula-sheet" class="toc-link">Formula Sheet</a></li>
+            </ul>
+            <div class="toc-header">Practice</div>
+            <ul class="toc-list">
+                <li><a href="#flashcards" class="toc-link">Flashcards</a></li>
+            </ul>
+        `;
+
+        // Inject TOC into Desktop and Mobile containers
+        document.getElementById('desktop-toc-content').innerHTML = tocData;
+        document.getElementById('mobile-toc-content').innerHTML = tocData;
+
+        // --- 2. Mobile Drawer Logic ---
+        function openDrawer() {
+            document.getElementById('drawerOverlay').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeDrawer() {
+            document.getElementById('drawerOverlay').classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        // Close drawer when a link is clicked
+        document.querySelectorAll('#mobile-toc-content .toc-link').forEach(link => {
+            link.addEventListener('click', closeDrawer);
+        });
+
+        // --- 3. ScrollSpy & Progress Bar ---
+        const sections = document.querySelectorAll('section');
+        const navLinks = document.querySelectorAll('.toc-link');
+        const progressBar = document.getElementById('progressBar');
+
+        window.addEventListener('scroll', () => {
+            // ScrollSpy
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (pageYOffset >= (sectionTop - 150)) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href').includes(current)) {
+                    link.classList.add('active');
+                }
+            });
+
+            // Progress Bar
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            progressBar.style.width = scrolled + "%";
+        });
+
+        // --- 4. Flashcard Flip ---
+        function toggleFlip(card) {
+            card.classList.toggle('flipped');
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,1495 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plant Kingdom | Advanced Notes</title>
+    <meta name="description"
+        content="Advanced lecture notes on Plant Kingdom for IISER IAT. Algae, Bryophytes, Pteridophytes, Gymnosperms, Angiosperms.">
+
+    <!-- Google Fonts: Inter & JetBrains Mono -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap"
+        rel="stylesheet">
+
+    <style>
+        /* =========================================
+           1. DESIGN SYSTEM
+           ========================================= */
+        :root {
+            --primary: #4f46e5;
+            --primary-dark: #4338ca;
+            --primary-soft: #e0e7ff;
+            --secondary: #0f172a;
+
+            --text-main: #1e293b;
+            --text-muted: #475569;
+            --text-light: #94a3b8;
+
+            --bg-wash: #f8fafc;
+            --bg-white: #ffffff;
+            --border: #e2e8f0;
+
+            --accent-amber: #f59e0b;
+            --accent-amber-soft: #fffbeb;
+
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --radius-pill: 100px;
+
+            --container-width: 1200px;
+            --nav-height: 70px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            outline: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: 100px;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            color: var(--text-main);
+            background: var(--bg-wash);
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+
+        /* =========================================
+           2. HEADER & PROGRESS BAR
+           ========================================= */
+        /* =========================================
+           2. HEADER & PROGRESS BAR
+           ========================================= */
+        header {
+            position: fixed;
+            top: 20px;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            display: flex;
+            justify-content: center;
+            pointer-events: none;
+            transition: top 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        header.scrolled {
+            top: 0;
+        }
+
+        .nav-container {
+            pointer-events: auto;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.08);
+            padding: 0.75rem 1.5rem;
+            border-radius: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 90%;
+            max-width: var(--container-width);
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        header.scrolled .nav-container {
+            width: 100%;
+            max-width: 100%;
+            border-radius: 0;
+            border-top: 0;
+            border-left: 0;
+            border-right: 0;
+            background: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            padding: 0.75rem 2rem;
+        }
+
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: var(--primary);
+            width: 0%;
+            transition: width 0.1s;
+            z-index: 1001;
+        }
+
+        .logo {
+            font-weight: 800;
+            color: var(--secondary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1.1rem;
+            text-decoration: none;
+        }
+
+        .btn-action {
+            padding: 0.5rem 1rem;
+            font-size: 0.85rem;
+            font-weight: 600;
+            border-radius: var(--radius-pill);
+            border: 1px solid var(--border);
+            color: var(--text-main);
+            background: white;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .btn-action:hover {
+            background: var(--bg-wash);
+        }
+
+        /* =========================================
+           3. LAYOUT (Sidebar + Main)
+           ========================================= */
+        .docs-container {
+            width: 92%;
+            max-width: var(--container-width);
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 260px 1fr;
+            gap: 4rem;
+            padding-top: calc(var(--nav-height) + 2rem);
+            padding-bottom: 6rem;
+        }
+
+        /* Sidebar (Desktop) */
+        .sidebar {
+            position: sticky;
+            top: calc(var(--nav-height) + 2rem);
+            height: calc(100vh - var(--nav-height) - 4rem);
+            overflow-y: auto;
+            padding-right: 1rem;
+            display: block;
+        }
+
+        /* Scrollbar Styling */
+        .sidebar::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .sidebar::-webkit-scrollbar-thumb {
+            background: var(--border);
+            border-radius: 4px;
+        }
+
+        .toc-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .toc-link {
+            display: block;
+            padding: 0.6rem 0.8rem;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            border-radius: 8px;
+            font-weight: 500;
+            text-decoration: none;
+            transition: 0.2s;
+        }
+
+        .toc-link:hover {
+            color: var(--primary);
+            background: var(--bg-white);
+        }
+
+        .toc-link.active {
+            color: var(--primary);
+            background: var(--primary-soft);
+            font-weight: 600;
+        }
+
+        .toc-header {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--text-light);
+            font-weight: 700;
+            margin: 1.5rem 0 0.5rem 0.5rem;
+        }
+
+        /* Main Content */
+        .content-area {
+            min-width: 0;
+        }
+
+        .chapter-title {
+            font-size: clamp(1.8rem, 5vw, 2.75rem);
+            font-weight: 800;
+            color: var(--secondary);
+            margin-bottom: 0.75rem;
+            letter-spacing: -0.03em;
+            line-height: 1.2;
+        }
+
+        .chapter-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 2.5rem;
+        }
+
+        .meta-pill {
+            background: white;
+            padding: 0.35rem 0.85rem;
+            border-radius: var(--radius-pill);
+            border: 1px solid var(--border);
+        }
+
+        /* Typography Styles */
+        h2 {
+            font-size: clamp(1.5rem, 3vw, 1.8rem);
+            font-weight: 700;
+            color: var(--secondary);
+            margin: 3.5rem 0 1.25rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        /* Purple mark next to H2 */
+        h2::before {
+            content: '';
+            width: 6px;
+            height: 24px;
+            background: var(--primary);
+            border-radius: 4px;
+        }
+
+        h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--secondary);
+            margin: 2rem 0 0.75rem;
+        }
+
+        p {
+            margin-bottom: 1.25rem;
+            font-size: 1.05rem;
+            color: var(--text-muted);
+        }
+
+        ul,
+        ol {
+            margin-bottom: 1.5rem;
+            padding-left: 1.5rem;
+            color: var(--text-muted);
+        }
+
+        li {
+            margin-bottom: 0.5rem;
+        }
+
+        /* =========================================
+           4. SPECIAL COMPONENTS
+           ========================================= */
+
+        /* Math/Formula Box */
+        .formula-box {
+            background: var(--secondary);
+            color: white;
+            padding: 1.5rem;
+            border-radius: var(--radius-md);
+            margin: 1.5rem 0;
+            font-family: 'JetBrains Mono', monospace;
+            overflow-x: auto;
+            border-left: 4px solid var(--primary);
+            box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.1);
+        }
+
+        .formula-desc {
+            font-size: 0.9rem;
+            color: var(--text-light);
+            margin-top: 0.75rem;
+            font-family: 'Inter', sans-serif;
+            opacity: 0.8;
+        }
+
+        /* Exam Tip Box */
+        .exam-tip {
+            background: var(--accent-amber-soft);
+            border: 1px solid rgba(245, 158, 11, 0.2);
+            padding: 1.25rem;
+            border-radius: var(--radius-md);
+            margin: 2rem 0;
+            display: flex;
+            gap: 1rem;
+            align-items: flex-start;
+        }
+
+        .exam-tip-icon {
+            color: var(--accent-amber);
+            font-size: 1.5rem;
+            flex-shrink: 0;
+            margin-top: -2px;
+        }
+
+        .exam-tip-content h4 {
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: #92400e;
+            margin-bottom: 0.25rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .exam-tip-content p {
+            color: #78350f;
+            font-size: 0.95rem;
+            margin: 0;
+        }
+
+        /* Responsive Table */
+        .table-container {
+            width: 100%;
+            overflow-x: auto;
+            margin: 2rem 0;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            background: white;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 600px;
+        }
+
+        th {
+            background: var(--bg-wash);
+            text-align: left;
+            padding: 1rem;
+            font-weight: 600;
+            color: var(--secondary);
+            border-bottom: 1px solid var(--border);
+            white-space: nowrap;
+        }
+
+        td {
+            padding: 1rem;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.95rem;
+            color: var(--text-muted);
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        /* Flashcards */
+        .flash-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .flashcard {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: 2rem;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            min-height: 160px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            perspective: 1000px;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .flashcard:active {
+            transform: scale(0.98);
+        }
+
+        .flash-front {
+            font-weight: 600;
+            color: var(--secondary);
+            font-size: 1.1rem;
+            transition: 0.3s;
+        }
+
+        .flash-back {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--primary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: 0.3s ease;
+            font-size: 1rem;
+            pointer-events: none;
+        }
+
+        .flashcard.flipped .flash-back {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto;
+        }
+
+        .flashcard.flipped .flash-front {
+            opacity: 0;
+            transform: translateY(-20px);
+        }
+
+        /* =========================================
+           5. MOBILE OPTIMIZATIONS
+           ========================================= */
+        /* Mobile TOC Button (Floating) */
+        .mobile-toc-btn {
+            display: none;
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: var(--secondary);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 100px;
+            font-weight: 600;
+            box-shadow: 0 4px 15px rgba(15, 23, 42, 0.3);
+            z-index: 100;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .mobile-toc-btn:active {
+            transform: scale(0.95);
+        }
+
+        /* Mobile Drawer */
+        .mobile-drawer-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 2000;
+            opacity: 0;
+            visibility: hidden;
+            transition: 0.3s;
+            backdrop-filter: blur(4px);
+        }
+
+        .mobile-drawer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 70vh;
+            background: white;
+            border-radius: 20px 20px 0 0;
+            padding: 1.5rem;
+            transform: translateY(100%);
+            transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .mobile-drawer-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .mobile-drawer-overlay.active .mobile-drawer {
+            transform: translateY(0);
+        }
+
+        .drawer-handle {
+            width: 40px;
+            height: 5px;
+            background: var(--border);
+            border-radius: 10px;
+            margin: 0 auto 1.5rem;
+            flex-shrink: 0;
+        }
+
+        @media (max-width: 900px) {
+            .docs-container {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+                width: 90%;
+            }
+
+            .sidebar {
+                display: none;
+            }
+
+            /* Hide Sidebar */
+            .mobile-toc-btn {
+                display: flex;
+            }
+
+            /* Show Float Button */
+
+            .chapter-title {
+                font-size: 2.2rem;
+            }
+
+            .content-area {
+                padding-bottom: 4rem;
+            }
+        }
+
+        /* Make header buttons responsive */
+        .nav-container {
+            width: 95%;
+        }
+
+        .btn-action {
+            font-size: 0.8rem;
+            padding: 0.45rem 0.85rem;
+        }
+
+        /* Adjust visual density for mobile */
+        @media (max-width: 480px) {
+            .logo {
+                font-size: 1rem;
+            }
+
+            .nav-container {
+                padding: 0 0.5rem;
+            }
+
+            .btn-action {
+                padding: 0.4rem 0.6rem;
+            }
+        }
+
+        /* =========================================
+           6. PRINT STYLES (PDF Generation)
+           ========================================= */
+        @media print {
+
+            /* Hide UI Elements */
+            header,
+            .progress-bar,
+            .mobile-toc-btn,
+            .sidebar,
+            .btn-action,
+            .exam-tip-icon {
+                display: none !important;
+            }
+
+            /* Layout Adjustments */
+            body {
+                background: white;
+                color: black;
+                font-size: 12pt;
+            }
+
+            .docs-container {
+                display: block;
+                width: 100%;
+                max-width: 100%;
+                padding: 0;
+                margin: 0;
+            }
+
+            .content-area {
+                width: 100%;
+                margin: 0;
+                padding: 0;
+            }
+
+            /* Typography for Print */
+            h1,
+            h2,
+            h3 {
+                color: black;
+                page-break-after: avoid;
+            }
+
+            p,
+            ul,
+            ol {
+                color: #333;
+            }
+
+            /* Ensure Flashcards are visible */
+            .flashcard {
+                break-inside: avoid;
+                border: 1px solid #ccc;
+                box-shadow: none;
+            }
+
+            .flash-back {
+                display: none !important;
+                /* Only show front or list them differently if needed */
+            }
+
+            /* Links */
+            a {
+                text-decoration: none;
+                color: black;
+            }
+        }
+
+        /* Note Images */
+        .note-image {
+            width: 100%;
+            max-width: 600px;
+            height: auto;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border);
+            margin: 2rem auto;
+            display: block;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .image-caption {
+            text-align: center;
+            font-size: 0.9rem;
+            color: var(--text-light);
+            margin-top: -1.5rem;
+            margin-bottom: 2.5rem;
+            font-style: italic;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Header & Progress -->
+
+    <header>
+        <div class="progress-bar" id="progressBar"></div>
+        <div class="nav-container">
+            <a href="/frontend/index.html" class="logo">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
+                    <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
+                </svg>
+                IISER Smart Prep
+            </a>
+            <div style="display: flex; gap: 0.8rem; align-items: center;">
+                <button onclick="window.print()" class="btn-action"
+                    style="display: flex; align-items: center; gap: 0.4rem;">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                        <polyline points="7 10 12 15 17 10"></polyline>
+                        <line x1="12" y1="15" x2="12" y2="3"></line>
+                    </svg>
+                    PDF
+                </button>
+                <a href="/frontend/smart_notes/smart_notes_home.html" class="btn-action">Back</a>
+            </div>
+        </div>
+    </header>
+
+    <div class="docs-container">
+
+        <!-- DESKTOP SIDEBAR -->
+        <nav class="sidebar">
+            <div id="desktop-toc-content">
+                <!-- Content injected via JS for reuse -->
+            </div>
+        </nav>
+
+        <!-- MAIN CONTENT -->
+        <main class="content-area">
+
+            <div
+                style="font-size: 0.9rem; font-weight: 700; color: var(--primary); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.5rem;">
+                Diversity in the Living World</div>
+            <h1 class="chapter-title">Plant Kingdom</h1>
+            <div class="chapter-meta">
+                <span class="meta-pill">Deep IISER-level Notes</span>
+                <span class="meta-pill">⏱️ 80 min read</span>
+                <span class="meta-pill">🎯 Exam Focus</span>
+            </div>
+
+            <!-- SECTION 1: CORE CONCEPTS -->
+            <section id="core-concepts">
+                <h2>1. Core Concepts</h2>
+                <p>The Plant Kingdom is diverse, but certain evolutionary threads tie all groups together. Understanding
+                    these transitions is key to mastering the topic.</p>
+
+                <h3>Life Cycles & Transitions</h3>
+                <ul>
+                    <li><strong>Haplodiplontic life cycle:</strong> Alternation of generations between a multicellular
+                        haploid gametophyte (n) and a diploid sporophyte (2n). The shift in dominance is a major
+                        evolutionary trend.</li>
+                </ul>
+                <!-- IMAGE PROMPT: Create a circular diagram showing haplodiplontic life cycle. 
+                     Show two phases: GAMETOPHYTE (n) in green on left half and SPOROPHYTE (2n) in blue on right half.
+                     Include arrows showing: Spores (n) → Gametophyte (n) → Gametes (n) → Fertilization → Zygote (2n) → Sporophyte (2n) → Meiosis → Spores (n).
+                     Label "mitosis" on gametophyte side and "meiosis" on sporophyte side.
+                     Clean, educational style with clear typography. -->
+                <img src="https://res.cloudinary.com/dhb8qmnxt/image/upload/v1769690743/unnamed_slu2x6.jpg"
+                    alt="Haplodiplontic Life Cycle" class="note-image">
+                <p class="image-caption">Figure 1: Generalized Haplodiplontic Life Cycle (Alternation of Generations)
+                </p>
+                <ul>
+                    <li><strong>Transition 1 (Vascular Tissue):</strong> Enabled internal water transport and larger
+                        bodies. <em>Pteridophytes onwards.</em></li>
+                    <li><strong>Transition 2 (Seed Habit):</strong> Retention/protection of embryo, provision of
+                        nutritive tissue, dormancy. <em>Gymnosperms & Angiosperms.</em></li>
+                    <li><strong>Transition 3 (Flower & Double Fertilization):</strong> Reproductive efficiency and
+                        co-evolution. <em>Angiosperms.</em></li>
+                    <li><strong>Adaptive Tradeoffs:</strong> Size vs dispersal mode (spores vs seeds), water dependence
+                        for fertilization vs pollen/air/animal dispersal.</li>
+                </ul>
+
+                <div class="exam-tip">
+                    <div class="exam-tip-icon">✨</div>
+                    <div class="exam-tip-content">
+                        <h4>Heterospory is Key</h4>
+                        <p><strong>Heterospory → Seed:</strong> The evolution from isospory to heterospory (microspores
+                            & megaspores) is the critical stepping stone to seed evolution.</p>
+                    </div>
+                </div>
+
+                <h3>Evolutionary Progression Formula</h3>
+                <div class="formula-box">
+                    Algae → Bryophytes → Pteridophytes → Gymnosperms → Angiosperms
+                    <div class="formula-desc">Represents evolution from water → land → seeds → flowers</div>
+                </div>
+            </section>
+
+            <!-- SECTION 2: ALGAE -->
+            <section id="algae">
+                <h2>2. Algae</h2>
+
+                <h3>1. Definition and Phylogenetic Scope</h3>
+                <p><strong>Definition:</strong> Algae are a large, paraphyletic assemblage of predominantly aquatic,
+                    photosynthetic organisms. The term lacks a strict taxonomic meaning but is a functional grouping.
+                </p>
+                <p><strong>Scope:</strong> Algae exhibit a vast range of complexity, from unicellular flagellates
+                    (<em>Chlamydomonas</em>) to complex multicellular forms like giant kelps (<em>Macrocystis</em>).
+                    While the term primarily refers to eukaryotic groups (green, red, and brown algae), cyanobacteria
+                    are often studied alongside them due to their ecological role, though they are prokaryotes.</p>
+
+                <h3>2. Morphological and Ecological Diversity</h3>
+                <p><strong>Body Plan (Thallus):</strong> Algae lack true roots, stems, and leaves. Their body, or
+                    thallus, can be organized at several levels of complexity:</p>
+                <ul>
+                    <li><strong>Unicellular:</strong> Single-celled (e.g., <em>Chlamydomonas</em>, diatoms).</li>
+                    <li><strong>Colonial:</strong> Aggregations of cells (e.g., <em>Volvox</em>).</li>
+                    <li><strong>Filamentous:</strong> Cells arranged in linear chains (e.g., <em>Spirogyra</em>).</li>
+                    <li><strong>Membranous/Parenchymatous:</strong> Cells forming complex, tissue-like structures (e.g.,
+                        <em>Ulva</em>, large brown algae).
+                    </li>
+                </ul>
+                <p><strong>Ecological Niche:</strong> Algae are the primary producers in most aquatic ecosystems. They
+                    are found in freshwater, marine, and moist terrestrial habitats.</p>
+                <p><strong>Photosynthetic Pigments:</strong> Chlorophyll <em>a</em> is ubiquitous in all photosynthetic
+                    algae. Accessory pigments are diagnostic for different groups and are adaptations for absorbing
+                    different wavelengths of light. Examples include chlorophyll <em>b</em> and carotenoids (green
+                    algae), and phycobilins (red algae, cyanobacteria).</p>
+
+                <!-- IMAGE PROMPT: Create a comparison chart showing three types of algae side by side.
+                     LEFT: Green Algae (Chlorophyta) - show Spirogyra with spiral chloroplasts
+                     CENTER: Brown Algae (Phaeophyta) - show kelp/seaweed structure with holdfast, stipe, blade
+                     RIGHT: Red Algae (Rhodophyta) - show branching coral-like structure
+                     Below each: list key pigments (Chlorophyll a+b for green, Chlorophyll a+c+fucoxanthin for brown, Chlorophyll a+phycobilins for red)
+                     Clean scientific illustration style with labels. -->
+                <img src="https://res.cloudinary.com/dhb8qmnxt/image/upload/v1769691018/unnamed_egfrc8.jpg"
+                    alt="Classification of Algae" class="note-image">
+                <p class="image-caption">Figure 2: Comparative View of Green, Brown, and Red Algae</p>
+
+                <h3>3. Reproduction and Life Cycles</h3>
+                <p>Algae exhibit all major types of eukaryotic life cycles: haplontic (dominant haploid gametophyte),
+                    diplontic (dominant diploid sporophyte), and haplodiplontic (alternation of generations). Both
+                    sexual (via gametes) and asexual (via spores or fragmentation) reproduction are common.</p>
+                <p><strong>Motile Gametes:</strong> The presence of flagellated gametes is a common feature, reflecting
+                    their aquatic ancestry and the need for motility to achieve fertilization in a fluid medium.</p>
+
+                <h3>4. Core Mechanisms and Formulas</h3>
+                <h4>Photosynthesis (Overall Equation)</h4>
+                <p>The fundamental process of carbon fixation in algae occurs in chloroplasts.</p>
+                <div class="formula-box">
+                    6CO₂ + 6H₂O --(Light & Pigments)--> C₆H₁₂O₆ + 6O₂
+                </div>
+
+                <h4>Light Attenuation and Niche Partitioning</h4>
+                <p>The absorption of light by water is wavelength-dependent. An alga's pigment composition determines
+                    its action spectrum and thus its optimal depth in the water column.</p>
+                <div class="formula-box">
+                    Beer-Lambert Law (Conceptual): I_d = I_0 * e^(-Kd)
+                    <div class="formula-desc">Models light intensity (I) at depth d. K is the attenuation coefficient
+                        (different for wavelengths).</div>
+                </div>
+                <p>Red light is absorbed shallowly, while blue/green light penetrates deeper.</p>
+                <p><strong>Ecological Implication:</strong> This is the basis of chromatic adaptation. Red algae, with
+                    their phycobilin pigments that absorb blue-green light efficiently, can inhabit deeper waters than
+                    green algae.</p>
+
+                <h3>5. Exam Insights and Problem-Solving Strategy</h3>
+                <p>When analyzing algal life cycles, be precise: state the ploidy (n or 2n) of the dominant phase and
+                    explicitly mention whether gametes or spores are motile (flagellated) or non-motile.</p>
+
+                <h3>Classification Formula</h3>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Group</th>
+                                <th>Pigment</th>
+                                <th>Reserve Food</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Chlorophyceae (Green)</td>
+                                <td>Chl a, b</td>
+                                <td>Starch</td>
+                            </tr>
+                            <tr>
+                                <td>Phaeophyceae (Brown)</td>
+                                <td>Chl a, c + Fucoxanthin</td>
+                                <td>Laminarin</td>
+                            </tr>
+                            <tr>
+                                <td>Rhodophyceae (Red)</td>
+                                <td>Chl a, d + Phycoerythrin</td>
+                                <td>Floridean starch</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="exam-tip">
+                    <div class="exam-tip-icon">💡</div>
+                    <div class="exam-tip-content">
+                        <h4>Exam Strategy</h4>
+                        <p>Use pigment profiles as evidence for ecological niche. E.g., Phycoerythrin in Red Algae =
+                            Deep Marine Adaptation.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECTION 3: BRYOPHYTES -->
+            <section id="bryophytes">
+                <h2>3. Bryophytes (Amphibians of Plant Kingdom)</h2>
+                <p>Mosses, Liverworts, Hornworts. Earliest diverging land plants.</p>
+
+                <h3>1. Definition and Phylogenetic Significance</h3>
+                <p><strong>Definition:</strong> Bryophytes are the earliest diverging lineage of extant land plants
+                    (embryophytes). They are characterized by a life cycle with a dominant, free-living gametophyte (n)
+                    and a transient, unbranched sporophyte (2n) that is nutritionally dependent on the gametophyte.</p>
+                <p><strong>Significance:</strong> They represent a critical evolutionary transition from aquatic
+                    charophycean algae to terrestrial vascular plants. Key adaptations to land are present (e.g.,
+                    cuticle, stomata in some), but they retain a strong dependence on water, particularly for
+                    reproduction.</p>
+
+                <h3>2. Key Structural and Anatomical Features</h3>
+                <p><strong>Non-vascular Nature:</strong> Bryophytes lack true lignified vascular tissues (xylem and
+                    phloem). Water transport is primarily external via capillarity, and internal conduction is
+                    facilitated by non-lignified cells called hydroids (for water) and leptoids (for sugars) in some
+                    mosses. These are analogous, not homologous, to true vascular tissues.</p>
+                <p><strong>Gametophyte Morphology:</strong> The dominant plant body is the gametophyte, which can be
+                    either thalloid (a flattened, undifferentiated body, as in <em>Marchantia</em>) or leafy
+                    (differentiated into a stem-like axis and leaf-like appendages, as in mosses).</p>
+                <p><strong>Sporophyte Structure:</strong> The simple sporophyte is typically composed of three parts: a
+                    foot (embedded in the gametophyte for nutrient absorption), a seta (stalk), and a capsule
+                    (sporangium where meiosis occurs).</p>
+
+                <!-- IMAGE PROMPT: Create a labeled diagram of bryophyte (moss) structure.
+                     Show: Left side - dominant green leafy GAMETOPHYTE (n) plant body with rhizoids at base.
+                     Right side - dependent SPOROPHYTE (2n) growing from gametophyte, with three parts labeled:
+                     1. FOOT (embedded in gametophyte), 2. SETA (stalk), 3. CAPSULE (at top, where spores form)
+                     Add arrows showing: spores released → germinate → new gametophyte.
+                     Include note: "Gametophyte = Dominant, Sporophyte = Dependent"
+                     Clean educational diagram with clear labels. -->
+                <img src="https://res.cloudinary.com/dhb8qmnxt/image/upload/v1769691142/unnamed_ezdzuj.jpg"
+                    alt="Bryophyte Life Cycle" class="note-image">
+                <p class="image-caption">Figure 3: Bryophyte Structure - Dominant Gametophyte with Dependent Sporophyte
+                </p>
+
+                <h3>3. Reproduction and Water Dependence</h3>
+                <p><strong>Sexual Reproduction:</strong> Bryophytes exhibit oogamy with motile, flagellated sperm. The
+                    requirement of a continuous film of water for sperm to swim to the egg is a major constraint,
+                    largely restricting bryophytes to moist habitats.</p>
+                <p><strong>Asexual Reproduction:</strong> Vegetative propagation is common and efficient, occurring via
+                    fragmentation or specialized structures like gemmae (produced in gemmae cups in liverworts like
+                    <em>Marchantia</em>).
+                </p>
+                <p><strong>Spore Dispersal:</strong> The sporophyte produces copious haploid spores via meiosis, which
+                    are typically dispersed by wind.</p>
+
+                <h3>4. Ecophysiology and Ecological Roles</h3>
+                <p><strong>Water Relations:</strong> Bryophytes are poikilohydric, meaning their internal water content
+                    varies with the ambient environment. They lack a thick waxy cuticle and efficient internal
+                    transport, but many possess remarkable desiccation tolerance, allowing them to survive extreme
+                    drying and rapidly resume metabolic activity upon rehydration.</p>
+                <p><strong>Ecological Importance:</strong> They are important pioneer species on bare rock and soil,
+                    contributing to pedogenesis. <em>Sphagnum</em> (peat moss) is of immense ecological importance,
+                    dominating peatland ecosystems which are a major global carbon sink.</p>
+
+                <h3>5. Exam Insights and Conceptual Focus</h3>
+                <p>The most critical concept for exams is the dominance of the haploid gametophyte generation, a
+                    condition that is the inverse of the trend seen in all vascular plants.</p>
+                <div class="exam-tip">
+                    <div class="exam-tip-icon">💡</div>
+                    <div class="exam-tip-content">
+                        <h4>Amphibians of Plant Kingdom</h4>
+                        <p>When discussing their phylogenetic position, emphasize the "amphibious" nature of bryophytes:
+                            they are terrestrial plants that are still fundamentally tied to water for sexual
+                            reproduction (due to flagellated sperm) and lack the lignified vascular tissues necessary
+                            for extensive vertical growth.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECTION 4: PTERIDOPHYTES -->
+            <section id="pteridophytes">
+                <h2>4. Pteridophytes (Ferns & Allies)</h2>
+                <h3>1. Definition and Evolutionary Position</h3>
+                <p><strong>Definition:</strong> Pteridophytes are the first true vascular (tracheophyte), seedless
+                    plants. They are defined by a life cycle with a dominant, free-living, and complex sporophyte (2n)
+                    and an independent but reduced, typically short-lived gametophyte (n).</p>
+                <p><strong>Evolutionary Significance:</strong> They represent the critical evolutionary step of
+                    acquiring lignified vascular tissue, which allowed for efficient transport and significant vertical
+                    growth, liberating them from the size constraints of bryophytes. However, they retain the ancestral
+                    dependence on water for fertilization.</p>
+
+                <h3>2. Anatomy, Life Cycle, and Reproduction</h3>
+                <p><strong>Vascular System:</strong> Possess true xylem (with tracheids for water conduction and
+                    support) and phloem (for sugar transport), enabling the development of true roots, stems, and leaves
+                    (megaphylls or microphylls).</p>
+                <p><strong>Sporophyte:</strong> The dominant, recognizable plant body (e.g., the fern frond). Sporangia
+                    (spore-producing structures) are often clustered into structures called sori on the underside of
+                    fern leaves.</p>
+                <p><strong>Gametophyte (Prothallus):</strong> A small, inconspicuous, and free-living structure that
+                    bears the sex organs (antheridia and archegonia).</p>
+                <p><strong>Fertilization:</strong> As in bryophytes, the sperm are flagellated and require a film of
+                    environmental water to swim to the egg. This is a key limiting factor in their life cycle.</p>
+
+                <h4>Homospory vs. Heterospory</h4>
+                <p>This is a crucial distinction within the group.</p>
+                <ul>
+                    <li><strong>Homospory:</strong> Produces one type of spore that develops into a bisexual gametophyte
+                        (most ferns, <em>Lycopodium</em>).</li>
+                    <li><strong>Heterospory:</strong> Produces two types of spores: microspores (develop into male
+                        gametophytes) and megaspores (develop into female gametophytes). This condition (seen in
+                        <em>Selaginella</em>) is a critical evolutionary preadaptation to the seed habit.
+                    </li>
+                </ul>
+
+                <!-- IMAGE PROMPT: Create a comparison diagram of Homospory vs Heterospory.
+                     LEFT panel - HOMOSPORY: Single sporangium → one type of spore → bisexual gametophyte (has both ♂ and ♀ symbols)
+                     RIGHT panel - HETEROSPORY: Two sporangia → Microsporangium produces microspores → male gametophyte (♂)
+                                                                 Megasporangium produces megaspores → female gametophyte (♀)
+                     Add note: "Heterospory is precursor to SEED evolution"
+                     Use simple icons and clear arrows. Educational science textbook style. -->
+                <img src="https://res.cloudinary.com/dhb8qmnxt/image/upload/v1769691225/unnamed_pehzxx.jpg"
+                    alt="Homospory vs Heterospory" class="note-image">
+                <p class="image-caption">Figure 4: Homospory vs Heterospory - Key Evolutionary Transition</p>
+
+                <h3>3. Physiology and Water Transport</h3>
+                <p><strong>Cohesion–Tension Theory:</strong> As vascular plants, pteridophytes rely on this mechanism
+                    for bulk water transport. Transpiration (evaporation of water from leaves) creates a negative
+                    pressure potential (tension) in the xylem, which pulls a continuous column of water up from the
+                    roots. The continuity of this column is maintained by the cohesive and adhesive properties of water.
+                </p>
+
+                <h4>Water Potential (Ψ)</h4>
+                <p>The movement of water throughout the plant is governed by gradients in water potential.</p>
+                <div class="formula-box">
+                    Formula: Ψ = Ψs + Ψp
+                    <div class="formula-desc">
+                        Ψs (Solute Potential): Effect of dissolved solutes (always negative).<br>
+                        Ψp (Pressure Potential): Physical pressure (turgor or tension).<br>
+                        Water always moves from an area of higher Ψ to lower Ψ.
+                    </div>
+                </div>
+
+                <h3>4. Representative Examples</h3>
+                <ul>
+                    <li><strong>Lycophytes (Club Mosses):</strong> <em>Selaginella</em> (heterosporous),
+                        <em>Lycopodium</em> (homosporous).
+                    </li>
+                    <li><strong>Monilophytes (Ferns and Horsetails):</strong> <em>Dryopteris, Pteris</em> (true ferns);
+                        <em>Equisetum</em> (horsetails).
+                    </li>
+                </ul>
+
+                <h3>5. Exam Insights and Conceptual Focus</h3>
+                <p><strong>Distinguishing from Bryophytes:</strong> The two definitive features are the presence of true
+                    lignified vascular tissue and a dominant, independent sporophyte generation.</p>
+                <div class="exam-tip">
+                    <div class="exam-tip-icon">✨</div>
+                    <div class="exam-tip-content">
+                        <h4>Predicting Evolutionary Trajectories</h4>
+                        <p>The evolution of <strong>heterospory</strong> is the single most important conceptual link
+                            between pteridophytes and the subsequent evolution of seed plants (gymnosperms and
+                            angiosperms). It is the precursor to the ovule.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECTION 5: GYMNOSPERMS -->
+            <section id="gymnosperms">
+                <h2>5. Gymnosperms</h2>
+                <h3>1. Definition and Key Evolutionary Innovations</h3>
+                <p><strong>Definition:</strong> Gymnosperms are a group of seed-producing vascular plants distinguished
+                    by having ovules and seeds that are "naked," meaning they are not enclosed within a protective
+                    ovary.</p>
+                <p><strong>Key Innovations:</strong> They represent two major evolutionary advances over pteridophytes:
+                </p>
+                <ul>
+                    <li><strong>The Seed:</strong> A complex structure containing the embryo, a nutritive tissue, and a
+                        protective seed coat. It allows for dormancy, protection, and dispersal with a stored food
+                        supply.</li>
+                    <li><strong>Pollen:</strong> The male gametophyte is reduced to a multicellular pollen grain.
+                        Pollination (the transfer of pollen to the ovule), typically by wind, and the subsequent growth
+                        of a pollen tube to deliver sperm directly to the egg, eliminates the ancestral requirement for
+                        free water for fertilization.</li>
+                </ul>
+
+                <h3>2. Major Extant Groups</h3>
+                <ul>
+                    <li><strong>Coniferophyta (Conifers):</strong> The most dominant and ecologically significant group,
+                        including pines (<em>Pinus</em>), firs, and spruces. They are characterized by woody cones and
+                        needle- or scale-like leaves.</li>
+                    <li><strong>Cycadophyta (Cycads):</strong> Dioecious, palm-like plants with large cones.</li>
+                    <li><strong>Ginkgophyta (Ginkgo):</strong> Represented by a single extant species, <em>Ginkgo
+                            biloba</em>, a deciduous "living fossil."</li>
+                    <li><strong>Gnetophyta (Gnetophytes):</strong> A small group (<em>Gnetum, Ephedra, Welwitschia</em>)
+                        with some angiosperm-like features (e.g., vessel elements in their xylem).</li>
+                </ul>
+
+                <h3>3. Reproductive Biology: The Seed Plant Blueprint</h3>
+                <p><strong>Heterospory:</strong> All gymnosperms are heterosporous. Microspores develop into pollen
+                    grains (male gametophytes), and a single megaspore within the ovule develops into the female
+                    gametophyte.</p>
+                <p><strong>Pollination and Fertilization:</strong> Pollination is predominantly anemophilous
+                    (wind-driven). The pollen grain germinates on the ovule, forming a pollen tube that grows through
+                    the nucellus to deliver the non-motile sperm nuclei directly to the egg cell.</p>
+                <p><strong>Seed Composition:</strong> The mature gymnosperm seed consists of three distinct generations
+                    of tissue:</p>
+                <ol>
+                    <li>The diploid seed coat, derived from the parent sporophyte's integument.</li>
+                    <li>The haploid nutritive tissue, which is the remains of the female gametophyte.</li>
+                    <li>The diploid embryo of the next sporophyte generation.</li>
+                </ol>
+
+                <!-- IMAGE PROMPT: Create a labeled cross-section diagram of a gymnosperm seed.
+                     Show three distinct layers from outside to inside:
+                     1. SEED COAT (outer) - label "2n, from parent sporophyte integument" in brown
+                     2. NUTRITIVE TISSUE (middle) - label "n, female gametophyte" in beige
+                     3. EMBRYO (center) - label "2n, next sporophyte generation" in green with tiny plant structure
+                     Add title: "Three Generations in One Seed"
+                     Clean cross-section diagram style. -->
+                <img src="https://res.cloudinary.com/dhb8qmnxt/image/upload/v1769691314/unnamed_ujavfd.jpg"
+                    alt="Gymnosperm Seed Structure" class="note-image">
+                <p class="image-caption">Figure 5: Gymnosperm Seed - Three Generations of Tissue</p>
+
+                <h3>4. Anatomy and Physiology</h3>
+                <p><strong>Wood Structure:</strong> The xylem of most gymnosperms is composed exclusively of tracheids
+                    for both water conduction and mechanical support; vessel elements are generally absent (except in
+                    Gnetophytes). Conifers are also characterized by the presence of resin ducts.</p>
+                <p><strong>Secondary Growth:</strong> As woody plants, they exhibit extensive secondary growth via a
+                    vascular cambium, allowing for the formation of wood and an increase in girth.</p>
+
+                <h3>5. Exam Insights and Problem-Solving Strategy</h3>
+                <p><strong>Phylogenetic Placement:</strong> Gymnosperms are the first spermatophytes (seed plants). The
+                    key distinction from pteridophytes is the presence of the seed and pollen. The key distinction from
+                    angiosperms is the absence of a flower and the "naked" condition of the ovule.</p>
+                <p><strong>Fossil Identification:</strong> When identifying a fossil plant, the presence of seeds but
+                    the clear absence of flowers or fruits is the definitive characteristic of a gymnosperm. Ovules
+                    borne on the surface of scales are a strong indicator of the conifer lineage.</p>
+                <div class="exam-tip">
+                    <div class="exam-tip-icon">🔍</div>
+                    <div class="exam-tip-content">
+                        <h4>Conceptual Link</h4>
+                        <p>The evolution of the <strong>pollen tube</strong> is the critical adaptation that severed the
+                            final link to water for reproduction, allowing seed plants to conquer and dominate drier
+                            terrestrial environments.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECTION 6: ANGIOSPERMS -->
+            <section id="angiosperms">
+                <h2>6. Angiosperms (Flowering Plants)</h2>
+                <h3>1. Definition and Evolutionary Dominance</h3>
+                <p><strong>Definition:</strong> Angiosperms, or flowering plants, are a division of seed plants
+                    characterized by three key synapomorphies: the flower, enclosed ovules (within a carpel that
+                    develops into a fruit), and double fertilization, which results in the formation of a diploid zygote
+                    and a typically triploid endosperm.</p>
+                <p><strong>Dominance:</strong> They are, by an immense margin, the most diverse and ecologically
+                    dominant group of land plants in the modern era.</p>
+
+                <h3>2. Key Anatomical and Reproductive Structures</h3>
+                <p><strong>Flower:</strong> The definitive reproductive structure, typically composed of four whorls of
+                    modified leaves: sepals (calyx), petals (corolla), stamens (androecium, containing microsporangia),
+                    and carpels (gynoecium, containing megasporangia/ovules). The extraordinary diversity in floral
+                    morphology is a direct reflection of coevolution with pollinators.</p>
+                <p><strong>Fruit:</strong> A mature, ripened ovary that encloses the seed(s). The fruit's primary
+                    functions are seed protection and facilitation of seed dispersal.</p>
+                <p><strong>Vascular Anatomy:</strong> In addition to tracheids, the xylem of most angiosperms contains
+                    vessel elements. These are wider, more efficient water-conducting cells that allow for higher rates
+                    of transpiration and photosynthesis compared to the tracheid-only xylem of most gymnosperms.</p>
+
+                <h3>3. The Hallmark of Angiosperm Reproduction: Double Fertilization</h3>
+                <p><strong>Gametophyte Reduction:</strong> Angiosperms exhibit the most extreme reduction of the
+                    gametophyte generation. The male gametophyte is the pollen grain, and the female gametophyte is the
+                    embryo sac (in the <em>Polygonum</em> type, it is a 7-celled, 8-nucleate structure).</p>
+                <p><strong>The Process:</strong> After pollination, two sperm cells are delivered to the embryo sac via
+                    the pollen tube.</p>
+                <ol>
+                    <li>One sperm cell fuses with the egg cell to form the diploid zygote (2n), which develops into the
+                        embryo.</li>
+                    <li>The second sperm cell fuses with the two polar nuclei in the central cell to form the primary
+                        endosperm nucleus (typically 3n).</li>
+                </ol>
+                <!-- IMAGE PROMPT: Create a detailed diagram of angiosperm double fertilization process.
+                     Show pollen grain landing on stigma → pollen tube growing down style to ovary.
+                     Inside embryo sac, show: 
+                     - EGG CELL (n) at bottom
+                     - CENTRAL CELL with 2 polar nuclei (n+n) in center
+                     - Two sperm nuclei traveling down pollen tube
+                     Fertilization events with arrows:
+                     1. Sperm 1 + Egg → ZYGOTE (2n) → becomes EMBRYO
+                     2. Sperm 2 + 2 Polar Nuclei → PRIMARY ENDOSPERM NUCLEUS (3n) → becomes ENDOSPERM
+                     Label "DOUBLE FERTILIZATION" prominently.
+                     Clean, colorful educational diagram with clear flow. -->
+                <img src="https://res.cloudinary.com/dhb8qmnxt/image/upload/v1769691428/unnamed_prghrl.jpg"
+                    alt="Angiosperm Life Cycle and Double Fertilization" class="note-image">
+                <p class="image-caption">Figure 6: Angiosperm Life Cycle highlighting Double Fertilization</p>
+                <p><strong>Functional Significance:</strong> This process of double fertilization is a key evolutionary
+                    innovation. It synchronizes the investment in nutritive tissue (endosperm) with successful
+                    fertilization, preventing the plant from wasting resources on provisioning an unfertilized ovule, a
+                    common occurrence in gymnosperms.</p>
+
+                <h3>4. Evolutionary and Ecological Strategies</h3>
+                <p><strong>Pollination Syndromes:</strong> The evolution of the flower allowed for the development of
+                    intricate coevolutionary relationships with animal pollinators (insects, birds, bats). This biotic
+                    pollination is generally more efficient and targeted than the anemophily (wind pollination) of
+                    gymnosperms, and it has been a major driver of angiosperm diversification and speciation.</p>
+                <p><strong>Seed Dispersal Mechanisms:</strong> The evolution of the fruit facilitated a wide array of
+                    highly effective seed dispersal strategies, utilizing abiotic vectors (wind, water) and biotic
+                    vectors (animals attracted to fleshy, nutritious fruits).</p>
+
+                <h3>5. Representative Examples and Major Clades</h3>
+                <ul>
+                    <li><strong>Monocots:</strong> Characterized by one cotyledon, parallel leaf venation, and floral
+                        parts typically in multiples of three. Examples: <em>Zea mays</em> (maize), <em>Oryza
+                            sativa</em> (rice).</li>
+                    <li><strong>Eudicots (Dicots):</strong> Characterized by two cotyledons, net-like leaf venation, and
+                        floral parts typically in multiples of four or five. Examples: <em>Arabidopsis thaliana</em>
+                        (model organism), <em>Solanum lycopersicum</em> (tomato).</li>
+                </ul>
+
+                <h3>6. Exam Insights and Problem-Solving Strategy</h3>
+                <p><strong>Definitive Identification:</strong> For any identification question, the presence of flowers,
+                    the process of double fertilization leading to a triploid endosperm, and ovules enclosed within an
+                    ovary that develops into a fruit are the unambiguous, defining features of an angiosperm.</p>
+                <p><strong>Phylogenetic Reasoning:</strong> When explaining the extraordinary success of angiosperms,
+                    the key arguments should focus on the evolutionary advantages conferred by the flower (facilitating
+                    biotic pollination and rapid speciation) and the fruit (enhancing seed protection and dispersal).
+                </p>
+            </section>
+
+            <!-- SECTION 7: COMPARATIVE TABLE -->
+            <section id="comparison">
+                <h2>7. Comparative Summary</h2>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Trait / Group</th>
+                                <th>Algae</th>
+                                <th>Bryophytes</th>
+                                <th>Pteridophytes</th>
+                                <th>Gymnosperms</th>
+                                <th>Angiosperms</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Habitat</strong></td>
+                                <td>Aquatic/terrestrial</td>
+                                <td>Moist terrestrial</td>
+                                <td>Terrestrial (moist)</td>
+                                <td>Terrestrial</td>
+                                <td>Terrestrial/aquatic</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Dominant generation</strong></td>
+                                <td>Variable</td>
+                                <td>Gametophyte (n)</td>
+                                <td>Sporophyte (2n)</td>
+                                <td>Sporophyte (2n)</td>
+                                <td>Sporophyte (2n)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Vascular tissue</strong></td>
+                                <td>Absent / primitive</td>
+                                <td>Absent</td>
+                                <td>Present (tracheids)</td>
+                                <td>Present (tracheids)</td>
+                                <td>Present (tracheids + vessels)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Seeds?</strong></td>
+                                <td>No</td>
+                                <td>No</td>
+                                <td>No</td>
+                                <td>Yes (naked)</td>
+                                <td>Yes (enclosed)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Fertilization</strong></td>
+                                <td>Water-borne gametes</td>
+                                <td>Water required</td>
+                                <td>Water required (flagellated sperm)</td>
+                                <td>Pollen (water not required)</td>
+                                <td>Pollen (water not required)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Reproductive unit</strong></td>
+                                <td>Gametes/spores</td>
+                                <td>Spores</td>
+                                <td>Spores</td>
+                                <td>Seeds (ovules exposed)</td>
+                                <td>Seeds (ovules enclosed; fruits)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- SECTION 8: MECHANISMS -->
+            <section id="mechanisms">
+                <h2>8. Mechanisms & Derivations</h2>
+
+                <h3>1. Water Potential and Direction of Water Movement</h3>
+                <div class="formula-box">
+                    Ψ = Ψs + Ψp
+                    <div class="formula-desc">
+                        <strong>Ψ:</strong> Total water potential<br>
+                        <strong>Ψs:</strong> Solute (osmotic) potential (≤ 0)<br>
+                        <strong>Ψp:</strong> Pressure potential (can be + or −)
+                    </div>
+                </div>
+                <p><strong>Rule:</strong> Water moves from higher (less negative) Ψ to lower (more negative) Ψ.</p>
+                <p><strong>Application:</strong>
+                <ul>
+                    <li><strong>Root Uptake:</strong> Soil Ψ > Root Ψ (due to solute accumulation).</li>
+                    <li><strong>Transpiration Pull:</strong> Leaf Ψ decreases as water evaporates, creating a gradient.
+                    </li>
+                </ul>
+                </p>
+
+                <h3>2. Cohesion–Tension (Qualitative Derivation)</h3>
+                <p>Evaporation at stomata → Menisci formation in mesophyll cell walls → Generates <strong>Negative
+                        Pressure (Tension)</strong> in xylem. Because of <strong>Cohesion</strong> (water-water) and
+                    <strong>Adhesion</strong> (water-wall), this tension transmits to the root, pulling a continuous
+                    water column.
+                </p>
+                <p><strong>Limits:</strong> Cavitation risk increases with high tension; vessel vs tracheid tradeoffs
+                    matter.</p>
+
+                <h3>3. Double Fertilization Consequence (Resource Optimization)</h3>
+                <p>Without double fertilization, endosperm could be formed before fertilization (wasted resources).
+                    Double fertilization ensures endosperm develops <strong>only when zygote forms</strong>, optimizing
+                    maternal resource allocation — a key evolutionary advantage of angiosperms.</p>
+            </section>
+
+            <section id="quick-revision">
+                <h2>Quick Revision & Conceptual Insights</h2>
+
+                <h3>One-Line Anchors</h3>
+                <ul>
+                    <li><strong>Algae:</strong> Diverse life cycles; pigments → depth niche.</li>
+                    <li><strong>Bryophytes:</strong> Dominant gametophyte; dependent sporophyte; water required for
+                        sperm.</li>
+                    <li><strong>Pteridophytes:</strong> Vascular, dominant sporophyte; spores disperse; some
+                        heterospory.</li>
+                    <li><strong>Gymnosperms:</strong> Naked seeds; pollen eliminates water dependence; tracheid wood.
+                    </li>
+                    <li><strong>Angiosperms:</strong> Flowers + fruits, double fertilization, vessels in xylem, greatest
+                        diversity.</li>
+                </ul>
+
+                <h3>Conceptual Insights for Problem Solving</h3>
+                <div class="exam-tip">
+                    <div class="exam-tip-icon">🧠</div>
+                    <div class="exam-tip-content">
+                        <h4>Exam Strategy</h4>
+                        <ul>
+                            <li><strong>Trace Traits:</strong> Map features (seeds, vessels) to groups to infer
+                                ecological implications.</li>
+                            <li><strong>Life-Cycle Listing:</strong> Write sequence (Meiosis → Spores → Gametophyte →
+                                Gametes → Fertilization → Zygote → Sporophyte) to avoid errors.</li>
+                            <li><strong>Evolutionary Drivers:</strong> Ask "Why?": Seeds/Pollen = Drier habitats;
+                                Vessels = High transport; Flowers = Targeted pollination.</li>
+                            <li><strong>Water Potential:</strong> Use Ψ to explain drought tolerance, stomatal behavior,
+                                and habitat distribution.</li>
+                            <li><strong>Fossil ID:</strong> Seeds = Seed plant; Flowers = Angiosperm; Scales = Conifer.
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <h3>Sample Short Questions</h3>
+                <div class="flash-grid">
+                    <div class="flashcard">
+                        <div class="flash-front">
+                            <h3>Why are bryophytes limited to moist habitats?</h3>
+                            <p>(Tap to Reveal)</p>
+                        </div>
+                        <div class="flash-back">
+                            <p>Because their sperm are flagellated and require a water film for motility; also lack
+                                robust vascular tissue for internal water transport.</p>
+                        </div>
+                    </div>
+                    <div class="flashcard">
+                        <div class="flash-front">
+                            <h3>Explain how heterospory facilitates seed evolution.</h3>
+                            <p>(Tap to Reveal)</p>
+                        </div>
+                        <div class="flash-back">
+                            <p>Heterospory separates male and female spore sizes and fates, allowing retention and
+                                nurturing of megaspore inside parental tissue, leading to integumented ovule and seed.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="flashcard">
+                        <div class="flash-front">
+                            <h3>What is the adaptive advantage of double fertilization?</h3>
+                            <p>(Tap to Reveal)</p>
+                        </div>
+                        <div class="flash-back">
+                            <p>Endosperm forms only upon fertilization, ensuring maternal investment only for fertilized
+                                ovules — efficient resource allocation.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <!-- Mobile Floating TOC -->
+    <button class="mobile-toc-btn" onclick="toggleMobileDrawer()">
+        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"></path>
+        </svg>
+        <span>Contents</span>
+    </button>
+
+    <!-- Mobile Drawer -->
+    <div class="mobile-drawer-overlay" id="mobileDrawerOverlay" onclick="toggleMobileDrawer()">
+        <div class="mobile-drawer" onclick="event.stopPropagation()">
+            <div class="drawer-handle"></div>
+            <div id="mobile-toc-content"></div>
+        </div>
+    </div>
+
+    <script>
+        // 1. Generate Table of Contents
+        const tocContent = document.getElementById('desktop-toc-content');
+        const mobileTocContent = document.getElementById('mobile-toc-content');
+        const sections = document.querySelectorAll('section[id]');
+
+        let tocHTML = '<div class="toc-header">Contents</div><ul class="toc-list">';
+
+        sections.forEach(section => {
+            const id = section.id;
+            const title = section.querySelector('h2').innerText;
+            tocHTML += `<li><a href="#${id}" class="toc-link">${title}</a></li>`;
+        });
+
+        tocHTML += '</ul>';
+
+        tocContent.innerHTML = tocHTML;
+        mobileTocContent.innerHTML = tocHTML;
+
+        // 2. Active Link Highlighting
+        const observerOptions = {
+            root: null,
+            rootMargin: '-20% 0px -60% 0px',
+            threshold: 0
+        };
+
+        const observer = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const id = entry.target.id;
+                    document.querySelectorAll('.toc-link').forEach(link => {
+                        link.classList.remove('active');
+                        if (link.getAttribute('href') === `#${id}`) {
+                            link.classList.add('active');
+                        }
+                    });
+                }
+            });
+        }, observerOptions);
+
+        sections.forEach(section => observer.observe(section));
+
+        // 3. Progress Bar
+        window.onscroll = function () {
+            let winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            let height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            let scrolled = (winScroll / height) * 100;
+            document.getElementById("progressBar").style.width = scrolled + "%";
+
+            // Header Scroll Effect
+            const header = document.querySelector('header');
+            if (winScroll > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        };
+
+        // 4. Mobile Drawer Toggle
+        function toggleMobileDrawer() {
+            const overlay = document.getElementById('mobileDrawerOverlay');
+            overlay.classList.toggle('active');
+        }
+
+        // 5. Flashcard Flip
+        document.querySelectorAll('.flashcard').forEach(card => {
+            card.addEventListener('click', () => {
+                card.classList.toggle('flipped');
+            });
+        });
+    </script>
+</body>
+
+</html>

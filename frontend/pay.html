@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pay Test</title>
+</head>
+
+<body>
+    <button onclick="pay()">Pay ₹1</button>
+
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <script>
+        async function pay() {
+            const res = await fetch("http://localhost:5000/api/create-order", {
+                method: "POST"
+            });
+
+            const order = await res.json();
+
+            const options = {
+                key: "rzp_test_S6zF2Dd2liRsY6", // Using the key found in .env
+                amount: order.amount,
+                currency: "INR",
+                name: "IISER Smart Prep",
+                description: "PRO Plan",
+                order_id: order.id,
+                handler: function (response) {
+                    alert("Payment Success!");
+                    console.log(response);
+                }
+            };
+
+            const rzp = new Razorpay(options);
+            rzp.open();
+        }
+    </script>
+</body>
+
+</html>

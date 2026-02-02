@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Platform Features | IISER Smart Prep</title>
+    <meta name="description"
+        content="Explore the comprehensive features of IISER Smart Prep - AI Tutor, Mock Tests, Analytics, and more.">
+
+    <!-- Google Fonts: Plus Jakarta Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* =========================================
+           1. CORE STYLES & VARIABLES
+           ========================================= */
+        :root {
+            --primary: #6366f1;
+            --primary-light: #818cf8;
+            --primary-dark: #4f46e5;
+            --primary-soft: #e0e7ff;
+            --accent: #8b5cf6;
+            --secondary: #0f172a;
+            --text-main: #0f172a;
+            --text-muted: #475569;
+            --text-light: #94a3b8;
+            --bg-white: #ffffff;
+            --bg-wash: #f8fafc;
+            --border: #e2e8f0;
+            --ai-cyan: #06b6d4;
+            --radius-md: 16px;
+            --radius-pill: 100px;
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            --container-width: 1200px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            color: var(--text-main);
+            background: var(--bg-wash);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        .container {
+            width: 90%;
+            max-width: var(--container-width);
+            margin: 0 auto;
+        }
+
+        /* Navigation */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+            padding: 1rem 0;
+        }
+
+        .nav-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            font-size: 1.25rem;
+            font-weight: 800;
+            color: var(--secondary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--text-muted);
+            transition: color 0.2s;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.5rem 1.2rem;
+            border-radius: var(--radius-pill);
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+            border: 1px solid var(--primary);
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+        }
+
+        /* =========================================
+           2. FEATURES PAGE STYLES
+           ========================================= */
+        main {
+            padding-top: 8rem;
+            padding-bottom: 6rem;
+        }
+
+        .header-section {
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto 5rem;
+        }
+
+        h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            color: var(--secondary);
+            margin-bottom: 1rem;
+            letter-spacing: -0.03em;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            color: var(--text-muted);
+            line-height: 1.7;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+        }
+
+        .feature-card {
+            background: white;
+            padding: 2.5rem;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow-md);
+            transition: transform 0.3s ease, border-color 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary-light);
+        }
+
+        .emoji-icon {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .feature-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--secondary);
+        }
+
+        .feature-desc {
+            color: var(--text-muted);
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .features-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+
+            h1 {
+                font-size: 2.25rem;
+            }
+        }
+
+        /* Footer */
+        footer {
+            background: white;
+            border-top: 1px solid var(--border);
+            padding: 4rem 0 2rem;
+            margin-top: auto;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- NAVIGATION -->
+    <header>
+        <div class="container nav-container">
+            <a href="index.html" class="logo">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path
+                        d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z">
+                    </path>
+                </svg>
+                IISER Smart Prep
+            </a>
+
+            <nav class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="features.html" style="color: var(--primary); font-weight: 600;">Features</a>
+                <a href="index.html#pricing">Pricing</a>
+                <a href="login.html?mode=signup" class="btn btn-primary" style="color: white;">Get Started</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- MAIN CONTENT -->
+    <main>
+        <div class="container">
+            <div class="header-section">
+                <h1>🚀 Platform Features</h1>
+                <p class="subtitle">
+                    Everything You Need to Crack IAT — Built for Serious Aspirants.<br>
+                    A focused, exam-first preparation ecosystem combining real exam simulation, AI guidance, and
+                    structured practice.
+                </p>
+            </div>
+
+            <div class="features-grid">
+
+                <!-- 1. Weekly Mocks -->
+                <div class="feature-card">
+                    <span class="emoji-icon">🧪</span>
+                    <h3 class="feature-title">Weekly Guided Full-Length Mocks</h3>
+                    <p class="feature-desc">Real exam interface. Unlimited access. Weekly roadmap with AI Rank
+                        Predictor.</p>
+                </div>
+
+                <!-- 2. AI Tutor -->
+                <div class="feature-card">
+                    <span class="emoji-icon">🤖</span>
+                    <h3 class="feature-title">AI Tutor</h3>
+                    <p class="feature-desc">Instant doubts clearing for PCMB. Short, exam-focused solutions.</p>
+                </div>
+
+                <!-- 3. AI Generated Mocks -->
+                <div class="feature-card">
+                    <span class="emoji-icon">⚙️</span>
+                    <h3 class="feature-title">AI-Generated Mock Tests</h3>
+                    <p class="feature-desc">Personalized full-length mocks based on weak areas & time.</p>
+                </div>
+
+                <!-- 4. PYQ Vault -->
+                <div class="feature-card">
+                    <span class="emoji-icon">📚</span>
+                    <h3 class="feature-title">PYQ Vault + Exam-Mode Solutions</h3>
+                    <p class="feature-desc">All PYQs with exam-mode solutions. Practice like the real test.</p>
+                </div>
+
+                <!-- 5. Interactive PYQ -->
+                <div class="feature-card">
+                    <span class="emoji-icon">⏱️</span>
+                    <h3 class="feature-title">Interactive PYQ Test Sessions</h3>
+                    <p class="feature-desc">Live/automated timed PYQ attempts with instant benchmarking.</p>
+                </div>
+
+                <!-- 6. Quick Mock -->
+                <div class="feature-card">
+                    <span class="emoji-icon">⚡</span>
+                    <h3 class="feature-title">Quick Mock — Every 2 Days</h3>
+                    <p class="feature-desc">30-min diagnostic every 2 days to fix weak areas fast.</p>
+                </div>
+
+                <!-- 7. Question of the Day -->
+                <div class="feature-card">
+                    <span class="emoji-icon">🧩</span>
+                    <h3 class="feature-title">Question of the Day</h3>
+                    <p class="feature-desc">Daily high-signal micro-question to keep you exam-ready.</p>
+                </div>
+
+                <!-- 8. AI Analysis -->
+                <div class="feature-card">
+                    <span class="emoji-icon">📊</span>
+                    <h3 class="feature-title">AI Mock Result Analyzer</h3>
+                    <p class="feature-desc">Deep insights on timing, accuracy, and detailed study plans.</p>
+                </div>
+
+                <!-- 9. Rank Predictor -->
+                <div class="feature-card">
+                    <span class="emoji-icon">🎯</span>
+                    <h3 class="feature-title">Rank Predictor & Progress Roadmap</h3>
+                    <p class="feature-desc">Estimate percentile & rank range with a personalized roadmap.</p>
+                </div>
+
+                <!-- 10. Smart Notes -->
+                <div class="feature-card">
+                    <span class="emoji-icon">🧠</span>
+                    <h3 class="feature-title">High-Quality Smart Notes</h3>
+                    <p class="feature-desc">Concise, exam-focused notes. No fluff, just high-yield content.</p>
+                </div>
+
+                <!-- 11. Doubt Resolution -->
+                <div class="feature-card">
+                    <span class="emoji-icon">🛠️</span>
+                    <h3 class="feature-title">24/7 Doubt Resolution</h3>
+                    <p class="feature-desc">24/7 hybrid system: Instant AI + Mentor support.</p>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="container">
+            <div style="text-align: center; color: var(--text-muted); font-size: 0.9rem;">
+                <div style="margin-bottom: 1rem;">
+                    <a href="index.html" style="margin: 0 10px;">Home</a>
+                    <a href="ai_tutor.html" style="margin: 0 10px;">AI Tutor</a>
+                    <a href="content.html" style="margin: 0 10px;">Contact</a>
+                    <a href="privacy.html" style="margin: 0 10px;">Privacy Policy</a>
+                </div>
+                &copy; 2026 IISER Smart Prep. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+</body>
+
+</html>

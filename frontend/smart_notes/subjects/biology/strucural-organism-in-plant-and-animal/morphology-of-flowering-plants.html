@@ -1,0 +1,2923 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Morphology of Flowering Plants | IISER Edge</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap"
+        rel="stylesheet">
+
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            /* Premium Color System */
+            --primary: 99 102 241;
+            --primary-light: 224 231 255;
+            --accent: 244 63 94;
+            --warning: 245 158 11;
+            --success: 16 185 129;
+
+            /* Neutral Scale */
+            --gray-50: 248 250 252;
+            --gray-100: 241 245 249;
+            --gray-200: 226 232 240;
+            --gray-300: 203 213 225;
+            --gray-400: 148 163 184;
+            --gray-500: 100 116 139;
+            --gray-600: 71 85 105;
+            --gray-700: 51 65 85;
+            --gray-800: 30 41 59;
+            --gray-900: 15 23 42;
+
+            /* semantic tokens */
+            --bg-primary: rgb(var(--gray-50));
+            --bg-secondary: white;
+            --bg-tertiary: rgb(var(--gray-100));
+            --text-primary: rgb(var(--gray-900));
+            --text-secondary: rgb(var(--gray-600));
+            --text-tertiary: rgb(var(--gray-500));
+            --border-primary: rgb(var(--gray-200));
+            --border-secondary: rgb(var(--gray-300));
+
+            /* Effects */
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+            --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+            --shadow-glow: 0 0 20px -5px rgb(var(--primary) / 0.4);
+
+            --glass-bg: rgba(255, 255, 255, 0.8);
+            --glass-border: rgba(255, 255, 255, 0.3);
+
+            --radius-sm: 0.5rem;
+            --radius-md: 0.75rem;
+            --radius-lg: 1rem;
+            --radius-xl: 1.5rem;
+
+            --nav-height: 80px;
+            --container-width: 880px;
+            --toc-width: 280px;
+        }
+
+        /* Dark Mode */
+        [data-theme="dark"] {
+            --bg-primary: rgb(var(--gray-900));
+            --bg-secondary: rgb(var(--gray-800));
+            --bg-tertiary: rgb(var(--gray-700));
+            --text-primary: rgb(var(--gray-50));
+            --text-secondary: rgb(var(--gray-300));
+            --text-tertiary: rgb(var(--gray-400));
+            --border-primary: rgb(var(--gray-700));
+            --border-secondary: rgb(var(--gray-600));
+
+            --glass-bg: rgba(15, 23, 42, 0.8);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --shadow-glow: 0 0 20px -5px rgb(var(--primary) / 0.6);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        body {
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.7;
+            font-size: 16px;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            overflow-x: hidden;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+            height: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--border-secondary);
+            border-radius: 100px;
+            border: 3px solid var(--bg-primary);
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgb(var(--gray-400));
+        }
+
+        /* Progress Bar */
+        .progress-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            z-index: 9999;
+            background: var(--border-primary);
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, rgb(var(--primary)), rgb(var(--accent)));
+            width: 0%;
+            transition: width 0.1s linear;
+            box-shadow: 0 0 10px rgb(var(--primary) / 0.5);
+        }
+
+        /* Header - Floating Pill Design */
+        header {
+            position: fixed;
+            top: 20px;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            display: flex;
+            justify-content: center;
+            pointer-events: none;
+            transition: top 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            height: auto;
+            /* Allow auto height */
+            background: transparent;
+            /* Remove solid background */
+            backdrop-filter: none;
+            /* Removed initial blur */
+            -webkit-backdrop-filter: none;
+            border-bottom: none;
+        }
+
+        header.scrolled {
+            top: 0;
+        }
+
+        .nav-container {
+            pointer-events: auto;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            border: 1px solid var(--glass-border);
+            box-shadow: var(--shadow-lg);
+            padding: 0.75rem 1.5rem;
+            border-radius: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 90%;
+            max-width: var(--container-width);
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            height: var(--nav-height);
+        }
+
+        header.scrolled .nav-container {
+            width: 100%;
+            max-width: 100%;
+            border-radius: 0;
+            border-top: 0;
+            border-left: 0;
+            border-right: 0;
+            background: var(--bg-secondary);
+            /* Solid background on scroll */
+            padding: 0 2rem;
+            box-shadow: var(--shadow-md);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-weight: 800;
+            color: var(--text-primary);
+            text-decoration: none;
+            font-size: 1.125rem;
+            transition: transform 0.2s;
+        }
+
+        .logo:hover {
+            transform: scale(1.02);
+        }
+
+        .logo-icon {
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, rgb(var(--primary)), rgb(var(--accent)));
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            box-shadow: var(--shadow-glow);
+        }
+
+        .nav-actions {
+            display: flex;
+            gap: 0.75rem;
+            align-items: center;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.625rem 1.25rem;
+            border-radius: 100px;
+            font-weight: 600;
+            font-size: 0.875rem;
+            transition: all 0.2s ease;
+            border: none;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .btn-secondary {
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+            border: 1px solid var(--border-primary);
+        }
+
+        .btn-secondary:hover {
+            background: var(--bg-secondary);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn-icon {
+            width: 40px;
+            height: 40px;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+        }
+
+        /* Theme Toggle Animation */
+        .theme-toggle {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .theme-toggle i {
+            transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        [data-theme="dark"] .theme-toggle i {
+            transform: rotate(360deg);
+        }
+
+        /* Main Layout */
+        .page-container {
+            display: flex;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding-top: calc(var(--nav-height) + 2rem);
+            padding-bottom: 4rem;
+            padding-left: 2rem;
+            padding-right: 2rem;
+            gap: 3rem;
+            position: relative;
+        }
+
+        /* Content Area */
+        .content-wrapper {
+            flex: 1;
+            max-width: var(--container-width);
+            margin: 0 auto;
+            position: relative;
+        }
+
+        /* Hero Section */
+        .hero {
+            margin-bottom: 3rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid var(--border-primary);
+            animation: fadeInUp 0.8s ease;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.375rem;
+            padding: 0.25rem 0.75rem;
+            background: rgb(var(--primary) / 0.1);
+            color: rgb(var(--primary));
+            border-radius: 100px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 1rem;
+            border: 1px solid rgb(var(--primary) / 0.2);
+        }
+
+        h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            line-height: 1.1;
+            color: var(--text-primary);
+            margin-bottom: 1.5rem;
+            letter-spacing: -0.02em;
+        }
+
+        .meta-info {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .meta-item i {
+            color: rgb(var(--primary));
+        }
+
+        /* Typography */
+        h2 {
+            font-size: 1.875rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin: 3rem 0 1.25rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 2px solid var(--border-primary);
+            scroll-margin-top: calc(var(--nav-height) + 20px);
+            position: relative;
+        }
+
+        h2::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 60px;
+            height: 2px;
+            background: linear-gradient(90deg, rgb(var(--primary)), rgb(var(--accent)));
+            border-radius: 2px;
+        }
+
+        h3 {
+            font-size: 1.375rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin: 2rem 0 1rem;
+            letter-spacing: -0.01em;
+        }
+
+        h4 {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin: 1.5rem 0 0.75rem;
+        }
+
+        p {
+            margin-bottom: 1.25rem;
+            color: var(--text-secondary);
+            line-height: 1.8;
+        }
+
+        /* Enhanced Lists */
+        ul,
+        ol {
+            margin-bottom: 1.5rem;
+            padding-left: 1.25rem;
+        }
+
+        li {
+            margin-bottom: 0.5rem;
+            color: var(--text-secondary);
+            position: relative;
+        }
+
+        ul li::marker {
+            color: rgb(var(--primary));
+            font-size: 1.1em;
+        }
+
+        /* Premium Cards */
+        .card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-primary);
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card:hover {
+            box-shadow: var(--shadow-xl);
+            border-color: var(--border-secondary);
+            transform: translateY(-2px);
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, rgb(var(--primary)), rgb(var(--accent)));
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .card:hover::before {
+            opacity: 1;
+        }
+
+        /* Specific Card Types */
+        .exam-tip {
+            border-left: 0;
+            background: linear-gradient(135deg, rgb(var(--warning) / 0.1), rgb(var(--warning) / 0.05));
+            border: 1px solid rgb(var(--warning) / 0.2);
+        }
+
+        .exam-tip::before {
+            background: rgb(var(--warning));
+        }
+
+        .exam-tip-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+            background: rgb(var(--warning));
+            color: white;
+            border-radius: 50%;
+            margin-bottom: 0.75rem;
+            font-size: 1rem;
+        }
+
+        .formula-box {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-secondary);
+            box-shadow: var(--shadow-md);
+            font-family: 'JetBrains Mono', monospace;
+            position: relative;
+        }
+
+        .formula-box::after {
+            content: '</>';
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            color: var(--text-tertiary);
+            font-size: 0.75rem;
+            opacity: 0.5;
+        }
+
+        .formula-content {
+            font-size: 1.125rem;
+            font-weight: 500;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .formula-desc {
+            font-size: 0.875rem;
+            color: var(--text-tertiary);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        .professor-note {
+            background: linear-gradient(135deg, rgb(var(--success) / 0.1), rgb(var(--success) / 0.05));
+            border: 1px solid rgb(var(--success) / 0.2);
+        }
+
+        .professor-note::before {
+            background: rgb(var(--success));
+        }
+
+        .professor-note h4 {
+            color: rgb(var(--success));
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 0;
+        }
+
+        /* Tables */
+        .table-container {
+            overflow-x: auto;
+            margin: 2rem 0;
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--border-primary);
+            box-shadow: var(--shadow-sm);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            background: var(--bg-secondary);
+            min-width: 600px;
+        }
+
+        th {
+            background: var(--bg-tertiary);
+            font-weight: 600;
+            color: var(--text-primary);
+            text-align: left;
+            padding: 1rem;
+            border-bottom: 2px solid var(--border-primary);
+            white-space: nowrap;
+        }
+
+        td {
+            padding: 1rem;
+            border-bottom: 1px solid var(--border-primary);
+            color: var(--text-secondary);
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:hover td {
+            background: var(--bg-tertiary);
+        }
+
+        /* Images */
+        .image-wrapper {
+            margin: 2rem 0;
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            border: 1px solid var(--border-primary);
+            background: var(--bg-secondary);
+            position: relative;
+        }
+
+        .image-wrapper img {
+            width: 100%;
+            height: auto;
+            display: block;
+            transition: transform 0.5s ease;
+        }
+
+        .image-wrapper:hover img {
+            transform: scale(1.02);
+        }
+
+        .image-caption {
+            padding: 1rem;
+            text-align: center;
+            font-size: 0.875rem;
+            color: var(--text-tertiary);
+            background: var(--bg-tertiary);
+            border-top: 1px solid var(--border-primary);
+        }
+
+        /* Desktop TOC */
+        .toc-container {
+            position: sticky;
+            top: calc(var(--nav-height) + 2rem);
+            width: var(--toc-width);
+            height: calc(100vh - var(--nav-height) - 4rem);
+            overflow-y: auto;
+            display: none;
+            padding-right: 1rem;
+        }
+
+        @media (min-width: 1280px) {
+            .toc-container {
+                display: block;
+            }
+        }
+
+        .toc-header {
+            font-size: 0.875rem;
+            font-weight: 700;
+            color: var(--text-tertiary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 1rem;
+            padding-left: 0.75rem;
+        }
+
+        .toc-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            position: relative;
+        }
+
+        .toc-list::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: var(--border-primary);
+        }
+
+        .toc-link {
+            display: block;
+            padding: 0.5rem 0.75rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.875rem;
+            font-weight: 500;
+            border-left: 2px solid transparent;
+            margin-left: 0;
+            transition: all 0.2s;
+            position: relative;
+        }
+
+        .toc-link:hover {
+            color: rgb(var(--primary));
+            background: rgb(var(--primary) / 0.05);
+        }
+
+        .toc-link.active {
+            color: rgb(var(--primary));
+            font-weight: 600;
+            border-left-color: rgb(var(--primary));
+            background: rgb(var(--primary) / 0.08);
+        }
+
+        /* Mobile TOC Drawer */
+        .mobile-drawer-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+            z-index: 2000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s;
+        }
+
+        .mobile-drawer-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .mobile-drawer {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: var(--bg-secondary);
+            border-radius: 2rem 2rem 0 0;
+            padding: 2rem;
+            max-height: 70vh;
+            overflow-y: auto;
+            transform: translateY(100%);
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .mobile-drawer-overlay.active .mobile-drawer {
+            transform: translateY(0);
+        }
+
+        .drawer-handle {
+            width: 40px;
+            height: 4px;
+            background: var(--border-secondary);
+            border-radius: 100px;
+            margin: 0 auto 1.5rem;
+        }
+
+        .toc-btn-mobile {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            width: 56px;
+            height: 56px;
+            background: linear-gradient(135deg, rgb(var(--primary)), rgb(var(--accent)));
+            color: white;
+            border: none;
+            border-radius: 50%;
+            box-shadow: var(--shadow-glow), var(--shadow-xl);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            z-index: 1000;
+            transition: all 0.3s;
+        }
+
+        .toc-btn-mobile:hover {
+            transform: scale(1.1) rotate(90deg);
+        }
+
+        .toc-btn-mobile:active {
+            transform: scale(0.95);
+        }
+
+        @media (min-width: 1280px) {
+            .toc-btn-mobile {
+                display: none;
+            }
+        }
+
+        /* Flashcards with 3D Flip */
+        .flash-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+            perspective: 1000px;
+        }
+
+        .flashcard {
+            height: 220px;
+            position: relative;
+            cursor: pointer;
+            transform-style: preserve-3d;
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .flashcard.flipped {
+            transform: rotateY(180deg);
+        }
+
+        .flashcard-face {
+            position: absolute;
+            inset: 0;
+            backface-visibility: hidden;
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            border: 1px solid var(--border-primary);
+            background: var(--bg-secondary);
+            box-shadow: var(--shadow-md);
+        }
+
+        .flash-front {
+            background: linear-gradient(135deg, var(--bg-secondary), var(--bg-tertiary));
+        }
+
+        .flash-back {
+            background: rgb(var(--primary));
+            color: white;
+            transform: rotateY(180deg);
+            border-color: rgb(var(--primary));
+        }
+
+        .flash-icon {
+            font-size: 2rem;
+            margin-bottom: 0.75rem;
+            opacity: 0.8;
+        }
+
+        .flash-front h3 {
+            font-size: 1.125rem;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+
+        .flash-front p {
+            font-size: 0.875rem;
+            color: var(--text-tertiary);
+            margin: 0;
+        }
+
+        .flash-back p {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 1rem;
+            margin: 0;
+            line-height: 1.6;
+        }
+
+        .flash-hint {
+            position: absolute;
+            bottom: 1rem;
+            font-size: 0.75rem;
+            opacity: 0.6;
+            font-weight: 500;
+        }
+
+        /* Interactive Highlight */
+        .highlight {
+            background: linear-gradient(120deg, rgb(var(--primary) / 0.2) 0%, rgb(var(--primary) / 0.2) 100%);
+            background-repeat: no-repeat;
+            background-size: 100% 40%;
+            background-position: 0 88%;
+            font-weight: 600;
+            color: var(--text-primary);
+            padding: 0 2px;
+            border-radius: 2px;
+            transition: background-size 0.3s;
+            cursor: help;
+            position: relative;
+        }
+
+        .highlight:hover {
+            background-size: 100% 100%;
+        }
+
+        /* Definition Tooltip */
+        .tooltip {
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-primary);
+            padding: 0.75rem;
+            border-radius: var(--radius-md);
+            font-size: 0.75rem;
+            font-weight: 400;
+            width: 200px;
+            box-shadow: var(--shadow-xl);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s;
+            z-index: 100;
+            color: var(--text-secondary);
+        }
+
+        .highlight:hover .tooltip {
+            opacity: 1;
+            visibility: visible;
+            bottom: calc(100% + 8px);
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-in {
+            animation: fadeInUp 0.6s ease forwards;
+            opacity: 0;
+        }
+
+        /* Section offset for anchor links */
+        section {
+            scroll-margin-top: calc(var(--nav-height) + 40px);
+        }
+
+        /* Search Bar (Premium Feature) */
+        .search-container {
+            position: relative;
+            margin-bottom: 2rem;
+            display: none;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 1rem 1.5rem;
+            padding-left: 3rem;
+            border: 1px solid var(--border-primary);
+            border-radius: var(--radius-xl);
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            font-family: inherit;
+            font-size: 0.9375rem;
+            transition: all 0.3s;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: rgb(var(--primary));
+            box-shadow: 0 0 0 4px rgb(var(--primary) / 0.1);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-tertiary);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            :root {
+                --nav-height: 140px;
+                /* Further increased nav height */
+            }
+
+            html {
+                font-size: 25px;
+                /* Increased by 25% as requested (20px -> 25px) */
+            }
+
+            body {
+                font-size: 1.4rem;
+                /* Very large body text */
+            }
+
+            /* Navbar Adjustments */
+            header {
+                top: 0;
+                height: var(--nav-height);
+                /* Fixed height */
+                background: white;
+                /* Solid background */
+                border-bottom: 1px solid var(--border-primary);
+            }
+
+            .nav-container {
+                width: 100%;
+                max-width: 100%;
+                padding: 0 1.5rem;
+                background: transparent;
+                box-shadow: none;
+                border: none;
+                border-radius: 0;
+            }
+
+            /* Hide Back Button on Mobile */
+            .nav-actions a.btn {
+                display: none;
+            }
+
+            .logo {
+                font-size: 1.8rem;
+                /* Larger logo text */
+            }
+
+            .logo svg {
+                width: 60px;
+                /* Larger logo icon */
+                height: 60px;
+            }
+
+            .btn {
+                padding: 1rem 2rem;
+                font-size: 1.2rem;
+            }
+
+            .btn-icon {
+                width: 64px;
+                /* Larger icon buttons */
+                height: 64px;
+                font-size: 1.6rem;
+            }
+
+            h1 {
+                font-size: 3rem;
+                line-height: 1.1;
+                margin-bottom: 2rem;
+            }
+
+            h2 {
+                font-size: 2.4rem;
+                margin-top: 4rem;
+                padding-bottom: 1rem;
+            }
+
+            h3 {
+                font-size: 2rem;
+                margin-top: 3rem;
+            }
+
+            h4 {
+                font-size: 1.6rem;
+                margin-top: 2.5rem;
+            }
+
+            p,
+            li {
+                font-size: 1.5rem;
+                /* ~30px text */
+                line-height: 1.6;
+                /* Slightly tighter line height for very large text */
+                margin-bottom: 1.75rem;
+            }
+
+            .page-container {
+                padding-left: 1.5rem;
+                padding-right: 1.5rem;
+                padding-top: calc(var(--nav-height) + 1rem);
+            }
+
+            .nav-container {
+                padding: 0 1.25rem;
+            }
+
+            table {
+                font-size: 1.2rem;
+            }
+
+            .meta-info {
+                font-size: 1.2rem;
+                gap: 1rem;
+            }
+
+            .card {
+                padding: 1.5rem;
+            }
+
+            .formula-content {
+                font-size: 1.6rem;
+            }
+
+            .formula-desc {
+                font-size: 1.2rem;
+            }
+
+            .badge {
+                font-size: 1rem;
+                padding: 0.5rem 1.2rem;
+            }
+        }
+
+        /* Print Styles */
+        @media print {
+
+            header,
+            .toc-container,
+            .toc-btn-mobile {
+                display: none;
+            }
+
+            .page-container {
+                padding-top: 2rem;
+            }
+
+            body {
+                background: white;
+                color: black;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Progress Bar -->
+    <div class="progress-container">
+        <div class="progress-bar" id="progressBar"></div>
+    </div>
+
+    <!-- Header -->
+    <header id="mainHeader">
+        <div class="nav-container">
+            <a href="/frontend/index.html" class="logo">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path
+                        d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z">
+                    </path>
+                </svg>
+                IISER Smart Prep
+            </a>
+
+            <div class="nav-actions">
+                <a href="unit-2-homepage-biology.html" class="btn btn-secondary">
+                    <i class="fas fa-arrow-left"></i>
+                    <span class="hide-mobile">Back to Unit</span>
+                </a>
+                <button class="btn btn-secondary btn-icon" onclick="window.print()" aria-label="Download PDF">
+                    <i class="fas fa-file-pdf"></i>
+                </button>
+                <button class="btn btn-secondary btn-icon theme-toggle" onclick="toggleTheme()"
+                    aria-label="Toggle theme">
+                    <i class="fas fa-sun"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <div class="page-container">
+        <!-- Main Content -->
+        <main class="content-wrapper">
+
+            <!-- Search (Premium Feature) -->
+            <div class="search-container" id="searchContainer">
+                <i class="fas fa-search search-icon"></i>
+                <input type="text" class="search-input" placeholder="Search this chapter..." id="searchInput">
+            </div>
+
+            <!-- Hero -->
+            <div class="hero">
+                <span class="badge">
+                    <i class="fas fa-star"></i>
+                    High Yield Topic
+                </span>
+                <h1>Morphology of Flowering Plants</h1>
+                <div class="meta-info">
+                    <div class="meta-item">
+                        <i class="fas fa-book"></i>
+                        <span>Biology Unit 2</span>
+                    </div>
+                    <div class="meta-item">
+                        <i class="fas fa-clock"></i>
+                        <span>45 min read</span>
+                    </div>
+                    <div class="meta-item">
+                        <i class="fas fa-graduation-cap"></i>
+                        <span>IAT Advanced</span>
+                    </div>
+                    <div class="meta-item">
+                        <i class="fas fa-fire"></i>
+                        <span>Hot Topic</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Content -->
+            <article>
+                <section id="intro" class="animate-in">
+                    <h2>Introduction — What is Morphology?</h2>
+
+                    <h3>1. Defining Morphology: Beyond "External Appearance"</h3>
+                    <p>
+                        While high school textbooks define <span class="highlight">Morphology<span class="tooltip">Study
+                                of form and structure of organisms</span></span> (Greek: <em>Morphos</em> = form;
+                        <em>Logos</em> = study) simply as the study of external characteristics, in advanced biological
+                        sciences, it is much profound.
+                    </p>
+                    <p>
+                        Morphology is the study of the size, shape, and structure of animals, plants, and microorganisms
+                        and the relationships of their constituent parts. It acts as the bridge between Genetics (the
+                        blueprint) and Ecology (the environment).
+                    </p>
+
+                    <div class="card formula-box">
+                        <div class="formula-content">Genotype + Environment + Developmental Noise → Phenotype
+                            (Morphology)</div>
+                        <div class="formula-desc">The Genotype-Phenotype Bridge: Morphology is the physical
+                            manifestation of the genome interacting with the environment.</div>
+                    </div>
+
+                    <h3>2. The Scope: Levels of Morphological Study</h3>
+                    <p>To understand an organism, we analyze form at multiple scales.</p>
+
+                    <h4>A. Eidonomy (External Morphology)</h4>
+                    <ul>
+                        <li><strong>Definition:</strong> Study of the external appearance of an organism.</li>
+                        <li><strong>Parameters:</strong> Shape, size, color, pattern, and external appendages.</li>
+                        <li><strong>Utility:</strong> Used primarily in Alpha Taxonomy (field identification).</li>
+                        <li><strong>Example:</strong> Identifying a beetle species by the iridescence of its elytra
+                            (wing case).</li>
+                    </ul>
+
+                    <h4>B. Anatomy (Internal Morphology)</h4>
+                    <ul>
+                        <li><strong>Definition:</strong> Study of internal structure revealed by dissection
+                            (<em>ana</em> = up; <em>tome</em> = cutting).</li>
+                        <li><strong>Focus:</strong> Arrangement of organs (situs), skeletal architecture, and visceral
+                            connections.</li>
+                        <li><strong>Key Concept:</strong> Anatomy dictates the constraints of morphology. A vertebrate
+                            cannot have wings and arms (like an angel) because the anatomical limit of the tetrapod
+                            lineage is four limbs.</li>
+                    </ul>
+
+                    <h4>C. Histology (Micro-Morphology)</h4>
+                    <ul>
+                        <li><strong>Definition:</strong> The study of tissue architecture.</li>
+                        <li><strong>Relevance:</strong> The microscopic arrangement of cells (e.g., Squamous vs.
+                            Columnar epithelium) determines the macroscopic function (Diffusion vs. Absorption).</li>
+                    </ul>
+
+                    <h3>3. The Central Dogma of Morphology: "Form Follows Function"</h3>
+                    <p>In evolutionary biology, structure is rarely arbitrary. It is shaped by natural selection to
+                        perform a specific function efficiently. This concept is Functional Morphology.</p>
+
+                    <h4>Comparative Analysis:</h4>
+
+                    <div class="card">
+                        <h4>Streamlining (Fusiform shape)</h4>
+                        <ul>
+                            <li><strong>Morphology:</strong> Tapered ends, widest in the middle.</li>
+                            <li><strong>Physics:</strong> Reduces drag coefficient in fluids.</li>
+                            <li><strong>Convergence:</strong> Seen in Sharks (Fish), Dolphins (Mammals), and
+                                Ichthyosaurs (Reptiles).</li>
+                        </ul>
+                    </div>
+
+                    <!-- IMAGE PROMPT: Convergent Evolution - Streamlining -->
+                    <!-- Scientific illustration showing convergent evolution in streamlined body shapes. Split comparison showing: (left) shark with fusiform body, (center) dolphin with similar streamlined shape, (right) extinct ichthyosaur fossil outline. All three oriented horizontally showing tapered front, widest middle, tapered rear. Clean white background, labeled with arrows indicating 'reduced drag coefficient'. Educational biology textbook style, detailed but simple color palette. -->
+
+                    <div class="card">
+                        <h4>Surface Area Maximization</h4>
+                        <ul>
+                            <li><strong>Morphology:</strong> High branching, folding, or villi.</li>
+                            <li><strong>Physiology:</strong> Required for exchange surfaces.</li>
+                            <li><strong>Examples:</strong> Intestinal villi, Lung alveoli, Root hairs, Fish gills.</li>
+                        </ul>
+                    </div>
+
+                    <div class="card professor-note">
+                        <h4><i class="fas fa-lightbulb"></i> Professor's Analogy</h4>
+                        <p>Think of morphology as Architecture. If the function is a "Church," the morphology includes
+                            high ceilings and stained glass. If the function is a "Bunker," the morphology includes
+                            thick walls and no windows. Nature is the architect; Natural Selection is the building code.
+                        </p>
+                    </div>
+
+                    <h3>4. Evolutionary Morphology: Homology vs. Analogy</h3>
+                    <p>Morphology is the primary tool used to reconstruct the Tree of Life (Phylogeny).</p>
+
+                    <div class="flash-grid">
+                        <div class="flashcard" onclick="this.classList.toggle('flipped')">
+                            <div class="flashcard-face flash-front">
+                                <div class="flash-icon">🔄</div>
+                                <h3>Homologous Structures</h3>
+                                <p>Same origin/ancestry, different function</p>
+                                <span class="flash-hint">Tap to reveal</span>
+                            </div>
+                            <div class="flashcard-face flash-back">
+                                <p>Evidence of <strong>Divergent Evolution</strong><br><br>
+                                    Example: Whale flipper and Human hand</p>
+                            </div>
+                        </div>
+
+                        <div class="flashcard" onclick="this.classList.toggle('flipped')">
+                            <div class="flashcard-face flash-front">
+                                <div class="flash-icon">🎯</div>
+                                <h3>Analogous Structures (Homoplasy)</h3>
+                                <p>Different origin, same function</p>
+                                <span class="flash-hint">Tap to reveal</span>
+                            </div>
+                            <div class="flashcard-face flash-back">
+                                <p>Evidence of <strong>Convergent Evolution</strong><br><br>
+                                    Example: Insect wing (chitin) vs Bird wing (bone/feather)</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card professor-note">
+                        <h4><i class="fas fa-microscope"></i> Research Insight</h4>
+                        <p>Modern morphology combines with Evo-Devo (Evolutionary Developmental Biology). We no longer
+                            just look at the adult bone; we look at the Hox genes that patterned that bone during
+                            embryogenesis.</p>
+                    </div>
+
+                    <h3>5. Symmetry: The Geometry of Life</h3>
+                    <p>The arrangement of body parts around a central axis is a fundamental morphological character.</p>
+
+                    <h4>I. Asymmetry</h4>
+                    <p>No plane of symmetry. Occurrence: Primitive forms (e.g., Porifera / Sponges). Significance:
+                        Indicates a lack of complex locomotion or sensory coordination.</p>
+
+                    <h4>II. Radial Symmetry</h4>
+                    <p>Any plane passing through the central axis divides the body into equal halves. Occurrence:
+                        Cnidarians (Jellyfish), Ctenophores, Adult Echinoderms. Ecological Logic: Beneficial for sessile
+                        (attached) or planktonic (drifting) animals. They meet the environment (food/danger) equally
+                        from all sides (360°).</p>
+
+                    <h4>III. Bilateral Symmetry</h4>
+                    <!-- IMAGE PROMPT: Body Symmetry Types -->
+                    <!-- Three-panel educational diagram showing types of body symmetry in organisms. Panel 1: asymmetric sponge with 'no plane of symmetry' notation. Panel 2: radially symmetric jellyfish with multiple dotted lines through center showing multiple planes of symmetry. Panel 3: bilaterally symmetric fish with single midsagittal plane dividing left/right halves. Clean scientific textbook style, simple color coding, white background. -->
+
+                    <p>Only one plane (midsagittal) divides the body into left and right halves. Occurrence:
+                        Platyhelminthes to Chordata (Grade Bilateria). Evolutionary Driver: Associated with
+                        Cephalization (formation of a head). If an animal moves forward, it needs sensory organs at the
+                        front. This creates an Anterior-Posterior axis, leading to bilateralism.</p>
+
+                    <h3>6. The "Bauplan" (Body Plan)</h3>
+                    <p>German for "building plan." This term refers to the fundamental morphological blueprint of a
+                        Phylum.</p>
+                    <ul>
+                        <li><strong>Sac-like Plan:</strong> Incomplete gut (single opening). E.g., Cnidaria, Flatworms.
+                        </li>
+                        <li><strong>Tube-within-a-tube Plan:</strong> Complete gut (Mouth → Anus). Allows for
+                            specialization of digestion. E.g., Annelids to Chordates.</li>
+                    </ul>
+
+                    <h3>7. Exam Traps & High-Yield Concepts for IAT/NEST</h3>
+
+                    <div class="card exam-tip">
+                        <div class="exam-tip-icon">⚠️</div>
+                        <div>
+                            <h4>Trap 1: Cryptic Species</h4>
+                            <p>Two species may have identical morphology but are genetically distinct and cannot
+                                interbreed. Lesson: Morphology is necessary but sometimes insufficient for taxonomy.
+                                Molecular genetics (DNA Barcoding) is the tie-breaker.</p>
+                        </div>
+                    </div>
+
+                    <div class="card exam-tip">
+                        <div class="exam-tip-icon">⚠️</div>
+                        <div>
+                            <h4>Trap 2: Phenotypic Plasticity</h4>
+                            <p>One genotype can produce different morphologies based on the environment. Example:
+                                Daphnia (water fleas) grow a sharp "helmet" only when predators are present. Do not
+                                mistake plastic variations for different species.</p>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <h4>Allometry</h4>
+                        <p>The study of the relationship of body size to shape. Parts of an organism grow at different
+                            rates (e.g., a human baby's head is huge relative to its body; in adults, it is smaller).
+                        </p>
+                    </div>
+
+                    <div class="card professor-note">
+                        <h4><i class="fas fa-comment-dots"></i> Final Thought for the Student</h4>
+                        <p>Morphology is not a "dead science" of describing dead things in jars. It is the study of
+                            biomechanics, adaptation, and evolutionary history. When you look at a structure, ask:
+                            <strong>What physical force shaped this?</strong> and <strong>What genetic constraint
+                                limited it?</strong>
+                        </p>
+                    </div>
+                </section>
+
+                <section id="root" class="animate-in">
+                    <h2>The Root System — Subterranean Architecture</h2>
+
+                    <h3>1. Introduction: The Geotropic Axis</h3>
+                    <p>The root is defined as the descending, cylindrical, non-green axis of the plant body. Unlike the
+                        shoot, it lacks nodes, internodes, leaves, and true buds (except in specific cases like Sweet
+                        Potato).</p>
+
+                    <div class="card professor-note">
+                        <h4><i class="fas fa-lightbulb"></i> The Biological Mandate</h4>
+                        <p>From an evolutionary perspective, the development of the root system (along with vascular
+                            tissue) was the critical innovation that allowed plants to colonize land
+                            (Terrestrialization). It solved two problems: <strong>Anchorage</strong> (stability against
+                            wind and gravity) and <strong>Acquisition</strong> (mining the soil for water and mineral
+                            ions against water potential gradients).</p>
+                    </div>
+
+                    <p><strong>Physiological Orientation:</strong></p>
+                    <ul>
+                        <li><strong>Positively Geotropic:</strong> Grows towards gravity.</li>
+                        <li><strong>Positively Hydrotropic:</strong> Grows towards water.</li>
+                        <li><strong>Negatively Phototropic:</strong> Grows away from light.</li>
+                    </ul>
+
+                    <h3>2. Regions of the Root: A Developmental Timeline</h3>
+                    <p>A root tip is not a static structure; it is a moving timeline of development. We examine it from
+                        the apex (tip) upwards.</p>
+
+                    <div class="card">
+                        <h4>Zone 1: The Root Cap (Calyptra)</h4>
+                        <p>Thimble-like multicellular cap covering the tender apex. <strong>Function 1
+                                (Protection):</strong> Shields the delicate meristem as it pushes through abrasive soil.
+                            <strong>Function 2 (Lubrication):</strong> Secretes Mucigel (a slime), which lubricates the
+                            path and fosters beneficial bacterial colonies (Rhizosphere). <strong>Function 3 (Sensory -
+                                High Yield):</strong> The root cap contains specialized cells called Statocytes
+                            containing starch grains (Statoliths). These grains settle under gravity, signaling the root
+                            to grow downwards (Gravitropism).
+                        </p>
+                        <p><em>Exception:</em> Aquatic plants (Hydrophytes like Pistia, Eichhornia) lack root caps.
+                            Instead, they have Root Pockets for buoyancy.</p>
+                    </div>
+
+                    <div class="card">
+                        <h4>Zone 2: Region of Meristematic Activity</h4>
+                        <p>Sub-apical (just behind the root cap). Small, thin-walled, isodiametric cells with dense
+                            protoplasm and large nuclei. Activity: Intense Mitosis. This is the engine of growth.</p>
+                        <p><strong>Research Note (The Quiescent Center):</strong> In the center of this zone is a group
+                            of cells with very low mitotic activity (The QC). These act as a "backup reservoir" of stem
+                            cells to restore the meristem if it is damaged.</p>
+                    </div>
+
+                    <div class="card">
+                        <h4>Zone 3: Region of Elongation</h4>
+                        <p>Mechanism: Cells differentiate not by dividing, but by Elongating. Driver: Rapid
+                            Vacuolization. The intake of water creates turgor pressure, stretching the cell walls
+                            longitudinally. Result: This zone is responsible for the actual increase in the length of
+                            the root.</p>
+                    </div>
+
+                    <div class="card">
+                        <h4>Zone 4: Region of Maturation (Differentiation)</h4>
+                        <p>Activity: Cells attain their final structural fate (Xylem, Phloem, Cortex). Key Feature:
+                            Epidermal cells protrude to form <strong>Root Hairs</strong>. Root Hairs are unicellular,
+                            fragile extensions of the Epiblema (root epidermis). Function: Massively increase the
+                            Surface Area for water absorption. Note: Absorption of water occurs primarily in this zone,
+                            not at the tip.</p>
+                    </div>
+
+                    <div class="card professor-note">
+                        <h4><i class="fas fa-tools"></i> Professor's Analogy</h4>
+                        <p>Think of a Root like a Tunnel Boring Machine. Root Cap = The Drill Bit (Hard, sensory).
+                            Meristem = The Motor (Generating new parts). Elongation Zone = The Hydraulic Pistons
+                            (Pushing the machine forward). Maturation Zone = The Tunnel Walls (Stabilized, functional
+                            pipes installed).</p>
+                    </div>
+
+                    <!-- IMAGE PROMPT: Root Zones Longitudinal Section -->
+                    <!-- Detailed longitudinal section diagram of a root tip showing four distinct zones from bottom to top. Zone 1: thimble-shaped root cap (calyptra) at very tip in brown. Zone 2: meristematic region with small densely-packed cells. Zone 3: elongation zone with vertically stretched cells. Zone 4: maturation zone with visible root hairs extending outward. Labels with arrows pointing to each zone. Clean botanical illustration style, white background, educational. -->
+
+                    <!-- IMAGE PROMPT: Root Cap Statocytes - Gravitropism -->
+                    <!-- Microscopic cellular view of root cap statocyte cells showing gravitropism mechanism. Specialized cells containing dense starch granules (statoliths) settling at bottom of cells due to gravity. Arrows showing gravity direction downward and growth response. Cell walls visible, starch grains in purple/blue, cell cytoplasm in light pink. Scientific microphotograph style illustration with labels. -->
+
+                    <h3>3. Types of Root Systems</h3>
+
+                    <h4>A. Tap Root System</h4>
+                    <p>Origin: Direct elongation of the embryonic Radicle. Structure: One dominant Primary Root persists
+                        and branches into secondary/tertiary roots. Occurrence: Dicotyledons (Mustard, Gram). Ecological
+                        Role: Deep feeders; provide strong anchorage for tall trees.</p>
+
+                    <h4>B. Fibrous Root System</h4>
+                    <p>Origin: The primary root (radicle) is short-lived and dies. A tuft of fiber-like roots emerges
+                        from the base of the stem. Occurrence: Monocots (Wheat, Grasses). Ecological Role: Surface
+                        feeders; excellent for soil binding and erosion control.</p>
+
+                    <h4>C. Adventitious Root System</h4>
+                    <p>Definition: Roots arising from any part of the plant other than the radicle (e.g., stems,
+                        leaves). Examples: Prop roots (Banyan), Stilt roots (Maize), Foliar roots (Bryophyllum).
+                        Application: Crucial for vegetative propagation (stem cuttings).</p>
+
+                    <!-- IMAGE PROMPT: Tap Root vs Fibrous Root Systems -->
+                    <!-- Side-by-side comparison of two root systems in soil cross-section. Left: tap root system showing single thick primary root growing deep vertically with small lateral branches (labeled: dicot - mustard/pea). Right: fibrous root system showing many thin roots of similar size spreading in all directions (labeled: monocot - grass/wheat). Soil texture visible, roots in white/cream color, educational botanical style. -->
+
+                    <h3>4. Modifications of Roots: Adaptation and Specialization</h3>
+                    <p>Roots often modify their morphology to perform functions beyond absorption.</p>
+
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Type</th>
+                                    <th>Modification</th>
+                                    <th>Characteristics</th>
+                                    <th>Examples</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td rowspan="3"><strong>Food Storage (Tap)</strong></td>
+                                    <td>Fusiform</td>
+                                    <td>Spindle-shaped (tapered at both ends)</td>
+                                    <td>Radish (Raphanus sativus)</td>
+                                </tr>
+                                <tr>
+                                    <td>Conical</td>
+                                    <td>Broad at base, tapering towards apex</td>
+                                    <td>Carrot (Daucus carota)</td>
+                                </tr>
+                                <tr>
+                                    <td>Napiform</td>
+                                    <td>Swollen/spherical at top, abruptly tapering</td>
+                                    <td>Turnip (Brassica rapa), Beetroot</td>
+                                </tr>
+                                <tr>
+                                    <td rowspan="2"><strong>Food Storage (Adventitious)</strong></td>
+                                    <td>Tuberous</td>
+                                    <td>Irregular swollen roots</td>
+                                    <td>Sweet Potato (Ipomoea batatas)</td>
+                                </tr>
+                                <tr>
+                                    <td>Fasciculated</td>
+                                    <td>Swollen roots in clusters</td>
+                                    <td>Dahlia, Asparagus</td>
+                                </tr>
+                                <tr>
+                                    <td rowspan="3"><strong>Mechanical Support</strong></td>
+                                    <td>Prop Roots</td>
+                                    <td>Arise from heavy horizontal branches, grow vertically down</td>
+                                    <td>Banyan (Ficus benghalensis)</td>
+                                </tr>
+                                <tr>
+                                    <td>Stilt Roots</td>
+                                    <td>Arise from lower nodes, growing obliquely (like guy ropes)</td>
+                                    <td>Maize, Sugarcane</td>
+                                </tr>
+                                <tr>
+                                    <td>Buttress Roots</td>
+                                    <td>Plank-like outgrowths at the base of the stem</td>
+                                    <td>Rainforest trees (Ficus elastica)</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Respiration</strong></td>
+                                    <td>Pneumatophores</td>
+                                    <td>Vertical roots with lenticels for gas exchange in anaerobic soil</td>
+                                    <td>Rhizophora, Avicennia, Sonneratia</td>
+                                </tr>
+                                <tr>
+                                    <td rowspan="3"><strong>Biological Interactions</strong></td>
+                                    <td>Nodulated</td>
+                                    <td>Host nitrogen-fixing bacteria (Rhizobium)</td>
+                                    <td>Fabaceae (Pea, Bean)</td>
+                                </tr>
+                                <tr>
+                                    <td>Mycorrhizal</td>
+                                    <td>Symbiotic association with Fungi</td>
+                                    <td>Pinus (cannot germinate without the fungus)</td>
+                                </tr>
+                                <tr>
+                                    <td>Haustorial</td>
+                                    <td>Sucking roots that penetrate host vascular tissue</td>
+                                    <td>Cuscuta (Dodder plant)</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="card exam-tip">
+                        <div class="exam-tip-icon">🎯</div>
+                        <div>
+                            <h4>Exam Trap: Potato vs Sweet Potato</h4>
+                            <p>Scientific proof: Look for <strong>Nodes</strong>. Potato "eyes" contain scale leaves and
+                                buds—nodal architecture confirms it's a stem. Sweet Potato lacks nodes
+                                entirely—confirming it's a root.</p>
+                        </div>
+                    </div>
+
+                    <h3>5. Professor's Research Corner: Molecular & Evolutionary Insights</h3>
+
+                    <div class="card professor-note">
+                        <h4><i class="fas fa-dna"></i> The "Auxin" Connection</h4>
+                        <p><strong>Why do roots grow down?</strong> Gravity causes Auxin (plant hormone) to accumulate
+                            on the lower side of the root tip. In Shoots: High auxin stimulates growth (stem bends up).
+                            In Roots: High auxin inhibits growth. Therefore, the upper side grows faster than the lower
+                            side, curving the root downwards.</p>
+                    </div>
+
+                    <div class="card professor-note">
+                        <h4><i class="fas fa-seedling"></i> The Evolutionary Step</h4>
+                        <p>Rhizoids vs. Roots: Bryophytes (Mosses) have Rhizoids (unicellular/multicellular filaments)
+                            for anchorage but lack vascular tissue. True Roots: Pteridophytes (Ferns) were the first to
+                            evolve true roots with Xylem/Phloem, allowing plants to grow tall (Tracheophytes).</p>
+                    </div>
+                </section>
+
+                <section id="stem" class="animate-in">
+                    <h2>The Stem — The Aerial Axis and Structural Integrity</h2>
+
+                    <h3>1. Introduction: The Ascending Axis</h3>
+                    <p>The stem is the ascending part of the plant axis that develops from the Plumule of the
+                        germinating embryo. Together with leaves, flowers, and fruits, it constitutes the Shoot System.
+                    </p>
+
+                    <h4>Fundamental Characteristics</h4>
+                    <p>Unlike roots, the stem possesses unique architectural features defined by its development:</p>
+                    <ul>
+                        <li><strong>Nodes and Internodes:</strong> The defining characteristic. Nodes are regions where
+                            leaves/buds arise; Internodes are the spacer regions between nodes.</li>
+                        <li><strong>Exogenous Branching:</strong> Branches arise from the outer cortical layers (unlike
+                            roots, where branching is endogenous/from the pericycle).</li>
+                        <li><strong>Phototropism:</strong> Positively phototropic (grows towards light) and negatively
+                            geotropic.</li>
+                        <li><strong>Buds:</strong> Possesses terminal (apical) and axillary buds.</li>
+                    </ul>
+
+                    <div class="card professor-note">
+                        <h4><i class="fas fa-microscope"></i> Professor's Insight</h4>
+                        <p>How do you scientifically prove a Potato is a stem and a Sweet Potato is a root? Look for the
+                            <strong>Nodes</strong>. The "eyes" of a potato have scale leaves and buds—this is nodal
+                            architecture. A Sweet Potato lacks nodes entirely.
+                        </p>
+                    </div>
+
+                    <h3>2. The Architecture of Growth: Buds</h3>
+                    <p>A Bud is essentially a condensed, embryonic shoot where the internodes are compressed, and young
+                        leaves are folded over the growing point.</p>
+                    <ul>
+                        <li><strong>Terminal (Apical) Bud:</strong> Located at the tip of the main stem. Responsible for
+                            height (Primary Growth).</li>
+                        <li><strong>Axillary (Lateral) Bud:</strong> Located in the axil (angle) between the leaf and
+                            stem. Responsible for branching.</li>
+                        <li><strong>Accessory Buds:</strong> Extra buds present alongside the axillary bud.</li>
+                        <li><strong>Adventitious Buds:</strong> Arise from random places (leaves, roots) – crucial for
+                            vegetative propagation (e.g., Bryophyllum).</li>
+                    </ul>
+
+                    <h4>The Hormonal Logic: Apical Dominance</h4>
+                    <p><strong>The Mechanism:</strong> The apical bud produces Auxin (IAA), which travels downwards and
+                        inhibits the growth of lateral (axillary) buds. <strong>The Result:</strong> The plant grows
+                        tall to compete for light. <strong>Application:</strong> Pruning (cutting the tip) removes the
+                        auxin source, allowing lateral buds to sprout, making the plant bushy (used in Tea
+                        plantations/Hedge making).</p>
+
+                    <h3>3. Modifications of the Stem: Evolutionary Adaptations</h3>
+                    <p>The stem is the most plastic organ in plants. It frequently abandons its "upright and conducting"
+                        role to assume specialized functions like storage, defense, or photosynthesis.</p>
+
+                    <h4>A. Underground Modifications (Organs of Perennation)</h4>
+                    <p>These stems grow below the soil surface. They are distinct from roots because they possess nodes,
+                        buds, and scale leaves. Their primary biological role is Perennation (surviving unfavorable
+                        seasons) and storage.</p>
+
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Type</th>
+                                    <th>Morphology</th>
+                                    <th>Markers</th>
+                                    <th>Examples</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>Rhizome</strong></td>
+                                    <td>Fleshy, grows horizontally (diageotropic) under the soil</td>
+                                    <td>Distinct nodes, internodes, scaly leaves, and axillary buds</td>
+                                    <td>Ginger (Zingiber), Turmeric (Curcuma), Ferns</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Corm</strong></td>
+                                    <td>Condensed form of rhizome growing vertically (apogeotropic). Spherical/globose
+                                    </td>
+                                    <td>Circular nodes</td>
+                                    <td>Amorphophallus (Zaminkand), Colocasia</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Tuber</strong></td>
+                                    <td>Swollen tip of an underground branch</td>
+                                    <td>"Eyes" (which are nodes with buds). No distinct roots at the tuber itself</td>
+                                    <td>Potato (Solanum tuberosum)</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Bulb</strong></td>
+                                    <td>The stem is highly reduced to a Disc. Storage function taken over by Fleshy
+                                        Scale Leaves</td>
+                                    <td>Tunicated (concentric layers) vs Scaly (overlapping)</td>
+                                    <td>Onion (Allium cepa), Garlic, Lily</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h4>B. Sub-aerial Modifications (Vegetative Propagation)</h4>
+                    <p>These stems are weak and creep along the ground/water to spread the plant colony (Cloning).</p>
+                    <ul>
+                        <li><strong>Runner:</strong> Long, thin internodes running along the soil surface. Roots develop
+                            at nodes. Examples: Strawberry, Oxalis, Lawn Grass (Cynodon).</li>
+                        <li><strong>Stolon:</strong> Arises from the base, grows upwards initially, then arches down to
+                            touch the soil and root. Examples: Mint (Mentha), Jasmine.</li>
+                        <li><strong>Offset:</strong> "Aquatic Runner." Short, thick internode with a rosette of leaves
+                            and a tuft of roots. Contains Aerenchyma for buoyancy. Examples: Pistia, Eichhornia (Water
+                            Hyacinth - "Terror of Bengal").</li>
+                        <li><strong>Sucker:</strong> Arises from the underground part of the stem, grows horizontally
+                            beneath the soil, then shoots obliquely upwards. Examples: Banana, Chrysanthemum, Pineapple.
+                        </li>
+                    </ul>
+
+                    <h4>C. Aerial Modifications (Survival Strategies)</h4>
+                    <p>Modifications of the stem above ground for specialized niches.</p>
+                    <ul>
+                        <li><strong>Stem Tendrils:</strong> Climbing support for weak stems. Origin: Modified Axillary
+                            Buds (e.g., Passiflora, Gourds) or Terminal Buds (e.g., Grapevine).</li>
+                        <li><strong>Thorns:</strong> Defense against browsing animals; reducing transpiration. Hard,
+                            woody, pointed, and Vascularized. Origin: Modified Axillary Buds. Examples: Bougainvillea,
+                            Citrus. <em>Note: Prickles (Rose) are different—they are superficial outgrowths, not
+                                modified stems.</em></li>
+                        <li><strong>Phylloclade:</strong> Xerophytic adaptation (Desert plants). The stem becomes green,
+                            flattened (Opuntia) or cylindrical (Euphorbia) to perform photosynthesis. Leaves are reduced
+                            to spines to stop water loss. Growth: Unlimited.</li>
+                        <li><strong>Cladode:</strong> A phylloclade of limited growth (usually one or two internodes).
+                            Examples: Asparagus, Ruscus.</li>
+                        <li><strong>Bulbil:</strong> Fleshy, swollen floral or vegetative buds that detach to form new
+                            plants. Example: Agave, Dioscorea.</li>
+                    </ul>
+
+                    <div class="card professor-note">
+                        <h4><i class="fas fa-code-branch"></i> Professor's Research Corner: Evolutionary Homology</h4>
+                        <p><strong>The Case of Homology:</strong> Compare the Thorn of Bougainvillea and the Tendril of
+                            Cucurbita (Pumpkin). Appearance: Totally different. Function: Defense vs. Support. Origin:
+                            Both arise from the Axillary Bud. Conclusion: They are <strong>Homologous Organs</strong>.
+                            They show Divergent Evolution (Same ancestor, different adaptation).</p>
+                        <p><strong>Phylloclade vs. Phyllode:</strong> Phylloclade is a Modified Stem (Nodes/internodes
+                            present), e.g., Opuntia. Phyllode is a Modified Petiole (Leaf stalk), nodes absent, e.g.,
+                            Australian Acacia.</p>
+                    </div>
+
+                    <!-- IMAGE PROMPT: Modified Stems -->
+                    <!--Educational illustration showing underground and aerial stem modifications. Top row: (1) rhizome - horizontal underground ginger stem with nodes; (2) tuber - potato with eyes (nodes); (3) corm - gladiolus solid stem; (4) bulb - onion with leaf layers. Bottom row: (5) tendril - cucumber climbing stem; (6) thorn - bougainvillea stem spine; (7) cladode - flattened photosynthetic asparagus stem. Each labeled clearly. Botanical textbook style. -->
+
+                    <h3>4. Comparative Anatomy: Root vs. Stem</h3>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Feature</th>
+                                    <th>Root</th>
+                                    <th>Stem</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>Origin</strong></td>
+                                    <td>Radicle</td>
+                                    <td>Plumule</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Nodes/Internodes</strong></td>
+                                    <td>Absent</td>
+                                    <td>Present</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Leaves</strong></td>
+                                    <td>Absent</td>
+                                    <td>Present</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Branching</strong></td>
+                                    <td>Endogenous (From Pericycle)</td>
+                                    <td>Exogenous (From Cortex)</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Cap</strong></td>
+                                    <td>Root Cap present</td>
+                                    <td>Absent</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Vascular Bundles</strong></td>
+                                    <td>Radial</td>
+                                    <td>Conjoint, Collateral</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Geotropism</strong></td>
+                                    <td>Positive</td>
+                                    <td>Negative</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <section id="leaf" class="animate-in">
+                    <h2>The Leaf — The Photosynthetic Engine</h2>
+
+                    <h3>1. Introduction: The Solar Array of the Biosphere</h3>
+                    <p>The leaf is a lateral, generally flattened structure borne on the stem. It is the primary seat of
+                        photosynthesis, transpiration, and respiration.</p>
+                    <ul>
+                        <li><strong>Origin:</strong> Exogenous (arises from the outer layers of the shoot apical
+                            meristem).</li>
+                        <li><strong>Development:</strong> Acropetal order (youngest leaves at the apex, oldest at the
+                            base).</li>
+                        <li><strong>Axillary Bud:</strong> A defining feature. A true leaf always bears a bud in its
+                            axil. This criterion distinguishes a simple leaf from the leaflets of a compound leaf.</li>
+                    </ul>
+
+                    <h3>2. Morphology: The Tripartite Structure</h3>
+                    <p>A typical angiosperm leaf consists of three distinct components:</p>
+
+                    <h4>A. Leaf Base (Hypopodium)</h4>
+                    <p>Function: Attachment to the stem. <strong>Modifications:</strong> <strong>Pulvinus:</strong> In
+                        Legumes (Mimosa pudica, Cassia), the base is swollen and filled with turgor-sensitive cells.
+                        Rapid changes in turgor pressure here drive seismonastic movements (folding when touched).
+                        <strong>Sheathing:</strong> In Monocots (Grasses, Maize), the base expands into a sheath that
+                        partially or wholly clasps the stem.
+                    </p>
+
+                    <h4>B. Petiole (Mesopodium)</h4>
+                    <p>Function: The stalk that lifts the blade to light (exposure) and allows it to flutter in the wind
+                        (cooling/gas exchange). <strong>Modification:</strong> <strong>Phyllode:</strong> In Australian
+                        Acacia, the petiole becomes flattened, green, and leaf-like to perform photosynthesis
+                        (xerophytic adaptation), while the true lamina falls off.</p>
+
+                    <h4>C. Lamina (Epipodium)</h4>
+                    <p>Function: The leaf blade. The "solar panel" containing the mesophyll tissue rich in chloroplasts.
+                        <strong>Venation:</strong> The skeleton of vessels (xylem/phloem) providing support and
+                        transport.
+                    </p>
+
+                    <h3>3. Venation Patterns: The Transport Grid</h3>
+                    <p>The arrangement of veins and veinlets in the lamina is a crucial taxonomic character.</p>
+
+                    <div class="flash-grid">
+                        <div class="flashcard" onclick="this.classList.toggle('flipped')">
+                            <div class="flashcard-face flash-front">
+                                <div class="flash-icon">🕸️</div>
+                                <h3>Reticulate Venation</h3>
+                                <p>Net-like pattern</p>
+                                <span class="flash-hint">Tap to flip</span>
+                            </div>
+                            <div class="flashcard-face flash-back">
+                                <p><strong>Typical of Dicots</strong><br><br>
+                                    Exceptions: Some Monocots show reticulate (e.g., <em>Smilax</em>,
+                                    <em>Dioscorea</em>, <em>Alocasia</em>)
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="flashcard" onclick="this.classList.toggle('flipped')">
+                            <div class="flashcard-face flash-front">
+                                <div class="flash-icon">➡️</div>
+                                <h3>Parallel Venation</h3>
+                                <p>Parallel veins</p>
+                                <span class="flash-hint">Tap to flip</span>
+                            </div>
+                            <div class="flashcard-face flash-back">
+                                <p><strong>Typical of Monocots</strong><br><br>
+                                    Exception: Some Dicots show parallel (e.g., <em>Calophyllum</em>,
+                                    <em>Corymbium</em>)
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h3>4. Complexity: Simple vs. Compound Leaves</h3>
+                    <p>Distinguishing these is a common practical skill.</p>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Feature</th>
+                                    <th>Simple Leaf</th>
+                                    <th>Compound Leaf</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>Lamina</strong></td>
+                                    <td>Entire or incised (cuts do not touch midrib)</td>
+                                    <td>Incised down to the midrib, breaking into Leaflets</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Axillary Bud</strong></td>
+                                    <td>Present in the axil of the leaf</td>
+                                    <td>Absent in the axil of individual leaflets</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Stipules</strong></td>
+                                    <td>Present at the base (if stipulate)</td>
+                                    <td>Absent at the base of leaflets</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Example</strong></td>
+                                    <td>Mango, Peepal</td>
+                                    <td>Rose, Neem</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h4>Types of Compound Leaves</h4>
+                    <ul>
+                        <li><strong>Pinnately Compound:</strong> Leaflets are arranged on a common axis called the
+                            Rachis (representing the midrib). Example: Neem (<em>Azadirachta indica</em>).</li>
+                        <li><strong>Palmately Compound:</strong> Leaflets are attached at a common point (tip of the
+                            petiole), radiating like fingers. Example: Silk Cotton (<em>Bombax</em>).</li>
+                    </ul>
+
+                    <h3>5. Phyllotaxy: The Mathematics of Optimization</h3>
+                    <p>Phyllotaxy is the pattern of arrangement of leaves on the stem. <strong>Evolutionary
+                            Goal:</strong> To maximize light capture and minimize Self-Shading.</p>
+                    <ul>
+                        <li><strong>Alternate (Spiral):</strong> Single leaf at each node. Creates a spiral path.
+                            Examples: Hibiscus, Mustard, Sunflower.</li>
+                        <li><strong>Opposite:</strong> Pair of leaves at each node. <em>Opposite Decussate:</em> Pairs
+                            rotate 90° at successive nodes (e.g., Calotropis, Ocimum). <em>Opposite Superposed:</em>
+                            Pairs align directly (e.g., Psidium/Guava).</li>
+                        <li><strong>Whorled:</strong> More than two leaves at a node. Example: Alstonia, Nerium.</li>
+                    </ul>
+
+                    <h3>6. Modifications of Leaves: Adaptation to Extremes</h3>
+                    <p>Leaves are the most plastic plant organ, modifying for defense, storage, or nutrition.</p>
+                    <ul>
+                        <li><strong>Tendrils (Support):</strong> The entire leaf (Wild Pea - <em>Lathyrus aphaca</em>)
+                            or leaflets (Garden Pea - <em>Pisum sativum</em>) modify into coiled springs. Research Note:
+                            Tendrils exhibit Thigmotropism (growth in response to touch).</li>
+                        <li><strong>Spines (Defense & Water Conservation):</strong> Xerophytic adaptation. Reduces
+                            surface area (transpiration) and deters herbivores. Examples: Opuntia (Cactus): Leaves →
+                            Spines; Stem → Photosynthetic. Aloe: Leaf margins modified into spines.</li>
+                        <li><strong>Storage (Food & Water):</strong> Fleshy Leaves in succulents (Aloe, Agave) and bulbs
+                            (Onion - fleshy scale leaves).</li>
+                        <li><strong>Phyllode (Photosynthesis):</strong> In Australian Acacia, short-lived leaves are
+                            replaced by flattened, photosynthetic petioles (Phyllodes). This reduces water loss
+                            (vertical orientation avoids direct noon sun).</li>
+                        <li><strong>Insectivorous Leaves (Carnivory):</strong> Ecological Driver: Nitrogen deficiency in
+                            soil. Pitcher Plant (<em>Nepenthes</em>): Lamina modifies into a pitcher; apex becomes the
+                            lid. Venus Flytrap (<em>Dionaea</em>): Lamina becomes a snap-trap with sensory trigger
+                            hairs. Bladderwort (<em>Utricularia</em>): Leaves modified into vacuum bladders for aquatic
+                            prey.</li>
+                    </ul>
+
+                    <div class="card professor-note">
+                        <h4><i class="fas fa-leaf"></i> Professor's Research Corner: Heterophylly & Plasticity</h4>
+                        <p><strong>Heterophylly (Developmental Plasticity):</strong> The presence of different types of
+                            leaves on the same plant.</p>
+                        <ul>
+                            <li><strong>Developmental Heterophylly:</strong> Leaves change shape as the plant ages.
+                                Example: Cotton, Coriander, Larkspur.</li>
+                            <li><strong>Environmental Heterophylly:</strong> Leaves change shape based on the medium
+                                (Water vs. Air). Example: Buttercup (<em>Ranunculus</em>). Submerged leaves:
+                                Dissected/Ribbon-like (to reduce water resistance). Aerial leaves: Broad/Lobed (for max
+                                photosynthesis).</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <section id="inflorescence" class="animate-in">
+                    <h2>Inflorescence — The Strategy of Floral Display</h2>
+
+                    <h3>1. Introduction: The Reproductive Architecture</h3>
+                    <p>Inflorescence is defined as the arrangement and distribution of flowers on the floral axis
+                        (Peduncle). From an evolutionary perspective, the shift from Solitary Flowers (singly borne) to
+                        Inflorescences (clusters) was a game-changer. The logic: "Strength in Numbers." Grouping small,
+                        inconspicuous flowers into a massive cluster makes the plant visible to pollinators from a
+                        distance (The Billboard Effect). It also maximizes the number of seeds produced per pollination
+                        event.</p>
+
+                    <h4>Key Terminologies</h4>
+                    <ul>
+                        <li><strong>Peduncle:</strong> The main stalk holding the entire inflorescence.</li>
+                        <li><strong>Rachis:</strong> The central axis on which flowers are attached.</li>
+                        <li><strong>Pedicel:</strong> The stalk of an individual flower.</li>
+                        <li><strong>Pedicellate:</strong> Stalked flower.</li>
+                        <li><strong>Sessile:</strong> Stalk-less flower.</li>
+                        <li><strong>Bract:</strong> A modified leaf at the base of the pedicel.</li>
+                        <li><strong>Involucre:</strong> A whorl of bracts surrounding an inflorescence (common in
+                            Sunflower/Umbels).</li>
+                    </ul>
+
+                    <h3>2. The Fundamental Dichotomy: Racemose vs. Cymose</h3>
+                    <p>The classification of inflorescence hinges on a single developmental decision: The fate of the
+                        Apical Bud.</p>
+
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Feature</th>
+                                    <th>Racemose (Indeterminate)</th>
+                                    <th>Cymose (Determinate)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>Main Axis</strong></td>
+                                    <td>Grows indefinitely (never ends in flower)</td>
+                                    <td>Terminates in a flower (growth stops)</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Order</strong></td>
+                                    <td>Acropetal (Youngest at Top)</td>
+                                    <td>Basipetal (Oldest at Top)</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Analogy</strong></td>
+                                    <td>🚀 Rising Rocket dropping stages</td>
+                                    <td>🎆 Fireworks Fountain</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h3>3. Detailed Morphology of Racemose Types</h3>
+                    <p>Classification is based on the nature of the axis (elongated, shortened, or flattened).</p>
+
+                    <h4>I. Elongated Main Axis</h4>
+                    <ul>
+                        <li><strong>Raceme:</strong> Flowers are pedicellate (stalked). Example: Mustard
+                            (<em>Brassica</em>), Radish.</li>
+                        <li><strong>Spike:</strong> Flowers are sessile (no stalk). Example: Achyranthes (Chaff-flower),
+                            Amaranth.</li>
+                        <li><strong>Catkin (Ament):</strong> A drooping/hanging spike with unisexual flowers. Example:
+                            Mulberry (<em>Morus</em>), Birch, Oak.</li>
+                        <li><strong>Spadix:</strong> A fleshy spike covered by a large, colorful bract called the
+                            Spathe. Example: Maize (Corn cob), Banana (<em>Musa</em>), Colocasia, Amorphophallus. Note:
+                            In Maize, the female inflorescence is the cob; the "silk" is the long styles/stigma.</li>
+                    </ul>
+
+                    <h4>II. Shortened Main Axis</h4>
+                    <p>The goal here is to bring all flowers to the same horizontal level (Flat-topped).</p>
+                    <ul>
+                        <li><strong>Corymb:</strong> Lower flower pedicels are long; upper ones are short. All flowers
+                            align at the top. Example: Iberis (Candytuft).</li>
+                        <li><strong>Umbel:</strong> All pedicels arise from a single common point (like umbrella ribs).
+                            Usually subtended by an Involucre of bracts. Example: Apiaceae Family (Coriander, Cumin,
+                            Carrot).</li>
+                    </ul>
+
+                    <h4>III. Flattened Main Axis (The Most Advanced)</h4>
+                    <ul>
+                        <li><strong>Capitulum (Head):</strong> The receptacle is flattened. Sessile flowers (Florets)
+                            are arranged in a centripetal manner. <strong>Dimorphism:</strong> Often has two types of
+                            florets: <strong>Ray Florets</strong> (Peripheral, zygomorphic, ligulate, usually sterile or
+                            female - Attractants) and <strong>Disc Florets</strong> (Central, actinomorphic, tubular,
+                            Bisexual and fertile - Reproduction). Family: Characteristic of Asteraceae (Compositae) —
+                            Sunflower, Marigold. Significance: This is considered the most evolutionarily advanced
+                            inflorescence due to high pollination efficiency (one insect visit pollinates hundreds of
+                            florets).</li>
+                    </ul>
+
+                    <h3>4. Detailed Morphology of Cymose Types</h3>
+                    <ul>
+                        <li><strong>Monochasial Cyme:</strong> Main axis ends in a flower; one lateral branch arises.
+                            <em>Helicoid:</em> Branches always on the same side. <em>Scorpioid:</em> Branches alternate
+                            left and right (Zig-zag). Example: Cotton, Heliotropium.
+                        </li>
+                        <li><strong>Dichasial Cyme:</strong> Main axis ends in a flower; two lateral branches arise.
+                            Example: Jasmine, Dianthus, Bougainvillea.</li>
+                        <li><strong>Polychasial Cyme:</strong> Whorl of lateral branches arises. Example: Calotropis
+                            (Madar).</li>
+                    </ul>
+
+                    <h3>5. Special Types of Inflorescence</h3>
+                    <p>High-Yield Zone for Olympiads and IAT. These do not fit strictly into Racemose or Cymose.</p>
+
+                    <div class="card">
+                        <h4>I. Cyathium</h4>
+                        <p>The "Fake Flower": The entire inflorescence looks like a single flower. Structure: A
+                            cup-shaped Involucre (fused bracts) with nectar glands. One single female flower in the
+                            center (reduced to just the pistil). Many male flowers surrounding it (reduced to just a
+                            stamen, jointed). Ratio: Female : Male :: 1 : Many. Example: <em>Euphorbia</em>, Poinsettia.
+                        </p>
+                    </div>
+
+                    <div class="card">
+                        <h4>II. Verticillaster</h4>
+                        <p>Origin: A condensed Dichasial Cyme that turns into a Monochasial Scorpioid cyme. Appearance:
+                            Flowers appear in false whorls around the node. Family: Characteristic of Lamiaceae
+                            (Labiatae). Example: Tulsi (Ocimum), Salvia, Mint.</p>
+                    </div>
+
+                    <div class="card">
+                        <h4>III. Hypanthodium</h4>
+                        <p>Structure: The receptacle becomes fleshy and flask-shaped with a small apical opening
+                            (Ostiole). Flower Location: Flowers are lined inside the hollow cavity. Male flowers near
+                            the pore; Female flowers at the base; Sterile "Gall" flowers in between. Pollination: By a
+                            specific wasp (e.g., Blastophaga) that crawls inside the ostiole to lay eggs in gall
+                            flowers. Example: <em>Ficus</em> species (Banyan, Peepal, Fig). Note: The fruit developed
+                            from this is called a Syconus.</p>
+                    </div>
+
+                    <div class="card professor-note">
+                        <h4><i class="fas fa-dna"></i> Professor's Research Corner: The Genetic Switch</h4>
+                        <p><strong>Indeterminate vs. Determinate — The Molecular Switch:</strong> What decides if a
+                            plant is Racemose or Cymose? It is controlled by the <strong>TFL1 (Terminal Flower
+                                1)</strong> gene. In Racemes: TFL1 is expressed in the shoot apex, preventing it from
+                            turning into a flower (maintaining "stem-ness"). In Cymes: TFL1 is suppressed, allowing
+                            floral identity genes (LEAFY) to convert the apex into a flower. Research Insight: Mutations
+                            in these genes can turn a Rose (Cyme) into an infinite climbing vine!</p>
+                    </div>
+                </section>
+
+                <section id="flower" class="animate-in">
+                    <h2>The Flower — The Reproductive Shoot</h2>
+
+                    <h3>6.1 Definition: The Morphological Identity</h3>
+                    <p>Morphologically, the flower is defined as a highly condensed, modified shoot specialized for
+                        sexual reproduction.</p>
+                    <p><strong>The Homology:</strong> The floral axis (Thalamus or Receptacle) represents the Stem. The
+                        floral whorls (Sepals, Petals, Stamens, Carpels) represent modified Leaves. The Evidence:
+                        Internode Condensation (nodes tightly together), Gynophore/Androphore (revealing true stem
+                        nature), and hormonal transition driven by Florigen converting SAM into Floral Meristem.</p>
+
+                    <h3>6.2 Architecture: The Four Whorls</h3>
+                    <p>A typical flower consists of four concentric whorls arranged on the swollen end of the pedicel
+                        (Thalamus).</p>
+
+                    <h4>A. Non-Essential (Accessory) Whorls</h4>
+                    <ul>
+                        <li><strong>Calyx (Sepals):</strong> Protection of the flower in the Bud Stage. Condition:
+                            Gamosepalous (Fused cup) vs. Polysepalous (Free leaflets).</li>
+                        <li><strong>Corolla (Petals):</strong> Attraction of pollinators (Entomophily) via color and
+                            fragrance. Condition: Gamopetalous (Fused tube) vs. Polypetalous (Free). <em>Olympiad
+                                Note:</em> When Calyx and Corolla are indistinguishable, the whorl is called Perianth,
+                            and the individual units are Tepals (e.g., Lilium, Tulip).</li>
+                    </ul>
+
+                    <h4>B. Essential (Reproductive) Whorls</h4>
+                    <ul>
+                        <li><strong>Androecium (The Male Unit):</strong> Unit: Stamen (Microsporophyll). Components:
+                            Filament (stalk) + Anther (pollen producer). Sterile Stamen: Known as a Staminode (e.g., in
+                            Cassia).</li>
+                        <li><strong>Gynoecium (The Female Unit):</strong> Unit: Carpel/Pistil (Megasporophyll).
+                            Components: Stigma (landing platform), Style (pollen tube pathway), Ovary (contains ovules).
+                        </li>
+                    </ul>
+
+                    <h3>6.3 Types of Flowers: Evolutionary Classifications</h3>
+
+                    <h4>I. Based on Symmetry (The Geometry of Co-evolution)</h4>
+                    <p>Symmetry dictates how a pollinator interacts with the flower.</p>
+                    <ul>
+                        <li><strong>Actinomorphic (Radial Symmetry):</strong> The flower can be divided into two equal
+                            halves by any radial plane. Primitive state allowing "Open Access." Examples: Mustard
+                            (Brassica), Chili, Datura.</li>
+                        <li><strong>Zygomorphic (Bilateral Symmetry):</strong> The flower can be divided into equal
+                            halves by only one vertical plane. Advanced state forcing specific pollinator orientation.
+                            Examples: Pea (Pisum), Bean, Gulmohar, Cassia.</li>
+                        <li><strong>Asymmetric:</strong> Cannot be divided into equal halves by any plane. Example:
+                            Canna.</li>
+                    </ul>
+
+                    <h4>II. Based on Sexuality</h4>
+                    <ul>
+                        <li><strong>Bisexual (Hermaphrodite):</strong> Both Androecium and Gynoecium present. (Hibiscus,
+                            Mustard).</li>
+                        <li><strong>Unisexual:</strong> Only one reproductive whorl present.
+                            <ul>
+                                <li><strong>Monoecious:</strong> Male and Female flowers on the same plant (e.g., Maize,
+                                    Castor, Cucurbits).</li>
+                                <li><strong>Dioecious:</strong> Male and Female flowers on different plants (e.g.,
+                                    Papaya, Date Palm).</li>
+                            </ul>
+                        </li>
+                    </ul>
+
+                    <h4>III. Based on Ovary Position (Thalamus Morphology)</h4>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Type</th>
+                                    <th>Morphology</th>
+                                    <th>Position</th>
+                                    <th>Examples</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>Hypogynous</strong></td>
+                                    <td>Gynoecium occupies highest position on conical thalamus</td>
+                                    <td>Superior Ovary</td>
+                                    <td>Mustard, China Rose (Hibiscus), Brinjal</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Perigynous</strong></td>
+                                    <td>Thalamus forms cup-shaped rim (hypanthium); ovary in center</td>
+                                    <td>Half-Inferior</td>
+                                    <td>Rose, Plum, Peach</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Epigynous</strong></td>
+                                    <td>Margin of thalamus grows upward and fuses with ovary wall</td>
+                                    <td>Inferior Ovary</td>
+                                    <td>Guava, Cucumber, Ray florets of Sunflower</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h3>6.4 Aestivation: Floral Architecture in Bud</h3>
+                    <p>Aestivation is the mode of arrangement of sepals or petals in the floral bud relative to one
+                        another.</p>
+                    <ul>
+                        <li><strong>Valvate:</strong> Margins touch but do not overlap. Example: Calotropis.</li>
+                        <li><strong>Twisted (Contorted):</strong> One margin overlaps the next in a regular pattern.
+                            Example: China Rose, Cotton, Lady's Finger.</li>
+                        <li><strong>Imbricate:</strong> Margins overlap but not in particular direction (1 inside, 1
+                            outside, 3 partial). Example: Cassia, Gulmohar.</li>
+                        <li><strong>Vexillary (Papilionaceous):</strong> Diagnostic of Fabaceae. Posterior petal is
+                            largest (Standard/Vexillum), two lateral (Wings/Alae), two anterior fused into boat-shaped
+                            Keel (Carina) enclosing stamens/pistil. Example: Pea, Bean.</li>
+                    </ul>
+
+                    <div class="card professor-note">
+                        <h4><i class="fas fa-dna"></i> Professor's Research Corner: The ABC Model</h4>
+                        <p><strong>Genetic Control of Floral Whorls:</strong> How does a meristem know where to put a
+                            petal versus a stamen? It is controlled by Homeotic Genes (MADS-box genes) via the ABC
+                            Model: Class A genes specify Sepals; Class A + B specify Petals; Class B + C specify
+                            Stamens; Class C specify Carpels. Mutation Insight: If Class B genes are mutated, the flower
+                            will only produce Sepals and Carpels (no petals or stamens).</p>
+                    </div>
+                </section>
+
+                <section id="fruit" class="animate-in">
+                    <h2>The Fruit — The Vessel of Dispersal</h2>
+
+                    <h3>1. Biological Definition: The Post-Fertilization Ovary</h3>
+                    <p>In strict botanical terms, a fruit is a mature, ripened ovary developed after fertilization.
+                        <strong>The Evolutionary Mandate:</strong> In Angiosperms, the fruit is the "biological
+                        packaging" designed to protect the seed (embryo) and ensure its transport to a new location.
+                        <strong>The Hormonal Trigger:</strong> The transition is triggered by a surge in Auxins and
+                        Gibberellins produced by the developing seeds. Note: If you remove the seeds from a developing
+                        strawberry, the fruit stops growing. If you spray Auxin, it resumes.
+                    </p>
+
+                    <h3>2. General Morphology: The Pericarp</h3>
+                    <p>The wall of the ovary transforms into the wall of the fruit, called the Pericarp. In fleshy
+                        fruits, this differentiates into three distinct layers:</p>
+                    <ul>
+                        <li><strong>Epicarp:</strong> The outer protective skin (e.g., the peel of a mango).</li>
+                        <li><strong>Mesocarp:</strong> The middle layer. Often fleshy and edible (e.g., mango pulp), but
+                            can be fibrous (e.g., coconut coir).</li>
+                        <li><strong>Endocarp:</strong> The inner layer surrounding the seed. Can be membranous (Orange),
+                            stony (Peach/Mango), or fleshy.</li>
+                    </ul>
+
+                    <h3>3. The "Truth" Spectrum: Classification by Origin</h3>
+                    <p>Not all "fruits" are ovaries. We classify them based on which floral parts contribute to the
+                        fruit formation.</p>
+
+                    <div class="card">
+                        <h4>A. True Fruit (Eucarp)</h4>
+                        <p>Developed only from the ovary. No other floral part involved. Examples: Mango, Tomato, Grape.
+                        </p>
+                    </div>
+
+                    <div class="card">
+                        <h4>B. False Fruit (Pseudocarp)</h4>
+                        <p>The ovary ripens, but the Thalamus or other parts grow significantly and become the main
+                            edible portion. <strong>The Classic Example: Apple & Pear (Pome).</strong> Anatomy: The core
+                            (which you throw away) is the true ovary. The crisp, white flesh is the swollen Thalamus.
+                            <strong>Other Examples:</strong> Cashew ("fruit" is swollen Peduncle; true fruit is the
+                            nut). Strawberry (fleshy red part is Thalamus holding tiny achenes).
+                        </p>
+                    </div>
+
+                    <div class="card">
+                        <h4>C. Parthenocarpic Fruit</h4>
+                        <p>Fruit developed without fertilization. Result: Seedless fruits. Mechanism: High internal
+                            auxin levels. Example: Banana (Natural parthenocarpy), Seedless Grapes, Pineapple.</p>
+                    </div>
+
+                    <h3>4. Morphological Types of Fruits (High-Yield Taxonomy)</h3>
+
+                    <h4>I. Simple Fruits (From Single Flower, Syncarpous Ovary)</h4>
+                    <p><strong>A. Fleshy Fruits</strong></p>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Type</th>
+                                    <th>Diagnostic</th>
+                                    <th>Examples</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>Drupe</strong></td>
+                                    <td>Monocarpellary, superior ovary. Distinct Stony Endocarp.</td>
+                                    <td>Mango (edible = Mesocarp), Coconut (Mesocarp = Fibrous coir)</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Berry</strong></td>
+                                    <td>Entire pericarp is fleshy; seeds embedded in pulp.</td>
+                                    <td>Tomato, Brinjal, Grape, Banana (technically a berry)</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Pepo</strong></td>
+                                    <td>Hard rind (Epicarp). Developed from Inferior Ovary.</td>
+                                    <td>Cucurbits (Cucumber, Pumpkin, Watermelon)</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Hesperidium</strong></td>
+                                    <td>Leathery rind with oil glands. Edible part = Juicy Placental Hairs.</td>
+                                    <td>Citrus (Orange, Lemon)</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <p><strong>B. Dry Fruits (Indehiscent - Do not split open)</strong></p>
+                    <ul>
+                        <li><strong>Caryopsis (Grain):</strong> Pericarp completely fused with seed coat (Testa).
+                            Characteristic of Poaceae (Wheat, Maize, Rice). Research Note: A grain of maize is
+                            technically a fruit, not just a seed.</li>
+                        <li><strong>Achene:</strong> Pericarp free from seed coat (e.g., Strawberry "seeds").</li>
+                    </ul>
+
+                    <p><strong>C. Dry Fruits (Dehiscent - Split open)</strong></p>
+                    <ul>
+                        <li><strong>Legume (Pod):</strong> Dehisces along both dorsal and ventral sutures. Examples:
+                            Pea, Bean (Fabaceae).</li>
+                        <li><strong>Capsule:</strong> Splits via valves or pores. Examples: Cotton, Lady's Finger,
+                            Datura.</li>
+                    </ul>
+
+                    <h4>II. Aggregate Fruits (Etaerio)</h4>
+                    <p>Origin: Single flower, Apocarpous (Free) carpels. Each free carpel becomes a mini-fruit
+                        (fruitlet), clustered together. Examples: Raspberry (Etaerio of Druplets), Strawberry (Etaerio
+                        of Achenes on fleshy thalamus), Custard Apple (Etaerio of Berries).</p>
+
+                    <h4>III. Composite Fruits (Multiple Fruits)</h4>
+                    <p>Origin: Developed from an Entire Inflorescence.</p>
+                    <ul>
+                        <li><strong>Sorosis:</strong> Developed from Spadix or Spike. Examples: Pineapple, Jackfruit
+                            (Perianth + Seeds = Edible), Mulberry.</li>
+                        <li><strong>Syconus:</strong> Developed from Hypanthodium inflorescence. Examples: Fig (Ficus).
+                            The fruit is the hollow flask; the "crunchy bits" are true fruitlets (achenes).</li>
+                    </ul>
+
+                    <div class="card professor-note">
+                        <h4><i class="fas fa-flask"></i> Professor's Research Corner: Physiology of Ripening</h4>
+                        <p><strong>Climacteric vs. Non-Climacteric Fruits:</strong> Climacteric fruits exhibit a sudden
+                            burst in respiration rate and Ethylene production during ripening. These can be ripened
+                            after picking. Examples: Mango, Banana, Apple, Tomato. Non-Climacteric: No respiratory
+                            burst. They stop ripening once detached. Examples: Citrus, Grape, Strawberry.</p>
+                    </div>
+                </section>
+
+                <section id="seed" class="animate-in">
+                    <h2>The Seed — The Biological Time Capsule</h2>
+
+                    <h3>1. Introduction: The Evolutionary Masterstroke</h3>
+                    <p>Morphologically, the seed is a fertilized, mature ovule. Evolutionarily, the development of the
+                        seed (Spermatophyta) replaced spores as the primary unit of dispersal. This was the critical
+                        adaptation that allowed plants to conquer terrestrial environments, freeing them from the
+                        requirement of external water for fertilization continuity.</p>
+
+                    <div class="card formula-box">
+                        <div class="formula-content">Integuments → Seed Coats | Zygote → Embryo | PEN → Endosperm |
+                            Micropyle → Seed Pore</div>
+                        <div class="formula-desc">The Transformation Equation</div>
+                    </div>
+
+                    <h3>2. Structural Architecture of a Seed</h3>
+                    <p>Regardless of complexity, all seeds possess three fundamental components:</p>
+
+                    <h4>A. Seed Coat (The Armor)</h4>
+                    <p>Origin: Integuments of the ovule. <strong>Layers:</strong> Testa (outer, thick, hard) and Tegmen
+                        (inner, thin, membranous). <strong>Surface Markings:</strong> Hilum (scar of attachment to
+                        funicle), Micropyle (minute pore above hilum for O₂ and H₂O entry).</p>
+
+                    <h4>B. The Embryo (The Miniature Plant)</h4>
+                    <p>The dormant future plant, situated at the micropylar end. <strong>Consists of:</strong> Embryonal
+                        Axis (Tigellum) containing Plumule (epicotyl tip → Future Shoot), Radicle (hypocotyl tip →
+                        Future Root), and Cotyledons (Seed Leaves).</p>
+
+                    <h4>C. Endosperm (The Packed Lunch)</h4>
+                    <p>Origin: Formed from Triple Fusion (3n). Function: Stored food reserve (Starch/Oil/Protein) for
+                        the developing embryo.</p>
+
+                    <h3>3. Classification Based on Reserves (Crucial for Exams)</h3>
+                    <p>Not all seeds retain their endosperm at maturity.</p>
+
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Type</th>
+                                    <th>Condition</th>
+                                    <th>Examples</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>Albuminous (Endospermic)</strong></td>
+                                    <td>Embryo does not consume all endosperm; distinct storage tissue remains</td>
+                                    <td>Monocots: Maize, Wheat, Rice, Coconut<br>Dicots: Castor (vital exception)</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Exalbuminous (Non-Endospermic)</strong></td>
+                                    <td>Embryo consumes endosperm completely; food stored in Cotyledons</td>
+                                    <td>Dicots: Pea, Bean, Gram, Groundnut<br>Monocots: Orchids (dust seeds)</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Perispermic</strong></td>
+                                    <td>Nucellus (diploid maternal tissue) persists as Perisperm</td>
+                                    <td>Black Pepper (Piper nigrum), Beetroot</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h3>4. Case Study: Anatomy of a Monocot Seed (Maize)</h3>
+                    <p>The Maize grain (Caryopsis) is the standard model for complex seed anatomy.</p>
+                    <ul>
+                        <li><strong>Pericarp + Seed Coat:</strong> Fused together forming a hull (characteristic of
+                            grains).</li>
+                        <li><strong>Endosperm:</strong> Bulky, starch-rich tissue filling most of the grain.</li>
+                        <li><strong>Aleurone Layer:</strong> Outer proteinaceous boundary of endosperm. Secretes
+                            hydrolytic enzymes (α-amylase) during germination to digest starch.</li>
+                        <li><strong>Embryo:</strong> Situated in a small groove. <strong>Scutellum:</strong> Single,
+                            large, shield-shaped cotyledon pressed against endosperm to absorb nutrients.</li>
+                        <li><strong>Protective Sheaths:</strong> Coleoptile (hollow foliar sheath protecting Plumule),
+                            Coleorhiza (sheath protecting Radicle).</li>
+                    </ul>
+
+                    <div class="card professor-note">
+                        <h4><i class="fas fa-vial"></i> Professor's Research Corner: Physiology of Germination</h4>
+                        <p><strong>The Molecular "Wake-up" Call:</strong> 1. Imbibition: Water enters via micropyle
+                            (physical adsorption generating immense pressure). 2. Hormonal Signal: Hydrated embryo
+                            secretes Gibberellic Acid (GA). 3. Target: GA diffuses to Aleurone Layer. 4. Gene
+                            Expression: GA induces transcription of amylase enzymes. 5. Digestion: Amylase breaks down
+                            starch into sugars fed to Scutellum → Embryo axis.</p>
+                    </div>
+                </section>
+
+                <section id="taxonomy" class="animate-in">
+                    <h2>Taxonomic Description — The Language of Botany</h2>
+
+                    <h3>1. Introduction: The Need for Standardization</h3>
+                    <p>In taxonomy, a "Semi-technical Description" is a standardized protocol used to document the
+                        morphological features of a plant. It is a universal code allowing a botanist in India to
+                        understand a specimen described by a botanist in Germany. <strong>The Philosophy:</strong> It
+                        moves from the General (Vegetative) to the Specific (Floral).</p>
+
+                    <h3>2. The Code: Symbols of the Floral Formula</h3>
+                    <p>Mastery of these symbols is non-negotiable for competitive exams.</p>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Symbol</th>
+                                    <th>Meaning</th>
+                                    <th>Conceptual Note</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>Br</strong></td>
+                                    <td>Bracteate</td>
+                                    <td>Flower arises from axil of a bract</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>K</strong></td>
+                                    <td>Calyx (Sepals)</td>
+                                    <td>Uses 'K' because 'C' is taken (from Greek Kalyx)</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>C</strong></td>
+                                    <td>Corolla (Petals)</td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>P</strong></td>
+                                    <td>Perianth (Tepals)</td>
+                                    <td>Used when Sepals and Petals indistinguishable</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>A</strong></td>
+                                    <td>Androecium</td>
+                                    <td>Male reproductive whorl</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>G</strong></td>
+                                    <td>Gynoecium</td>
+                                    <td>Female reproductive whorl</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>⊕</strong></td>
+                                    <td>Actinomorphic</td>
+                                    <td>Radial Symmetry (like a wheel)</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>%</strong></td>
+                                    <td>Zygomorphic</td>
+                                    <td>Bilateral Symmetry (distinct top/bottom)</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>()</strong></td>
+                                    <td>Cohesion</td>
+                                    <td>Parts within whorl fused (e.g., K(5) = 5 fused sepals)</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>⌢</strong></td>
+                                    <td>Adhesion</td>
+                                    <td>Parts of different whorls fused</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>G̲</strong></td>
+                                    <td>Superior Ovary</td>
+                                    <td>Line below G (Thalamus below)</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>G̅</strong></td>
+                                    <td>Inferior Ovary</td>
+                                    <td>Line above G (Thalamus encloses)</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h3>3. The Blueprint: The Floral Diagram</h3>
+                    <p>The Floral Diagram is a schematic Transverse Section (T.S.) of the flower bud.</p>
+                    <ul>
+                        <li><strong>The Mother Axis:</strong> Represented by a dot on top. Indicates Posterior side.
+                        </li>
+                        <li><strong>Concentric Rings:</strong> Outer = Calyx, Second = Corolla, Inner = Androecium and
+                            Gynoecium.</li>
+                        <li><strong>Connectivity:</strong> Fusion shown by connecting lines; Adhesion (e.g.,
+                            Epipetalous) shown by line connecting Stamen to Petal.</li>
+                    </ul>
+                </section>
+
+                <section id="families" class="animate-in">
+                    <h2>Systematic Botany — Description of Important Families</h2>
+
+                    <h3>1. Family Fabaceae (Papilionoideae) — The Pulse Family</h3>
+                    <p>Formerly Papilionoideae, a subfamily of Leguminosae.</p>
+                    <ul>
+                        <li><strong>Vegetative:</strong> Nodulated roots (Rhizobium); Pinnately compound leaves;
+                            Pulvinus leaf base; Stipulate.</li>
+                        <li><strong>Floral:</strong> Racemose inflorescence; Zygomorphic (%); Papilionaceous corolla (1
+                            Standard + 2 Wings + 2 Keel).</li>
+                        <li><strong>Androecium:</strong> Diadelphous (9) + 1. Ten stamens: 9 fused, 1 free.</li>
+                        <li><strong>Gynoecium:</strong> Monocarpellary, Superior, Marginal Placentation.</li>
+                        <li><strong>Fruit:</strong> Legume (Pod).</li>
+                    </ul>
+
+                    <div class="card formula-box">
+                        <div class="formula-content">% ⊕ K(5) C₁₊₂₊₂ A(9)+1 G₁</div>
+                        <div class="formula-desc">Fabaceae Floral Formula</div>
+                    </div>
+
+                    <h3>2. Family Solanaceae — The Potato Family</h3>
+                    <ul>
+                        <li><strong>Vegetative:</strong> Often underground tuber (Potato); Alternate, Exstipulate
+                            leaves.</li>
+                        <li><strong>Floral:</strong> Cymose/Solitary; Actinomorphic (⊕); Persistent calyx.</li>
+                        <li><strong>Androecium:</strong> 5 Stamens, Epipetalous.</li>
+                        <li><strong>Gynoecium:</strong> Bicarpellary, Syncarpous, Superior. Crucial Diagnostic: Ovary is
+                            obliquely placed (tilted 45°) with swollen placenta (Axile).</li>
+                        <li><strong>Fruit:</strong> Berry or Capsule.</li>
+                    </ul>
+
+                    <div class="card formula-box">
+                        <div class="formula-content">⊕ K(5) C(5) A₅ G̲(2)</div>
+                        <div class="formula-desc">Solanaceae Floral Formula</div>
+                    </div>
+
+                    <h3>3. Family Liliaceae — The Lily Family</h3>
+                    <p>Characteristic representative of Monocots.</p>
+                    <ul>
+                        <li><strong>Vegetative:</strong> Fibrous roots; Underground bulbs/corms; Parallel Venation.</li>
+                        <li><strong>Floral:</strong> Trimerous (3+3); Actinomorphic (⊕); Perianth of 6 Tepals.</li>
+                        <li><strong>Androecium:</strong> 6 Stamens (3+3), Epiphyllous.</li>
+                        <li><strong>Gynoecium:</strong> Tricarpellary, Syncarpous, Superior. Trilocular. Axile
+                            Placentation.</li>
+                    </ul>
+
+                    <div class="card formula-box">
+                        <div class="formula-content">⊕ P(3+3) A(3+3) G̲(3)</div>
+                        <div class="formula-desc">Liliaceae Floral Formula</div>
+                    </div>
+
+                    <h3>4. High-Yield Comparative Table</h3>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Feature</th>
+                                    <th>Fabaceae</th>
+                                    <th>Solanaceae</th>
+                                    <th>Liliaceae</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>Class</strong></td>
+                                    <td>Dicot</td>
+                                    <td>Dicot</td>
+                                    <td>Monocot</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Symmetry</strong></td>
+                                    <td>Zygomorphic (%)</td>
+                                    <td>Actinomorphic (⊕)</td>
+                                    <td>Actinomorphic (⊕)</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Stamens</strong></td>
+                                    <td>10 (Diadelphous 9+1)</td>
+                                    <td>5 (Epipetalous)</td>
+                                    <td>6 (Epiphyllous 3+3)</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Ovary</strong></td>
+                                    <td>Monocarpellary</td>
+                                    <td>Bicarpellary (Oblique)</td>
+                                    <td>Tricarpellary</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Placentation</strong></td>
+                                    <td>Marginal</td>
+                                    <td>Axile (Swollen)</td>
+                                    <td>Axile</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="card professor-note">
+                        <h4><i class="fas fa-award"></i> Professor's Research Corner: Evolutionary Patterns</h4>
+                        <p><strong>The Trend of Fusion:</strong> Notice the formulas: Fabaceae has free petals (mostly),
+                            Solanaceae has fused petals. Evolutionary Insight: Gamopetaly (fusion) is considered
+                            advanced over Polypetaly. It creates a specific tube shape to exclude generalist insects and
+                            favor specialist pollinators (co-evolution).</p>
+                        <p><strong>The "Missing" Family (Brassicaceae):</strong> Tetradynamous stamens (2 outer short +
+                            4 inner long) and Cruciform (cross-shaped) corolla. Formula: ⊕ K₂₊₂ C₄ A₂₊₄ G̲(2).</p>
+                    </div>
+                </section>
+
+                <section id="angiosperms" class="animate-in">
+                    <h2>Angiosperms — The Masters of the Terrestrial Flora</h2>
+
+                    <h3>1. Introduction: The Evolutionary Dominance</h3>
+                    <p>Angiosperms (Greek: <em>Angion</em> = Vessel, <em>Sperma</em> = Seed) are the most advanced,
+                        diverse group of plants. <strong>Defining Character:</strong> Ovules enclosed within an Ovary
+                        (Fruit). Distinguishes them from Gymnosperms ("Naked Seeds"). Appeared during Cretaceous Period
+                        (~130 mya). Darwin called this rapid diversification the "Abominable Mystery."</p>
+
+                    <h4>Why are they so successful?</h4>
+                    <ul>
+                        <li>Vessels in Xylem: More efficient than Tracheids</li>
+                        <li>Flowers: Co-evolution with animal pollinators</li>
+                        <li>Fruits: Use animals for seed dispersal</li>
+                        <li>Double Fertilization: Metabolic masterpiece</li>
+                    </ul>
+
+                    <h3>2. The Life Cycle: Alternation of Generations</h3>
+                    <ul>
+                        <li><strong>Sporophyte (2n):</strong> The independent, photosynthetic plant we see (dominant).
+                        </li>
+                        <li><strong>Gametophyte (n):</strong> Highly reduced, microscopic. Male = Pollen Grain
+                            (3-celled). Female = Embryo Sac (7-celled, 8-nucleate).</li>
+                    </ul>
+
+                    <h3>3. The Physiological Masterstroke: Double Fertilization</h3>
+                    <p>Defining synapomorphy of Angiosperms.</p>
+                    <div class="card formula-box">
+                        <div class="formula-content">Syngamy: Male Gamete (n) + Egg Cell (n) → Zygote (2n) → Embryo
+                        </div>
+                        <div class="formula-content">Triple Fusion: Male Gamete (n) + Secondary Nucleus (2n) → PEN (3n)
+                            → Endosperm</div>
+                        <div class="formula-desc">Unlike Gymnosperms, Angiosperms only invest energy in food storage
+                            after fertilization is guaranteed. This efficiency is why they outcompeted Gymnosperms.
+                        </div>
+                    </div>
+
+                    <h3>4. Classification: Monocots vs. Dicots</h3>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Feature</th>
+                                    <th>Dicotyledons (Dicots)</th>
+                                    <th>Monocotyledons (Monocots)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>Seeds</strong></td>
+                                    <td>Two Cotyledons</td>
+                                    <td>One Cotyledon (Scutellum)</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Root System</strong></td>
+                                    <td>Tap Root System</td>
+                                    <td>Fibrous Root System (Adventitious)</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Leaf Venation</strong></td>
+                                    <td>Reticulate (Net-like)</td>
+                                    <td>Parallel</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Flowers</strong></td>
+                                    <td>Tetramerous/Pentamerous (4 or 5)</td>
+                                    <td>Trimerous (Multiples of 3)</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Stem Anatomy</strong></td>
+                                    <td>Vascular bundles in Ring; Cambium present (Secondary Growth)</td>
+                                    <td>Vascular bundles Scattered; Cambium absent</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Pollen</strong></td>
+                                    <td>Tricolpate (3 pores)</td>
+                                    <td>Monocolpate (1 pore)</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="card professor-note">
+                        <h4><i class="fas fa-tree"></i> Professor's Research Corner: The "Basal" Angiosperms</h4>
+                        <p>Modern phylogenetics (APG System) recognizes a third, primitive group: The ANA Grade
+                            (Amborella, Nymphaea, Austrobaileya). These branched off before the Monocot/Dicot split. Key
+                            Feature: Floral parts often spirally arranged (not whorled) and indefinite in number (e.g.,
+                            Water Lily petals).</p>
+                    </div>
+                </section>
+            </article>
+
+            <!-- Completion Indicator -->
+            <div
+                style="margin-top: 4rem; padding-top: 2rem; border-top: 2px solid var(--border-primary); text-align: center; color: var(--text-tertiary);">
+                <i class="fas fa-check-circle"
+                    style="font-size: 2rem; color: rgb(var(--success)); margin-bottom: 0.5rem;"></i>
+                <p style="font-weight: 600; color: var(--text-primary);">End of Chapter</p>
+                <p style="font-size: 0.875rem;">Morphology of Flowering Plants</p>
+            </div>
+        </main>
+
+        <!-- Desktop TOC -->
+        <aside class="toc-container">
+            <div class="toc-header">On this page</div>
+            <nav>
+                <ul class="toc-list" id="tocList">
+                    <li><a href="#intro" class="toc-link">Introduction — What is Morphology?</a></li>
+                    <li><a href="#root" class="toc-link">The Root System</a></li>
+                    <li><a href="#stem" class="toc-link">The Stem</a></li>
+                    <li><a href="#leaf" class="toc-link">The Leaf</a></li>
+                    <li><a href="#inflorescence" class="toc-link">Inflorescence</a></li>
+                    <li><a href="#flower" class="toc-link">The Flower</a></li>
+                    <li><a href="#fruit" class="toc-link">The Fruit</a></li>
+                    <li><a href="#seed" class="toc-link">The Seed</a></li>
+                    <li><a href="#taxonomy" class="toc-link">Taxonomic Description</a></li>
+                    <li><a href="#families" class="toc-link">Systematic Botany</a></li>
+                    <li><a href="#angiosperms" class="toc-link">Angiosperms</a></li>
+                </ul>
+            </nav>
+
+            <div
+                style="margin-top: 2rem; padding: 1rem; background: var(--bg-tertiary); border-radius: var(--radius-md); border: 1px solid var(--border-primary);">
+                <div
+                    style="font-size: 0.75rem; font-weight: 700; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.5rem;">
+                    Study Progress</div>
+                <div style="height: 4px; background: var(--border-primary); border-radius: 100px; overflow: hidden;">
+                    <div id="tocProgress"
+                        style="height: 100%; width: 0%; background: linear-gradient(90deg, rgb(var(--primary)), rgb(var(--accent))); transition: width 0.3s;">
+                    </div>
+                </div>
+                <div style="margin-top: 0.5rem; font-size: 0.75rem; color: var(--text-secondary);" id="progressText">0%
+                    completed</div>
+            </div>
+        </aside>
+    </div>
+
+    <!-- Mobile Drawer -->
+    <button class="toc-btn-mobile" onclick="toggleDrawer()">
+        <i class="fas fa-list"></i>
+    </button>
+
+    <div class="mobile-drawer-overlay" id="drawerOverlay" onclick="toggleDrawer()">
+        <div class="mobile-drawer" onclick="event.stopPropagation()">
+            <div class="drawer-handle"></div>
+            <div class="toc-header" style="font-size: 1.125rem; margin-bottom: 1.5rem;">Contents</div>
+            <ul class="toc-list" style="position: relative;" id="mobileTocList">
+                <!-- Populated by JS -->
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        // Theme Toggle
+        function toggleTheme() {
+            const html = document.documentElement;
+            const currentTheme = html.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            html.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+
+            // Icon toggle
+            const icon = document.querySelector('.theme-toggle i');
+            icon.className = newTheme === 'dark' ? 'fas fa-moon' : 'fas fa-sun';
+        }
+
+        // Initialize Theme
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        document.documentElement.setAttribute('data-theme', savedTheme);
+        document.querySelector('.theme-toggle i').className = savedTheme === 'dark' ? 'fas fa-moon' : 'fas fa-sun';
+
+        // Progress Bar & Scroll Spy
+        const progressBar = document.getElementById('progressBar');
+        const tocProgress = document.getElementById('tocProgress');
+        const progressText = document.getElementById('progressText');
+        const sections = document.querySelectorAll('section[id]');
+        const tocLinks = document.querySelectorAll('.toc-link');
+
+        window.addEventListener('scroll', () => {
+            // Main Progress Bar
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            progressBar.style.width = scrolled + '%';
+
+            // TOC Progress
+            if (tocProgress) {
+                tocProgress.style.width = scrolled + '%';
+                progressText.textContent = Math.round(scrolled) + '% completed';
+            }
+
+            // Header Scroll Effect
+            const header = document.getElementById('mainHeader');
+            if (winScroll > 20) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+
+        // Intersection Observer for Scroll Spy
+        const observerOptions = {
+            root: null,
+            rootMargin: '-20% 0px -60% 0px',
+            threshold: 0
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const id = entry.target.getAttribute('id');
+                    tocLinks.forEach(link => {
+                        link.classList.remove('active');
+                        if (link.getAttribute('href') === `#${id}`) {
+                            link.classList.add('active');
+                        }
+                    });
+                }
+            });
+        }, observerOptions);
+
+        sections.forEach(section => observer.observe(section));
+
+        // Mobile Drawer
+        function toggleDrawer() {
+            const overlay = document.getElementById('drawerOverlay');
+            overlay.classList.toggle('active');
+            document.body.style.overflow = overlay.classList.contains('active') ? 'hidden' : '';
+        }
+
+        // Populate Mobile TOC
+        const mobileTocList = document.getElementById('mobileTocList');
+        tocLinks.forEach(link => {
+            const li = document.createElement('li');
+            const a = document.createElement('a');
+            a.href = link.getAttribute('href');
+            a.className = 'toc-link';
+            a.textContent = link.textContent;
+            a.onclick = () => toggleDrawer();
+            li.appendChild(a);
+            mobileTocList.appendChild(li);
+        });
+
+        // Stagger Animation on Scroll
+        const animateElements = document.querySelectorAll('.animate-in');
+        const animateObserver = new IntersectionObserver((entries) => {
+            entries.forEach((entry, index) => {
+                if (entry.isIntersecting) {
+                    setTimeout(() => {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }, index * 100);
+                    animateObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1 });
+
+        animateElements.forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(20px)';
+            el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            animateObserver.observe(el);
+        });
+
+        // Smooth Scroll for Anchor Links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Keyboard Shortcuts
+        document.addEventListener('keydown', (e) => {
+            // Press 'T' to toggle theme
+            if (e.key === 't' && !e.ctrlKey && !e.metaKey && !e.altKey) {
+                if (document.activeElement.tagName !== 'INPUT') {
+                    toggleTheme();
+                }
+            }
+            // Press 'Escape' to close drawer
+            if (e.key === 'Escape') {
+                const drawer = document.getElementById('drawerOverlay');
+                if (drawer.classList.contains('active')) {
+                    toggleDrawer();
+                }
+            }
+        });
+
+        // Initialize flashcards with random colors for variety
+        const colors = [
+            ['99, 102, 241', '244, 63, 94'], // Indigo to Rose
+            ['16, 185, 129', '59, 130, 246'], // Emerald to Blue
+            ['245, 158, 11', '239, 68, 68'],  // Amber to Red
+        ];
+
+        document.querySelectorAll('.flash-back').forEach((card, index) => {
+            const colorPair = colors[index % colors.length];
+            card.style.background = `linear-gradient(135deg, rgb(${colorPair[0]}), rgb(${colorPair[1]}))`;
+        });
+    </script>
+</body>
+
+</html>

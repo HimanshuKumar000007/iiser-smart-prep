@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Privacy Policy | IISER Smart Prep</title>
+
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <style>
+        /* =========================================
+           1. SHARED DESIGN SYSTEM (Matches Home)
+           ========================================= */
+        :root {
+            --primary: #4f46e5;
+            --primary-dark: #4338ca;
+            --primary-soft: #e0e7ff;
+            --secondary: #0f172a;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --text-light: #94a3b8;
+            --bg-wash: #f8fafc;
+            --border: #e2e8f0;
+            --radius-lg: 24px;
+            --radius-pill: 100px;
+            --container-width: 800px;
+            /* Narrower for reading text */
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            color: var(--text-main);
+            background: var(--bg-wash);
+            line-height: 1.7;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+            transition: all 0.2s ease;
+        }
+
+        /* =========================================
+           2. NAVIGATION (Floating)
+           ========================================= */
+        header {
+            position: fixed;
+            top: 20px;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            display: flex;
+            justify-content: center;
+            pointer-events: none;
+            transition: top 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        header.scrolled {
+            top: 0;
+        }
+
+        .nav-container {
+            pointer-events: auto;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.08);
+            padding: 0.75rem 1.5rem;
+            border-radius: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 90%;
+            max-width: 1140px;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        header.scrolled .nav-container {
+            width: 100%;
+            max-width: 100%;
+            border-radius: 0;
+            border-top: 0;
+            border-left: 0;
+            border-right: 0;
+            background: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            padding: 1rem 2rem;
+        }
+
+        .logo {
+            font-size: 1.25rem;
+            font-weight: 800;
+            color: var(--secondary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            letter-spacing: -0.02em;
+            z-index: 1002;
+        }
+
+        .btn-sm {
+            padding: 0.5rem 1rem;
+            font-size: 0.85rem;
+            font-weight: 600;
+            border-radius: var(--radius-pill);
+            border: 1px solid var(--border);
+            color: var(--text-main);
+            background: transparent;
+        }
+
+        .btn-sm:hover {
+            background: var(--bg-wash);
+            border-color: var(--text-muted);
+        }
+
+        /* =========================================
+           3. MAIN CONTENT (Legal Paper Style)
+           ========================================= */
+        .page-wrapper {
+            padding-top: 8rem;
+            padding-bottom: 5rem;
+            width: 90%;
+            max-width: var(--container-width);
+            margin: 0 auto;
+        }
+
+        .legal-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .legal-header h1 {
+            font-size: clamp(2rem, 5vw, 2.5rem);
+            font-weight: 800;
+            color: var(--secondary);
+            letter-spacing: -0.03em;
+            margin-bottom: 0.5rem;
+        }
+
+        .last-updated {
+            color: var(--primary);
+            font-weight: 600;
+            font-size: 0.9rem;
+            background: var(--primary-soft);
+            padding: 0.25rem 0.75rem;
+            border-radius: 100px;
+            display: inline-block;
+        }
+
+        .document-card {
+            background: white;
+            padding: 4rem;
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--border);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+        }
+
+        section {
+            margin-bottom: 2.5rem;
+            border-bottom: 1px solid var(--bg-wash);
+            padding-bottom: 2.5rem;
+        }
+
+        section:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+            margin-bottom: 0;
+        }
+
+        h2 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--secondary);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        h2::before {
+            content: '';
+            display: block;
+            width: 6px;
+            height: 24px;
+            background: var(--primary);
+            border-radius: 4px;
+        }
+
+        p {
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+        }
+
+        ul {
+            list-style: none;
+            padding-left: 1rem;
+        }
+
+        li {
+            position: relative;
+            padding-left: 1.5rem;
+            margin-bottom: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        li::before {
+            content: "•";
+            color: var(--primary);
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+            font-size: 1.2rem;
+            line-height: 1.5rem;
+        }
+
+        .highlight-link {
+            color: var(--primary);
+            font-weight: 600;
+            border-bottom: 1px dashed var(--primary);
+        }
+
+        /* =========================================
+           4. RESPONSIVE DESIGN
+           ========================================= */
+        @media (max-width: 768px) {
+            .page-wrapper {
+                padding-top: 6rem;
+            }
+
+            .document-card {
+                padding: 2rem 1.5rem;
+            }
+
+            .legal-header h1 {
+                font-size: 1.75rem;
+            }
+
+            h2 {
+                font-size: 1.1rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <header>
+        <div class="nav-container">
+            <a href="index.html" class="logo">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path
+                        d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z">
+                    </path>
+                </svg>
+                IISER Smart Prep
+            </a>
+            <a href="index.html" class="btn-sm">Back Home</a>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="page-wrapper">
+
+        <div class="legal-header">
+            <h1>Privacy Policy</h1>
+            <span class="last-updated">Last Updated: January 2026</span>
+        </div>
+
+        <div class="document-card">
+
+            <p style="font-size: 1.1rem; color: var(--text-main); margin-bottom: 2rem;">
+                Your privacy is important to us. This policy explains how <b>IISER Smart Prep</b> collects, uses, and
+                protects your data.
+            </p>
+
+            <section>
+                <h2>1. Information We Collect</h2>
+                <p>We only collect the data necessary to provide you with a personalized learning experience:</p>
+                <ul>
+                    <li><b>Identity:</b> Email address for account management.</li>
+                    <li><b>Security:</b> Login credentials (stored with industry-standard encryption).</li>
+                    <li><b>Transactions:</b> Payment status (e.g., "Paid" or "Unpaid"). We do <i>not</i> store card
+                        details.</li>
+                    <li><b>Academics:</b> Mock test scores, time spent per question, and analytics data.</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>2. Payment Security</h2>
+                <p>All financial transactions are processed through <b>Razorpay</b>, a secure third-party payment
+                    gateway.
+                </p>
+                <p>We do not collect, store, or have access to your credit card numbers, UPI IDs, or net banking
+                    passwords.</p>
+            </section>
+
+            <section>
+                <h2>3. How We Use Data</h2>
+                <ul>
+                    <li>To provide and evaluate your mock tests.</li>
+                    <li>To generate personalized performance analytics.</li>
+                    <li>To unlock premium features and maintain subscription status.</li>
+                    <li>To improve platform performance.</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>4. Cookies & Local Storage</h2>
+                <p>We use local storage and session cookies solely for authentication (keeping you logged in) and
+                    session
+                    management.</p>
+            </section>
+
+            <section>
+                <h2>5. Data Sharing</h2>
+                <p>We value your trust. We <b>do not</b> sell, trade, or rent your personal identification information
+                    to third parties.</p>
+            </section>
+
+            <section>
+                <h2>6. Data Protection</h2>
+                <p>We implement a variety of security measures to maintain the safety of your personal information when
+                    you enter, submit, or access your personal information.</p>
+            </section>
+
+            <section>
+                <h2>7. User Rights</h2>
+                <p>You have the right to request the deletion of your account and all associated data at any time. To do
+                    so, please contact our support team.</p>
+            </section>
+
+            <section>
+                <h2>8. Contact Us</h2>
+                <p>If you have questions regarding this policy, please contact us:</p>
+                <a href="mailto:support@iisersmartprep.space"
+                    style="color: var(--primary); font-weight: 600; display: inline-flex; align-items: center; gap: 0.5rem;">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="2" y="4" width="20" height="16" rx="2"></rect>
+                        <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
+                    </svg>
+                    support@iisersmartprep.space
+                </a>
+            </section>
+
+        </div>
+
+        <div style="text-align: center; margin-top: 2rem; font-size: 0.85rem; color: var(--text-light);">
+            &copy; 2026 IISER Smart Prep. All rights reserved.
+        </div>
+
+    </div>
+
+    <script>
+        // Use scroll logic to match homepage behavior
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('header');
+            if (window.scrollY > 20) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+    </script>
+</body>
+
+</html>

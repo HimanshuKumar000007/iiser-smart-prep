@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Chat Integration</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        .glass-panel {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .message-bubble {
+            max-width: 80%;
+            animation: slideIn 0.3s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .typing-indicator span {
+            animation: blink 1.4s infinite both;
+            display: inline-block;
+            width: 6px;
+            height: 6px;
+            background-color: #60a5fa;
+            border-radius: 50%;
+            margin: 0 2px;
+        }
+
+        .typing-indicator span:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .typing-indicator span:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        @keyframes blink {
+
+            0%,
+            100% {
+                opacity: 0.2;
+            }
+
+            50% {
+                opacity: 1;
+            }
+        }
+
+        .code-block {
+            position: relative;
+        }
+
+        .copy-btn {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+
+        .code-block:hover .copy-btn {
+            opacity: 1;
+        }
+
+        /* Scrollbar styling */
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: rgba(30, 41, 59, 0.5);
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: rgba(148, 163, 184, 0.5);
+            border-radius: 3px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: rgba(148, 163, 184, 0.8);
+        }
+    </style>
+    <base target="_blank">
+</head>
+
+<body class="bg-slate-900 text-slate-100 min-h-screen flex flex-col">
+
+    <!-- Header -->
+    <header class="glass-panel sticky top-0 z-50 border-b border-slate-700">
+        <div class="max-w-6xl mx-auto px-4 py-4 flex justify-between items-center">
+            <div class="flex items-center gap-3">
+                <div
+                    class="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center shadow-lg">
+                    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M13 10V3L4 14h7v7l9-11h-7z" />
+                    </svg>
+                </div>
+                <div>
+                    <h1
+                        class="font-bold text-lg bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
+                        AI Assistant</h1>
+                    <p class="text-xs text-slate-400">Powered by API Integration</p>
+                </div>
+            </div>
+
+            <button onclick="toggleSettings()" class="p-2 hover:bg-slate-700 rounded-lg transition-colors">
+                <svg class="w-6 h-6 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                </svg>
+            </button>
+        </div>
+    </header>
+
+    <!-- Settings Panel (Hidden by default) -->
+    <div id="settingsPanel"
+        class="hidden fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+        <div class="glass-panel rounded-2xl p-6 max-w-md w-full shadow-2xl border border-slate-700">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-xl font-bold text-white">API Configuration</h2>
+                <button onclick="toggleSettings()" class="text-slate-400 hover:text-white">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-slate-300 mb-2">API Provider</label>
+                    <select id="apiProvider"
+                        class="w-full bg-slate-800 border border-slate-600 rounded-lg px-4 py-2 text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                        <option value="openai">OpenAI (GPT-4/3.5)</option>
+                        <option value="anthropic">Anthropic (Claude)</option>
+                        <option value="custom">Custom Endpoint</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-slate-300 mb-2">API Key</label>
+                    <input type="password" id="apiKey" placeholder="sk-..."
+                        class="w-full bg-slate-800 border border-slate-600 rounded-lg px-4 py-2 text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                    <p class="text-xs text-slate-500 mt-1">Stored locally in your browser only</p>
+                </div>
+
+                <div id="customEndpointDiv" class="hidden">
+                    <label class="block text-sm font-medium text-slate-300 mb-2">Endpoint URL</label>
+                    <input type="text" id="customEndpoint" placeholder="https://api.example.com/v1/chat"
+                        class="w-full bg-slate-800 border border-slate-600 rounded-lg px-4 py-2 text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-slate-300 mb-2">Model</label>
+                    <input type="text" id="modelName" placeholder="gpt-4"
+                        class="w-full bg-slate-800 border border-slate-600 rounded-lg px-4 py-2 text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                </div>
+
+                <button onclick="saveSettings()"
+                    class="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-medium py-2 rounded-lg transition-all transform hover:scale-[1.02]">
+                    Save Configuration
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Chat Container -->
+    <main class="flex-1 max-w-6xl mx-auto w-full px-4 py-6 flex flex-col gap-4">
+
+        <!-- Messages Area -->
+        <div id="chatContainer"
+            class="flex-1 glass-panel rounded-2xl p-4 overflow-y-auto custom-scrollbar min-h-[500px] max-h-[70vh] flex flex-col gap-4">
+
+            <!-- Welcome Message -->
+            <div
+                class="message-bubble self-start bg-slate-800 border border-slate-700 rounded-2xl rounded-tl-sm p-4 shadow-lg">
+                <div class="flex items-center gap-2 mb-2">
+                    <div
+                        class="w-6 h-6 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
+                        <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M13 10V3L4 14h7v7l9-11h-7z" />
+                        </svg>
+                    </div>
+                    <span class="font-semibold text-blue-400">AI Assistant</span>
+                </div>
+                <div class="prose prose-invert max-w-none text-slate-300">
+                    Hello! I'm your AI assistant. How can I help you today?
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Input Area -->
+        <div class="glass-panel rounded-2xl p-4 border border-slate-700">
+            <div class="flex gap-3 items-end">
+                <div class="flex-1 relative">
+                    <textarea id="userInput" rows="1" placeholder="Type your message..."
+                        class="w-full bg-slate-800/50 border border-slate-600 rounded-xl px-4 py-3 pr-12 text-white placeholder-slate-500 focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none custom-scrollbar"
+                        onkeydown="handleKeyDown(event)" oninput="autoResize(this)"></textarea>
+                    <button onclick="clearChat()"
+                        class="absolute right-3 top-3 text-slate-500 hover:text-slate-300 transition-colors"
+                        title="Clear chat">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                        </svg>
+                    </button>
+                </div>
+                <button onclick="sendMessage()" id="sendBtn"
+                    class="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white p-3 rounded-xl transition-all transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+                    </svg>
+                </button>
+            </div>
+            <div class="mt-2 flex justify-between items-center text-xs text-slate-500">
+                <span>Press Enter to send, Shift + Enter for new line</span>
+                <span id="statusIndicator" class="flex items-center gap-2">
+                    <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
+                    Ready
+                </span>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // State management
+        let messages = [];
+        let isStreaming = false;
+        let currentController = null;
+
+        // Load settings from localStorage
+        const settings = JSON.parse(localStorage.getItem('aiSettings') || '{}');
+        if (settings.apiKey) document.getElementById('apiKey').value = settings.apiKey;
+        if (settings.provider) document.getElementById('apiProvider').value = settings.provider;
+        if (settings.model) document.getElementById('modelName').value = settings.model;
+        if (settings.endpoint) document.getElementById('customEndpoint').value = settings.endpoint;
+
+        // Show/hide custom endpoint based on provider
+        document.getElementById('apiProvider').addEventListener('change', (e) => {
+            const customDiv = document.getElementById('customEndpointDiv');
+            if (e.target.value === 'custom') {
+                customDiv.classList.remove('hidden');
+            } else {
+                customDiv.classList.add('hidden');
+            }
+        });
+
+        function toggleSettings() {
+            const panel = document.getElementById('settingsPanel');
+            panel.classList.toggle('hidden');
+        }
+
+        function saveSettings() {
+            const settings = {
+                apiKey: document.getElementById('apiKey').value,
+                provider: document.getElementById('apiProvider').value,
+                model: document.getElementById('modelName').value || 'gpt-4',
+                endpoint: document.getElementById('customEndpoint').value
+            };
+            localStorage.setItem('aiSettings', JSON.stringify(settings));
+            toggleSettings();
+            showNotification('Settings saved successfully!');
+        }
+
+        function autoResize(textarea) {
+            textarea.style.height = 'auto';
+            textarea.style.height = Math.min(textarea.scrollHeight, 200) + 'px';
+        }
+
+        function handleKeyDown(e) {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                sendMessage();
+            }
+        }
+
+        function clearChat() {
+            if (confirm('Are you sure you want to clear the conversation?')) {
+                messages = [];
+                document.getElementById('chatContainer').innerHTML = `
+                    <div class="message-bubble self-start bg-slate-800 border border-slate-700 rounded-2xl rounded-tl-sm p-4 shadow-lg">
+                        <div class="flex items-center gap-2 mb-2">
+                            <div class="w-6 h-6 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
+                                <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                                </svg>
+                            </div>
+                            <span class="font-semibold text-blue-400">AI Assistant</span>
+                        </div>
+                        <div class="prose prose-invert max-w-none text-slate-300">
+                            Hello! I'm your AI assistant. How can I help you today?
+                        </div>
+                    </div>
+                `;
+            }
+        }
+
+        function addMessage(content, isUser = false) {
+            const container = document.getElementById('chatContainer');
+            const bubble = document.createElement('div');
+            bubble.className = `message-bubble ${isUser ? 'self-end bg-blue-600' : 'self-start bg-slate-800 border border-slate-700'} rounded-2xl ${isUser ? 'rounded-tr-sm' : 'rounded-tl-sm'} p-4 shadow-lg max-w-[85%] md:max-w-[75%]`;
+
+            if (isUser) {
+                bubble.innerHTML = `<div class="text-white">${escapeHtml(content)}</div>`;
+            } else {
+                bubble.innerHTML = `
+                    <div class="flex items-center gap-2 mb-2">
+                        <div class="w-6 h-6 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
+                            <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                            </svg>
+                        </div>
+                        <span class="font-semibold text-blue-400">AI Assistant</span>
+                    </div>
+                    <div class="prose prose-invert max-w-none text-slate-300 overflow-x-auto">
+                        ${content}
+                    </div>
+                `;
+            }
+
+            container.appendChild(bubble);
+            container.scrollTop = container.scrollHeight;
+            return bubble;
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        function showTypingIndicator() {
+            const container = document.getElementById('chatContainer');
+            const indicator = document.createElement('div');
+            indicator.id = 'typingIndicator';
+            indicator.className = 'message-bubble self-start bg-slate-800 border border-slate-700 rounded-2xl rounded-tl-sm p-4 shadow-lg';
+            indicator.innerHTML = `
+                <div class="flex items-center gap-2 mb-2">
+                    <div class="w-6 h-6 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
+                        <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                        </svg>
+                    </div>
+                    <span class="font-semibold text-blue-400">AI Assistant</span>
+                </div>
+                <div class="typing-indicator flex gap-1 px-2">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            `;
+            container.appendChild(indicator);
+            container.scrollTop = container.scrollHeight;
+        }
+
+        function removeTypingIndicator() {
+            const indicator = document.getElementById('typingIndicator');
+            if (indicator) indicator.remove();
+        }
+
+        async function sendMessage() {
+            const input = document.getElementById('userInput');
+            const sendBtn = document.getElementById('sendBtn');
+            const content = input.value.trim();
+
+            if (!content || isStreaming) return;
+
+            const settings = JSON.parse(localStorage.getItem('aiSettings') || '{}');
+            if (!settings.apiKey) {
+                showNotification('Please configure your API key in settings first!', 'error');
+                toggleSettings();
+                return;
+            }
+
+            // Add user message
+            addMessage(content, true);
+            messages.push({ role: 'user', content });
+            input.value = '';
+            input.style.height = 'auto';
+
+            // Show typing indicator
+            showTypingIndicator();
+            isStreaming = true;
+            sendBtn.disabled = true;
+            updateStatus('Connecting...', 'yellow');
+
+            try {
+                const responseBubble = await streamResponse(settings);
+                messages.push({ role: 'assistant', content: responseBubble.fullText });
+            } catch (error) {
+                showNotification(error.message, 'error');
+                removeTypingIndicator();
+            } finally {
+                isStreaming = false;
+                sendBtn.disabled = false;
+                updateStatus('Ready', 'green');
+            }
+        }
+
+        async function streamResponse(settings) {
+            const provider = settings.provider || 'openai';
+            let url, body, headers;
+
+            // Configure request based on provider
+            if (provider === 'openai') {
+                url = 'https://api.openai.com/v1/chat/completions';
+                headers = {
+                    'Authorization': `Bearer ${settings.apiKey}`,
+                    'Content-Type': 'application/json'
+                };
+                body = {
+                    model: settings.model || 'gpt-4',
+                    messages: messages,
+                    stream: true
+                };
+            } else if (provider === 'anthropic') {
+                url = 'https://api.anthropic.com/v1/messages';
+                headers = {
+                    'x-api-key': settings.apiKey,
+                    'anthropic-version': '2023-06-01',
+                    'Content-Type': 'application/json'
+                };
+                body = {
+                    model: settings.model || 'claude-3-opus-20240229',
+                    max_tokens: 4096,
+                    messages: messages,
+                    stream: true
+                };
+            } else {
+                url = settings.endpoint;
+                headers = {
+                    'Authorization': `Bearer ${settings.apiKey}`,
+                    'Content-Type': 'application/json'
+                };
+                body = {
+                    model: settings.model || 'default',
+                    messages: messages,
+                    stream: true
+                };
+            }
+
+            currentController = new AbortController();
+
+            try {
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: headers,
+                    body: JSON.stringify(body),
+                    signal: currentController.signal
+                });
+
+                if (!response.ok) {
+                    const error = await response.json().catch(() => ({}));
+                    throw new Error(error.error?.message || `HTTP error! status: ${response.status}`);
+                }
+
+                removeTypingIndicator();
+                const container = document.getElementById('chatContainer');
+                const bubble = document.createElement('div');
+                bubble.className = 'message-bubble self-start bg-slate-800 border border-slate-700 rounded-2xl rounded-tl-sm p-4 shadow-lg max-w-[85%] md:max-w-[75%]';
+                bubble.innerHTML = `
+                    <div class="flex items-center gap-2 mb-2">
+                        <div class="w-6 h-6 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
+                            <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                            </svg>
+                        </div>
+                        <span class="font-semibold text-blue-400">AI Assistant</span>
+                    </div>
+                    <div class="prose prose-invert max-w-none text-slate-300 overflow-x-auto streaming-content"></div>
+                `;
+                container.appendChild(bubble);
+
+                const contentDiv = bubble.querySelector('.streaming-content');
+                let fullText = '';
+
+                const reader = response.body.getReader();
+                const decoder = new TextDecoder();
+
+                while (true) {
+                    const { done, value } = await reader.read();
+                    if (done) break;
+
+                    const chunk = decoder.decode(value);
+                    const lines = chunk.split('\n');
+
+                    for (const line of lines) {
+                        if (line.trim() === '') continue;
+                        if (line.trim() === 'data: [DONE]') continue;
+
+                        if (line.startsWith('data: ')) {
+                            try {
+                                const data = JSON.parse(line.slice(6));
+                                let content = '';
+
+                                if (provider === 'openai') {
+                                    content = data.choices?.[0]?.delta?.content || '';
+                                } else if (provider === 'anthropic') {
+                                    if (data.type === 'content_block_delta') {
+                                        content = data.delta?.text || '';
+                                    }
+                                } else {
+                                    content = data.choices?.[0]?.delta?.content || data.content || '';
+                                }
+
+                                if (content) {
+                                    fullText += content;
+                                    contentDiv.innerHTML = marked.parse(fullText);
+                                    // Re-highlight code blocks
+                                    contentDiv.querySelectorAll('pre code').forEach((block) => {
+                                        hljs.highlightElement(block);
+                                    });
+                                    // Add copy buttons to code blocks
+                                    addCopyButtons(contentDiv);
+                                    container.scrollTop = container.scrollHeight;
+                                }
+                            } catch (e) {
+                                console.error('Error parsing chunk:', e);
+                            }
+                        }
+                    }
+                }
+
+                return { fullText };
+
+            } catch (error) {
+                if (error.name === 'AbortError') {
+                    throw new Error('Request cancelled');
+                }
+                throw error;
+            }
+        }
+
+        function addCopyButtons(container) {
+            container.querySelectorAll('pre').forEach(pre => {
+                if (pre.querySelector('.copy-btn')) return;
+
+                const btn = document.createElement('button');
+                btn.className = 'copy-btn bg-slate-700 hover:bg-slate-600 text-slate-300 px-2 py-1 rounded text-xs transition-all';
+                btn.innerHTML = 'Copy';
+                btn.onclick = () => {
+                    const code = pre.querySelector('code').textContent;
+                    navigator.clipboard.writeText(code);
+                    btn.textContent = 'Copied!';
+                    setTimeout(() => btn.textContent = 'Copy', 2000);
+                };
+                pre.classList.add('code-block');
+                pre.appendChild(btn);
+            });
+        }
+
+        function updateStatus(text, color) {
+            const indicator = document.getElementById('statusIndicator');
+            const colors = {
+                green: 'bg-green-500',
+                yellow: 'bg-yellow-500',
+                red: 'bg-red-500'
+            };
+            indicator.innerHTML = `
+                <span class="w-2 h-2 ${colors[color]} rounded-full animate-pulse"></span>
+                ${text}
+            `;
+        }
+
+        function showNotification(message, type = 'success') {
+            const notif = document.createElement('div');
+            const bgColor = type === 'error' ? 'bg-red-600' : 'bg-green-600';
+            notif.className = `fixed top-20 right-4 ${bgColor} text-white px-6 py-3 rounded-lg shadow-xl z-50 animate-slide-in flex items-center gap-2`;
+            notif.innerHTML = `
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    ${type === 'error'
+                    ? '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>'
+                    : '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>'
+                }
+                </svg>
+                ${message}
+            `;
+            document.body.appendChild(notif);
+            setTimeout(() => {
+                notif.remove();
+            }, 3000);
+        }
+
+        // Initialize
+        document.getElementById('apiProvider').dispatchEvent(new Event('change'));
+    </script>
+</body>
+
+</html>
