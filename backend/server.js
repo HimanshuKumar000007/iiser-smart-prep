@@ -15,7 +15,13 @@ const jwt = require("jsonwebtoken");
 const { createClient } = require("@supabase/supabase-js");
 
 const app = express();
-app.use(cors());
+app.use(cors({
+  origin: [
+    "https://iisersmartprep.space",
+    "https://www.iisersmartprep.space"
+  ],
+  credentials: true
+}));
 app.use(express.json());
 
 // Supabase client (SERVER ONLY)
