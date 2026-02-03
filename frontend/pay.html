@@ -11,9 +11,10 @@
     <button onclick="pay()">Pay ₹1</button>
 
     <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <script src="config.js"></script>
     <script>
         async function pay() {
-            const res = await fetch("http://localhost:5000/api/create-order", {
+            const res = await fetch(`${API_BASE_URL}/create-order`, {
                 method: "POST"
             });
 

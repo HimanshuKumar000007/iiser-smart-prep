@@ -545,6 +545,7 @@
         </div>
     </header>
 
+    <script src="config.js"></script>
     <script>
         // Check Login Status & Sync Plan
         document.addEventListener("DOMContentLoaded", async () => {
@@ -562,7 +563,7 @@
 
                 // 2. Sync Plan with Backend
                 try {
-                    const res = await fetch("http://localhost:5000/api/me", {
+                    const res = await fetch(`${API_BASE_URL}/me`, {
                         headers: { "Authorization": "Bearer " + token }
                     });
 

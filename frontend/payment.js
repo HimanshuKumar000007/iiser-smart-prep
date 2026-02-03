@@ -16,7 +16,7 @@ async function buyPro() {
 
     // 1️⃣ Create order from backend
     try {
-        const res = await fetch("http://localhost:5000/api/create-order", {
+        const res = await fetch(`${API_BASE_URL}/create-order`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -42,7 +42,7 @@ async function buyPro() {
 
             handler: async function (response) {
                 // 3️⃣ Verify payment on backend
-                const verifyRes = await fetch("http://localhost:5000/api/verify-payment", {
+                const verifyRes = await fetch(`${API_BASE_URL}/verify-payment`, {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",

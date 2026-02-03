@@ -728,6 +728,7 @@
             </div>
         </div>
     </div>
+    <script src="../config.js"></script>
     <script src="../auth.js"></script>
     <script>
         (async function protectTestAccess() {
@@ -741,7 +742,7 @@
             }
 
             try {
-                const res = await fetch("http://localhost:5000/api/check-mock-access", {
+                const res = await fetch(`${API_BASE_URL}/check-mock-access`, {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
@@ -780,7 +781,7 @@
 
             // 🔥 ROBUST SYNC: Always fetch latest plan
             try {
-                const res = await fetch("http://localhost:5000/api/me", {
+                const res = await fetch(`${API_BASE_URL}/me`, {
                     headers: { "Authorization": "Bearer " + token }
                 });
 

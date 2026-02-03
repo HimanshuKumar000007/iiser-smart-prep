@@ -924,6 +924,7 @@
     <!-- =========================================
        JAVASCRIPT LOGIC
        ========================================= -->
+    <script src="../config.js"></script>
     <script>
         // 1. AUTH & PLAN STATE MANAGEMENT
         const token = localStorage.getItem("IAT_TOKEN");
@@ -949,7 +950,7 @@
             if (!token) return;
 
             try {
-                const res = await fetch("http://localhost:5000/api/me", {
+                const res = await fetch(`${API_BASE_URL}/me`, {
                     headers: { "Authorization": "Bearer " + token }
                 });
 
@@ -999,7 +1000,7 @@
 
             // 🔥 CHECK PLAN LIVE
             try {
-                const res = await fetch("http://localhost:5000/api/me", {
+                const res = await fetch(`${API_BASE_URL}/me`, {
                     headers: { "Authorization": "Bearer " + token }
                 });
 
@@ -1068,7 +1069,7 @@
 
             try {
                 // Create Order
-                const res = await fetch("http://localhost:5000/api/create-order", {
+                const res = await fetch(`${API_BASE_URL}/create-order`, {
                     method: "POST",
                     headers: { "Content-Type": "application/json", "Authorization": `Bearer ${token}` }
                 });
@@ -1098,7 +1099,7 @@
 
         async function verifyPayment(response) {
             try {
-                const res = await fetch("http://localhost:5000/api/verify-payment", {
+                const res = await fetch(`${API_BASE_URL}/verify-payment`, {
                     method: "POST",
                     headers: { "Content-Type": "application/json", "Authorization": `Bearer ${token}` },
                     body: JSON.stringify(response)

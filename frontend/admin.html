@@ -20,11 +20,12 @@
         <tbody id="users"></tbody>
     </table>
 
+    <script src="config.js"></script>
     <script>
         const token = localStorage.getItem("IAT_TOKEN");
 
         // 🔒 PROTECT ADMIN PAGE
-        fetch("http://localhost:5000/api/me", {
+        fetch(`${API_BASE_URL}/me`, {
             headers: { Authorization: "Bearer " + token }
         })
             .then(res => res.json())
@@ -36,7 +37,7 @@
             });
 
         async function loadUsers() {
-            const res = await fetch("http://localhost:5000/api/admin/users", {
+            const res = await fetch(`${API_BASE_URL}/admin/users`, {
                 headers: { Authorization: "Bearer " + token }
             });
 
@@ -59,7 +60,7 @@
         }
 
         async function setPlan(email, plan) {
-            await fetch("http://localhost:5000/api/admin/set-plan", {
+            await fetch(`${API_BASE_URL}/admin/set-plan`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

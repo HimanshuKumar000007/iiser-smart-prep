@@ -708,6 +708,7 @@
         </div>
     </div>
 
+    <script src="../config.js"></script>
     <script>
         // --- Filter Logic ---
         let currentFilter = 'all';
@@ -750,7 +751,7 @@
             if (!token) return;
 
             try {
-                const res = await fetch("http://localhost:5000/api/me", {
+                const res = await fetch(`${API_BASE_URL}/me`, {
                     headers: { "Authorization": "Bearer " + token }
                 });
 
