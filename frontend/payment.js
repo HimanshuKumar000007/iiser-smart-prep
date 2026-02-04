@@ -33,11 +33,11 @@ async function buyPro() {
 
         // 2️⃣ Razorpay options
         const options = {
-            key: "rzp_live_SC3R47SGOoJHvE", // 👈 YOUR LIVE KEY ID
+            key: RAZORPAY_KEY_ID, // 👈 Loaded from config.js
             amount: order.amount,
             currency: "INR",
             name: "IISER Smart Prep",
-            description: "Pro Plan (Test)",
+            description: "Pro Plan",
             order_id: order.id,
 
             handler: async function (response) {
