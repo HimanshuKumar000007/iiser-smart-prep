@@ -1078,7 +1078,7 @@
 
                 // Initialize Razorpay
                 const options = {
-                    key: "rzp_test_xxxxxxx", // Replace with your actual ID
+                    key: "rzp_test_S6zF2Dd2liRsY6", // 👈 YOUR TEST KEY ID
                     amount: order.amount,
                     currency: "INR",
                     order_id: order.id,
@@ -1120,14 +1120,14 @@
         }
 
         // 5. SCROLL HEADER TRANSFORMATION
+        const header = document.querySelector('header');
         window.addEventListener('scroll', () => {
-            const header = document.querySelector('header');
             if (window.scrollY > 20) {
                 header.classList.add('scrolled');
             } else {
                 header.classList.remove('scrolled');
             }
-        });
+        }, { passive: true });
     </script>
     <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 

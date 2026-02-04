@@ -1,20 +1,28 @@
-require("dotenv").config();
-console.log("SUPABASE_URL =", process.env.SUPABASE_URL);
+const express = require("express");
+const app = express();
 
-// Razorpay Init (Moved to Top)
-const Razorpay = require("razorpay");
-const razorpay = new Razorpay({
-  key_id: process.env.RAZORPAY_KEY_ID,
-  key_secret: process.env.RAZORPAY_KEY_SECRET
+if (process.env.NODE_ENV !== "production") {
+  require("dotenv").config();
+}
+
+const PORT = process.env.PORT || 8080;
+
+app.get("/", (req, res) => {
+  res.status(200).send("Backend is running");
 });
 
-const express = require("express");
+// ------------------------------------------------------------------
+// Imports & Configuration
+// ------------------------------------------------------------------
 const cors = require("cors");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const { createClient } = require("@supabase/supabase-js");
+const Razorpay = require("razorpay");
+const crypto = require("crypto");
+const { sendResetEmail } = require("./utils/mailer");
 
-const app = express();
+// Middleware
 app.use(cors({
   origin: [
     "https://iisersmartprep.space",
@@ -24,15 +32,19 @@ app.use(cors({
 }));
 app.use(express.json());
 
-// Supabase client (SERVER ONLY)
+// Debug
+console.log("SUPABASE_URL =", process.env.SUPABASE_URL);
+
+// Supabase
 const supabase = createClient(
   process.env.SUPABASE_URL,
   process.env.SUPABASE_SERVICE_KEY
 );
 
-// ✅ HEALTH CHECK
-app.get("/", (req, res) => {
-  res.send("Backend running ✅");
+// Razorpay
+const razorpay = new Razorpay({
+  key_id: process.env.RAZORPAY_KEY_ID,
+  key_secret: process.env.RAZORPAY_KEY_SECRET
 });
 
 // ===============================
@@ -169,8 +181,6 @@ app.post("/api/signup", async (req, res) => {
   }
 });
 
-const crypto = require("crypto");
-
 // =======================
 // 💸 PAYMENT API
 // =======================
@@ -296,8 +306,6 @@ app.post("/api/login", async (req, res) => {
 // =======================
 // 🔐 FORGOT PASSWORD API
 // =======================
-const { sendResetEmail } = require("./utils/mailer");
-
 app.post("/api/forgot-password", async (req, res) => {
   try {
     const { email } = req.body;
@@ -485,10 +493,10 @@ ${question}
   }
 });
 
-const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
-  console.log(`✅ Server running on port ${PORT}`);
+  console.log("Server running on port", PORT);
 });
+
 process.on("unhandledRejection", (reason, promise) => {
   console.error("Unhandled Rejection at:", promise, "reason:", reason);
 });
