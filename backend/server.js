@@ -11,6 +11,10 @@ app.get("/", (req, res) => {
   res.status(200).send("Backend is running");
 });
 
+app.get("/health", (req, res) => {
+  res.json({ status: "ok" });
+});
+
 // ------------------------------------------------------------------
 // Imports & Configuration
 // ------------------------------------------------------------------
