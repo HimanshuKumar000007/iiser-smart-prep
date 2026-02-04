@@ -306,6 +306,8 @@
             justify-content: center;
             pointer-events: none;
             transition: top 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            will-change: top;
+            transform: translateZ(0);
         }
 
         header.scrolled {
@@ -326,7 +328,15 @@
             justify-content: space-between;
             width: 90%;
             max-width: var(--container-width);
-            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+                padding 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+                border-radius 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+                background 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+                box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            will-change: width, padding, border-radius, background, box-shadow;
+            transform: translateZ(0);
+            backface-visibility: hidden;
+            -webkit-font-smoothing: subpixel-antialiased;
         }
 
         header.scrolled .nav-container {
@@ -2031,13 +2041,22 @@
             observer.observe(el);
         });
 
-        // --- Scroll Header Transformation ---
+        // --- Scroll Header Transformation (Optimized with RAF) ---
         const header = document.querySelector('header');
+        let isScrolled = false;
+        let ticking = false;
+
         window.addEventListener('scroll', () => {
-            if (window.scrollY > 20) {
-                header.classList.add('scrolled');
-            } else {
-                header.classList.remove('scrolled');
+            if (!ticking) {
+                window.requestAnimationFrame(() => {
+                    const shouldBeScrolled = window.scrollY > 20;
+                    if (shouldBeScrolled !== isScrolled) {
+                        isScrolled = shouldBeScrolled;
+                        header.classList.toggle('scrolled', isScrolled);
+                    }
+                    ticking = false;
+                });
+                ticking = true;
             }
         }, { passive: true });
 
