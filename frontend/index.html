@@ -308,6 +308,9 @@
             transition: top 0.3s cubic-bezier(0.16, 1, 0.3, 1);
             will-change: top;
             transform: translateZ(0);
+            /* Hardware acceleration */
+            contain: layout;
+            /* Isolate layout */
         }
 
         header.scrolled {
@@ -316,9 +319,8 @@
 
         .nav-container {
             pointer-events: auto;
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
+            background: rgba(255, 255, 255, 0.96);
+            /* High opacity, no blur */
             border: 1px solid rgba(255, 255, 255, 0.5);
             box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.08);
             padding: 0.75rem 1.5rem;
@@ -328,27 +330,21 @@
             justify-content: space-between;
             width: 90%;
             max-width: var(--container-width);
-            transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1),
-                padding 0.3s cubic-bezier(0.16, 1, 0.3, 1),
-                border-radius 0.3s cubic-bezier(0.16, 1, 0.3, 1),
-                background 0.3s cubic-bezier(0.16, 1, 0.3, 1),
-                box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-            will-change: width, padding, border-radius, background, box-shadow;
+            transition: background 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+                box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+                border-color 0.3s ease;
+            will-change: background, box-shadow;
             transform: translateZ(0);
             backface-visibility: hidden;
+            /* Fix for flickering text during animation */
             -webkit-font-smoothing: subpixel-antialiased;
         }
 
         header.scrolled .nav-container {
-            width: 100%;
-            max-width: 100%;
-            border-radius: 0;
-            border-top: 0;
-            border-left: 0;
-            border-right: 0;
-            background: rgba(255, 255, 255, 0.95);
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-            padding: 1rem 2rem;
+            background: rgba(255, 255, 255, 0.98);
+            /* More opaque */
+            box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.1);
+            border-color: rgba(255, 255, 255, 0.8);
         }
 
         .logo {
@@ -443,6 +439,8 @@
             position: relative;
             overflow: hidden;
             background: var(--bg-white);
+            contain: content;
+            /* Performance optimization */
         }
 
         .hero::before {
@@ -458,7 +456,8 @@
                 radial-gradient(circle at 20% 80%, rgba(139, 92, 246, 0.08) 0%, transparent 40%);
             z-index: 0;
             pointer-events: none;
-            animation: gradient-shift 15s ease infinite;
+            /* animation: gradient-shift 15s ease infinite; DISABLED for performance */
+            transform: translateZ(0);
         }
 
         .hero-content {
@@ -660,11 +659,13 @@
         .section-light {
             padding: 6rem 0;
             background: var(--bg-white);
+            contain: content;
         }
 
         .section-wash {
             padding: 6rem 0;
             background: var(--bg-wash);
+            contain: content;
         }
 
         .grid-3 {
@@ -685,6 +686,7 @@
             cursor: default;
             position: relative;
             overflow: hidden;
+            will-change: transform, box-shadow;
         }
 
         .card-clickable {
@@ -774,6 +776,7 @@
             color: white;
             position: relative;
             overflow: hidden;
+            contain: content;
         }
 
         .dark-section::before {
@@ -799,6 +802,9 @@
             background: rgba(255, 255, 255, 0.05);
             border: 1px solid rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            transform: translateZ(0);
+            /* Fix for backdrop-filter repaints */
         }
 
         .dark-card:hover {
@@ -1194,14 +1200,14 @@
             }
         }
     </style>
-<!-- Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-WHHM4FTNHG"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-WHHM4FTNHG');
-</script>
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-WHHM4FTNHG"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'G-WHHM4FTNHG');
+    </script>
 </head>
 
 <body>
@@ -2033,7 +2039,7 @@
         // --- Scroll Animations ---
         const observerOptions = {
             threshold: 0.1,
-            rootMargin: "0px 0px -50px 0px"
+            rootMargin: "0px 0px -20px 0px" // Trigger slightly earlier for smoother feel
         };
 
         const observer = new IntersectionObserver((entries) => {
