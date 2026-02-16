@@ -1433,8 +1433,7 @@
                 </article>
 
                 <!-- CARD 2 -->
-                <a href="smart_notes/smart_notes_home.html" class="card dark-card card-clickable fade-in-up"
-                    style="text-decoration: none;">
+                <article class="card dark-card card-clickable fade-in-up" onclick="checkSmartNotesAccess()">
                     <div class="icon-box">🧠</div>
                     <h3>Smart Revision</h3>
                     <p>Access high-yield cheat sheets, formula lists, and diversity notes tailored for IAT 2026.</p>
@@ -1446,7 +1445,7 @@
                             <polyline points="12 5 19 12 12 19"></polyline>
                         </svg>
                     </div>
-                </a>
+                </article>
 
                 <!-- CARD 3 -->
                 <article class="card dark-card card-clickable fade-in-up" onclick="openModal('modal-focus')">
@@ -2048,8 +2047,8 @@
                     <p>Physics, Chem, Math, Bio</p>
                 </div>
             </div>
-            <button class="btn btn-ai" style="width: 100%; margin-top: 1.5rem;"
-                onclick="window.location.href='ai_tutor.html'">Try AI Tutor</button>
+            <button class="btn btn-ai" style="width: 100%; margin-top: 1.5rem;" onclick="checkAIProAccess()">Try AI
+                Tutor</button>
         </div>
 
         <!-- MODAL: NOTES -->
@@ -2156,6 +2155,41 @@
         document.querySelectorAll('.fade-in-up').forEach(el => {
             observer.observe(el);
         });
+
+        // --- AI Tutor Access Logic ---
+        function checkAIProAccess() {
+            const token = localStorage.getItem("IAT_TOKEN");
+            const plan = localStorage.getItem("IAT_PLAN");
+
+            if (token && plan === "PRO") {
+                window.location.href = "ai_tutor.html";
+            } else {
+                // Redirect to pricing section for non-logged in or non-pro users
+                closeModal();
+                window.location.href = "#pricing";
+            }
+        }
+
+        function checkSmartNotesAccess() {
+            const token = localStorage.getItem("IAT_TOKEN");
+            const plan = localStorage.getItem("IAT_PLAN");
+
+            if (!token) {
+                // User not logged in, redirect to login page
+                window.location.href = "login.html";
+            } else if (plan !== "PRO") {
+                // User logged in but not PRO, scroll to pricing
+                const pricingSection = document.getElementById("pricing");
+                if (pricingSection) {
+                    pricingSection.scrollIntoView({ behavior: 'smooth' });
+                } else {
+                    window.location.href = "#pricing";
+                }
+            } else {
+                // User logged in and PRO
+                window.location.href = "smart_notes/smart_notes_home.html";
+            }
+        }
 
         // --- Scroll Header Transformation (Optimized with RAF) ---
         const header = document.querySelector('header');
