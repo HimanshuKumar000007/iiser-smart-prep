@@ -1,0 +1,1980 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Best Books for Chemistry: Organic, Inorganic & Physical | IISER Smart Prep</title>
+    <meta name="description"
+        content="Curated list of must-read Chemistry books for IAT 2026 — MS Chauhan, VK Jaiswal, N Awasthi with branch-wise strategy and reaction mechanisms.">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <style>
+        /* =========================================
+           ROOT & RESET
+           ========================================= */
+        :root {
+            /* Chemistry-themed palette: Crimson, Amber & Deep Purple */
+            --chem-primary: #dc2626;
+            --chem-dark: #b91c1c;
+            --chem-light: #fee2e2;
+            --chem-soft: #fef2f2;
+            --chem-amber: #f59e0b;
+            --chem-purple: #7c3aed;
+            --chem-purple-soft: #ede9fe;
+            --primary: #6366f1;
+            --secondary: #0f172a;
+            --secondary-light: #1e293b;
+            --text-main: #0f172a;
+            --text-muted: #475569;
+            --text-light: #94a3b8;
+            --bg-white: #ffffff;
+            --bg-wash: #f8fafc;
+            --bg-crimson: #fff5f5;
+            --border: #e2e8f0;
+
+            --radius-sm: 12px;
+            --radius-md: 16px;
+            --radius-lg: 24px;
+            --radius-pill: 100px;
+
+            --shadow-xs: 0 1px 2px 0 rgba(0, 0, 0, 0.03);
+            --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.08);
+            --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+            --shadow-glow: 0 0 40px -10px rgba(220, 38, 38, 0.3);
+            --shadow-book: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+
+            --container-width: 1200px;
+            --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            outline: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            font-size: 16px;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            color: var(--text-main);
+            background: var(--bg-wash);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+            transition: all 0.2s ease;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        .container {
+            width: 90%;
+            max-width: var(--container-width);
+            margin: 0 auto;
+        }
+
+        /* Animations */
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0px);
+            }
+
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        @keyframes pulse-glow {
+
+            0%,
+            100% {
+                box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.4);
+            }
+
+            50% {
+                box-shadow: 0 0 20px 10px rgba(220, 38, 38, 0.1);
+            }
+        }
+
+        @keyframes slide-up {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes bubble {
+
+            0%,
+            100% {
+                transform: translateY(0) scale(1);
+            }
+
+            50% {
+                transform: translateY(-20px) scale(1.1);
+            }
+        }
+
+        .fade-in-up {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s var(--ease-out-expo);
+        }
+
+        .fade-in-up.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* =========================================
+           COMPONENTS
+           ========================================= */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.75rem 1.75rem;
+            border-radius: var(--radius-pill);
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            gap: 0.5rem;
+            letter-spacing: -0.01em;
+            white-space: nowrap;
+            border: none;
+        }
+
+        .btn-primary {
+            background: var(--chem-primary);
+            color: white;
+            box-shadow: 0 4px 6px rgba(220, 38, 38, 0.2);
+        }
+
+        .btn-primary:hover {
+            background: var(--chem-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px -5px rgba(220, 38, 38, 0.4);
+        }
+
+        .btn-secondary {
+            background: var(--secondary);
+            color: white;
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--text-main);
+            border: 1px solid var(--border);
+        }
+
+        .btn-outline:hover {
+            border-color: var(--chem-primary);
+            color: var(--chem-primary);
+            background: var(--chem-soft);
+        }
+
+        .tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.375rem;
+            padding: 0.375rem 0.875rem;
+            background: var(--chem-soft);
+            color: var(--chem-dark);
+            border-radius: var(--radius-pill);
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        /* =========================================
+           NAVIGATION
+           ========================================= */
+        header {
+            position: fixed;
+            top: 20px;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            display: flex;
+            justify-content: center;
+            pointer-events: none;
+            transition: top 0.3s var(--ease-out-expo);
+        }
+
+        header.scrolled {
+            top: 0;
+        }
+
+        .nav-container {
+            pointer-events: auto;
+            background: rgba(255, 255, 255, 0.96);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.08);
+            padding: 0.75rem 1.5rem;
+            border-radius: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 90%;
+            max-width: var(--container-width);
+            transition: all 0.3s var(--ease-out-expo);
+        }
+
+        header.scrolled .nav-container {
+            background: rgba(255, 255, 255, 0.98);
+            box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.1);
+        }
+
+        .logo {
+            font-size: 1.25rem;
+            font-weight: 800;
+            color: var(--secondary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            letter-spacing: -0.02em;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--text-muted);
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 2px;
+            bottom: -4px;
+            left: 0;
+            background-color: var(--chem-primary);
+            transform: scaleX(0);
+            transform-origin: bottom right;
+            transition: transform 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--chem-primary);
+        }
+
+        .nav-links a:hover::after {
+            transform: scaleX(1);
+            transform-origin: bottom left;
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            cursor: pointer;
+            z-index: 1002;
+            padding: 0.5rem;
+        }
+
+        .hamburger-line {
+            display: block;
+            width: 24px;
+            height: 2px;
+            background-color: var(--secondary);
+            margin: 5px 0;
+            transition: all 0.3s ease;
+            border-radius: 2px;
+        }
+
+        /* =========================================
+           HERO SECTION
+           ========================================= */
+        .article-hero {
+            padding: 10rem 0 5rem;
+            background: linear-gradient(180deg, var(--bg-crimson) 0%, var(--bg-white) 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .article-hero::before {
+            content: '';
+            position: absolute;
+            top: -30%;
+            right: -10%;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(220, 38, 38, 0.12) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        .article-hero::after {
+            content: '⚗️';
+            position: absolute;
+            top: 20%;
+            right: 10%;
+            font-size: 200px;
+            opacity: 0.05;
+            pointer-events: none;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        /* Floating Bubbles */
+        .bubble {
+            position: absolute;
+            border-radius: 50%;
+            opacity: 0.1;
+            animation: bubble 8s ease-in-out infinite;
+        }
+
+        .bubble-1 {
+            width: 100px;
+            height: 100px;
+            background: var(--chem-primary);
+            top: 20%;
+            left: 5%;
+            animation-delay: 0s;
+        }
+
+        .bubble-2 {
+            width: 60px;
+            height: 60px;
+            background: var(--chem-amber);
+            top: 60%;
+            left: 8%;
+            animation-delay: 2s;
+        }
+
+        .bubble-3 {
+            width: 80px;
+            height: 80px;
+            background: var(--chem-purple);
+            bottom: 20%;
+            right: 15%;
+            animation-delay: 4s;
+        }
+
+        .hero-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .article-meta {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .article-badge {
+            background: var(--chem-soft);
+            color: var(--chem-dark);
+            padding: 0.375rem 1rem;
+            border-radius: 100px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .article-date {
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+
+        .article-hero h1 {
+            font-size: clamp(2.5rem, 5vw, 3.5rem);
+            font-weight: 800;
+            line-height: 1.1;
+            letter-spacing: -0.03em;
+            margin-bottom: 1.5rem;
+            color: var(--secondary);
+        }
+
+        .article-hero p {
+            font-size: 1.25rem;
+            color: var(--text-muted);
+            line-height: 1.7;
+            margin-bottom: 2rem;
+        }
+
+        .hero-stats {
+            display: flex;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .hero-stat {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .hero-stat-icon {
+            width: 48px;
+            height: 48px;
+            background: white;
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .hero-stat-content h4 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--secondary);
+        }
+
+        .hero-stat-content span {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        /* Book Showcase */
+        .book-showcase {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 400px;
+        }
+
+        .book-card {
+            width: 200px;
+            height: 280px;
+            border-radius: 8px 12px 12px 8px;
+            position: relative;
+            box-shadow: var(--shadow-book);
+            transform: perspective(1000px) rotateY(-15deg);
+            transition: all 0.5s var(--ease-out-expo);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 1.5rem;
+            color: white;
+            border-left: 4px solid;
+        }
+
+        .book-card.organic {
+            background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+            border-left-color: #fca5a5;
+            z-index: 3;
+        }
+
+        .book-card.inorganic {
+            position: absolute;
+            transform: perspective(1000px) rotateY(0deg) translateX(60px) translateZ(-30px);
+            opacity: 0.95;
+            background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%);
+            border-left-color: #c4b5fd;
+            z-index: 2;
+        }
+
+        .book-card.physical {
+            position: absolute;
+            transform: perspective(1000px) rotateY(15deg) translateX(120px) translateZ(-60px);
+            opacity: 0.9;
+            background: linear-gradient(135deg, #0369a1 0%, #075985 100%);
+            border-left-color: #7dd3fc;
+            z-index: 1;
+        }
+
+        .book-card:hover {
+            transform: perspective(1000px) rotateY(0deg) scale(1.05) translateX(0) translateZ(0);
+            z-index: 10;
+            opacity: 1;
+        }
+
+        .book-spine {
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 12px;
+            background: linear-gradient(90deg, rgba(255, 255, 255, 0.3), transparent);
+            border-radius: 8px 0 0 8px;
+        }
+
+        .book-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            line-height: 1.3;
+        }
+
+        .book-author {
+            font-size: 0.8rem;
+            opacity: 0.9;
+        }
+
+        .book-badge {
+            align-self: flex-start;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 0.25rem 0.75rem;
+            border-radius: 100px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        /* =========================================
+           CONTENT SECTIONS
+           ========================================= */
+        .article-content {
+            padding: 4rem 0;
+            background: var(--bg-white);
+        }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1fr 320px;
+            gap: 4rem;
+            align-items: start;
+        }
+
+        .article-main {
+            max-width: 100%;
+        }
+
+        .section-intro {
+            background: var(--chem-soft);
+            border-radius: var(--radius-lg);
+            padding: 2rem;
+            margin-bottom: 3rem;
+            border-left: 4px solid var(--chem-primary);
+        }
+
+        .section-intro p {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            line-height: 1.8;
+            margin: 0;
+        }
+
+        .article-main h2 {
+            font-size: 1.875rem;
+            font-weight: 700;
+            color: var(--secondary);
+            margin: 3rem 0 1.5rem;
+            letter-spacing: -0.02em;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .article-main h2::before {
+            content: '';
+            width: 4px;
+            height: 32px;
+            background: var(--chem-primary);
+            border-radius: 2px;
+        }
+
+        .article-main h3 {
+            font-size: 1.375rem;
+            font-weight: 700;
+            color: var(--secondary);
+            margin: 2.5rem 0 1rem;
+        }
+
+        .article-main p {
+            color: var(--text-muted);
+            font-size: 1.05rem;
+            line-height: 1.9;
+            margin-bottom: 1.5rem;
+        }
+
+        .article-main strong {
+            color: var(--secondary);
+            font-weight: 600;
+        }
+
+        /* Branch Tabs */
+        .branch-tabs {
+            display: flex;
+            gap: 0.5rem;
+            margin: 2rem 0;
+            padding: 0.5rem;
+            background: var(--bg-wash);
+            border-radius: var(--radius-pill);
+        }
+
+        .branch-tab {
+            flex: 1;
+            padding: 0.75rem 1.5rem;
+            border-radius: var(--radius-pill);
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            border: none;
+            background: transparent;
+            color: var(--text-muted);
+        }
+
+        .branch-tab.active {
+            background: white;
+            color: var(--secondary);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .branch-tab.organic:hover,
+        .branch-tab.organic.active {
+            color: var(--chem-primary);
+        }
+
+        .branch-tab.inorganic:hover,
+        .branch-tab.inorganic.active {
+            color: var(--chem-purple);
+        }
+
+        .branch-tab.physical:hover,
+        .branch-tab.physical.active {
+            color: #0369a1;
+        }
+
+        /* Book Detail Cards */
+        .book-detail-card {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 2rem;
+            margin: 2rem 0;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .book-detail-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .book-detail-card.organic {
+            border-top: 4px solid var(--chem-primary);
+        }
+
+        .book-detail-card.inorganic {
+            border-top: 4px solid var(--chem-purple);
+        }
+
+        .book-detail-card.physical {
+            border-top: 4px solid #0369a1;
+        }
+
+        .book-header {
+            display: flex;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .book-cover-mini {
+            width: 80px;
+            height: 110px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            flex-shrink: 0;
+            box-shadow: var(--shadow-md);
+        }
+
+        .book-cover-mini.ms-chauhan {
+            background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+        }
+
+        .book-cover-mini.jaiswal {
+            background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%);
+        }
+
+        .book-cover-mini.awasthi {
+            background: linear-gradient(135deg, #0369a1 0%, #075985 100%);
+        }
+
+        .book-cover-mini.ncert {
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+        }
+
+        .book-cover-mini.morrison {
+            background: linear-gradient(135deg, #059669 0%, #047857 100%);
+        }
+
+        .book-info h4 {
+            font-size: 1.375rem;
+            font-weight: 700;
+            color: var(--secondary);
+            margin-bottom: 0.25rem;
+        }
+
+        .book-info .author {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .book-priority {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .priority-badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 100px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .priority-badge.must {
+            background: #fee2e2;
+            color: #dc2626;
+        }
+
+        .priority-badge.high {
+            background: #fef3c7;
+            color: #d97706;
+        }
+
+        .priority-badge.recommended {
+            background: var(--chem-soft);
+            color: var(--chem-dark);
+        }
+
+        .priority-badge.advanced {
+            background: var(--chem-purple-soft);
+            color: var(--chem-purple);
+        }
+
+        /* Chapter Lists */
+        .chapter-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .chapter-list {
+            background: var(--bg-wash);
+            border-radius: var(--radius-md);
+            padding: 1.25rem;
+        }
+
+        .chapter-list h5 {
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: var(--secondary);
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .chapter-list ul {
+            margin: 0;
+        }
+
+        .chapter-list li {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            padding: 0.375rem 0;
+            padding-left: 1.25rem;
+            position: relative;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .chapter-list li:last-child {
+            border-bottom: none;
+        }
+
+        .chapter-list li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--chem-primary);
+            font-weight: 700;
+            font-size: 0.75rem;
+        }
+
+        .chapter-list li.star::before {
+            content: '★';
+            color: #f59e0b;
+        }
+
+        .chapter-list li.flask::before {
+            content: '⚗️';
+            color: var(--chem-purple);
+        }
+
+        /* Reaction Map */
+        .reaction-map {
+            background: var(--secondary);
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            color: white;
+        }
+
+        .reaction-map h5 {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--chem-amber);
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .reaction-flow {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            align-items: center;
+        }
+
+        .reaction-node {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius-pill);
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        .reaction-arrow {
+            color: var(--chem-amber);
+            font-size: 1.25rem;
+        }
+
+        /* Strategy Cards */
+        .strategy-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .strategy-card {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .strategy-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-md);
+            border-color: var(--chem-primary);
+        }
+
+        .strategy-icon {
+            width: 64px;
+            height: 64px;
+            background: var(--chem-soft);
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.75rem;
+            margin: 0 auto 1rem;
+        }
+
+        .strategy-card h4 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        .strategy-card p {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin: 0;
+            line-height: 1.6;
+        }
+
+        /* Timeline */
+        .timeline {
+            position: relative;
+            margin: 2rem 0;
+            padding-left: 2rem;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(180deg, var(--chem-primary), var(--chem-purple), #0369a1);
+        }
+
+        .timeline-item {
+            position: relative;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            transition: all 0.3s ease;
+        }
+
+        .timeline-item:hover {
+            transform: translateX(8px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -2.35rem;
+            top: 1.75rem;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: white;
+            border: 3px solid;
+        }
+
+        .timeline-item.organic::before {
+            border-color: var(--chem-primary);
+        }
+
+        .timeline-item.inorganic::before {
+            border-color: var(--chem-purple);
+        }
+
+        .timeline-item.physical::before {
+            border-color: #0369a1;
+        }
+
+        .timeline-week {
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.5rem;
+        }
+
+        .timeline-item.organic .timeline-week {
+            color: var(--chem-primary);
+        }
+
+        .timeline-item.inorganic .timeline-week {
+            color: var(--chem-purple);
+        }
+
+        .timeline-item.physical .timeline-week {
+            color: #0369a1;
+        }
+
+        .timeline-item h4 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        .timeline-item p {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin: 0;
+        }
+
+        /* CTA Section */
+        .cta-section {
+            background: linear-gradient(135deg, var(--secondary) 0%, var(--secondary-light) 100%);
+            border-radius: var(--radius-lg);
+            padding: 3rem;
+            margin: 4rem 0;
+            text-align: center;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-section::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at 50% 50%, rgba(220, 38, 38, 0.15) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        .cta-section h3 {
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .cta-section p {
+            color: var(--text-light);
+            margin-bottom: 2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Sidebar */
+        .article-sidebar {
+            position: sticky;
+            top: 100px;
+        }
+
+        .sidebar-card {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .sidebar-card h4 {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--secondary);
+            margin-bottom: 1rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .sidebar-link {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 0;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            border-bottom: 1px solid var(--border);
+            transition: all 0.2s ease;
+        }
+
+        .sidebar-link:last-child {
+            border-bottom: none;
+        }
+
+        .sidebar-link:hover {
+            color: var(--chem-primary);
+            padding-left: 0.5rem;
+        }
+
+        .sidebar-link svg {
+            width: 16px;
+            height: 16px;
+            color: var(--text-light);
+        }
+
+        .sidebar-link:hover svg {
+            color: var(--chem-primary);
+        }
+
+        .sidebar-highlight {
+            background: linear-gradient(135deg, var(--chem-soft), #fff5f5);
+            border: 1px solid var(--chem-light);
+        }
+
+        .sidebar-highlight .price {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--secondary);
+            margin: 0.5rem 0;
+        }
+
+        .sidebar-highlight .price span {
+            font-size: 1rem;
+            font-weight: 500;
+            color: var(--text-muted);
+        }
+
+        /* Reading Progress */
+        .reading-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--chem-primary), var(--chem-purple), #0369a1);
+            z-index: 9999;
+            transition: width 0.1s;
+        }
+
+        /* =========================================
+           RESPONSIVE
+           ========================================= */
+        @media (max-width: 1024px) {
+            .hero-grid {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .book-showcase {
+                order: -1;
+                height: 350px;
+            }
+
+            .hero-stats {
+                justify-content: center;
+            }
+
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .article-sidebar {
+                position: relative;
+                top: 0;
+                order: -1;
+            }
+
+            .chapter-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .strategy-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .branch-tabs {
+                flex-direction: column;
+                border-radius: var(--radius-md);
+            }
+
+            .timeline {
+                padding-left: 1.5rem;
+            }
+
+            .timeline-item::before {
+                left: -1.85rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            header {
+                top: 10px;
+            }
+
+            .nav-container {
+                width: 95%;
+                padding: 0.75rem 1.25rem;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .nav-links {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100vh;
+                background: white;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                gap: 2rem;
+                transform: translateX(100%);
+                transition: transform 0.3s ease;
+                z-index: 999;
+            }
+
+            .nav-links.active {
+                transform: translateX(0);
+            }
+
+            .nav-links a {
+                font-size: 1.5rem;
+            }
+
+            .article-hero {
+                padding: 8rem 0 3rem;
+            }
+
+            .article-hero h1 {
+                font-size: 2rem;
+            }
+
+            .book-detail-card {
+                padding: 1.5rem;
+            }
+
+            .book-header {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .reaction-flow {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .reaction-arrow {
+                transform: rotate(90deg);
+            }
+        }
+
+        /* Utility */
+        .text-gradient {
+            background: linear-gradient(135deg, var(--chem-primary) 0%, var(--chem-purple) 50%, #0369a1 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Reading Progress Bar -->
+    <div class="reading-progress" id="reading-progress"></div>
+
+    <!-- Floating Bubbles -->
+    <div class="bubble bubble-1"></div>
+    <div class="bubble bubble-2"></div>
+    <div class="bubble bubble-3"></div>
+
+    <!-- NAVIGATION -->
+    <header>
+        <div class="nav-container">
+            <a href="../index.html" class="logo">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path
+                        d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z">
+                    </path>
+                </svg>
+                IISER Smart Prep
+            </a>
+
+            <button class="mobile-menu-btn" onclick="toggleMenu()" aria-label="Toggle menu">
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+            </button>
+
+            <nav class="nav-links" id="nav-links">
+                <a href="../index.html">Home</a>
+                <a href="../index.html#features">Features</a>
+                <a href="../index.html#pricing">Pricing</a>
+                <a href="../index.html#faq">FAQ</a>
+                <div class="auth-buttons" style="display: flex; gap: 0.75rem; align-items: center;">
+                    <a href="../login.html" class="btn btn-outline"
+                        style="padding: 0.5rem 1.2rem; font-size: 0.85rem;">Log In</a>
+                    <a href="../login.html?mode=signup" class="btn btn-primary"
+                        style="padding: 0.5rem 1.2rem; font-size: 0.85rem;">Get Started</a>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- HERO SECTION -->
+    <section class="article-hero">
+        <div class="container">
+            <div class="hero-grid fade-in-up">
+                <div>
+                    <div class="article-meta">
+                        <span class="article-badge">Resources</span>
+                        <span class="article-date">Jan 28, 2026</span>
+                    </div>
+                    <h1>Best Books for <span class="text-gradient">Chemistry</span></h1>
+                    <p>Master Organic mechanisms with MS Chauhan, conquer Inorganic with VK Jaiswal, and ace Physical
+                        Chemistry with N Awasthi — the holy trinity for IAT success.</p>
+
+                    <div class="hero-stats">
+                        <div class="hero-stat">
+                            <div class="hero-stat-icon">⚗️</div>
+                            <div class="hero-stat-content">
+                                <h4>3</h4>
+                                <span>Branches</span>
+                            </div>
+                        </div>
+                        <div class="hero-stat">
+                            <div class="hero-stat-icon">🧪</div>
+                            <div class="hero-stat-content">
+                                <h4>300+</h4>
+                                <span>Key Reactions</span>
+                            </div>
+                        </div>
+                        <div class="hero-stat">
+                            <div class="hero-stat-icon">⏱️</div>
+                            <div class="hero-stat-content">
+                                <h4>10-12</h4>
+                                <span>Weeks Complete</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="book-showcase">
+                    <div class="book-card organic">
+                        <div class="book-spine"></div>
+                        <span class="book-badge">Organic</span>
+                        <div class="book-title">Advanced Organic Chemistry</div>
+                        <div class="book-author">M.S. Chauhan</div>
+                    </div>
+                    <div class="book-card inorganic">
+                        <div class="book-spine"></div>
+                        <span class="book-badge">Inorganic</span>
+                        <div class="book-title">Inorganic Chemistry</div>
+                        <div class="book-author">V.K. Jaiswal</div>
+                    </div>
+                    <div class="book-card physical">
+                        <div class="book-spine"></div>
+                        <span class="book-badge">Physical</span>
+                        <div class="book-title">Physical Chemistry</div>
+                        <div class="book-author">N. Awasthi</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ARTICLE CONTENT -->
+    <section class="article-content">
+        <div class="container">
+            <div class="content-grid">
+                <div class="article-main fade-in-up">
+
+                    <div class="section-intro">
+                        <p><strong>IAT Chemistry tests three distinct skills:</strong> Mechanistic thinking (Organic),
+                            factual recall with pattern recognition (Inorganic), and mathematical problem-solving
+                            (Physical). Each branch needs a different book and strategy — master all three for a top
+                            score.</p>
+                    </div>
+
+                    <!-- Branch Selector -->
+                    <h2>The Three Branches of Chemistry</h2>
+                    <p>IAT Chemistry is equally distributed across Organic, Inorganic, and Physical. Neglect any one
+                        branch and you lose 33% of your marks.</p>
+
+                    <div class="branch-tabs">
+                        <button class="branch-tab organic active" onclick="showBranch('organic')">Organic</button>
+                        <button class="branch-tab inorganic" onclick="showBranch('inorganic')">Inorganic</button>
+                        <button class="branch-tab physical" onclick="showBranch('physical')">Physical</button>
+                    </div>
+
+                    <!-- ORGANIC CHEMISTRY -->
+                    <div id="organic-content" class="branch-content">
+                        <h3>Organic Chemistry — The Mechanism Game</h3>
+                        <p>Organic Chemistry is not about memorizing reactions. It's about understanding electron flow,
+                            identifying nucleophiles and electrophiles, and predicting products from first principles.
+                        </p>
+
+                        <div class="book-detail-card organic">
+                            <div class="book-header">
+                                <div class="book-cover-mini ms-chauhan">🧪</div>
+                                <div class="book-info">
+                                    <h4>Advanced Organic Chemistry</h4>
+                                    <div class="author">M.S. Chauhan (Balaji Publications)</div>
+                                    <div class="book-priority">
+                                        <span class="priority-badge must">Most Important</span>
+                                        <span class="priority-badge high">Mechanism Focus</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <h4 style="margin-top: 0;">How to Use MS Chauhan</h4>
+
+                            <div class="strategy-grid" style="margin: 1.5rem 0;">
+                                <div class="strategy-card">
+                                    <div class="strategy-icon" style="background: var(--chem-soft);">📖</div>
+                                    <h4>Level 1: Theory</h4>
+                                    <p>Read mechanism boxes carefully. Draw every curved arrow. Understand WHY, not just
+                                        WHAT.</p>
+                                </div>
+                                <div class="strategy-card">
+                                    <div class="strategy-icon" style="background: var(--chem-soft);">✏️</div>
+                                    <h4>Level 2: Solved Ex</h4>
+                                    <p>Cover solution. Predict product. Check mechanism. Build intuition for electron
+                                        movement.</p>
+                                </div>
+                                <div class="strategy-card">
+                                    <div class="strategy-icon" style="background: var(--chem-soft);">🎯</div>
+                                    <h4>Level 3: Practice</h4>
+                                    <p>Do all MCQs. Time yourself: 2 minutes per problem. Review mistakes with
+                                        mechanism.</p>
+                                </div>
+                            </div>
+
+                            <div class="reaction-map">
+                                <h5>High-Yield Reaction Map</h5>
+                                <div class="reaction-flow">
+                                    <span class="reaction-node">Alkene Reactions</span>
+                                    <span class="reaction-arrow">→</span>
+                                    <span class="reaction-node">Alcohols & Ethers</span>
+                                    <span class="reaction-arrow">→</span>
+                                    <span class="reaction-node">Carbonyl Chemistry</span>
+                                    <span class="reaction-arrow">→</span>
+                                    <span class="reaction-node">Carboxylic Acids</span>
+                                    <span class="reaction-arrow">→</span>
+                                    <span class="reaction-node">Amines & Biomolecules</span>
+                                </div>
+                            </div>
+
+                            <div class="chapter-grid">
+                                <div class="chapter-list">
+                                    <h5>🎯 Priority Chapters</h5>
+                                    <ul>
+                                        <li class="star">GOC (General Organic Chem)</li>
+                                        <li class="star">Hydrocarbons</li>
+                                        <li class="star">Alkyl Halides</li>
+                                        <li class="star">Alcohols, Phenols, Ethers</li>
+                                        <li class="star">Aldehydes & Ketones</li>
+                                        <li class="star">Carboxylic Acids</li>
+                                        <li>Amines</li>
+                                        <li>Biomolecules</li>
+                                    </ul>
+                                </div>
+                                <div class="chapter-list">
+                                    <h5>⚡ Mechanism Masters</h5>
+                                    <ul>
+                                        <li class="star">SN1 vs SN2 (always tested)</li>
+                                        <li class="star">E1 vs E2 elimination</li>
+                                        <li class="star">Nucleophilic addition</li>
+                                        <li class="star">Aldol condensation</li>
+                                        <li class="bolt">Cannizzaro reaction</li>
+                                        <li class="bolt">Hoffmann elimination</li>
+                                        <li>Reimer-Tiemann</li>
+                                        <li>Friedel-Crafts</li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <div
+                                style="margin-top: 1.5rem; padding: 1rem; background: var(--chem-soft); border-radius: var(--radius-md); border-left: 4px solid var(--chem-primary);">
+                                <strong>⚗️ Pro Tip:</strong> Create a "Mechanism Notebook." Draw every mechanism you
+                                encounter without looking at the solution. If you can't draw the curved arrows, you
+                                don't understand the reaction.
+                            </div>
+                        </div>
+
+                        <!-- Morrison & Boyd -->
+                        <div class="book-detail-card organic" style="border-top-color: #059669;">
+                            <div class="book-header">
+                                <div class="book-cover-mini morrison">📗</div>
+                                <div class="book-info">
+                                    <h4>Organic Chemistry (Morrison & Boyd)</h4>
+                                    <div class="author">Robert Morrison & Robert Boyd</div>
+                                    <div class="book-priority">
+                                        <span class="priority-badge recommended">Reference</span>
+                                        <span class="priority-badge advanced">Deep Theory</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <p style="margin-top: 0;">Use Morrison & Boyd only when MS Chauhan's explanation feels
+                                insufficient. Read Chapter 1 (Structure) and Chapter 6 (Stereochemistry) completely —
+                                these build foundational intuition. Skip problem-solving; use only for conceptual
+                                clarity.</p>
+                        </div>
+                    </div>
+
+                    <!-- INORGANIC CHEMISTRY -->
+                    <div id="inorganic-content" class="branch-content" style="display: none;">
+                        <h3>Inorganic Chemistry — The Memory + Pattern Game</h3>
+                        <p>Inorganic seems like pure memorization, but IAT tests patterns: periodic trends, coordination
+                            chemistry logic, and chemical bonding principles. VK Jaiswal teaches you to predict, not
+                            memorize.</p>
+
+                        <div class="book-detail-card inorganic">
+                            <div class="book-header">
+                                <div class="book-cover-mini jaiswal">⚛️</div>
+                                <div class="book-info">
+                                    <h4>Inorganic Chemistry</h4>
+                                    <div class="author">V.K. Jaiswal (Balaji Publications)</div>
+                                    <div class="book-priority">
+                                        <span class="priority-badge must">Essential</span>
+                                        <span class="priority-badge high">Pattern Based</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <h4 style="margin-top: 0;">The Jaiswal Method</h4>
+
+                            <div class="strategy-grid" style="margin: 1.5rem 0;">
+                                <div class="strategy-card">
+                                    <div class="strategy-icon" style="background: var(--chem-purple-soft);">📊</div>
+                                    <h4>Trend Tables</h4>
+                                    <p>Don't memorize values. Understand trends: IE, EA, EN, atomic radius. Draw the
+                                        patterns.</p>
+                                </div>
+                                <div class="strategy-card">
+                                    <div class="strategy-icon" style="background: var(--chem-purple-soft);">🔷</div>
+                                    <h4>Coordination Logic</h4>
+                                    <p>VBT, CFT, and color — master the logic of splitting and pairing energy. Predict
+                                        geometry.</p>
+                                </div>
+                                <div class="strategy-card">
+                                    <div class="strategy-icon" style="background: var(--chem-purple-soft);">📝</div>
+                                    <h4>NCERT Integration</h4>
+                                    <p>Jaiswal + NCERT together. Jaiswal explains; NCERT provides the exact IAT-level
+                                        facts.</p>
+                                </div>
+                            </div>
+
+                            <div class="chapter-grid">
+                                <div class="chapter-list">
+                                    <h5 style="color: var(--chem-purple);">🎯 High-Weightage</h5>
+                                    <ul>
+                                        <li class="star">Chemical Bonding</li>
+                                        <li class="star">Coordination Compounds</li>
+                                        <li class="star">p-Block Elements</li>
+                                        <li class="star">d & f Block Elements</li>
+                                        <li class="flask">Metallurgy</li>
+                                        <li>Environmental Chemistry</li>
+                                    </ul>
+                                </div>
+                                <div class="chapter-list">
+                                    <h5 style="color: var(--chem-purple);">📋 Must Memorize</h5>
+                                    <ul>
+                                        <li class="star">Color of compounds</li>
+                                        <li class="star">Magnetic moments</li>
+                                        <li class="star">Oxidation states</li>
+                                        <li class="flask">Reactivity series</li>
+                                        <li>Flame test colors</li>
+                                        <li>Important ores</li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <div class="formula-box" style="background: var(--chem-purple);">
+                                <h5 style="color: #c4b5fd;">Coordination Chemistry Formula</h5>
+                                <p>CFSE = (-0.4 × n(t2g) + 0.6 × n(eg)) × Δo + (pairing energy
+                                    corrections)<br><br>Master this calculation. IAT always tests whether you understand
+                                    splitting in octahedral vs tetrahedral fields.</p>
+                            </div>
+                        </div>
+
+                        <div
+                            style="margin-top: 1.5rem; padding: 1.5rem; background: var(--chem-purple-soft); border-radius: var(--radius-md);">
+                            <strong style="color: var(--chem-purple);">⚛️ Memory Hack:</strong> Create "color cards" —
+                            flashcards with compound on one side, color/magnetic property on other. Review daily for 10
+                            minutes. Spaced repetition beats cramming.
+                        </div>
+                    </div>
+
+                    <!-- PHYSICAL CHEMISTRY -->
+                    <div id="physical-content" class="branch-content" style="display: none;">
+                        <h3>Physical Chemistry — The Math Branch</h3>
+                        <p>Physical Chemistry is 40% conceptual understanding and 60% problem-solving speed. N Awasthi
+                            provides the graded practice needed to solve IAT-level problems in under 90 seconds.</p>
+
+                        <div class="book-detail-card physical">
+                            <div class="book-header">
+                                <div class="book-cover-mini awasthi">📘</div>
+                                <div class="book-info">
+                                    <h4>Physical Chemistry</h4>
+                                    <div class="author">Narendra Awasthi (Balaji Publications)</div>
+                                    <div class="book-priority">
+                                        <span class="priority-badge must">Problem Solving</span>
+                                        <span class="priority-badge high">Graded Levels</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <h4 style="margin-top: 0;">The Level System</h4>
+                            <p>Awasthi's book is organized in three levels. Don't skip levels — each builds calculation
+                                speed and conceptual depth.</p>
+
+                            <div class="strategy-grid" style="margin: 1.5rem 0;">
+                                <div class="strategy-card">
+                                    <div class="strategy-icon" style="background: #e0f2fe;">🥉</div>
+                                    <h4>Level 1: Basic</h4>
+                                    <p>Formula application. Build accuracy. Target: 3 min/problem. Do ALL problems.</p>
+                                </div>
+                                <div class="strategy-card">
+                                    <div class="strategy-icon" style="background: #e0f2fe;">🥈</div>
+                                    <h4>Level 2: JEE Main</h4>
+                                    <p>IAT-level difficulty. Multi-concept problems. Target: 2 min/problem.</p>
+                                </div>
+                                <div class="strategy-card">
+                                    <div class="strategy-icon" style="background: #e0f2fe;">🥇</div>
+                                    <h4>Level 3: Advanced</h4>
+                                    <p>Skip initially. Return after mocks. For 160+ scorers only.</p>
+                                </div>
+                            </div>
+
+                            <div class="chapter-grid">
+                                <div class="chapter-list">
+                                    <h5 style="color: #0369a1;">🎯 Priority Chapters</h5>
+                                    <ul>
+                                        <li class="star">Mole Concept</li>
+                                        <li class="star">Atomic Structure</li>
+                                        <li class="star">Gaseous State</li>
+                                        <li class="star">Thermodynamics</li>
+                                        <li class="star">Chemical Equilibrium</li>
+                                        <li class="star">Ionic Equilibrium</li>
+                                        <li>Electrochemistry</li>
+                                        <li>Chemical Kinetics</li>
+                                    </ul>
+                                </div>
+                                <div class="chapter-list">
+                                    <h5 style="color: #0369a1;">⚡ Calculation Tips</h5>
+                                    <ul>
+                                        <li class="star">Use approximation</li>
+                                        <li class="star">Master log tables</li>
+                                        <li class="star">Unit conversion speed</li>
+                                        <li class="bolt">Significant figures</li>
+                                        <li>Graph interpretations</li>
+                                        <li>Dimensional analysis</li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <div
+                                style="margin-top: 1.5rem; padding: 1rem; background: #e0f2fe; border-radius: var(--radius-md); border-left: 4px solid #0369a1;">
+                                <strong>🧮 Speed Tip:</strong> Physical Chemistry rewards approximation. If options are
+                                far apart (factor of 2 or more), approximate aggressively. Save exact calculation for
+                                close options only.
+                            </div>
+                        </div>
+
+                        <!-- NCERT for Physical -->
+                        <div class="book-detail-card physical" style="border-top-color: #f59e0b;">
+                            <div class="book-header">
+                                <div class="book-cover-mini ncert">📙</div>
+                                <div class="book-info">
+                                    <h4>NCERT Physical Chemistry</h4>
+                                    <div class="author">NCERT Class 11 & 12</div>
+                                    <div class="book-priority">
+                                        <span class="priority-badge must">Theory Base</span>
+                                        <span class="priority-badge high">Numericals</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <p style="margin-top: 0;">NCERT Physical Chemistry is surprisingly problem-rich. Solve every
+                                "Intext Question" and "Exercise" numerical. The "Additional Exercises" contain IAT-level
+                                problems that most students skip. Don't be most students.</p>
+                        </div>
+                    </div>
+
+                    <!-- Integrated Timeline -->
+                    <h2>The 10-Week Integrated Plan</h2>
+                    <p>Chemistry branches are interconnected. Study them in parallel, not sequentially, to build
+                        cross-branch intuition.</p>
+
+                    <div class="timeline">
+                        <div class="timeline-item organic">
+                            <div class="timeline-week">Weeks 1-3</div>
+                            <h4>Organic Foundation + GOC</h4>
+                            <p>MS Chauhan Level 1 (GOC, Hydrocarbons). Build mechanism intuition. Daily: 5 problems + 2
+                                mechanism drawings.</p>
+                        </div>
+                        <div class="timeline-item inorganic">
+                            <div class="timeline-week">Weeks 2-4</div>
+                            <h4>Inorganic: Bonding + Periodicity</h4>
+                            <p>VK Jaiswal Chemical Bonding + NCERT Periodicity. Create trend tables. Daily: 20 facts
+                                review.</p>
+                        </div>
+                        <div class="timeline-item physical">
+                            <div class="timeline-week">Weeks 3-5</div>
+                            <h4>Physical: Mole + Gaseous + Thermo</h4>
+                            <p>N Awasthi Level 1-2. Focus on calculation speed. Daily: 10 problems with timer.</p>
+                        </div>
+                        <div class="timeline-item organic">
+                            <div class="timeline-week">Weeks 6-7</div>
+                            <h4>Organic: Carbonyl + Carboxylic</h4>
+                            <p>MS Chauhan Level 2. Master nucleophilic addition. Connect to Biomolecules.</p>
+                        </div>
+                        <div class="timeline-item inorganic">
+                            <div class="timeline-week">Weeks 7-8</div>
+                            <h4>Inorganic: Coordination + p-Block</h4>
+                            <p>VK Jaiswal + NCERT. Color compounds, VBT, CFT. Daily flashcard review.</p>
+                        </div>
+                        <div class="timeline-item physical">
+                            <div class="timeline-week">Weeks 8-10</div>
+                            <h4>Physical: Equilibrium + Electrochem</h4>
+                            <p>N Awasthi Level 2 + Previous Year IAT problems. Mock test integration.</p>
+                        </div>
+                    </div>
+
+                    <!-- Final CTA -->
+                    <div class="cta-section">
+                        <h3>Master Chemistry with AI-Powered Practice</h3>
+                        <p>Get branch-wise adaptive tests that identify your weak reactions, formulas, and calculation
+                            patterns.</p>
+                        <div class="cta-buttons">
+                            <a href="../mock_test/chemistry_sectional.html" class="btn btn-primary">
+                                Start Chemistry Sectional
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="9 18 15 12 9 6"></polyline>
+                                </svg>
+                            </a>
+                            <a href="../pyqs/pyq.html?subject=chemistry" class="btn btn-outline"
+                                style="background: white; color: var(--secondary);">
+                                Browse Chemistry PYQs
+                            </a>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- SIDEBAR -->
+                <aside class="article-sidebar fade-in-up">
+                    <!-- Quick Links -->
+                    <div class="sidebar-card">
+                        <h4>Related Resources</h4>
+                        <a href="iat-2026-notification.html" class="sidebar-link">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                <polyline points="14 2 14 8 20 8"></polyline>
+                            </svg>
+                            IAT 2026 Official Notification
+                        </a>
+                        <a href="best-books-physics.html" class="sidebar-link">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                <polyline points="14 2 14 8 20 8"></polyline>
+                            </svg>
+                            Best Books for Physics
+                        </a>
+                        <a href="best-books-biology.html" class="sidebar-link">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                <polyline points="14 2 14 8 20 8"></polyline>
+                            </svg>
+                            Best Books for Biology
+                        </a>
+                        <a href="#" class="sidebar-link">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                <polyline points="14 2 14 8 20 8"></polyline>
+                            </svg>
+                            3-Month Study Plan
+                        </a>
+                    </div>
+
+                    <!-- Reaction Sheet -->
+                    <div class="sidebar-card sidebar-highlight">
+                        <h4>Free Download</h4>
+                        <div style="text-align: center; padding: 1rem 0;">
+                            <div style="font-size: 3rem; margin-bottom: 0.5rem;">🧪</div>
+                            <h5
+                                style="font-size: 1.1rem; font-weight: 700; color: var(--secondary); margin-bottom: 0.5rem;">
+                                Organic Reaction Map</h5>
+                            <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;">300+ reactions
+                                with mechanisms, reagents, and conditions in flowchart format.</p>
+                            <button class="btn btn-primary" style="width: 100%;"
+                                onclick="alert('Reaction map download coming soon!')">
+                                Download PDF
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Daily Reaction -->
+                    <div class="sidebar-card" style="background: var(--secondary); color: white;">
+                        <h4 style="color: white; border-bottom-color: rgba(255,255,255,0.2);">Reaction of the Day</h4>
+                        <div style="padding: 1rem 0; text-align: center;">
+                            <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">⚗️</div>
+                            <p style="font-size: 0.9rem; color: var(--text-light); margin-bottom: 1rem;">One high-yield
+                                organic reaction daily with mechanism video.</p>
+                            <a href="#" class="btn btn-primary"
+                                style="width: 100%; background: var(--chem-primary);">View Today's Reaction</a>
+                        </div>
+                    </div>
+
+                    <!-- Sticky CTA -->
+                    <div class="sidebar-card"
+                        style="background: linear-gradient(135deg, var(--chem-soft), #fff5f5); border-color: var(--chem-light);">
+                        <h4>Chemistry Weak?</h4>
+                        <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 1rem;">Get branch-specific
+                            AI tutoring with personalized reaction sets and formula drills.</p>
+                        <a href="../index.html#pricing" class="btn btn-primary" style="width: 100%;">Start AI Tutor</a>
+                    </div>
+                </aside>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer style="background: white; border-top: 1px solid var(--border); padding: 5rem 0 2rem;">
+        <div class="container">
+            <div
+                style="display: flex; flex-wrap: wrap; gap: 3rem; justify-content: space-between; margin-bottom: 3rem;">
+                <div style="max-width: 320px;">
+                    <a href="../index.html" class="logo" style="margin-bottom: 1rem;">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path
+                                d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z">
+                            </path>
+                        </svg>
+                        IISER Smart Prep
+                    </a>
+                    <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 1rem;">Empowering scientific
+                        minds to reach India's premier research institutes through data and strategy.</p>
+                </div>
+
+                <div style="display: flex; gap: 4rem; flex-wrap: wrap;">
+                    <div>
+                        <h4 style="margin-bottom: 1rem; font-size: 0.9rem; font-weight: 700; color: var(--secondary);">
+                            Platform</h4>
+                        <ul style="display: flex; flex-direction: column; gap: 0.75rem;">
+                            <li><a href="../ai_tutor.html" style="color: var(--text-muted); font-size: 0.9rem;">AI
+                                    Tutor</a></li>
+                            <li><a href="../mock_test/full_mock_test_homepage.html"
+                                    style="color: var(--text-muted); font-size: 0.9rem;">Mock Tests</a></li>
+                            <li><a href="../index.html#pricing"
+                                    style="color: var(--text-muted); font-size: 0.9rem;">Pricing</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 style="margin-bottom: 1rem; font-size: 0.9rem; font-weight: 700; color: var(--secondary);">
+                            Resources</h4>
+                        <ul style="display: flex; flex-direction: column; gap: 0.75rem;">
+                            <li><a href="#" style="color: var(--text-muted); font-size: 0.9rem;">Study Guides</a></li>
+                            <li><a href="../pyqs/pyq.html" style="color: var(--text-muted); font-size: 0.9rem;">Previous
+                                    Year Papers</a></li>
+                            <li><a href="#" style="color: var(--text-muted); font-size: 0.9rem;">Book
+                                    Recommendations</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 style="margin-bottom: 1rem; font-size: 0.9rem; font-weight: 700; color: var(--secondary);">
+                            Support</h4>
+                        <ul style="display: flex; flex-direction: column; gap: 0.75rem;">
+                            <li><a href="../index.html#faq" style="color: var(--text-muted); font-size: 0.9rem;">FAQ</a>
+                            </li>
+                            <li><a href="../contact.html"
+                                    style="color: var(--text-muted); font-size: 0.9rem;">Contact</a></li>
+                            <li><a href="../privacy.html" style="color: var(--text-muted); font-size: 0.9rem;">Privacy
+                                    Policy</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div
+                style="text-align: center; border-top: 1px solid var(--border); padding-top: 2rem; color: var(--text-light); font-size: 0.85rem;">
+                &copy; 2026 IISER Smart Prep. All rights reserved. Not affiliated with IISERs Joint Admissions
+                Committee.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile Menu
+        function toggleMenu() {
+            const navLinks = document.getElementById('nav-links');
+            navLinks.classList.toggle('active');
+            document.body.style.overflow = navLinks.classList.contains('active') ? 'hidden' : 'auto';
+        }
+
+        // Branch Tab Switching
+        function showBranch(branch) {
+            // Hide all content
+            document.querySelectorAll('.branch-content').forEach(el => {
+                el.style.display = 'none';
+            });
+
+            // Remove active class from all tabs
+            document.querySelectorAll('.branch-tab').forEach(el => {
+                el.classList.remove('active');
+            });
+
+            // Show selected content
+            document.getElementById(branch + '-content').style.display = 'block';
+
+            // Add active class to selected tab
+            document.querySelector('.branch-tab.' + branch).classList.add('active');
+        }
+
+        // Scroll Animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: "0px 0px -20px 0px"
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-in-up').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Header Scroll Effect
+        const header = document.querySelector('header');
+        let isScrolled = false;
+        let ticking = false;
+
+        window.addEventListener('scroll', () => {
+            if (!ticking) {
+                window.requestAnimationFrame(() => {
+                    const shouldBeScrolled = window.scrollY > 20;
+                    if (shouldBeScrolled !== isScrolled) {
+                        isScrolled = shouldBeScrolled;
+                        header.classList.toggle('scrolled', isScrolled);
+                    }
+                    ticking = false;
+                });
+                ticking = true;
+            }
+        }, { passive: true });
+
+        // Reading Progress Bar
+        window.addEventListener('scroll', () => {
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            document.getElementById('reading-progress').style.width = scrolled + "%";
+        });
+    </script>
+</body>
+
+</html>

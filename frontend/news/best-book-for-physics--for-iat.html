@@ -1,0 +1,1805 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Best Books for Physics: HC Verma to Irodov | IISER Smart Prep</title>
+    <meta name="description"
+        content="Curated list of must-read Physics books for IAT 2026 — HC Verma, DC Pandey, Irodov with specific chapters and problem-solving strategy.">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <style>
+        /* =========================================
+           ROOT & RESET
+           ========================================= */
+        :root {
+            /* Physics-themed palette: Electric Blue, Deep Navy & Cyan */
+            --phy-primary: #3b82f6;
+            --phy-dark: #1d4ed8;
+            --phy-light: #dbeafe;
+            --phy-soft: #eff6ff;
+            --phy-electric: #06b6d4;
+            --primary: #6366f1;
+            --secondary: #0f172a;
+            --secondary-light: #1e293b;
+            --text-main: #0f172a;
+            --text-muted: #475569;
+            --text-light: #94a3b8;
+            --bg-white: #ffffff;
+            --bg-wash: #f8fafc;
+            --bg-navy: #f0f9ff;
+            --border: #e2e8f0;
+
+            --radius-sm: 12px;
+            --radius-md: 16px;
+            --radius-lg: 24px;
+            --radius-pill: 100px;
+
+            --shadow-xs: 0 1px 2px 0 rgba(0, 0, 0, 0.03);
+            --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.08);
+            --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+            --shadow-glow: 0 0 40px -10px rgba(59, 130, 246, 0.3);
+            --shadow-book: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+
+            --container-width: 1200px;
+            --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            outline: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            font-size: 16px;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            color: var(--text-main);
+            background: var(--bg-wash);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+            transition: all 0.2s ease;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        .container {
+            width: 90%;
+            max-width: var(--container-width);
+            margin: 0 auto;
+        }
+
+        /* Animations */
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0px);
+            }
+
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        @keyframes pulse-glow {
+
+            0%,
+            100% {
+                box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.4);
+            }
+
+            50% {
+                box-shadow: 0 0 20px 10px rgba(59, 130, 246, 0.1);
+            }
+        }
+
+        @keyframes slide-up {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in-up {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s var(--ease-out-expo);
+        }
+
+        .fade-in-up.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* =========================================
+           COMPONENTS
+           ========================================= */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.75rem 1.75rem;
+            border-radius: var(--radius-pill);
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            gap: 0.5rem;
+            letter-spacing: -0.01em;
+            white-space: nowrap;
+            border: none;
+        }
+
+        .btn-primary {
+            background: var(--phy-primary);
+            color: white;
+            box-shadow: 0 4px 6px rgba(59, 130, 246, 0.2);
+        }
+
+        .btn-primary:hover {
+            background: var(--phy-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px -5px rgba(59, 130, 246, 0.4);
+        }
+
+        .btn-secondary {
+            background: var(--secondary);
+            color: white;
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--text-main);
+            border: 1px solid var(--border);
+        }
+
+        .btn-outline:hover {
+            border-color: var(--phy-primary);
+            color: var(--phy-primary);
+            background: var(--phy-soft);
+        }
+
+        .tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.375rem;
+            padding: 0.375rem 0.875rem;
+            background: var(--phy-soft);
+            color: var(--phy-dark);
+            border-radius: var(--radius-pill);
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        /* =========================================
+           NAVIGATION
+           ========================================= */
+        header {
+            position: fixed;
+            top: 20px;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            display: flex;
+            justify-content: center;
+            pointer-events: none;
+            transition: top 0.3s var(--ease-out-expo);
+        }
+
+        header.scrolled {
+            top: 0;
+        }
+
+        .nav-container {
+            pointer-events: auto;
+            background: rgba(255, 255, 255, 0.96);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.08);
+            padding: 0.75rem 1.5rem;
+            border-radius: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 90%;
+            max-width: var(--container-width);
+            transition: all 0.3s var(--ease-out-expo);
+        }
+
+        header.scrolled .nav-container {
+            background: rgba(255, 255, 255, 0.98);
+            box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.1);
+        }
+
+        .logo {
+            font-size: 1.25rem;
+            font-weight: 800;
+            color: var(--secondary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            letter-spacing: -0.02em;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--text-muted);
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 2px;
+            bottom: -4px;
+            left: 0;
+            background-color: var(--phy-primary);
+            transform: scaleX(0);
+            transform-origin: bottom right;
+            transition: transform 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--phy-primary);
+        }
+
+        .nav-links a:hover::after {
+            transform: scaleX(1);
+            transform-origin: bottom left;
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            cursor: pointer;
+            z-index: 1002;
+            padding: 0.5rem;
+        }
+
+        .hamburger-line {
+            display: block;
+            width: 24px;
+            height: 2px;
+            background-color: var(--secondary);
+            margin: 5px 0;
+            transition: all 0.3s ease;
+            border-radius: 2px;
+        }
+
+        /* =========================================
+           HERO SECTION
+           ========================================= */
+        .article-hero {
+            padding: 10rem 0 5rem;
+            background: linear-gradient(180deg, var(--bg-navy) 0%, var(--bg-white) 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .article-hero::before {
+            content: '';
+            position: absolute;
+            top: -30%;
+            right: -10%;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(59, 130, 246, 0.15) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        .article-hero::after {
+            content: '⚛️';
+            position: absolute;
+            top: 20%;
+            right: 10%;
+            font-size: 200px;
+            opacity: 0.05;
+            pointer-events: none;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .hero-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .article-meta {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .article-badge {
+            background: var(--phy-soft);
+            color: var(--phy-dark);
+            padding: 0.375rem 1rem;
+            border-radius: 100px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .article-date {
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+
+        .article-hero h1 {
+            font-size: clamp(2.5rem, 5vw, 3.5rem);
+            font-weight: 800;
+            line-height: 1.1;
+            letter-spacing: -0.03em;
+            margin-bottom: 1.5rem;
+            color: var(--secondary);
+        }
+
+        .article-hero p {
+            font-size: 1.25rem;
+            color: var(--text-muted);
+            line-height: 1.7;
+            margin-bottom: 2rem;
+        }
+
+        .hero-stats {
+            display: flex;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .hero-stat {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .hero-stat-icon {
+            width: 48px;
+            height: 48px;
+            background: white;
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .hero-stat-content h4 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--secondary);
+        }
+
+        .hero-stat-content span {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        /* Book Showcase */
+        .book-showcase {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 400px;
+        }
+
+        .book-card {
+            width: 220px;
+            height: 300px;
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            border-radius: 8px 12px 12px 8px;
+            position: relative;
+            box-shadow: var(--shadow-book);
+            transform: perspective(1000px) rotateY(-15deg);
+            transition: all 0.5s var(--ease-out-expo);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 1.5rem;
+            color: white;
+            border-left: 4px solid var(--phy-primary);
+        }
+
+        .book-card:nth-child(2) {
+            position: absolute;
+            transform: perspective(1000px) rotateY(5deg) translateX(80px) translateZ(-50px);
+            opacity: 0.9;
+            background: linear-gradient(135deg, #0369a1 0%, #075985 100%);
+            border-left-color: var(--phy-electric);
+            z-index: -1;
+        }
+
+        .book-card:nth-child(3) {
+            position: absolute;
+            transform: perspective(1000px) rotateY(15deg) translateX(160px) translateZ(-100px);
+            opacity: 0.8;
+            background: linear-gradient(135deg, #1e40af 0%, #1e3a8a 100%);
+            border-left-color: #f59e0b;
+            z-index: -2;
+        }
+
+        .book-card:hover {
+            transform: perspective(1000px) rotateY(0deg) scale(1.05);
+            z-index: 10;
+        }
+
+        .book-spine {
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 12px;
+            background: linear-gradient(90deg, rgba(255, 255, 255, 0.3), transparent);
+            border-radius: 8px 0 0 8px;
+        }
+
+        .book-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            line-height: 1.3;
+        }
+
+        .book-author {
+            font-size: 0.85rem;
+            opacity: 0.8;
+        }
+
+        .book-badge {
+            align-self: flex-start;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 0.25rem 0.75rem;
+            border-radius: 100px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        /* =========================================
+           CONTENT SECTIONS
+           ========================================= */
+        .article-content {
+            padding: 4rem 0;
+            background: var(--bg-white);
+        }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1fr 320px;
+            gap: 4rem;
+            align-items: start;
+        }
+
+        .article-main {
+            max-width: 100%;
+        }
+
+        .section-intro {
+            background: var(--phy-soft);
+            border-radius: var(--radius-lg);
+            padding: 2rem;
+            margin-bottom: 3rem;
+            border-left: 4px solid var(--phy-primary);
+        }
+
+        .section-intro p {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            line-height: 1.8;
+            margin: 0;
+        }
+
+        .article-main h2 {
+            font-size: 1.875rem;
+            font-weight: 700;
+            color: var(--secondary);
+            margin: 3rem 0 1.5rem;
+            letter-spacing: -0.02em;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .article-main h2::before {
+            content: '';
+            width: 4px;
+            height: 32px;
+            background: var(--phy-primary);
+            border-radius: 2px;
+        }
+
+        .article-main h3 {
+            font-size: 1.375rem;
+            font-weight: 700;
+            color: var(--secondary);
+            margin: 2.5rem 0 1rem;
+        }
+
+        .article-main p {
+            color: var(--text-muted);
+            font-size: 1.05rem;
+            line-height: 1.9;
+            margin-bottom: 1.5rem;
+        }
+
+        .article-main strong {
+            color: var(--secondary);
+            font-weight: 600;
+        }
+
+        /* Book Detail Cards */
+        .book-detail-card {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 2rem;
+            margin: 2rem 0;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .book-detail-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--phy-light);
+        }
+
+        .book-detail-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--phy-primary), var(--phy-electric));
+            border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+        }
+
+        .book-header {
+            display: flex;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .book-cover-mini {
+            width: 80px;
+            height: 110px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            flex-shrink: 0;
+            box-shadow: var(--shadow-md);
+        }
+
+        .book-cover-mini.hcverma {
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+        }
+
+        .book-cover-mini.dcpandey {
+            background: linear-gradient(135deg, #0369a1 0%, #075985 100%);
+        }
+
+        .book-cover-mini.irodov {
+            background: linear-gradient(135deg, #1e40af 0%, #1e3a8a 100%);
+        }
+
+        .book-cover-mini.ncert {
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+        }
+
+        .book-info h4 {
+            font-size: 1.375rem;
+            font-weight: 700;
+            color: var(--secondary);
+            margin-bottom: 0.25rem;
+        }
+
+        .book-info .author {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .book-priority {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .priority-badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 100px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .priority-badge.must {
+            background: #fee2e2;
+            color: #dc2626;
+        }
+
+        .priority-badge.high {
+            background: #fef3c7;
+            color: #d97706;
+        }
+
+        .priority-badge.recommended {
+            background: var(--phy-soft);
+            color: var(--phy-dark);
+        }
+
+        .priority-badge.advanced {
+            background: #e0e7ff;
+            color: #4338ca;
+        }
+
+        /* Chapter Lists */
+        .chapter-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .chapter-list {
+            background: var(--bg-wash);
+            border-radius: var(--radius-md);
+            padding: 1.25rem;
+        }
+
+        .chapter-list h5 {
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: var(--secondary);
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .chapter-list ul {
+            margin: 0;
+        }
+
+        .chapter-list li {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            padding: 0.375rem 0;
+            padding-left: 1.25rem;
+            position: relative;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .chapter-list li:last-child {
+            border-bottom: none;
+        }
+
+        .chapter-list li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--phy-primary);
+            font-weight: 700;
+            font-size: 0.75rem;
+        }
+
+        .chapter-list li.star::before {
+            content: '★';
+            color: #f59e0b;
+        }
+
+        .chapter-list li.bolt::before {
+            content: '⚡';
+            color: var(--phy-electric);
+        }
+
+        /* Strategy Cards */
+        .strategy-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .strategy-card {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .strategy-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-md);
+            border-color: var(--phy-primary);
+        }
+
+        .strategy-icon {
+            width: 64px;
+            height: 64px;
+            background: var(--phy-soft);
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.75rem;
+            margin: 0 auto 1rem;
+        }
+
+        .strategy-card h4 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        .strategy-card p {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin: 0;
+            line-height: 1.6;
+        }
+
+        /* Difficulty Ladder */
+        .difficulty-ladder {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            margin: 2rem 0;
+        }
+
+        .ladder-step {
+            display: flex;
+            align-items: center;
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border);
+            transition: all 0.3s ease;
+        }
+
+        .ladder-step:last-child {
+            border-bottom: none;
+        }
+
+        .ladder-step:hover {
+            background: var(--bg-wash);
+        }
+
+        .ladder-number {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 1.25rem;
+            margin-right: 1.5rem;
+            flex-shrink: 0;
+        }
+
+        .ladder-step:nth-child(1) .ladder-number {
+            background: #dcfce7;
+            color: #16a34a;
+        }
+
+        .ladder-step:nth-child(2) .ladder-number {
+            background: #dbeafe;
+            color: var(--phy-primary);
+        }
+
+        .ladder-step:nth-child(3) .ladder-number {
+            background: #fef3c7;
+            color: #d97706;
+        }
+
+        .ladder-step:nth-child(4) .ladder-number {
+            background: #fee2e2;
+            color: #dc2626;
+        }
+
+        .ladder-content h4 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--secondary);
+            margin-bottom: 0.25rem;
+        }
+
+        .ladder-content p {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin: 0;
+        }
+
+        .ladder-arrow {
+            margin-left: auto;
+            color: var(--text-light);
+            font-size: 1.5rem;
+        }
+
+        /* CTA Section */
+        .cta-section {
+            background: linear-gradient(135deg, var(--secondary) 0%, var(--secondary-light) 100%);
+            border-radius: var(--radius-lg);
+            padding: 3rem;
+            margin: 4rem 0;
+            text-align: center;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-section::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at 50% 50%, rgba(59, 130, 246, 0.15) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        .cta-section h3 {
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .cta-section p {
+            color: var(--text-light);
+            margin-bottom: 2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Sidebar */
+        .article-sidebar {
+            position: sticky;
+            top: 100px;
+        }
+
+        .sidebar-card {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .sidebar-card h4 {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--secondary);
+            margin-bottom: 1rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .sidebar-link {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 0;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            border-bottom: 1px solid var(--border);
+            transition: all 0.2s ease;
+        }
+
+        .sidebar-link:last-child {
+            border-bottom: none;
+        }
+
+        .sidebar-link:hover {
+            color: var(--phy-primary);
+            padding-left: 0.5rem;
+        }
+
+        .sidebar-link svg {
+            width: 16px;
+            height: 16px;
+            color: var(--text-light);
+        }
+
+        .sidebar-link:hover svg {
+            color: var(--phy-primary);
+        }
+
+        .sidebar-highlight {
+            background: linear-gradient(135deg, var(--phy-soft), #f0f9ff);
+            border: 1px solid var(--phy-light);
+        }
+
+        .sidebar-highlight .price {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--secondary);
+            margin: 0.5rem 0;
+        }
+
+        .sidebar-highlight .price span {
+            font-size: 1rem;
+            font-weight: 500;
+            color: var(--text-muted);
+        }
+
+        /* Formula Box */
+        .formula-box {
+            background: var(--secondary);
+            border-radius: var(--radius-md);
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .formula-box::before {
+            content: '∑';
+            position: absolute;
+            top: -20px;
+            right: -10px;
+            font-size: 100px;
+            opacity: 0.1;
+            font-family: serif;
+        }
+
+        .formula-box h5 {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--phy-electric);
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .formula-box p {
+            color: white;
+            margin: 0;
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+
+        /* Reading Progress */
+        .reading-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--phy-primary), var(--phy-electric));
+            z-index: 9999;
+            transition: width 0.1s;
+        }
+
+        /* =========================================
+           RESPONSIVE
+           ========================================= */
+        @media (max-width: 1024px) {
+            .hero-grid {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .book-showcase {
+                order: -1;
+                height: 350px;
+            }
+
+            .hero-stats {
+                justify-content: center;
+            }
+
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .article-sidebar {
+                position: relative;
+                top: 0;
+                order: -1;
+            }
+
+            .chapter-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .strategy-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            header {
+                top: 10px;
+            }
+
+            .nav-container {
+                width: 95%;
+                padding: 0.75rem 1.25rem;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .nav-links {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100vh;
+                background: white;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                gap: 2rem;
+                transform: translateX(100%);
+                transition: transform 0.3s ease;
+                z-index: 999;
+            }
+
+            .nav-links.active {
+                transform: translateX(0);
+            }
+
+            .nav-links a {
+                font-size: 1.5rem;
+            }
+
+            .article-hero {
+                padding: 8rem 0 3rem;
+            }
+
+            .article-hero h1 {
+                font-size: 2rem;
+            }
+
+            .book-detail-card {
+                padding: 1.5rem;
+            }
+
+            .book-header {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .ladder-step {
+                flex-direction: column;
+                text-align: center;
+                gap: 1rem;
+            }
+
+            .ladder-arrow {
+                display: none;
+            }
+        }
+
+        /* Utility */
+        .text-gradient {
+            background: linear-gradient(135deg, var(--phy-primary) 0%, var(--phy-electric) 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+    </style>
+    <base target="_blank">
+</head>
+
+<body>
+
+    <!-- Reading Progress Bar -->
+    <div class="reading-progress" id="reading-progress"></div>
+
+    <!-- NAVIGATION -->
+    <header>
+        <div class="nav-container">
+            <a href="../index.html" class="logo">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path
+                        d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z">
+                    </path>
+                </svg>
+                IISER Smart Prep
+            </a>
+
+            <button class="mobile-menu-btn" onclick="toggleMenu()" aria-label="Toggle menu">
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+            </button>
+
+            <nav class="nav-links" id="nav-links">
+                <a href="../index.html">Home</a>
+                <a href="../index.html#features">Features</a>
+                <a href="../index.html#pricing">Pricing</a>
+                <a href="../index.html#faq">FAQ</a>
+                <div class="auth-buttons" style="display: flex; gap: 0.75rem; align-items: center;">
+                    <a href="../login.html" class="btn btn-outline"
+                        style="padding: 0.5rem 1.2rem; font-size: 0.85rem;">Log In</a>
+                    <a href="../login.html?mode=signup" class="btn btn-primary"
+                        style="padding: 0.5rem 1.2rem; font-size: 0.85rem;">Get Started</a>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- HERO SECTION -->
+    <section class="article-hero">
+        <div class="container">
+            <div class="hero-grid fade-in-up">
+                <div>
+                    <div class="article-meta">
+                        <span class="article-badge">Resources</span>
+                        <span class="article-date">Jan 28, 2026</span>
+                    </div>
+                    <h1>Best Books for <span class="text-gradient">Physics</span></h1>
+                    <p>From HC Verma's conceptual clarity to Irodov's legendary problems—master the complete ladder for
+                        IAT Physics. Includes chapter-wise priority and time-bound strategy.</p>
+
+                    <div class="hero-stats">
+                        <div class="hero-stat">
+                            <div class="hero-stat-icon">⚡</div>
+                            <div class="hero-stat-content">
+                                <h4>4</h4>
+                                <span>Core Books</span>
+                            </div>
+                        </div>
+                        <div class="hero-stat">
+                            <div class="hero-stat-icon">🎯</div>
+                            <div class="hero-stat-content">
+                                <h4>500+</h4>
+                                <span>Key Problems</span>
+                            </div>
+                        </div>
+                        <div class="hero-stat">
+                            <div class="hero-stat-icon">📐</div>
+                            <div class="hero-stat-content">
+                                <h4>8-10</h4>
+                                <span>Weeks to Master</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="book-showcase">
+                    <div class="book-card">
+                        <div class="book-spine"></div>
+                        <span class="book-badge">Foundation</span>
+                        <div class="book-title">Concepts of Physics</div>
+                        <div class="book-author">H.C. Verma</div>
+                    </div>
+                    <div class="book-card">
+                        <div class="book-spine"></div>
+                        <span class="book-badge">Practice</span>
+                        <div class="book-title">Understanding Physics</div>
+                        <div class="book-author">D.C. Pandey</div>
+                    </div>
+                    <div class="book-card">
+                        <div class="book-spine"></div>
+                        <span class="book-badge">Advanced</span>
+                        <div class="book-title">Problems in General Physics</div>
+                        <div class="book-author">I.E. Irodov</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ARTICLE CONTENT -->
+    <section class="article-content">
+        <div class="container">
+            <div class="content-grid">
+                <div class="article-main fade-in-up">
+
+                    <div class="section-intro">
+                        <p><strong>IAT Physics rewards conceptual depth over formula memorization.</strong> The exam
+                            tests your ability to visualize problems, apply first principles, and solve efficiently
+                            under time pressure. This ladder—from NCERT to Irodov—builds exactly those skills.</p>
+                    </div>
+
+                    <!-- The Ladder -->
+                    <h2>The Physics Mastery Ladder</h2>
+                    <p>Don't jump straight to hard problems. Physics requires systematic skill-building. Follow this
+                        sequence:</p>
+
+                    <div class="difficulty-ladder">
+                        <div class="ladder-step">
+                            <div class="ladder-number">1</div>
+                            <div class="ladder-content">
+                                <h4>NCERT + Exemplar</h4>
+                                <p>Build theoretical foundation. Master theory, solved examples, and back exercises.</p>
+                            </div>
+                            <div class="ladder-arrow">→</div>
+                        </div>
+                        <div class="ladder-step">
+                            <div class="ladder-number">2</div>
+                            <div class="ladder-content">
+                                <h4>HC Verma Concepts of Physics</h4>
+                                <p>Develop problem-solving intuition. Focus on Worked Examples and Objective I & II.</p>
+                            </div>
+                            <div class="ladder-arrow">→</div>
+                        </div>
+                        <div class="ladder-step">
+                            <div class="ladder-number">3</div>
+                            <div class="ladder-content">
+                                <h4>D.C. Pandey Understanding Physics</h4>
+                                <p>Practice exam-pattern problems. Build speed and accuracy with MCQ banks.</p>
+                            </div>
+                            <div class="ladder-arrow">→</div>
+                        </div>
+                        <div class="ladder-step">
+                            <div class="ladder-number">4</div>
+                            <div class="ladder-content">
+                                <h4>Irodov (Selective)</h4>
+                                <p>Master challenging problems. Focus on Mechanics, Electrodynamics, and Modern Physics.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- NCERT Section -->
+                    <h2>Step 1: NCERT + Exemplar</h2>
+                    <p>NCERT Physics is surprisingly deep. The "Additional Exercises" and "Exemplar Problems" contain
+                        IAT-level questions that most students ignore.</p>
+
+                    <div class="book-detail-card">
+                        <div class="book-header">
+                            <div class="book-cover-mini ncert">📙</div>
+                            <div class="book-info">
+                                <h4>NCERT Physics (Class 11 & 12)</h4>
+                                <div class="author">NCERT Publications</div>
+                                <div class="book-priority">
+                                    <span class="priority-badge must">Absolute Must</span>
+                                    <span class="priority-badge high">Theory Base</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <h3 style="margin-top: 0;">High-Yield Chapters</h3>
+
+                        <div class="chapter-grid">
+                            <div class="chapter-list">
+                                <h5>⚡ Class 11 (Mechanics Focus)</h5>
+                                <ul>
+                                    <li class="star">Laws of Motion</li>
+                                    <li class="star">Work, Energy & Power</li>
+                                    <li class="star">Rotational Motion</li>
+                                    <li class="bolt">Gravitation</li>
+                                    <li>Units & Measurements</li>
+                                    <li>Kinematics</li>
+                                    <li>Thermodynamics</li>
+                                    <li>Oscillations & Waves</li>
+                                </ul>
+                            </div>
+                            <div class="chapter-list">
+                                <h5>⚡ Class 12 (Elec & Modern)</h5>
+                                <ul>
+                                    <li class="star">Electrostatics</li>
+                                    <li class="star">Current Electricity</li>
+                                    <li class="star">Moving Charges & Magnetism</li>
+                                    <li class="bolt">Electromagnetic Induction</li>
+                                    <li class="bolt">Ray Optics</li>
+                                    <li>Wave Optics</li>
+                                    <li>Dual Nature of Matter</li>
+                                    <li>Atoms & Nuclei</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="formula-box">
+                            <h5>Key Insight</h5>
+                            <p>Solve every "Additional Exercise" problem. These are deliberately tougher and match IAT's
+                                application-based approach. The Exemplar book is a hidden gem—treat it as a separate
+                                practice book.</p>
+                        </div>
+                    </div>
+
+                    <!-- HC Verma Section -->
+                    <h2>Step 2: HC Verma — The Bible</h2>
+                    <p>HC Verma isn't just a book—it's a methodology. The "Concepts of Physics" two-volume set teaches
+                        you how to think like a physicist.</p>
+
+                    <div class="book-detail-card">
+                        <div class="book-header">
+                            <div class="book-cover-mini hcverma">📘</div>
+                            <div class="book-info">
+                                <h4>Concepts of Physics (Vol 1 & 2)</h4>
+                                <div class="author">Prof. H.C. Verma</div>
+                                <div class="book-priority">
+                                    <span class="priority-badge must">Most Important</span>
+                                    <span class="priority-badge high">Concept Building</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <h3 style="margin-top: 0;">How to Use HC Verma</h3>
+
+                        <div class="strategy-grid" style="margin: 1.5rem 0;">
+                            <div class="strategy-card">
+                                <div class="strategy-icon">📖</div>
+                                <h4>Theory Sections</h4>
+                                <p>Read actively. Derive every formula shown. Don't skip the "Wavelength" and "Thought
+                                    Provoking" boxes.</p>
+                            </div>
+                            <div class="strategy-card">
+                                <div class="strategy-icon">✏️</div>
+                                <h4>Worked Examples</h4>
+                                <p>Cover the solution. Attempt first. These 700+ solved problems build your intuition
+                                    better than any theory.</p>
+                            </div>
+                            <div class="strategy-card">
+                                <div class="strategy-icon">🎯</div>
+                                <h4>Objective I & II</h4>
+                                <p>These are IAT-pattern MCQs. Objective II (multiple correct) is especially important
+                                    for concept testing.</p>
+                            </div>
+                        </div>
+
+                        <div class="chapter-grid">
+                            <div class="chapter-list">
+                                <h5>🎯 Vol 1: Mechanics & Thermo</h5>
+                                <ul>
+                                    <li class="star">Ch 7: Circular Motion</li>
+                                    <li class="star">Ch 8: Work & Energy</li>
+                                    <li class="star">Ch 10: Rotational Mechanics</li>
+                                    <li class="bolt">Ch 12: Simple Harmonic Motion</li>
+                                    <li class="bolt">Ch 23: Heat & Temperature</li>
+                                    <li>Ch 3: Rest & Motion</li>
+                                    <li>Ch 5: Newton's Laws</li>
+                                </ul>
+                            </div>
+                            <div class="chapter-list">
+                                <h5>🎯 Vol 2: Elec, Mag & Modern</h5>
+                                <ul>
+                                    <li class="star">Ch 29: Electric Field & Potential</li>
+                                    <li class="star">Ch 30: Gauss's Law</li>
+                                    <li class="star">Ch 34: Magnetic Field</li>
+                                    <li class="bolt">Ch 38: Electromagnetic Induction</li>
+                                    <li class="bolt">Ch 41: Electric Current</li>
+                                    <li>Ch 40: Alternating Current</li>
+                                    <li>Ch 46: Photometry</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div
+                            style="margin-top: 1.5rem; padding: 1rem; background: var(--phy-soft); border-radius: var(--radius-md); border-left: 4px solid var(--phy-primary);">
+                            <strong>⚡ Pro Tip:</strong> Don't solve all numerical problems. Focus on "Exercises"
+                            problems marked with * (star) and all Objective questions. Time is better spent on D.C.
+                            Pandey for practice volume.
+                        </div>
+                    </div>
+
+                    <!-- DC Pandey Section -->
+                    <h2>Step 3: D.C. Pandey — Practice Engine</h2>
+                    <p>Once concepts are clear, you need volume. D.C. Pandey's "Understanding Physics" series provides
+                        exam-pattern practice with graded difficulty.</p>
+
+                    <div class="book-detail-card">
+                        <div class="book-header">
+                            <div class="book-cover-mini dcpandey">📗</div>
+                            <div class="book-info">
+                                <h4>Understanding Physics (5 Volumes)</h4>
+                                <div class="author">D.C. Pandey (Arihant)</div>
+                                <div class="book-priority">
+                                    <span class="priority-badge recommended">High Volume Practice</span>
+                                    <span class="priority-badge high">IAT Pattern</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <h3 style="margin-top: 0;">Volume-wise Strategy</h3>
+
+                        <div class="chapter-grid">
+                            <div class="chapter-list">
+                                <h5>📚 Priority Volumes</h5>
+                                <ul>
+                                    <li class="star">Mechanics Vol 1 & 2</li>
+                                    <li class="star">Electricity & Magnetism</li>
+                                    <li class="bolt">Optics & Modern Physics</li>
+                                    <li>Waves & Thermodynamics</li>
+                                </ul>
+                            </div>
+                            <div class="chapter-list">
+                                <h5>🎯 Section Strategy</h5>
+                                <ul>
+                                    <li class="star">Introductory Exercise (do all)</li>
+                                    <li class="star">AIEEE/IIT-JEE MCQs</li>
+                                    <li class="bolt">Level 1: Speed building</li>
+                                    <li>Level 2: Skip initially</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div
+                            style="margin-top: 1.5rem; padding: 1rem; background: #fef3c7; border-radius: var(--radius-md);">
+                            <strong>⏱️ Time Strategy:</strong> Each "Introductory Exercise" should take 30-45 minutes.
+                            If you're taking longer, your concepts need revision—go back to HC Verma.
+                        </div>
+                    </div>
+
+                    <!-- Irodov Section -->
+                    <h2>Step 4: Irodov — The Ultimate Test</h2>
+                    <p>I.E. Irodov's "Problems in General Physics" is legendary. But be selective—solving all 1800+
+                        problems is overkill and counterproductive for IAT.</p>
+
+                    <div class="book-detail-card">
+                        <div class="book-header">
+                            <div class="book-cover-mini irodov">📕</div>
+                            <div class="book-info">
+                                <h4>Problems in General Physics</h4>
+                                <div class="author">I.E. Irodov</div>
+                                <div class="book-priority">
+                                    <span class="priority-badge advanced">Advanced Only</span>
+                                    <span class="priority-badge recommended">Top 1% Scorers</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <h3 style="margin-top: 0;">Selective Irodov Strategy</h3>
+
+                        <div class="chapter-grid">
+                            <div class="chapter-list">
+                                <h5>🎯 Do These Chapters</h5>
+                                <ul>
+                                    <li class="star">1.2: Kinematics</li>
+                                    <li class="star">1.3: Dynamics</li>
+                                    <li class="star">1.4: Energy & Momentum</li>
+                                    <li class="bolt">2.1: Electrostatics</li>
+                                    <li class="bolt">2.2: DC Circuits</li>
+                                    <li>3.1: Magnetic Field</li>
+                                </ul>
+                            </div>
+                            <div class="chapter-list">
+                                <h5>❌ Skip These</h5>
+                                <ul>
+                                    <li>1.8: Fluid Mechanics (low weight)</li>
+                                    <li>1.9: Relativity (beyond IAT)</li>
+                                    <li>2.4: EM Waves (too theoretical)</li>
+                                    <li>2.5: Radiation (too advanced)</li>
+                                    <li>Most of Part 3 & 4</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="formula-box" style="background: #1e3a8a;">
+                            <h5>The Irodov Mindset</h5>
+                            <p>Each Irodov problem should take 15-20 minutes. If you're stuck for 10 minutes, look at
+                                the first step of the solution, then try again. The goal is learning technique, not
+                                suffering.</p>
+                        </div>
+                    </div>
+
+                    <!-- 8 Week Plan -->
+                    <h2>The 8-Week Physics Mastery Plan</h2>
+
+                    <div class="book-detail-card" style="border-left: 4px solid var(--phy-primary);">
+                        <div style="display: grid; gap: 1.5rem;">
+                            <div style="display: flex; gap: 1rem; align-items: flex-start;">
+                                <div
+                                    style="width: 40px; height: 40px; background: var(--phy-soft); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; color: var(--phy-dark); flex-shrink: 0;">
+                                    1</div>
+                                <div>
+                                    <h4 style="margin: 0 0 0.25rem; font-size: 1.1rem;">Weeks 1-2: NCERT Deep Dive</h4>
+                                    <p style="margin: 0; font-size: 0.9rem; color: var(--text-muted);">Complete theory +
+                                        all Additional Exercises. Solve Exemplar problems for starred chapters.</p>
+                                </div>
+                            </div>
+                            <div style="display: flex; gap: 1rem; align-items: flex-start;">
+                                <div
+                                    style="width: 40px; height: 40px; background: var(--phy-soft); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; color: var(--phy-dark); flex-shrink: 0;">
+                                    2</div>
+                                <div>
+                                    <h4 style="margin: 0 0 0.25rem; font-size: 1.1rem;">Weeks 3-4: HC Verma Concepts
+                                    </h4>
+                                    <p style="margin: 0; font-size: 0.9rem; color: var(--text-muted);">Theory + Worked
+                                        Examples + Objective I & II. Skip lengthy numerical exercises.</p>
+                                </div>
+                            </div>
+                            <div style="display: flex; gap: 1rem; align-items: flex-start;">
+                                <div
+                                    style="width: 40px; height: 40px; background: var(--phy-soft); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; color: var(--phy-dark); flex-shrink: 0;">
+                                    3</div>
+                                <div>
+                                    <h4 style="margin: 0 0 0.25rem; font-size: 1.1rem;">Weeks 5-6: D.C. Pandey Volume
+                                    </h4>
+                                    <p style="margin: 0; font-size: 0.9rem; color: var(--text-muted);">Introductory
+                                        Exercises + AIEEE archives. Build speed: 1 minute per MCQ target.</p>
+                                </div>
+                            </div>
+                            <div style="display: flex; gap: 1rem; align-items: flex-start;">
+                                <div
+                                    style="width: 40px; height: 40px; background: #fef3c7; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; color: #d97706; flex-shrink: 0;">
+                                    4</div>
+                                <div>
+                                    <h4 style="margin: 0 0 0.25rem; font-size: 1.1rem;">Weeks 7-8: Irodov Selective +
+                                        Revision</h4>
+                                    <p style="margin: 0; font-size: 0.9rem; color: var(--text-muted);">2-3 problems
+                                        daily from selected chapters. Weekly full mocks. Revise weak areas.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Final CTA -->
+                    <div class="cta-section">
+                        <h3>Test Your Physics Problem-Solving</h3>
+                        <p>Take our timed Physics sectional with problems curated from HC Verma and Irodov patterns.</p>
+                        <div class="cta-buttons">
+                            <a href="../mock_test/physics_sectional.html" class="btn btn-primary">
+                                Start Physics Sectional
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="9 18 15 12 9 6"></polyline>
+                                </svg>
+                            </a>
+                            <a href="../pyqs/pyq.html?subject=physics" class="btn btn-outline"
+                                style="background: white; color: var(--secondary);">
+                                Browse Physics PYQs
+                            </a>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- SIDEBAR -->
+                <aside class="article-sidebar fade-in-up">
+                    <!-- Quick Links -->
+                    <div class="sidebar-card">
+                        <h4>Related Resources</h4>
+                        <a href="iat-2026-notification.html" class="sidebar-link">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                <polyline points="14 2 14 8 20 8"></polyline>
+                            </svg>
+                            IAT 2026 Official Notification
+                        </a>
+                        <a href="best-books-biology.html" class="sidebar-link">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                <polyline points="14 2 14 8 20 8"></polyline>
+                            </svg>
+                            Best Books for Biology
+                        </a>
+                        <a href="#" class="sidebar-link">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                <polyline points="14 2 14 8 20 8"></polyline>
+                            </svg>
+                            Best Books for Chemistry
+                        </a>
+                        <a href="#" class="sidebar-link">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                <polyline points="14 2 14 8 20 8"></polyline>
+                            </svg>
+                            3-Month Study Plan
+                        </a>
+                    </div>
+
+                    <!-- Formula Sheet -->
+                    <div class="sidebar-card sidebar-highlight">
+                        <h4>Free Download</h4>
+                        <div style="text-align: center; padding: 1rem 0;">
+                            <div style="font-size: 3rem; margin-bottom: 0.5rem;">⚡</div>
+                            <h5
+                                style="font-size: 1.1rem; font-weight: 700; color: var(--secondary); margin-bottom: 0.5rem;">
+                                Physics Formula Sheet</h5>
+                            <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;">200+ essential
+                                formulas organized by chapter with units and dimensions.</p>
+                            <button class="btn btn-primary" style="width: 100%;"
+                                onclick="alert('Formula sheet download coming soon!')">
+                                Download PDF
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Daily Problem -->
+                    <div class="sidebar-card" style="background: var(--secondary); color: white;">
+                        <h4 style="color: white; border-bottom-color: rgba(255,255,255,0.2);">Daily Challenge</h4>
+                        <div style="padding: 1rem 0; text-align: center;">
+                            <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">🏆</div>
+                            <p style="font-size: 0.9rem; color: var(--text-light); margin-bottom: 1rem;">One
+                                Irodov-level problem every day with video solution.</p>
+                            <a href="#" class="btn btn-primary"
+                                style="width: 100%; background: var(--phy-primary);">View Today's Problem</a>
+                        </div>
+                    </div>
+
+                    <!-- Sticky CTA -->
+                    <div class="sidebar-card"
+                        style="background: linear-gradient(135deg, var(--phy-soft), #f0f9ff); border-color: var(--phy-light);">
+                        <h4>Physics Weak?</h4>
+                        <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 1rem;">Get personalized
+                            problem sets based on your weak chapters.</p>
+                        <a href="../index.html#pricing" class="btn btn-primary" style="width: 100%;">Start AI Tutor</a>
+                    </div>
+                </aside>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer style="background: white; border-top: 1px solid var(--border); padding: 5rem 0 2rem;">
+        <div class="container">
+            <div
+                style="display: flex; flex-wrap: wrap; gap: 3rem; justify-content: space-between; margin-bottom: 3rem;">
+                <div style="max-width: 320px;">
+                    <a href="../index.html" class="logo" style="margin-bottom: 1rem;">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path
+                                d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z">
+                            </path>
+                        </svg>
+                        IISER Smart Prep
+                    </a>
+                    <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 1rem;">Empowering scientific
+                        minds to reach India's premier research institutes through data and strategy.</p>
+                </div>
+
+                <div style="display: flex; gap: 4rem; flex-wrap: wrap;">
+                    <div>
+                        <h4 style="margin-bottom: 1rem; font-size: 0.9rem; font-weight: 700; color: var(--secondary);">
+                            Platform</h4>
+                        <ul style="display: flex; flex-direction: column; gap: 0.75rem;">
+                            <li><a href="../ai_tutor.html" style="color: var(--text-muted); font-size: 0.9rem;">AI
+                                    Tutor</a></li>
+                            <li><a href="../mock_test/full_mock_test_homepage.html"
+                                    style="color: var(--text-muted); font-size: 0.9rem;">Mock Tests</a></li>
+                            <li><a href="../index.html#pricing"
+                                    style="color: var(--text-muted); font-size: 0.9rem;">Pricing</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 style="margin-bottom: 1rem; font-size: 0.9rem; font-weight: 700; color: var(--secondary);">
+                            Resources</h4>
+                        <ul style="display: flex; flex-direction: column; gap: 0.75rem;">
+                            <li><a href="#" style="color: var(--text-muted); font-size: 0.9rem;">Study Guides</a></li>
+                            <li><a href="../pyqs/pyq.html" style="color: var(--text-muted); font-size: 0.9rem;">Previous
+                                    Year Papers</a></li>
+                            <li><a href="#" style="color: var(--text-muted); font-size: 0.9rem;">Book
+                                    Recommendations</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 style="margin-bottom: 1rem; font-size: 0.9rem; font-weight: 700; color: var(--secondary);">
+                            Support</h4>
+                        <ul style="display: flex; flex-direction: column; gap: 0.75rem;">
+                            <li><a href="../index.html#faq" style="color: var(--text-muted); font-size: 0.9rem;">FAQ</a>
+                            </li>
+                            <li><a href="../contact.html"
+                                    style="color: var(--text-muted); font-size: 0.9rem;">Contact</a></li>
+                            <li><a href="../privacy.html" style="color: var(--text-muted); font-size: 0.9rem;">Privacy
+                                    Policy</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div
+                style="text-align: center; border-top: 1px solid var(--border); padding-top: 2rem; color: var(--text-light); font-size: 0.85rem;">
+                &copy; 2026 IISER Smart Prep. All rights reserved. Not affiliated with IISERs Joint Admissions
+                Committee.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile Menu
+        function toggleMenu() {
+            const navLinks = document.getElementById('nav-links');
+            navLinks.classList.toggle('active');
+            document.body.style.overflow = navLinks.classList.contains('active') ? 'hidden' : 'auto';
+        }
+
+        // Scroll Animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: "0px 0px -20px 0px"
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-in-up').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Header Scroll Effect
+        const header = document.querySelector('header');
+        let isScrolled = false;
+        let ticking = false;
+
+        window.addEventListener('scroll', () => {
+            if (!ticking) {
+                window.requestAnimationFrame(() => {
+                    const shouldBeScrolled = window.scrollY > 20;
+                    if (shouldBeScrolled !== isScrolled) {
+                        isScrolled = shouldBeScrolled;
+                        header.classList.toggle('scrolled', isScrolled);
+                    }
+                    ticking = false;
+                });
+                ticking = true;
+            }
+        }, { passive: true });
+
+        // Reading Progress Bar
+        window.addEventListener('scroll', () => {
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            document.getElementById('reading-progress').style.width = scrolled + "%";
+        });
+    </script>
+</body>
+
+</html>

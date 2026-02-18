@@ -1,0 +1,2172 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IAT 3-Month Study Planner | Pro Tracker</title>
+    <meta name="description"
+        content="3-month IAT preparation planner with intelligent task scheduling and carry-forward system.">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --primary: #6366f1;
+            --primary-light: #818cf8;
+            --primary-dark: #4f46e5;
+            --primary-soft: #e0e7ff;
+            --accent: #8b5cf6;
+            --success: #22c55e;
+            --success-soft: #dcfce7;
+            --warning: #f59e0b;
+            --warning-soft: #fef3c7;
+            --danger: #ef4444;
+            --danger-soft: #fee2e2;
+            --info: #06b6d4;
+            --info-soft: #ecfeff;
+            --secondary: #0f172a;
+            --secondary-light: #1e293b;
+            --text-main: #0f172a;
+            --text-muted: #475569;
+            --text-light: #94a3b8;
+            --bg-white: #ffffff;
+            --bg-wash: #f8fafc;
+            --bg-cream: #fafaf9;
+            --border: #e2e8f0;
+
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --radius-xl: 24px;
+            --radius-pill: 100px;
+
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+            --shadow-glow: 0 0 20px rgba(99, 102, 241, 0.3);
+
+            --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            color: var(--text-main);
+            background: var(--bg-cream);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Navigation */
+        .nav-pro {
+            background: var(--secondary);
+            color: white;
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo-pro {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-weight: 800;
+            font-size: 1.25rem;
+        }
+
+        .pro-badge {
+            background: linear-gradient(135deg, #f59e0b, #ef4444);
+            padding: 0.25rem 0.75rem;
+            border-radius: var(--radius-pill);
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .nav-stats {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-stat {
+            text-align: center;
+        }
+
+        .nav-stat-value {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--warning);
+        }
+
+        .nav-stat-label {
+            font-size: 0.7rem;
+            color: var(--text-light);
+            text-transform: uppercase;
+        }
+
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            cursor: pointer;
+        }
+
+        .user-avatar {
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.9rem;
+        }
+
+        /* Main Layout */
+        .app-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+            display: grid;
+            grid-template-columns: 280px 1fr 320px;
+            gap: 2rem;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            position: sticky;
+            top: 80px;
+            height: calc(100vh - 100px);
+            overflow-y: auto;
+        }
+
+        .sidebar-section {
+            background: var(--bg-white);
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border);
+        }
+
+        .sidebar-title {
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-light);
+            margin-bottom: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .algorithm-badge {
+            background: var(--info-soft);
+            color: var(--info);
+            padding: 0.25rem 0.5rem;
+            border-radius: var(--radius-pill);
+            font-size: 0.65rem;
+        }
+
+        /* Progress Ring */
+        .progress-ring-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 1rem 0;
+        }
+
+        .progress-ring {
+            position: relative;
+            width: 140px;
+            height: 140px;
+        }
+
+        .progress-ring svg {
+            transform: rotate(-90deg);
+        }
+
+        .progress-ring-bg {
+            fill: none;
+            stroke: var(--bg-wash);
+            stroke-width: 10;
+        }
+
+        .progress-ring-fill {
+            fill: none;
+            stroke: url(#gradient);
+            stroke-width: 10;
+            stroke-linecap: round;
+            transition: stroke-dashoffset 0.8s var(--ease-out-expo);
+        }
+
+        .progress-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+        }
+
+        .progress-percent {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--secondary);
+        }
+
+        .progress-label {
+            font-size: 0.7rem;
+            color: var(--text-light);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .stat-box {
+            text-align: center;
+            padding: 1rem;
+            background: var(--bg-wash);
+            border-radius: var(--radius-md);
+            transition: all 0.2s ease;
+        }
+
+        .stat-box:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--secondary);
+        }
+
+        .stat-value.success {
+            color: var(--success);
+        }
+
+        .stat-value.warning {
+            color: var(--warning);
+        }
+
+        .stat-value.danger {
+            color: var(--danger);
+        }
+
+        .stat-label {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            margin-top: 0.25rem;
+        }
+
+        /* Algorithm Status */
+        .algorithm-status {
+            background: linear-gradient(135deg, var(--secondary-light), var(--secondary));
+            color: white;
+            border-radius: var(--radius-md);
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .algo-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .algo-icon {
+            width: 32px;
+            height: 32px;
+            background: var(--primary);
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+        }
+
+        .algo-title {
+            font-weight: 700;
+            font-size: 0.9rem;
+        }
+
+        .algo-subtitle {
+            font-size: 0.75rem;
+            color: var(--text-light);
+        }
+
+        .algo-metrics {
+            display: flex;
+            gap: 1rem;
+            font-size: 0.75rem;
+        }
+
+        .algo-metric {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+
+        .algo-metric-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--success);
+        }
+
+        /* Phase Navigation */
+        .phase-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .phase-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.875rem;
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: 1px solid transparent;
+        }
+
+        .phase-item:hover {
+            background: var(--bg-wash);
+            border-color: var(--border);
+        }
+
+        .phase-item.active {
+            background: var(--primary-soft);
+            border-color: var(--primary);
+        }
+
+        .phase-item.completed {
+            background: var(--success-soft);
+            border-color: var(--success);
+        }
+
+        .phase-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+            background: var(--bg-wash);
+            font-weight: 700;
+        }
+
+        .phase-item.active .phase-icon {
+            background: var(--primary);
+            color: white;
+        }
+
+        .phase-item.completed .phase-icon {
+            background: var(--success);
+            color: white;
+        }
+
+        .phase-info {
+            flex: 1;
+        }
+
+        .phase-info h4 {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--secondary);
+        }
+
+        .phase-info p {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .phase-status {
+            font-size: 0.75rem;
+            padding: 0.25rem 0.5rem;
+            border-radius: var(--radius-pill);
+            background: var(--bg-wash);
+            color: var(--text-muted);
+        }
+
+        .phase-item.active .phase-status {
+            background: var(--primary);
+            color: white;
+        }
+
+        /* Carry Forward Alert */
+        .carry-forward-alert {
+            background: linear-gradient(135deg, var(--warning-soft), #fffbeb);
+            border: 2px solid var(--warning);
+            border-radius: var(--radius-md);
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .carry-forward-alert .icon {
+            font-size: 1.5rem;
+        }
+
+        .carry-forward-alert .content h4 {
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: var(--secondary);
+            margin-bottom: 0.25rem;
+        }
+
+        .carry-forward-alert .content p {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        /* Main Content */
+        .main-content {
+            background: var(--bg-white);
+            border-radius: var(--radius-xl);
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border);
+            overflow: hidden;
+        }
+
+        .content-header {
+            padding: 2rem;
+            border-bottom: 1px solid var(--border);
+            background: linear-gradient(135deg, var(--bg-white), var(--bg-wash));
+        }
+
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1.5rem;
+        }
+
+        .header-title h1 {
+            font-size: 1.75rem;
+            font-weight: 800;
+            color: var(--secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        .header-subtitle {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        .algorithm-indicator {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            background: var(--info-soft);
+            padding: 0.75rem 1rem;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--info);
+        }
+
+        .algo-pulse {
+            width: 8px;
+            height: 8px;
+            background: var(--info);
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+
+            50% {
+                opacity: 0.5;
+                transform: scale(1.2);
+            }
+        }
+
+        .algo-text {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--info);
+        }
+
+        /* Date Navigation */
+        .date-navigator {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .nav-btn {
+            width: 44px;
+            height: 44px;
+            border: 1px solid var(--border);
+            background: var(--bg-white);
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 1.25rem;
+        }
+
+        .nav-btn:hover {
+            background: var(--primary-soft);
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        .current-date-display {
+            flex: 1;
+            text-align: center;
+        }
+
+        .current-date-display .day-name {
+            font-size: 0.875rem;
+            color: var(--text-light);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .current-date-display .full-date {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--secondary);
+        }
+
+        .today-btn {
+            padding: 0.5rem 1rem;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: var(--radius-pill);
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        /* Calendar Strip */
+        .calendar-strip-container {
+            background: var(--bg-wash);
+            padding: 1.5rem 2rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .calendar-strip {
+            display: flex;
+            gap: 0.75rem;
+            overflow-x: auto;
+            padding-bottom: 0.5rem;
+        }
+
+        .calendar-day {
+            min-width: 70px;
+            padding: 1rem 0.75rem;
+            border-radius: var(--radius-md);
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: 2px solid transparent;
+            background: var(--bg-white);
+        }
+
+        .calendar-day:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .calendar-day.active {
+            background: var(--primary);
+            color: white;
+            box-shadow: var(--shadow-glow);
+        }
+
+        .calendar-day.completed {
+            background: var(--success-soft);
+            border-color: var(--success);
+        }
+
+        .calendar-day.partial {
+            background: var(--warning-soft);
+            border-color: var(--warning);
+        }
+
+        .calendar-day.missed {
+            background: var(--danger-soft);
+            border-color: var(--danger);
+            opacity: 0.7;
+        }
+
+        .calendar-day .day-label {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            margin-bottom: 0.25rem;
+            opacity: 0.8;
+        }
+
+        .calendar-day .day-num {
+            font-size: 1.25rem;
+            font-weight: 700;
+        }
+
+        .calendar-day .task-indicator {
+            display: flex;
+            gap: 2px;
+            justify-content: center;
+            margin-top: 0.5rem;
+        }
+
+        .calendar-day .task-dot {
+            width: 4px;
+            height: 4px;
+            border-radius: 50%;
+            background: currentColor;
+            opacity: 0.5;
+        }
+
+        .calendar-day.completed .task-dot,
+        .calendar-day.active .task-dot {
+            opacity: 1;
+        }
+
+        /* Tasks Section */
+        .tasks-section {
+            padding: 2rem;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .section-title {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .section-title h2 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--secondary);
+        }
+
+        .task-count {
+            background: var(--bg-wash);
+            padding: 0.25rem 0.75rem;
+            border-radius: var(--radius-pill);
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .submit-all-btn {
+            padding: 0.5rem 1.25rem;
+            background: var(--success);
+            color: white;
+            border: none;
+            border-radius: var(--radius-md);
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .submit-all-btn:hover {
+            background: #16a34a;
+        }
+
+        /* Subject Sections */
+        .subject-container {
+            margin-bottom: 2rem;
+        }
+
+        .subject-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            padding: 1rem;
+            background: var(--bg-wash);
+            border-radius: var(--radius-md);
+            border-left: 4px solid transparent;
+        }
+
+        .subject-header.phy {
+            border-left-color: #3b82f6;
+        }
+
+        .subject-header.chem {
+            border-left-color: #ef4444;
+        }
+
+        .subject-header.math {
+            border-left-color: #f59e0b;
+        }
+
+        .subject-header.bio {
+            border-left-color: #22c55e;
+        }
+
+        .subject-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            background: white;
+        }
+
+        .subject-header.phy .subject-icon {
+            background: #dbeafe;
+        }
+
+        .subject-header.chem .subject-icon {
+            background: #fee2e2;
+        }
+
+        .subject-header.math .subject-icon {
+            background: #fef3c7;
+        }
+
+        .subject-header.bio .subject-icon {
+            background: #dcfce7;
+        }
+
+        .subject-info {
+            flex: 1;
+        }
+
+        .subject-info h3 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--secondary);
+            margin-bottom: 0.25rem;
+        }
+
+        .subject-meta {
+            display: flex;
+            gap: 1rem;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .subject-progress-bar {
+            width: 120px;
+            height: 6px;
+            background: var(--bg-white);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .subject-progress-fill {
+            height: 100%;
+            border-radius: 3px;
+            transition: width 0.5s ease;
+        }
+
+        .subject-header.phy .subject-progress-fill {
+            background: #3b82f6;
+        }
+
+        .subject-header.chem .subject-progress-fill {
+            background: #ef4444;
+        }
+
+        .subject-header.math .subject-progress-fill {
+            background: #f59e0b;
+        }
+
+        .subject-header.bio .subject-progress-fill {
+            background: #22c55e;
+        }
+
+        /* Task Items */
+        .task-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .task-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            padding: 1.25rem;
+            background: var(--bg-white);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            transition: all 0.2s ease;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .task-item:hover {
+            border-color: var(--primary-light);
+            box-shadow: var(--shadow-md);
+            transform: translateX(4px);
+        }
+
+        .task-item.completed {
+            background: var(--success-soft);
+            border-color: var(--success);
+            opacity: 0.85;
+        }
+
+        .task-item.completed .task-content {
+            text-decoration: line-through;
+            opacity: 0.7;
+        }
+
+        .task-item.carry-forward {
+            background: var(--warning-soft);
+            border: 2px dashed var(--warning);
+        }
+
+        .task-priority-indicator {
+            width: 4px;
+            height: 100%;
+            position: absolute;
+            left: 0;
+            top: 0;
+            border-radius: var(--radius-md) 0 0 var(--radius-md);
+        }
+
+        .task-priority-indicator.high {
+            background: var(--danger);
+        }
+
+        .task-priority-indicator.medium {
+            background: var(--warning);
+        }
+
+        .task-priority-indicator.low {
+            background: var(--primary);
+        }
+
+        .task-checkbox {
+            width: 24px;
+            height: 24px;
+            border: 2px solid var(--border);
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            margin-top: 0.125rem;
+            transition: all 0.2s ease;
+            background: white;
+        }
+
+        .task-item:hover .task-checkbox {
+            border-color: var(--primary);
+        }
+
+        .task-item.completed .task-checkbox {
+            background: var(--success);
+            border-color: var(--success);
+            color: white;
+        }
+
+        .task-content {
+            flex: 1;
+        }
+
+        .task-title {
+            font-weight: 600;
+            color: var(--secondary);
+            margin-bottom: 0.375rem;
+            font-size: 1rem;
+        }
+
+        .task-description {
+            font-size: 0.875rem;
+            color: var(--text-muted);
+            line-height: 1.5;
+            margin-bottom: 0.75rem;
+        }
+
+        .task-footer {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .task-tag {
+            display: flex;
+            align-items: center;
+            gap: 0.375rem;
+            padding: 0.25rem 0.625rem;
+            background: var(--bg-wash);
+            border-radius: var(--radius-pill);
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .task-tag svg {
+            width: 12px;
+            height: 12px;
+        }
+
+        .task-tag.priority-high {
+            background: var(--danger-soft);
+            color: var(--danger);
+        }
+
+        .task-tag.priority-medium {
+            background: var(--warning-soft);
+            color: var(--warning);
+        }
+
+        .task-tag.priority-low {
+            background: var(--primary-soft);
+            color: var(--primary);
+        }
+
+        .task-tag.carry-forward {
+            background: var(--warning-soft);
+            color: var(--warning);
+            font-weight: 600;
+        }
+
+        .task-tag.syllabus-order {
+            background: var(--info-soft);
+            color: var(--info);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 3rem;
+            color: var(--text-muted);
+        }
+
+        /* Right Panel */
+        .right-panel {
+            position: sticky;
+            top: 80px;
+            height: calc(100vh - 100px);
+            overflow-y: auto;
+        }
+
+        /* Syllabus Progress */
+        .syllabus-progress {
+            background: var(--bg-white);
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border);
+        }
+
+        .syllabus-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .syllabus-item:last-child {
+            border-bottom: none;
+        }
+
+        .syllabus-check {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+        }
+
+        .syllabus-check.completed {
+            background: var(--success);
+            color: white;
+        }
+
+        .syllabus-check.pending {
+            background: var(--bg-wash);
+            border: 2px solid var(--border);
+        }
+
+        .syllabus-check.current {
+            background: var(--primary);
+            color: white;
+        }
+
+        .syllabus-info {
+            flex: 1;
+        }
+
+        .syllabus-info h4 {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--secondary);
+        }
+
+        .syllabus-info p {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        /* Algorithm Log */
+        .algo-log {
+            background: var(--secondary);
+            color: white;
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .algo-log-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+        }
+
+        .algo-log-icon {
+            width: 36px;
+            height: 36px;
+            background: var(--primary);
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .algo-log-title {
+            font-weight: 700;
+        }
+
+        .algo-log-subtitle {
+            font-size: 0.75rem;
+            color: var(--text-light);
+        }
+
+        .log-entry {
+            padding: 0.75rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: var(--radius-md);
+            margin-bottom: 0.5rem;
+            font-size: 0.8rem;
+            border-left: 3px solid var(--primary);
+        }
+
+        .log-entry.success {
+            border-left-color: var(--success);
+        }
+
+        .log-entry.warning {
+            border-left-color: var(--warning);
+        }
+
+        .log-time {
+            font-size: 0.7rem;
+            color: var(--text-light);
+            margin-bottom: 0.25rem;
+        }
+
+        /* Weekly Stats */
+        .weekly-stats {
+            background: var(--bg-white);
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border);
+        }
+
+        .stat-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .stat-row:last-child {
+            border-bottom: none;
+        }
+
+        .stat-label-sm {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .stat-value-sm {
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: var(--secondary);
+        }
+
+        /* Responsive */
+        @media (max-width: 1200px) {
+            .app-container {
+                grid-template-columns: 1fr;
+            }
+
+            .sidebar,
+            .right-panel {
+                position: relative;
+                top: 0;
+                height: auto;
+            }
+
+            .sidebar {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+                gap: 1rem;
+            }
+
+            .sidebar-section {
+                margin-bottom: 0;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-container {
+                padding: 0 1rem;
+            }
+
+            .nav-stats {
+                display: none;
+            }
+
+            .app-container {
+                padding: 1rem;
+            }
+
+            .content-header {
+                padding: 1.5rem;
+            }
+
+            .header-top {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .tasks-section {
+                padding: 1rem;
+            }
+
+            .task-item {
+                padding: 1rem;
+            }
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-wash);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--text-light);
+            border-radius: 3px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <nav class="nav-pro">
+        <div class="nav-container">
+            <div class="logo-pro">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path
+                        d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z">
+                    </path>
+                </svg>
+                IISER Smart Prep
+                <span class="pro-badge">Pro</span>
+            </div>
+            <div class="nav-stats">
+                <div class="nav-stat">
+                    <div class="nav-stat-value" id="nav-day">1</div>
+                    <div class="nav-stat-label">Day</div>
+                </div>
+                <div class="nav-stat">
+                    <div class="nav-stat-value" id="nav-streak">0</div>
+                    <div class="nav-stat-label">Streak</div>
+                </div>
+                <div class="nav-stat">
+                    <div class="nav-stat-value" id="nav-pending">0</div>
+                    <div class="nav-stat-label">Carry</div>
+                </div>
+            </div>
+            <div class="user-menu">
+                <span>Student</span>
+                <div class="user-avatar">S</div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main App -->
+    <div class="app-container">
+        <!-- Left Sidebar -->
+        <aside class="sidebar">
+            <!-- Algorithm Status -->
+            <div class="algorithm-status">
+                <div class="algo-header">
+                    <div class="algo-icon">⚡</div>
+                    <div>
+                        <div class="algo-title">Smart Scheduler Active</div>
+                        <div class="algo-subtitle">Syllabus-based task generation</div>
+                    </div>
+                </div>
+                <div class="algo-metrics">
+                    <div class="algo-metric">
+                        <div class="algo-metric-dot"></div>
+                        <span>Carry-Forward: ON</span>
+                    </div>
+                    <div class="algo-metric">
+                        <div class="algo-metric-dot" style="background: var(--warning);"></div>
+                        <span>Syllabus Order: Active</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Overall Progress -->
+            <div class="sidebar-section">
+                <div class="sidebar-title">
+                    3-Month Progress
+                    <span class="algorithm-badge">Day <span id="current-day-num">1</span>/90</span>
+                </div>
+                <div class="progress-ring-container">
+                    <div class="progress-ring">
+                        <svg width="140" height="140">
+                            <defs>
+                                <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                                    <stop offset="0%" stop-color="#6366f1" />
+                                    <stop offset="100%" stop-color="#06b6d4" />
+                                </linearGradient>
+                            </defs>
+                            <circle class="progress-ring-bg" cx="70" cy="70" r="60"></circle>
+                            <circle class="progress-ring-fill" cx="70" cy="70" r="60" stroke-dasharray="376.99"
+                                stroke-dashoffset="376.99" id="progress-circle"></circle>
+                        </svg>
+                        <div class="progress-text">
+                            <div class="progress-percent" id="progress-text">0%</div>
+                            <div class="progress-label">Completed</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="stats-grid">
+                    <div class="stat-box">
+                        <div class="stat-value success" id="stat-completed">0</div>
+                        <div class="stat-label">Tasks Done</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-value warning" id="stat-carry">0</div>
+                        <div class="stat-label">Carry Forward</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-value" id="stat-hours">0</div>
+                        <div class="stat-label">Study Hours</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-value danger" id="stat-mocks">0</div>
+                        <div class="stat-label">Mocks Done</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Study Phases -->
+            <div class="sidebar-section">
+                <div class="sidebar-title">Study Phases</div>
+                <div class="phase-list" id="phase-list">
+                    <div class="phase-item active">
+                        <div class="phase-icon">1</div>
+                        <div class="phase-info">
+                            <h4>Foundation Phase</h4>
+                            <p>Days 1-30 • In Progress</p>
+                        </div>
+                        <div class="phase-status">Day 1</div>
+                    </div>
+                    <div class="phase-item">
+                        <div class="phase-icon">2</div>
+                        <div class="phase-info">
+                            <h4>Acceleration Phase</h4>
+                            <p>Days 31-60 • Upcoming</p>
+                        </div>
+                        <div class="phase-status">Pending</div>
+                    </div>
+                    <div class="phase-item">
+                        <div class="phase-icon">3</div>
+                        <div class="phase-info">
+                            <h4>Revision & Mastery</h4>
+                            <p>Days 61-85 • Upcoming</p>
+                        </div>
+                        <div class="phase-status">Pending</div>
+                    </div>
+                    <div class="phase-item">
+                        <div class="phase-icon">🏁</div>
+                        <div class="phase-info">
+                            <h4>Final Sprint</h4>
+                            <p>Days 86-90 • Exam Week</p>
+                        </div>
+                        <div class="phase-status">Pending</div>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Header -->
+            <div class="content-header">
+                <div class="header-top">
+                    <div class="header-title">
+                        <h1 id="greeting">Day 1 - Today's Mission</h1>
+                        <div class="header-subtitle">Tasks auto-generated based on syllabus progression</div>
+                    </div>
+                    <div class="algorithm-indicator">
+                        <div class="algo-pulse"></div>
+                        <div class="algo-text">Smart Code Running</div>
+                    </div>
+                </div>
+                <div class="date-navigator">
+                    <button class="nav-btn" onclick="changeDate(-1)">←</button>
+                    <div class="current-date-display">
+                        <div class="day-name" id="current-day">Day 1 of 90</div>
+                        <div class="full-date" id="current-full-date">--</div>
+                    </div>
+                    <button class="nav-btn" onclick="changeDate(1)">→</button>
+                    <button class="today-btn" onclick="goToToday()">Today</button>
+                </div>
+            </div>
+
+            <!-- Calendar Strip -->
+            <div class="calendar-strip-container">
+                <div class="calendar-strip" id="calendar-strip">
+                    <!-- Generated by JS -->
+                </div>
+            </div>
+
+            <!-- Carry Forward Alert -->
+            <div id="carry-forward-alert" style="display: none;">
+                <!-- Shown if carry-forward tasks exist -->
+            </div>
+
+            <!-- Tasks Section -->
+            <div class="tasks-section" id="tasks-container">
+                <!-- Generated by JS -->
+            </div>
+        </main>
+
+        <!-- Right Panel -->
+        <aside class="right-panel">
+            <!-- Syllabus Progress -->
+            <div class="syllabus-progress">
+                <div class="sidebar-title">Syllabus Coverage</div>
+                <div id="syllabus-list">
+                    <!-- Generated by JS -->
+                </div>
+            </div>
+
+            <!-- Algorithm Log -->
+            <div class="algo-log">
+                <div class="algo-log-header">
+                    <div class="algo-log-icon">📊</div>
+                    <div>
+                        <div class="algo-log-title">Today's Logic</div>
+                        <div class="algo-log-subtitle">How tasks were assigned</div>
+                    </div>
+                </div>
+                <div id="algorithm-log">
+                    <!-- Generated by JS -->
+                </div>
+            </div>
+
+            <!-- Weekly Stats -->
+            <div class="weekly-stats">
+                <div class="sidebar-title">This Week</div>
+                <div class="stat-row">
+                    <span class="stat-label-sm">Tasks Assigned</span>
+                    <span class="stat-value-sm" id="week-assigned">0</span>
+                </div>
+                <div class="stat-row">
+                    <span class="stat-label-sm">Tasks Completed</span>
+                    <span class="stat-value-sm" id="week-completed">0</span>
+                </div>
+                <div class="stat-row">
+                    <span class="stat-label-sm">Carry Forward</span>
+                    <span class="stat-value-sm" id="week-carry" style="color: var(--warning);">0</span>
+                </div>
+                <div class="stat-row">
+                    <span class="stat-label-sm">Completion Rate</span>
+                    <span class="stat-value-sm" id="week-rate">0%</span>
+                </div>
+            </div>
+        </aside>
+    </div>
+
+    <script>
+        // ==========================================
+        // 3-MONTH IAT STUDY PLANNER ENGINE
+        // NO AI - PURE ALGORITHMIC LOGIC
+        // ==========================================
+
+        const StudyPlanner = {
+            // 90-Day Structured Curriculum (Syllabus Order)
+            curriculum: generateCurriculum(),
+
+            // User State - starts fresh for each user
+            state: {
+                currentDay: 1,
+                startDate: null, // Will be set on first use
+                completedTasks: new Set(),
+                taskHistory: {}, // dayNumber -> tasks
+                carryForwardTasks: [], // tasks from previous days
+                stats: {
+                    totalTasksDone: 0,
+                    totalHours: 0,
+                    mocksDone: 0,
+                    streak: 0,
+                    lastCompletedDate: null
+                }
+            },
+
+            // Initialize
+            init() {
+                this.loadState();
+
+                // If no start date, this is first time - initialize
+                if (!this.state.startDate) {
+                    this.state.startDate = new Date().toISOString();
+                    this.state.currentDay = 1;
+                    this.saveState();
+                }
+
+                this.generateDayTasks(this.state.currentDay);
+                this.render();
+            },
+
+            // Generate 90-day curriculum in syllabus order
+            generateDayPlan(dayNumber) {
+                const plan = this.curriculum[dayNumber];
+                if (!plan) return null;
+
+                const tasks = [];
+
+                // 1. CARRY FORWARD TASKS (from previous incomplete days)
+                const carryTasks = this.getCarryForwardTasks(dayNumber);
+                tasks.push(...carryTasks.map(t => ({
+                    ...t,
+                    isCarryForward: true,
+                    originalDay: t.day
+                })));
+
+                // 2. MAIN STUDY TASK (based on syllabus progression)
+                tasks.push({
+                    id: `day${dayNumber}_study`,
+                    type: 'study',
+                    subject: plan.subject,
+                    title: `Study: ${plan.topic}`,
+                    description: `Read NCERT ${plan.chapter} - ${plan.topic}. Make notes of key formulas and concepts.`,
+                    estimatedTime: 90,
+                    priority: 'high',
+                    isSyllabusOrder: true
+                });
+
+                // 3. PRACTICE TASK (PYQ or Practice Set)
+                const practiceId = Math.ceil(dayNumber / 3);
+                tasks.push({
+                    id: `day${dayNumber}_practice`,
+                    type: 'practice',
+                    subject: plan.subject,
+                    title: `Practice Set: ${plan.subject} - ${plan.topic}`,
+                    description: `Complete Practice Set ${practiceId} and PYQ Set ${practiceId} for ${plan.topic}`,
+                    estimatedTime: 60,
+                    priority: 'high',
+                    isSyllabusOrder: true
+                });
+
+                // 4. MOCK TEST (every 6th day)
+                if (dayNumber % 6 === 0) {
+                    const mockId = Math.floor(dayNumber / 6);
+                    tasks.push({
+                        id: `day${dayNumber}_mock`,
+                        type: 'mock',
+                        subject: 'mixed',
+                        title: `Mock Test ${mockId}`,
+                        description: `Full-length 3-hour mock test covering all subjects studied so far.`,
+                        estimatedTime: 180,
+                        priority: 'high',
+                        isSyllabusOrder: true
+                    });
+                }
+
+                // 5. REVISION TASK (spaced repetition)
+                const revisionDays = [3, 7, 14, 30];
+                for (const revDay of revisionDays) {
+                    if (dayNumber > revDay) {
+                        const revPlan = this.curriculum[dayNumber - revDay];
+                        if (revPlan && Math.random() > 0.5) { // 50% chance
+                            tasks.push({
+                                id: `day${dayNumber}_rev_${revDay}`,
+                                type: 'revision',
+                                subject: revPlan.subject,
+                                title: `Revision: ${revPlan.topic}`,
+                                description: `Quick revision of Day ${dayNumber - revDay}: ${revPlan.topic}. Review formulas and solve 5 MCQs.`,
+                                estimatedTime: 30,
+                                priority: 'medium',
+                                isSyllabusOrder: true
+                            });
+                            break; // Only one revision task per day
+                        }
+                    }
+                }
+
+                return tasks;
+            },
+
+            // Get incomplete tasks from previous days (Carry Forward Logic)
+            getCarryForwardTasks(currentDay) {
+                const carryTasks = [];
+
+                // Check last 3 days for incomplete tasks
+                for (let d = Math.max(1, currentDay - 3); d < currentDay; d++) {
+                    const dayTasks = this.state.taskHistory[d] || [];
+                    const incomplete = dayTasks.filter(t =>
+                        !this.state.completedTasks.has(t.id) &&
+                        !t.isCarryForward // Don't carry forward already carried tasks
+                    );
+
+                    // Add up to 2 tasks per previous day
+                    carryTasks.push(...incomplete.slice(0, 2).map(t => ({
+                        ...t,
+                        id: `${t.id}_carry_${currentDay}`,
+                        priority: 'high', // Elevate priority
+                        description: `[CARRY FROM DAY ${d}] ${t.description}`
+                    })));
+                }
+
+                return carryTasks.slice(0, 3); // Max 3 carry-forward tasks
+            },
+
+            // Generate or retrieve tasks for a day
+            generateDayTasks(dayNumber) {
+                if (!this.state.taskHistory[dayNumber]) {
+                    this.state.taskHistory[dayNumber] = this.generateDayPlan(dayNumber);
+                }
+                return this.state.taskHistory[dayNumber];
+            },
+
+            // Toggle task completion
+            toggleTask(taskId) {
+                if (this.state.completedTasks.has(taskId)) {
+                    this.state.completedTasks.delete(taskId);
+                    this.state.stats.totalTasksDone--;
+                } else {
+                    this.state.completedTasks.add(taskId);
+                    this.state.stats.totalTasksDone++;
+
+                    // Check if all tasks completed for streak
+                    this.checkStreak();
+                }
+                this.saveState();
+                this.render();
+            },
+
+            // Check and update streak
+            checkStreak() {
+                const todayTasks = this.state.taskHistory[this.state.currentDay] || [];
+                const allCompleted = todayTasks.every(t =>
+                    this.state.completedTasks.has(t.id)
+                );
+
+                if (allCompleted && todayTasks.length > 0) {
+                    this.state.stats.streak++;
+                }
+            },
+
+            // Submit all tasks for the day
+            submitDay() {
+                const tasks = this.state.taskHistory[this.state.currentDay] || [];
+                let completed = 0;
+
+                tasks.forEach(task => {
+                    if (!this.state.completedTasks.has(task.id)) {
+                        this.state.completedTasks.add(task.id);
+                        completed++;
+                    }
+                });
+
+                this.state.stats.totalTasksDone += completed;
+                this.checkStreak();
+                this.saveState();
+
+                // Move to next day
+                alert(`Day ${this.state.currentDay} submitted! ${completed} tasks completed.`);
+                this.changeDate(1);
+            },
+
+            // Change date
+            changeDate(delta) {
+                const newDay = this.state.currentDay + delta;
+                if (newDay < 1 || newDay > 90) return;
+
+                this.state.currentDay = newDay;
+                this.generateDayTasks(newDay);
+                this.render();
+            },
+
+            // Get current date based on start date and current day
+            getCurrentDate() {
+                const start = new Date(this.state.startDate);
+                const current = new Date(start);
+                current.setDate(start.getDate() + (this.state.currentDay - 1));
+                return current;
+            },
+
+            // Render everything
+            render() {
+                this.renderCalendar();
+                this.renderTasks();
+                this.renderSyllabus();
+                this.renderAlgorithmLog();
+                this.updateStats();
+            },
+
+            renderCalendar() {
+                const strip = document.getElementById('calendar-strip');
+                const days = [];
+                const currentDate = this.getCurrentDate();
+
+                for (let i = -3; i <= 3; i++) {
+                    const dayNum = this.state.currentDay + i;
+                    if (dayNum < 1 || dayNum > 90) continue;
+
+                    const date = new Date(currentDate);
+                    date.setDate(date.getDate() + i);
+
+                    const tasks = this.state.taskHistory[dayNum] || [];
+                    const completed = tasks.filter(t =>
+                        this.state.completedTasks.has(t.id)
+                    ).length;
+
+                    let status = '';
+                    if (i === 0) status = 'active';
+                    else if (tasks.length > 0 && completed === tasks.length) status = 'completed';
+                    else if (completed > 0) status = 'partial';
+                    else if (i < 0) status = 'missed';
+
+                    days.push(`
+                        <div class="calendar-day ${status}" onclick="planner.jumpToDay(${dayNum})">
+                            <div class="day-label">Day</div>
+                            <div class="day-num">${dayNum}</div>
+                            <div class="task-indicator">
+                                ${Array(3).fill(0).map((_, i) =>
+                        `<div class="task-dot" style="opacity: ${i < completed ? 1 : 0.3}"></div>`
+                    ).join('')}
+                            </div>
+                        </div>
+                    `);
+                }
+
+                strip.innerHTML = days.join('');
+            },
+
+            renderTasks() {
+                const container = document.getElementById('tasks-container');
+                const dayNum = this.state.currentDay;
+                const tasks = this.state.taskHistory[dayNum] || [];
+
+                // Group by type
+                const grouped = {
+                    carry: tasks.filter(t => t.isCarryForward),
+                    study: tasks.filter(t => t.type === 'study'),
+                    practice: tasks.filter(t => t.type === 'practice'),
+                    mock: tasks.filter(t => t.type === 'mock'),
+                    revision: tasks.filter(t => t.type === 'revision')
+                };
+
+                const completedCount = tasks.filter(t =>
+                    this.state.completedTasks.has(t.id)
+                ).length;
+
+                // Show carry-forward alert if exists
+                const alertDiv = document.getElementById('carry-forward-alert');
+                if (grouped.carry.length > 0) {
+                    alertDiv.style.display = 'block';
+                    alertDiv.innerHTML = `
+                        <div class="carry-forward-alert">
+                            <div class="icon">⚠️</div>
+                            <div class="content">
+                                <h4>${grouped.carry.length} Task${grouped.carry.length > 1 ? 's' : ''} from Previous Day${grouped.carry.length > 1 ? 's' : ''}</h4>
+                                <p>Incomplete tasks carried forward. Complete them first!</p>
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    alertDiv.style.display = 'none';
+                }
+
+                const subjectConfig = {
+                    Physics: { icon: '⚡', color: 'phy' },
+                    Chemistry: { icon: '⚗️', color: 'chem' },
+                    Biology: { icon: '🧬', color: 'bio' },
+                    Mathematics: { icon: '∑', color: 'math' },
+                    mixed: { icon: '📝', color: 'math' }
+                };
+
+                container.innerHTML = `
+                    <div class="section-header">
+                        <div class="section-title">
+                            <h2>Today's Tasks</h2>
+                            <span class="task-count">${completedCount}/${tasks.length} completed</span>
+                        </div>
+                        <button class="submit-all-btn" onclick="planner.submitDay()">
+                            ✓ Submit Day ${dayNum}
+                        </button>
+                    </div>
+                    
+                    ${grouped.carry.length > 0 ? `
+                        <div class="subject-container">
+                            <div class="subject-header" style="border-left-color: var(--warning); background: var(--warning-soft);">
+                                <div class="subject-icon" style="background: var(--warning-soft);">⚠️</div>
+                                <div class="subject-info">
+                                    <h3>Carry Forward Tasks</h3>
+                                    <div class="subject-meta">Complete these first</div>
+                                </div>
+                            </div>
+                            <div class="task-list">
+                                ${grouped.carry.map(task => this.renderTaskItem(task)).join('')}
+                            </div>
+                        </div>
+                    ` : ''}
+                    
+                    ${grouped.study.length > 0 ? `
+                        <div class="subject-container">
+                            <div class="subject-header ${subjectConfig[grouped.study[0].subject].color}">
+                                <div class="subject-icon">${subjectConfig[grouped.study[0].subject].icon}</div>
+                                <div class="subject-info">
+                                    <h3>Study Task</h3>
+                                    <div class="subject-meta">Main learning objective</div>
+                                </div>
+                            </div>
+                            <div class="task-list">
+                                ${grouped.study.map(task => this.renderTaskItem(task)).join('')}
+                            </div>
+                        </div>
+                    ` : ''}
+                    
+                    ${grouped.practice.length > 0 ? `
+                        <div class="subject-container">
+                            <div class="subject-header ${subjectConfig[grouped.practice[0].subject].color}">
+                                <div class="subject-icon">📝</div>
+                                <div class="subject-info">
+                                    <h3>Practice Task</h3>
+                                    <div class="subject-meta">PYQs and practice sets</div>
+                                </div>
+                            </div>
+                            <div class="task-list">
+                                ${grouped.practice.map(task => this.renderTaskItem(task)).join('')}
+                            </div>
+                        </div>
+                    ` : ''}
+                    
+                    ${grouped.mock.length > 0 ? `
+                        <div class="subject-container">
+                            <div class="subject-header" style="border-left-color: var(--danger);">
+                                <div class="subject-icon" style="background: var(--danger-soft);">⏱️</div>
+                                <div class="subject-info">
+                                    <h3>Mock Test</h3>
+                                    <div class="subject-meta">Full-length simulation</div>
+                                </div>
+                            </div>
+                            <div class="task-list">
+                                ${grouped.mock.map(task => this.renderTaskItem(task)).join('')}
+                            </div>
+                        </div>
+                    ` : ''}
+                    
+                    ${grouped.revision.length > 0 ? `
+                        <div class="subject-container">
+                            <div class="subject-header" style="border-left-color: var(--primary);">
+                                <div class="subject-icon" style="background: var(--primary-soft);">🔄</div>
+                                <div class="subject-info">
+                                    <h3>Revision Task</h3>
+                                    <div class="subject-meta">Spaced repetition review</div>
+                                </div>
+                            </div>
+                            <div class="task-list">
+                                ${grouped.revision.map(task => this.renderTaskItem(task)).join('')}
+                            </div>
+                        </div>
+                    ` : ''}
+                `;
+            },
+
+            renderTaskItem(task) {
+                const isCompleted = this.state.completedTasks.has(task.id);
+                const config = {
+                    high: { class: 'priority-high', label: 'HIGH' },
+                    medium: { class: 'priority-medium', label: 'MED' },
+                    low: { class: 'priority-low', label: 'LOW' }
+                }[task.priority];
+
+                return `
+                    <div class="task-item ${isCompleted ? 'completed' : ''} ${task.isCarryForward ? 'carry-forward' : ''}" 
+                         onclick="planner.toggleTask('${task.id}')">
+                        <div class="task-priority-indicator ${task.priority}"></div>
+                        <div class="task-checkbox">${isCompleted ? '✓' : ''}</div>
+                        <div class="task-content">
+                            <div class="task-title">${task.title}</div>
+                            <div class="task-description">${task.description}</div>
+                            <div class="task-footer">
+                                <span class="task-tag">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <circle cx="12" cy="12" r="10"></circle>
+                                        <polyline points="12 6 12 12 16 14"></polyline>
+                                    </svg>
+                                    ${task.estimatedTime} min
+                                </span>
+                                <span class="task-tag ${config.class}">${config.label}</span>
+                                ${task.isCarryForward ? '<span class="task-tag carry-forward">CARRY</span>' : ''}
+                                ${task.isSyllabusOrder ? '<span class="task-tag syllabus-order">SYLLABUS</span>' : ''}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            },
+
+            renderSyllabus() {
+                const container = document.getElementById('syllabus-list');
+                const current = this.curriculum[this.state.currentDay];
+
+                // Show last 2 completed, current, and next 2 topics
+                const items = [];
+                for (let i = Math.max(1, this.state.currentDay - 2); i <= Math.min(90, this.state.currentDay + 2); i++) {
+                    const plan = this.curriculum[i];
+                    let status = 'pending';
+                    if (i < this.state.currentDay) status = 'completed';
+                    else if (i === this.state.currentDay) status = 'current';
+
+                    items.push(`
+                        <div class="syllabus-item">
+                            <div class="syllabus-check ${status}">
+                                ${status === 'completed' ? '✓' : status === 'current' ? '→' : ''}
+                            </div>
+                            <div class="syllabus-info">
+                                <h4>${plan.subject}: ${plan.topic}</h4>
+                                <p>Day ${i} • ${plan.chapter}</p>
+                            </div>
+                        </div>
+                    `);
+                }
+
+                container.innerHTML = items.join('');
+            },
+
+            renderAlgorithmLog() {
+                const log = document.getElementById('algorithm-log');
+                const dayNum = this.state.currentDay;
+                const carryCount = this.getCarryForwardTasks(dayNum).length;
+
+                const entries = [
+                    { type: 'success', time: '06:00 AM', message: `Generated Day ${dayNum} plan from syllabus` },
+                    {
+                        type: carryCount > 0 ? 'warning' : 'success', time: '06:01 AM',
+                        message: carryCount > 0 ? `Carried forward ${carryCount} incomplete task(s)` : 'No carry-forward tasks'
+                    },
+                    { type: 'info', time: '06:02 AM', message: `Assigned ${this.curriculum[dayNum].subject} study topic` },
+                    { type: 'info', time: '06:03 AM', message: 'Added practice set and PYQs' }
+                ];
+
+                if (dayNum % 6 === 0) {
+                    entries.push({ type: 'success', time: '06:04 AM', message: `Scheduled Mock Test ${dayNum / 6}` });
+                }
+
+                log.innerHTML = entries.map(e => `
+                    <div class="log-entry ${e.type}">
+                        <div class="log-time">${e.time}</div>
+                        <div>${e.message}</div>
+                    </div>
+                `).join('');
+            },
+
+            updateStats() {
+                const currentDate = this.getCurrentDate();
+
+                document.getElementById('current-day-num').textContent = this.state.currentDay;
+                document.getElementById('nav-day').textContent = this.state.currentDay;
+                document.getElementById('nav-streak').textContent = this.state.stats.streak;
+
+                const carryCount = this.getCarryForwardTasks(this.state.currentDay).length;
+                document.getElementById('nav-pending').textContent = carryCount;
+                document.getElementById('stat-carry').textContent = carryCount;
+
+                document.getElementById('stat-completed').textContent = this.state.stats.totalTasksDone;
+                document.getElementById('stat-hours').textContent = this.state.stats.totalHours;
+                document.getElementById('stat-mocks').textContent = this.state.stats.mocksDone;
+
+                // Progress ring
+                const progress = Math.round((this.state.currentDay / 90) * 100);
+                document.getElementById('progress-text').textContent = progress + '%';
+                document.getElementById('progress-circle').style.strokeDashoffset = 376.99 * (1 - progress / 100);
+
+                // Greeting
+                document.getElementById('greeting').textContent = `Day ${this.state.currentDay} - Today's Mission`;
+                document.getElementById('current-day').textContent = `Day ${this.state.currentDay} of 90`;
+
+                // Format date
+                const dateOptions = { year: 'numeric', month: 'long', day: 'numeric' };
+                document.getElementById('current-full-date').textContent = currentDate.toLocaleDateString('en-US', dateOptions);
+
+                // Update weekly stats
+                this.updateWeeklyStats();
+            },
+
+            updateWeeklyStats() {
+                const currentWeekStart = Math.floor((this.state.currentDay - 1) / 7) * 7 + 1;
+                let weekAssigned = 0;
+                let weekCompleted = 0;
+                let weekCarry = 0;
+
+                for (let d = currentWeekStart; d < currentWeekStart + 7 && d <= 90; d++) {
+                    const tasks = this.state.taskHistory[d] || [];
+                    weekAssigned += tasks.length;
+                    weekCompleted += tasks.filter(t => this.state.completedTasks.has(t.id)).length;
+                    if (d < this.state.currentDay) {
+                        weekCarry += tasks.filter(t => !this.state.completedTasks.has(t.id)).length;
+                    }
+                }
+
+                const weekRate = weekAssigned > 0 ? Math.round((weekCompleted / weekAssigned) * 100) : 0;
+
+                document.getElementById('week-assigned').textContent = weekAssigned;
+                document.getElementById('week-completed').textContent = weekCompleted;
+                document.getElementById('week-carry').textContent = weekCarry;
+                document.getElementById('week-rate').textContent = weekRate + '%';
+            },
+
+            jumpToDay(dayNum) {
+                this.state.currentDay = dayNum;
+                this.generateDayTasks(dayNum);
+                this.render();
+            },
+
+            // Persistence
+            saveState() {
+                const stateToSave = {
+                    ...this.state,
+                    completedTasks: Array.from(this.state.completedTasks),
+                    startDate: this.state.startDate
+                };
+                localStorage.setItem('iatPlannerState_v2', JSON.stringify(stateToSave));
+            },
+
+            loadState() {
+                const saved = localStorage.getItem('iatPlannerState_v2');
+                if (saved) {
+                    const parsed = JSON.parse(saved);
+                    this.state = {
+                        ...parsed,
+                        completedTasks: new Set(parsed.completedTasks || [])
+                    };
+                }
+            }
+        };
+
+        // Generate 90-day curriculum
+        function generateCurriculum() {
+            const curriculum = {};
+            let day = 1;
+
+            // Phase 1: Days 1-30 (Foundation - Physics focus)
+            const phase1 = [
+                ['Physics', 'Units and Dimensions', 'Physics Ch 1'],
+                ['Physics', 'Motion in 1D', 'Physics Ch 2'],
+                ['Physics', 'Motion in 2D', 'Physics Ch 3'],
+                ['Physics', 'Laws of Motion', 'Physics Ch 4'],
+                ['Physics', 'Work, Energy, Power', 'Physics Ch 5'],
+                ['Chemistry', 'Some Basic Concepts', 'Chemistry Ch 1'],
+                ['Chemistry', 'Structure of Atom', 'Chemistry Ch 2'],
+                ['Chemistry', 'Periodic Table', 'Chemistry Ch 3'],
+                ['Biology', 'The Living World', 'Biology Ch 1'],
+                ['Biology', 'Biological Classification', 'Biology Ch 2'],
+                ['Physics', 'System of Particles', 'Physics Ch 6'],
+                ['Physics', 'Rotational Motion', 'Physics Ch 7'],
+                ['Chemistry', 'Chemical Bonding', 'Chemistry Ch 4'],
+                ['Chemistry', 'States of Matter', 'Chemistry Ch 5'],
+                ['Biology', 'Plant Kingdom', 'Biology Ch 3'],
+                ['Biology', 'Animal Kingdom', 'Biology Ch 4'],
+                ['Physics', 'Gravitation', 'Physics Ch 8'],
+                ['Physics', 'Mechanical Properties', 'Physics Ch 9'],
+                ['Chemistry', 'Thermodynamics', 'Chemistry Ch 6'],
+                ['Chemistry', 'Equilibrium', 'Chemistry Ch 7'],
+                ['Biology', 'Morphology of Plants', 'Biology Ch 5'],
+                ['Biology', 'Anatomy of Plants', 'Biology Ch 6'],
+                ['Physics', 'Thermal Properties', 'Physics Ch 10'],
+                ['Physics', 'Thermodynamics', 'Physics Ch 11'],
+                ['Chemistry', 'Redox Reactions', 'Chemistry Ch 8'],
+                ['Chemistry', 'Hydrogen', 'Chemistry Ch 9'],
+                ['Biology', 'Cell Structure', 'Biology Ch 8'],
+                ['Biology', 'Cell Cycle', 'Biology Ch 10'],
+                ['Physics', 'Kinetic Theory', 'Physics Ch 12'],
+                ['Physics', 'Oscillations', 'Physics Ch 13']
+            ];
+
+            // Phase 2: Days 31-60 (Acceleration - Chemistry focus)
+            const phase2 = [
+                ['Chemistry', 's-Block Elements', 'Chemistry Ch 10'],
+                ['Chemistry', 'p-Block Elements', 'Chemistry Ch 11'],
+                ['Physics', 'Waves', 'Physics Ch 14'],
+                ['Physics', 'Electric Charges', 'Physics Ch 1 (XII)'],
+                ['Biology', 'Transport in Plants', 'Biology Ch 11'],
+                ['Biology', 'Mineral Nutrition', 'Biology Ch 12'],
+                ['Chemistry', 'Organic Chemistry Basics', 'Chemistry Ch 12'],
+                ['Chemistry', 'Hydrocarbons', 'Chemistry Ch 13'],
+                ['Physics', 'Electrostatic Potential', 'Physics Ch 2 (XII)'],
+                ['Physics', 'Current Electricity', 'Physics Ch 3 (XII)'],
+                ['Biology', 'Photosynthesis', 'Biology Ch 13'],
+                ['Biology', 'Respiration', 'Biology Ch 14'],
+                ['Chemistry', 'Haloalkanes', 'Chemistry Ch 14'],
+                ['Chemistry', 'Alcohols, Phenols', 'Chemistry Ch 15'],
+                ['Physics', 'Moving Charges', 'Physics Ch 4 (XII)'],
+                ['Physics', 'Magnetism', 'Physics Ch 5 (XII)'],
+                ['Biology', 'Plant Growth', 'Biology Ch 15'],
+                ['Biology', 'Digestion', 'Biology Ch 16'],
+                ['Chemistry', 'Aldehydes, Ketones', 'Chemistry Ch 16'],
+                ['Chemistry', 'Amines', 'Chemistry Ch 17'],
+                ['Physics', 'EMI', 'Physics Ch 6 (XII)'],
+                ['Physics', 'AC', 'Physics Ch 7 (XII)'],
+                ['Biology', 'Breathing', 'Biology Ch 17'],
+                ['Biology', 'Body Fluids', 'Biology Ch 18'],
+                ['Chemistry', 'Biomolecules', 'Chemistry Ch 18'],
+                ['Chemistry', 'Polymers', 'Chemistry Ch 19'],
+                ['Physics', 'EM Waves', 'Physics Ch 8 (XII)'],
+                ['Physics', 'Ray Optics', 'Physics Ch 9 (XII)'],
+                ['Biology', 'Excretory', 'Biology Ch 19'],
+                ['Biology', 'Locomotion', 'Biology Ch 20']
+            ];
+
+            // Phase 3: Days 61-85 (Revision & Mastery)
+            const phase3 = [
+                ['Chemistry', 'Everyday Chemistry', 'Chemistry Ch 20'],
+                ['Physics', 'Wave Optics', 'Physics Ch 10 (XII)'],
+                ['Physics', 'Dual Nature', 'Physics Ch 11 (XII)'],
+                ['Biology', 'Neural Control', 'Biology Ch 21'],
+                ['Biology', 'Chemical Coordination', 'Biology Ch 22'],
+                ['Chemistry', 'Solid State', 'Chemistry Ch 1 (XII)'],
+                ['Chemistry', 'Solutions', 'Chemistry Ch 2 (XII)'],
+                ['Physics', 'Atoms', 'Physics Ch 12 (XII)'],
+                ['Physics', 'Nuclei', 'Physics Ch 13 (XII)'],
+                ['Biology', 'Reproduction', 'Biology Ch 1 (XII)'],
+                ['Biology', 'Sexual Reproduction', 'Biology Ch 2 (XII)'],
+                ['Chemistry', 'Electrochemistry', 'Chemistry Ch 3 (XII)'],
+                ['Chemistry', 'Chemical Kinetics', 'Chemistry Ch 4 (XII)'],
+                ['Physics', 'Semiconductors', 'Physics Ch 14 (XII)'],
+                ['Biology', 'Human Reproduction', 'Biology Ch 3 (XII)'],
+                ['Biology', 'Reproductive Health', 'Biology Ch 4 (XII)'],
+                ['Chemistry', 'Surface Chemistry', 'Chemistry Ch 5 (XII)'],
+                ['Chemistry', 'Isolation', 'Chemistry Ch 6 (XII)'],
+                ['Physics', 'Communication', 'Physics Ch 15 (XII)'],
+                ['Biology', 'Inheritance', 'Biology Ch 5 (XII)'],
+                ['Biology', 'Molecular Basis', 'Biology Ch 6 (XII)'],
+                ['Chemistry', 'p-Block Advanced', 'Chemistry Ch 7 (XII)'],
+                ['Chemistry', 'd & f Block', 'Chemistry Ch 8 (XII)'],
+                ['Biology', 'Evolution', 'Biology Ch 7 (XII)'],
+                ['Biology', 'Human Health', 'Biology Ch 8 (XII)']
+            ];
+
+            // Phase 4: Days 86-90 (Final Sprint)
+            const phase4 = [
+                ['Mixed', 'Full Revision 1', 'All Subjects'],
+                ['Mixed', 'Full Revision 2', 'All Subjects'],
+                ['Mixed', 'Full Revision 3', 'All Subjects'],
+                ['Mixed', 'Final Mock', 'All Subjects'],
+                ['Mixed', 'Exam Day Prep', 'All Subjects']
+            ];
+
+            [...phase1, ...phase2, ...phase3, ...phase4].forEach(([subject, topic, chapter]) => {
+                curriculum[day] = { subject, topic, chapter };
+                day++;
+            });
+
+            return curriculum;
+        }
+
+        // Global planner instance
+        const planner = StudyPlanner;
+
+        // Initialize on load
+        document.addEventListener('DOMContentLoaded', () => {
+            planner.init();
+        });
+
+        // Helper functions for onclick handlers
+        function changeDate(delta) {
+            planner.changeDate(delta);
+        }
+
+        function goToToday() {
+            // Calculate today's day based on start date
+            const start = new Date(planner.state.startDate);
+            const today = new Date();
+            const diffDays = Math.floor((today - start) / (1000 * 60 * 60 * 24)) + 1;
+            const targetDay = Math.max(1, Math.min(90, diffDays));
+            planner.jumpToDay(targetDay);
+        }
+    </script>
+</body>
+
+</html>

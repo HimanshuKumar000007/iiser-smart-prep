@@ -163,6 +163,38 @@
             background: var(--primary-dark);
         }
 
+        /* Mobile Menu Button */
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            cursor: pointer;
+            z-index: 1002;
+            padding: 0.5rem;
+        }
+
+        .hamburger-line {
+            display: block;
+            width: 24px;
+            height: 2px;
+            background-color: var(--secondary);
+            margin: 5px 0;
+            transition: all 0.3s ease;
+            border-radius: 2px;
+        }
+
+        .hamburger-line.active:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 5px);
+        }
+
+        .hamburger-line.active:nth-child(2) {
+            opacity: 0;
+        }
+
+        .hamburger-line.active:nth-child(3) {
+            transform: rotate(-45deg) translate(5px, -5px);
+        }
+
         /* =========================================
            2. FEATURES PAGE STYLES
            ========================================= */
@@ -242,12 +274,61 @@
         }
 
         @media (max-width: 768px) {
-            .features-grid {
-                grid-template-columns: 1fr;
+            .nav-container {
+                width: 95%;
+                padding: 0.75rem 1.25rem;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .nav-links {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100vh;
+                background: white;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                gap: 2rem;
+                transform: translateX(100%);
+                transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+                z-index: 999;
+                box-shadow: -10px 0 30px rgba(0, 0, 0, 0.1);
+            }
+
+            .nav-links.active {
+                transform: translateX(0);
+            }
+
+            .nav-links a {
+                font-size: 1.25rem;
+            }
+
+            main {
+                padding-top: 6rem;
+                padding-bottom: 4rem;
+            }
+
+            .header-section {
+                margin-bottom: 3rem;
+                padding: 0 1rem;
             }
 
             h1 {
-                font-size: 2.25rem;
+                font-size: 2rem;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
+            .feature-card {
+                padding: 1.5rem;
             }
         }
 
@@ -259,14 +340,14 @@
             margin-top: auto;
         }
     </style>
-<!-- Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-WHHM4FTNHG"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-WHHM4FTNHG');
-</script>
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-WHHM4FTNHG"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'G-WHHM4FTNHG');
+    </script>
 </head>
 
 <body>
@@ -284,7 +365,13 @@
                 IISER Smart Prep
             </a>
 
-            <nav class="nav-links">
+            <button class="mobile-menu-btn" onclick="toggleMenu()" aria-label="Toggle menu">
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+            </button>
+
+            <nav class="nav-links" id="nav-links">
                 <a href="index.html">Home</a>
                 <a href="features.html" style="color: var(--primary); font-weight: 600;">Features</a>
                 <a href="index.html#pricing">Pricing</a>
@@ -390,16 +477,54 @@
     </main>
 
     <!-- FOOTER -->
-    <footer>
+    <footer style="background: white; border-top: 1px solid var(--border); padding: 5rem 0 2rem;">
         <div class="container">
-            <div style="text-align: center; color: var(--text-muted); font-size: 0.9rem;">
-                <div style="margin-bottom: 1rem;">
-                    <a href="index.html" style="margin: 0 10px;">Home</a>
-                    <a href="ai_tutor.html" style="margin: 0 10px;">AI Tutor</a>
-                    <a href="content.html" style="margin: 0 10px;">Contact</a>
-                    <a href="privacy.html" style="margin: 0 10px;">Privacy Policy</a>
+            <div
+                style="display: flex; flex-wrap: wrap; gap: 3rem; justify-content: space-between; margin-bottom: 3rem;">
+                <div style="max-width: 320px;">
+                    <a href="#" class="logo" style="margin-bottom: 1rem;">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path
+                                d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z">
+                            </path>
+                        </svg>
+                        IISER Smart Prep
+                    </a>
+                    <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 1rem;">Empowering scientific
+                        minds to reach India's premier research institutes through data and strategy.</p>
                 </div>
-                &copy; 2026 IISER Smart Prep. All rights reserved.
+
+                <div style="display: flex; gap: 4rem; flex-wrap: wrap;">
+                    <div>
+                        <h4 style="margin-bottom: 1rem; font-size: 0.9rem; font-weight: 700; color: var(--secondary);">
+                            Platform</h4>
+                        <ul style="display: flex; flex-direction: column; gap: 0.75rem;">
+                            <li><a href="ai_tutor.html" style="color: var(--text-muted); font-size: 0.9rem;">AI
+                                    Tutor</a></li>
+                            <li><a href="mock_test/full_mock_test_homepage.html"
+                                    style="color: var(--text-muted); font-size: 0.9rem;">Mock Tests</a></li>
+                            <li><a href="#" style="color: var(--text-muted); font-size: 0.9rem;">Pricing</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 style="margin-bottom: 1rem; font-size: 0.9rem; font-weight: 700; color: var(--secondary);">
+                            Support</h4>
+                        <ul style="display: flex; flex-direction: column; gap: 0.75rem;">
+                            <li><a href="#faq" style="color: var(--text-muted); font-size: 0.9rem;">FAQ</a></li>
+                            <li><a href="#" style="color: var(--text-muted); font-size: 0.9rem;">Contact</a></li>
+                            <li><a href="privacy.html" style="color: var(--text-muted); font-size: 0.9rem;">Privacy
+                                    Policy</a></li>
+                            <li><a href="terms.html" style="color: var(--text-muted); font-size: 0.9rem;">Terms &
+                                    Conditions</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div
+                style="text-align: center; border-top: 1px solid var(--border); padding-top: 2rem; color: var(--text-light); font-size: 0.85rem;">
+                &copy; 2026 IISER Smart Prep. All rights reserved. Not affiliated with IISERs Joint Admissions
+                Committee.
             </div>
         </div>
     </footer>
@@ -414,6 +539,21 @@
                 header.classList.remove('scrolled');
             }
         }, { passive: true });
+
+        // --- Mobile Menu Logic ---
+        function toggleMenu() {
+            const navLinks = document.getElementById('nav-links');
+            const lines = document.querySelectorAll('.hamburger-line');
+            navLinks.classList.toggle('active');
+
+            lines.forEach(line => line.classList.toggle('active'));
+
+            if (navLinks.classList.contains('active')) {
+                document.body.style.overflow = 'hidden';
+            } else {
+                document.body.style.overflow = 'auto';
+            }
+        }
     </script>
 </body>
 

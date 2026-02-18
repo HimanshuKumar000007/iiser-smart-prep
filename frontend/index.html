@@ -1448,11 +1448,18 @@
                 </article>
 
                 <!-- CARD 3 -->
-                <article class="card dark-card card-clickable fade-in-up" onclick="openModal('modal-focus')">
-                    <div class="icon-box">🎯</div>
-                    <h3>Neuro-Focus Mode</h3>
-                    <p>Distraction-free UI with time-per-question tracking to build the mental stamina required for the
-                        exam.</p>
+                <article class="card dark-card card-clickable fade-in-up" onclick="checkProgressAnalyticsAccess()">
+                    <div class="icon-box">📊</div>
+                    <h3>Progress Analytics</h3>
+                    <p>Real-time visual tracking of your 3-month journey with completion rings and phase breakdowns.</p>
+                    <div class="card-link" style="color: #818cf8;">
+                        Track Progress
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                            <polyline points="12 5 19 12 12 19"></polyline>
+                        </svg>
+                    </div>
                 </article>
             </div>
         </div>
@@ -1570,21 +1577,6 @@
                                     <polyline points="20 6 9 17 4 12"></polyline>
                                 </svg></div>
                             <div>
-                                <strong>AI-Generated Mock Tests (Personalized)</strong>
-                                <p
-                                    style="font-size: 0.9rem; color: var(--text-muted); margin-top: 0.25rem; line-height: 1.4;">
-                                    Create full-length mock tests using AI based on your weak topics, difficulty
-                                    preference, and time availability — all in a real exam interface with real-time
-                                    clock and detailed exam-level analytics.</p>
-                            </div>
-                        </li>
-                        <li style="display: flex; align-items: flex-start;">
-                            <div class="check-icon" style="margin-top: 0.25rem;"><svg viewBox="0 0 24 24" fill="none"
-                                    stroke="currentColor" stroke-width="3" stroke-linecap="round"
-                                    stroke-linejoin="round">
-                                    <polyline points="20 6 9 17 4 12"></polyline>
-                                </svg></div>
-                            <div>
                                 <strong>PYQ Vault + Exam-Mode Solutions</strong>
                                 <p
                                     style="font-size: 0.9rem; color: var(--text-muted); margin-top: 0.25rem; line-height: 1.4;">
@@ -1592,20 +1584,7 @@
                                     practice PYQs exactly like the real test.</p>
                             </div>
                         </li>
-                        <li style="display: flex; align-items: flex-start;">
-                            <div class="check-icon" style="margin-top: 0.25rem;"><svg viewBox="0 0 24 24" fill="none"
-                                    stroke="currentColor" stroke-width="3" stroke-linecap="round"
-                                    stroke-linejoin="round">
-                                    <polyline points="20 6 9 17 4 12"></polyline>
-                                </svg></div>
-                            <div>
-                                <strong>Interactive PYQ Sessions</strong>
-                                <p
-                                    style="font-size: 0.9rem; color: var(--text-muted); margin-top: 0.25rem; line-height: 1.4;">
-                                    Scheduled live/automated sessions that run a PYQ in test-mode — get timed practice
-                                    and instant feedback.</p>
-                            </div>
-                        </li>
+
                         <li style="display: flex; align-items: flex-start;">
                             <div class="check-icon" style="margin-top: 0.25rem;"><svg viewBox="0 0 24 24" fill="none"
                                     stroke="currentColor" stroke-width="3" stroke-linecap="round"
@@ -1618,20 +1597,6 @@
                                     style="font-size: 0.9rem; color: var(--text-muted); margin-top: 0.25rem; line-height: 1.4;">
                                     A focused, 30–45 minute diagnostic every 48 hours to identify drift and fix it fast.
                                 </p>
-                            </div>
-                        </li>
-                        <li style="display: flex; align-items: flex-start;">
-                            <div class="check-icon" style="margin-top: 0.25rem;"><svg viewBox="0 0 24 24" fill="none"
-                                    stroke="currentColor" stroke-width="3" stroke-linecap="round"
-                                    stroke-linejoin="round">
-                                    <polyline points="20 6 9 17 4 12"></polyline>
-                                </svg></div>
-                            <div>
-                                <strong>Question of the Day</strong>
-                                <p
-                                    style="font-size: 0.9rem; color: var(--text-muted); margin-top: 0.25rem; line-height: 1.4;">
-                                    One carefully-picked micro-question daily — 5 minutes of high-signal practice to
-                                    keep momentum.</p>
                             </div>
                         </li>
                         <li style="display: flex; align-items: flex-start;">
@@ -2061,14 +2026,15 @@
                 revision sheet.</p>
         </div>
 
-        <!-- MODAL: FOCUS -->
+        <!-- MODAL: PROGRESS ANALYTICS -->
         <div id="modal-focus" class="modal-content" onclick="event.stopPropagation()">
             <div class="modal-header">
-                <h3>Neuro-Focus Mode</h3>
+                <h3>Progress Analytics</h3>
                 <div class="close-modal" onclick="closeModal()">&times;</div>
             </div>
-            <p style="color: var(--text-muted);">A distraction-free interface that forces full-screen mode and tracks
-                time-per-question to simulate exam pressure.</p>
+            <p style="color: var(--text-muted);">Real-time visual tracking of your 3-month journey with completion
+                rings, phase breakdowns, carry-forward alerts, and weekly performance stats — all powered by pure
+                algorithmic logic.</p>
         </div>
 
     </div>
@@ -2188,6 +2154,27 @@
             } else {
                 // User logged in and PRO
                 window.location.href = "smart_notes/smart_notes_home.html";
+            }
+        }
+
+        function checkProgressAnalyticsAccess() {
+            const token = localStorage.getItem("IAT_TOKEN");
+            const plan = localStorage.getItem("IAT_PLAN");
+
+            if (!token) {
+                // User not logged in, redirect to login page
+                window.location.href = "login.html";
+            } else if (plan !== "PRO") {
+                // User logged in but not PRO, scroll to pricing
+                const pricingSection = document.getElementById("pricing");
+                if (pricingSection) {
+                    pricingSection.scrollIntoView({ behavior: 'smooth' });
+                } else {
+                    window.location.href = "#pricing";
+                }
+            } else {
+                // User logged in and PRO
+                window.location.href = "iat-planner-pro.html";
             }
         }
 

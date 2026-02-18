@@ -458,71 +458,61 @@
         </div>
 
         <!-- 3. TEST GRID -->
-        <div class="grid-3">
+        <div class="grid-3" id="testGrid"></div>
 
-            <!-- QUICK TEST 1 -->
-            <div class="test-card">
-                <div class="card-top">
-                    <div class="test-icon">⚡</div>
-                    <span class="badge badge-free">Free</span>
-                </div>
-                <h3 class="test-title">Quick Mock 01</h3>
-                <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 0.5rem;">Mixed Subjects</p>
-                <div class="test-meta">
-                    <span class="meta-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <circle cx="12" cy="12" r="10"></circle>
-                            <polyline points="12 6 12 12 16 14"></polyline>
-                        </svg> 30 Min</span>
-                    <span class="meta-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                            <polyline points="14 2 14 8 20 8"></polyline>
-                            <line x1="16" y1="13" x2="8" y2="13"></line>
-                            <line x1="16" y1="17" x2="8" y2="17"></line>
-                            <polyline points="10 9 9 9 8 9"></polyline>
-                        </svg> 20 Marks</span>
-                </div>
-                <div class="card-action">
-                    <button class="btn btn-primary btn-full" onclick="startQuickMock(1)">Start Test</button>
-                </div>
-            </div>
+        <script>
+            // Dynamic card generation for all 40 mocks
+            const testGrid = document.getElementById('testGrid');
+            const FREE_LIMIT = 10; // Mocks 1-10 are free
+            const TOTAL_MOCKS = 40;
 
-            <!-- QUICK TEST 2 -->
-            <div class="test-card locked">
-                <div class="card-top">
-                    <div class="test-icon">⚡</div>
-                    <span class="badge badge-pro">PRO</span>
-                </div>
-                <h3 class="test-title">Quick Mock 02</h3>
-                <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 0.5rem;">Physics Focus</p>
-                <div class="test-meta">
-                    <span class="meta-item">⏱️ 30 Min</span>
-                    <span class="meta-item">📝 20 Marks</span>
-                </div>
-                <div class="card-action">
-                    <button class="btn btn-lock btn-full" onclick="startQuickMock(2)">Unlock Test</button>
-                </div>
-            </div>
+            // Mocks with image prompts (show 🖼️ icon)
+            const imageMocks = [11, 12, 13, 14, 15, 16, 17, 18, 19, 22, 27, 28, 31, 32];
 
-            <!-- QUICK TEST 3 -->
-            <div class="test-card locked">
-                <div class="card-top">
-                    <div class="test-icon">⚡</div>
-                    <span class="badge badge-pro">PRO</span>
-                </div>
-                <h3 class="test-title">Quick Mock 03</h3>
-                <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 0.5rem;">Math Challenge</p>
-                <div class="test-meta">
-                    <span class="meta-item">⏱️ 30 Min</span>
-                    <span class="meta-item">📝 20 Marks</span>
-                </div>
-                <div class="card-action">
-                    <button class="btn btn-lock btn-full" onclick="startQuickMock(3)">Unlock Test</button>
-                </div>
-            </div>
+            // Labels for mocks
+            const mockLabels = {
+                1: 'Mixed Subjects', 2: 'Physics Focus', 3: 'Math Challenge',
+                4: 'Biology Basics', 5: 'Chemistry Core', 6: 'All Rounder',
+                7: 'Conceptual Mix', 8: 'Logical Reasoning', 9: 'Quick Drill',
+                10: 'Rapid Fire', 11: 'Image Special', 12: 'Visual Physics',
+                13: 'Diagram Master', 14: 'Graph Analysis', 15: 'Figure Based',
+                16: 'Visual Chemistry', 17: 'Image MCQs', 18: 'Picture Quiz',
+                19: 'Very Hard • Images', 20: 'Hard Challenge', 21: 'Standard Mix',
+                22: 'Easy • Images', 23: 'Very Easy Mix', 24: 'Very Hard',
+                25: 'Very Hard', 26: 'Very Hard', 27: 'Image Special',
+                28: 'Image Special', 29: 'Very Hard', 30: 'Very Hard',
+                31: 'Image Special', 32: 'Image Special', 33: 'Very Easy',
+                34: 'Very Easy', 35: 'Very Easy', 36: 'Very Easy',
+                37: 'Very Hard', 38: 'Very Hard', 39: 'Very Hard', 40: 'Very Hard'
+            };
 
-        </div>
+            for (let i = 1; i <= TOTAL_MOCKS; i++) {
+                const isFree = i <= FREE_LIMIT;
+                const hasImage = imageMocks.includes(i);
+                const num = String(i).padStart(2, '0');
+                const label = mockLabels[i] || 'Mixed Subjects';
+                const icon = hasImage ? '🖼️' : '⚡';
+
+                const card = document.createElement('div');
+                card.className = 'test-card' + (isFree ? '' : ' locked');
+                card.innerHTML = `
+                    <div class="card-top">
+                        <div class="test-icon">${icon}</div>
+                        <span class="badge ${isFree ? 'badge-free' : 'badge-pro'}">${isFree ? 'Free' : 'PRO'}</span>
+                    </div>
+                    <h3 class="test-title">Quick Mock ${num}</h3>
+                    <p style="font-size:0.9rem;color:var(--text-muted);margin-bottom:0.5rem;">${label}</p>
+                    <div class="test-meta">
+                        <span class="meta-item">⏱️ 30 Min</span>
+                        <span class="meta-item">📝 64 Marks</span>
+                    </div>
+                    <div class="card-action">
+                        <button class="btn ${isFree ? 'btn-primary' : 'btn-lock'} btn-full" onclick="startQuickMock(${i})">${isFree ? 'Start Test' : 'Unlock Test'}</button>
+                    </div>
+                `;
+                testGrid.appendChild(card);
+            }
+        </script>
     </div>
 
     <!-- FOOTER -->
@@ -689,7 +679,7 @@
             }
 
             // Free mock checks
-            if (id === 1) {
+            if (id <= 10) {
                 goToTest(id);
                 return;
             }

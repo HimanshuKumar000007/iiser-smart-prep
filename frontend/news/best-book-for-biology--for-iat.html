@@ -1,0 +1,1601 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Best Books for Biology: NCERT & Campbell Guide | IISER Smart Prep</title>
+    <meta name="description"
+        content="Curated list of must-read Biology books for IAT 2026 — NCERT and Campbell Biology with specific chapters and preparation strategy.">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <style>
+        /* =========================================
+           ROOT & RESET
+           ========================================= */
+        :root {
+            /* Biology-themed palette: Emerald, Teal & Sage */
+            --bio-primary: #10b981;
+            --bio-dark: #047857;
+            --bio-light: #d1fae5;
+            --bio-soft: #ecfdf5;
+            --primary: #6366f1;
+            --primary-light: #818cf8;
+            --accent: #8b5cf6;
+            --secondary: #0f172a;
+            --secondary-light: #1e293b;
+            --text-main: #0f172a;
+            --text-muted: #475569;
+            --text-light: #94a3b8;
+            --bg-white: #ffffff;
+            --bg-wash: #f8fafc;
+            --bg-sage: #f0fdf4;
+            --border: #e2e8f0;
+
+            --radius-sm: 12px;
+            --radius-md: 16px;
+            --radius-lg: 24px;
+            --radius-pill: 100px;
+
+            --shadow-xs: 0 1px 2px 0 rgba(0, 0, 0, 0.03);
+            --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.08);
+            --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+            --shadow-glow: 0 0 40px -10px rgba(16, 185, 129, 0.3);
+            --shadow-book: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+
+            --container-width: 1200px;
+            --nav-height: 80px;
+
+            --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            outline: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            font-size: 16px;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            color: var(--text-main);
+            background: var(--bg-wash);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+            transition: all 0.2s ease;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        .container {
+            width: 90%;
+            max-width: var(--container-width);
+            margin: 0 auto;
+        }
+
+        /* Animations */
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0px);
+            }
+
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        @keyframes pulse-glow {
+
+            0%,
+            100% {
+                box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4);
+            }
+
+            50% {
+                box-shadow: 0 0 20px 10px rgba(16, 185, 129, 0.1);
+            }
+        }
+
+        @keyframes slide-up {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes book-float {
+
+            0%,
+            100% {
+                transform: translateY(0) rotateY(-5deg);
+            }
+
+            50% {
+                transform: translateY(-15px) rotateY(5deg);
+            }
+        }
+
+        .fade-in-up {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s var(--ease-out-expo);
+        }
+
+        .fade-in-up.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* =========================================
+           COMPONENTS
+           ========================================= */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.75rem 1.75rem;
+            border-radius: var(--radius-pill);
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            gap: 0.5rem;
+            letter-spacing: -0.01em;
+            white-space: nowrap;
+            border: none;
+        }
+
+        .btn-primary {
+            background: var(--bio-primary);
+            color: white;
+            box-shadow: 0 4px 6px rgba(16, 185, 129, 0.2);
+        }
+
+        .btn-primary:hover {
+            background: var(--bio-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px -5px rgba(16, 185, 129, 0.4);
+        }
+
+        .btn-secondary {
+            background: var(--secondary);
+            color: white;
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--text-main);
+            border: 1px solid var(--border);
+        }
+
+        .btn-outline:hover {
+            border-color: var(--bio-primary);
+            color: var(--bio-primary);
+            background: var(--bio-soft);
+        }
+
+        .tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.375rem;
+            padding: 0.375rem 0.875rem;
+            background: var(--bio-soft);
+            color: var(--bio-dark);
+            border-radius: var(--radius-pill);
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        /* =========================================
+           NAVIGATION
+           ========================================= */
+        header {
+            position: fixed;
+            top: 20px;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            display: flex;
+            justify-content: center;
+            pointer-events: none;
+            transition: top 0.3s var(--ease-out-expo);
+        }
+
+        header.scrolled {
+            top: 0;
+        }
+
+        .nav-container {
+            pointer-events: auto;
+            background: rgba(255, 255, 255, 0.96);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.08);
+            padding: 0.75rem 1.5rem;
+            border-radius: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 90%;
+            max-width: var(--container-width);
+            transition: all 0.3s var(--ease-out-expo);
+        }
+
+        header.scrolled .nav-container {
+            background: rgba(255, 255, 255, 0.98);
+            box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.1);
+        }
+
+        .logo {
+            font-size: 1.25rem;
+            font-weight: 800;
+            color: var(--secondary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            letter-spacing: -0.02em;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--text-muted);
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 2px;
+            bottom: -4px;
+            left: 0;
+            background-color: var(--bio-primary);
+            transform: scaleX(0);
+            transform-origin: bottom right;
+            transition: transform 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--bio-primary);
+        }
+
+        .nav-links a:hover::after {
+            transform: scaleX(1);
+            transform-origin: bottom left;
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            cursor: pointer;
+            z-index: 1002;
+            padding: 0.5rem;
+        }
+
+        .hamburger-line {
+            display: block;
+            width: 24px;
+            height: 2px;
+            background-color: var(--secondary);
+            margin: 5px 0;
+            transition: all 0.3s ease;
+            border-radius: 2px;
+        }
+
+        /* =========================================
+           HERO SECTION
+           ========================================= */
+        .article-hero {
+            padding: 10rem 0 5rem;
+            background: linear-gradient(180deg, var(--bg-sage) 0%, var(--bg-white) 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .article-hero::before {
+            content: '';
+            position: absolute;
+            top: -30%;
+            right: -10%;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(16, 185, 129, 0.15) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        .article-hero::after {
+            content: '🧬';
+            position: absolute;
+            top: 20%;
+            right: 10%;
+            font-size: 200px;
+            opacity: 0.05;
+            pointer-events: none;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .hero-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .article-meta {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .article-badge {
+            background: var(--bio-soft);
+            color: var(--bio-dark);
+            padding: 0.375rem 1rem;
+            border-radius: 100px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .article-date {
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+
+        .article-hero h1 {
+            font-size: clamp(2.5rem, 5vw, 3.5rem);
+            font-weight: 800;
+            line-height: 1.1;
+            letter-spacing: -0.03em;
+            margin-bottom: 1.5rem;
+            color: var(--secondary);
+        }
+
+        .article-hero p {
+            font-size: 1.25rem;
+            color: var(--text-muted);
+            line-height: 1.7;
+            margin-bottom: 2rem;
+        }
+
+        .hero-stats {
+            display: flex;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .hero-stat {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .hero-stat-icon {
+            width: 48px;
+            height: 48px;
+            background: white;
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .hero-stat-content h4 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--secondary);
+        }
+
+        .hero-stat-content span {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        /* Book Showcase */
+        .book-showcase {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 400px;
+        }
+
+        .book-card {
+            width: 220px;
+            height: 300px;
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            border-radius: 8px 12px 12px 8px;
+            position: relative;
+            box-shadow: var(--shadow-book);
+            transform: perspective(1000px) rotateY(-15deg);
+            transition: all 0.5s var(--ease-out-expo);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 1.5rem;
+            color: white;
+            border-left: 4px solid var(--bio-primary);
+        }
+
+        .book-card:nth-child(2) {
+            position: absolute;
+            transform: perspective(1000px) rotateY(5deg) translateX(80px) translateZ(-50px);
+            opacity: 0.9;
+            background: linear-gradient(135deg, #059669 0%, #047857 100%);
+            border-left-color: white;
+            z-index: -1;
+        }
+
+        .book-card:hover {
+            transform: perspective(1000px) rotateY(0deg) scale(1.05);
+            z-index: 10;
+        }
+
+        .book-spine {
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 12px;
+            background: linear-gradient(90deg, rgba(255, 255, 255, 0.3), transparent);
+            border-radius: 8px 0 0 8px;
+        }
+
+        .book-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            line-height: 1.3;
+        }
+
+        .book-author {
+            font-size: 0.85rem;
+            opacity: 0.8;
+        }
+
+        .book-badge {
+            align-self: flex-start;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 0.25rem 0.75rem;
+            border-radius: 100px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        /* =========================================
+           CONTENT SECTIONS
+           ========================================= */
+        .article-content {
+            padding: 4rem 0;
+            background: var(--bg-white);
+        }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1fr 320px;
+            gap: 4rem;
+            align-items: start;
+        }
+
+        .article-main {
+            max-width: 100%;
+        }
+
+        .section-intro {
+            background: var(--bio-soft);
+            border-radius: var(--radius-lg);
+            padding: 2rem;
+            margin-bottom: 3rem;
+            border-left: 4px solid var(--bio-primary);
+        }
+
+        .section-intro p {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            line-height: 1.8;
+            margin: 0;
+        }
+
+        .article-main h2 {
+            font-size: 1.875rem;
+            font-weight: 700;
+            color: var(--secondary);
+            margin: 3rem 0 1.5rem;
+            letter-spacing: -0.02em;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .article-main h2::before {
+            content: '';
+            width: 4px;
+            height: 32px;
+            background: var(--bio-primary);
+            border-radius: 2px;
+        }
+
+        .article-main h3 {
+            font-size: 1.375rem;
+            font-weight: 700;
+            color: var(--secondary);
+            margin: 2.5rem 0 1rem;
+        }
+
+        .article-main p {
+            color: var(--text-muted);
+            font-size: 1.05rem;
+            line-height: 1.9;
+            margin-bottom: 1.5rem;
+        }
+
+        .article-main strong {
+            color: var(--secondary);
+            font-weight: 600;
+        }
+
+        /* Book Detail Cards */
+        .book-detail-card {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 2rem;
+            margin: 2rem 0;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .book-detail-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--bio-light);
+        }
+
+        .book-detail-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--bio-primary), var(--primary));
+            border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+        }
+
+        .book-header {
+            display: flex;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .book-cover-mini {
+            width: 80px;
+            height: 110px;
+            background: linear-gradient(135deg, var(--secondary) 0%, var(--secondary-light) 100%);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            flex-shrink: 0;
+            box-shadow: var(--shadow-md);
+        }
+
+        .book-cover-mini.ncert {
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+        }
+
+        .book-cover-mini.campbell {
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+        }
+
+        .book-info h4 {
+            font-size: 1.375rem;
+            font-weight: 700;
+            color: var(--secondary);
+            margin-bottom: 0.25rem;
+        }
+
+        .book-info .author {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .book-priority {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .priority-badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 100px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .priority-badge.must {
+            background: #fee2e2;
+            color: #dc2626;
+        }
+
+        .priority-badge.high {
+            background: #fef3c7;
+            color: #d97706;
+        }
+
+        .priority-badge.recommended {
+            background: var(--bio-soft);
+            color: var(--bio-dark);
+        }
+
+        /* Chapter Lists */
+        .chapter-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .chapter-list {
+            background: var(--bg-wash);
+            border-radius: var(--radius-md);
+            padding: 1.25rem;
+        }
+
+        .chapter-list h5 {
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: var(--secondary);
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .chapter-list ul {
+            margin: 0;
+        }
+
+        .chapter-list li {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            padding: 0.375rem 0;
+            padding-left: 1.25rem;
+            position: relative;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .chapter-list li:last-child {
+            border-bottom: none;
+        }
+
+        .chapter-list li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--bio-primary);
+            font-weight: 700;
+            font-size: 0.75rem;
+        }
+
+        .chapter-list li.star::before {
+            content: '★';
+            color: #f59e0b;
+        }
+
+        /* Strategy Cards */
+        .strategy-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .strategy-card {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .strategy-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-md);
+            border-color: var(--bio-primary);
+        }
+
+        .strategy-icon {
+            width: 64px;
+            height: 64px;
+            background: var(--bio-soft);
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.75rem;
+            margin: 0 auto 1rem;
+        }
+
+        .strategy-card h4 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        .strategy-card p {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin: 0;
+            line-height: 1.6;
+        }
+
+        /* Comparison Table */
+        .comparison-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            margin: 2rem 0;
+            background: white;
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border);
+        }
+
+        .comparison-table th,
+        .comparison-table td {
+            padding: 1.25rem 1.5rem;
+            text-align: left;
+        }
+
+        .comparison-table th {
+            background: var(--secondary);
+            color: white;
+            font-weight: 600;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .comparison-table td {
+            color: var(--text-muted);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .comparison-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .comparison-table tr:hover td {
+            background: var(--bg-wash);
+        }
+
+        .comparison-table .book-name {
+            font-weight: 700;
+            color: var(--secondary);
+        }
+
+        .check {
+            color: var(--bio-primary);
+            font-weight: 700;
+        }
+
+        .partial {
+            color: #f59e0b;
+        }
+
+        .cross {
+            color: #ef4444;
+        }
+
+        /* CTA Section */
+        .cta-section {
+            background: linear-gradient(135deg, var(--secondary) 0%, var(--secondary-light) 100%);
+            border-radius: var(--radius-lg);
+            padding: 3rem;
+            margin: 4rem 0;
+            text-align: center;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-section::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at 50% 50%, rgba(16, 185, 129, 0.15) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        .cta-section h3 {
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .cta-section p {
+            color: var(--text-light);
+            margin-bottom: 2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Sidebar */
+        .article-sidebar {
+            position: sticky;
+            top: 100px;
+        }
+
+        .sidebar-card {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .sidebar-card h4 {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--secondary);
+            margin-bottom: 1rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .sidebar-link {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 0;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            border-bottom: 1px solid var(--border);
+            transition: all 0.2s ease;
+        }
+
+        .sidebar-link:last-child {
+            border-bottom: none;
+        }
+
+        .sidebar-link:hover {
+            color: var(--bio-primary);
+            padding-left: 0.5rem;
+        }
+
+        .sidebar-link svg {
+            width: 16px;
+            height: 16px;
+            color: var(--text-light);
+        }
+
+        .sidebar-link:hover svg {
+            color: var(--bio-primary);
+        }
+
+        .sidebar-highlight {
+            background: linear-gradient(135deg, var(--bio-soft), #f0fdf4);
+            border: 1px solid var(--bio-light);
+        }
+
+        .sidebar-highlight .price {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--secondary);
+            margin: 0.5rem 0;
+        }
+
+        .sidebar-highlight .price span {
+            font-size: 1rem;
+            font-weight: 500;
+            color: var(--text-muted);
+        }
+
+        /* Reading Progress */
+        .reading-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--bio-primary), var(--primary));
+            z-index: 9999;
+            transition: width 0.1s;
+        }
+
+        /* =========================================
+           RESPONSIVE
+           ========================================= */
+        @media (max-width: 1024px) {
+            .hero-grid {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .book-showcase {
+                order: -1;
+                height: 300px;
+            }
+
+            .hero-stats {
+                justify-content: center;
+            }
+
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .article-sidebar {
+                position: relative;
+                top: 0;
+                order: -1;
+            }
+
+            .chapter-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .strategy-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            header {
+                top: 10px;
+            }
+
+            .nav-container {
+                width: 95%;
+                padding: 0.75rem 1.25rem;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .nav-links {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100vh;
+                background: white;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                gap: 2rem;
+                transform: translateX(100%);
+                transition: transform 0.3s ease;
+                z-index: 999;
+            }
+
+            .nav-links.active {
+                transform: translateX(0);
+            }
+
+            .nav-links a {
+                font-size: 1.5rem;
+            }
+
+            .article-hero {
+                padding: 8rem 0 3rem;
+            }
+
+            .article-hero h1 {
+                font-size: 2rem;
+            }
+
+            .book-detail-card {
+                padding: 1.5rem;
+            }
+
+            .book-header {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .comparison-table {
+                font-size: 0.85rem;
+            }
+
+            .comparison-table th,
+            .comparison-table td {
+                padding: 0.75rem;
+            }
+        }
+
+        /* Utility */
+        .text-gradient {
+            background: linear-gradient(135deg, var(--bio-primary) 0%, var(--primary) 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Reading Progress Bar -->
+    <div class="reading-progress" id="reading-progress"></div>
+
+    <!-- NAVIGATION -->
+    <header>
+        <div class="nav-container">
+            <a href="../index.html" class="logo">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path
+                        d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z">
+                    </path>
+                </svg>
+                IISER Smart Prep
+            </a>
+
+            <button class="mobile-menu-btn" onclick="toggleMenu()" aria-label="Toggle menu">
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+            </button>
+
+            <nav class="nav-links" id="nav-links">
+                <a href="../index.html">Home</a>
+                <a href="../index.html#features">Features</a>
+                <a href="../index.html#pricing">Pricing</a>
+                <a href="../index.html#faq">FAQ</a>
+                <div class="auth-buttons" style="display: flex; gap: 0.75rem; align-items: center;">
+                    <a href="../login.html" class="btn btn-outline"
+                        style="padding: 0.5rem 1.2rem; font-size: 0.85rem;">Log In</a>
+                    <a href="../login.html?mode=signup" class="btn btn-primary"
+                        style="padding: 0.5rem 1.2rem; font-size: 0.85rem;">Get Started</a>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- HERO SECTION -->
+    <section class="article-hero">
+        <div class="container">
+            <div class="hero-grid fade-in-up">
+                <div>
+                    <div class="article-meta">
+                        <span class="article-badge">Resources</span>
+                        <span class="article-date">Jan 28, 2026</span>
+                    </div>
+                    <h1>Best Books for <span class="text-gradient">Biology</span></h1>
+                    <p>A curated, battle-tested list of must-read books focusing on NCERT & Campbell Biology. Master
+                        these chapters and you're 80% ready for IAT.</p>
+
+                    <div class="hero-stats">
+                        <div class="hero-stat">
+                            <div class="hero-stat-icon">📚</div>
+                            <div class="hero-stat-content">
+                                <h4>2</h4>
+                                <span>Core Books</span>
+                            </div>
+                        </div>
+                        <div class="hero-stat">
+                            <div class="hero-stat-icon">🎯</div>
+                            <div class="hero-stat-content">
+                                <h4>25+</h4>
+                                <span>Key Chapters</span>
+                            </div>
+                        </div>
+                        <div class="hero-stat">
+                            <div class="hero-stat-icon">⏱️</div>
+                            <div class="hero-stat-content">
+                                <h4>6-8</h4>
+                                <span>Weeks to Complete</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="book-showcase">
+                    <div class="book-card">
+                        <div class="book-spine"></div>
+                        <span class="book-badge">Must Read</span>
+                        <div class="book-title">NCERT Biology</div>
+                        <div class="book-author">Class 11 & 12</div>
+                    </div>
+                    <div class="book-card">
+                        <div class="book-spine"></div>
+                        <span class="book-badge">Reference</span>
+                        <div class="book-title">Campbell Biology</div>
+                        <div class="book-author">12th Edition</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ARTICLE CONTENT -->
+    <section class="article-content">
+        <div class="container">
+            <div class="content-grid">
+                <div class="article-main fade-in-up">
+
+                    <div class="section-intro">
+                        <p><strong>The IAT Biology section tests conceptual clarity, not rote memorization.</strong>
+                            While NCERT forms the backbone (60-70% questions), Campbell Biology helps you tackle the
+                            remaining application-based questions that separate toppers from the rest.</p>
+                    </div>
+
+                    <!-- NCERT Section -->
+                    <h2>NCERT Biology: The Foundation</h2>
+                    <p>NCERT is non-negotiable. Every line, every diagram, every caption is potential question material.
+                        The IAT specifically tests your ability to connect concepts across chapters.</p>
+
+                    <div class="book-detail-card">
+                        <div class="book-header">
+                            <div class="book-cover-mini ncert">📗</div>
+                            <div class="book-info">
+                                <h4>NCERT Biology (Class 11 & 12)</h4>
+                                <div class="author">NCERT Publications</div>
+                                <div class="book-priority">
+                                    <span class="priority-badge must">Must Do</span>
+                                    <span class="priority-badge high">60-70% Weightage</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <h3 style="margin-top: 0;">High-Yield Chapters</h3>
+
+                        <div class="chapter-grid">
+                            <div class="chapter-list">
+                                <h5>🧬 Class 11 (Priority)</h5>
+                                <ul>
+                                    <li class="star">Cell: The Unit of Life</li>
+                                    <li class="star">Cell Cycle & Cell Division</li>
+                                    <li class="star">Biomolecules</li>
+                                    <li>Structural Organisation in Animals</li>
+                                    <li>Anatomy of Flowering Plants</li>
+                                    <li>Transport in Plants</li>
+                                    <li>Photosynthesis in Higher Plants</li>
+                                    <li>Respiration in Plants</li>
+                                </ul>
+                            </div>
+                            <div class="chapter-list">
+                                <h5>🧬 Class 12 (Priority)</h5>
+                                <ul>
+                                    <li class="star">Principles of Inheritance & Variation</li>
+                                    <li class="star">Molecular Basis of Inheritance</li>
+                                    <li class="star">Human Reproduction</li>
+                                    <li class="star">Reproductive Health</li>
+                                    <li>Evolution</li>
+                                    <li>Human Health & Disease</li>
+                                    <li>Microbes in Human Welfare</li>
+                                    <li>Biotechnology: Principles & Processes</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div
+                            style="margin-top: 1.5rem; padding: 1rem; background: var(--bg-wash); border-radius: var(--radius-md);">
+                            <strong>💡 Pro Tip:</strong> Read the "Summary" at the end of each NCERT chapter first. It
+                            gives you the blueprint of what to focus on. Then read the chapter, and finally solve all
+                            intext and exercise questions.
+                        </div>
+                    </div>
+
+                    <!-- Strategy Cards -->
+                    <h3>How to Study NCERT for IAT</h3>
+                    <div class="strategy-grid">
+                        <div class="strategy-card">
+                            <div class="strategy-icon">📖</div>
+                            <h4>First Reading</h4>
+                            <p>Read like a story. Don't highlight. Just understand the flow and key concepts.</p>
+                        </div>
+                        <div class="strategy-card">
+                            <div class="strategy-icon">🖊️</div>
+                            <h4>Second Reading</h4>
+                            <p>Active reading. Highlight, make notes, create mind maps for processes.</p>
+                        </div>
+                        <div class="strategy-card">
+                            <div class="strategy-icon">🔄</div>
+                            <h4>Revision Cycles</h4>
+                            <p>Revise every 7 days. Use the summary + your notes for quick revision.</p>
+                        </div>
+                    </div>
+
+                    <!-- Campbell Section -->
+                    <h2>Campbell Biology: The Differentiator</h2>
+                    <p>Campbell is your weapon for the 30-40% questions that require deeper understanding. Focus only on
+                        specific chapters that extend NCERT concepts.</p>
+
+                    <div class="book-detail-card">
+                        <div class="book-header">
+                            <div class="book-cover-mini campbell">📘</div>
+                            <div class="book-info">
+                                <h4>Campbell Biology (12th Edition)</h4>
+                                <div class="author">Reece, Urry, Cain et al.</div>
+                                <div class="book-priority">
+                                    <span class="priority-badge recommended">Reference</span>
+                                    <span class="priority-badge high">30-40% Edge</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <h3 style="margin-top: 0;">Selective Reading Guide</h3>
+                        <p style="font-size: 0.95rem; color: var(--text-light); margin-bottom: 1rem;">Don't read
+                            cover-to-cover. Use Campbell for these specific topics only:</p>
+
+                        <div class="chapter-grid">
+                            <div class="chapter-list">
+                                <h5>🔬 Must-Read Units</h5>
+                                <ul>
+                                    <li class="star">Unit 2: The Cell (Ch 6-12)</li>
+                                    <li class="star">Unit 3: Genetics (Ch 13-17)</li>
+                                    <li>Unit 4: Evolution (Ch 22-25)</li>
+                                    <li>Unit 5: Plant Form & Function (Ch 35-39)</li>
+                                </ul>
+                            </div>
+                            <div class="chapter-list">
+                                <h5>🎯 High-Yield Topics</h5>
+                                <ul>
+                                    <li class="star">Membrane Transport</li>
+                                    <li class="star">Cell Signaling</li>
+                                    <li class="star">DNA Replication & Repair</li>
+                                    <li class="star">Gene Expression Regulation</li>
+                                    <li>Photosynthesis mechanisms</li>
+                                    <li>Respiration pathways</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div
+                            style="margin-top: 1.5rem; padding: 1rem; background: #fef3c7; border-radius: var(--radius-md); border-left: 4px solid #f59e0b;">
+                            <strong>⚠️ Warning:</strong> Campbell is 1400+ pages. Reading everything is a trap. Stick to
+                            the chapters listed above and use the "Check Your Understanding" questions at chapter ends.
+                        </div>
+                    </div>
+
+                    <!-- Comparison Table -->
+                    <h3>Quick Comparison</h3>
+                    <table class="comparison-table">
+                        <thead>
+                            <tr>
+                                <th>Aspect</th>
+                                <th>NCERT</th>
+                                <th>Campbell</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="book-name">Question Coverage</td>
+                                <td class="check">60-70%</td>
+                                <td class="partial">30-40%</td>
+                            </tr>
+                            <tr>
+                                <td class="book-name">Difficulty Level</td>
+                                <td>Moderate</td>
+                                <td>High</td>
+                            </tr>
+                            <tr>
+                                <td class="book-name">Time Required</td>
+                                <td class="check">3-4 weeks</td>
+                                <td>4-6 weeks (selective)</td>
+                            </tr>
+                            <tr>
+                                <td class="book-name">Diagrams</td>
+                                <td class="check">Exam-standard</td>
+                                <td>Conceptual depth</td>
+                            </tr>
+                            <tr>
+                                <td class="book-name">Priority</td>
+                                <td class="check">Absolute Must</td>
+                                <td class="partial">Recommended</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <!-- Study Timeline -->
+                    <h2>Recommended 6-Week Timeline</h2>
+
+                    <div class="book-detail-card" style="border-left: 4px solid var(--bio-primary);">
+                        <div style="display: grid; gap: 1.5rem;">
+                            <div style="display: flex; gap: 1rem; align-items: flex-start;">
+                                <div
+                                    style="width: 40px; height: 40px; background: var(--bio-soft); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; color: var(--bio-dark); flex-shrink: 0;">
+                                    1</div>
+                                <div>
+                                    <h4 style="margin: 0 0 0.25rem; font-size: 1.1rem;">Weeks 1-2: NCERT Class 11</h4>
+                                    <p style="margin: 0; font-size: 0.9rem; color: var(--text-muted);">Focus on Cell
+                                        Biology, Biomolecules, and Plant Physiology. These form the conceptual base.</p>
+                                </div>
+                            </div>
+                            <div style="display: flex; gap: 1rem; align-items: flex-start;">
+                                <div
+                                    style="width: 40px; height: 40px; background: var(--bio-soft); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; color: var(--bio-dark); flex-shrink: 0;">
+                                    2</div>
+                                <div>
+                                    <h4 style="margin: 0 0 0.25rem; font-size: 1.1rem;">Weeks 3-4: NCERT Class 12</h4>
+                                    <p style="margin: 0; font-size: 0.9rem; color: var(--text-muted);">Genetics,
+                                        Reproduction, and Biotechnology are high-weightage. Master these first.</p>
+                                </div>
+                            </div>
+                            <div style="display: flex; gap: 1rem; align-items: flex-start;">
+                                <div
+                                    style="width: 40px; height: 40px; background: #fef3c7; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; color: #d97706; flex-shrink: 0;">
+                                    3</div>
+                                <div>
+                                    <h4 style="margin: 0 0 0.25rem; font-size: 1.1rem;">Weeks 5-6: Campbell Selective
+                                    </h4>
+                                    <p style="margin: 0; font-size: 0.9rem; color: var(--text-muted);">Read only the
+                                        specified chapters. Focus on understanding mechanisms, not memorization.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Final CTA -->
+                    <div class="cta-section">
+                        <h3>Ready to Test Your Biology Prep?</h3>
+                        <p>Take our AI-curated Biology sectional test with questions mapped to these exact chapters.</p>
+                        <div class="cta-buttons">
+                            <a href="../mock_test/biology_sectional.html" class="btn btn-primary">
+                                Start Biology Sectional
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="9 18 15 12 9 6"></polyline>
+                                </svg>
+                            </a>
+                            <a href="../pyqs/pyq.html?subject=biology" class="btn btn-outline"
+                                style="background: white; color: var(--secondary);">
+                                Browse Biology PYQs
+                            </a>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- SIDEBAR -->
+                <aside class="article-sidebar fade-in-up">
+                    <!-- Quick Links -->
+                    <div class="sidebar-card">
+                        <h4>Related Resources</h4>
+                        <a href="iat-2026-notification.html" class="sidebar-link">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                <polyline points="14 2 14 8 20 8"></polyline>
+                            </svg>
+                            IAT 2026 Official Notification
+                        </a>
+                        <a href="#" class="sidebar-link">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                <polyline points="14 2 14 8 20 8"></polyline>
+                            </svg>
+                            Best Books for Physics
+                        </a>
+                        <a href="#" class="sidebar-link">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                <polyline points="14 2 14 8 20 8"></polyline>
+                            </svg>
+                            Best Books for Chemistry
+                        </a>
+                        <a href="#" class="sidebar-link">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                <polyline points="14 2 14 8 20 8"></polyline>
+                            </svg>
+                            3-Month Study Plan
+                        </a>
+                    </div>
+
+                    <!-- Download Checklist -->
+                    <div class="sidebar-card sidebar-highlight">
+                        <h4>Free Download</h4>
+                        <div style="text-align: center; padding: 1rem 0;">
+                            <div style="font-size: 3rem; margin-bottom: 0.5rem;">📋</div>
+                            <h5
+                                style="font-size: 1.1rem; font-weight: 700; color: var(--secondary); margin-bottom: 0.5rem;">
+                                Biology Chapter Checklist</h5>
+                            <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;">Track your
+                                progress through every high-yield chapter.</p>
+                            <button class="btn btn-primary" style="width: 100%;"
+                                onclick="alert('Checklist download coming soon!')">
+                                Download PDF
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Sticky CTA -->
+                    <div class="sidebar-card" style="background: var(--secondary); color: white;">
+                        <h4 style="color: white; border-bottom-color: rgba(255,255,255,0.2);">Need Structured Prep?</h4>
+                        <p style="font-size: 0.9rem; color: var(--text-light); margin-bottom: 1rem;">Get AI-powered
+                            study plans, daily tasks, and mock tests.</p>
+                        <a href="../index.html#pricing" class="btn btn-primary" style="width: 100%;">View Plans</a>
+                    </div>
+                </aside>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer style="background: white; border-top: 1px solid var(--border); padding: 5rem 0 2rem;">
+        <div class="container">
+            <div
+                style="display: flex; flex-wrap: wrap; gap: 3rem; justify-content: space-between; margin-bottom: 3rem;">
+                <div style="max-width: 320px;">
+                    <a href="../index.html" class="logo" style="margin-bottom: 1rem;">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path
+                                d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z">
+                            </path>
+                        </svg>
+                        IISER Smart Prep
+                    </a>
+                    <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 1rem;">Empowering scientific
+                        minds to reach India's premier research institutes through data and strategy.</p>
+                </div>
+
+                <div style="display: flex; gap: 4rem; flex-wrap: wrap;">
+                    <div>
+                        <h4 style="margin-bottom: 1rem; font-size: 0.9rem; font-weight: 700; color: var(--secondary);">
+                            Platform</h4>
+                        <ul style="display: flex; flex-direction: column; gap: 0.75rem;">
+                            <li><a href="../ai_tutor.html" style="color: var(--text-muted); font-size: 0.9rem;">AI
+                                    Tutor</a></li>
+                            <li><a href="../mock_test/full_mock_test_homepage.html"
+                                    style="color: var(--text-muted); font-size: 0.9rem;">Mock Tests</a></li>
+                            <li><a href="../index.html#pricing"
+                                    style="color: var(--text-muted); font-size: 0.9rem;">Pricing</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 style="margin-bottom: 1rem; font-size: 0.9rem; font-weight: 700; color: var(--secondary);">
+                            Resources</h4>
+                        <ul style="display: flex; flex-direction: column; gap: 0.75rem;">
+                            <li><a href="#" style="color: var(--text-muted); font-size: 0.9rem;">Study Guides</a></li>
+                            <li><a href="../pyqs/pyq.html" style="color: var(--text-muted); font-size: 0.9rem;">Previous
+                                    Year Papers</a></li>
+                            <li><a href="#" style="color: var(--text-muted); font-size: 0.9rem;">Book
+                                    Recommendations</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 style="margin-bottom: 1rem; font-size: 0.9rem; font-weight: 700; color: var(--secondary);">
+                            Support</h4>
+                        <ul style="display: flex; flex-direction: column; gap: 0.75rem;">
+                            <li><a href="../index.html#faq" style="color: var(--text-muted); font-size: 0.9rem;">FAQ</a>
+                            </li>
+                            <li><a href="../contact.html"
+                                    style="color: var(--text-muted); font-size: 0.9rem;">Contact</a></li>
+                            <li><a href="../privacy.html" style="color: var(--text-muted); font-size: 0.9rem;">Privacy
+                                    Policy</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div
+                style="text-align: center; border-top: 1px solid var(--border); padding-top: 2rem; color: var(--text-light); font-size: 0.85rem;">
+                &copy; 2026 IISER Smart Prep. All rights reserved. Not affiliated with IISERs Joint Admissions
+                Committee.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile Menu
+        function toggleMenu() {
+            const navLinks = document.getElementById('nav-links');
+            navLinks.classList.toggle('active');
+            document.body.style.overflow = navLinks.classList.contains('active') ? 'hidden' : 'auto';
+        }
+
+        // Scroll Animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: "0px 0px -20px 0px"
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-in-up').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Header Scroll Effect
+        const header = document.querySelector('header');
+        let isScrolled = false;
+        let ticking = false;
+
+        window.addEventListener('scroll', () => {
+            if (!ticking) {
+                window.requestAnimationFrame(() => {
+                    const shouldBeScrolled = window.scrollY > 20;
+                    if (shouldBeScrolled !== isScrolled) {
+                        isScrolled = shouldBeScrolled;
+                        header.classList.toggle('scrolled', isScrolled);
+                    }
+                    ticking = false;
+                });
+                ticking = true;
+            }
+        }, { passive: true });
+
+        // Reading Progress Bar
+        window.addEventListener('scroll', () => {
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            document.getElementById('reading-progress').style.width = scrolled + "%";
+        });
+    </script>
+</body>
+
+</html>
