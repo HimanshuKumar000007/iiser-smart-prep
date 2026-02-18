@@ -1118,7 +1118,7 @@
             .nav-links {
                 position: fixed;
                 top: 0;
-                left: 0;
+                right: 0;
                 width: 100%;
                 height: 100vh;
                 background: white;
@@ -1126,14 +1126,14 @@
                 justify-content: center;
                 align-items: center;
                 gap: 2rem;
-                transform: translateX(100%);
-                transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+                clip-path: inset(0 0 0 100%);
+                transition: clip-path 0.3s cubic-bezier(0.4, 0, 0.2, 1);
                 z-index: 999;
                 box-shadow: -10px 0 30px rgba(0, 0, 0, 0.1);
             }
 
             .nav-links.active {
-                transform: translateX(0);
+                clip-path: inset(0 0 0 0);
             }
 
             .nav-links a {
@@ -1521,6 +1521,175 @@
         </div>
     </section>
 
+    <!-- LATEST ARTICLES & GUIDES -->
+    <section id="blog" style="background: white;">
+        <div class="container">
+            <div class="section-header fade-in-up">
+                <span class="kicker">Knowledge Hub</span>
+                <h2>Latest Articles &amp; Guides</h2>
+                <p>Expert insights, exam news, and study hacks to keep your preparation on track.</p>
+            </div>
+
+            <!-- Category Filter (Visual Only) -->
+            <div class="fade-in-up"
+                style="display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap; margin-bottom: 3rem;">
+                <button class="btn btn-primary" style="padding: 0.5rem 1.25rem; font-size: 0.9rem;">All</button>
+                <button class="btn btn-outline"
+                    style="padding: 0.5rem 1.25rem; font-size: 0.9rem; border-color: var(--border); color: var(--text-muted);">Strategy
+                    🧠</button>
+                <button class="btn btn-outline"
+                    style="padding: 0.5rem 1.25rem; font-size: 0.9rem; border-color: var(--border); color: var(--text-muted);">Exam
+                    News 📰</button>
+                <button class="btn btn-outline"
+                    style="padding: 0.5rem 1.25rem; font-size: 0.9rem; border-color: var(--border); color: var(--text-muted);">Subject
+                    Wise 📚</button>
+                <button class="btn btn-outline"
+                    style="padding: 0.5rem 1.25rem; font-size: 0.9rem; border-color: var(--border); color: var(--text-muted);">Success
+                    Stories 🏆</button>
+            </div>
+
+            <div class="grid-3">
+                <!-- Blog Card 1 -->
+                <article class="card card-clickable fade-in-up"
+                    style="display: flex; flex-direction: column; height: 100%;">
+                    <div style="margin-bottom: 1rem; display: flex; align-items: center; gap: 0.75rem;">
+                        <span
+                            style="background: #e0e7ff; color: var(--primary); padding: 0.25rem 0.75rem; border-radius: 100px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase;">Strategy</span>
+                        <span style="color: var(--text-light); font-size: 0.8rem;">Feb 10, 2026</span>
+                    </div>
+                    <h3 style="font-size: 1.25rem; margin-bottom: 0.75rem; line-height: 1.4;">How to Crack IAT in 3
+                        Months: A Week-by-Week Plan</h3>
+                    <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: auto;">Detailed roadmap
+                        covering high-weightage topics, revision cycles, and mock test strategy for maximum output.</p>
+                    <div class="card-link" style="margin-top: 1.5rem;">
+                        Read Article
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                            <polyline points="12 5 19 12 12 19"></polyline>
+                        </svg>
+                    </div>
+                </article>
+
+                <!-- Blog Card 2 -->
+                <a href="news/iat-2026-notification.html" class="card card-clickable fade-in-up"
+                    style="display: flex; flex-direction: column; height: 100%; text-decoration: none;">
+                    <div style="margin-bottom: 1rem; display: flex; align-items: center; gap: 0.75rem;">
+                        <span
+                            style="background: #fee2e2; color: #ef4444; padding: 0.25rem 0.75rem; border-radius: 100px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase;">Update</span>
+                        <span style="color: var(--text-light); font-size: 0.8rem;">Feb 07, 2026</span>
+                    </div>
+                    <h3 style="font-size: 1.25rem; margin-bottom: 0.75rem; line-height: 1.4; color: var(--secondary);">
+                        IAT 2026 Official
+                        Notification Out: Key Changes</h3>
+                    <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: auto;">Everything you need to
+                        know about the new exam pattern, eligibility criteria, and important dates.</p>
+                    <div class="card-link" style="margin-top: 1.5rem;">
+                        Read Article
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                            <polyline points="12 5 19 12 12 19"></polyline>
+                        </svg>
+                    </div>
+                </a>
+
+                <!-- Blog Card 3 -->
+                <a href="news/best-book-for-biology--for-iat.html" class="card card-clickable fade-in-up"
+                    style="display: flex; flex-direction: column; height: 100%; text-decoration: none;">
+                    <div style="margin-bottom: 1rem; display: flex; align-items: center; gap: 0.75rem;">
+                        <span
+                            style="background: #dcfce7; color: #166534; padding: 0.25rem 0.75rem; border-radius: 100px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase;">Resources</span>
+                        <span style="color: var(--text-light); font-size: 0.8rem;">Jan 28, 2026</span>
+                    </div>
+                    <h3 style="font-size: 1.25rem; margin-bottom: 0.75rem; line-height: 1.4; color: var(--secondary);">
+                        Best Books for Biology: Focusing on NCERT &amp; Campbell</h3>
+                    <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: auto;">A curated list of
+                        must-read books and specific chapters that are critical for the Bio section of IAT.</p>
+                    <div class="card-link" style="margin-top: 1.5rem;">
+                        Read Article
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                            <polyline points="12 5 19 12 12 19"></polyline>
+                        </svg>
+                    </div>
+                </a>
+
+                <!-- Blog Card 4 - Physics -->
+                <a href="news/best-book-for-physics--for-iat.html" class="card card-clickable fade-in-up blog-extra-card"
+                    style="display: none; flex-direction: column; height: 100%; text-decoration: none;">
+                    <div style="margin-bottom: 1rem; display: flex; align-items: center; gap: 0.75rem;">
+                        <span
+                            style="background: #fef3c7; color: #b45309; padding: 0.25rem 0.75rem; border-radius: 100px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase;">Resources</span>
+                        <span style="color: var(--text-light); font-size: 0.8rem;">Jan 25, 2026</span>
+                    </div>
+                    <h3 style="font-size: 1.25rem; margin-bottom: 0.75rem; line-height: 1.4; color: var(--secondary);">
+                        Best Books for Physics: HC Verma, Irodov &amp; Beyond</h3>
+                    <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: auto;">Topic-wise book
+                        recommendations covering Mechanics, Electrodynamics, Optics, and Modern Physics for IAT.</p>
+                    <div class="card-link" style="margin-top: 1.5rem;">
+                        Read Article
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                            <polyline points="12 5 19 12 12 19"></polyline>
+                        </svg>
+                    </div>
+                </a>
+
+                <!-- Blog Card 5 - Chemistry -->
+                <a href="news//best-book-for-chemistry--for-iat.html" class="card card-clickable fade-in-up blog-extra-card"
+                    style="display: none; flex-direction: column; height: 100%; text-decoration: none;">
+                    <div style="margin-bottom: 1rem; display: flex; align-items: center; gap: 0.75rem;">
+                        <span
+                            style="background: #ede9fe; color: #6d28d9; padding: 0.25rem 0.75rem; border-radius: 100px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase;">Resources</span>
+                        <span style="color: var(--text-light); font-size: 0.8rem;">Jan 22, 2026</span>
+                    </div>
+                    <h3 style="font-size: 1.25rem; margin-bottom: 0.75rem; line-height: 1.4; color: var(--secondary);">
+                        Best Books for Chemistry: NCERT, JD Lee &amp; Clayden</h3>
+                    <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: auto;">Covering Physical,
+                        Organic, and Inorganic Chemistry — the exact books and chapters that matter for IAT.</p>
+                    <div class="card-link" style="margin-top: 1.5rem;">
+                        Read Article
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                            <polyline points="12 5 19 12 12 19"></polyline>
+                        </svg>
+                    </div>
+                </a>
+
+                <!-- Blog Card 6 - Mathematics -->
+                <a href="news/best-books-for-math-for-iat.html" class="card card-clickable fade-in-up blog-extra-card"
+                    style="display: none; flex-direction: column; height: 100%; text-decoration: none;">
+                    <div style="margin-bottom: 1rem; display: flex; align-items: center; gap: 0.75rem;">
+                        <span
+                            style="background: #fce7f3; color: #be185d; padding: 0.25rem 0.75rem; border-radius: 100px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase;">Resources</span>
+                        <span style="color: var(--text-light); font-size: 0.8rem;">Jan 20, 2026</span>
+                    </div>
+                    <h3 style="font-size: 1.25rem; margin-bottom: 0.75rem; line-height: 1.4; color: var(--secondary);">
+                        Best Books for Math: RD Sharma, Cengage &amp; Hall Knight</h3>
+                    <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: auto;">From Calculus to
+                        Algebra — a focused reading list with chapter-level priorities for the Math section of IAT.</p>
+                    <div class="card-link" style="margin-top: 1.5rem;">
+                        Read Article
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                            <polyline points="12 5 19 12 12 19"></polyline>
+                        </svg>
+                    </div>
+                </a>
+            </div>
+
+
+            <div style="text-align: center; margin-top: 3rem;">
+                <button id="toggle-articles-btn" class="btn btn-outline" onclick="toggleExtraArticles()">View All Articles</button>
+            </div>
+        </div>
+    </section>
+
     <!-- 6. PRICING -->
     <section id="pricing" class="section-wash">
         <div class="container">
@@ -1665,107 +1834,6 @@
 
 
 
-    <!-- 9. LATEST ARTICLES & GUIDES -->
-    <section id="blog" style="background: white;">
-        <div class="container">
-            <div class="section-header fade-in-up">
-                <span class="kicker">Knowledge Hub</span>
-                <h2>Latest Articles & Guides</h2>
-                <p>Expert insights, exam news, and study hacks to keep your preparation on track.</p>
-            </div>
-
-            <!-- Category Filter (Visual Only) -->
-            <div class="fade-in-up"
-                style="display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap; margin-bottom: 3rem;">
-                <button class="btn btn-primary" style="padding: 0.5rem 1.25rem; font-size: 0.9rem;">All</button>
-                <button class="btn btn-outline"
-                    style="padding: 0.5rem 1.25rem; font-size: 0.9rem; border-color: var(--border); color: var(--text-muted);">Strategy
-                    🧠</button>
-                <button class="btn btn-outline"
-                    style="padding: 0.5rem 1.25rem; font-size: 0.9rem; border-color: var(--border); color: var(--text-muted);">Exam
-                    News 📰</button>
-                <button class="btn btn-outline"
-                    style="padding: 0.5rem 1.25rem; font-size: 0.9rem; border-color: var(--border); color: var(--text-muted);">Subject
-                    Wise 📚</button>
-                <button class="btn btn-outline"
-                    style="padding: 0.5rem 1.25rem; font-size: 0.9rem; border-color: var(--border); color: var(--text-muted);">Success
-                    Stories 🏆</button>
-            </div>
-
-            <div class="grid-3">
-                <!-- Blog Card 1 -->
-                <article class="card card-clickable fade-in-up"
-                    style="display: flex; flex-direction: column; height: 100%;">
-                    <div style="margin-bottom: 1rem; display: flex; align-items: center; gap: 0.75rem;">
-                        <span
-                            style="background: #e0e7ff; color: var(--primary); padding: 0.25rem 0.75rem; border-radius: 100px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase;">Strategy</span>
-                        <span style="color: var(--text-light); font-size: 0.8rem;">Feb 10, 2026</span>
-                    </div>
-                    <h3 style="font-size: 1.25rem; margin-bottom: 0.75rem; line-height: 1.4;">How to Crack IAT in 3
-                        Months: A Week-by-Week Plan</h3>
-                    <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: auto;">Detailed roadmap
-                        covering high-weightage topics, revision cycles, and mock test strategy for maximum output.</p>
-                    <div class="card-link" style="margin-top: 1.5rem;">
-                        Read Article
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <line x1="5" y1="12" x2="19" y2="12"></line>
-                            <polyline points="12 5 19 12 12 19"></polyline>
-                        </svg>
-                    </div>
-                </article>
-
-                <!-- Blog Card 2 -->
-                <a href="news/iat-2026-notification.html" class="card card-clickable fade-in-up"
-                    style="display: flex; flex-direction: column; height: 100%; text-decoration: none;">
-                    <div style="margin-bottom: 1rem; display: flex; align-items: center; gap: 0.75rem;">
-                        <span
-                            style="background: #fee2e2; color: #ef4444; padding: 0.25rem 0.75rem; border-radius: 100px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase;">Update</span>
-                        <span style="color: var(--text-light); font-size: 0.8rem;">Feb 07, 2026</span>
-                    </div>
-                    <h3 style="font-size: 1.25rem; margin-bottom: 0.75rem; line-height: 1.4; color: var(--secondary);">
-                        IAT 2026 Official
-                        Notification Out: Key Changes</h3>
-                    <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: auto;">Everything you need to
-                        know about the new exam pattern, eligibility criteria, and important dates.</p>
-                    <div class="card-link" style="margin-top: 1.5rem;">
-                        Read Article
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <line x1="5" y1="12" x2="19" y2="12"></line>
-                            <polyline points="12 5 19 12 12 19"></polyline>
-                        </svg>
-                    </div>
-                </a>
-
-                <!-- Blog Card 3 -->
-                <article class="card card-clickable fade-in-up"
-                    style="display: flex; flex-direction: column; height: 100%;">
-                    <div style="margin-bottom: 1rem; display: flex; align-items: center; gap: 0.75rem;">
-                        <span
-                            style="background: #dcfce7; color: #166534; padding: 0.25rem 0.75rem; border-radius: 100px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase;">Resources</span>
-                        <span style="color: var(--text-light); font-size: 0.8rem;">Jan 28, 2026</span>
-                    </div>
-                    <h3 style="font-size: 1.25rem; margin-bottom: 0.75rem; line-height: 1.4;">Best Books for Biology:
-                        Focusing on NCERT & Campbell</h3>
-                    <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: auto;">A curated list of
-                        must-read books and specific chapters that are critical for the Bio section of IAT.</p>
-                    <div class="card-link" style="margin-top: 1.5rem;">
-                        Read Article
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <line x1="5" y1="12" x2="19" y2="12"></line>
-                            <polyline points="12 5 19 12 12 19"></polyline>
-                        </svg>
-                    </div>
-                </article>
-            </div>
-
-            <div style="text-align: center; margin-top: 3rem;">
-                <a href="#" class="btn btn-outline">View All Articles</a>
-            </div>
-        </div>
-    </section>
 
     <!-- 10. FAQ -->
     <div class="container">
@@ -2209,6 +2277,24 @@
         }, 5000);
     </script>
     <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <script>
+    // --- Blog Articles Toggle ---
+        function toggleExtraArticles() {
+            var cards = document.querySelectorAll('.blog-extra-card');
+            var btn = document.getElementById('toggle-articles-btn');
+            if (!cards.length) return;
+            
+            var isHidden = cards[0].style.display === 'none';
+            
+            for (var i = 0; i < cards.length; i++) {
+                cards[i].style.display = isHidden ? 'flex' : 'none';
+            }
+            
+            btn.textContent = isHidden ? 'Show Less' : 'View All Articles';
+        }
+
+    
+    </script>
     <script src="config.js"></script>
     <script src="payment.js"></script>
 </body>

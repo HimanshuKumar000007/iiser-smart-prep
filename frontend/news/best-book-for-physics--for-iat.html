@@ -137,6 +137,63 @@
             transform: translateY(0);
         }
 
+        /* Modal Styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(4px);
+            z-index: 1000;
+            display: none;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 1;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 2rem;
+            border-radius: var(--radius-lg);
+            width: 90%;
+            max-width: 500px;
+            box-shadow: var(--shadow-xl);
+            position: relative;
+            animation: slide-up 0.4s var(--ease-out-expo);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-header h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--secondary);
+        }
+
+        .close-modal {
+            font-size: 1.5rem;
+            color: var(--text-muted);
+            cursor: pointer;
+            line-height: 1;
+        }
+
+        .close-modal:hover {
+            color: var(--secondary);
+        }
+
         /* =========================================
            COMPONENTS
            ========================================= */
@@ -1613,7 +1670,7 @@
                             </svg>
                             IAT 2026 Official Notification
                         </a>
-                        <a href="best-books-biology.html" class="sidebar-link">
+                        <a href="best-book-for-biology--for-iat.html" class="sidebar-link">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                                 stroke-linecap="round" stroke-linejoin="round">
                                 <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
@@ -1621,7 +1678,7 @@
                             </svg>
                             Best Books for Biology
                         </a>
-                        <a href="#" class="sidebar-link">
+                        <a href="best-book-for-chemistry--for-iat.html" class="sidebar-link">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                                 stroke-linecap="round" stroke-linejoin="round">
                                 <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
@@ -1629,7 +1686,7 @@
                             </svg>
                             Best Books for Chemistry
                         </a>
-                        <a href="#" class="sidebar-link">
+                        <a href="javascript:void(0)" class="sidebar-link" onclick="accessStudyPlan()">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                                 stroke-linecap="round" stroke-linejoin="round">
                                 <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
@@ -1798,6 +1855,98 @@
             const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
             const scrolled = (winScroll / height) * 100;
             document.getElementById('reading-progress').style.width = scrolled + "%";
+        });
+    </script>
+
+    <!-- MODAL: STUDY PLAN ACCESS -->
+    <div id="modal-overlay" class="modal-overlay" onclick="closeModal()">
+        <div id="modal-study-plan" class="modal-content" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <h3>3-Month Study Plan</h3>
+                <div class="close-modal" onclick="closeModal()">&times;</div>
+            </div>
+            <div style="text-align: center; margin-bottom: 2rem;">
+                <div style="font-size: 3rem; margin-bottom: 1rem;">📅</div>
+                <h4 style="color: var(--secondary); margin-bottom: 0.5rem; font-size: 1.25rem;">Exclusive PRO Feature
+                </h4>
+                <p style="color: var(--text-muted); font-size: 0.95rem;">
+                    Get the detailed day-by-day roadmap covering high-yield topics, revision cycles, and mock test
+                    strategy.
+                </p>
+            </div>
+
+            <div
+                style="background: var(--bg-wash); padding: 1rem; border-radius: var(--radius-md); margin-bottom: 1.5rem; border: 1px solid var(--border);">
+                <ul style="text-align: left; display: flex; flex-direction: column; gap: 0.5rem;">
+                    <li style="display: flex; gap: 0.5rem; font-size: 0.9rem; color: var(--text-muted);">
+                        <span style="color: var(--phy-primary);">✓</span> Daily Subject Targets
+                    </li>
+                    <li style="display: flex; gap: 0.5rem; font-size: 0.9rem; color: var(--text-muted);">
+                        <span style="color: var(--phy-primary);">✓</span> Revision Scheduling
+                    </li>
+                    <li style="display: flex; gap: 0.5rem; font-size: 0.9rem; color: var(--text-muted);">
+                        <span style="color: var(--phy-primary);">✓</span> Backlog Management
+                    </li>
+                </ul>
+            </div>
+
+            <button class="btn btn-primary" style="width: 100%; margin-bottom: 0.75rem;" onclick="redirectToPricing()">
+                Upgrade to PRO - ₹199
+            </button>
+            <button class="btn btn-outline" style="width: 100%; border: none;" onclick="closeModal()">
+                Maybe Later
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // --- Access Control Logic ---
+        function accessStudyPlan() {
+            const token = localStorage.getItem("IAT_TOKEN");
+            const plan = localStorage.getItem("IAT_PLAN");
+
+            if (token && plan === "PRO") {
+                // User is PRO, download/open the plan
+                const link = document.createElement('a');
+                link.href = '../assets/files/IISER_IAT_3_Month_Study_Plan.pdf'; // Placeholder path
+                link.download = 'IISER_IAT_3_Month_Study_Plan.pdf';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            } else {
+                // User is not PRO or not logged in, show modal
+                openModal('modal-study-plan');
+            }
+        }
+
+        function redirectToPricing() {
+            window.location.href = "../index.html#pricing";
+        }
+
+        // --- Modal Logic ---
+        function openModal(modalId) {
+            const overlay = document.getElementById('modal-overlay');
+            const contents = document.querySelectorAll('.modal-content');
+            contents.forEach(el => el.style.display = 'none');
+
+            const target = document.getElementById(modalId);
+            if (target) {
+                target.style.display = 'block';
+                overlay.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            }
+        }
+
+        function closeModal() {
+            const overlay = document.getElementById('modal-overlay');
+            overlay.classList.remove('active');
+            setTimeout(() => {
+                document.body.style.overflow = 'auto';
+            }, 300);
+        }
+
+        document.addEventListener('keydown', function (event) {
+            if (event.key === "Escape") closeModal();
         });
     </script>
 </body>
