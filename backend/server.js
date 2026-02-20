@@ -15,14 +15,7 @@ app.get("/health", (req, res) => {
   res.json({ status: "ok" });
 });
 
-// ------------------------------------------------------------------
-// 🔑 CONFIG ENDPOINT (Public)
-// ------------------------------------------------------------------
-app.get("/api/config", (req, res) => {
-  res.json({
-    razorpayKey: process.env.RAZORPAY_KEY_ID
-  });
-});
+// (Moved /api/config below middleware)
 
 // ------------------------------------------------------------------
 // Imports & Configuration
@@ -51,6 +44,15 @@ app.use(express.json());
 // Debug
 console.log("SUPABASE_URL =", process.env.SUPABASE_URL ? "Set" : "Not Set");
 console.log("RAZORPAY_KEY_ID =", process.env.RAZORPAY_KEY_ID ? "Set" : "Not Set");
+
+// ------------------------------------------------------------------
+// 🔑 CONFIG ENDPOINT (Public)
+// ------------------------------------------------------------------
+app.get("/api/config", (req, res) => {
+  res.json({
+    razorpayKey: process.env.RAZORPAY_KEY_ID
+  });
+});
 
 // Supabase
 const supabase = createClient(
