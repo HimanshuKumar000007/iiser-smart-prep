@@ -71,6 +71,6 @@ async function buyPro() {
 
     } catch (err) {
         console.error("Payment Error:", err);
-        alert("Something went wrong initializing payment");
+        alert("Something went wrong initializing payment: " + err.message);
     }
 }

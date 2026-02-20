@@ -30,7 +30,9 @@ const { sendResetEmail } = require("./utils/mailer");
 app.use(cors({
   origin: [
     "https://iisersmartprep.space",
-    "https://www.iisersmartprep.space"
+    "https://www.iisersmartprep.space",
+    "http://127.0.0.1:5500",
+    "http://localhost:5500"
   ],
   credentials: true
 }));
