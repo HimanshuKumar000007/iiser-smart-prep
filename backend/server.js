@@ -36,19 +36,21 @@ const crypto = require("crypto");
 const { sendResetEmail } = require("./utils/mailer");
 
 // Middleware
+app.use((req, res, next) => {
+  console.log(`Incoming request from Origin: ${req.headers.origin} | Method: ${req.method} | Path: ${req.path}`);
+  next();
+});
+
+// Middleware
 app.use(cors({
-  origin: [
-    "https://iisersmartprep.space",
-    "https://www.iisersmartprep.space",
-    "http://127.0.0.1:5500",
-    "http://localhost:5500"
-  ],
+  origin: true, // 👈 Reflects the request origin
   credentials: true
 }));
 app.use(express.json());
 
 // Debug
-console.log("SUPABASE_URL =", process.env.SUPABASE_URL);
+console.log("SUPABASE_URL =", process.env.SUPABASE_URL ? "Set" : "Not Set");
+console.log("RAZORPAY_KEY_ID =", process.env.RAZORPAY_KEY_ID ? "Set" : "Not Set");
 
 // Supabase
 const supabase = createClient(
