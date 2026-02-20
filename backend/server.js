@@ -49,6 +49,10 @@ console.log("RAZORPAY_KEY_ID =", process.env.RAZORPAY_KEY_ID ? "Set" : "Not Set"
 // 🔑 CONFIG ENDPOINT (Public)
 // ------------------------------------------------------------------
 app.get("/api/config", (req, res) => {
+  // Manual CORS to ensure it works
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Methods", "GET");
+
   res.json({
     razorpayKey: process.env.RAZORPAY_KEY_ID
   });
