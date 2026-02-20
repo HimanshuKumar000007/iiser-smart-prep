@@ -15,89 +15,463 @@
     <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
     <style>
-        /* REUSED STYLES FROM INDEX.HTML */
         :root {
+            /* IISER Brand Palette */
             --primary: #6366f1;
             --primary-light: #818cf8;
             --primary-dark: #4f46e5;
             --primary-soft: #e0e7ff;
             --accent: #8b5cf6;
+            --accent-soft: #f3e8ff;
             --ai-cyan: #06b6d4;
+            --ai-glow: rgba(6, 182, 212, 0.3);
+            --success: #22c55e;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --info: #3b82f6;
+
+            /* Neutral Scale */
             --secondary: #0f172a;
+            --secondary-light: #1e293b;
             --text-main: #0f172a;
             --text-muted: #475569;
             --text-light: #94a3b8;
             --bg-white: #ffffff;
             --bg-wash: #f8fafc;
+            --bg-gradient-start: #f0f9ff;
             --border: #e2e8f0;
-            --radius-md: 16px;
-            --radius-lg: 24px;
+            --border-light: #f1f5f9;
+
+            /* Dimensions */
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --radius-xl: 24px;
             --radius-pill: 100px;
-            --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-            --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
-            --container-width: 1200px;
+
+            /* Shadows */
+            --shadow-xs: 0 1px 2px 0 rgba(0, 0, 0, 0.03);
+            --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+            --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -2px rgba(0, 0, 0, 0.04);
+            --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            --shadow-xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            --shadow-glow: 0 0 40px -10px rgba(99, 102, 241, 0.3);
+            --shadow-ai: 0 0 40px -10px rgba(6, 182, 212, 0.4);
+
+            --container-width: 1400px;
+            --nav-height: 72px;
+
+            /* Animation */
+            --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+            --ease-spring: cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        html {
+            scroll-behavior: smooth;
         }
 
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
-            background: var(--bg-wash);
+            background: linear-gradient(135deg, var(--bg-wash) 0%, #f0f4ff 50%, var(--bg-wash) 100%);
             color: var(--text-main);
             line-height: 1.6;
+            min-height: 100vh;
+            overflow-x: hidden;
         }
 
-        a {
-            text-decoration: none;
-            color: inherit;
-            transition: 0.2s;
+        /* Animated Background Mesh */
+        .bg-mesh {
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+            opacity: 0.4;
+            background:
+                radial-gradient(circle at 20% 80%, rgba(99, 102, 241, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(6, 182, 212, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(139, 92, 246, 0.05) 0%, transparent 40%);
+            animation: meshFloat 20s ease-in-out infinite;
         }
 
-        .container {
-            width: 90%;
-            max-width: var(--container-width);
-            margin: 0 auto;
+        @keyframes meshFloat {
+
+            0%,
+            100% {
+                transform: translate(0, 0) scale(1);
+            }
+
+            33% {
+                transform: translate(30px, -30px) scale(1.05);
+            }
+
+            66% {
+                transform: translate(-20px, 20px) scale(0.95);
+            }
         }
 
-        /* Navigation */
+        /* Loading Screen */
+        .loading-screen {
+            position: fixed;
+            inset: 0;
+            background: linear-gradient(135deg, var(--secondary) 0%, #1e1b4b 100%);
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.6s var(--ease-out-expo), visibility 0.6s;
+        }
+
+        .loading-screen.hidden {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        .loader-ring {
+            width: 80px;
+            height: 80px;
+            position: relative;
+        }
+
+        .loader-ring svg {
+            width: 100%;
+            height: 100%;
+            animation: rotate 2s linear infinite;
+        }
+
+        .loader-ring circle {
+            fill: none;
+            stroke-width: 4;
+            stroke-linecap: round;
+            animation: dash 1.5s ease-in-out infinite;
+        }
+
+        .loader-ring .bg {
+            stroke: rgba(255, 255, 255, 0.1);
+        }
+
+        .loader-ring .progress {
+            stroke: url(#loaderGradient);
+            stroke-dasharray: 200;
+            stroke-dashoffset: 0;
+        }
+
+        @keyframes rotate {
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        @keyframes dash {
+            0% {
+                stroke-dasharray: 1, 200;
+                stroke-dashoffset: 0;
+            }
+
+            50% {
+                stroke-dasharray: 89, 200;
+                stroke-dashoffset: -35;
+            }
+
+            100% {
+                stroke-dasharray: 89, 200;
+                stroke-dashoffset: -124;
+            }
+        }
+
+        .loading-text {
+            color: white;
+            margin-top: 1.5rem;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            font-size: 0.9rem;
+        }
+
+        .loading-subtext {
+            color: rgba(255, 255, 255, 0.6);
+            margin-top: 0.5rem;
+            font-size: 0.8rem;
+        }
+
+        /* Navigation - Glassmorphism */
         header {
-            background: white;
-            border-bottom: 1px solid var(--border);
-            padding: 1rem 0;
-            position: sticky;
+            position: fixed;
             top: 0;
+            left: 0;
+            right: 0;
+            height: var(--nav-height);
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(226, 232, 240, 0.6);
             z-index: 100;
+            transition: all 0.3s var(--ease-out-expo);
+        }
+
+        header.scrolled {
+            background: rgba(255, 255, 255, 0.95);
+            box-shadow: var(--shadow-sm);
         }
 
         .nav-container {
+            max-width: var(--container-width);
+            margin: 0 auto;
+            padding: 0 2rem;
+            height: 100%;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
 
         .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
             font-weight: 800;
             font-size: 1.25rem;
             color: var(--secondary);
+            letter-spacing: -0.02em;
+            transition: transform 0.2s;
+        }
+
+        .logo:hover {
+            transform: scale(1.02);
+        }
+
+        .logo-icon {
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .nav-badge {
+            background: linear-gradient(135deg, #fcd34d, #f59e0b);
+            color: white;
+            padding: 0.4rem 1rem;
+            border-radius: var(--radius-pill);
+            font-size: 0.75rem;
+            font-weight: 800;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
+            }
+
+            50% {
+                box-shadow: 0 4px 20px rgba(245, 158, 11, 0.5);
+            }
+        }
+
+        .nav-btn {
             display: flex;
             align-items: center;
             gap: 0.5rem;
+            padding: 0.6rem 1.25rem;
+            border-radius: var(--radius-pill);
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: none;
+            background: transparent;
+            color: var(--text-muted);
+        }
+
+        .nav-btn:hover {
+            background: var(--bg-wash);
+            color: var(--secondary);
+        }
+
+        .nav-btn.primary {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+        }
+
+        .nav-btn.primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(99, 102, 241, 0.4);
+        }
+
+        /* Main Layout */
+        main {
+            margin-top: var(--nav-height);
+            padding: 2rem;
+            max-width: var(--container-width);
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Welcome Section */
+        .welcome-section {
+            margin-bottom: 2rem;
+        }
+
+        .welcome-card {
+            background: linear-gradient(135deg, var(--secondary) 0%, #1e1b4b 50%, #312e81 100%);
+            border-radius: var(--radius-xl);
+            padding: 2.5rem;
+            color: white;
+            position: relative;
+            overflow: hidden;
+            box-shadow: var(--shadow-xl);
+        }
+
+        .welcome-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(99, 102, 241, 0.3) 0%, transparent 70%);
+            animation: float 8s ease-in-out infinite;
+        }
+
+        .welcome-card::after {
+            content: '';
+            position: absolute;
+            bottom: -30%;
+            left: -10%;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(6, 182, 212, 0.2) 0%, transparent 60%);
+            animation: float 10s ease-in-out infinite reverse;
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translate(0, 0) rotate(0deg);
+            }
+
+            50% {
+                transform: translate(20px, -20px) rotate(5deg);
+            }
+        }
+
+        .welcome-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .welcome-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1.5rem;
+        }
+
+        .welcome-title {
+            font-size: 2rem;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, white 0%, #c7d2fe 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .welcome-subtitle {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 1rem;
+        }
+
+        .consistency-badge {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 1rem 1.5rem;
+            border-radius: var(--radius-lg);
+            text-align: center;
+        }
+
+        .consistency-value {
+            font-size: 2rem;
+            font-weight: 800;
+            color: #34d399;
+        }
+
+        .consistency-label {
+            font-size: 0.75rem;
+            color: rgba(255, 255, 255, 0.6);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .stats-row {
+            display: flex;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .stat-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .stat-icon {
+            width: 48px;
+            height: 48px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .stat-info h4 {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .stat-info p {
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.6);
         }
 
         /* Dashboard Grid */
         .dashboard-grid {
             display: grid;
-            grid-template-columns: 2fr 1fr;
+            grid-template-columns: 1fr 380px;
             gap: 2rem;
-            padding: 2rem 0 4rem;
         }
 
-        @media(max-width: 900px) {
+        @media (max-width: 1200px) {
             .dashboard-grid {
                 grid-template-columns: 1fr;
             }
@@ -106,355 +480,1152 @@
         /* Cards */
         .card {
             background: white;
-            border-radius: var(--radius-md);
-            border: 1px solid var(--border);
-            padding: 1.5rem;
+            border-radius: var(--radius-xl);
+            border: 1px solid var(--border-light);
+            box-shadow: var(--shadow-sm);
+            overflow: hidden;
+            transition: all 0.3s var(--ease-out-expo);
+        }
+
+        .card:hover {
+            box-shadow: var(--shadow-md);
+            transform: translateY(-2px);
+        }
+
+        .card-header {
+            padding: 1.5rem 2rem;
+            border-bottom: 1px solid var(--border-light);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .card-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--secondary);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .card-title i {
+            color: var(--primary);
+            font-size: 1.25rem;
+        }
+
+        .card-body {
+            padding: 2rem;
+        }
+
+        /* Progress Rings Section */
+        .progress-section {
+            margin-bottom: 2rem;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .section-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--secondary);
+        }
+
+        .view-toggle {
+            display: flex;
+            gap: 0.5rem;
+            background: var(--bg-wash);
+            padding: 0.25rem;
+            border-radius: var(--radius-pill);
+        }
+
+        .toggle-btn {
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius-pill);
+            border: none;
+            background: transparent;
+            font-weight: 600;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .toggle-btn.active {
+            background: white;
+            color: var(--primary);
             box-shadow: var(--shadow-sm);
         }
 
-        .card h3 {
-            color: var(--secondary);
-            margin-bottom: 1rem;
-            font-size: 1.1rem;
+        .progress-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
         }
 
-        /* Welcome Banner */
-        .welcome-banner {
-            background: linear-gradient(135deg, var(--primary), var(--accent));
-            color: white;
-            padding: 2.5rem;
+        @media (max-width: 900px) {
+            .progress-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        .subject-card {
+            background: white;
             border-radius: var(--radius-lg);
-            margin: 2rem 0;
+            padding: 1.5rem;
+            border: 1px solid var(--border-light);
+            transition: all 0.3s var(--ease-out-expo);
             position: relative;
             overflow: hidden;
         }
 
-        .welcome-banner h1 {
-            font-size: 2rem;
-            margin-bottom: 0.5rem;
+        .subject-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--subject-color, var(--primary));
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.3s var(--ease-out-expo);
         }
 
-        .welcome-banner p {
-            opacity: 0.9;
+        .subject-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-md);
         }
 
-        /* Progress Rings */
-        .progress-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 1rem;
-            margin-bottom: 2rem;
+        .subject-card:hover::before {
+            transform: scaleX(1);
         }
 
-        .progress-card {
-            text-align: center;
-            padding: 1rem;
-            border: 1px solid var(--border);
-            border-radius: var(--radius-md);
-            background: white;
+        .subject-card.physics {
+            --subject-color: #ef4444;
         }
 
-        .ring-container {
-            width: 80px;
-            height: 80px;
-            margin: 0 auto 0.5rem;
+        .subject-card.chemistry {
+            --subject-color: #06b6d4;
+        }
+
+        .subject-card.math {
+            --subject-color: #f59e0b;
+        }
+
+        .subject-card.biology {
+            --subject-color: #22c55e;
+        }
+
+        .ring-wrapper {
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 1rem;
             position: relative;
+        }
+
+        .ring-svg {
+            width: 100%;
+            height: 100%;
+            transform: rotate(-90deg);
         }
 
         .ring-bg {
             fill: none;
             stroke: var(--bg-wash);
-            stroke-width: 8;
+            stroke-width: 10;
         }
 
-        .ring-fill {
+        .ring-progress {
             fill: none;
-            stroke: var(--primary);
-            stroke-width: 8;
+            stroke: var(--subject-color, var(--primary));
+            stroke-width: 10;
             stroke-linecap: round;
-            transform: rotate(-90deg);
-            transform-origin: 50% 50%;
-            stroke-dasharray: 220;
-            stroke-dashoffset: 220;
-            transition: stroke-dashoffset 1s ease;
+            stroke-dasharray: 339.292;
+            stroke-dashoffset: 339.292;
+            transition: stroke-dashoffset 1.5s var(--ease-out-expo);
         }
 
-        .ring-text {
+        .ring-center {
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
+            text-align: center;
+        }
+
+        .ring-percentage {
+            font-size: 1.75rem;
+            font-weight: 800;
+            color: var(--secondary);
+            line-height: 1;
+        }
+
+        .ring-label {
+            font-size: 0.75rem;
+            color: var(--text-light);
+            margin-top: 0.25rem;
+        }
+
+        .subject-info {
+            text-align: center;
+        }
+
+        .subject-name {
             font-weight: 700;
+            color: var(--secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        .subject-meta {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+
+        /* Chart Section */
+        .chart-container {
+            height: 320px;
+            position: relative;
+        }
+
+        .chart-filter {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .filter-btn {
+            padding: 0.5rem 1rem;
+            border: 1px solid var(--border);
+            background: white;
+            border-radius: var(--radius-pill);
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .filter-btn:hover,
+        .filter-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        /* Sidebar Cards */
+        .sidebar-card {
+            margin-bottom: 1.5rem;
+        }
+
+        .phase-indicator {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .phase-number {
+            width: 56px;
+            height: 56px;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            border-radius: var(--radius-lg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 800;
+            font-size: 1.25rem;
+            box-shadow: var(--shadow-glow);
+        }
+
+        .phase-info h4 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--secondary);
+        }
+
+        .phase-info p {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .progress-bar {
+            height: 8px;
+            background: var(--bg-wash);
+            border-radius: var(--radius-pill);
+            overflow: hidden;
+            margin-bottom: 1.5rem;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            border-radius: var(--radius-pill);
+            transition: width 1s var(--ease-out-expo);
+            position: relative;
+        }
+
+        .progress-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            width: 20px;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3));
+            animation: shimmer 2s infinite;
+        }
+
+        @keyframes shimmer {
+            0% {
+                transform: translateX(-20px);
+            }
+
+            100% {
+                transform: translateX(20px);
+            }
+        }
+
+        .topic-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .topic-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.875rem;
+            background: var(--bg-wash);
+            border-radius: var(--radius-md);
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+
+        .topic-item:hover {
+            background: var(--primary-soft);
+            transform: translateX(4px);
+        }
+
+        .topic-status {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            flex-shrink: 0;
+        }
+
+        .topic-status.done {
+            background: #dcfce7;
+            color: var(--success);
+        }
+
+        .topic-status.current {
+            background: var(--primary-soft);
+            color: var(--primary);
+            animation: pulse-ring 2s infinite;
+        }
+
+        .topic-status.pending {
+            background: var(--bg-wash);
+            color: var(--text-light);
+        }
+
+        @keyframes pulse-ring {
+
+            0%,
+            100% {
+                box-shadow: 0 0 0 0 rgba(99, 102, 241, 0.4);
+            }
+
+            50% {
+                box-shadow: 0 0 0 8px rgba(99, 102, 241, 0);
+            }
+        }
+
+        .topic-name {
+            flex: 1;
+            font-weight: 600;
             font-size: 0.9rem;
         }
 
-        /* Buttons */
-        .btn {
-            display: inline-block;
-            padding: 0.75rem 1.5rem;
-            border-radius: var(--radius-pill);
-            font-weight: 600;
-            text-align: center;
-            cursor: pointer;
-        }
-
-        .btn-primary {
-            background: var(--primary);
-            color: white;
-            border: none;
-        }
-
-        .btn-outline {
-            border: 1px solid var(--border);
-            color: var(--text-muted);
+        .topic-tag {
+            font-size: 0.75rem;
+            padding: 0.25rem 0.5rem;
             background: white;
+            border-radius: 4px;
+            color: var(--text-muted);
         }
 
-        .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-        }
-
-        /* Quick Links */
-        .quick-links {
+        /* Action Buttons */
+        .action-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-            gap: 1rem;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.75rem;
         }
 
-        .quick-link-item {
-            text-align: center;
-            padding: 1.5rem;
-            border: 1px solid var(--border);
-            border-radius: var(--radius-md);
-            transition: 0.2s;
+        .action-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 1.25rem;
+            background: var(--bg-wash);
+            border: 1px solid transparent;
+            border-radius: var(--radius-lg);
             cursor: pointer;
+            transition: all 0.3s var(--ease-out-expo);
+            text-decoration: none;
+            color: inherit;
         }
 
-        .quick-link-item:hover {
+        .action-btn:hover {
+            background: white;
             border-color: var(--primary);
-            background: var(--primary-soft);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
         }
 
-        .quick-link-icon {
-            font-size: 2rem;
-            margin-bottom: 0.5rem;
-            display: block;
+        .action-icon {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, var(--primary-soft), white);
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            transition: all 0.3s;
+        }
+
+        .action-btn:hover .action-icon {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            color: white;
+            transform: scale(1.1);
+        }
+
+        .action-label {
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: var(--secondary);
+        }
+
+        .action-sublabel {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        /* AI Insights */
+        .ai-insight {
+            background: linear-gradient(135deg, #ecfeff 0%, #eff6ff 100%);
+            border: 1px solid rgba(6, 182, 212, 0.2);
+            border-radius: var(--radius-lg);
+            padding: 1.25rem;
+            margin-top: 1.5rem;
+        }
+
+        .ai-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .ai-avatar {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, var(--ai-cyan), var(--primary));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1rem;
+            animation: ai-pulse 3s infinite;
+        }
+
+        @keyframes ai-pulse {
+
+            0%,
+            100% {
+                box-shadow: 0 0 0 0 rgba(6, 182, 212, 0.4);
+            }
+
+            50% {
+                box-shadow: 0 0 0 10px rgba(6, 182, 212, 0);
+            }
+        }
+
+        .ai-title {
+            font-weight: 700;
+            color: var(--secondary);
+        }
+
+        .ai-text {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        .ai-highlight {
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            main {
+                padding: 1rem;
+            }
+
+            .welcome-card {
+                padding: 1.5rem;
+            }
+
+            .welcome-title {
+                font-size: 1.5rem;
+            }
+
+            .stats-row {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .progress-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .ring-wrapper {
+                width: 100px;
+                height: 100px;
+            }
+        }
+
+        /* Utility Classes */
+        .fade-in {
+            animation: fadeIn 0.6s var(--ease-out-expo) forwards;
+            opacity: 0;
+        }
+
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+            }
+        }
+
+        .stagger-1 {
+            animation-delay: 0.1s;
+        }
+
+        .stagger-2 {
+            animation-delay: 0.2s;
+        }
+
+        .stagger-3 {
+            animation-delay: 0.3s;
+        }
+
+        .stagger-4 {
+            animation-delay: 0.4s;
         }
     </style>
 </head>
 
 <body>
+    <!-- SVG Gradient Definitions -->
+    <svg width="0" height="0" style="position: absolute;">
+        <defs>
+            <linearGradient id="loaderGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" style="stop-color:#6366f1;stop-opacity:1" />
+                <stop offset="100%" style="stop-color:#8b5cf6;stop-opacity:1" />
+            </linearGradient>
+        </defs>
+    </svg>
 
-    <!-- Auth Check Overlay -->
-    <div id="auth-loading"
-        style="position: fixed; inset: 0; background: white; z-index: 9999; display: flex; align-items: center; justify-content: center;">
-        <div style="text-align: center;">
-            <div
-                style="width: 40px; height: 40px; border: 4px solid var(--bg-wash); border-top-color: var(--primary); border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 1rem;">
-            </div>
-            <p>Verifying Access...</p>
+    <!-- Loading Screen -->
+    <div class="loading-screen" id="loadingScreen">
+        <div class="loader-ring">
+            <svg viewBox="0 0 100 100">
+                <circle class="bg" cx="50" cy="50" r="40"></circle>
+                <circle class="progress" cx="50" cy="50" r="40"></circle>
+            </svg>
         </div>
+        <div class="loading-text">Initializing Analytics</div>
+        <div class="loading-subtext">Loading your study data...</div>
     </div>
 
-    <style>
-        @keyframes spin {
-            to {
-                transform: rotate(360deg);
-            }
-        }
-    </style>
-
-    <script>
-        // IMMEDIATE AUTH CHECK
-        (function() {
-            const token = localStorage.getItem("IAT_TOKEN");
-            const plan = localStorage.getItem("IAT_PLAN");
-            
-            if (!token) {
-                window.location.href = "login.html?redirect=iat-planner-pro.html";
-            } else if (plan !== "PRO") {
-                alert("This feature is exclusive to PRO members.");
-                window.location.href = "index.html#pricing";
-            } else {
-                // Access Granted
-                setTimeout(() => {
-                    document.getElementById('auth-loading').style.display = 'none';
-                }, 800);
-            }
-        })();
-    </script>
+    <!-- Background Mesh -->
+    <div class="bg-mesh"></div>
 
     <!-- Navigation -->
-    <header>
-        <div class="container nav-container">
+    <header id="navbar">
+        <div class="nav-container">
             <a href="index.html" class="logo">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
-                    stroke-linecap="round" stroke-linejoin="round">
-                    <path
-                        d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z">
-                    </path>
-                </svg>
+                <div class="logo-icon">
+                    <i class="ph ph-hexagon"></i>
+                </div>
                 IISER Smart Prep
             </a>
-            <div style="display: flex; gap: 1rem; align-items: center;">
-                <span class="badge"
-                    style="background: linear-gradient(135deg, #fcd34d, #f59e0b); color: white; padding: 0.25rem 0.75rem; border-radius: 100px; font-size: 0.75rem; font-weight: 800; letter-spacing: 0.05em;">PRO
-                    MEMBER</span>
-                <button onclick="logout()" class="btn-outline"
-                    style="padding: 0.5rem 1rem; font-size: 0.85rem;">Logout</button>
+            <div class="nav-right">
+                <span class="nav-badge">PRO Member</span>
+                <button class="nav-btn" onclick="window.location.href='ai_tutor.html'">
+                    <i class="ph ph-robot"></i>
+                    AI Tutor
+                </button>
+                <button class="nav-btn primary" onclick="logout()">
+                    <i class="ph ph-sign-out"></i>
+                    Logout
+                </button>
             </div>
         </div>
     </header>
 
-    <div class="container">
-        <!-- Banner -->
-        <div class="welcome-banner">
-            <h1>Welcome back, Future Researcher</h1>
-            <p>You're on track! Your consistency score is in the top 5% of aspirants.</p>
-        </div>
+    <!-- Main Content -->
+    <main>
+        <!-- Welcome Section -->
+        <section class="welcome-section fade-in">
+            <div class="welcome-card">
+                <div class="welcome-content">
+                    <div class="welcome-header">
+                        <div>
+                            <h1 class="welcome-title">Welcome back, Future Researcher</h1>
+                            <p class="welcome-subtitle">Your consistency puts you in the top 5% of IAT aspirants</p>
+                        </div>
+                        <div class="consistency-badge">
+                            <div class="consistency-value">94%</div>
+                            <div class="consistency-label">Consistency</div>
+                        </div>
+                    </div>
+                    <div class="stats-row">
+                        <div class="stat-item">
+                            <div class="stat-icon">
+                                <i class="ph ph-trend-up"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h4>+12%</h4>
+                                <p>vs Last Week</p>
+                            </div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-icon">
+                                <i class="ph ph-clock"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h4>48h</h4>
+                                <p>Study Time</p>
+                            </div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-icon">
+                                <i class="ph ph-target"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h4>156</h4>
+                                <p>Questions Solved</p>
+                            </div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-icon">
+                                <i class="ph ph-lightning"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h4>7</h4>
+                                <p>Day Streak</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
 
         <!-- Subject Progress -->
-        <h3 style="margin-bottom: 1rem; color: var(--secondary); font-weight: 700;">Syllabus Coverage</h3>
-        <div class="progress-grid">
-            <div class="progress-card">
-                <div class="ring-container">
-                    <svg width="80" height="80">
-                        <circle class="ring-bg" cx="40" cy="40" r="35"></circle>
-                        <circle class="ring-fill" cx="40" cy="40" r="35"
-                            style="stroke: #ef4444; stroke-dashoffset: 60;"></circle>
-                    </svg>
-                    <div class="ring-text">72%</div>
+        <section class="progress-section fade-in stagger-1">
+            <div class="section-header">
+                <h2 class="section-title">Syllabus Mastery</h2>
+                <div class="view-toggle">
+                    <button class="toggle-btn active">Overview</button>
+                    <button class="toggle-btn">Detailed</button>
                 </div>
-                <h5>Physics</h5>
             </div>
-            <div class="progress-card">
-                <div class="ring-container">
-                    <svg width="80" height="80">
-                        <circle class="ring-bg" cx="40" cy="40" r="35"></circle>
-                        <circle class="ring-fill" cx="40" cy="40" r="35"
-                            style="stroke: #06b6d4; stroke-dashoffset: 100;"></circle>
-                    </svg>
-                    <div class="ring-text">55%</div>
+            <div class="progress-grid">
+                <!-- Physics -->
+                <div class="subject-card physics">
+                    <div class="ring-wrapper">
+                        <svg class="ring-svg" viewBox="0 0 120 120">
+                            <circle class="ring-bg" cx="60" cy="60" r="54"></circle>
+                            <circle class="ring-progress" cx="60" cy="60" r="54" data-progress="72"></circle>
+                        </svg>
+                        <div class="ring-center">
+                            <div class="ring-percentage">72%</div>
+                            <div class="ring-label">Complete</div>
+                        </div>
+                    </div>
+                    <div class="subject-info">
+                        <h3 class="subject-name">Physics</h3>
+                        <div class="subject-meta">
+                            <span class="meta-item"><i class="ph ph-check-circle"></i> 45/62</span>
+                            <span class="meta-item"><i class="ph ph-trend-up"></i> +5%</span>
+                        </div>
+                    </div>
                 </div>
-                <h5>Chemistry</h5>
-            </div>
-            <div class="progress-card">
-                <div class="ring-container">
-                    <svg width="80" height="80">
-                        <circle class="ring-bg" cx="40" cy="40" r="35"></circle>
-                        <circle class="ring-fill" cx="40" cy="40" r="35"
-                            style="stroke: #eab308; stroke-dashoffset: 140;"></circle>
-                    </svg>
-                    <div class="ring-text">35%</div>
-                </div>
-                <h5>Math</h5>
-            </div>
-            <div class="progress-card">
-                <div class="ring-container">
-                    <svg width="80" height="80">
-                        <circle class="ring-bg" cx="40" cy="40" r="35"></circle>
-                        <circle class="ring-fill" cx="40" cy="40" r="35"
-                            style="stroke: #22c55e; stroke-dashoffset: 40;"></circle>
-                    </svg>
-                    <div class="ring-text">82%</div>
-                </div>
-                <h5>Biology</h5>
-            </div>
-        </div>
 
+                <!-- Chemistry -->
+                <div class="subject-card chemistry">
+                    <div class="ring-wrapper">
+                        <svg class="ring-svg" viewBox="0 0 120 120">
+                            <circle class="ring-bg" cx="60" cy="60" r="54"></circle>
+                            <circle class="ring-progress" cx="60" cy="60" r="54" data-progress="55"></circle>
+                        </svg>
+                        <div class="ring-center">
+                            <div class="ring-percentage">55%</div>
+                            <div class="ring-label">Complete</div>
+                        </div>
+                    </div>
+                    <div class="subject-info">
+                        <h3 class="subject-name">Chemistry</h3>
+                        <div class="subject-meta">
+                            <span class="meta-item"><i class="ph ph-check-circle"></i> 38/69</span>
+                            <span class="meta-item"><i class="ph ph-trend-up"></i> +8%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Mathematics -->
+                <div class="subject-card math">
+                    <div class="ring-wrapper">
+                        <svg class="ring-svg" viewBox="0 0 120 120">
+                            <circle class="ring-bg" cx="60" cy="60" r="54"></circle>
+                            <circle class="ring-progress" cx="60" cy="60" r="54" data-progress="35"></circle>
+                        </svg>
+                        <div class="ring-center">
+                            <div class="ring-percentage">35%</div>
+                            <div class="ring-label">Complete</div>
+                        </div>
+                    </div>
+                    <div class="subject-info">
+                        <h3 class="subject-name">Mathematics</h3>
+                        <div class="subject-meta">
+                            <span class="meta-item"><i class="ph ph-check-circle"></i> 22/63</span>
+                            <span class="meta-item"><i class="ph ph-warning"></i> Focus</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Biology -->
+                <div class="subject-card biology">
+                    <div class="ring-wrapper">
+                        <svg class="ring-svg" viewBox="0 0 120 120">
+                            <circle class="ring-bg" cx="60" cy="60" r="54"></circle>
+                            <circle class="ring-progress" cx="60" cy="60" r="54" data-progress="82"></circle>
+                        </svg>
+                        <div class="ring-center">
+                            <div class="ring-percentage">82%</div>
+                            <div class="ring-label">Complete</div>
+                        </div>
+                    </div>
+                    <div class="subject-info">
+                        <h3 class="subject-name">Biology</h3>
+                        <div class="subject-meta">
+                            <span class="meta-item"><i class="ph ph-check-circle"></i> 51/62</span>
+                            <span class="meta-item"><i class="ph ph-trend-up"></i> +12%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Dashboard Grid -->
         <div class="dashboard-grid">
-            <!-- Left Col: Mock Analysis -->
-            <div class="card">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
-                    <h3>Mock Test Performance</h3>
-                    <select style="padding: 0.25rem 0.5rem; border-radius: 6px; border: 1px solid var(--border);">
-                        <option>Last 5 Tests</option>
-                        <option>All Time</option>
-                    </select>
+            <!-- Left Column -->
+            <div class="main-content">
+                <!-- Performance Chart -->
+                <div class="card fade-in stagger-2">
+                    <div class="card-header">
+                        <h3 class="card-title">
+                            <i class="ph ph-chart-bar"></i>
+                            Mock Test Performance
+                        </h3>
+                        <div class="chart-filter">
+                            <button class="filter-btn active">Last 5</button>
+                            <button class="filter-btn">Last 10</button>
+                            <button class="filter-btn">All</button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="chart-container">
+                            <canvas id="performanceChart"></canvas>
+                        </div>
+                    </div>
                 </div>
-                <div style="height: 300px;">
-                    <canvas id="mockChart"></canvas>
+
+                <!-- AI Insights -->
+                <div class="ai-insight fade-in stagger-3">
+                    <div class="ai-header">
+                        <div class="ai-avatar">
+                            <i class="ph ph-sparkle"></i>
+                        </div>
+                        <span class="ai-title">AI Study Insight</span>
+                    </div>
+                    <p class="ai-text">
+                        Your <span class="ai-highlight">Mathematics</span> progress is 23% below target.
+                        Based on your mock patterns, I recommend focusing on
+                        <span class="ai-highlight">Calculus & Integration</span> this week.
+                        Students with similar profiles improved 15% by dedicating 3 extra hours to problem sets.
+                    </p>
                 </div>
             </div>
 
-            <!-- Right Col: Study Plan & Quick Links -->
-            <div style="display: flex; flex-direction: column; gap: 2rem;">
-
-                <!-- Study Plan Card -->
-                <div class="card" style="border-left: 4px solid var(--primary);">
-                    <h3>Current Study Phase</h3>
-                    <div style="margin-bottom: 1.5rem;">
-                        <h4 style="font-size: 1.25rem; color: var(--primary);">Phase 2: Deep Dive</h4>
-                        <p style="font-size: 0.9rem; color: var(--text-muted);">Week 5 of 12</p>
+            <!-- Right Column -->
+            <div class="sidebar">
+                <!-- Current Phase -->
+                <div class="card sidebar-card fade-in stagger-2">
+                    <div class="card-header">
+                        <h3 class="card-title">
+                            <i class="ph ph-rocket-launch"></i>
+                            Current Phase
+                        </h3>
                     </div>
-                    <div style="background: var(--bg-wash); padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem;">
-                        <ul style="font-size: 0.9rem; display: flex; flex-direction: column; gap: 0.5rem;">
-                            <li style="display: flex; gap: 0.5rem;">✅ Completed: Mechanics</li>
-                            <li style="display: flex; gap: 0.5rem;">👉 Current: Electrodynamics</li>
-                            <li style="display: flex; gap: 0.5rem;">📅 Next: Thermodynamics</li>
-                        </ul>
+                    <div class="card-body">
+                        <div class="phase-indicator">
+                            <div class="phase-number">2</div>
+                            <div class="phase-info">
+                                <h4>Deep Dive & Practice</h4>
+                                <p>Week 5 of 12 • 42% Complete</p>
+                            </div>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 42%"></div>
+                        </div>
+                        <div class="topic-list">
+                            <div class="topic-item">
+                                <div class="topic-status done">
+                                    <i class="ph ph-check"></i>
+                                </div>
+                                <span class="topic-name">Mechanics Fundamentals</span>
+                                <span class="topic-tag">Physics</span>
+                            </div>
+                            <div class="topic-item">
+                                <div class="topic-status current">
+                                    <i class="ph ph-arrow-right"></i>
+                                </div>
+                                <span class="topic-name">Electrodynamics</span>
+                                <span class="topic-tag">Physics</span>
+                            </div>
+                            <div class="topic-item">
+                                <div class="topic-status pending">
+                                    <i class="ph ph-circle"></i>
+                                </div>
+                                <span class="topic-name">Thermodynamics</span>
+                                <span class="topic-tag">Physics</span>
+                            </div>
+                            <div class="topic-item">
+                                <div class="topic-status pending">
+                                    <i class="ph ph-circle"></i>
+                                </div>
+                                <span class="topic-name">Organic Chemistry</span>
+                                <span class="topic-tag">Chemistry</span>
+                            </div>
+                        </div>
                     </div>
-                    <a href="assets/files/IISER_IAT_3_Month_Study_Plan.pdf" download class="btn btn-primary"
-                        style="width: 100%; text-decoration: none;">Download Full Plan PDF</a>
-                    <a href="#" class="btn btn-outline"
-                        style="width: 100%; margin-top: 0.5rem; text-decoration: none;">View Week Schedule</a>
                 </div>
 
-                <!-- Tools -->
-                <div class="card">
-                    <h3>Quick Access</h3>
-                    <div class="quick-links">
-                        <div class="quick-link-item" onclick="window.location.href='ai_tutor.html'">
-                            <span class="quick-link-icon">🤖</span>
-                            <span style="font-weight: 600; font-size: 0.9rem;">AI Tutor</span>
-                        </div>
-                        <div class="quick-link-item" onclick="window.location.href='smart_notes/smart_notes_home.html'">
-                            <span class="quick-link-icon">🧠</span>
-                            <span style="font-weight: 600; font-size: 0.9rem;">Smart Notes</span>
+                <!-- Quick Actions -->
+                <div class="card sidebar-card fade-in stagger-3">
+                    <div class="card-header">
+                        <h3 class="card-title">
+                            <i class="ph ph-lightning"></i>
+                            Quick Actions
+                        </h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="action-grid">
+                            <a href="ai_tutor.html" class="action-btn">
+                                <div class="action-icon">
+                                    <i class="ph ph-robot"></i>
+                                </div>
+                                <span class="action-label">AI Tutor</span>
+                                <span class="action-sublabel">Ask doubts</span>
+                            </a>
+                            <a href="smart_notes/smart_notes_home.html" class="action-btn">
+                                <div class="action-icon">
+                                    <i class="ph ph-book-open"></i>
+                                </div>
+                                <span class="action-label">Smart Notes</span>
+                                <span class="action-sublabel">Revision</span>
+                            </a>
+                            <a href="mock_test/full_mock_test_homepage.html" class="action-btn">
+                                <div class="action-icon">
+                                    <i class="ph ph-exam"></i>
+                                </div>
+                                <span class="action-label">Mock Test</span>
+                                <span class="action-sublabel">Practice</span>
+                            </a>
+                            <a href="#" class="action-btn" onclick="downloadStudyPlan()">
+                                <div class="action-icon">
+                                    <i class="ph ph-download-simple"></i>
+                                </div>
+                                <span class="action-label">Study Plan</span>
+                                <span class="action-sublabel">PDF</span>
+                            </a>
                         </div>
                     </div>
                 </div>
 
+                <!-- Daily Goal -->
+                <div class="card sidebar-card fade-in stagger-4">
+                    <div class="card-header">
+                        <h3 class="card-title">
+                            <i class="ph ph-target"></i>
+                            Today's Goal
+                        </h3>
+                    </div>
+                    <div class="card-body">
+                        <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
+                            <div style="flex: 1;">
+                                <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                                    <span style="font-weight: 600;">3/5 Tasks</span>
+                                    <span style="color: var(--text-muted); font-size: 0.9rem;">60%</span>
+                                </div>
+                                <div class="progress-bar" style="height: 6px;">
+                                    <div class="progress-fill"
+                                        style="width: 60%; background: linear-gradient(90deg, var(--success), #34d399);">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="display: flex; flex-direction: column; gap: 0.5rem; font-size: 0.9rem;">
+                            <div style="display: flex; align-items: center; gap: 0.5rem; color: var(--success);">
+                                <i class="ph ph-check-circle-fill"></i>
+                                <span style="text-decoration: line-through; opacity: 0.6;">Solve 20 Physics
+                                    problems</span>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 0.5rem; color: var(--success);">
+                                <i class="ph ph-check-circle-fill"></i>
+                                <span style="text-decoration: line-through; opacity: 0.6;">Review Chemistry notes</span>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 0.5rem; color: var(--success);">
+                                <i class="ph ph-check-circle-fill"></i>
+                                <span style="text-decoration: line-through; opacity: 0.6;">Watch Biology lecture</span>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 0.5rem; color: var(--text-muted);">
+                                <i class="ph ph-circle"></i>
+                                <span>Practice Integration (15 problems)</span>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 0.5rem; color: var(--text-muted);">
+                                <i class="ph ph-circle"></i>
+                                <span>Take 30-min Quick Mock</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
+    </main>
 
     <script>
+        // Auth Check
+        (function () {
+            const token = localStorage.getItem("IAT_TOKEN");
+            const plan = localStorage.getItem("IAT_PLAN");
+
+            if (!token) {
+                window.location.href = "login.html?redirect=iat-planner-pro.html";
+                return;
+            } else if (plan !== "PRO") {
+                alert("This feature is exclusive to PRO members.");
+                window.location.href = "index.html#pricing";
+                return;
+            }
+
+            // Hide loading screen
+            window.addEventListener('load', () => {
+                setTimeout(() => {
+                    document.getElementById('loadingScreen').classList.add('hidden');
+                    animateRings();
+                }, 800);
+            });
+        })();
+
+        // Navbar scroll effect
+        window.addEventListener('scroll', () => {
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 20) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // Animate progress rings
+        function animateRings() {
+            const rings = document.querySelectorAll('.ring-progress');
+            rings.forEach(ring => {
+                const progress = ring.getAttribute('data-progress');
+                const circumference = 2 * Math.PI * 54; // r=54
+                const offset = circumference - (progress / 100) * circumference;
+                setTimeout(() => {
+                    ring.style.strokeDashoffset = offset;
+                }, 200);
+            });
+        }
+
+        // Logout
         function logout() {
             localStorage.clear();
             window.location.href = "index.html";
         }
 
+        // Download study plan
+        function downloadStudyPlan() {
+            // Simulate download
+            const btn = event.currentTarget;
+            const originalHTML = btn.innerHTML;
+            btn.innerHTML = '<div class="action-icon"><i class="ph ph-spinner animate-spin"></i></div><span class="action-label">Downloading...</span>';
+
+            setTimeout(() => {
+                btn.innerHTML = '<div class="action-icon" style="background: #dcfce7; color: #22c55e;"><i class="ph ph-check"></i></div><span class="action-label">Downloaded!</span>';
+                setTimeout(() => {
+                    btn.innerHTML = originalHTML;
+                }, 2000);
+            }, 1500);
+        }
+
         // Initialize Chart
-        const ctx = document.getElementById('mockChart').getContext('2d');
+        const ctx = document.getElementById('performanceChart').getContext('2d');
+
+        // Create gradient
+        const gradient = ctx.createLinearGradient(0, 0, 0, 400);
+        gradient.addColorStop(0, 'rgba(99, 102, 241, 0.3)');
+        gradient.addColorStop(1, 'rgba(99, 102, 241, 0)');
+
         new Chart(ctx, {
-            type: 'bar',
+            type: 'line',
             data: {
                 labels: ['Mock 1', 'Mock 2', 'Mock 3', 'Mock 4', 'Mock 5'],
                 datasets: [{
-                    label: 'Total Score',
+                    label: 'Your Score',
                     data: [120, 145, 138, 160, 172],
-                    backgroundColor: '#818cf8',
-                    borderRadius: 6,
+                    borderColor: '#6366f1',
+                    backgroundColor: gradient,
+                    borderWidth: 3,
+                    fill: true,
+                    tension: 0.4,
+                    pointBackgroundColor: '#6366f1',
+                    pointBorderColor: '#fff',
+                    pointBorderWidth: 2,
+                    pointRadius: 6,
+                    pointHoverRadius: 8
                 }, {
-                    label: 'Average Topper Score',
+                    label: 'Topper Average',
                     data: [180, 185, 182, 190, 195],
-                    backgroundColor: '#cbd5e1',
-                    borderRadius: 6,
-                    type: 'line'
+                    borderColor: '#94a3b8',
+                    borderWidth: 2,
+                    borderDash: [5, 5],
+                    fill: false,
+                    tension: 0.4,
+                    pointRadius: 0,
+                    pointHoverRadius: 4
                 }]
             },
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
-                scales: {
-                    y: { beginAtZero: true, max: 240 }
+                interaction: {
+                    mode: 'index',
+                    intersect: false,
                 },
                 plugins: {
-                    legend: { position: 'bottom' }
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            usePointStyle: true,
+                            padding: 20,
+                            font: {
+                                family: "'Plus Jakarta Sans', sans-serif",
+                                size: 12
+                            }
+                        }
+                    },
+                    tooltip: {
+                        backgroundColor: 'rgba(15, 23, 42, 0.9)',
+                        titleFont: {
+                            family: "'Plus Jakarta Sans', sans-serif",
+                            size: 13
+                        },
+                        bodyFont: {
+                            family: "'Plus Jakarta Sans', sans-serif",
+                            size: 12
+                        },
+                        padding: 12,
+                        cornerRadius: 8,
+                        displayColors: false
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 240,
+                        grid: {
+                            color: 'rgba(226, 232, 240, 0.6)',
+                            drawBorder: false
+                        },
+                        ticks: {
+                            font: {
+                                family: "'Plus Jakarta Sans', sans-serif",
+                                size: 11
+                            },
+                            color: '#94a3b8'
+                        }
+                    },
+                    x: {
+                        grid: {
+                            display: false,
+                            drawBorder: false
+                        },
+                        ticks: {
+                            font: {
+                                family: "'Plus Jakarta Sans', sans-serif",
+                                size: 11
+                            },
+                            color: '#64748b'
+                        }
+                    }
                 }
             }
+        });
+
+        // Filter buttons interaction
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', function () {
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
+        // Toggle buttons interaction
+        document.querySelectorAll('.toggle-btn').forEach(btn => {
+            btn.addEventListener('click', function () {
+                document.querySelectorAll('.toggle-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+            });
         });
     </script>
 </body>
