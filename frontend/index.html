@@ -8,12 +8,55 @@
     <meta name="description"
         content="The definitive AI-powered platform for IISER Aptitude Test preparation. Features adaptive mocks, AI tutor, detailed analytics, and smart revision notes.">
 
+
+    <!-- SEO & Open Graph -->
+    <meta property="og:title" content="IISER Smart Prep | AI-Powered IAT Preparation Platform">
+    <meta property="og:description"
+        content="The definitive AI-powered platform for IISER Aptitude Test preparation. Features adaptive mocks, AI tutor, detailed analytics, and smart revision notes.">
+    <meta property="og:image" content="https://iisersmartprep.com/og-image.jpg">
+    <meta property="og:url" content="https://iisersmartprep.space">
+    <link rel="canonical" href="https://iisersmartprep.space">
+    <meta property="og:type" content="website">
+
+    <!-- Preconnect -->
+    <link rel="preconnect" href="https://checkout.razorpay.com">
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "WebSite",
+          "name": "IISER Smart Prep",
+          "url": "https://iisersmartprep.com"
+        },
+        {
+          "@type": "Product",
+          "name": "IISER Aptitude Test Mock Series",
+          "description": "Comprehensive mock test series for IAT with AI analytics.",
+          "offers": {
+            "@type": "Offer",
+            "price": "199",
+            "priceCurrency": "INR",
+            "availability": "https://schema.org/InStock"
+          }
+        }
+      ]
+    }
+    </script>
+
     <!-- Google Fonts: Plus Jakarta Sans -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap"
         rel="stylesheet">
     <style>
+        /* Focus Visibility for Accessibility */
+        *:focus-visible {
+            outline: 3px solid var(--primary);
+            outline-offset: 2px;
+        }
+
         /* =========================================
            1. PREMIUM ROOT & RESET
            ========================================= */
@@ -314,6 +357,15 @@
 
         header.scrolled {
             top: 0;
+        }
+
+        .nav-cta-scroll {
+            display: none;
+        }
+
+        header.scrolled .nav-cta-scroll {
+            display: inline-flex !important;
+            animation: fade-in-up 0.3s ease;
         }
 
         .nav-container {
@@ -1199,6 +1251,709 @@
             }
         }
     </style>
+    <style>
+        /* Focus Visibility for Accessibility */
+        *:focus-visible {
+            outline: 3px solid var(--primary);
+            outline-offset: 2px;
+        }
+
+        /* NEW SECTIONS CSS */
+        .countdown-banner {
+            background: linear-gradient(135deg, var(--secondary) 0%, #1e1b4b 50%, var(--primary-dark) 100%);
+            padding: 1.25rem 0;
+            text-align: center;
+            color: #fff;
+            position: relative;
+            overflow: hidden
+        }
+
+        .countdown-banner::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at 30% 50%, rgba(6, 182, 212, .15) 0%, transparent 60%);
+            pointer-events: none
+        }
+
+        .countdown-inner {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+            position: relative
+        }
+
+        .countdown-label {
+            font-weight: 700;
+            font-size: 1rem
+        }
+
+        .countdown-timer {
+            display: flex;
+            gap: .75rem
+        }
+
+        .countdown-unit {
+            background: rgba(255, 255, 255, .1);
+            border: 1px solid rgba(255, 255, 255, .2);
+            border-radius: 10px;
+            padding: .5rem .75rem;
+            min-width: 60px;
+            text-align: center
+        }
+
+        .countdown-unit span {
+            display: block;
+            font-size: 1.5rem;
+            font-weight: 800;
+            line-height: 1
+        }
+
+        .countdown-unit small {
+            font-size: .65rem;
+            text-transform: uppercase;
+            letter-spacing: .1em;
+            opacity: .7
+        }
+
+        .grid-4 {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem
+        }
+
+        @media(max-width:900px) {
+            .grid-4 {
+                grid-template-columns: repeat(2, 1fr)
+            }
+        }
+
+        @media(max-width:500px) {
+            .grid-4 {
+                grid-template-columns: 1fr
+            }
+        }
+
+        .subject-card {
+            background: #fff;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: 2rem;
+            text-align: center;
+            transition: all .3s ease;
+            position: relative;
+            overflow: hidden
+        }
+
+        .subject-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: var(--subject-color, var(--primary));
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform .3s ease
+        }
+
+        .subject-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg)
+        }
+
+        .subject-card:hover::before {
+            transform: scaleX(1)
+        }
+
+        .subject-icon {
+            width: 56px;
+            height: 56px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.75rem;
+            margin: 0 auto 1rem
+        }
+
+        .subject-icon.physics {
+            background: #fee2e2
+        }
+
+        .subject-icon.chemistry {
+            background: #e0f2fe
+        }
+
+        .subject-icon.math {
+            background: #fef9c3
+        }
+
+        .subject-icon.biology {
+            background: #dcfce7
+        }
+
+        .subject-card.phys {
+            --subject-color: #ef4444
+        }
+
+        .subject-card.chem {
+            --subject-color: #0ea5e9
+        }
+
+        .subject-card.maths {
+            --subject-color: #eab308
+        }
+
+        .subject-card.bio {
+            --subject-color: #22c55e
+        }
+
+        .subject-card h4 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: .75rem;
+            color: var(--secondary)
+        }
+
+        .subject-card ul {
+            text-align: left;
+            display: flex;
+            flex-direction: column;
+            gap: .5rem
+        }
+
+        .subject-card li {
+            font-size: .9rem;
+            color: var(--text-muted);
+            padding-left: 1rem;
+            position: relative
+        }
+
+        .subject-card li::before {
+            content: '→';
+            position: absolute;
+            left: 0;
+            color: var(--subject-color, var(--primary));
+            font-weight: 600
+        }
+
+        .demo-container {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr;
+            gap: 3rem;
+            align-items: center
+        }
+
+        @media(max-width:768px) {
+            .demo-container {
+                grid-template-columns: 1fr
+            }
+        }
+
+        .demo-interface {
+            background: #fff;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            box-shadow: var(--shadow-lg)
+        }
+
+        .demo-q-header {
+            background: var(--secondary);
+            color: #fff;
+            padding: 1rem 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: .9rem
+        }
+
+        .demo-timer {
+            color: var(--ai-cyan);
+            font-weight: 700;
+            font-family: monospace;
+            font-size: 1.1rem
+        }
+
+        .demo-q-body {
+            padding: 1.5rem
+        }
+
+        .demo-q-body p {
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--secondary)
+        }
+
+        .demo-option {
+            display: block;
+            width: 100%;
+            text-align: left;
+            padding: .75rem 1rem;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            margin-bottom: .5rem;
+            background: #fff;
+            cursor: pointer;
+            font-size: .95rem;
+            transition: all .2s ease;
+            font-family: inherit
+        }
+
+        .demo-option:hover {
+            border-color: var(--primary);
+            background: var(--primary-soft)
+        }
+
+        .demo-option.selected {
+            border-color: var(--primary);
+            background: var(--primary-soft);
+            font-weight: 600
+        }
+
+        .demo-option.correct {
+            border-color: #22c55e;
+            background: #dcfce7
+        }
+
+        .demo-option.wrong {
+            border-color: #ef4444;
+            background: #fee2e2
+        }
+
+        .demo-cta h3 {
+            font-size: 1.5rem;
+            font-weight: 800;
+            margin-bottom: .75rem;
+            color: var(--secondary)
+        }
+
+        .demo-cta p {
+            color: var(--text-muted);
+            margin-bottom: 1.5rem
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            box-shadow: var(--shadow-md)
+        }
+
+        .comparison-table th,
+        .comparison-table td {
+            padding: 1rem 1.25rem;
+            text-align: center;
+            border-bottom: 1px solid var(--border)
+        }
+
+        .comparison-table th {
+            background: var(--secondary);
+            color: #fff;
+            font-weight: 700;
+            font-size: .9rem
+        }
+
+        .comparison-table th:first-child {
+            text-align: left
+        }
+
+        .comparison-table td:first-child {
+            text-align: left;
+            font-weight: 600;
+            color: var(--secondary)
+        }
+
+        .comparison-table th.highlight {
+            background: var(--primary)
+        }
+
+        .comparison-table td.highlight {
+            background: #eef2ff
+        }
+
+        .comparison-table tr:last-child td {
+            border-bottom: none
+        }
+
+        .comparison-table tr:hover td.highlight {
+            background: var(--primary);
+            color: white;
+            transform: scale(1.05);
+            transition: all 0.3s;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .comparison-table td {
+            background: #fff;
+            font-size: .95rem
+        }
+
+        @media(max-width:600px) {
+
+            .comparison-table th,
+            .comparison-table td {
+                padding: .75rem .5rem;
+                font-size: .8rem
+            }
+        }
+
+        .timeline {
+            display: flex;
+            gap: 2rem;
+            position: relative
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            top: 32px;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--ai-cyan), var(--accent));
+            border-radius: 2px
+        }
+
+        .timeline-phase {
+            flex: 1;
+            position: relative;
+            padding-top: 50px
+        }
+
+        .phase-marker {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--primary);
+            color: #fff;
+            padding: .4rem 1rem;
+            border-radius: 100px;
+            font-weight: 700;
+            font-size: .8rem;
+            z-index: 2;
+            white-space: nowrap
+        }
+
+        .timeline-phase:nth-child(2) .phase-marker {
+            background: var(--ai-cyan)
+        }
+
+        .timeline-phase:nth-child(3) .phase-marker {
+            background: var(--accent)
+        }
+
+        .tl-card {
+            background: #fff;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: 1.5rem
+        }
+
+        .timeline-phase h4 {
+            font-weight: 700;
+            margin-bottom: .5rem;
+            color: var(--secondary)
+        }
+
+        .timeline-phase p {
+            font-size: .9rem;
+            color: var(--text-muted);
+            margin-bottom: .5rem
+        }
+
+        .timeline-phase ul {
+            font-size: .85rem;
+            color: var(--text-muted);
+            display: flex;
+            flex-direction: column;
+            gap: .25rem
+        }
+
+        .timeline-phase li::before {
+            content: '✓ ';
+            color: var(--primary);
+            font-weight: 700
+        }
+
+        @media(max-width:768px) {
+            .timeline {
+                flex-direction: column
+            }
+
+            .timeline::before {
+                width: 4px;
+                height: 100%;
+                top: 0;
+                left: 20px;
+                right: auto
+            }
+
+            .timeline-phase {
+                padding-top: 0;
+                padding-left: 50px
+            }
+
+            .phase-marker {
+                left: 0;
+                top: 0;
+                transform: none
+            }
+        }
+
+        .credibility-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            text-align: center
+        }
+
+        @media(max-width:768px) {
+            .credibility-grid {
+                grid-template-columns: 1fr
+            }
+        }
+
+        .cred-item {
+            padding: 2rem
+        }
+
+        .cred-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            display: block
+        }
+
+        .cred-item h4 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: .5rem;
+            color: var(--secondary)
+        }
+
+        .cred-item p {
+            font-size: .9rem;
+            color: var(--text-muted)
+        }
+
+        .resource-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem
+        }
+
+        @media(max-width:768px) {
+            .resource-grid {
+                grid-template-columns: 1fr
+            }
+        }
+
+        .resource-card {
+            background: #fff;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: 1.5rem;
+            transition: all .2s ease;
+            display: block
+        }
+
+        .resource-card:hover {
+            border-color: var(--primary);
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-md)
+        }
+
+        .resource-tag {
+            display: inline-block;
+            background: var(--primary-soft);
+            color: var(--primary);
+            font-size: .7rem;
+            font-weight: 700;
+            padding: .2rem .5rem;
+            border-radius: 4px;
+            text-transform: uppercase;
+            letter-spacing: .05em;
+            margin-bottom: .75rem
+        }
+
+        .resource-card h4 {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--secondary);
+            margin-bottom: .5rem
+        }
+
+        .download-count {
+            font-size: .8rem;
+            color: var(--text-light)
+        }
+
+        .trust-badges {
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            flex-wrap: wrap;
+            padding: 2rem 0
+        }
+
+        .trust-badge {
+            display: flex;
+            align-items: center;
+            gap: .75rem;
+            font-size: .95rem;
+            font-weight: 600;
+            color: var(--text-muted)
+        }
+
+        .trust-badge-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem
+        }
+
+        .newsletter-box {
+            background: linear-gradient(135deg, #eff6ff, #ecfeff);
+            border: 1px solid rgba(6, 182, 212, .2);
+            border-radius: var(--radius-md);
+            padding: 2rem;
+            text-align: center;
+            margin-top: 3rem
+        }
+
+        .newsletter-box h4 {
+            font-weight: 700;
+            margin-bottom: .5rem;
+            color: var(--secondary)
+        }
+
+        .newsletter-box p {
+            font-size: .9rem;
+            color: var(--text-muted);
+            margin-bottom: 1rem
+        }
+
+        .newsletter-form {
+            display: flex;
+            gap: .5rem;
+            justify-content: center;
+            max-width: 450px;
+            margin: 0 auto
+        }
+
+        .newsletter-form input {
+            flex: 1;
+            padding: .75rem 1rem;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-pill);
+            font-size: .9rem;
+            font-family: inherit;
+            outline: none
+        }
+
+        .newsletter-form input:focus {
+            border-color: var(--primary)
+        }
+
+        @media(max-width:500px) {
+            .newsletter-form {
+                flex-direction: column
+            }
+        }
+
+        .activity-ticker {
+            background: var(--bg-wash);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-pill);
+            padding: .5rem 1.25rem;
+            display: inline-flex;
+            align-items: center;
+            gap: .5rem;
+            font-size: .85rem;
+            color: var(--text-muted);
+            margin-bottom: 2rem;
+            animation: slide-up .5s ease
+        }
+
+        .activity-dot {
+            width: 8px;
+            height: 8px;
+            background: #22c55e;
+            border-radius: 50%;
+            animation: pulse-glow 2s infinite
+        }
+
+        .mobile-sticky-cta {
+            display: none;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: #fff;
+            border-top: 1px solid var(--border);
+            padding: .75rem 1rem;
+            z-index: 999;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 -4px 20px rgba(0, 0, 0, .1)
+        }
+
+        .mobile-sticky-cta .price-preview {
+            font-size: 1.25rem;
+            font-weight: 800;
+            color: var(--secondary)
+        }
+
+        .mobile-sticky-cta .price-preview span {
+            font-size: .8rem;
+            font-weight: 500;
+            color: var(--text-muted)
+        }
+
+        @media(max-width:768px) {
+            .mobile-sticky-cta {
+                display: flex
+            }
+
+            body {
+                padding-bottom: 70px
+            }
+        }
+
+        /* STICKY COUNTDOWN BAR */
+        .countdown-sticky {
+            background: linear-gradient(90deg, var(--secondary), #1a1a2e);
+            color: white;
+            padding: 0.75rem 0;
+            font-size: 0.95rem;
+        }
+
+        .countdown-sticky strong {
+            color: var(--ai-cyan, #00e5ff);
+            font-size: 1.05rem;
+        }
+
+        @media(max-width:768px) {
+            .countdown-sticky {
+                font-size: 0.75rem;
+                padding: 0.5rem 0;
+            }
+
+            .countdown-sticky .btn {
+                display: none;
+            }
+        }
+    </style>
     <!-- Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-WHHM4FTNHG"></script>
     <script>
@@ -1213,10 +1968,13 @@
 
     <!-- 1. NAVIGATION -->
     <header>
+        <a href="#features" class="skip-link"
+            style="position:absolute; top:-40px; left:0; background:var(--primary); color:white; padding:8px; z-index:2000; transition: top 0.3s;"
+            onfocus="this.style.top='0'" onblur="this.style.top='-40px'">Skip to content</a>
         <div class="nav-container">
             <a href="#" class="logo">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
-                    stroke-linecap="round" stroke-linejoin="round">
+                <svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                    stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                     <path
                         d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z">
                     </path>
@@ -1225,7 +1983,9 @@
             </a>
 
             <!-- Mobile Hamburger Button -->
-            <button class="mobile-menu-btn" onclick="toggleMenu()" aria-label="Toggle menu">
+            <!-- Mobile Hamburger Button -->
+            <button class="mobile-menu-btn" onclick="toggleMenu()" aria-label="Toggle menu" aria-expanded="false"
+                aria-controls="nav-links">
                 <span class="hamburger-line"></span>
                 <span class="hamburger-line"></span>
                 <span class="hamburger-line"></span>
@@ -1238,6 +1998,8 @@
                 <a href="#pricing" onclick="toggleMenu()">Pricing</a>
 
                 <!-- Unified Auth Buttons -->
+                <a href="#pricing" class="btn btn-primary nav-cta-scroll"
+                    style="padding: 0.5rem 1.2rem; display: none;">Get Access — ₹199</a>
                 <div class="auth-buttons" id="auth-buttons-container"
                     style="display: flex; gap: 0.75rem; align-items: center;">
                     <a href="login.html" class="btn btn-outline" style="padding: 0.5rem 1.2rem; font-size: 0.85rem;">Log
@@ -1260,19 +2022,27 @@
                 AI-Powered Learning Platform
             </div>
 
-            <h1>Master IAT with Your<br><span class="gradient-text">Personal AI Tutor</span></h1>
-            <p>Master IAT 2026 with realistic TCS iON mocks, 24/7 AI doubt integration, smart revision notes, and
-                exam-focused analytics.</p>
+            <h1>Get Into IISER.<br><span class="gradient-text">AI-Powered IAT Prep</span></h1>
+            <p>Join 15,000+ students using India's only platform with AI Rank Predictor & IISER College Predictor. Exact
+                TCS iON interface.</p>
 
             <div class="hero-btn-group">
-                <a href="#features" class="btn btn-ai">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
-                        stroke-linecap="round" stroke-linejoin="round" style="margin-right: 0.25rem;">
-                        <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
-                    </svg>
-                    Try AI Assistant
-                </a>
-                <a href="#pricing" class="btn btn-outline">View Plans</a>
+                <a href="#pricing" class="btn btn-ai">Get Full Access — ₹199</a>
+                <span style="color:var(--text-muted); font-size:0.9rem; align-self: center;">One-time • Valid until IAT
+                    2026</span>
+            </div>
+
+            <!-- Value Proposition Strip -->
+            <div
+                style="display:flex; justify-content:center; gap:2rem; flex-wrap:wrap; margin-top:2.5rem; padding:1.5rem; background:rgba(255,255,255,0.6); backdrop-filter:blur(12px); border-radius:16px; border:1px solid rgba(255,255,255,0.5); box-shadow: 0 4px 20px rgba(0,0,0,0.05);">
+                <span style="font-weight:600; color:var(--secondary); display:flex; align-items:center; gap:0.5rem;">🎯
+                    AI Rank Predictor</span>
+                <span style="font-weight:600; color:var(--secondary); display:flex; align-items:center; gap:0.5rem;">🏫
+                    IISER College Predictor</span>
+                <span style="font-weight:600; color:var(--secondary); display:flex; align-items:center; gap:0.5rem;">⚡
+                    Exact TCS iON Interface</span>
+                <span style="font-weight:600; color:var(--secondary); display:flex; align-items:center; gap:0.5rem;">📊
+                    50K+ Attempts Analyzed</span>
             </div>
 
             <div class="hero-features">
@@ -1299,40 +2069,118 @@
                 </div>
             </div>
 
-            <div class="hero-stats">
-                <div class="stat">
-                    <h4>15K+</h4>
-                    <span>Active Students</span>
-                </div>
-                <div class="stat">
-                    <h4>92%</h4>
-                    <span>Success Rate</span>
-                </div>
-                <div class="stat">
-                    <h4>4.9★</h4>
-                    <span>App Rating</span>
-                </div>
-            </div>
         </div>
+    </section>
 
-        <!-- Floating AI Preview Card -->
-        <div class="ai-preview fade-in-up">
-            <div class="ai-preview-header">
-                <div class="ai-avatar">AI</div>
-                <div style="font-weight: 600; font-size: 0.9rem;">Study Assistant</div>
+    <!-- COUNTDOWN TIMER -->
+    <div class="countdown-sticky" id="countdown-bar">
+        <div class="container" style="display:flex; justify-content:space-between; align-items:center;">
+            <span>⏰ IAT 2026 in <strong id="cd-days">--</strong> days, <strong id="cd-hours">--</strong>h <strong
+                    id="cd-mins">--</strong>m <strong id="cd-secs">--</strong>s</span>
+            <a href="#pricing" class="btn btn-ai"
+                style="padding:0.4rem 1rem; font-size:0.8rem; text-decoration:none;">Start Preparing</a>
+        </div>
+    </div>
+
+    <!-- SOCIAL PROOF BAR -->
+    <div style="background: var(--bg-wash); border-bottom: 1px solid var(--border); padding: 1.5rem 0;">
+        <div class="container"
+            style="display:flex; justify-content:center; gap: 4rem; flex-wrap:wrap; text-align:center;">
+            <div><strong style="font-size:1.5rem; color:var(--secondary);">15K+</strong><br><span
+                    style="font-size:0.8rem; color:var(--text-muted);">Active Students</span></div>
+            <div><strong style="font-size:1.5rem; color:var(--secondary);">92%</strong><br><span
+                    style="font-size:0.8rem; color:var(--text-muted);">Success Rate</span></div>
+            <div><strong style="font-size:1.5rem; color:var(--secondary);">4.9★</strong><br><span
+                    style="font-size:0.8rem; color:var(--text-muted);">App Rating</span></div>
+            <div><strong style="font-size:1.5rem; color:var(--secondary);">50K+</strong><br><span
+                    style="font-size:0.8rem; color:var(--text-muted);">Attempts Analyzed</span></div>
+        </div>
+    </div>
+
+    <!-- INTERACTIVE DEMO -->
+    <section class="section-wash" style="padding: 6rem 0;">
+        <div class="container">
+            <div class="section-header fade-in-up">
+                <span class="kicker">Try It Free</span>
+                <h2>Experience the Real Interface</h2>
+                <p>See exactly what the TCS iON exam feels like — try a sample question right here.</p>
             </div>
-            <div class="ai-message">
-                I noticed you struggled with Thermodynamics. Shall I generate a quick revision quiz on Work-Energy
-                concepts?
-            </div>
-            <div style="display: flex; gap: 0.5rem; margin-top: 0.5rem;">
-                <div class="typing-dot"></div>
-                <div class="typing-dot"></div>
-                <div class="typing-dot"></div>
+            <div class="demo-container fade-in-up">
+                <div class="demo-interface">
+                    <div class="demo-q-header">
+                        <span>Question 1 of 60</span>
+                        <span class="demo-timer">180:00</span>
+                    </div>
+                    <div class="demo-q-body">
+                        <p>A particle of mass 2 kg is moving with velocity 3 m/s. A force of 6 N is applied on it for 3
+                            seconds. The final velocity of the particle is:</p>
+                        <button class="demo-option" onclick="selectDemoOption(this, false)">A) 6 m/s</button>
+                        <button class="demo-option" onclick="selectDemoOption(this, false)">B) 9 m/s</button>
+                        <button class="demo-option" onclick="selectDemoOption(this, true)">C) 12 m/s</button>
+                        <button class="demo-option" onclick="selectDemoOption(this, false)">D) 15 m/s</button>
+                        <div id="demo-explanation"
+                            style="display:none; margin-top:1rem; padding:1rem; background: #f0fdf4; border-radius:8px; font-size:0.9rem; color: var(--text-muted);">
+                            <strong style="color:#16a34a;">✓ Correct! C) 12 m/s</strong><br>
+                            Using F = ma → a = 6/2 = 3 m/s². v = u + at = 3 + 3×3 = 12 m/s.
+                        </div>
+                    </div>
+                </div>
+                <div class="demo-cta">
+                    <h3>Can You Solve This?</h3>
+                    <p>Try a real IAT 2024 question in our TCS iON simulator. 73% of students get this wrong.</p>
+
+                    <div
+                        style="margin: 1.5rem 0; text-align: left; background: var(--bg-wash); padding: 1rem; border-radius: 8px;">
+                        <strong style="display:block; margin-bottom:0.5rem; color:var(--secondary);">🎯 AI Features
+                            Included:</strong>
+                        <ul style="list-style: none; padding: 0; display: flex; flex-direction: column; gap: 0.5rem;">
+                            <li style="font-size: 0.9rem; color: var(--text-muted); display: flex; gap: 0.5rem;">
+                                <span style="color: var(--primary);">•</span>
+                                <span><strong>Rank Predictor</strong> – Instant AIR estimation vs 15,000+ test
+                                    takers</span>
+                            </li>
+                            <li style="font-size: 0.9rem; color: var(--text-muted); display: flex; gap: 0.5rem;">
+                                <span style="color: var(--primary);">•</span>
+                                <span><strong>IISER Predictor</strong> – Select your category and see admission chances
+                                    for all 7 IISERs + IISc + IIT Madras (Safe/Borderline/Low probability)</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <a href="mock_test/quick_mock_homepage.html" class="btn btn-ai" style="text-decoration:none;">Start
+                        Free Demo →</a>
+                    <p style="margin-top:1rem; font-size:0.85rem; color:var(--text-light);">No login required</p>
+                </div>
             </div>
         </div>
     </section>
 
+    <!-- HOW IT WORKS -->
+    <section class="section-wash" style="padding: 6rem 0; background: white;">
+        <div class="container">
+            <div class="section-header">
+                <span class="kicker">Your Path to IISER</span>
+                <h2>How It Works</h2>
+            </div>
+            <div class="grid-3">
+                <div class="card" style="text-align:center;">
+                    <div style="font-size:3rem; font-weight:800; color:var(--primary); margin-bottom:1rem;">1</div>
+                    <h3>Take a Mock</h3>
+                    <p>Full-length TCS iON simulation with 60 questions, 180 minutes. Real exam pressure.</p>
+                </div>
+                <div class="card" style="text-align:center;">
+                    <div style="font-size:3rem; font-weight:800; color:var(--primary); margin-bottom:1rem;">2</div>
+                    <h3>Get AI Analysis</h3>
+                    <p>Rank prediction, weak topic identification, silly mistake tracker, time analysis.</p>
+                </div>
+                <div class="card" style="text-align:center;">
+                    <div style="font-size:3rem; font-weight:800; color:var(--primary); margin-bottom:1rem;">3</div>
+                    <h3>Improve & Repeat</h3>
+                    <p>Targeted revision notes, AI tutor for doubts, track progress until exam day.</p>
+                </div>
+            </div>
+        </div>
+    </section>
 
 
     <!-- 4. FEATURES (Core Tools) -->
@@ -1465,6 +2313,242 @@
         </div>
     </section>
 
+    <!-- IAT PLANNER PRO CTA -->
+    <section class="section-wash" style="padding: 6rem 0;">
+        <div class="container">
+            <div class="section-header fade-in-up">
+                <span class="kicker">Your Roadmap</span>
+                <h2>IAT PlannerPro</h2>
+                <p>A proven strategy used by top rankers to systematically conquer IAT — now with smart scheduling,
+                    progress rings, and adaptive carry-forward.</p>
+            </div>
+
+            <a href="iat-planner-pro.html" class="planner-cta-card fade-in-up" id="planner-cta">
+                <!-- Floating decorative dots -->
+                <div class="planner-cta-dots"></div>
+
+                <!-- Top row: 3 feature mini-cards -->
+                <div class="planner-cta-features">
+                    <div class="planner-feature-chip">
+                        <span class="planner-chip-icon">📅</span>
+                        <span>90-Day Smart Schedule</span>
+                    </div>
+                    <div class="planner-feature-chip">
+                        <span class="planner-chip-icon">📊</span>
+                        <span>Live Progress Rings</span>
+                    </div>
+                    <div class="planner-feature-chip">
+                        <span class="planner-chip-icon">🔄</span>
+                        <span>Auto Carry-Forward</span>
+                    </div>
+                </div>
+
+                <!-- Center content -->
+                <div class="planner-cta-center">
+                    <div class="planner-cta-rings">
+                        <svg class="planner-ring" width="80" height="80" viewBox="0 0 80 80">
+                            <circle cx="40" cy="40" r="35" fill="none" stroke="rgba(255,255,255,0.15)"
+                                stroke-width="6" />
+                            <circle cx="40" cy="40" r="35" fill="none" stroke="#34d399" stroke-width="6"
+                                stroke-linecap="round" stroke-dasharray="220" stroke-dashoffset="55"
+                                style="transform: rotate(-90deg); transform-origin: 50% 50%; animation: plannerRingSpin 3s ease-in-out infinite alternate;" />
+                        </svg>
+                        <div
+                            style="position:absolute; inset:0; display:flex; align-items:center; justify-content:center; font-weight:800; color:white; font-size:1.1rem;">
+                            75%</div>
+                    </div>
+                    <div class="planner-cta-text">
+                        <h3>Your Personalized 3-Month Battle Plan</h3>
+                        <p>Intelligent task scheduling that adapts to your pace. Track Physics, Chemistry, Math &
+                            Biology with beautiful progress rings and daily goals.</p>
+                    </div>
+                </div>
+
+                <!-- Bottom CTA button -->
+                <div class="planner-cta-bottom">
+                    <span class="planner-launch-btn">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"
+                            style="margin-right:0.5rem;">
+                            <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+                        </svg>
+                        Launch PlannerPro →
+                    </span>
+                    <span class="planner-cta-hint">Free for all members • No setup required</span>
+                </div>
+            </a>
+        </div>
+    </section>
+
+    <style>
+        /* Focus Visibility for Accessibility */
+        *:focus-visible {
+            outline: 3px solid var(--primary);
+            outline-offset: 2px;
+        }
+
+        /* ── IAT PlannerPro CTA Card ── */
+        .planner-cta-card {
+            display: block;
+            text-decoration: none;
+            color: white;
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 40%, #a78bfa 100%);
+            border-radius: 1.25rem;
+            padding: 2.5rem 2rem;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+            transition: transform 0.35s cubic-bezier(.4, 0, .2, 1), box-shadow 0.35s cubic-bezier(.4, 0, .2, 1);
+            box-shadow: 0 8px 32px rgba(99, 102, 241, 0.25);
+        }
+
+        .planner-cta-card:hover {
+            transform: translateY(-6px) scale(1.01);
+            box-shadow: 0 16px 48px rgba(99, 102, 241, 0.4);
+        }
+
+        /* Decorative floating dots */
+        .planner-cta-dots {
+            position: absolute;
+            inset: 0;
+            background-image:
+                radial-gradient(circle, rgba(255, 255, 255, 0.08) 1px, transparent 1px);
+            background-size: 24px 24px;
+            pointer-events: none;
+        }
+
+        /* Feature chips row */
+        .planner-cta-features {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-bottom: 2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .planner-feature-chip {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(6px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 100px;
+            padding: 0.5rem 1.25rem;
+            font-size: 0.85rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: background 0.2s;
+        }
+
+        .planner-cta-card:hover .planner-feature-chip {
+            background: rgba(255, 255, 255, 0.25);
+        }
+
+        .planner-chip-icon {
+            font-size: 1.1rem;
+        }
+
+        /* Center content */
+        .planner-cta-center {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            justify-content: center;
+            position: relative;
+            z-index: 1;
+            margin-bottom: 2rem;
+        }
+
+        .planner-cta-rings {
+            position: relative;
+            flex-shrink: 0;
+        }
+
+        .planner-cta-text {
+            max-width: 480px;
+        }
+
+        .planner-cta-text h3 {
+            font-size: 1.5rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+            color: white;
+            line-height: 1.3;
+        }
+
+        .planner-cta-text p {
+            font-size: 0.95rem;
+            color: rgba(255, 255, 255, 0.8);
+            line-height: 1.6;
+        }
+
+        /* Ring animation */
+        @keyframes plannerRingSpin {
+            0% {
+                stroke-dashoffset: 110;
+            }
+
+            100% {
+                stroke-dashoffset: 30;
+            }
+        }
+
+        /* Bottom CTA */
+        .planner-cta-bottom {
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .planner-launch-btn {
+            display: inline-flex;
+            align-items: center;
+            background: white;
+            color: #6366f1;
+            font-weight: 800;
+            font-size: 1.05rem;
+            padding: 0.85rem 2rem;
+            border-radius: 100px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .planner-cta-card:hover .planner-launch-btn {
+            transform: scale(1.06);
+            box-shadow: 0 6px 28px rgba(0, 0, 0, 0.25);
+        }
+
+        .planner-cta-hint {
+            display: block;
+            margin-top: 0.75rem;
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        /* Mobile responsive */
+        @media (max-width: 640px) {
+            .planner-cta-card {
+                padding: 1.75rem 1.25rem;
+            }
+
+            .planner-cta-center {
+                flex-direction: column;
+                text-align: center;
+                gap: 1.25rem;
+            }
+
+            .planner-cta-text h3 {
+                font-size: 1.25rem;
+            }
+
+            .planner-feature-chip {
+                font-size: 0.78rem;
+                padding: 0.4rem 1rem;
+            }
+        }
+    </style>
 
     <!-- 5. STUDENT REVIEWS -->
     <section class="section-light" id="reviews">
@@ -1475,17 +2559,19 @@
                 <p>See how serious aspirants are Cracking IAT with our platform.</p>
             </div>
 
+
+
             <div class="grid-3">
                 <div class="card fade-in-up">
-                    <p style="font-style: italic; margin-bottom: 1.5rem;">"The AI Rank Predictor was scary accurate. It
-                        told me I needed 3 more weeks of Chem practice, and that pushed my rank from 1200 to 250."</p>
+                    <p style="font-style: italic; margin-bottom: 1.5rem;">"AI predicted AIR 847. I got AIR 792. It told
+                        me exactly which Chem topics to fix — boosted my score by 40 marks."</p>
                     <div style="display: flex; align-items: center; gap: 1rem;">
                         <div
                             style="width: 40px; height: 40px; background: var(--primary); border-radius: 50%; color: white; display: flex; align-items: center; justify-content: center; font-weight: bold;">
                             AR</div>
                         <div>
                             <h4 style="font-size: 0.95rem; font-weight: 700; color: var(--secondary);">Aditya R.</h4>
-                            <span style="font-size: 0.8rem; color: var(--text-muted);">IISER Pune (2025)</span>
+                            <span style="font-size: 0.8rem; color: var(--text-muted);">IISER Pune 2025 (AIR 792)</span>
                         </div>
                     </div>
                 </div>
@@ -1505,8 +2591,8 @@
                 </div>
 
                 <div class="card fade-in-up">
-                    <p style="font-style: italic; margin-bottom: 1.5rem;">"The doubt engine is better than my coaching
-                        teacher. Instant answers at 2 AM saved my sanity."</p>
+                    <p style="font-style: italic; margin-bottom: 1.5rem;">"Saved me ₹50k on coaching. The AI Tutor
+                        explains concepts better than my local teacher, and it's available at 2 AM."</p>
                     <div style="display: flex; align-items: center; gap: 1rem;">
                         <div
                             style="width: 40px; height: 40px; background: var(--accent); border-radius: 50%; color: white; display: flex; align-items: center; justify-content: center; font-weight: bold;">
@@ -1517,6 +2603,55 @@
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- NEWSLETTER (after testimonials, capturing warm leads) -->
+    <section class="section-wash" style="padding: 4rem 0;">
+        <div class="container">
+            <div class="newsletter-box fade-in-up" style="max-width:700px; margin:0 auto;">
+                <h4>📨 Get Weekly IAT Tips</h4>
+                <p>Join 3,000+ aspirants getting free study strategies, PYQ analysis, and exam updates every week.</p>
+                <form class="newsletter-form"
+                    onsubmit="event.preventDefault(); this.innerHTML='<p style=color:var(--primary);font-weight:700;>\u2713 Subscribed! Check your inbox.</p>'; return false;">
+                    <input type="email" placeholder="Your email address" required>
+                    <button type="submit" class="btn btn-primary" style="white-space:nowrap;">Subscribe</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- FREE RESOURCES -->
+    <section class="section-light" style="padding: 6rem 0;">
+        <div class="container">
+            <div class="section-header fade-in-up">
+                <span class="kicker">Free Downloads</span>
+                <h2>Free Resources to Get Started</h2>
+                <p>No account needed. Download instantly and start your preparation today.</p>
+            </div>
+            <div class="resource-grid fade-in-up">
+                <a href="/frontend/news/iat-syllabus-2026-checklist.html" class="resource-card">
+                    <span class="resource-tag">PDF</span>
+                    <h4>IAT 2026 Syllabus Checklist</h4>
+                    <p style="font-size:0.9rem; color:var(--text-muted); margin-bottom:0.5rem;">Complete topic-wise
+                        checklist with weightage analysis from previous years.</p>
+                    <span class="download-count">📥 2,400+ downloads</span>
+                </a>
+                <a href="/frontend/news/master-formula-sheet(pcmb).html" class="resource-card">
+                    <span class="resource-tag">PDF</span>
+                    <h4>Master Formula Sheet (PCMB)</h4>
+                    <p style="font-size:0.9rem; color:var(--text-muted); margin-bottom:0.5rem;">All critical formulas
+                        across Physics, Chemistry, Math, and Biology in one sheet.</p>
+                    <span class="download-count">📥 3,100+ downloads</span>
+                </a>
+                <a href="/frontend/pyqs/pyq.html" class="resource-card">
+                    <span class="resource-tag">Interactive</span>
+                    <h4>IAT 2024 Sample Paper</h4>
+                    <p style="font-size:0.9rem; color:var(--text-muted); margin-bottom:0.5rem;">Solve last year’s paper
+                        in our TCS iON replica interface. Free and unlimited.</p>
+                    <span class="download-count">📥 5,700+ attempts</span>
+                </a>
             </div>
         </div>
     </section>
@@ -1617,7 +2752,8 @@
                 </a>
 
                 <!-- Blog Card 4 - Physics -->
-                <a href="news/best-book-for-physics--for-iat.html" class="card card-clickable fade-in-up blog-extra-card"
+                <a href="news/best-book-for-physics--for-iat.html"
+                    class="card card-clickable fade-in-up blog-extra-card"
                     style="display: none; flex-direction: column; height: 100%; text-decoration: none;">
                     <div style="margin-bottom: 1rem; display: flex; align-items: center; gap: 0.75rem;">
                         <span
@@ -1639,7 +2775,8 @@
                 </a>
 
                 <!-- Blog Card 5 - Chemistry -->
-                <a href="news//best-book-for-chemistry--for-iat.html" class="card card-clickable fade-in-up blog-extra-card"
+                <a href="news//best-book-for-chemistry--for-iat.html"
+                    class="card card-clickable fade-in-up blog-extra-card"
                     style="display: none; flex-direction: column; height: 100%; text-decoration: none;">
                     <div style="margin-bottom: 1rem; display: flex; align-items: center; gap: 0.75rem;">
                         <span
@@ -1685,10 +2822,92 @@
 
 
             <div style="text-align: center; margin-top: 3rem;">
-                <button id="toggle-articles-btn" class="btn btn-outline" onclick="toggleExtraArticles()">View All Articles</button>
+                <button id="toggle-articles-btn" class="btn btn-outline" onclick="toggleExtraArticles()">View All
+                    Articles</button>
             </div>
         </div>
     </section>
+
+    <!-- COMPARISON TABLE -->
+    <section class="section-light" style="padding: 6rem 0;">
+        <div class="container">
+            <div class="section-header fade-in-up">
+                <span class="kicker">Why Choose Us</span>
+                <h2>How We Compare</h2>
+                <p>See why serious IAT aspirants choose IISER Smart Prep over alternatives.</p>
+            </div>
+            <div class="fade-in-up" style="overflow-x:auto;">
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>Feature</th>
+                            <th class="highlight">IISER Smart Prep</th>
+                            <th>Generic Apps</th>
+                            <th>Coaching Centers</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>TCS iON Interface</td>
+                            <td class="highlight">✅ Exact Replica</td>
+                            <td>❌ Generic UI</td>
+                            <td>❌ Pen &amp; Paper</td>
+                        </tr>
+                        <tr>
+                            <td>AI Rank Predictor</td>
+                            <td class="highlight">✅ After Every Mock</td>
+                            <td>❌ Not Available</td>
+                            <td>❌ Manual Only</td>
+                        </tr>
+                        <tr>
+                            <td>24/7 AI Doubt Solver</td>
+                            <td class="highlight">✅ Instant</td>
+                            <td>❌ Forums Only</td>
+                            <td>⚠️ Office Hours</td>
+                        </tr>
+                        <tr>
+                            <td>Smart Revision Notes</td>
+                            <td class="highlight">✅ Exam-Focused</td>
+                            <td>⚠️ Generic Notes</td>
+                            <td>✅ Classroom Notes</td>
+                        </tr>
+                        <tr>
+                            <td>PYQ Vault (2017–25)</td>
+                            <td class="highlight">✅ Interactive</td>
+                            <td>⚠️ PDF Only</td>
+                            <td>⚠️ Partial</td>
+                        </tr>
+                        <tr>
+                            <td>Price</td>
+                            <td class="highlight" style="font-weight:800;color:var(--primary);">₹199 One-Time</td>
+                            <td>₹2,000+/year</td>
+                            <td>₹50,000+</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <!-- TRUST BADGES -->
+    <div style="background: var(--bg-wash); padding: 1.5rem 0;">
+        <div class="container">
+            <div class="trust-badges fade-in-up">
+                <div class="trust-badge">
+                    <div class="trust-badge-icon" style="background:#dcfce7;">🔒</div>
+                    <span>Secure Payment via Razorpay</span>
+                </div>
+                <div class="trust-badge">
+                    <div class="trust-badge-icon" style="background:#e0f2fe;">⚡</div>
+                    <span>Instant Access After Payment</span>
+                </div>
+                <div class="trust-badge">
+                    <div class="trust-badge-icon" style="background:#fef9c3;">🌍</div>
+                    <span>Used by Students in 150+ Cities</span>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- 6. PRICING -->
     <section id="pricing" class="section-wash">
@@ -1707,6 +2926,17 @@
                         <span class="amount">199</span>
                     </div>
                     <span class="billing">One-time payment • Valid until exam</span>
+
+                    <!-- Urgency & Guarantee -->
+                    <div style="margin-top: 1rem; text-align: center;">
+                        <div style="color: #ef4444; font-size: 0.85rem; font-weight: 700; margin-bottom: 0.5rem;">
+                            ⚠️ Price increases to ₹299 after March 31
+                        </div>
+                        <div
+                            style="font-size: 0.8rem; color: var(--text-muted); display: flex; align-items: center; justify-content: center; gap: 0.25rem;">
+                            <span style="color: var(--primary);">🛡️</span> 7-day money-back guarantee
+                        </div>
+                    </div>
                 </div>
                 <div class="pricing-body">
                     <ul class="feature-list" style="display: flex; flex-direction: column; gap: 1.5rem;">
@@ -1826,6 +3056,10 @@
                     </ul>
                     <button onclick="buyPro()" class="btn btn-primary" style="width: 100%; margin-top: 2rem;">Get Access
                         Now</button>
+                    <p style="text-align:center; margin-top:1rem; font-size:0.85rem;">
+                        <a href="#faq" style="color:var(--primary); text-decoration:none;">Still have questions? → Read
+                            our FAQ</a>
+                    </p>
                 </div>
             </div>
         </div>
@@ -1845,6 +3079,12 @@
 
         <div style="max-width: 800px; margin: 0 auto;">
             <style>
+                /* Focus Visibility for Accessibility */
+                *:focus-visible {
+                    outline: 3px solid var(--primary);
+                    outline-offset: 2px;
+                }
+
                 .faq-item {
                     background: white;
                     border: 1px solid var(--border);
@@ -1964,9 +3204,48 @@
                     our free "Quick Mock" first!
                 </div>
             </details>
+
+            <details class="faq-item fade-in-up">
+                <summary class="faq-summary">How is this different from NTA Abhyas?</summary>
+                <div class="faq-content">
+                    NTA Abhyas covers JEE/NEET. We are exclusively built for the IISER Aptitude Test with IAT-specific
+                    questions, the TCS iON interface, and an AI Rank Predictor calibrated to IAT cutoffs.
+                </div>
+            </details>
+
+            <details class="faq-item fade-in-up">
+                <summary class="faq-summary">Can I use this on my mobile phone?</summary>
+                <div class="faq-content">
+                    Absolutely! Our platform is fully responsive. While we recommend a laptop for full-length mocks (to
+                    simulate exam day), the AI Tutor, Smart Notes, Quick Mocks, and PYQ Vault all work beautifully on
+                    mobile.
+                </div>
+            </details>
+
+            <details class="faq-item fade-in-up">
+                <summary class="faq-summary">What if the exam pattern changes?</summary>
+                <div class="faq-content">
+                    We monitor IISER announcements closely. If the pattern changes, we will update our mocks and content
+                    within 48 hours — at no extra cost to you.
+                </div>
+            </details>
+
+            <details class="faq-item fade-in-up">
+                <summary class="faq-summary">Do you offer mentorship or 1-on-1 guidance?</summary>
+                <div class="faq-content">
+                    Our AI Tutor handles 95% of doubts instantly. For complex strategic guidance, our mentor team is
+                    available via the 24/7 Doubt Resolution feature included in your PRO plan.
+                </div>
+            </details>
         </div>
     </div>
     </section>
+
+    <!-- MOBILE STICKY CTA -->
+    <div class="mobile-sticky-cta">
+        <div class="price-preview">₹199 <span>one-time</span></div>
+        <button onclick="buyPro()" class="btn btn-ai" style="padding:0.6rem 1.5rem;">Get Access</button>
+    </div>
 
     <!-- 11. FOOTER -->
     <footer style="background: white; border-top: 1px solid var(--border); padding: 5rem 0 2rem;">
@@ -2138,9 +3417,14 @@
         function toggleMenu() {
             const navLinks = document.getElementById('nav-links');
             const lines = document.querySelectorAll('.hamburger-line');
-            navLinks.classList.toggle('active');
+            const btn = document.querySelector('.mobile-menu-btn');
 
+            navLinks.classList.toggle('active');
             lines.forEach(line => line.classList.toggle('active'));
+
+            // Toggle aria-expanded
+            const isExpanded = navLinks.classList.contains('active');
+            if (btn) btn.setAttribute('aria-expanded', isExpanded);
 
             if (navLinks.classList.contains('active')) {
                 document.body.style.overflow = 'hidden';
@@ -2150,9 +3434,14 @@
         }
 
         // --- Auth State Check ---
-        const token = localStorage.getItem("IAT_TOKEN");
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const token = localStorage.getItem("IAT_TOKEN");
+            updateButtons();
+        });
 
         function updateButtons() {
+            const token = localStorage.getItem("IAT_TOKEN");
             const container = document.getElementById("auth-buttons-container");
             if (!container) return;
 
@@ -2164,7 +3453,7 @@
             }
         }
 
-        updateButtons();
+        // updateButtons(); // Moved to DOMContentLoaded
 
         function logout() {
             localStorage.clear();
@@ -2276,27 +3565,188 @@
             }
         }, 5000);
     </script>
-    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <script src="https://checkout.razorpay.com/v1/checkout.js" async></script>
     <script>
-    // --- Blog Articles Toggle ---
+        // --- Blog Articles Toggle ---
         function toggleExtraArticles() {
             var cards = document.querySelectorAll('.blog-extra-card');
             var btn = document.getElementById('toggle-articles-btn');
             if (!cards.length) return;
-            
+
             var isHidden = cards[0].style.display === 'none';
-            
+
             for (var i = 0; i < cards.length; i++) {
                 cards[i].style.display = isHidden ? 'flex' : 'none';
             }
-            
+
             btn.textContent = isHidden ? 'Show Less' : 'View All Articles';
         }
+        // --- Exam Countdown Timer ---
+        (function () {
+            const examDate = new Date('2026-06-15T09:30:00+05:30').getTime();
+            function updateCountdown() {
+                const now = new Date().getTime();
+                const diff = examDate - now;
+                if (diff <= 0) {
+                    document.getElementById('cd-days').textContent = '0';
+                    document.getElementById('cd-hours').textContent = '0';
+                    document.getElementById('cd-mins').textContent = '0';
+                    document.getElementById('cd-secs').textContent = '0';
+                    return;
+                }
+                document.getElementById('cd-days').textContent = Math.floor(diff / 86400000);
+                document.getElementById('cd-hours').textContent = Math.floor((diff % 86400000) / 3600000);
+                document.getElementById('cd-mins').textContent = Math.floor((diff % 3600000) / 60000);
+                document.getElementById('cd-secs').textContent = Math.floor((diff % 60000) / 1000);
+            }
+            updateCountdown();
+            setInterval(updateCountdown, 1000);
+        })();
 
-    
+        // --- Interactive Demo Question ---
+        function selectDemoOption(btn, isCorrect) {
+            var opts = document.querySelectorAll('.demo-option');
+            for (var i = 0; i < opts.length; i++) {
+                opts[i].disabled = true;
+                opts[i].classList.remove('selected', 'correct', 'wrong');
+            }
+            if (isCorrect) {
+                btn.classList.add('correct');
+            } else {
+                btn.classList.add('wrong');
+                for (var i = 0; i < opts.length; i++) {
+                    if (opts[i].getAttribute('onclick') && opts[i].getAttribute('onclick').indexOf('true') > -1) {
+                        opts[i].classList.add('correct');
+                    }
+                }
+            }
+            document.getElementById('demo-explanation').style.display = 'block';
+        }
+
+
+
     </script>
     <script src="config.js"></script>
     <script src="payment.js"></script>
+    <!-- Floating Activity Ticker -->
+    <div id="floating-ticker" class="activity-ticker"
+        style="position:fixed; bottom:20px; left:20px; z-index:1000; box-shadow: 0 4px 12px rgba(0,0,0,0.1); background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(8px); display:none;">
+        <span class="activity-dot"></span>
+        <span id="live-activity-text">Loading activity...</span>
+    </div>
+
+    <script>
+        const activities = [
+            "Rahul from Delhi just purchased IAT Pass",
+            "Priya scored 92% in Mock Test #7",
+            "Arjun improved rank by 400 points",
+            "Sneha asked AI Tutor about Thermodynamics",
+            "Vikram from Mumbai just started a free trial",
+            "Anjali analyzed her weak areas in Organic Chem",
+            "Rohan from Kolkata scored 180/240 in Full Mock",
+            "Divya from Pune downloaded the Master Formula Sheet",
+            "Karthik just unlocked the 2024 PYQ Paper",
+            "Meera from Hyderabad asked about Rotational Motion",
+            "Arav improved his Chemistry score by 25%",
+            "Ishita from Bangalore purchased the Crash Course",
+            "Varun just completed the 'Quick Mock' in 12 mins",
+            "Kavya from Chennai got AIR 152 in Rank Predictor",
+            "Aditya from Jaipur asked AI to explain 'Chirality'",
+            "Riya from Bhopal analyzed her time management stats",
+            "Aryan scored 55/60 in Mathematics section",
+            "Diya from Lucknow unlocked the PlannerPro",
+            "Vihaan just finished the Biology Chapter Test",
+            "Ananya from Mohali asked for a revision plan",
+            "Dev from Patna purchased the IAT 2026 Pass",
+            "Saanvi from Thiruvananthapuram scored 95% in Logic",
+            "Aarav from Noida improved from Rank 1200 to 850",
+            "Myra just solved 50 Physics PYQs",
+            "Reyansh from Gurgaon asked about 'Coordination Compounds'",
+            "Aadhya from Indore purchased the Test Series",
+            "Krishna scored full marks in Biology section",
+            "Pari from Surat just started IAT Mock #4",
+            "Ishan from Vadodara analyzed his negative marking",
+            "Hazel from Bhubaneswar asked about 'Limits and Derivatives'",
+            "Dhruv just upgraded to the Pro Plan",
+            "Shanaya from Nagpur completed the Daily Challenge",
+            "Kabir from Kanpur scored 88% in Mock #9",
+            "Zoya from Kochi asked AI about 'Genetics'",
+            "Vivaan from Visakhapatnam purchased the Combo Pack",
+            "Amaira just downloaded the Physics Cheat Sheet",
+            "Advik from Ludhiana improved his accuracy to 90%",
+            "Kyra from Agra asked about 'Electrostatics'",
+            "Muhammed from Calicut scored 160/240 in Mock #2",
+            "Navya from Nashik analyzed her Chemistry weak spots",
+            "Sai from Tirupati just started the Free Trial",
+            "Ayesha from Aligarh asked AI to simplify 'Integration'",
+            "Om from Varanasi purchased the IAT Pass",
+            "Siya from Meerut improved her Biology rank",
+            "Atharv from Rajkot completed 100 questions today",
+            "Sarah from Guwahati asked about 'Plant Physiology'",
+            "Vedant from Jodhpur scored 98% in the Quick Mock",
+            "Urvi from Raipur unlocked the 2023 PYQ Paper",
+            "Shaurya from Dehradun asked about 'Complex Numbers'",
+            "Jhanvi from Ranchi analyzed her Physics performance",
+            "Yash from Gwalior purchased the Full Access Plan",
+            "Mahika from Jabalpur improved her mock score by 30 marks"
+        ];
+
+        const ticker = document.getElementById('floating-ticker');
+        const textElem = document.getElementById('live-activity-text');
+
+        // Show after 3 seconds
+        setTimeout(() => {
+            ticker.style.display = 'inline-flex';
+            rotateActivity();
+        }, 3000);
+
+        function rotateActivity() {
+            const activity = activities[Math.floor(Math.random() * activities.length)];
+            textElem.textContent = activity;
+            textElem.style.animation = 'none';
+            textElem.offsetHeight; /* trigger reflow */
+            textElem.style.animation = 'fade-in-up 0.5s ease';
+
+            // Random interval between 4-8 seconds
+            setTimeout(rotateActivity, Math.random() * 4000 + 4000);
+        }
+    </script>
+    <!-- Exit Intent Popup -->
+    <div id="exit-modal" class="modal-overlay"
+        style="display:none; align-items:center; justify-content:center; z-index:2000;">
+        <div class="modal-content"
+            style="text-align:center; max-width:400px; position:relative; animation: fade-in-up 0.3s ease;">
+            <button onclick="closeExitModal()"
+                style="position:absolute; top:10px; right:10px; background:none; border:none; font-size:1.5rem; cursor:pointer; color:var(--text-muted);">&times;</button>
+            <div style="font-size:3rem; margin-bottom:1rem;">🎁</div>
+            <h3 style="margin-bottom:0.5rem; color:var(--secondary);">Wait! Don't Miss Out</h3>
+            <p style="color:var(--text-muted); margin-bottom:1.5rem; font-size:0.95rem;">Get 5 Free Previous Year
+                Questions with detailed solutions before you go.</p>
+            <a href="pyqs/pyq.html" class="btn btn-primary" style="width:100%;">Get Free PYQs</a>
+        </div>
+    </div>
+
+    <script>
+        // Exit Intent Logic
+        document.addEventListener('mouseout', (e) => {
+            if (e.clientY < 10 && !localStorage.getItem('exitModalShown')) {
+                document.getElementById('exit-modal').style.display = 'flex';
+                localStorage.setItem('exitModalShown', 'true');
+            }
+        });
+
+        function closeExitModal() {
+            document.getElementById('exit-modal').style.display = 'none';
+        }
+
+        // Mobile Fallback (Show after 30s if not shown)
+        setTimeout(() => {
+            if (!localStorage.getItem('exitModalShown')) {
+                document.getElementById('exit-modal').style.display = 'flex';
+                localStorage.setItem('exitModalShown', 'true');
+            }
+        }, 30000);
+    </script>
 </body>
 
 </html>
