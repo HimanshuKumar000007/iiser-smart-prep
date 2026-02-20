@@ -1698,7 +1698,7 @@
                             <circle class="ring-progress" cx="60" cy="60" r="54" data-progress="0"></circle>
                         </svg>
                         <div class="ring-center">
-                            <div class="ring-percentage" id="math-percent">0%</div>
+                            <div class="ring-percentage" id="mathematics-percent">0%</div>
                             <div class="ring-label">Complete</div>
                         </div>
                     </div>
@@ -1706,9 +1706,9 @@
                         <h3 class="subject-name">Mathematics</h3>
                         <div class="subject-meta">
                             <span class="meta-item"><i class="ph ph-check-circle"></i> <span
-                                    id="math-completed">0</span>/<span id="math-total">0</span></span>
+                                    id="mathematics-completed">0</span>/<span id="mathematics-total">0</span></span>
                             <span class="meta-item" id="math-trend-container"><i class="ph ph-trend-up"></i> <span
-                                    id="math-trend">0%</span></span>
+                                    id="mathematics-trend">0%</span></span>
                         </div>
                     </div>
                 </div>
@@ -1834,7 +1834,7 @@
                                 <span class="action-label">Mock Test</span>
                                 <span class="action-sublabel">Practice</span>
                             </a>
-                            <button class="action-btn" onclick="downloadStudyPlan()">
+                            <button class="action-btn" onclick="downloadStudyPlan(event)">
                                 <div class="action-icon">
                                     <i class="ph ph-download-simple"></i>
                                 </div>
@@ -2441,7 +2441,7 @@
             window.location.href = "index.html";
         }
 
-        function downloadStudyPlan() {
+        function downloadStudyPlan(event) {
             const btn = event.currentTarget;
             const originalHTML = btn.innerHTML;
             btn.innerHTML = '<div class="action-icon"><i class="ph ph-spinner animate-spin"></i></div><span class="action-label">Downloading...</span>';
