@@ -41,7 +41,7 @@ async function buyPro() {
 
         // 2️⃣ Razorpay options
         const options = {
-            key: RAZORPAY_KEY_ID, // 👈 Loaded from config.js
+            key: config.razorpayKey, // 👈 Loaded from backend
             amount: order.amount,
             currency: "INR",
             name: "IISER Smart Prep",

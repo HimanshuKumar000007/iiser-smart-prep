@@ -2056,7 +2056,15 @@
 
     </section>
 
-
+    <!-- COUNTDOWN TIMER -->
+    <div class="countdown-sticky" id="countdown-bar">
+        <div class="container" style="display:flex; justify-content:space-between; align-items:center;">
+            <span>⏰ IAT 2026 in <strong id="cd-days">--</strong> days, <strong id="cd-hours">--</strong>h <strong
+                    id="cd-mins">--</strong>m <strong id="cd-secs">--</strong>s</span>
+            <a href="#pricing" class="btn btn-ai"
+                style="padding:0.4rem 1rem; font-size:0.8rem; text-decoration:none;">Start Preparing</a>
+        </div>
+    </div>
 
     <!-- SOCIAL PROOF BAR -->
     <div style="background: var(--bg-wash); border-bottom: 1px solid var(--border); padding: 1.5rem 0;">
@@ -3570,7 +3578,15 @@
         }, { passive: true });
 
         // --- Mock AI Preview Animation ---
-
+        setInterval(() => {
+            const preview = document.querySelector('.ai-preview');
+            if (preview && Math.random() > 0.7) {
+                preview.style.animation = 'none';
+                setTimeout(() => {
+                    preview.style.animation = 'float 6s ease-in-out infinite';
+                }, 10);
+            }
+        }, 5000);
     </script>
     <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
     <script>
@@ -3589,7 +3605,26 @@
             btn.textContent = isHidden ? 'Show Less' : 'View All Articles';
         }
         // --- Exam Countdown Timer ---
-
+        (function () {
+            const examDate = new Date('2026-06-15T09:30:00+05:30').getTime();
+            function updateCountdown() {
+                const now = new Date().getTime();
+                const diff = examDate - now;
+                if (diff <= 0) {
+                    document.getElementById('cd-days').textContent = '0';
+                    document.getElementById('cd-hours').textContent = '0';
+                    document.getElementById('cd-mins').textContent = '0';
+                    document.getElementById('cd-secs').textContent = '0';
+                    return;
+                }
+                document.getElementById('cd-days').textContent = Math.floor(diff / 86400000);
+                document.getElementById('cd-hours').textContent = Math.floor((diff % 86400000) / 3600000);
+                document.getElementById('cd-mins').textContent = Math.floor((diff % 3600000) / 60000);
+                document.getElementById('cd-secs').textContent = Math.floor((diff % 60000) / 1000);
+            }
+            updateCountdown();
+            setInterval(updateCountdown, 1000);
+        })();
 
         // --- Interactive Demo Question ---
         function selectDemoOption(btn, isCorrect) {
@@ -3735,6 +3770,7 @@
             }
         }, 30000);
     </script>
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 </body>
 
 </html>
