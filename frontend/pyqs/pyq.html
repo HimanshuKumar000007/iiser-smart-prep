@@ -782,14 +782,14 @@
             }
         }
     </style>
-<!-- Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-WHHM4FTNHG"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-WHHM4FTNHG');
-</script>
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-WHHM4FTNHG"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'G-WHHM4FTNHG');
+    </script>
 </head>
 
 <body>
@@ -1312,7 +1312,7 @@
             if (!token) return;
 
             try {
-                const res = await fetch(`${API_BASE_URL}/me`, {
+                const res = await fetch("https://api.iisersmartprep.space/api/me", {
                     headers: { "Authorization": "Bearer " + token }
                 });
 
@@ -1464,7 +1464,7 @@
             showToast("Verifying Access...");
 
             try {
-                const res = await fetch(`${API_BASE_URL}/me`, {
+                const res = await fetch("https://api.iisersmartprep.space/api/me", {
                     headers: { "Authorization": "Bearer " + token }
                 });
 
@@ -1596,19 +1596,24 @@
 
             try {
                 // Create Order
-                const res = await fetch(`${API_BASE_URL}/create-order`, {
+                const res = await fetch("https://api.iisersmartprep.space/api/create-order", {
                     method: "POST",
-                    headers: { "Content-Type": "application/json", "Authorization": `Bearer ${token}` }
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${token}`
+                    }
                 });
-                const order = await res.json();
-                if (order.error) throw new Error(order.error);
+                const data = await res.json();
+                console.log("ORDER DATA:", data);
+
+                if (data.error) throw new Error(data.error);
 
                 // Initialize Razorpay
                 const options = {
-                    key: "rzp_test_S6zF2Dd2liRsY6", // Test Key ID
-                    amount: order.amount,
-                    currency: "INR",
-                    order_id: order.id,
+                    key: data.key,
+                    amount: data.amount,
+                    currency: data.currency,
+                    order_id: data.order_id,
                     name: "IISER Smart Prep",
                     description: "Pro Plan Upgrade",
                     handler: function (response) { verifyPayment(response, btn, originalText); },
@@ -1633,13 +1638,16 @@
         async function verifyPayment(response, btn, originalText) {
             const token = localStorage.getItem("IAT_TOKEN");
             try {
-                const res = await fetch(`${API_BASE_URL}/verify-payment`, {
+                const res = await fetch("https://api.iisersmartprep.space/api/verify-payment", {
                     method: "POST",
-                    headers: { "Content-Type": "application/json", "Authorization": `Bearer ${token}` },
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${token}`
+                    },
                     body: JSON.stringify(response)
                 });
-                const data = await res.json();
-                if (data.success) {
+                const verifyData = await res.json();
+                if (verifyData.success) {
                     localStorage.setItem("IAT_PLAN", "PRO");
                     closeModal(); // Close premium modal
                     unlockUI();   // Unlock content

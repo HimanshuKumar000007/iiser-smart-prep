@@ -2,11 +2,9 @@ async function buyPro() {
     // 0️⃣ Check Login
     const token = localStorage.getItem("IAT_TOKEN");
     if (!token) {
-        // Use the new Bottom Sheet UI
         if (window.showAuthSheet) {
             window.showAuthSheet();
         } else {
-            // Fallback if sheet not found (shouldn't happen on index.html)
             alert("Please login first to upgrade.");
             const currentUrl = encodeURIComponent(window.location.href);
             window.location.href = `login.html?redirect=${currentUrl}`;
@@ -16,7 +14,7 @@ async function buyPro() {
 
     // 1️⃣ Create order from backend
     try {
-        const res = await fetch(`${API_BASE_URL}/create-order`, {
+        const res = await fetch("https://api.iisersmartprep.space/api/create-order", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -24,33 +22,26 @@ async function buyPro() {
             }
         });
 
-        // 1.1️⃣ Fetch Key from Backend
-        const configRes = await fetch(`${API_BASE_URL}/config`);
-        const config = await configRes.json();
+        const data = await res.json();
+        console.log("ORDER DATA:", data);
 
-        if (!config.razorpayKey) {
-            throw new Error("Failed to load payment configuration");
-        }
-
-        const order = await res.json();
-
-        if (order.error) {
-            alert("Error creating order: " + order.error);
+        if (data.error) {
+            alert("Error creating order: " + data.error);
             return;
         }
 
         // 2️⃣ Razorpay options
         const options = {
-            key: config.razorpayKey, // 👈 Loaded from backend
-            amount: order.amount,
-            currency: "INR",
+            key: data.key,
+            amount: data.amount,
+            currency: data.currency,
+            order_id: data.order_id,
             name: "IISER Smart Prep",
             description: "Pro Plan",
-            order_id: order.id,
 
             handler: async function (response) {
                 // 3️⃣ Verify payment on backend
-                const verifyRes = await fetch(`${API_BASE_URL}/verify-payment`, {
+                const verifyRes = await fetch("https://api.iisersmartprep.space/api/verify-payment", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
@@ -59,9 +50,9 @@ async function buyPro() {
                     body: JSON.stringify(response)
                 });
 
-                const data = await verifyRes.json();
+                const verifyData = await verifyRes.json();
 
-                if (data.success) {
+                if (verifyData.success) {
                     alert("PRO activated 🎉");
                     localStorage.setItem("IAT_PLAN", "PRO");
                     window.location.reload();

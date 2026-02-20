@@ -216,7 +216,14 @@ app.post("/api/create-order", async (req, res) => {
     };
 
     const order = await razorpay.orders.create(options);
-    res.json(order);
+
+    // Return all fields for Razorpay SDK
+    res.json({
+      key: process.env.RAZORPAY_KEY_ID,
+      order_id: order.id,
+      amount: order.amount,
+      currency: order.currency
+    });
 
   } catch (err) {
     console.error(err);

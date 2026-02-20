@@ -461,14 +461,14 @@
             transform: translateY(0);
         }
     </style>
-<!-- Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-WHHM4FTNHG"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-WHHM4FTNHG');
-</script>
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-WHHM4FTNHG"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'G-WHHM4FTNHG');
+    </script>
 </head>
 
 <body>
@@ -759,7 +759,7 @@
             if (!token) return;
 
             try {
-                const res = await fetch(`${API_BASE_URL}/me`, {
+                const res = await fetch("https://api.iisersmartprep.space/api/me", {
                     headers: { "Authorization": "Bearer " + token }
                 });
 

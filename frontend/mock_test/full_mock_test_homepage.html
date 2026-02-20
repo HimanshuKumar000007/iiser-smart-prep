@@ -1072,7 +1072,7 @@
             if (!token) return;
 
             try {
-                const res = await fetch(`${API_BASE_URL}/me`, {
+                const res = await fetch("https://api.iisersmartprep.space/api/me", {
                     headers: { "Authorization": "Bearer " + token }
                 });
 
@@ -1122,7 +1122,7 @@
 
             // 🔥 CHECK PLAN LIVE
             try {
-                const res = await fetch(`${API_BASE_URL}/me`, {
+                const res = await fetch("https://api.iisersmartprep.space/api/me", {
                     headers: { "Authorization": "Bearer " + token }
                 });
 
@@ -1182,6 +1182,7 @@
 
         // 4. RAZORPAY PAYMENT LOGIC
         async function buyPro() {
+            const token = localStorage.getItem("IAT_TOKEN");
             if (!token) { closeUpgradeModal(); openAuthSheet(); return; }
 
             const btn = document.querySelector('.btn-upgrade-now');
@@ -1191,19 +1192,21 @@
 
             try {
                 // Create Order
-                const res = await fetch(`${API_BASE_URL}/create-order`, {
+                const res = await fetch("https://api.iisersmartprep.space/api/create-order", {
                     method: "POST",
                     headers: { "Content-Type": "application/json", "Authorization": `Bearer ${token}` }
                 });
-                const order = await res.json();
-                if (order.error) throw new Error(order.error);
+                const data = await res.json();
+                console.log("ORDER DATA:", data);
+
+                if (data.error) throw new Error(data.error);
 
                 // Initialize Razorpay
                 const options = {
-                    key: RAZORPAY_KEY_ID, // 👈 Loaded from config.js
-                    amount: order.amount,
-                    currency: "INR",
-                    order_id: order.id,
+                    key: data.key,
+                    amount: data.amount,
+                    currency: data.currency,
+                    order_id: data.order_id,
                     name: "IISER Smart Prep",
                     description: "Pro Plan Upgrade",
                     handler: function (response) { verifyPayment(response); },
@@ -1220,14 +1223,15 @@
         }
 
         async function verifyPayment(response) {
+            const token = localStorage.getItem("IAT_TOKEN");
             try {
-                const res = await fetch(`${API_BASE_URL}/verify-payment`, {
+                const res = await fetch("https://api.iisersmartprep.space/api/verify-payment", {
                     method: "POST",
                     headers: { "Content-Type": "application/json", "Authorization": `Bearer ${token}` },
                     body: JSON.stringify(response)
                 });
-                const data = await res.json();
-                if (data.success) {
+                const vData = await res.json();
+                if (vData.success) {
                     localStorage.setItem("IAT_PLAN", "PRO");
                     closeUpgradeModal();
                     unlockUI();

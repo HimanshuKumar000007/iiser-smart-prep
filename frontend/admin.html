@@ -3,14 +3,14 @@
 
 <head>
     <title>Admin Dashboard</title>
-<!-- Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-WHHM4FTNHG"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-WHHM4FTNHG');
-</script>
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-WHHM4FTNHG"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'G-WHHM4FTNHG');
+    </script>
 </head>
 
 <body>
@@ -33,7 +33,7 @@
         const token = localStorage.getItem("IAT_TOKEN");
 
         // 🔒 PROTECT ADMIN PAGE
-        fetch(`${API_BASE_URL}/me`, {
+        fetch("https://api.iisersmartprep.space/api/me", {
             headers: { Authorization: "Bearer " + token }
         })
             .then(res => res.json())
@@ -45,7 +45,7 @@
             });
 
         async function loadUsers() {
-            const res = await fetch(`${API_BASE_URL}/admin/users`, {
+            const res = await fetch("https://api.iisersmartprep.space/api/admin/users", {
                 headers: { Authorization: "Bearer " + token }
             });
 
@@ -68,7 +68,7 @@
         }
 
         async function setPlan(email, plan) {
-            await fetch(`${API_BASE_URL}/admin/set-plan`, {
+            await fetch("https://api.iisersmartprep.space/api/admin/set-plan", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

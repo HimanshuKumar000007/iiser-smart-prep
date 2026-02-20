@@ -5,14 +5,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pay Test</title>
-<!-- Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-WHHM4FTNHG"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-WHHM4FTNHG');
-</script>
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-WHHM4FTNHG"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'G-WHHM4FTNHG');
+    </script>
 </head>
 
 <body>
@@ -22,22 +22,26 @@
     <script src="config.js"></script>
     <script>
         async function pay() {
-            const res = await fetch(`${API_BASE_URL}/create-order`, {
-                method: "POST"
+            const res = await fetch("https://api.iisersmartprep.space/api/create-order", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                }
             });
 
-            const order = await res.json();
+            const data = await res.json();
+            console.log("ORDER DATA:", data);
 
             const options = {
-                key: "rzp_test_S6zF2Dd2liRsY6", // Using the key found in .env
-                amount: order.amount,
-                currency: "INR",
+                key: data.key,
+                amount: data.amount,
+                currency: data.currency,
+                order_id: data.order_id,
                 name: "IISER Smart Prep",
-                description: "PRO Plan",
-                order_id: order.id,
+                description: "Pro Plan",
+
                 handler: function (response) {
-                    alert("Payment Success!");
-                    console.log(response);
+                    alert("Payment successful 🎉");
                 }
             };
 
