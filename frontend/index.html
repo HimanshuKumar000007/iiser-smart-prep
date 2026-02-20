@@ -14,8 +14,7 @@
     <meta property="og:description"
         content="The definitive AI-powered platform for IISER Aptitude Test preparation. Features adaptive mocks, AI tutor, detailed analytics, and smart revision notes.">
     <meta property="og:image" content="https://iisersmartprep.com/og-image.jpg">
-    <meta property="og:url" content="https://iisersmartprep.space">
-    <link rel="canonical" href="https://iisersmartprep.space">
+    <meta property="og:url" content="https://iisersmartprep.com">
     <meta property="og:type" content="website">
 
     <!-- Preconnect -->
@@ -51,12 +50,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap"
         rel="stylesheet">
     <style>
-        /* Focus Visibility for Accessibility */
-        *:focus-visible {
-            outline: 3px solid var(--primary);
-            outline-offset: 2px;
-        }
-
         /* =========================================
            1. PREMIUM ROOT & RESET
            ========================================= */
@@ -1252,12 +1245,6 @@
         }
     </style>
     <style>
-        /* Focus Visibility for Accessibility */
-        *:focus-visible {
-            outline: 3px solid var(--primary);
-            outline-offset: 2px;
-        }
-
         /* NEW SECTIONS CSS */
         .countdown-banner {
             background: linear-gradient(135deg, var(--secondary) 0%, #1e1b4b 50%, var(--primary-dark) 100%);
@@ -1968,13 +1955,10 @@
 
     <!-- 1. NAVIGATION -->
     <header>
-        <a href="#features" class="skip-link"
-            style="position:absolute; top:-40px; left:0; background:var(--primary); color:white; padding:8px; z-index:2000; transition: top 0.3s;"
-            onfocus="this.style.top='0'" onblur="this.style.top='-40px'">Skip to content</a>
         <div class="nav-container">
             <a href="#" class="logo">
-                <svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                    stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                    stroke-linecap="round" stroke-linejoin="round">
                     <path
                         d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z">
                     </path>
@@ -1983,9 +1967,7 @@
             </a>
 
             <!-- Mobile Hamburger Button -->
-            <!-- Mobile Hamburger Button -->
-            <button class="mobile-menu-btn" onclick="toggleMenu()" aria-label="Toggle menu" aria-expanded="false"
-                aria-controls="nav-links">
+            <button class="mobile-menu-btn" onclick="toggleMenu()" aria-label="Toggle menu">
                 <span class="hamburger-line"></span>
                 <span class="hamburger-line"></span>
                 <span class="hamburger-line"></span>
@@ -2381,12 +2363,6 @@
     </section>
 
     <style>
-        /* Focus Visibility for Accessibility */
-        *:focus-visible {
-            outline: 3px solid var(--primary);
-            outline-offset: 2px;
-        }
-
         /* ── IAT PlannerPro CTA Card ── */
         .planner-cta-card {
             display: block;
@@ -3079,12 +3055,6 @@
 
         <div style="max-width: 800px; margin: 0 auto;">
             <style>
-                /* Focus Visibility for Accessibility */
-                *:focus-visible {
-                    outline: 3px solid var(--primary);
-                    outline-offset: 2px;
-                }
-
                 .faq-item {
                     background: white;
                     border: 1px solid var(--border);
@@ -3417,14 +3387,9 @@
         function toggleMenu() {
             const navLinks = document.getElementById('nav-links');
             const lines = document.querySelectorAll('.hamburger-line');
-            const btn = document.querySelector('.mobile-menu-btn');
-
             navLinks.classList.toggle('active');
-            lines.forEach(line => line.classList.toggle('active'));
 
-            // Toggle aria-expanded
-            const isExpanded = navLinks.classList.contains('active');
-            if (btn) btn.setAttribute('aria-expanded', isExpanded);
+            lines.forEach(line => line.classList.toggle('active'));
 
             if (navLinks.classList.contains('active')) {
                 document.body.style.overflow = 'hidden';
@@ -3434,14 +3399,9 @@
         }
 
         // --- Auth State Check ---
-
-        document.addEventListener('DOMContentLoaded', () => {
-            const token = localStorage.getItem("IAT_TOKEN");
-            updateButtons();
-        });
+        const token = localStorage.getItem("IAT_TOKEN");
 
         function updateButtons() {
-            const token = localStorage.getItem("IAT_TOKEN");
             const container = document.getElementById("auth-buttons-container");
             if (!container) return;
 
@@ -3453,7 +3413,7 @@
             }
         }
 
-        // updateButtons(); // Moved to DOMContentLoaded
+        updateButtons();
 
         function logout() {
             localStorage.clear();
@@ -3565,7 +3525,7 @@
             }
         }, 5000);
     </script>
-    <script src="https://checkout.razorpay.com/v1/checkout.js" async></script>
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
     <script>
         // --- Blog Articles Toggle ---
         function toggleExtraArticles() {

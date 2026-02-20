@@ -31,17 +31,9 @@ async function buyPro() {
             return;
         }
 
-        // 1.5️⃣ Fetch Config (Razorpay Key)
-        const configRes = await fetch(`${API_BASE_URL}/config`);
-        const config = await configRes.json();
-
-        if (!config.razorpayKeyId) {
-            throw new Error("Failed to load payment configuration");
-        }
-
         // 2️⃣ Razorpay options
         const options = {
-            key: config.razorpayKeyId, // 👈 Fetched from backend
+            key: RAZORPAY_KEY_ID, // 👈 Loaded from config.js
             amount: order.amount,
             currency: "INR",
             name: "IISER Smart Prep",

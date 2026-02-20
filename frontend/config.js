@@ -3,8 +3,7 @@
 const API_BASE_URL = "https://api.iisersmartprep.space/api";
 
 // Razorpay Key (LIVE)
-// Razorpay Key (LIVE) - Setup moved to backend /api/config
-// const RAZORPAY_KEY_ID = "rzp_live_SC3R47SGOoJHvE";
+const RAZORPAY_KEY_ID = "rzp_live_SC3R47SGOoJHvE";
 
 
 // Example: const API_BASE_URL = "https://iiser-smart-prep-backend.up.railway.app/api";

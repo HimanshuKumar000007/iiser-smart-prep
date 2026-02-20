@@ -15,15 +15,6 @@ app.get("/health", (req, res) => {
   res.json({ status: "ok" });
 });
 
-// ===============================
-// ⚙️ CONFIG API
-// ===============================
-app.get("/api/config", (req, res) => {
-  res.json({
-    razorpayKeyId: process.env.RAZORPAY_KEY_ID
-  });
-});
-
 // ------------------------------------------------------------------
 // Imports & Configuration
 // ------------------------------------------------------------------
