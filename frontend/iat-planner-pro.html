@@ -12,12 +12,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap"
         rel="stylesheet">
 
-    <!-- Chart.js -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-    <!-- Phosphor Icons -->
-    <script src="https://unpkg.com/@phosphor-icons/web"></script>
-
     <style>
         :root {
             /* IISER Brand Palette */
@@ -63,7 +57,7 @@
             --shadow-ai: 0 0 40px -10px rgba(6, 182, 212, 0.4);
 
             --container-width: 1400px;
-            --nav-height: 64px;
+            --nav-height: 72px;
             --nav-height-mobile: 56px;
 
             /* Animation */
@@ -72,6 +66,18 @@
 
             /* Touch targets */
             --touch-target: 44px;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+
+            .bg-mesh,
+            .welcome-card::before,
+            .welcome-card::after,
+            .loader-ring svg,
+            .topic-status.current {
+                animation: none !important;
+                transition: none !important;
+            }
         }
 
         * {
@@ -1834,7 +1840,7 @@
                                 <span class="action-label">Mock Test</span>
                                 <span class="action-sublabel">Practice</span>
                             </a>
-                            <button class="action-btn" onclick="downloadStudyPlan(event)">
+                            <button class="action-btn" onclick="downloadStudyPlan(this)">
                                 <div class="action-icon">
                                     <i class="ph ph-download-simple"></i>
                                 </div>
@@ -1944,20 +1950,16 @@
                 }
             },
 
-            // Get data from localStorage
-            get() {
-                const stored = localStorage.getItem('IAT_USER_DATA');
-                if (!stored) return this.init();
-                try {
-                    return JSON.parse(stored);
-                } catch (e) {
-                    return this.init();
-                }
-            },
-
-            // Save data to localStorage
+            _saveTimer: null,
+            // Save data to localStorage with debouncing
             save(data) {
-                localStorage.setItem('IAT_USER_DATA', JSON.stringify(data));
+                if (this._saveTimer) {
+                    clearTimeout(this._saveTimer);
+                }
+                this._saveTimer = setTimeout(() => {
+                    localStorage.setItem('IAT_USER_DATA', JSON.stringify(data));
+                    this._saveTimer = null;
+                }, 200);
             },
 
             // Update specific fields
@@ -2019,7 +2021,7 @@
             // Update questions solved
             addQuestions(count) {
                 const data = this.get();
-                data.stats.questionsSolved += count;
+                data.stats.questionsSolved += (count || 0);
                 this.save(data);
             },
 
@@ -2051,12 +2053,27 @@
             }
 
             // Initialize data and UI
-            window.addEventListener('load', () => {
-                setTimeout(() => {
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', fastInit);
+            } else {
+                fastInit();
+            }
+
+            function fastInit() {
+                // Initial check for loading screen safety
+                const loadingScreen = document.getElementById('loadingScreen');
+
+                try {
                     initializeDashboard();
-                    document.getElementById('loadingScreen').classList.add('hidden');
-                }, 800);
-            });
+                    if (loadingScreen) loadingScreen.classList.add('hidden');
+                } catch (error) {
+                    console.error('Initialization error:', error);
+                    if (loadingScreen) {
+                        loadingScreen.querySelector('.loading-text').textContent = 'Error Loading Dashboard';
+                        loadingScreen.querySelector('.loading-subtext').textContent = 'Please refresh the page';
+                    }
+                }
+            }
         })();
 
         // Initialize Dashboard with User Data
@@ -2081,8 +2098,21 @@
             // Generate AI insights
             generateInsights(data);
 
-            // Animate rings
-            setTimeout(animateRings, 300);
+            // Animate rings when visible
+            const ringSection = document.querySelector('.progress-section');
+            if (ringSection && 'IntersectionObserver' in window) {
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            animateRings();
+                            observer.disconnect();
+                        }
+                    });
+                }, { threshold: 0.1 });
+                observer.observe(ringSection);
+            } else {
+                setTimeout(animateRings, 500);
+            }
         }
 
         function updateWelcomeSection(data) {
@@ -2153,7 +2183,11 @@
             gradient.addColorStop(1, 'rgba(99, 102, 241, 0)');
 
             if (performanceChart) {
-                performanceChart.destroy();
+                performanceChart.data.labels = labels;
+                performanceChart.data.datasets[0].data = scores;
+                performanceChart.data.datasets[1].data = calculateTopperAverage(scores);
+                performanceChart.update('none'); // Update without animation for resizes
+                return;
             }
 
             performanceChart = new Chart(ctx, {
@@ -2441,8 +2475,7 @@
             window.location.href = "index.html";
         }
 
-        function downloadStudyPlan(event) {
-            const btn = event.currentTarget;
+        function downloadStudyPlan(btn) {
             const originalHTML = btn.innerHTML;
             btn.innerHTML = '<div class="action-icon"><i class="ph ph-spinner animate-spin"></i></div><span class="action-label">Downloading...</span>';
             btn.disabled = true;
@@ -2511,9 +2544,13 @@
         // Run simulation occasionally
         setInterval(simulateActivity, 30000); // Every 30 seconds
     </script>
+    <!-- Core Dependencies - Deferred for Performance -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
+    <script src="https://unpkg.com/@phosphor-icons/web" defer></script>
+
     <!-- Cloudflare Pages Analytics -->
     <script defer src='https://static.cloudflareinsights.com/beacon.min.js'
-        data-cf-beacon='{"token": "129fb9c40bed4fdc8e2901d8124be41b"}'></script><!-- Cloudflare Pages Analytics -->
+        data-cf-beacon='{"token": "129fb9c40bed4fdc8e2901d8124be41b"}'></script>
 </body>
 
 </html>
