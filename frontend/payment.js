@@ -24,6 +24,14 @@ async function buyPro() {
             }
         });
 
+        // 1.1️⃣ Fetch Key from Backend
+        const configRes = await fetch(`${API_BASE_URL}/config`);
+        const config = await configRes.json();
+
+        if (!config.razorpayKey) {
+            throw new Error("Failed to load payment configuration");
+        }
+
         const order = await res.json();
 
         if (order.error) {
