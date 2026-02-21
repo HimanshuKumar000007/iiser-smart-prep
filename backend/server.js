@@ -339,23 +339,27 @@ app.post("/api/login", async (req, res) => {
 // =======================
 app.post('/api/forgot-password', async (req, res) => {
   try {
-    const { email } = req.body
+    const { email } = req.body;
 
-    const { data, error } = await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: "https://iisersmartprep.space/reset-password.html"
-    })
+    const { error } = await Promise.race([
+      supabase.auth.resetPasswordForEmail(email, {
+        redirectTo: "https://iisersmartprep.space/reset-password.html"
+      }),
+      new Promise((_, reject) => setTimeout(() => reject(new Error("Timeout")), 8000))
+    ]);
 
     if (error) {
-      return res.status(400).json({ error: error.message })
+      return res.status(400).json({ error: error.message });
     }
 
-    return res.json({ success: true })
+    return res.json({ success: true });
 
   } catch (err) {
-    console.error(err)
-    res.status(500).json({ error: "Server error" })
+    console.error(err);
+    const message = err.message === "Timeout" ? "Request timed out. Try again." : "Server error";
+    res.status(err.message === "Timeout" ? 408 : 500).json({ error: message });
   }
-})
+});
 
 
 // =======================
