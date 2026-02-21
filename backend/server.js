@@ -26,7 +26,8 @@ const jwt = require("jsonwebtoken");
 const { createClient } = require("@supabase/supabase-js");
 const Razorpay = require("razorpay");
 const crypto = require("crypto");
-const { sendResetEmail } = require("./utils/mailer");
+// (mailer import removed)
+
 
 // Middleware
 app.use((req, res, next) => {
@@ -336,30 +337,26 @@ app.post("/api/login", async (req, res) => {
 // =======================
 // 🔐 FORGOT PASSWORD API
 // =======================
-app.post("/api/forgot-password", async (req, res) => {
+app.post('/api/forgot-password', async (req, res) => {
   try {
-    const { email } = req.body;
-
-    if (!email) {
-      return res.status(400).json({ error: "Email is required" });
-    }
+    const { email } = req.body
 
     const { data, error } = await supabase.auth.resetPasswordForEmail(email, {
       redirectTo: "https://iisersmartprep.space/reset-password.html"
-    });
+    })
 
     if (error) {
-      console.error("Supabase error:", error);
-      return res.status(400).json({ error: error.message });
+      return res.status(400).json({ error: error.message })
     }
 
-    res.json({ success: true });
+    return res.json({ success: true })
 
   } catch (err) {
-    console.error("Server error:", err);
-    res.status(500).json({ error: "Internal server error" });
+    console.error(err)
+    res.status(500).json({ error: "Server error" })
   }
-});
+})
+
 
 // =======================
 // 🔁 RESET PASSWORD API
