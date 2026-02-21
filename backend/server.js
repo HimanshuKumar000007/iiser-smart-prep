@@ -61,7 +61,7 @@ app.get("/api/config", (req, res) => {
 // Supabase
 const supabase = createClient(
   process.env.SUPABASE_URL,
-  process.env.SUPABASE_SERVICE_KEY
+  process.env.SUPABASE_SERVICE_ROLE_KEY
 );
 
 // Razorpay
@@ -339,37 +339,25 @@ app.post("/api/login", async (req, res) => {
 app.post("/api/forgot-password", async (req, res) => {
   try {
     const { email } = req.body;
-    if (!email) return res.status(400).json({ error: "Email required" });
 
-    const { data: user } = await supabase
-      .from("users")
-      .select("id")
-      .eq("email", email)
-      .single();
-
-    if (!user) {
-      return res.json({ message: "If email exists, reset link sent" });
+    if (!email) {
+      return res.status(400).json({ error: "Email is required" });
     }
 
-    const resetToken = crypto.randomBytes(32).toString("hex");
-    const expiry = new Date(Date.now() + 15 * 60 * 1000); // 15 min
+    const { data, error } = await supabase.auth.resetPasswordForEmail(email, {
+      redirectTo: "https://iisersmartprep.space/reset-password.html"
+    });
 
-    await supabase
-      .from("users")
-      .update({
-        reset_token: resetToken,
-        reset_token_expiry: expiry
-      })
-      .eq("email", email);
+    if (error) {
+      console.error("Supabase error:", error);
+      return res.status(400).json({ error: error.message });
+    }
 
-    // ✅ SEND EMAIL
-    await sendResetEmail(email, resetToken);
-
-    res.json({ message: "Reset link sent to email" });
+    res.json({ success: true });
 
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: "Failed to send reset email" });
+    console.error("Server error:", err);
+    res.status(500).json({ error: "Internal server error" });
   }
 });
 

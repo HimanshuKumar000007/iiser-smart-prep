@@ -9,6 +9,8 @@
         content="Complete IAT 2026 syllabus for Physics, Chemistry, Math, Biology. Download free PDF checklist with high-yield topics, weightage analysis, and 30-day study plan.">
 
     <!-- Google Fonts: Plus Jakarta Sans -->
+
+    <!-- Google Fonts: Plus Jakarta Sans -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap"
@@ -1192,6 +1194,10 @@
                     breaks down the complete syllabus, identifies high-yield chapters, and provides a
                     <strong>downloadable PDF checklist</strong> to track your preparation.
                 </p>
+                <button id="reveal-content-btn" class="btn btn-outline" onclick="revealAllContent()"
+                    style="margin-top: 1.5rem; border-color: var(--primary); color: var(--primary);">
+                    📖 Reveal All Content
+                </button>
 
                 <!-- PDF DOWNLOAD BOX -->
                 <div class="pdf-hero-box fade-in-up">
@@ -2461,6 +2467,18 @@
             } else {
                 document.body.style.overflow = 'auto';
             }
+        }
+
+        // Reveal All Content
+        function revealAllContent() {
+            document.querySelectorAll('.fade-in-up').forEach(el => {
+                el.classList.add('visible');
+                if (typeof observer !== 'undefined') {
+                    observer.unobserve(el);
+                }
+            });
+            const btn = document.getElementById('reveal-content-btn');
+            if (btn) btn.style.display = 'none';
         }
 
         // Intersection Observer for animations
