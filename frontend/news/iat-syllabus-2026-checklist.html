@@ -2521,6 +2521,34 @@
         gtag('config', 'G-WHHM4FTNHG');
     </script>
 
+
+    <!-- Auth & Pro Logic -->
+    <script src="/config.js"></script>
+    <script>
+        // --- Auth State Check ---
+        const token = localStorage.getItem("IAT_TOKEN");
+
+        function updateButtons() {
+            const container = document.getElementById("auth-buttons-container");
+            if (!container) return;
+
+            if (token) {
+                container.innerHTML = `
+                    <a href="/mock_test/full_mock_test_homepage.html" class="btn btn-primary" style="padding: 0.5rem 1rem;">Dashboard</a>
+                    <button onclick="logout()" class="btn btn-outline" style="border:none; color: var(--text-muted);">Logout</button>
+                `;
+            }
+        }
+
+        if (typeof updateButtons === 'function') {
+            updateButtons();
+        }
+
+        function logout() {
+            localStorage.clear();
+            window.location.href = '/index.html';
+        }
+    </script>
 </body>
 
 </html>

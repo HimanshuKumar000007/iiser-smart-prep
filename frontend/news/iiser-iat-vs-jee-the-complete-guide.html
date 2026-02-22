@@ -2094,7 +2094,7 @@
                 <!-- SIDEBAR -->
                 <aside class="article-sidebar fade-in-up">
                     <!-- Quick Links -->
-                    <div class="sidebar-card">
+                    <div class="sidebar-card pro-hidden">
                         <h4>Related Resources</h4>
                         <a href="/news/iat-2026-notification.html" class="sidebar-link">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
@@ -2371,6 +2371,34 @@
                 const span = element.querySelector('span');
                 if (span) span.textContent = '−';
             }
+        }
+    </script>
+
+    <!-- Auth & Pro Logic -->
+    <script src="/config.js"></script>
+    <script>
+        // --- Auth State Check ---
+        const token = localStorage.getItem("IAT_TOKEN");
+
+        function updateButtons() {
+            const container = document.getElementById("auth-buttons-container");
+            if (!container) return;
+
+            if (token) {
+                container.innerHTML = `
+                    <a href="/mock_test/full_mock_test_homepage.html" class="btn btn-primary" style="padding: 0.5rem 1rem;">Dashboard</a>
+                    <button onclick="logout()" class="btn btn-outline" style="border:none; color: var(--text-muted);">Logout</button>
+                `;
+            }
+        }
+
+        if (typeof updateButtons === 'function') {
+            updateButtons();
+        }
+
+        function logout() {
+            localStorage.clear();
+            window.location.href = '/index.html';
         }
     </script>
 </body>
