@@ -40,6 +40,12 @@ app.use(cors({
   origin: true, // 👈 Reflects the request origin
   credentials: true
 }));
+app.use("/api/razorpay-webhook", express.json({
+  verify: (req, res, buf) => {
+    req.rawBody = buf.toString();
+  }
+}));
+
 app.use(express.json());
 
 // Debug
@@ -208,12 +214,16 @@ app.post("/api/signup", async (req, res) => {
 // =======================
 // 💸 PAYMENT API
 // =======================
-app.post("/api/create-order", async (req, res) => {
+app.post("/api/create-order", authMiddleware, async (req, res) => {
   try {
     const options = {
       amount: 19900, // ₹199 = 19900 paise
       currency: "INR",
-      receipt: "receipt_" + Date.now()
+      receipt: "receipt_" + Date.now(),
+      notes: {
+        user_id: req.user.id || req.user.userId, // JWT from authMiddleware (signup uses userId, login uses id. Best to handle both or standardize)
+        email: req.user.email
+      }
     };
 
     const order = await razorpay.orders.create(options);
@@ -231,6 +241,7 @@ app.post("/api/create-order", async (req, res) => {
     res.status(500).json({ error: "Order creation failed" });
   }
 });
+
 
 app.post("/api/verify-payment", authMiddleware, async (req, res) => {
   const {
@@ -276,6 +287,67 @@ app.post("/api/verify-payment", authMiddleware, async (req, res) => {
 
   } else {
     return res.status(400).json({ success: false });
+  }
+});
+
+// =======================
+// 🚨 RAZORPAY WEBHOOK
+// =======================
+app.post("/api/razorpay-webhook", async (req, res) => {
+  try {
+    const webhookSecret = process.env.RAZORPAY_WEBHOOK_SECRET;
+
+    const signature = req.headers["x-razorpay-signature"];
+
+    const expectedSignature = crypto
+      .createHmac("sha256", webhookSecret)
+      .update(req.rawBody)
+      .digest("hex");
+
+    // ❌ Signature invalid
+    if (expectedSignature !== signature) {
+      console.log("Invalid webhook signature");
+      return res.status(400).json({ success: false });
+    }
+
+    const event = req.body.event;
+
+    // 🎯 Payment success event
+    if (event === "payment.captured" || event === "order.paid") {
+
+      const payment = req.body.payload.payment.entity;
+
+      const paymentId = payment.id;
+      const userId = payment.notes.user_id;
+
+      if (!userId) {
+        console.log("No user_id found in notes");
+        return res.json({ success: true });
+      }
+
+      // 🔥 UPDATE USER TO PRO
+      const { error } = await supabase
+        .from("users")
+        .update({
+          plan: "PRO",
+          is_pro: true,
+          payment_id: paymentId,
+          plan_expiry: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000)
+        })
+        .eq("id", userId);
+
+      if (error) {
+        console.error("Supabase update error:", error);
+      } else {
+        console.log("User upgraded to PRO:", userId);
+      }
+    }
+
+    res.json({ status: "ok" });
+
+  } catch (err) {
+    console.error("Webhook error:", err);
+    res.status(500).json({ success: false });
   }
 });
 
