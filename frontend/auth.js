@@ -26,7 +26,7 @@ function requirePro() {
     if (plan !== "PRO" && plan !== "Pro") {
         alert("This mock test is for PRO users only");
         // Redirect to pricing section on homepage or a pricing page if it exists
-        window.location.href = '/index.html#pricing';
+        window.location.href = '/#pricing';
         return false;
     }
     return true;
