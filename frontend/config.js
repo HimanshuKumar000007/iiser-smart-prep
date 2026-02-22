@@ -17,8 +17,7 @@ document.addEventListener("DOMContentLoaded", () => {
             div.pro-hidden,
             section.pro-hidden,
             a.pro-hidden,
-            button.pro-hidden,
-            .planner-cta-card.pro-hidden {
+            button.pro-hidden {
                 display: none !important;
                 visibility: hidden !important;
                 opacity: 0 !important;
