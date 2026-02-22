@@ -736,8 +736,8 @@
             </div>
         </div>
     </div>
-    <script src="../config.js"></script>
-    <script src="../auth.js"></script>
+    <script src="/config.js"></script>
+    <script src="/auth.js"></script>
     <script>
         (async function protectTestAccess() {
             const token = localStorage.getItem("IAT_TOKEN");
@@ -745,7 +745,7 @@
 
             if (!token || !mockId) {
                 alert("Unauthorized access");
-                window.location.href = "../index.html";
+                window.location.href = '/index.html';
                 return;
             }
 
@@ -764,12 +764,12 @@
                 const data = await res.json();
                 if (!data.access) {
                     alert("This mock test requires PRO access");
-                    window.location.href = "../mock_test/full_mock_test_homepage.html";
+                    window.location.href = '/mock_test/full_mock_test_homepage.html';
                 }
 
             } catch (err) {
                 alert("Access denied");
-                window.location.href = "../index.html";
+                window.location.href = '/index.html';
             }
         })();
 
@@ -801,7 +801,7 @@
                     if (res.status === 401) {
                         localStorage.removeItem("IAT_TOKEN");
                         alert("Session expired. Please login again.");
-                        window.location.href = "../login.html";
+                        window.location.href = '/login.html';
                         return;
                     }
                 }
@@ -820,7 +820,7 @@
             // 3. For Pro Mocks, Strict Check
             if (updatedPlan !== "PRO") {
                 alert("This mock test is for PRO users only. Please upgrade.");
-                window.location.href = "full_mock_test_homepage.html";
+                window.location.href = '/mock_test/full_mock_test_homepage.html';
             }
         }
 
@@ -959,7 +959,7 @@
                 // Auth Check
                 const token = localStorage.getItem("IAT_TOKEN");
                 if (!token) {
-                    window.location.href = "../login.html";
+                    window.location.href = '/login.html';
                     return;
                 }
 
@@ -1125,7 +1125,7 @@
             let contentHtml = q.text;
             if (q.image) {
                 contentHtml += `<div style="margin-top: 1.5rem; text-align: center;">
-                    <img src="${q.image}" alt="Question Diagram" style="max-width: 100%; max-height: 400px; border-radius: 8px; border: 1px solid var(--border);">
+                    <img src="/mock_test/$%7Bq.image%7D" alt="Question Diagram" style="max-width: 100%; max-height: 400px; border-radius: 8px; border: 1px solid var(--border);">
                 </div>`;
             }
             document.getElementById('qText').innerHTML = contentHtml;

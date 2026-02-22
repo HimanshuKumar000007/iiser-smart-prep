@@ -736,8 +736,8 @@
             </div>
         </div>
     </div>
-    <script src="../config.js"></script>
-    <script src="../auth.js"></script>
+    <script src="/config.js"></script>
+    <script src="/auth.js"></script>
     <script>
         // (async function protectTestAccess() {
         //     // STRICT GUARD REMOVED to allow Free Test Access (2022-2024)
@@ -774,13 +774,13 @@
                         // Session expired
                         // localStorage.removeItem("IAT_TOKEN"); // Don't wipe immediately, maybe just warn?
                         // alert("Session expired. Please login again.");
-                        // window.location.href = "../login.html";
+                        // window.location.href = '/login.html';
                         // return;
 
                         // Actually, if 401, we shouldn't proceed.
                         localStorage.removeItem("IAT_TOKEN");
                         alert("Session expired. Please login again.");
-                        window.location.href = "../login.html";
+                        window.location.href = '/login.html';
                         return;
                     }
                     // For other errors (500 etc), we might want to let them thru if it's a free test?
@@ -804,7 +804,7 @@
             // 3. For Pro Mocks, Strict Check
             if (updatedPlan !== "PRO") {
                 alert("This mock test is for PRO users only. Please upgrade.");
-                window.location.href = "full_mock_test_homepage.html";
+                window.location.href = '/pyqs/full_mock_test_homepage.html';
             }
         }
 
@@ -942,7 +942,7 @@
                 // Auth Check
                 const token = localStorage.getItem("IAT_TOKEN");
                 if (!token) {
-                    window.location.href = "../login.html";
+                    window.location.href = '/login.html';
                     return;
                 }
 
@@ -1098,7 +1098,7 @@
             let contentHtml = q.text;
             if (q.image) {
                 contentHtml += `<div style="margin-top: 1.5rem; text-align: center;">
-                    <img src="${q.image}" alt="Question Diagram" style="max-width: 100%; max-height: 400px; border-radius: 8px; border: 1px solid var(--border);">
+                    <img src="/pyqs/$%7Bq.image%7D" alt="Question Diagram" style="max-width: 100%; max-height: 400px; border-radius: 8px; border: 1px solid var(--border);">
                 </div>`;
             }
             document.getElementById('qText').innerHTML = contentHtml;

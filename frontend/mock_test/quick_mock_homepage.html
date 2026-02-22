@@ -445,7 +445,7 @@
     <!-- 1. FLOATING NAVIGATION -->
     <header>
         <div class="nav-container">
-            <a href="../index.html" class="logo">
+            <a href="/index.html" class="logo">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
                     stroke-linecap="round" stroke-linejoin="round">
                     <path
@@ -455,7 +455,7 @@
                 IISER Smart Prep <span>Quick Mocks</span>
             </a>
             <div style="display: flex; gap: 1rem; align-items: center;">
-                <a href="../index.html" class="btn btn-outline"
+                <a href="/index.html" class="btn btn-outline"
                     style="padding: 0.5rem 1rem; font-size: 0.8rem;">Exit</a>
             </div>
         </div>
@@ -533,7 +533,7 @@
             <div
                 style="display: flex; flex-wrap: wrap; gap: 3rem; justify-content: space-between; margin-bottom: 3rem;">
                 <div style="max-width: 320px;">
-                    <a href="../index.html" class="logo" style="margin-bottom: 1rem;">
+                    <a href="/index.html" class="logo" style="margin-bottom: 1rem;">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                             stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                             <path
@@ -551,11 +551,11 @@
                         <h4 style="margin-bottom: 1rem; font-size: 0.9rem; font-weight: 700; color: var(--secondary);">
                             Platform</h4>
                         <ul style="display: flex; flex-direction: column; gap: 0.75rem;">
-                            <li><a href="../ai_tutor.html" style="color: var(--text-muted); font-size: 0.9rem;">AI
+                            <li><a href="/ai_tutor.html" style="color: var(--text-muted); font-size: 0.9rem;">AI
                                     Tutor</a></li>
-                            <li><a href="full_mock_test_homepage.html"
+                            <li><a href="/mock_test/full_mock_test_homepage.html"
                                     style="color: var(--text-muted); font-size: 0.9rem;">Mock Tests</a></li>
-                            <li><a href="../index.html#pricing"
+                            <li><a href="/index.html#pricing"
                                     style="color: var(--text-muted); font-size: 0.9rem;">Pricing</a></li>
                         </ul>
                     </div>
@@ -563,12 +563,12 @@
                         <h4 style="margin-bottom: 1rem; font-size: 0.9rem; font-weight: 700; color: var(--secondary);">
                             Support</h4>
                         <ul style="display: flex; flex-direction: column; gap: 0.75rem;">
-                            <li><a href="../index.html#faq" style="color: var(--text-muted); font-size: 0.9rem;">FAQ</a>
+                            <li><a href="/index.html#faq" style="color: var(--text-muted); font-size: 0.9rem;">FAQ</a>
                             </li>
                             <li><a href="#" style="color: var(--text-muted); font-size: 0.9rem;">Contact</a></li>
-                            <li><a href="../privacy.html" style="color: var(--text-muted); font-size: 0.9rem;">Privacy
+                            <li><a href="/privacy.html" style="color: var(--text-muted); font-size: 0.9rem;">Privacy
                                     Policy</a></li>
-                            <li><a href="../terms.html" style="color: var(--text-muted); font-size: 0.9rem;">Terms &
+                            <li><a href="/terms.html" style="color: var(--text-muted); font-size: 0.9rem;">Terms &
                                     Conditions</a></li>
                         </ul>
                     </div>
@@ -622,7 +622,7 @@
     </div>
 
     <!-- JAVASCRIPT LOGIC -->
-    <script src="../config.js"></script>
+    <script src="/config.js"></script>
     <script>
         // 1. AUTH & PLAN STATE MANAGEMENT
         const token = localStorage.getItem("IAT_TOKEN");
@@ -712,11 +712,11 @@
                 if (user.plan === "PRO") {
                     goToTest(id);
                 } else {
-                    window.location.href = "../index.html#pricing";
+                    window.location.href = '/index.html#pricing';
                 }
             } catch (err) {
                 console.error(err);
-                window.location.href = "../index.html#pricing";
+                window.location.href = '/index.html#pricing';
             }
         }
 
@@ -724,7 +724,7 @@
             localStorage.setItem("CURRENT_MOCK", id);
             localStorage.setItem("CURRENT_MOCK_ID", id);
             localStorage.setItem("CURRENT_MOCK_TYPE", "QUICK");
-            window.location.href = "start_test.html";
+            window.location.href = '/mock_test/start_test.html';
         }
 
         // 3. MODAL CONTROLS

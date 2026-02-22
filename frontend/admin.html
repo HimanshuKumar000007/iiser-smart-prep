@@ -28,7 +28,7 @@
         <tbody id="users"></tbody>
     </table>
 
-    <script src="config.js"></script>
+    <script src="/config.js"></script>
     <script>
         const token = localStorage.getItem("IAT_TOKEN");
 
@@ -40,7 +40,7 @@
             .then(user => {
                 if (user.role !== "admin") {
                     alert("Access denied");
-                    window.location.href = "index.html";
+                    window.location.href = '/index.html';
                 }
             });
 
