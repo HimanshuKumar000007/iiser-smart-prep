@@ -10,13 +10,32 @@ document.addEventListener("DOMContentLoaded", () => {
     const isPro = localStorage.getItem("IAT_PLAN") === "PRO";
     if (isPro) {
         // 1. Hide unwanted pricing/upsell elements
-        const hiddenElements = document.querySelectorAll(".pro-hidden");
-        hiddenElements.forEach(el => {
-            el.style.display = "none !important";
+        const hideElements = () => {
+            const hiddenElements = document.querySelectorAll(".pro-hidden");
+            hiddenElements.forEach(el => {
+                el.style.display = "none !important";
+                // Fallback for some inline styles that might override the above
+                el.setAttribute("style", "display: none !important;");
+            });
+        };
 
-            // Fallback for some inline styles that might override the above
-            el.setAttribute("style", "display: none !important;");
+        // Run immediately
+        hideElements();
+
+        // Run continuously for dynamically added elements
+        const observer = new MutationObserver((mutations) => {
+            let shouldRun = false;
+            mutations.forEach(mutation => {
+                if (mutation.addedNodes.length > 0) {
+                    shouldRun = true;
+                }
+            });
+            if (shouldRun) {
+                hideElements();
+            }
         });
+
+        observer.observe(document.body, { childList: true, subtree: true });
 
         // 2. Add PRO badge to header logo
         const logoEl = document.querySelector(".logo");
