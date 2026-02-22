@@ -9,33 +9,23 @@ const RAZORPAY_KEY_ID = "rzp_live_SC3R47SGOoJHvE";
 document.addEventListener("DOMContentLoaded", () => {
     const isPro = localStorage.getItem("IAT_PLAN") === "PRO";
     if (isPro) {
-        // 1. Hide unwanted pricing/upsell elements
-        const hideElements = () => {
-            const hiddenElements = document.querySelectorAll(".pro-hidden");
-            hiddenElements.forEach(el => {
-                el.style.display = "none !important";
-                // Fallback for some inline styles that might override the above
-                el.setAttribute("style", "display: none !important;");
-            });
-        };
-
-        // Run immediately
-        hideElements();
-
-        // Run continuously for dynamically added elements
-        const observer = new MutationObserver((mutations) => {
-            let shouldRun = false;
-            mutations.forEach(mutation => {
-                if (mutation.addedNodes.length > 0) {
-                    shouldRun = true;
-                }
-            });
-            if (shouldRun) {
-                hideElements();
+        // 1. Inject strictly enforced CSS to hide all .pro-hidden elements globally
+        const style = document.createElement("style");
+        style.innerHTML = `
+            .pro-hidden {
+                display: none !important;
+                visibility: hidden !important;
+                opacity: 0 !important;
+                height: 0 !important;
+                width: 0 !important;
+                pointer-events: none !important;
+                position: absolute !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                overflow: hidden !important;
             }
-        });
-
-        observer.observe(document.body, { childList: true, subtree: true });
+        `;
+        document.head.appendChild(style);
 
         // 2. Add PRO badge to header logo
         const logoEl = document.querySelector(".logo");
