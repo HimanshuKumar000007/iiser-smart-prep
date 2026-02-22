@@ -10,9 +10,15 @@ document.addEventListener("DOMContentLoaded", () => {
     const isPro = localStorage.getItem("IAT_PLAN") === "PRO";
     if (isPro) {
         // 1. Inject strictly enforced CSS to hide all .pro-hidden elements globally
+        // We use double classes, IDs, and aggressive resets to win all specificity wars.
         const style = document.createElement("style");
         style.innerHTML = `
-            .pro-hidden {
+            .pro-hidden,
+            div.pro-hidden,
+            section.pro-hidden,
+            a.pro-hidden,
+            button.pro-hidden,
+            .planner-cta-card.pro-hidden {
                 display: none !important;
                 visibility: hidden !important;
                 opacity: 0 !important;
@@ -23,6 +29,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 margin: 0 !important;
                 padding: 0 !important;
                 overflow: hidden !important;
+                z-index: -9999 !important;
             }
         `;
         document.head.appendChild(style);
