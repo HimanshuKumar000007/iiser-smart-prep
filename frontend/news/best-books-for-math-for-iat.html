@@ -2139,12 +2139,7 @@
 
             if (token && plan === "PRO") {
                 // User is PRO, download/open the plan
-                const link = document.createElement('a');
-                link.href = '../assets/files/IISER_IAT_3_Month_Study_Plan.pdf'; // Placeholder path
-                link.download = 'IISER_IAT_3_Month_Study_Plan.pdf';
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
+                window.location.href = '/iat-planner-pro.html';
             } else {
                 // User is not PRO or not logged in, show modal
                 openModal('modal-study-plan');
