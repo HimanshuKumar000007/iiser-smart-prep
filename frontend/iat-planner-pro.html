@@ -4,42 +4,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>IISER IAT 2026 Sprint | Smart Scheduler</title>
-
+    <title>IISER IAT 2026 Sprint | Real Performance Tracker</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
         href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;600;700&display=swap"
         rel="stylesheet">
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
-
     <style>
         :root {
-            --bg-primary: #0a0a0f;
-            --bg-secondary: #12121a;
-            --bg-tertiary: #1e1e2e;
-            --bg-card: rgba(30, 30, 46, 0.6);
-
-            --accent-primary: #6366f1;
-            --accent-secondary: #8b5cf6;
-            --accent-success: #22c55e;
-            --accent-warning: #f59e0b;
-            --accent-danger: #ef4444;
-            --accent-cyan: #06b6d4;
+            --bg-primary: #050507;
+            --bg-secondary: #0a0a0f;
+            --bg-card: rgba(15, 15, 25, 0.7);
+            --accent-purple: #6366f1;
             --accent-pink: #ec4899;
-
-            --text-primary: #fafafa;
+            --accent-cyan: #06b6d4;
+            --accent-green: #22c55e;
+            --accent-orange: #f59e0b;
+            --accent-red: #ef4444;
+            --text-primary: #ffffff;
             --text-secondary: #a1a1aa;
             --text-muted: #71717a;
-
-            --glass-border: rgba(255, 255, 255, 0.08);
-            --radius-sm: 8px;
-            --radius-md: 12px;
-            --radius-lg: 16px;
-            --radius-xl: 24px;
-
-            --shadow-glow: 0 0 20px rgba(99, 102, 241, 0.3);
-            --ease-spring: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            --glass-border: rgba(255, 255, 255, 0.06);
         }
 
         * {
@@ -63,8 +49,8 @@
             inset: 0;
             z-index: -1;
             background:
-                radial-gradient(ellipse 80% 50% at 20% 40%, rgba(99, 102, 241, 0.15), transparent),
-                radial-gradient(ellipse 60% 40% at 80% 60%, rgba(139, 92, 246, 0.1), transparent);
+                radial-gradient(circle at 20% 50%, rgba(99, 102, 241, 0.12), transparent 40%),
+                radial-gradient(circle at 80% 20%, rgba(236, 72, 153, 0.08), transparent 40%);
             pointer-events: none;
         }
 
@@ -72,14 +58,14 @@
             position: sticky;
             top: 0;
             z-index: 100;
-            background: rgba(10, 10, 15, 0.8);
+            background: rgba(5, 5, 7, 0.85);
             backdrop-filter: blur(20px);
             border-bottom: 1px solid var(--glass-border);
             padding: 1rem;
         }
 
         .header-content {
-            max-width: 800px;
+            max-width: 900px;
             margin: 0 auto;
             display: flex;
             justify-content: space-between;
@@ -95,13 +81,13 @@
         .brand-icon {
             width: 42px;
             height: 42px;
-            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            background: linear-gradient(135deg, var(--accent-purple), var(--accent-pink));
             border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 1.5rem;
-            box-shadow: var(--shadow-glow);
+            box-shadow: 0 0 20px rgba(99, 102, 241, 0.4);
         }
 
         .brand-text h1 {
@@ -138,31 +124,58 @@
         }
 
         .icon-btn:hover {
-            background: var(--bg-tertiary);
+            background: var(--glass-border);
             transform: translateY(-2px);
         }
 
+        .icon-btn.recording {
+            animation: pulse-rec 1.5s infinite;
+            background: rgba(239, 68, 68, 0.2);
+            border-color: var(--accent-red);
+            color: var(--accent-red);
+        }
+
+        @keyframes pulse-rec {
+
+            0%,
+            100% {
+                box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4);
+            }
+
+            50% {
+                box-shadow: 0 0 0 10px rgba(239, 68, 68, 0);
+            }
+        }
+
         .container {
-            max-width: 800px;
+            max-width: 900px;
             margin: 0 auto;
             padding: 1.5rem 1rem;
         }
 
-        /* Date Strip */
-        .date-strip {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            margin-bottom: 1.5rem;
-            padding: 0.75rem 1rem;
-            background: var(--bg-secondary);
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 1.5rem 1rem;
+        }
+
+        /* Date Strip Card */
+        .date-strip-card {
+            background: var(--bg-card);
             border: 1px solid var(--glass-border);
-            border-radius: var(--radius-lg);
+            border-radius: 16px;
+            padding: 1rem 1.25rem;
+            margin-bottom: 1.5rem;
+            backdrop-filter: blur(10px);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             overflow-x: auto;
+            gap: 1.5rem;
             scrollbar-width: none;
         }
 
-        .date-strip::-webkit-scrollbar {
+        .date-strip-card::-webkit-scrollbar {
             display: none;
         }
 
@@ -170,12 +183,36 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 0.5rem 0.75rem;
-            border-radius: var(--radius-md);
+            justify-content: center;
             min-width: 60px;
             cursor: pointer;
+            padding: 0.75rem 0.5rem;
+            border-radius: 12px;
             transition: all 0.2s;
             position: relative;
+        }
+
+        .date-item .date-day {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.25rem;
+        }
+
+        .date-item .date-num {
+            font-size: 1.5rem;
+            font-weight: 800;
+            font-family: 'Space Grotesk', sans-serif;
+            color: var(--text-primary);
+            line-height: 1;
+            margin-bottom: 0.25rem;
+        }
+
+        .date-item .date-month {
+            font-size: 0.65rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
         }
 
         .date-item:hover {
@@ -183,292 +220,439 @@
         }
 
         .date-item.active {
-            background: var(--accent-primary);
+            background: var(--accent-purple);
+            box-shadow: 0 4px 20px rgba(99, 102, 241, 0.3);
+            cursor: default;
+        }
+
+        .date-item.active .date-day,
+        .date-item.active .date-num,
+        .date-item.active .date-month {
             color: white;
         }
 
-        .date-item.has-tasks::after {
+        .date-item.active::after {
             content: '';
             position: absolute;
             bottom: 4px;
             width: 4px;
             height: 4px;
-            background: var(--accent-warning);
+            background: var(--accent-orange);
             border-radius: 50%;
+            box-shadow: 0 0 5px var(--accent-orange);
         }
 
-        .date-item.all-completed::after {
-            background: var(--accent-success);
-            box-shadow: 0 0 6px var(--accent-success);
-        }
-
-        .date-day {
-            font-size: 0.7rem;
-            text-transform: uppercase;
-            color: var(--text-muted);
-            margin-bottom: 0.25rem;
-        }
-
-        .date-item.active .date-day {
-            color: rgba(255, 255, 255, 0.8);
-        }
-
-        .date-num {
-            font-size: 1.1rem;
-            font-weight: 700;
-        }
-
-        .date-month {
-            font-size: 0.65rem;
-            color: var(--text-muted);
-        }
-
-        .date-item.active .date-month {
-            color: rgba(255, 255, 255, 0.7);
-        }
-
-        /* Hero Card */
-        .hero-card {
-            background: linear-gradient(135deg, rgba(99, 102, 241, 0.15), rgba(139, 92, 246, 0.1));
-            border: 1px solid var(--glass-border);
-            border-radius: var(--radius-xl);
-            padding: 1.5rem;
+        /* Top Stats - REAL DATA */
+        .stats-overview {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
             margin-bottom: 1.5rem;
+        }
+
+        @media (min-width: 640px) {
+            .stats-overview {
+                grid-template-columns: 2fr 1fr 1fr;
+            }
+        }
+
+        .stat-card {
+            background: var(--bg-card);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 1.25rem;
             position: relative;
             overflow: hidden;
+            backdrop-filter: blur(10px);
         }
 
-        .hero-card::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            right: -20%;
-            width: 300px;
-            height: 300px;
-            background: radial-gradient(circle, rgba(99, 102, 241, 0.3), transparent 70%);
-            animation: pulse 6s ease-in-out infinite;
-        }
-
-        @keyframes pulse {
-
-            0%,
-            100% {
-                opacity: 0.4;
-                transform: scale(1);
-            }
-
-            50% {
-                opacity: 0.8;
-                transform: scale(1.1);
-            }
-        }
-
-        .hero-content {
-            position: relative;
-            z-index: 1;
-        }
-
-        .day-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            background: rgba(255, 255, 255, 0.05);
-            padding: 0.4rem 0.8rem;
-            border-radius: 100px;
-            font-size: 0.8rem;
-            font-weight: 600;
-            margin-bottom: 0.75rem;
-            border: 1px solid var(--glass-border);
-        }
-
-        .hero-title {
-            font-size: 1.5rem;
-            font-weight: 800;
-            margin-bottom: 0.25rem;
-        }
-
-        .hero-subtitle {
-            color: var(--text-secondary);
-            font-size: 0.9rem;
-            margin-bottom: 1.25rem;
-        }
-
-        .stats-bar {
-            display: flex;
-            gap: 1.5rem;
-            align-items: center;
-            flex-wrap: wrap;
-        }
-
-        .stat {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .stat-icon {
-            font-size: 1.25rem;
-        }
-
-        .stat-info {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .stat-value {
-            font-size: 1.1rem;
-            font-weight: 700;
+        .stat-card.primary {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.15), rgba(99, 102, 241, 0.05));
+            border-color: rgba(99, 102, 241, 0.2);
         }
 
         .stat-label {
             font-size: 0.7rem;
             color: var(--text-muted);
             text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
         }
 
-        .current-date-display {
-            margin-left: auto;
-            text-align: right;
-            padding-left: 1rem;
-            border-left: 1px solid var(--glass-border);
-        }
-
-        .current-date-day {
-            font-size: 1.5rem;
+        .stat-value-large {
+            font-size: 2.2rem;
             font-weight: 800;
-            color: var(--accent-primary);
+            font-family: 'Space Grotesk', sans-serif;
+            margin-bottom: 0.25rem;
+            display: flex;
+            align-items: baseline;
+            gap: 0.25rem;
         }
 
-        .current-date-full {
+        .stat-value-large span {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .stat-sub {
             font-size: 0.8rem;
             color: var(--text-secondary);
         }
 
-        .progress-ring {
-            width: 60px;
-            height: 60px;
+        /* Dashboard Grid */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        @media (min-width: 768px) {
+            .dashboard-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        .dash-card {
+            background: var(--bg-card);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 1.25rem;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s;
+        }
+
+        .dash-card:hover {
+            transform: translateY(-2px);
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .dash-card-title {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* Subject Split - Real Data */
+        .donut-chart-container {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .donut-chart {
+            width: 85px;
+            height: 85px;
+            border-radius: 50%;
             position: relative;
             flex-shrink: 0;
+            transition: all 0.5s ease;
         }
 
-        .progress-ring svg {
-            transform: rotate(-90deg);
-        }
-
-        .progress-ring circle {
-            fill: none;
-            stroke-width: 4;
-        }
-
-        .progress-ring .bg {
-            stroke: rgba(255, 255, 255, 0.1);
-        }
-
-        .progress-ring .progress {
-            stroke: var(--accent-success);
-            stroke-linecap: round;
-            stroke-dasharray: 151;
-            stroke-dashoffset: 151;
-            transition: stroke-dashoffset 1s var(--ease-spring);
-        }
-
-        .progress-text {
+        .donut-hole {
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            font-size: 0.9rem;
+            width: 65px;
+            height: 65px;
+            background: var(--bg-card);
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.65rem;
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+
+        .donut-hole .hours {
+            font-size: 1.1rem;
+            color: var(--text-primary);
             font-weight: 700;
         }
 
-        /* Subject Filter */
-        .filter-bar {
+        .subject-legend {
             display: flex;
+            flex-direction: column;
             gap: 0.5rem;
-            margin-bottom: 1.5rem;
-            overflow-x: auto;
-            padding-bottom: 0.5rem;
-            scrollbar-width: none;
+            flex: 1;
         }
 
-        .filter-bar::-webkit-scrollbar {
-            display: none;
-        }
-
-        .filter-btn {
-            flex-shrink: 0;
-            padding: 0.6rem 1rem;
-            border-radius: var(--radius-md);
-            border: 1px solid var(--glass-border);
-            background: var(--bg-secondary);
-            color: var(--text-secondary);
-            font-weight: 600;
-            font-size: 0.85rem;
-            cursor: pointer;
-            transition: all 0.2s;
+        .legend-item {
             display: flex;
             align-items: center;
-            gap: 0.4rem;
+            gap: 0.5rem;
+            font-size: 0.8rem;
         }
 
-        .filter-btn.active {
-            background: var(--accent-primary);
-            color: white;
-            border-color: var(--accent-primary);
+        .legend-item .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
         }
 
-        .filter-btn:hover:not(.active) {
-            background: var(--bg-tertiary);
+        .legend-item .name {
+            color: var(--text-secondary);
+            flex: 1;
         }
 
-        /* Quest Card */
-        .quest-card {
+        .legend-item .time {
+            color: var(--text-primary);
+            font-weight: 600;
+            font-family: 'Space Grotesk';
+        }
+
+        /* Consistency - Real Streak Data */
+        .consistency-display {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            height: 100%;
+        }
+
+        .consistency-percent {
+            font-size: 2.8rem;
+            font-weight: 800;
+            font-family: 'Space Grotesk';
+            margin-bottom: 0.5rem;
+            background: linear-gradient(to right, #fff, #888);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .progress-bar-bg {
+            width: 100%;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 3px;
+            overflow: hidden;
+            margin-bottom: 0.75rem;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            background: var(--accent-green);
+            width: 0%;
+            transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 0 10px var(--accent-green);
+        }
+
+        .consistency-meta {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        /* Study Balance - Real Analysis */
+        .study-balance-content {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            height: 100%;
+        }
+
+        .balance-score {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            margin: 0 auto 0.75rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            position: relative;
+        }
+
+        .balance-score::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 50%;
+            padding: 3px;
+            background: linear-gradient(135deg, var(--accent-purple), var(--accent-pink));
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+        }
+
+        .balance-text {
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+            font-size: 1.1rem;
+        }
+
+        .balance-sub {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+
+        /* Activity Map - Real Sessions */
+        .activity-map-card {
             background: var(--bg-card);
             border: 1px solid var(--glass-border);
-            border-radius: var(--radius-xl);
+            border-radius: 16px;
             padding: 1.25rem;
             margin-bottom: 1.5rem;
-            backdrop-filter: blur(10px);
         }
 
-        .quest-header {
+        .activity-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 1rem;
         }
 
-        .quest-title {
-            font-size: 1rem;
+        .activity-title {
+            font-size: 0.9rem;
             font-weight: 700;
             display: flex;
             align-items: center;
             gap: 0.5rem;
         }
 
-        .quest-title i {
-            color: var(--accent-warning);
+        .activity-legend {
+            display: flex;
+            gap: 0.75rem;
+            font-size: 0.7rem;
+            color: var(--text-muted);
         }
 
-        .badge {
-            background: rgba(245, 158, 11, 0.15);
-            color: var(--accent-warning);
-            padding: 0.3rem 0.8rem;
-            border-radius: 100px;
-            font-size: 0.75rem;
-            font-weight: 700;
-        }
-
-        .skipped-badge {
-            background: rgba(239, 68, 68, 0.15);
-            color: var(--accent-danger);
-            padding: 0.3rem 0.8rem;
-            border-radius: 100px;
-            font-size: 0.75rem;
-            font-weight: 700;
+        .legend-item-small {
             display: flex;
             align-items: center;
-            gap: 0.25rem;
+            gap: 4px;
+        }
+
+        .legend-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 2px;
+        }
+
+        .timeline {
+            display: flex;
+            justify-content: space-between;
+            position: relative;
+            padding: 1.5rem 0 0.5rem;
+            gap: 0.5rem;
+        }
+
+        .time-segment {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .time-bar-container {
+            width: 100%;
+            height: 80px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 8px;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: flex-end;
+        }
+
+        .time-fill {
+            width: 100%;
+            border-radius: 8px 8px 0 0;
+            transition: height 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            min-height: 4px;
+        }
+
+        .time-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 100%;
+            background: linear-gradient(to top, transparent, rgba(255, 255, 255, 0.1));
+        }
+
+        .time-label {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            margin-top: 0.25rem;
+        }
+
+        .time-value {
+            font-size: 0.75rem;
+            color: var(--text-primary);
+            font-weight: 600;
+            font-family: 'Space Grotesk';
+        }
+
+        /* Tasks Section */
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            margin-top: 2rem;
+        }
+
+        .section-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+        }
+
+        .xp-display {
+            color: var(--accent-purple);
+            font-weight: 700;
+            font-family: 'Space Grotesk';
+        }
+
+        .filter-pills {
+            display: flex;
+            gap: 0.5rem;
+            overflow-x: auto;
+            padding-bottom: 0.5rem;
+            margin-bottom: 1rem;
+            scrollbar-width: none;
+        }
+
+        .filter-pills::-webkit-scrollbar {
+            display: none;
+        }
+
+        .pill {
+            padding: 0.5rem 1rem;
+            background: var(--bg-secondary);
+            border: 1px solid var(--glass-border);
+            border-radius: 100px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all 0.2s;
+            color: var(--text-secondary);
+        }
+
+        .pill.active {
+            background: var(--accent-purple);
+            border-color: var(--accent-purple);
+            color: white;
         }
 
         .task-list {
@@ -480,48 +664,28 @@
         .task-item {
             background: var(--bg-secondary);
             border: 1px solid var(--glass-border);
-            border-radius: var(--radius-md);
+            border-radius: 12px;
             padding: 1rem;
             display: flex;
-            align-items: flex-start;
-            gap: 0.875rem;
+            align-items: center;
+            gap: 1rem;
             cursor: pointer;
             transition: all 0.2s;
-            position: relative;
         }
 
         .task-item:hover {
-            border-color: var(--accent-primary);
+            border-color: var(--accent-purple);
             transform: translateX(4px);
         }
 
         .task-item.completed {
             opacity: 0.6;
-            background: rgba(34, 197, 94, 0.05);
-            border-color: rgba(34, 197, 94, 0.3);
+            border-color: rgba(34, 197, 94, 0.2);
         }
 
-        .task-item.completed .task-text {
+        .task-item.completed .task-title {
             text-decoration: line-through;
             color: var(--text-muted);
-        }
-
-        .task-item.skipped {
-            border-color: rgba(239, 68, 68, 0.3);
-            background: rgba(239, 68, 68, 0.05);
-        }
-
-        .task-item.skipped::before {
-            content: 'SKIPPED';
-            position: absolute;
-            top: 0.5rem;
-            right: 0.5rem;
-            font-size: 0.6rem;
-            font-weight: 700;
-            color: var(--accent-danger);
-            background: rgba(239, 68, 68, 0.2);
-            padding: 0.15rem 0.4rem;
-            border-radius: 4px;
         }
 
         .checkbox {
@@ -533,13 +697,12 @@
             align-items: center;
             justify-content: center;
             flex-shrink: 0;
-            margin-top: 0.125rem;
             transition: all 0.2s;
         }
 
         .task-item.completed .checkbox {
-            background: var(--accent-success);
-            border-color: var(--accent-success);
+            background: var(--accent-green);
+            border-color: var(--accent-green);
             color: white;
         }
 
@@ -547,18 +710,15 @@
             flex: 1;
         }
 
-        .task-text {
+        .task-title {
             font-weight: 600;
             font-size: 0.95rem;
-            margin-bottom: 0.375rem;
-            line-height: 1.4;
-            padding-right: 1rem;
+            margin-bottom: 0.25rem;
         }
 
         .task-meta {
             display: flex;
-            flex-wrap: wrap;
-            gap: 0.5rem;
+            gap: 0.75rem;
             font-size: 0.75rem;
             color: var(--text-muted);
         }
@@ -567,9 +727,6 @@
             display: flex;
             align-items: center;
             gap: 0.25rem;
-            padding: 0.2rem 0.5rem;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 4px;
         }
 
         .priority {
@@ -580,53 +737,113 @@
             border-radius: 4px;
         }
 
-        .priority-critical {
-            background: rgba(239, 68, 68, 0.2);
-            color: var(--accent-danger);
+        .priority.critical {
+            background: rgba(239, 68, 68, 0.15);
+            color: var(--accent-red);
         }
 
-        .priority-high {
-            background: rgba(245, 158, 11, 0.2);
-            color: var(--accent-warning);
+        .priority.high {
+            background: rgba(245, 158, 11, 0.15);
+            color: var(--accent-orange);
         }
 
-        .priority-medium {
-            background: rgba(6, 182, 212, 0.2);
+        .priority.medium {
+            background: rgba(6, 182, 212, 0.15);
             color: var(--accent-cyan);
         }
 
-        .priority-low {
-            background: rgba(161, 161, 170, 0.2);
-            color: var(--text-muted);
-        }
-
-        .rescheduled-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.25rem;
-            font-size: 0.7rem;
-            color: var(--accent-warning);
-            margin-top: 0.25rem;
-        }
-
-        /* Subject Progress */
-        .section-title {
-            font-size: 1rem;
+        .task-xp {
             font-weight: 700;
-            margin-bottom: 1rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            color: var(--accent-purple);
+            font-size: 0.9rem;
+            font-family: 'Space Grotesk';
         }
 
-        .progress-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
+        /* Live Session Indicator */
+        .live-session-bar {
+            background: linear-gradient(90deg, rgba(99, 102, 241, 0.1), rgba(236, 72, 153, 0.1));
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            display: none;
+            align-items: center;
             gap: 1rem;
         }
 
+        .live-session-bar.active {
+            display: flex;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .live-indicator {
+            width: 12px;
+            height: 12px;
+            background: var(--accent-red);
+            border-radius: 50%;
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.3;
+            }
+        }
+
+        .live-info {
+            flex: 1;
+        }
+
+        .live-title {
+            font-weight: 700;
+            font-size: 0.95rem;
+        }
+
+        .live-time {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            font-family: 'Space Grotesk';
+        }
+
+        .live-btn {
+            padding: 0.5rem 1rem;
+            background: var(--accent-red);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 0.8rem;
+        }
+
+        /* Subject Grid */
+        .subject-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
         @media (min-width: 640px) {
-            .progress-grid {
+            .subject-grid {
                 grid-template-columns: repeat(4, 1fr);
             }
         }
@@ -634,36 +851,20 @@
         .subject-card {
             background: var(--bg-card);
             border: 1px solid var(--glass-border);
-            border-radius: var(--radius-lg);
+            border-radius: 16px;
             padding: 1.25rem;
             position: relative;
             overflow: hidden;
-            transition: all 0.3s;
             cursor: pointer;
+            transition: all 0.3s;
         }
 
         .subject-card:hover {
             transform: translateY(-4px);
-            border-color: var(--accent-primary);
+            border-color: var(--subject-color);
         }
 
-        .subject-card.physics {
-            --subject-color: #ef4444;
-        }
-
-        .subject-card.chemistry {
-            --subject-color: #06b6d4;
-        }
-
-        .subject-card.mathematics {
-            --subject-color: #f59e0b;
-        }
-
-        .subject-card.biology {
-            --subject-color: #22c55e;
-        }
-
-        .subject-card::after {
+        .subject-card::before {
             content: '';
             position: absolute;
             top: 0;
@@ -675,7 +876,7 @@
             transition: opacity 0.3s;
         }
 
-        .subject-card:hover::after {
+        .subject-card:hover::before {
             opacity: 1;
         }
 
@@ -698,11 +899,12 @@
             margin-bottom: 0.25rem;
         }
 
-        .subject-percent {
-            font-size: 1.5rem;
+        .subject-time {
+            font-size: 1.3rem;
             font-weight: 800;
             color: var(--subject-color);
-            margin-bottom: 0.5rem;
+            font-family: 'Space Grotesk';
+            margin-bottom: 0.25rem;
         }
 
         .subject-stats {
@@ -713,17 +915,16 @@
 
         .progress-track {
             height: 4px;
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.08);
             border-radius: 2px;
             overflow: hidden;
         }
 
-        .progress-fill {
+        .progress-fill-sub {
             height: 100%;
             background: var(--subject-color);
             border-radius: 2px;
-            transition: width 1s var(--ease-spring);
-            width: 0%;
+            transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         /* Bottom Nav */
@@ -732,7 +933,7 @@
             bottom: 0;
             left: 0;
             right: 0;
-            background: rgba(10, 10, 15, 0.95);
+            background: rgba(5, 5, 7, 0.95);
             backdrop-filter: blur(20px);
             border-top: 1px solid var(--glass-border);
             padding: 0.75rem 1rem calc(0.75rem + env(safe-area-inset-bottom));
@@ -763,12 +964,173 @@
 
         .nav-item.active,
         .nav-item:hover {
-            color: var(--accent-primary);
+            color: var(--accent-purple);
             background: rgba(99, 102, 241, 0.1);
         }
 
         .nav-item i {
             font-size: 1.4rem;
+        }
+
+        /* Focus Modal */
+        .focus-modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(5, 5, 7, 0.98);
+            z-index: 1000;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        .focus-modal.active {
+            display: flex;
+        }
+
+        .focus-title {
+            font-size: 2rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+            text-align: center;
+        }
+
+        .focus-subtitle {
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .focus-task-select {
+            width: 100%;
+            max-width: 400px;
+            margin-bottom: 2rem;
+        }
+
+        .focus-task-select label {
+            display: block;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+        }
+
+        .focus-task-select select {
+            width: 100%;
+            padding: 1rem;
+            background: var(--bg-secondary);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            color: var(--text-primary);
+            font-family: inherit;
+            font-size: 1rem;
+        }
+
+        .focus-timer-display {
+            font-family: 'Space Grotesk';
+            font-size: 6rem;
+            font-weight: 700;
+            margin: 2rem 0;
+            letter-spacing: -2px;
+        }
+
+        .focus-controls {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .task-actions {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+        }
+
+        .btn-skip {
+            padding: 0.25rem 0.75rem;
+            border-radius: 100px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            background: rgba(239, 68, 68, 0.1);
+            color: var(--accent-danger);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+
+        .btn-skip:hover {
+            background: var(--accent-danger);
+            color: white;
+        }
+
+        .task-play-btn {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(99, 102, 241, 0.1);
+            color: var(--accent-primary);
+            border: 1px solid rgba(99, 102, 241, 0.2);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .task-play-btn:hover {
+            background: var(--accent-primary);
+            color: white;
+            box-shadow: 0 0 10px rgba(99, 102, 241, 0.4);
+            transform: scale(1.05);
+        }
+
+        .focus-btn {
+            padding: 1rem 2.5rem;
+            border-radius: 100px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .focus-btn.start {
+            background: var(--accent-purple);
+            color: white;
+            box-shadow: 0 4px 20px rgba(99, 102, 241, 0.4);
+        }
+
+        .focus-btn.start:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 30px rgba(99, 102, 241, 0.5);
+        }
+
+        .focus-btn.stop {
+            background: var(--accent-red);
+            color: white;
+        }
+
+        .focus-btn.secondary {
+            background: transparent;
+            color: var(--text-secondary);
+            border: 1px solid var(--glass-border);
+        }
+
+        .close-focus {
+            position: absolute;
+            top: 2rem;
+            right: 2rem;
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 1.5rem;
+            cursor: pointer;
         }
 
         /* Toast */
@@ -780,15 +1142,14 @@
             background: var(--bg-secondary);
             border: 1px solid var(--glass-border);
             padding: 1rem 1.5rem;
-            border-radius: var(--radius-lg);
+            border-radius: 12px;
             display: flex;
             align-items: center;
             gap: 0.75rem;
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
             opacity: 0;
-            transition: all 0.3s var(--ease-spring);
-            z-index: 1000;
-            pointer-events: none;
+            transition: all 0.3s ease;
+            z-index: 2000;
         }
 
         .toast.show {
@@ -796,191 +1157,13 @@
             transform: translateX(-50%) translateY(0);
         }
 
-        .toast-icon {
-            width: 32px;
-            height: 32px;
-            background: var(--accent-success);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 1rem;
-        }
-
-        /* Modal */
-        .modal {
-            position: fixed;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.8);
-            backdrop-filter: blur(10px);
-            z-index: 1000;
-            display: none;
-            align-items: center;
-            justify-content: center;
-            padding: 1rem;
-        }
-
-        .modal.active {
-            display: flex;
-        }
-
-        .modal-content {
-            background: var(--bg-secondary);
-            border: 1px solid var(--glass-border);
-            border-radius: var(--radius-xl);
-            padding: 2rem;
-            width: 100%;
-            max-width: 400px;
-            animation: slideUp 0.3s var(--ease-spring);
-        }
-
-        @keyframes slideUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .modal-title {
-            font-size: 1.25rem;
-            font-weight: 700;
-            margin-bottom: 1rem;
-        }
-
-        .form-group {
-            margin-bottom: 1rem;
-        }
-
-        .form-label {
-            display: block;
-            font-size: 0.85rem;
-            color: var(--text-secondary);
-            margin-bottom: 0.5rem;
-        }
-
-        .form-input {
-            width: 100%;
-            padding: 0.75rem;
-            background: var(--bg-primary);
-            border: 1px solid var(--glass-border);
-            border-radius: var(--radius-md);
-            color: var(--text-primary);
-            font-family: inherit;
-            font-size: 0.95rem;
-        }
-
-        .form-input:focus {
-            outline: none;
-            border-color: var(--accent-primary);
-        }
-
-        .btn-primary {
-            width: 100%;
-            padding: 0.875rem;
-            background: var(--accent-primary);
-            color: white;
-            border: none;
-            border-radius: var(--radius-md);
-            font-weight: 600;
-            font-size: 0.95rem;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .btn-primary:hover {
-            background: var(--accent-secondary);
-            transform: translateY(-2px);
-        }
-
-        .btn-secondary {
-            width: 100%;
-            padding: 0.875rem;
-            background: transparent;
-            color: var(--text-secondary);
-            border: 1px solid var(--glass-border);
-            border-radius: var(--radius-md);
-            font-weight: 600;
-            font-size: 0.95rem;
-            cursor: pointer;
-            margin-top: 0.5rem;
-        }
-
-        .empty-state {
-            text-align: center;
-            padding: 3rem 1rem;
-            color: var(--text-muted);
-        }
-
-        .empty-state i {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-            opacity: 0.5;
-        }
-
-        .task-actions {
-            display: flex;
-            gap: 0.5rem;
-            margin-top: 0.5rem;
-        }
-
-        .btn-skip {
-            padding: 0.4rem 0.75rem;
-            background: rgba(239, 68, 68, 0.1);
-            color: var(--accent-danger);
-            border: 1px solid rgba(239, 68, 68, 0.3);
-            border-radius: 6px;
-            font-size: 0.75rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .btn-skip:hover {
-            background: rgba(239, 68, 68, 0.2);
-        }
-
-        /* Animations */
-        @keyframes slideIn {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .animate-in {
-            animation: slideIn 0.5s var(--ease-spring) forwards;
-        }
-
+        /* Confetti */
         .confetti {
             position: fixed;
             width: 10px;
             height: 10px;
             pointer-events: none;
             z-index: 9999;
-        }
-
-        .pending-tasks-info {
-            background: rgba(245, 158, 11, 0.1);
-            border: 1px solid rgba(245, 158, 11, 0.3);
-            border-radius: var(--radius-md);
-            padding: 0.75rem;
-            margin-bottom: 1rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            font-size: 0.85rem;
-            color: var(--accent-warning);
         }
     </style>
     <base target="_blank">
@@ -989,1043 +1172,663 @@
 <body>
     <div class="bg-mesh"></div>
 
-    <!-- Setup Modal -->
-    <div class="modal" id="setupModal">
-        <div class="modal-content">
-            <h3 class="modal-title">Welcome to IAT 2026 Sprint 🎯</h3>
-            <p style="color: var(--text-secondary); margin-bottom: 1.5rem; font-size: 0.9rem;">
-                Smart scheduling: Skipped topics automatically reschedule for tomorrow!
-            </p>
-            <div class="form-group">
-                <label class="form-label">Your Name</label>
-                <input type="text" class="form-input" id="userName" placeholder="Enter your name" value="Aspirant">
-            </div>
-            <button class="btn-primary" onclick="initializeApp()">Start Preparation</button>
-        </div>
-    </div>
-
-    <!-- Header -->
     <header class="app-header">
         <div class="header-content">
             <div class="brand">
-                <div class="brand-icon">
-                    <i class="ph ph-atom"></i>
-                </div>
+                <div class="brand-icon"><i class="ph ph-atom"></i></div>
                 <div class="brand-text">
-                    <h1>IAT Sprint 2026</h1>
-                    <span>Smart Syllabus Tracker</span>
+                    <h1>Smart Scheduler</h1>
+                    <span style="color: var(--accent-purple);">Dynamic IAT Planner</span>
                 </div>
             </div>
             <div class="header-actions">
-                <button class="icon-btn" onclick="resetData()" title="Reset All Data">
-                    <i class="ph ph-arrow-counter-clockwise"></i>
-                </button>
-                <button class="icon-btn" onclick="showStats()" title="View Statistics">
-                    <i class="ph ph-chart-bar"></i>
-                </button>
+                <div style="display: flex; gap: 1rem; align-items: center;">
+                    <div style="font-weight: 700; color: var(--accent-orange); display: flex; align-items: center; gap: 0.25rem;">
+                        <i class="ph ph-fire"></i> <span id="headerStreak">0</span>
+                    </div>
+                    <div style="font-weight: 700; color: var(--accent-purple); display: flex; align-items: center; gap: 0.25rem;">
+                        <i class="ph ph-lightning"></i> <span id="headerXP">0 XP</span>
+                    </div>
+                </div>
+                <button class="icon-btn" onclick="resetData()"><i class="ph ph-arrow-counter-clockwise"></i></button>
             </div>
         </div>
     </header>
 
     <main class="container">
-        <!-- Date Strip -->
-        <div class="date-strip animate-in" id="dateStrip">
-            <!-- Dates injected by JS -->
+        <!-- Date Strip UI -->
+        <style>
+            .date-strip-container {
+                margin-top: 1rem;
+                margin-bottom: 2rem;
+                overflow-x: auto;
+                scrollbar-width: none;
+            }
+            .date-strip-container::-webkit-scrollbar { display: none; }
+            .date-strip-card {
+                display: flex;
+                gap: 0.75rem;
+                padding-bottom: 0.5rem;
+            }
+            .date-item {
+                background: var(--bg-secondary);
+                border: 1px solid var(--glass-border);
+                border-radius: 12px;
+                padding: 0.75rem 1rem;
+                min-width: 70px;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 0.25rem;
+                cursor: pointer;
+                transition: all 0.2s;
+            }
+            .date-item.active {
+                background: rgba(99, 102, 241, 0.15);
+                border-color: var(--accent-purple);
+            }
+            .date-day { font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; font-weight: 600; }
+            .date-item.active .date-day { color: var(--accent-purple); }
+            .date-num { font-size: 1.25rem; font-weight: 800; font-family: 'Space Grotesk'; }
+            .date-month { font-size: 0.7rem; color: var(--text-muted); }
+            
+            .task-play-btn {
+                width: 36px; height: 36px; border-radius: 50%;
+                display: flex; align-items: center; justify-content: center;
+                background: rgba(99, 102, 241, 0.1); color: var(--accent-purple);
+                border: 1px solid rgba(99, 102, 241, 0.2); cursor: pointer; transition: all 0.2s;
+            }
+            .task-play-btn:hover { background: var(--accent-purple); color: white; transform: scale(1.05); }
+        </style>
+        
+        <div class="date-strip-container">
+            <div class="date-strip-card" id="dateStripContainer"></div>
         </div>
 
-        <!-- Hero -->
-        <div class="hero-card animate-in">
-            <div class="hero-content">
-                <div class="day-badge">
-                    <i class="ph ph-calendar"></i>
-                    <span id="dayCounter">Day 1 of 120</span>
+        <div class="stats-overview" style="margin-bottom: 2rem;">
+            <div class="stat-card primary">
+                <div class="stat-label"><i class="ph ph-clock"></i> Today's Focus</div>
+                <div class="stat-value-large" id="totalFocusTime">0<span>h</span> 00<span>m</span></div>
+                <div class="stat-sub" id="focusSub">Ready to track</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label"><i class="ph ph-target"></i> Tasks Completed</div>
+                <div class="stat-value-large" id="tasksCompletedCount">0/5</div>
+                <div class="progress-track" style="margin-top: 0.5rem;">
+                    <div class="progress-fill-sub" id="tasksProgressBar" style="width: 0%; background: var(--accent-green);"></div>
                 </div>
-                <h2 class="hero-title" id="userGreeting">Ready to conquer IAT?</h2>
-                <p class="hero-subtitle" id="phaseInfo">Foundation Phase: Build strong basics</p>
-
-                <div class="stats-bar">
-                    <div class="stat">
-                        <span class="stat-icon">🔥</span>
-                        <div class="stat-info">
-                            <span class="stat-value" id="streakCount">0</span>
-                            <span class="stat-label">Day Streak</span>
-                        </div>
-                    </div>
-                    <div class="stat">
-                        <span class="stat-icon">⚡</span>
-                        <div class="stat-info">
-                            <span class="stat-value" id="totalXP">0</span>
-                            <span class="stat-label">Total XP</span>
-                        </div>
-                    </div>
-                    <div class="stat">
-                        <span class="stat-icon">📚</span>
-                        <div class="stat-info">
-                            <span class="stat-value" id="topicsDone">0</span>
-                            <span class="stat-label">Topics Done</span>
-                        </div>
-                    </div>
-
-                    <div class="current-date-display">
-                        <div class="current-date-day" id="currentDayNum">1</div>
-                        <div class="current-date-full" id="currentDateFull">Jan 2026</div>
-                    </div>
-
-                    <div class="progress-ring">
-                        <svg width="60" height="60" viewBox="0 0 60 60">
-                            <circle class="bg" cx="30" cy="30" r="24"></circle>
-                            <circle class="progress" id="dailyProgressRing" cx="30" cy="30" r="24"></circle>
-                        </svg>
-                        <div class="progress-text" id="dailyPercent">0%</div>
-                    </div>
-                </div>
             </div>
         </div>
 
-        <!-- Subject Filter -->
-        <div class="filter-bar animate-in">
-            <button class="filter-btn active" onclick="filterTasks('all')">
-                <i class="ph ph-squares-four"></i> All
-            </button>
-            <button class="filter-btn" onclick="filterTasks('physics')">
-                <i class="ph ph-atom"></i> Physics
-            </button>
-            <button class="filter-btn" onclick="filterTasks('chemistry')">
-                <i class="ph ph-flask"></i> Chemistry
-            </button>
-            <button class="filter-btn" onclick="filterTasks('mathematics')">
-                <i class="ph ph-function"></i> Math
-            </button>
-            <button class="filter-btn" onclick="filterTasks('biology')">
-                <i class="ph ph-dna"></i> Biology
-            </button>
+        <div class="section-header">
+            <div class="section-title">Smart Daily Plan</div>
+            <div class="xp-display" id="xpDisplay">+0 XP Today</div>
         </div>
 
-        <!-- Pending Tasks From Previous Days -->
-        <div id="pendingTasksContainer" style="display: none;">
-            <div class="pending-tasks-info">
-                <i class="ph ph-warning-circle"></i>
-                <span>You have <strong id="pendingCount">0</strong> rescheduled tasks from previous days</span>
-            </div>
+        <div class="filter-pills">
+            <div class="pill active" onclick="filterTasks('all', this)">All</div>
+            <div class="pill" onclick="filterTasks('physics', this)">Physics</div>
+            <div class="pill" onclick="filterTasks('chemistry', this)">Chemistry</div>
+            <div class="pill" onclick="filterTasks('mathematics', this)">Math</div>
+            <div class="pill" onclick="filterTasks('biology', this)">Biology</div>
         </div>
 
-        <!-- Tasks -->
-        <div class="quest-card animate-in">
-            <div class="quest-header">
-                <h3 class="quest-title">
-                    <i class="ph ph-target"></i>
-                    <span id="tasksTitle">Today's Priority Tasks</span>
-                </h3>
-                <span class="badge" id="xpBadge">+0 XP</span>
-            </div>
-            <div class="task-list" id="taskList">
-                <!-- Tasks injected here -->
-            </div>
-        </div>
-
-        <!-- Subject Progress -->
-        <h3 class="section-title">
-            Subject Mastery
-            <span style="font-size: 0.8rem; color: var(--text-muted); font-weight: 400;">Click for details</span>
-        </h3>
-
-        <div class="progress-grid animate-in" id="subjectGrid">
-            <!-- Subject cards injected here -->
-        </div>
+        <div class="task-list" id="taskList"></div>
     </main>
 
     <!-- Bottom Nav -->
     <nav class="bottom-nav">
         <div class="nav-container">
-            <a class="nav-item active" onclick="switchTab('home')">
-                <i class="ph ph-house"></i>
-                <span>Today</span>
-            </a>
-            <a class="nav-item" onclick="switchTab('calendar')">
-                <i class="ph ph-calendar"></i>
-                <span>Calendar</span>
-            </a>
-            <a class="nav-item" onclick="switchTab('mock')">
-                <i class="ph ph-exam"></i>
-                <span>Mock</span>
-            </a>
-            <a class="nav-item" onclick="switchTab('profile')">
-                <i class="ph ph-user"></i>
-                <span>Profile</span>
-            </a>
+            <a class="nav-item active" onclick="switchTab('home')"><i class="ph ph-house"></i><span>Today</span></a>
+            <a class="nav-item" onclick="switchTab('plan')"><i class="ph ph-calendar"></i><span>Plan</span></a>
+            <a class="nav-item" onclick="switchTab('mock')"><i class="ph ph-exam"></i><span>Mock</span></a>
+            <a class="nav-item" onclick="switchTab('profile')"><i class="ph ph-user"></i><span>Profile</span></a>
         </div>
     </nav>
 
+    <!-- Focus Modal -->
+    <div class="focus-modal" id="focusModal">
+        <button class="close-focus" onclick="closeFocus()"><i class="ph ph-x"></i></button>
+        <div class="focus-title" id="focusGreeting">Focus Session</div>
+        <div class="focus-subtitle" id="focusDetails">Ready to make progress?</div>
+
+        <div id="focusIcon" style="font-size: 4rem; margin-bottom: 1rem;"><i class="ph ph-target"></i></div>
+        <div id="focusTopic" style="font-size: 1.5rem; font-weight: 700; margin-bottom: 2rem; text-align: center;">-</div>
+
+        <div class="focus-timer-display" id="focusTimer">00:00</div>
+
+        <div class="focus-controls">
+            <button class="focus-btn start" id="startBtn" onclick="toggleFocusTimer()">
+                <i class="ph ph-play"></i> Start Session
+            </button>
+            <button class="focus-btn stop" id="stopBtn" onclick="completeFocus()" style="display: none;">
+                <i class="ph ph-check-circle"></i> Complete Early
+            </button>
+        </div>
+    </div>
+
     <!-- Toast -->
     <div class="toast" id="toast">
-        <div class="toast-icon">
-            <i class="ph ph-check"></i>
-        </div>
+        <i class="ph ph-trophy" style="font-size: 1.5rem; color: var(--accent-orange);"></i>
         <div>
-            <div style="font-weight: 700;" id="toastTitle">Completed!</div>
-            <div style="font-size: 0.85rem; color: var(--text-muted);" id="toastMsg">+100 XP</div>
+            <div style="font-weight: 700;">Session Complete!</div>
+            <div style="font-size: 0.85rem; color: var(--text-muted);" id="toastMsg">Time tracked and saved</div>
         </div>
     </div>
 
     <script>
-        // ==========================================
-        // COMPLETE IISER IAT 2026 SYLLABUS
-        // ==========================================
-        const SYLLABUS = {
-            physics: {
-                name: 'Physics',
-                color: '#ef4444',
-                icon: 'atom',
-                topics: [
-                    { name: 'Physical World & Measurement', priority: 'medium', class: 11, completed: false },
-                    { name: 'Kinematics (Motion in 1D/2D, Projectile)', priority: 'high', class: 11, completed: false },
-                    { name: 'Laws of Motion (Newton\'s laws, Friction)', priority: 'high', class: 11, completed: false },
-                    { name: 'Work, Energy & Power', priority: 'high', class: 11, completed: false },
-                    { name: 'System of Particles (COM, Rotation)', priority: 'high', class: 11, completed: false },
-                    { name: 'Gravitation (Kepler\'s laws, Escape velocity)', priority: 'high', class: 11, completed: false },
-                    { name: 'Properties of Bulk Matter', priority: 'medium', class: 11, completed: false },
-                    { name: 'Thermodynamics (Laws, Processes, Engines)', priority: 'critical', class: 11, completed: false },
-                    { name: 'Kinetic Theory of Gases', priority: 'medium', class: 11, completed: false },
-                    { name: 'Oscillations (SHM, Energy)', priority: 'medium', class: 11, completed: false },
-                    { name: 'Waves (Standing waves, Doppler effect)', priority: 'high', class: 11, completed: false },
-                    { name: 'Electrostatics (Coulomb\'s, Gauss\'s law)', priority: 'critical', class: 12, completed: false },
-                    { name: 'Current Electricity (Kirchhoff\'s, Bridges)', priority: 'critical', class: 12, completed: false },
-                    { name: 'Magnetism (Biot-Savart, Ampere\'s law)', priority: 'high', class: 12, completed: false },
-                    { name: 'EMI & AC (Faraday\'s, LCR circuits)', priority: 'high', class: 12, completed: false },
-                    { name: 'EM Waves', priority: 'medium', class: 12, completed: false },
-                    { name: 'Optics (Ray & Wave optics)', priority: 'critical', class: 12, completed: false },
-                    { name: 'Modern Physics (Photoelectric, Bohr, Nuclei)', priority: 'critical', class: 12, completed: false },
-                    { name: 'Semiconductors', priority: 'medium', class: 12, completed: false },
-                    { name: 'Communication Systems', priority: 'low', class: 12, completed: false }
-                ]
-            },
-            chemistry: {
-                name: 'Chemistry',
-                color: '#06b6d4',
-                icon: 'flask',
-                topics: [
-                    { name: 'Structure of Atom (Quantum numbers)', priority: 'high', class: 11, completed: false },
-                    { name: 'Periodic Table & Trends', priority: 'high', class: 11, completed: false },
-                    { name: 'Chemical Bonding (VSEPR, MOT, Hybridization)', priority: 'critical', class: 11, completed: false },
-                    { name: 'States of Matter', priority: 'medium', class: 11, completed: false },
-                    { name: 'Thermodynamics (Enthalpy, Gibbs free energy)', priority: 'critical', class: 11, completed: false },
-                    { name: 'Equilibrium (Kp/Kc, pH, Buffer)', priority: 'critical', class: 11, completed: false },
-                    { name: 'Redox Reactions', priority: 'medium', class: 11, completed: false },
-                    { name: 'Hydrogen', priority: 'low', class: 11, completed: false },
-                    { name: 's-Block Elements', priority: 'medium', class: 11, completed: false },
-                    { name: 'p-Block Elements (Groups 13-18)', priority: 'high', class: 11, completed: false },
-                    { name: 'Organic Chemistry Basics', priority: 'high', class: 11, completed: false },
-                    { name: 'Hydrocarbons', priority: 'medium', class: 11, completed: false },
-                    { name: 'Solid State', priority: 'medium', class: 12, completed: false },
-                    { name: 'Solutions (Raoult\'s law, Colligative)', priority: 'high', class: 12, completed: false },
-                    { name: 'Electrochemistry (Nernst, Kohlrausch)', priority: 'critical', class: 12, completed: false },
-                    { name: 'Chemical Kinetics (Arrhenius, Catalysis)', priority: 'critical', class: 12, completed: false },
-                    { name: 'Surface Chemistry', priority: 'medium', class: 12, completed: false },
-                    { name: 'General Principles of Metallurgy', priority: 'low', class: 12, completed: false },
-                    { name: 'd and f Block Elements', priority: 'medium', class: 12, completed: false },
-                    { name: 'Coordination Compounds (VBT, CFT)', priority: 'high', class: 12, completed: false },
-                    { name: 'Haloalkanes and Haloarenes', priority: 'high', class: 12, completed: false },
-                    { name: 'Alcohols, Phenols and Ethers', priority: 'high', class: 12, completed: false },
-                    { name: 'Aldehydes, Ketones, Carboxylic Acids', priority: 'critical', class: 12, completed: false },
-                    { name: 'Amines', priority: 'medium', class: 12, completed: false },
-                    { name: 'Biomolecules (Carbs, Proteins, DNA)', priority: 'high', class: 12, completed: false },
-                    { name: 'Polymers', priority: 'low', class: 12, completed: false },
-                    { name: 'Chemistry in Everyday Life', priority: 'low', class: 12, completed: false }
-                ]
-            },
-            mathematics: {
-                name: 'Mathematics',
-                color: '#f59e0b',
-                icon: 'function',
-                topics: [
-                    { name: 'Sets', priority: 'low', class: 11, completed: false },
-                    { name: 'Relations and Functions', priority: 'high', class: 11, completed: false },
-                    { name: 'Trigonometric Functions & Identities', priority: 'critical', class: 11, completed: false },
-                    { name: 'Complex Numbers (Argand plane)', priority: 'high', class: 11, completed: false },
-                    { name: 'Linear Inequalities', priority: 'low', class: 11, completed: false },
-                    { name: 'Permutations and Combinations', priority: 'high', class: 11, completed: false },
-                    { name: 'Binomial Theorem', priority: 'high', class: 11, completed: false },
-                    { name: 'Sequences and Series', priority: 'high', class: 11, completed: false },
-                    { name: 'Straight Lines', priority: 'critical', class: 11, completed: false },
-                    { name: 'Conic Sections', priority: 'critical', class: 11, completed: false },
-                    { name: 'Introduction to 3D Geometry', priority: 'medium', class: 11, completed: false },
-                    { name: 'Limits and Derivatives', priority: 'critical', class: 11, completed: false },
-                    { name: 'Statistics', priority: 'medium', class: 11, completed: false },
-                    { name: 'Probability', priority: 'medium', class: 11, completed: false },
-                    { name: 'Matrices', priority: 'critical', class: 12, completed: false },
-                    { name: 'Determinants', priority: 'critical', class: 12, completed: false },
-                    { name: 'Continuity and Differentiability', priority: 'high', class: 12, completed: false },
-                    { name: 'Application of Derivatives', priority: 'critical', class: 12, completed: false },
-                    { name: 'Integrals', priority: 'critical', class: 12, completed: false },
-                    { name: 'Application of Integrals', priority: 'high', class: 12, completed: false },
-                    { name: 'Differential Equations', priority: 'high', class: 12, completed: false },
-                    { name: 'Vector Algebra', priority: 'critical', class: 12, completed: false },
-                    { name: '3D Geometry (Lines & Planes)', priority: 'high', class: 12, completed: false },
-                    { name: 'Linear Programming', priority: 'medium', class: 12, completed: false },
-                    { name: 'Probability (Advanced)', priority: 'high', class: 12, completed: false }
-                ]
-            },
-            biology: {
-                name: 'Biology',
-                color: '#22c55e',
-                icon: 'dna',
-                topics: [
-                    { name: 'The Living World', priority: 'low', class: 11, completed: false },
-                    { name: 'Biological Classification', priority: 'medium', class: 11, completed: false },
-                    { name: 'Plant Kingdom', priority: 'medium', class: 11, completed: false },
-                    { name: 'Animal Kingdom', priority: 'medium', class: 11, completed: false },
-                    { name: 'Morphology of Flowering Plants', priority: 'medium', class: 11, completed: false },
-                    { name: 'Anatomy of Flowering Plants', priority: 'medium', class: 11, completed: false },
-                    { name: 'Structural Organisation in Animals', priority: 'medium', class: 11, completed: false },
-                    { name: 'Cell: The Unit of Life', priority: 'critical', class: 11, completed: false },
-                    { name: 'Cell Cycle and Cell Division', priority: 'critical', class: 11, completed: false },
-                    { name: 'Transport in Plants', priority: 'high', class: 11, completed: false },
-                    { name: 'Mineral Nutrition', priority: 'high', class: 11, completed: false },
-                    { name: 'Photosynthesis in Higher Plants', priority: 'critical', class: 11, completed: false },
-                    { name: 'Respiration in Plants', priority: 'critical', class: 11, completed: false },
-                    { name: 'Plant Growth and Development', priority: 'high', class: 11, completed: false },
-                    { name: 'Digestion and Absorption', priority: 'critical', class: 11, completed: false },
-                    { name: 'Breathing and Exchange of Gases', priority: 'critical', class: 11, completed: false },
-                    { name: 'Body Fluids and Circulation', priority: 'critical', class: 11, completed: false },
-                    { name: 'Excretory Products and their Elimination', priority: 'critical', class: 11, completed: false },
-                    { name: 'Locomotion and Movement', priority: 'high', class: 11, completed: false },
-                    { name: 'Neural Control and Coordination', priority: 'critical', class: 11, completed: false },
-                    { name: 'Chemical Coordination and Integration', priority: 'critical', class: 11, completed: false },
-                    { name: 'Reproduction in Organisms', priority: 'high', class: 12, completed: false },
-                    { name: 'Sexual Reproduction in Flowering Plants', priority: 'high', class: 12, completed: false },
-                    { name: 'Human Reproduction', priority: 'critical', class: 12, completed: false },
-                    { name: 'Reproductive Health', priority: 'medium', class: 12, completed: false },
-                    { name: 'Principles of Inheritance and Variation', priority: 'critical', class: 12, completed: false },
-                    { name: 'Molecular Basis of Inheritance', priority: 'critical', class: 12, completed: false },
-                    { name: 'Evolution', priority: 'high', class: 12, completed: false },
-                    { name: 'Human Health and Disease', priority: 'medium', class: 12, completed: false },
-                    { name: 'Strategies for Enhancement in Food Production', priority: 'low', class: 12, completed: false },
-                    { name: 'Microbes in Human Welfare', priority: 'medium', class: 12, completed: false },
-                    { name: 'Biotechnology: Principles and Processes', priority: 'high', class: 12, completed: false },
-                    { name: 'Biotechnology and its Applications', priority: 'high', class: 12, completed: false },
-                    { name: 'Organisms and Populations', priority: 'high', class: 12, completed: false },
-                    { name: 'Ecosystem', priority: 'critical', class: 12, completed: false },
-                    { name: 'Biodiversity and Conservation', priority: 'high', class: 12, completed: false },
-                    { name: 'Environmental Issues', priority: 'medium', class: 12, completed: false }
-                ]
-            }
-        };
+const SYLLABUS = {
+    physics: {
+        name: 'Physics', color: '#ef4444', icon: 'atom', topics: [
+            { name: 'Kinematics - 1D Motion', priority: 'high', class: 11, time: 45, completed: false },
+            { name: 'Newton\'s Laws of Motion', priority: 'high', class: 11, time: 45, completed: false },
+            { name: 'Work, Energy & Power', priority: 'high', class: 11, time: 45, completed: false },
+            { name: 'Rotational Dynamics', priority: 'high', class: 11, time: 60, completed: false },
+            { name: 'Gravitation', priority: 'medium', class: 11, time: 45, completed: false },
+            { name: 'Thermodynamics', priority: 'critical', class: 11, time: 60, completed: false },
+            { name: 'Kinetic Theory of Gases', priority: 'medium', class: 11, time: 45, completed: false },
+            { name: 'Simple Harmonic Motion', priority: 'medium', class: 11, time: 45, completed: false },
+            { name: 'Wave Motion', priority: 'high', class: 11, time: 45, completed: false },
+            { name: 'Electrostatics - Coulomb\'s Law', priority: 'critical', class: 12, time: 60, completed: false },
+            { name: 'Current Electricity', priority: 'critical', class: 12, time: 60, completed: false },
+            { name: 'Moving Charges & Magnetism', priority: 'high', class: 12, time: 60, completed: false },
+            { name: 'EMI & Alternating Current', priority: 'high', class: 12, time: 45, completed: false },
+            { name: 'Ray Optics & Wave Optics', priority: 'critical', class: 12, time: 60, completed: false },
+            { name: 'Modern Physics', priority: 'critical', class: 12, time: 60, completed: false }
+        ]
+    },
+    chemistry: {
+        name: 'Chemistry', color: '#06b6d4', icon: 'flask', topics: [
+            { name: 'Atomic Structure', priority: 'high', class: 11, time: 45, completed: false },
+            { name: 'Periodic Properties', priority: 'high', class: 11, time: 45, completed: false },
+            { name: 'Chemical Bonding', priority: 'critical', class: 11, time: 60, completed: false },
+            { name: 'Thermodynamics', priority: 'critical', class: 11, time: 60, completed: false },
+            { name: 'Chemical Equilibrium', priority: 'critical', class: 11, time: 60, completed: false },
+            { name: 'Ionic Equilibrium', priority: 'high', class: 11, time: 60, completed: false },
+            { name: 'Redox Reactions', priority: 'medium', class: 11, time: 45, completed: false },
+            { name: 's-Block Elements', priority: 'medium', class: 11, time: 45, completed: false },
+            { name: 'p-Block Elements', priority: 'high', class: 11, time: 45, completed: false },
+            { name: 'Organic Basics & Nomenclature', priority: 'high', class: 11, time: 60, completed: false },
+            { name: 'Hydrocarbons', priority: 'medium', class: 11, time: 60, completed: false },
+            { name: 'Solid State', priority: 'medium', class: 12, time: 45, completed: false },
+            { name: 'Solutions & Colligative Properties', priority: 'high', class: 12, time: 45, completed: false },
+            { name: 'Electrochemistry', priority: 'critical', class: 12, time: 60, completed: false },
+            { name: 'Chemical Kinetics', priority: 'critical', class: 12, time: 60, completed: false },
+            { name: 'Coordination Compounds', priority: 'high', class: 12, time: 45, completed: false },
+            { name: 'Aldehydes, Ketones & Acids', priority: 'critical', class: 12, time: 60, completed: false }
+        ]
+    },
+    mathematics: {
+        name: 'Math', color: '#f59e0b', icon: 'function', topics: [
+            { name: 'Trigonometric Functions', priority: 'critical', class: 11, time: 60, completed: false },
+            { name: 'Complex Numbers', priority: 'high', class: 11, time: 60, completed: false },
+            { name: 'Quadratic Equations', priority: 'high', class: 11, time: 45, completed: false },
+            { name: 'Permutations & Combinations', priority: 'high', class: 11, time: 60, completed: false },
+            { name: 'Binomial Theorem', priority: 'high', class: 11, time: 60, completed: false },
+            { name: 'Sequences & Series', priority: 'high', class: 11, time: 45, completed: false },
+            { name: 'Straight Lines', priority: 'critical', class: 11, time: 60, completed: false },
+            { name: 'Circles & Conic Sections', priority: 'critical', class: 11, time: 60, completed: false },
+            { name: 'Limits & Continuity', priority: 'critical', class: 11, time: 45, completed: false },
+            { name: 'Differentiation', priority: 'critical', class: 11, time: 45, completed: false },
+            { name: 'Application of Derivatives', priority: 'critical', class: 12, time: 60, completed: false },
+            { name: 'Indefinite Integration', priority: 'critical', class: 12, time: 60, completed: false },
+            { name: 'Definite Integration', priority: 'critical', class: 12, time: 60, completed: false },
+            { name: 'Differential Equations', priority: 'high', class: 12, time: 60, completed: false },
+            { name: 'Vectors & 3D Geometry', priority: 'critical', class: 12, time: 60, completed: false },
+            { name: 'Probability', priority: 'high', class: 12, time: 60, completed: false }
+        ]
+    },
+    biology: {
+        name: 'Biology', color: '#22c55e', icon: 'dna', topics: [
+            { name: 'Cell - The Unit of Life', priority: 'critical', class: 11, time: 45, completed: false },
+            { name: 'Cell Cycle & Division', priority: 'critical', class: 11, time: 45, completed: false },
+            { name: 'Transport in Plants', priority: 'high', class: 11, time: 45, completed: false },
+            { name: 'Mineral Nutrition', priority: 'high', class: 11, time: 45, completed: false },
+            { name: 'Photosynthesis', priority: 'critical', class: 11, time: 60, completed: false },
+            { name: 'Respiration in Plants', priority: 'critical', class: 11, time: 60, completed: false },
+            { name: 'Plant Growth & Development', priority: 'high', class: 11, time: 45, completed: false },
+            { name: 'Digestion & Absorption', priority: 'critical', class: 11, time: 45, completed: false },
+            { name: 'Breathing & Gas Exchange', priority: 'critical', class: 11, time: 45, completed: false },
+            { name: 'Body Fluids & Circulation', priority: 'critical', class: 11, time: 45, completed: false },
+            { name: 'Excretory System', priority: 'high', class: 11, time: 45, completed: false },
+            { name: 'Neural Control & Coordination', priority: 'critical', class: 11, time: 45, completed: false },
+            { name: 'Chemical Coordination', priority: 'critical', class: 11, time: 45, completed: false },
+            { name: 'Reproduction in Organisms', priority: 'high', class: 12, time: 45, completed: false },
+            { name: 'Genetics & Evolution', priority: 'critical', class: 12, time: 60, completed: false },
+            { name: 'Ecosystem & Environment', priority: 'high', class: 12, time: 45, completed: false }
+        ]
+    }
+};
 
-        // ==========================================
-        // SMART SCHEDULER SYSTEM
-        // ==========================================
-        let appState = {
-            user: { name: 'Aspirant', startDate: null },
-            stats: { streak: 0, totalXP: 0, longestStreak: 0, lastActive: null },
-            dailyTasks: {}, // Map of date string to tasks
-            skippedTasks: [], // Tasks that were skipped and need rescheduling
-            currentDate: new Date().toDateString()
-        };
+// GLOBAL APP STATE
+let appState = {
+    user: { name: 'Aspirant', startDate: null },
+    stats: {
+        streak: 0,
+        longestStreak: 0,
+        totalXP: 0,
+        totalFocusMinutes: 0,
+        sessionsCompleted: 0,
+        lastActiveDate: null
+    },
+    taskQueue: {
+        today: [],
+        rescheduled: []
+    },
+    dailyTasks: {} // for legacy compatibility
+};
 
-        let currentViewDate = new Date();
+let currentFilter = 'all';
+let currentTaskId = null;
+let focusTimerInterval = null;
+let focusTimeRemaining = 0;
+let focusTotalTime = 0;
 
-        // ==========================================
-        // INITIALIZATION
-        // ==========================================
-        function init() {
-            const saved = localStorage.getItem('IAT2026_DATA');
+// Initialization
+function init() {
+    const saved = localStorage.getItem('IAT2026_SMART');
+    if (saved) {
+        appState = JSON.parse(saved);
 
-            if (!saved) {
-                document.getElementById('setupModal').classList.add('active');
-            } else {
-                const data = JSON.parse(saved);
-                appState = { ...appState, ...data };
+        // Backwards compatibility migration
+        if (!appState.taskQueue) appState.taskQueue = { today: [], rescheduled: [] };
 
-                // Load syllabus completion status
-                loadSyllabusProgress();
+        updateStreak();
+        generateSmartDailyTasks();
+        renderAll();
+    } else {
+        welcomeSetup();
+    }
+}
 
-                // Check for missed days and handle skipped tasks
-                handleMissedDays();
+function welcomeSetup() {
+    document.body.innerHTML += `
+                <div class="focus-modal active" id="welcomeModal" style="z-index: 3000; display:flex; flex-direction:column; align-items:center; justify-content:center;">
+                    <div style="text-align: center; max-width: 400px; background: var(--bg-card); padding: 2rem; border-radius: 1rem; border: 1px solid var(--glass-border);">
+                        <div style="font-size: 3rem; margin-bottom: 1rem;">🎯</div>
+                        <h2 style="font-size: 1.5rem; margin-bottom: 0.5rem;">Welcome to Smart Scheduler</h2>
+                        <p style="color: var(--text-muted); margin-bottom: 2rem;">Auto-generates your ideal path to IAT 2026.</p>
+                        <input type="text" id="setupName" placeholder="Your Name" style="width: 100%; padding: 1rem; background: var(--bg-secondary); border: 1px solid var(--glass-border); border-radius: 12px; color: white; margin-bottom: 1rem; font-size: 1rem;">
+                        <button onclick="completeSetup()" style="width: 100%; padding: 1rem; background: var(--accent-purple); color: white; border: none; border-radius: 12px; font-weight: 700; cursor: pointer;">Begin</button>
+                    </div>
+                </div>
+            `;
+}
 
-                loadApp();
-            }
-        }
+function completeSetup() {
+    appState.user.name = document.getElementById('setupName').value || 'Aspirant';
+    appState.user.startDate = new Date().toISOString();
+    appState.stats.lastActiveDate = new Date().toDateString();
 
-        function initializeApp() {
-            const name = document.getElementById('userName').value.trim() || 'Aspirant';
-            const today = new Date();
+    saveData();
+    document.getElementById('welcomeModal').remove();
+    generateSmartDailyTasks();
+    renderAll();
+}
 
-            appState.user.name = name;
-            appState.user.startDate = today.toISOString();
-            appState.stats.lastActive = today.toDateString();
-            appState.currentDate = today.toDateString();
+function saveData() {
+    localStorage.setItem('IAT2026_SMART', JSON.stringify(appState));
+}
 
-            // Generate first day tasks
-            generateTasksForDate(today);
+function resetData() {
+    if (confirm('Delete all data and restart?')) {
+        localStorage.removeItem('IAT2026_SMART');
+        location.reload();
+    }
+}
 
-            saveData();
-            document.getElementById('setupModal').classList.remove('active');
-            loadApp();
-        }
+// Smart Logic
+function calculateSmartTime(topic) {
+    let baseTime = topic.time || 45;
+    const priorityMultiplier = { 'critical': 1.5, 'high': 1.2, 'medium': 1.0, 'low': 0.8 };
+    const classMultiplier = topic.class === 12 ? 1.1 : 1.0;
+    const finalTime = Math.round(baseTime * (priorityMultiplier[topic.priority] || 1.0) * classMultiplier);
+    return Math.ceil(finalTime / 5) * 5; // round to nearest 5
+}
 
-        function loadApp() {
-            renderDateStrip();
-            updateUI();
-            renderTasks();
-            renderSubjectProgress();
-        }
+function generateSmartDailyTasks() {
+    const today = new Date().toDateString();
 
-        // ==========================================
-        // SMART TASK SCHEDULING
-        // ==========================================
-        function generateTasksForDate(date) {
-            const dateStr = date.toDateString();
-            const dayOfWeek = date.getDay();
+    if (appState.taskQueue.today.length > 0 && appState.taskQueue.today[0].date === today) {
+        return; // Already generated for today
+    }
 
-            // Check if tasks already exist for this date
-            if (appState.dailyTasks[dateStr] && appState.dailyTasks[dateStr].length > 0) {
-                return;
-            }
+    const tasks = [];
+    const subjects = Object.keys(SYLLABUS);
 
-            const tasks = [];
+    // Re-add any incomplete tasks from yesterday
+    const rescheduled = appState.taskQueue.rescheduled.filter(t => t.scheduledFor === today);
+    rescheduled.forEach(task => {
+        tasks.push({ ...task, isRescheduled: true, date: today });
+    });
+    appState.taskQueue.rescheduled = appState.taskQueue.rescheduled.filter(t => t.scheduledFor !== today);
 
-            // First, add any rescheduled (skipped) tasks from previous days
-            const rescheduled = appState.skippedTasks.filter(t => t.rescheduledFor === dateStr);
-            rescheduled.forEach(task => {
-                tasks.push({
-                    ...task,
-                    id: Date.now() + Math.random(),
-                    isRescheduled: true,
-                    originalDate: task.originalDate
-                });
-            });
+    // Add new tasks
+    const subjectStats = subjects.map(s => {
+        const completed = SYLLABUS[s].topics.filter(t => t.completed).length;
+        const total = SYLLABUS[s].topics.length;
+        return { subject: s, ratio: total > 0 ? completed / total : 0 };
+    }).sort((a, b) => a.ratio - b.ratio); // focus on lowest completion first
 
-            // Remove these from skipped tasks
-            appState.skippedTasks = appState.skippedTasks.filter(t => t.rescheduledFor !== dateStr);
+    const neededTasks = 5 - tasks.length;
+    for (let i = 0; i < neededTasks && i < 4; i++) {
+        const subjKey = subjectStats[i % 4].subject;
+        const subject = SYLLABUS[subjKey];
 
-            // Calculate how many new tasks we need (aim for 5 total)
-            const remainingSlots = 5 - tasks.length;
+        const incomplete = subject.topics.filter(t => !t.completed);
+        if (incomplete.length > 0) {
+            const priorityOrder = { critical: 0, high: 1, medium: 2, low: 3 };
+            incomplete.sort((a, b) => priorityOrder[a.priority] - priorityOrder[b.priority]);
 
-            if (remainingSlots > 0) {
-                // Get subject progress for smart selection
-                const subjectStats = getSubjectStats();
+            const topic = incomplete[0];
+            const smartTime = calculateSmartTime(topic);
 
-                // Sort by lowest completion percentage
-                subjectStats.sort((a, b) => a.percent - b.percent);
-
-                // Generate new tasks prioritizing weak subjects
-                let tasksAdded = 0;
-
-                for (let subjectData of subjectStats) {
-                    if (tasksAdded >= remainingSlots) break;
-
-                    const subject = subjectData.subject;
-                    const incompleteTopics = getIncompleteTopics(subject);
-
-                    // Sort by priority
-                    const priorityOrder = { critical: 0, high: 1, medium: 2, low: 3 };
-                    incompleteTopics.sort((a, b) => priorityOrder[a.priority] - priorityOrder[b.priority]);
-
-                    // Add tasks from this subject
-                    for (let topic of incompleteTopics) {
-                        if (tasksAdded >= remainingSlots) break;
-
-                        // Check if this topic is already scheduled
-                        const alreadyScheduled = Object.values(appState.dailyTasks).flat().some(t =>
-                            t.topicName === topic.name && !t.completed && !t.skipped
-                        );
-
-                        if (!alreadyScheduled) {
-                            tasks.push({
-                                id: Date.now() + Math.random(),
-                                subject: subject,
-                                topicName: topic.name,
-                                priority: topic.priority,
-                                class: topic.class,
-                                type: 'learn',
-                                xp: getXPReward(topic.priority),
-                                completed: false,
-                                skipped: false,
-                                duration: '45 min',
-                                createdAt: dateStr
-                            });
-                            tasksAdded++;
-                        }
-                    }
-                }
-
-                // Fill remaining with practice/mock tasks if needed
-                while (tasksAdded < remainingSlots) {
-                    const weakestSubject = subjectStats[0];
-                    tasks.push({
-                        id: Date.now() + Math.random(),
-                        subject: weakestSubject.subject,
-                        topicName: `Practice Problems & Revision`,
-                        priority: 'high',
-                        class: 11,
-                        type: 'practice',
-                        xp: 100,
-                        completed: false,
-                        skipped: false,
-                        duration: '60 min',
-                        createdAt: dateStr
-                    });
-                    tasksAdded++;
-                }
-            }
-
-            appState.dailyTasks[dateStr] = tasks;
-            saveData();
-        }
-
-        function getSubjectStats() {
-            return Object.keys(SYLLABUS).map(subject => {
-                const topics = SYLLABUS[subject].topics;
-                const completed = topics.filter(t => t.completed).length;
-                return {
-                    subject,
-                    completed,
-                    total: topics.length,
-                    percent: completed / topics.length
-                };
+            tasks.push({
+                id: Date.now() + i,
+                subject: subjKey,
+                topicName: topic.name,
+                priority: topic.priority,
+                class: topic.class || 11,
+                allocatedTime: smartTime,
+                completed: false,
+                skipped: false,
+                date: today,
+                xp: smartTime * (topic.priority === 'critical' ? 2 : topic.priority === 'high' ? 1.5 : 1)
             });
         }
+    }
 
-        function getIncompleteTopics(subject) {
-            return SYLLABUS[subject].topics.filter(t => !t.completed);
+    appState.taskQueue.today = tasks;
+    appState.dailyTasks[today] = tasks; // sync legacy
+    saveData();
+}
+
+// Streak
+function updateStreak() {
+    const today = new Date().toDateString();
+    const lastActive = appState.stats.lastActiveDate;
+
+    if (!lastActive) {
+        appState.stats.streak = 0;
+    } else {
+        const lastDate = new Date(lastActive);
+        const todayDate = new Date(today);
+        const diffDays = Math.floor((todayDate - lastDate) / (1000 * 60 * 60 * 24));
+
+        if (diffDays > 1) {
+            appState.stats.streak = 0;
         }
+    }
+}
 
-        function handleMissedDays() {
-            const today = new Date();
-            const lastActive = new Date(appState.stats.lastActive || appState.user.startDate);
-
-            // Check if we missed any days
-            const diffDays = Math.floor((today - lastActive) / (86400000));
-
-            if (diffDays > 1) {
-                // Process each missed day
-                for (let i = 1; i < diffDays; i++) {
-                    const missedDate = new Date(lastActive);
-                    missedDate.setDate(lastActive.getDate() + i);
-                    const missedDateStr = missedDate.toDateString();
-
-                    // Generate tasks for missed day if not exists
-                    if (!appState.dailyTasks[missedDateStr]) {
-                        generateTasksForDate(missedDate);
-                    }
-
-                    // Auto-skip incomplete tasks from missed days
-                    const missedTasks = appState.dailyTasks[missedDateStr] || [];
-                    missedTasks.forEach(task => {
-                        if (!task.completed && !task.skipped) {
-                            skipTask(task, missedDateStr, true); // Auto-skip
-                        }
-                    });
-                }
-
-                // Reset streak if missed more than 1 day
-                appState.stats.streak = 0;
-            }
-
-            // Generate tasks for today if not exists
-            generateTasksForDate(today);
+function incrementStreak() {
+    const today = new Date().toDateString();
+    if (appState.stats.lastActiveDate !== today) {
+        appState.stats.streak++;
+        appState.stats.lastActiveDate = today;
+        if (appState.stats.streak > appState.stats.longestStreak) {
+            appState.stats.longestStreak = appState.stats.streak;
         }
+    }
+}
 
-        function skipTask(task, dateStr, isAutoSkip = false) {
-            task.skipped = true;
-            task.skippedAt = new Date().toISOString();
+// Render functions
+function renderAll() {
+    renderHeader();
+    renderStats();
+    renderDateStrip();
+    renderTasks();
+}
 
-            // Reschedule for tomorrow
-            const tomorrow = new Date(dateStr);
-            tomorrow.setDate(tomorrow.getDate() + 1);
-            const tomorrowStr = tomorrow.toDateString();
+function renderHeader() {
+    document.getElementById('headerStreak').textContent = appState.stats.streak;
+    document.getElementById('headerXP').textContent = appState.stats.totalXP + " XP";
+}
 
-            // Add to skipped tasks queue
-            appState.skippedTasks.push({
-                ...task,
-                rescheduledFor: tomorrowStr,
-                originalDate: dateStr,
-                skipCount: (task.skipCount || 0) + 1
-            });
+function renderStats() {
+    const h = Math.floor(appState.stats.totalFocusMinutes / 60);
+    const m = appState.stats.totalFocusMinutes % 60;
+    document.getElementById('totalFocusTime').innerHTML = `${h}<span>h</span> ${m.toString().padStart(2, '0')}<span>m</span>`;
 
-            // If skipped multiple times, increase priority
-            if (task.skipCount >= 2) {
-                const priorityBoost = { low: 'medium', medium: 'high', high: 'critical' };
-                task.priority = priorityBoost[task.priority] || task.priority;
-            }
+    const todayTasks = appState.taskQueue.today;
+    const compTasks = todayTasks.filter(t => t.completed).length;
+    document.getElementById('tasksCompletedCount').textContent = `${compTasks}/${todayTasks.length}`;
+    const pct = todayTasks.length > 0 ? (compTasks / todayTasks.length) * 100 : 0;
+    document.getElementById('tasksProgressBar').style.width = `${pct}%`;
+}
 
-            if (!isAutoSkip) {
-                saveData();
-                updateUI();
-                renderTasks();
-                showToast('Task Skipped', 'Rescheduled for tomorrow', 'warning');
-            }
-        }
+function renderDateStrip() {
+    const container = document.getElementById('dateStripContainer');
+    if (!container) return;
+    container.innerHTML = '';
 
-        // ==========================================
-        // UI FUNCTIONS
-        // ==========================================
-        function renderDateStrip() {
-            const strip = document.getElementById('dateStrip');
-            strip.innerHTML = '';
+    const today = new Date();
+    for (let i = -3; i <= 3; i++) {
+        const d = new Date(today);
+        d.setDate(today.getDate() + i);
+        const isToday = i === 0;
 
-            const today = new Date();
-            const startDate = new Date(appState.user.startDate || today);
-
-            // Show last 3 days, today, and next 3 days
-            for (let i = -3; i <= 3; i++) {
-                const d = new Date(today);
-                d.setDate(today.getDate() + i);
-                const dateStr = d.toDateString();
-
-                const isToday = i === 0;
-                const isActive = dateStr === currentViewDate.toDateString();
-
-                // Check if this date has tasks
-                const tasks = appState.dailyTasks[dateStr] || [];
-                const hasTasks = tasks.length > 0;
-                const allCompleted = hasTasks && tasks.every(t => t.completed);
-                const hasSkipped = tasks.some(t => t.skipped);
-
-                const dateItem = document.createElement('div');
-                dateItem.className = `date-item ${isActive ? 'active' : ''} ${hasTasks ? 'has-tasks' : ''} ${allCompleted ? 'all-completed' : ''}`;
-                dateItem.onclick = () => selectDate(d);
-
-                dateItem.innerHTML = `
+        const el = document.createElement('div');
+        el.className = `date-item ${isToday ? 'active' : ''}`;
+        el.innerHTML = `
                     <span class="date-day">${d.toLocaleDateString('en-US', { weekday: 'short' })}</span>
                     <span class="date-num">${d.getDate()}</span>
                     <span class="date-month">${d.toLocaleDateString('en-US', { month: 'short' })}</span>
                 `;
+        container.appendChild(el);
+    }
+}
 
-                strip.appendChild(dateItem);
-            }
-        }
+function filterTasks(filter, el) {
+    currentFilter = filter;
+    document.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
+    el.classList.add('active');
+    renderTasks();
+}
 
-        function selectDate(date) {
-            currentViewDate = date;
-            renderDateStrip();
-            updateUI();
-            renderTasks();
-        }
+function renderTasks() {
+    const container = document.getElementById('taskList');
+    container.innerHTML = '';
 
-        function updateUI() {
-            const dateStr = currentViewDate.toDateString();
-            const isToday = dateStr === new Date().toDateString();
-            const tasks = appState.dailyTasks[dateStr] || [];
+    let tasks = appState.taskQueue.today || [];
+    if (currentFilter !== 'all') {
+        tasks = tasks.filter(t => t.subject === currentFilter);
+    }
 
-            // Update date display
-            const dayNum = calculateDayNumber(currentViewDate);
-            document.getElementById('dayCounter').textContent = `Day ${dayNum} of 120`;
-            document.getElementById('currentDayNum').textContent = dayNum;
-            document.getElementById('currentDateFull').textContent = currentViewDate.toLocaleDateString('en-US', {
-                month: 'short',
-                year: 'numeric'
-            });
+    let todayXP = 0;
 
-            // Greeting
-            const hour = currentViewDate.getHours();
-            let greeting = 'Ready to conquer IAT';
-            if (isToday) {
-                if (hour < 12) greeting = 'Good morning';
-                else if (hour < 17) greeting = 'Good afternoon';
-                else greeting = 'Good evening';
-            }
-            document.getElementById('userGreeting').textContent = `${greeting}, ${appState.user.name}?`;
+    tasks.forEach(task => {
+        const isCompleted = task.completed;
+        if (isCompleted) todayXP += Math.floor(task.xp);
 
-            // Phase info
-            const phase = getPhaseInfo(dayNum);
-            document.getElementById('phaseInfo').textContent = `${phase.name}: ${phase.focus}`;
+        let el = document.createElement('div');
+        el.className = `task-item ${isCompleted ? 'completed' : ''}`;
 
-            // Stats
-            document.getElementById('streakCount').textContent = appState.stats.streak;
-            document.getElementById('totalXP').textContent = appState.stats.totalXP;
+        const subj = SYLLABUS[task.subject];
 
-            const totalTopicsDone = Object.values(SYLLABUS).reduce((sum, sub) =>
-                sum + sub.topics.filter(t => t.completed).length, 0
-            );
-            document.getElementById('topicsDone').textContent = totalTopicsDone;
-
-            // Progress ring
-            const completed = tasks.filter(t => t.completed).length;
-            const total = tasks.length;
-            const percent = total > 0 ? Math.round((completed / total) * 100) : 0;
-
-            document.getElementById('dailyPercent').textContent = `${percent}%`;
-            const ring = document.getElementById('dailyProgressRing');
-            const circumference = 2 * Math.PI * 24;
-            ring.style.strokeDashoffset = circumference - (percent / 100) * circumference;
-
-            // XP Badge
-            const todayXP = tasks.filter(t => t.completed).reduce((sum, t) => sum + t.xp, 0);
-            document.getElementById('xpBadge').textContent = `+${todayXP} XP`;
-
-            // Tasks title
-            document.getElementById('tasksTitle').textContent = isToday ? "Today's Priority Tasks" :
-                `Tasks for ${currentViewDate.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })}`;
-
-            // Show pending tasks warning if any
-            const pendingSkipped = appState.skippedTasks.length;
-            const pendingContainer = document.getElementById('pendingTasksContainer');
-            if (pendingSkipped > 0 && isToday) {
-                pendingContainer.style.display = 'block';
-                document.getElementById('pendingCount').textContent = pendingSkipped;
-            } else {
-                pendingContainer.style.display = 'none';
-            }
-        }
-
-        function renderTasks() {
-            const container = document.getElementById('taskList');
-            container.innerHTML = '';
-
-            const dateStr = currentViewDate.toDateString();
-            let tasks = appState.dailyTasks[dateStr] || [];
-
-            // Filter by subject if needed
-            const activeFilter = document.querySelector('.filter-btn.active');
-            const filterSubject = activeFilter ? activeFilter.textContent.toLowerCase().trim() : 'all';
-
-            if (filterSubject !== 'all' && !filterSubject.includes('all')) {
-                const subjectMap = { 'physics': 'physics', 'chemistry': 'chemistry', 'math': 'mathematics', 'biology': 'biology' };
-                const subject = subjectMap[filterSubject.replace(/[^a-z]/g, '')];
-                if (subject) {
-                    tasks = tasks.filter(t => t.subject === subject);
-                }
-            }
-
-            if (tasks.length === 0) {
-                container.innerHTML = `
-                    <div class="empty-state">
-                        <i class="ph ph-calendar-check"></i>
-                        <div>No tasks for this date</div>
-                    </div>
-                `;
-                return;
-            }
-
-            tasks.forEach(task => {
-                const el = document.createElement('div');
-                el.className = `task-item ${task.completed ? 'completed' : ''} ${task.skipped ? 'skipped' : ''}`;
-
-                const isPast = currentViewDate < new Date().setHours(0, 0, 0, 0);
-                const isToday = currentViewDate.toDateString() === new Date().toDateString();
-                const canInteract = isToday && !task.completed && !task.skipped;
-
-                if (canInteract) {
-                    el.onclick = (e) => {
-                        if (!e.target.closest('.btn-skip')) {
-                            toggleTask(task.id, dateStr);
-                        }
-                    };
-                }
-
-                let rescheduledBadge = '';
-                if (task.isRescheduled) {
-                    rescheduledBadge = `<div class="rescheduled-badge"><i class="ph ph-arrow-u-up-left"></i> Rescheduled from ${new Date(task.originalDate).toLocaleDateString()}</div>`;
-                }
-
-                el.innerHTML = `
-                    <div class="checkbox" style="${task.completed ? 'background: var(--accent-success); border-color: var(--accent-success); color: white;' : ''}">
-                        ${task.completed ? '<i class="ph ph-check"></i>' : ''}
-                    </div>
+        // Content
+        el.innerHTML = `
+                    <div class="checkbox" onclick="toggleTask(${task.id})">${isCompleted ? '<i class="ph ph-check"></i>' : ''}</div>
                     <div class="task-content">
-                        <div class="task-text">${task.topicName}</div>
-                        ${rescheduledBadge}
+                        <div class="task-title" onclick="toggleTask(${task.id})" style="cursor: pointer;">${task.topicName}</div>
                         <div class="task-meta">
-                            <span class="priority priority-${task.priority}">${task.priority}</span>
-                            <span class="tag"><i class="ph ph-book"></i> Class ${task.class}</span>
-                            <span class="tag"><i class="ph ph-clock"></i> ${task.duration}</span>
-                            <span class="tag"><i class="ph ph-coin"></i> ${task.xp} XP</span>
+                            <span class="priority ${task.priority}">${task.priority}</span>
+                            <span class="tag"><i class="ph ph-${subj.icon}"></i> ${subj.name}</span>
+                            <span class="tag"><i class="ph ph-clock"></i> ${task.allocatedTime}m</span>
                         </div>
-                        ${canInteract ? `
-                            <div class="task-actions">
-                                <button class="btn-skip" onclick="skipTaskById(${task.id}, '${dateStr}')">
-                                    <i class="ph ph-x"></i> Skip (Reschedule)
-                                </button>
-                            </div>
-                        ` : ''}
                     </div>
                 `;
-                container.appendChild(el);
-            });
+
+        if (!isCompleted) {
+            const actions = document.createElement('div');
+            actions.className = 'task-actions';
+            actions.innerHTML = `
+                        <button class="btn-skip" onclick="skipTask(${task.id})" title="Reschedule for tomorrow"><i class="ph ph-calendar-plus"></i></button>
+                        <button class="task-play-btn" onclick="openFocusModeForTask(${task.id})" title="Start Session"><i class="ph ph-play-circle" style="font-size:1.5rem"></i></button>
+                    `;
+            el.appendChild(actions);
+        } else {
+            const xpEl = document.createElement('div');
+            xpEl.className = 'task-xp';
+            xpEl.textContent = `+${Math.floor(task.xp)} XP`;
+            el.appendChild(xpEl);
         }
 
-        function skipTaskById(taskId, dateStr) {
-            const task = appState.dailyTasks[dateStr].find(t => t.id === taskId);
-            if (task) {
-                skipTask(task, dateStr);
-            }
-        }
+        container.appendChild(el);
+    });
 
-        function toggleTask(taskId, dateStr) {
-            const task = appState.dailyTasks[dateStr].find(t => t.id === taskId);
-            if (!task || task.skipped) return;
+    document.getElementById('xpDisplay').textContent = `+${todayXP} XP Today`;
+}
 
-            task.completed = !task.completed;
+// Actions
+function toggleTask(id) {
+    const task = appState.taskQueue.today.find(t => t.id === id);
+    if (!task) return;
 
-            if (task.completed) {
-                // Update streak
-                const isToday = dateStr === new Date().toDateString();
-                if (isToday) {
-                    const todayTasks = appState.dailyTasks[dateStr];
-                    const completedCount = todayTasks.filter(t => t.completed).length;
-                    if (completedCount === 1) {
-                        appState.stats.streak++;
-                        if (appState.stats.streak > appState.stats.longestStreak) {
-                            appState.stats.longestStreak = appState.stats.streak;
-                        }
-                    }
-                }
+    task.completed = !task.completed;
 
-                // Add XP
-                appState.stats.totalXP += task.xp;
+    // Mark complete in syllabus
+    const topic = SYLLABUS[task.subject].topics.find(t => t.name === task.topicName);
+    if (topic) topic.completed = task.completed;
 
-                // Mark topic as completed in syllabus
-                if (task.type === 'learn') {
-                    const subject = SYLLABUS[task.subject];
-                    const topic = subject.topics.find(t => t.name === task.topicName);
-                    if (topic) topic.completed = true;
-                }
+    if (task.completed) {
+        appState.stats.totalXP += Math.floor(task.xp);
+        showToast('Task Done!', `+${Math.floor(task.xp)} XP`);
+        createConfetti();
+        incrementStreak();
+    } else {
+        appState.stats.totalXP -= Math.floor(task.xp);
+    }
 
-                showToast('Task Completed!', `+${task.xp} XP earned`);
-                createConfetti();
+    saveData();
+    renderAll();
+}
 
-                // Check all completed
-                const allCompleted = appState.dailyTasks[dateStr].every(t => t.completed || t.skipped);
-                if (allCompleted) {
-                    setTimeout(() => {
-                        showToast('All Tasks Done!', 'Great job! Keep the momentum! 🔥');
-                        for (let i = 0; i < 3; i++) setTimeout(createConfetti, i * 300);
-                    }, 1000);
-                }
-            } else {
-                // Undo
-                appState.stats.totalXP -= task.xp;
-                if (task.type === 'learn') {
-                    const subject = SYLLABUS[task.subject];
-                    const topic = subject.topics.find(t => t.name === task.topicName);
-                    if (topic) topic.completed = false;
-                }
-            }
+function skipTask(id) {
+    const taskIndex = appState.taskQueue.today.findIndex(t => t.id === id);
+    if (taskIndex > -1) {
+        const task = appState.taskQueue.today.splice(taskIndex, 1)[0];
+        const tomorrow = new Date();
+        tomorrow.setDate(tomorrow.getDate() + 1);
+        task.scheduledFor = tomorrow.toDateString();
+        appState.taskQueue.rescheduled.push(task);
 
-            saveData();
-            updateUI();
-            renderTasks();
-            renderSubjectProgress();
-            renderDateStrip();
-        }
-
-        function renderSubjectProgress() {
-            const container = document.getElementById('subjectGrid');
-            container.innerHTML = '';
-
-            Object.entries(SYLLABUS).forEach(([key, subject]) => {
-                const completed = subject.topics.filter(t => t.completed).length;
-                const total = subject.topics.length;
-                const percent = Math.round((completed / total) * 100);
-
-                const card = document.createElement('div');
-                card.className = `subject-card ${key}`;
-                card.onclick = () => showSubjectDetails(key);
-
-                card.innerHTML = `
-                    <div class="subject-icon" style="color: ${subject.color};">
-                        <i class="ph ph-${subject.icon}"></i>
-                    </div>
-                    <div class="subject-name">${subject.name}</div>
-                    <div class="subject-percent" style="color: ${subject.color};">${percent}%</div>
-                    <div class="subject-stats">${completed}/${total} Topics</div>
-                    <div class="progress-track">
-                        <div class="progress-fill" style="width: ${percent}%; background: ${subject.color};"></div>
-                    </div>
-                `;
-                container.appendChild(card);
-            });
-        }
-
-        // ==========================================
-        // UTILITIES
-        // ==========================================
-        function calculateDayNumber(date) {
-            if (!appState.user.startDate) return 1;
-            const start = new Date(appState.user.startDate);
-            const diff = Math.floor((date - start) / 86400000);
-            return Math.max(1, diff + 1);
-        }
-
-        function getPhaseInfo(day) {
-            if (day <= 30) return { name: 'Foundation Phase', focus: 'NCERT basics & conceptual clarity' };
-            if (day <= 60) return { name: 'Practice Phase', focus: 'Problem solving & JEE Main level' };
-            if (day <= 90) return { name: 'Advanced Phase', focus: 'JEE Advanced & IAT previous years' };
-            return { name: 'Revision Phase', focus: 'Mock tests & final polish' };
-        }
-
-        function getXPReward(priority) {
-            const rewards = { critical: 150, high: 100, medium: 75, low: 50 };
-            return rewards[priority] || 50;
-        }
-
-        function filterTasks(subject) {
-            // Update active button
-            document.querySelectorAll('.filter-btn').forEach(btn => {
-                btn.classList.remove('active');
-                if (btn.textContent.toLowerCase().includes(subject) || (subject === 'all' && btn.textContent.includes('All'))) {
-                    btn.classList.add('active');
-                }
-            });
-
-            renderTasks();
-        }
-
-        function saveData() {
-            localStorage.setItem('IAT2026_DATA', JSON.stringify(appState));
-
-            // Save syllabus progress separately
-            const syllabusProgress = {};
-            Object.keys(SYLLABUS).forEach(key => {
-                syllabusProgress[key] = SYLLABUS[key].topics.map(t => ({
-                    name: t.name,
-                    completed: t.completed
-                }));
-            });
-            localStorage.setItem('IAT2026_SYLLABUS', JSON.stringify(syllabusProgress));
-        }
-
-        function loadSyllabusProgress() {
-            const saved = localStorage.getItem('IAT2026_SYLLABUS');
-            if (saved) {
-                const progress = JSON.parse(saved);
-                Object.keys(progress).forEach(subject => {
-                    progress[subject].forEach((savedTopic, idx) => {
-                        if (SYLLABUS[subject].topics[idx]) {
-                            SYLLABUS[subject].topics[idx].completed = savedTopic.completed;
-                        }
-                    });
-                });
-            }
-        }
-
-        function showSubjectDetails(subjectKey) {
-            const subject = SYLLABUS[subjectKey];
-            const pending = subject.topics.filter(t => !t.completed);
-            const completed = subject.topics.filter(t => t.completed);
-
-            let msg = `📘 ${subject.name} Syllabus\n\n`;
-            msg += `✅ Completed (${completed.length}):\n`;
-            completed.slice(0, 5).forEach(t => msg += `   • ${t.name}\n`);
-            if (completed.length > 5) msg += `   ... and ${completed.length - 5} more\n`;
-
-            msg += `\n⏳ Pending (${pending.length}):\n`;
-            pending.slice(0, 8).forEach(t => msg += `   • [${t.priority.toUpperCase()}] ${t.name}\n`);
-            if (pending.length > 8) msg += `   ... and ${pending.length - 8} more\n`;
-
-            alert(msg);
-        }
-
-        function showStats() {
-            const totalTopics = Object.values(SYLLABUS).reduce((sum, s) => sum + s.topics.length, 0);
-            const completedTopics = Object.values(SYLLABUS).reduce((sum, s) =>
-                sum + s.topics.filter(t => t.completed).length, 0);
-            const overallPercent = (completedTopics / totalTopics * 100).toFixed(1);
-
-            const totalTasks = Object.values(appState.dailyTasks).flat().length;
-            const completedTasks = Object.values(appState.dailyTasks).flat().filter(t => t.completed).length;
-
-            alert(`📊 Your IAT 2026 Statistics
-        
-👤 Name: ${appState.user.name}
-📅 Started: ${new Date(appState.user.startDate).toLocaleDateString()}
-
-🔥 Current Streak: ${appState.stats.streak} days
-🏆 Longest Streak: ${appState.stats.longestStreak} days
-⚡ Total XP: ${appState.stats.totalXP}
-
-📚 Syllabus Progress: ${overallPercent}%
-   • Physics: ${SYLLABUS.physics.topics.filter(t => t.completed).length}/${SYLLABUS.physics.topics.length}
-   • Chemistry: ${SYLLABUS.chemistry.topics.filter(t => t.completed).length}/${SYLLABUS.chemistry.topics.length}
-   • Mathematics: ${SYLLABUS.mathematics.topics.filter(t => t.completed).length}/${SYLLABUS.mathematics.topics.length}
-   • Biology: ${SYLLABUS.biology.topics.filter(t => t.completed).length}/${SYLLABUS.biology.topics.length}
-
-✅ Tasks Completed: ${completedTasks}/${totalTasks}
-🔄 Rescheduled Tasks: ${appState.skippedTasks.length}
-
-🎯 Keep pushing! You're doing great!`);
-        }
-
-        function resetData() {
-            if (confirm('⚠️ Reset ALL progress? This cannot be undone!')) {
-                localStorage.removeItem('IAT2026_DATA');
-                localStorage.removeItem('IAT2026_SYLLABUS');
-                location.reload();
-            }
-        }
-
-        function switchTab(tab) {
-            if (tab === 'home') {
-                currentViewDate = new Date();
-                renderDateStrip();
-                updateUI();
-                renderTasks();
-            } else if (tab === 'calendar') {
-                showToast('Calendar View', 'Use the date strip above to navigate between days!');
-            } else if (tab === 'mock') {
-                const score = prompt('Enter mock test score (0-240):');
-                if (score && !isNaN(score)) {
-                    const numScore = parseInt(score);
-                    const percent = (numScore / 240 * 100).toFixed(1);
-                    const xp = Math.floor(numScore / 2);
-                    appState.stats.totalXP += xp;
-                    saveData();
-                    updateUI();
-                    showToast('Mock Test Recorded!', `Scored ${percent}% | +${xp} XP`);
-                }
-            } else if (tab === 'profile') {
-                showStats();
-            }
-        }
-
-        function showToast(title, message, type = 'success') {
-            const toast = document.getElementById('toast');
-            document.getElementById('toastTitle').textContent = title;
-            document.getElementById('toastMsg').textContent = message;
-
-            const icon = toast.querySelector('.toast-icon');
-            if (type === 'warning') {
-                icon.style.background = 'var(--accent-warning)';
-                icon.innerHTML = '<i class="ph ph-warning"></i>';
-            } else {
-                icon.style.background = 'var(--accent-success)';
-                icon.innerHTML = '<i class="ph ph-check"></i>';
-            }
-
-            toast.classList.add('show');
-            setTimeout(() => toast.classList.remove('show'), 3000);
-        }
-
-        function createConfetti() {
-            const colors = ['#6366f1', '#8b5cf6', '#22c55e', '#f59e0b', '#06b6d4', '#ec4899'];
-            for (let i = 0; i < 20; i++) {
-                const confetti = document.createElement('div');
-                confetti.className = 'confetti';
-                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-                confetti.style.left = Math.random() * 100 + 'vw';
-                confetti.style.top = '-10px';
-                document.body.appendChild(confetti);
-
-                const animation = confetti.animate([
-                    { transform: `translateY(0) rotate(0)`, opacity: 1 },
-                    { transform: `translateY(${window.innerHeight}px) rotate(${Math.random() * 720}deg)`, opacity: 0 }
-                ], {
-                    duration: 2000 + Math.random() * 1000,
-                    easing: 'cubic-bezier(0.25, 0.46, 0.45, 0.94)'
-                });
-
-                animation.onfinish = () => confetti.remove();
-            }
-        }
-
-        // Start
-        window.addEventListener('DOMContentLoaded', init);
-
-        // Auto-save on hide
-        document.addEventListener('visibilitychange', () => {
-            if (document.hidden) saveData();
+        // Add a new task to replace it
+        appState.taskQueue.today.push({
+            ...task,
+            id: Date.now(),
+            topicName: `${SYLLABUS[task.subject].topics[0].name} (Replacement)`,
+            priority: 'medium',
+            xp: 50,
+            allocatedTime: 25
         });
+
+        saveData();
+        showToast('Rescheduled', 'Moved to tomorrow\'s plan');
+        renderAll();
+    }
+}
+
+// Focus Mode
+function openFocusModeForTask(id) {
+    const task = appState.taskQueue.today.find(t => t.id === id);
+    if (!task || task.completed) return;
+
+    currentTaskId = task.id;
+    focusTotalTime = task.allocatedTime * 60;
+    focusTimeRemaining = focusTotalTime;
+
+    const subj = SYLLABUS[task.subject];
+    document.getElementById('focusIcon').innerHTML = `<i class="ph ph-${subj.icon}" style="color:${subj.color}"></i>`;
+    document.getElementById('focusTopic').textContent = task.topicName;
+    document.getElementById('focusDetails').textContent = `Class ${task.class} • ${task.allocatedTime} mins • ${task.priority.toUpperCase()} priority`;
+
+    updateFocusTimerDisplay();
+
+    document.getElementById('focusModal').classList.add('active');
+    document.getElementById('startBtn').style.display = 'flex';
+    document.getElementById('stopBtn').style.display = 'none';
+}
+
+function toggleFocusTimer() {
+    if (focusTimerInterval) return; // already running
+    document.getElementById('startBtn').style.display = 'none';
+    document.getElementById('stopBtn').style.display = 'flex';
+
+    focusTimerInterval = setInterval(() => {
+        focusTimeRemaining--;
+        updateFocusTimerDisplay();
+
+        if (focusTimeRemaining <= 0) {
+            completeFocus();
+        }
+    }, 1000);
+}
+
+function updateFocusTimerDisplay() {
+    const m = Math.floor(focusTimeRemaining / 60).toString().padStart(2, '0');
+    const s = (focusTimeRemaining % 60).toString().padStart(2, '0');
+    document.getElementById('focusTimer').textContent = `${m}:${s}`;
+}
+
+function completeFocus() {
+    if (focusTimerInterval) {
+        clearInterval(focusTimerInterval);
+        focusTimerInterval = null;
+    }
+
+    if (currentTaskId) {
+        const task = appState.taskQueue.today.find(t => t.id === currentTaskId);
+        if (task && !task.completed) {
+            const timeSpent = Math.ceil((focusTotalTime - focusTimeRemaining) / 60);
+            appState.stats.totalFocusMinutes += timeSpent;
+            appState.stats.sessionsCompleted++;
+            toggleTask(task.id);
+        }
+    }
+
+    closeFocus();
+}
+
+function closeFocus() {
+    if (focusTimerInterval) {
+        clearInterval(focusTimerInterval);
+        focusTimerInterval = null;
+    }
+    currentTaskId = null;
+    document.getElementById('focusModal').classList.remove('active');
+    renderAll();
+}
+
+function showToast(title, msg) {
+    document.querySelector('#toast div:first-child').textContent = title;
+    document.getElementById('toastMsg').textContent = msg;
+    const toast = document.getElementById('toast');
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 3000);
+}
+
+function createConfetti() {
+    const colors = ['#ef4444', '#3b82f6', '#10b981', '#f59e0b', '#8b5cf6'];
+    for (let i = 0; i < 50; i++) {
+        const c = document.createElement('div');
+        c.className = 'confetti';
+        c.style.left = Math.random() * 100 + 'vw';
+        c.style.background = colors[Math.floor(Math.random() * colors.length)];
+        document.body.appendChild(c);
+
+        const anim = c.animate([
+            { transform: `translate3d(0, 0, 0) rotate(0)`, opacity: 1 },
+            { transform: `translate3d(${Math.random() * 100 - 50}px, 100vh, 0) rotate(${Math.random() * 720}deg)`, opacity: 0 }
+        ], { duration: 1000 + Math.random() * 1000, easing: 'cubic-bezier(.37,0,.63,1)' });
+
+        anim.onfinish = () => c.remove();
+    }
+}
+
+// Boot
+document.addEventListener('DOMContentLoaded', init);
+
     </script>
 </body>
 
