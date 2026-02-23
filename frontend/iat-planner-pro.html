@@ -1679,12 +1679,12 @@
             if (i >= 61 && i <= 75) {
                 // Day 61-75: Rapid 2nd Revision
                 if (i % 2 === 0) {
-                     PLAN_90_DAYS.push([
+                    PLAN_90_DAYS.push([
                         { subject: 'physics', topicName: 'Rotation, Electrostatics, Modern Physics Revision', priority: 'critical', class: 12, allocatedTime: 120, xp: 200 },
                         { subject: 'mathematics', topicName: 'Calculus, Conics, Vectors Revision', priority: 'critical', class: 12, allocatedTime: 120, xp: 200 },
                     ]);
                 } else {
-                     PLAN_90_DAYS.push([
+                    PLAN_90_DAYS.push([
                         { subject: 'chemistry', topicName: 'Thermodynamics, Electrochem, Organic reactions Revision', priority: 'critical', class: 12, allocatedTime: 120, xp: 200 },
                         { subject: 'biology', topicName: 'Genetics, Cell cycle, Physiology, Ecology Revision', priority: 'critical', class: 12, allocatedTime: 120, xp: 200 },
                     ]);
@@ -1697,23 +1697,23 @@
                     ]);
                 } else {
                     PLAN_90_DAYS.push([
-                         { subject: 'physics', topicName: 'Deep Analysis & Error Notebook', priority: 'critical', class: 12, allocatedTime: 180, xp: 400, isTest: true },
+                        { subject: 'physics', topicName: 'Deep Analysis & Error Notebook', priority: 'critical', class: 12, allocatedTime: 180, xp: 400, isTest: true },
                     ]);
                 }
             } else if (i >= 86 && i <= 90) {
                 PLAN_90_DAYS.push([
-                     { subject: 'physics', topicName: 'Final Polish: Formulas & Derivations', priority: 'critical', class: 12, allocatedTime: 120, xp: 200 },
-                     { subject: 'chemistry', topicName: 'Final Polish: NCERT Reactions', priority: 'critical', class: 12, allocatedTime: 120, xp: 200 },
-                     { subject: 'mathematics', topicName: 'Final Polish: Light Mock Selection', priority: 'critical', class: 12, allocatedTime: 120, xp: 200 },
-                     { subject: 'biology', topicName: 'Final Polish: NCERT Diagrams', priority: 'critical', class: 12, allocatedTime: 120, xp: 200 },
+                    { subject: 'physics', topicName: 'Final Polish: Formulas & Derivations', priority: 'critical', class: 12, allocatedTime: 120, xp: 200 },
+                    { subject: 'chemistry', topicName: 'Final Polish: NCERT Reactions', priority: 'critical', class: 12, allocatedTime: 120, xp: 200 },
+                    { subject: 'mathematics', topicName: 'Final Polish: Light Mock Selection', priority: 'critical', class: 12, allocatedTime: 120, xp: 200 },
+                    { subject: 'biology', topicName: 'Final Polish: NCERT Diagrams', priority: 'critical', class: 12, allocatedTime: 120, xp: 200 },
                 ]);
             } else {
-                 PLAN_90_DAYS.push([
+                PLAN_90_DAYS.push([
                     { subject: 'physics', topicName: 'Buffer / Backlog', priority: 'medium', class: 12, allocatedTime: 120, xp: 100 },
                     { subject: 'chemistry', topicName: 'Buffer / Backlog', priority: 'medium', class: 12, allocatedTime: 120, xp: 100 },
                     { subject: 'mathematics', topicName: 'Buffer / Backlog', priority: 'medium', class: 12, allocatedTime: 120, xp: 100 },
                     { subject: 'biology', topicName: 'Buffer / Backlog', priority: 'medium', class: 12, allocatedTime: 120, xp: 100 },
-                 ]);
+                ]);
             }
         }
 
@@ -1776,7 +1776,7 @@
             appState.user.startDate = new Date().toISOString();
             appState.stats.lastActiveDate = new Date().toDateString();
             appState.currentDay = 1;
-            
+
             saveData();
             document.getElementById('welcomeModal').remove();
             renderAll();
@@ -1811,6 +1811,65 @@
             }
         }
 
+        function renderDateStrip() {
+            const container = document.getElementById('dateStripContainer');
+            if (!container) return;
+            container.innerHTML = '';
+
+            const today = new Date();
+
+            // Calculate what day number today is relative to start
+            const start = appState.user.startDate ? new Date(appState.user.startDate) : new Date();
+            start.setHours(0, 0, 0, 0);
+            const todayStart = new Date();
+            todayStart.setHours(0, 0, 0, 0);
+            const todayDayNum = Math.floor((todayStart - start) / (1000 * 60 * 60 * 24)) + 1;
+
+            // Render previous days and future days around "today"
+            for (let i = -3; i <= 3; i++) {
+                const d = new Date(today);
+                d.setDate(today.getDate() + i);
+
+                // Calculate the target day number for this specific rendered item
+                const targetDayNum = todayDayNum + i;
+
+                // Active logic: Visual highlight if this item represents the CURRENT selected day in the 90-day plan
+                const isActive = (targetDayNum === appState.currentDay);
+
+                const el = document.createElement('div');
+                el.className = `date-item ${isActive ? 'active' : ''}`;
+
+                // Allow them to skip to other days by clicking the strip
+                // We know that `appState.currentDay` + (targetDayNum - appState.currentDay) = targetDayNum
+                const offsetFromCurrent = targetDayNum - appState.currentDay;
+
+                el.onclick = () => {
+                    let newDay = appState.currentDay + offsetFromCurrent;
+                    // Constrain
+                    newDay = Math.max(1, Math.min(90, newDay));
+                    if (appState.currentDay !== newDay) {
+                        appState.currentDay = newDay;
+                        saveData();
+                        renderAll();
+                    }
+                };
+
+                el.innerHTML = `
+                    <span class="date-day">${d.toLocaleDateString('en-US', { weekday: 'short' })}</span>
+                    <span class="date-num">${d.getDate()}</span>
+                    <span class="date-month">${d.toLocaleDateString('en-US', { month: 'short' })}</span>
+                `;
+                container.appendChild(el);
+            }
+
+            // Re-label Smart Daily Plan section header
+            const titleEl = document.querySelector('.section-title');
+            if (titleEl) {
+                if (appState.currentDay === todayDayNum) titleEl.innerText = "Today's Plan";
+                else titleEl.innerText = `Plan for Day ${appState.currentDay}`;
+            }
+        }
+
         function incrementStreak() {
             const today = new Date().toDateString();
             if (appState.stats.lastActiveDate !== today) {
@@ -1821,7 +1880,7 @@
                 }
             }
         }
-        
+
         function previousDay() {
             if (appState.currentDay > 1) {
                 appState.currentDay--;
@@ -1829,7 +1888,7 @@
                 renderAll();
             }
         }
-        
+
         function nextDay() {
             if (appState.currentDay < 90) {
                 appState.currentDay++;
@@ -1861,11 +1920,11 @@
             if (!appState.dailyStatus[dayKey]) {
                 appState.dailyStatus[dayKey] = {};
             }
-            
+
             const todayTasks = PLAN_90_DAYS[appState.currentDay - 1];
             let compTasks = 0;
             todayTasks.forEach((t, index) => {
-                 if (appState.dailyStatus[dayKey][index]) compTasks++;
+                if (appState.dailyStatus[dayKey][index]) compTasks++;
             });
 
             document.getElementById('tasksCompletedCount').textContent = `${compTasks}/${todayTasks.length}`;
@@ -1883,10 +1942,10 @@
                     <button class="icon-btn" onclick="nextDay()" style="color: var(--accent-purple); border: 1px solid var(--glass-border); background: var(--bg-secondary); padding: 0.5rem; border-radius: 8px;">Next <i class="ph ph-caret-right"></i></button>
                 </div>
             `;
-            
+
             // Re-label Smart Daily Plan section header
             const titleEl = document.querySelector('.section-title');
-            if(titleEl) titleEl.innerText = `Day ${appState.currentDay} Plan`;
+            if (titleEl) titleEl.innerText = `Day ${appState.currentDay} Plan`;
         }
 
         function filterTasks(filter, el) {
@@ -1902,7 +1961,7 @@
 
             let rawTasks = PLAN_90_DAYS[appState.currentDay - 1];
             let tasks = Object.assign([], rawTasks);
-            
+
             const dayKey = `Day ${appState.currentDay}`;
 
             if (currentFilter !== 'all') {
@@ -1915,7 +1974,7 @@
                 // Find original index to maintain status mapping correctly
                 const originalIndex = rawTasks.indexOf(task);
                 const isCompleted = appState.dailyStatus[dayKey][originalIndex] === true;
-                
+
                 if (isCompleted) todayXP += Math.floor(task.xp);
 
                 let el = document.createElement('div');
@@ -1960,7 +2019,7 @@
         function toggleTask(originalIndex) {
             const dayKey = `Day ${appState.currentDay}`;
             const task = PLAN_90_DAYS[appState.currentDay - 1][originalIndex];
-            
+
             const wasCompleted = appState.dailyStatus[dayKey][originalIndex] === true;
             appState.dailyStatus[dayKey][originalIndex] = !wasCompleted;
 
@@ -2079,7 +2138,7 @@
         document.addEventListener('DOMContentLoaded', init);
 
     </script>
-</script>
+    </script>
 </body>
 
 </html>
