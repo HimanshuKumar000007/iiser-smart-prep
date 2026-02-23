@@ -1356,87 +1356,372 @@
     </div>
 
     <script>
-        const SYLLABUS = {
-            physics: {
-                name: 'Physics', color: '#ef4444', icon: 'atom', topics: [
-                    { name: 'Kinematics - 1D Motion', priority: 'high', class: 11, time: 45, completed: false },
-                    { name: 'Newton\'s Laws of Motion', priority: 'high', class: 11, time: 45, completed: false },
-                    { name: 'Work, Energy & Power', priority: 'high', class: 11, time: 45, completed: false },
-                    { name: 'Rotational Dynamics', priority: 'high', class: 11, time: 60, completed: false },
-                    { name: 'Gravitation', priority: 'medium', class: 11, time: 45, completed: false },
-                    { name: 'Thermodynamics', priority: 'critical', class: 11, time: 60, completed: false },
-                    { name: 'Kinetic Theory of Gases', priority: 'medium', class: 11, time: 45, completed: false },
-                    { name: 'Simple Harmonic Motion', priority: 'medium', class: 11, time: 45, completed: false },
-                    { name: 'Wave Motion', priority: 'high', class: 11, time: 45, completed: false },
-                    { name: 'Electrostatics - Coulomb\'s Law', priority: 'critical', class: 12, time: 60, completed: false },
-                    { name: 'Current Electricity', priority: 'critical', class: 12, time: 60, completed: false },
-                    { name: 'Moving Charges & Magnetism', priority: 'high', class: 12, time: 60, completed: false },
-                    { name: 'EMI & Alternating Current', priority: 'high', class: 12, time: 45, completed: false },
-                    { name: 'Ray Optics & Wave Optics', priority: 'critical', class: 12, time: 60, completed: false },
-                    { name: 'Modern Physics', priority: 'critical', class: 12, time: 60, completed: false }
-                ]
-            },
-            chemistry: {
-                name: 'Chemistry', color: '#06b6d4', icon: 'flask', topics: [
-                    { name: 'Atomic Structure', priority: 'high', class: 11, time: 45, completed: false },
-                    { name: 'Periodic Properties', priority: 'high', class: 11, time: 45, completed: false },
-                    { name: 'Chemical Bonding', priority: 'critical', class: 11, time: 60, completed: false },
-                    { name: 'Thermodynamics', priority: 'critical', class: 11, time: 60, completed: false },
-                    { name: 'Chemical Equilibrium', priority: 'critical', class: 11, time: 60, completed: false },
-                    { name: 'Ionic Equilibrium', priority: 'high', class: 11, time: 60, completed: false },
-                    { name: 'Redox Reactions', priority: 'medium', class: 11, time: 45, completed: false },
-                    { name: 's-Block Elements', priority: 'medium', class: 11, time: 45, completed: false },
-                    { name: 'p-Block Elements', priority: 'high', class: 11, time: 45, completed: false },
-                    { name: 'Organic Basics & Nomenclature', priority: 'high', class: 11, time: 60, completed: false },
-                    { name: 'Hydrocarbons', priority: 'medium', class: 11, time: 60, completed: false },
-                    { name: 'Solid State', priority: 'medium', class: 12, time: 45, completed: false },
-                    { name: 'Solutions & Colligative Properties', priority: 'high', class: 12, time: 45, completed: false },
-                    { name: 'Electrochemistry', priority: 'critical', class: 12, time: 60, completed: false },
-                    { name: 'Chemical Kinetics', priority: 'critical', class: 12, time: 60, completed: false },
-                    { name: 'Coordination Compounds', priority: 'high', class: 12, time: 45, completed: false },
-                    { name: 'Aldehydes, Ketones & Acids', priority: 'critical', class: 12, time: 60, completed: false }
-                ]
-            },
-            mathematics: {
-                name: 'Math', color: '#f59e0b', icon: 'function', topics: [
-                    { name: 'Trigonometric Functions', priority: 'critical', class: 11, time: 60, completed: false },
-                    { name: 'Complex Numbers', priority: 'high', class: 11, time: 60, completed: false },
-                    { name: 'Quadratic Equations', priority: 'high', class: 11, time: 45, completed: false },
-                    { name: 'Permutations & Combinations', priority: 'high', class: 11, time: 60, completed: false },
-                    { name: 'Binomial Theorem', priority: 'high', class: 11, time: 60, completed: false },
-                    { name: 'Sequences & Series', priority: 'high', class: 11, time: 45, completed: false },
-                    { name: 'Straight Lines', priority: 'critical', class: 11, time: 60, completed: false },
-                    { name: 'Circles & Conic Sections', priority: 'critical', class: 11, time: 60, completed: false },
-                    { name: 'Limits & Continuity', priority: 'critical', class: 11, time: 45, completed: false },
-                    { name: 'Differentiation', priority: 'critical', class: 11, time: 45, completed: false },
-                    { name: 'Application of Derivatives', priority: 'critical', class: 12, time: 60, completed: false },
-                    { name: 'Indefinite Integration', priority: 'critical', class: 12, time: 60, completed: false },
-                    { name: 'Definite Integration', priority: 'critical', class: 12, time: 60, completed: false },
-                    { name: 'Differential Equations', priority: 'high', class: 12, time: 60, completed: false },
-                    { name: 'Vectors & 3D Geometry', priority: 'critical', class: 12, time: 60, completed: false },
-                    { name: 'Probability', priority: 'high', class: 12, time: 60, completed: false }
-                ]
-            },
-            biology: {
-                name: 'Biology', color: '#22c55e', icon: 'dna', topics: [
-                    { name: 'Cell - The Unit of Life', priority: 'critical', class: 11, time: 45, completed: false },
-                    { name: 'Cell Cycle & Division', priority: 'critical', class: 11, time: 45, completed: false },
-                    { name: 'Transport in Plants', priority: 'high', class: 11, time: 45, completed: false },
-                    { name: 'Mineral Nutrition', priority: 'high', class: 11, time: 45, completed: false },
-                    { name: 'Photosynthesis', priority: 'critical', class: 11, time: 60, completed: false },
-                    { name: 'Respiration in Plants', priority: 'critical', class: 11, time: 60, completed: false },
-                    { name: 'Plant Growth & Development', priority: 'high', class: 11, time: 45, completed: false },
-                    { name: 'Digestion & Absorption', priority: 'critical', class: 11, time: 45, completed: false },
-                    { name: 'Breathing & Gas Exchange', priority: 'critical', class: 11, time: 45, completed: false },
-                    { name: 'Body Fluids & Circulation', priority: 'critical', class: 11, time: 45, completed: false },
-                    { name: 'Excretory System', priority: 'high', class: 11, time: 45, completed: false },
-                    { name: 'Neural Control & Coordination', priority: 'critical', class: 11, time: 45, completed: false },
-                    { name: 'Chemical Coordination', priority: 'critical', class: 11, time: 45, completed: false },
-                    { name: 'Reproduction in Organisms', priority: 'high', class: 12, time: 45, completed: false },
-                    { name: 'Genetics & Evolution', priority: 'critical', class: 12, time: 60, completed: false },
-                    { name: 'Ecosystem & Environment', priority: 'high', class: 12, time: 45, completed: false }
-                ]
+        const PLAN_90_DAYS = [
+            // Day 1
+            [
+                { subject: 'physics', topicName: 'Units, dimensions, errors', priority: 'medium', class: 11, allocatedTime: 120, xp: 100 },
+                { subject: 'chemistry', topicName: 'Structure of atom (quantum nos, de Broglie)', priority: 'high', class: 11, allocatedTime: 120, xp: 150 },
+                { subject: 'mathematics', topicName: 'Trigonometric identities', priority: 'critical', class: 11, allocatedTime: 120, xp: 200 },
+                { subject: 'biology', topicName: 'The Living World', priority: 'low', class: 11, allocatedTime: 120, xp: 50 },
+            ],
+            // Day 2
+            [
+                { subject: 'physics', topicName: 'Kinematics (1D)', priority: 'high', class: 11, allocatedTime: 120, xp: 150 },
+                { subject: 'chemistry', topicName: 'Periodic trends', priority: 'high', class: 11, allocatedTime: 120, xp: 150 },
+                { subject: 'mathematics', topicName: 'Trig equations', priority: 'high', class: 11, allocatedTime: 120, xp: 150 },
+                { subject: 'biology', topicName: 'Biological Classification', priority: 'medium', class: 11, allocatedTime: 120, xp: 100 },
+            ],
+            // Day 3
+            [
+                { subject: 'physics', topicName: 'Kinematics (2D, projectile)', priority: 'high', class: 11, allocatedTime: 120, xp: 150 },
+                { subject: 'chemistry', topicName: 'Chemical bonding (VSEPR, hybridization)', priority: 'critical', class: 11, allocatedTime: 120, xp: 200 },
+                { subject: 'mathematics', topicName: 'Complex numbers (algebra)', priority: 'high', class: 11, allocatedTime: 120, xp: 150 },
+                { subject: 'biology', topicName: 'Plant Kingdom (algae, bryophytes)', priority: 'medium', class: 11, allocatedTime: 120, xp: 100 },
+            ],
+            // Day 4
+            [
+                { subject: 'physics', topicName: 'Laws of Motion, friction', priority: 'high', class: 11, allocatedTime: 120, xp: 150 },
+                { subject: 'chemistry', topicName: 'Chemical bonding (MOT, H-bonding)', priority: 'critical', class: 11, allocatedTime: 120, xp: 200 },
+                { subject: 'mathematics', topicName: 'Complex numbers (Argand, polar)', priority: 'high', class: 11, allocatedTime: 120, xp: 150 },
+                { subject: 'biology', topicName: 'Plant Kingdom (pterido, gymno, angio)', priority: 'medium', class: 11, allocatedTime: 120, xp: 100 },
+            ],
+            // Day 5
+            [
+                { subject: 'physics', topicName: 'Work, energy, power', priority: 'high', class: 11, allocatedTime: 120, xp: 150 },
+                { subject: 'chemistry', topicName: 'Thermodynamics (1st law, enthalpy)', priority: 'critical', class: 11, allocatedTime: 120, xp: 200 },
+                { subject: 'mathematics', topicName: 'Permutations & combinations', priority: 'high', class: 11, allocatedTime: 120, xp: 150 },
+                { subject: 'biology', topicName: 'Animal Kingdom (non-chordates)', priority: 'medium', class: 11, allocatedTime: 120, xp: 100 },
+            ],
+            // Day 6
+            [
+                { subject: 'physics', topicName: 'COM & momentum', priority: 'high', class: 11, allocatedTime: 120, xp: 150 },
+                { subject: 'chemistry', topicName: 'Thermodynamics (Gibbs, spontaneity)', priority: 'critical', class: 11, allocatedTime: 120, xp: 200 },
+                { subject: 'mathematics', topicName: 'Binomial theorem', priority: 'high', class: 11, allocatedTime: 120, xp: 150 },
+                { subject: 'biology', topicName: 'Animal Kingdom (chordates)', priority: 'medium', class: 11, allocatedTime: 120, xp: 100 },
+            ],
+            // Day 7
+            [
+                { subject: 'physics', topicName: 'Weekly Test & Analysis', priority: 'critical', class: 11, allocatedTime: 180, xp: 300, isTest: true },
+            ],
+            // Day 8
+            [
+                { subject: 'physics', topicName: 'Rotational motion (torque)', priority: 'high', class: 11, allocatedTime: 120, xp: 150 },
+                { subject: 'chemistry', topicName: 'Chemical equilibrium', priority: 'critical', class: 11, allocatedTime: 120, xp: 200 },
+                { subject: 'mathematics', topicName: 'Sequences & series', priority: 'high', class: 11, allocatedTime: 120, xp: 150 },
+                { subject: 'biology', topicName: 'Morphology of flowering plants', priority: 'medium', class: 11, allocatedTime: 120, xp: 100 },
+            ],
+            // Day 9
+            [
+                { subject: 'physics', topicName: 'Gravitation', priority: 'high', class: 11, allocatedTime: 120, xp: 150 },
+                { subject: 'chemistry', topicName: 'Ionic equilibrium (pH, buffer)', priority: 'critical', class: 11, allocatedTime: 120, xp: 200 },
+                { subject: 'mathematics', topicName: 'Straight lines (basics)', priority: 'critical', class: 11, allocatedTime: 120, xp: 200 },
+                { subject: 'biology', topicName: 'Anatomy of flowering plants', priority: 'medium', class: 11, allocatedTime: 120, xp: 100 },
+            ],
+            // Day 10
+            [
+                { subject: 'physics', topicName: 'Elasticity', priority: 'medium', class: 11, allocatedTime: 120, xp: 100 },
+                { subject: 'chemistry', topicName: 'Redox reactions', priority: 'medium', class: 11, allocatedTime: 120, xp: 100 },
+                { subject: 'mathematics', topicName: 'Straight lines (distance, angle)', priority: 'critical', class: 11, allocatedTime: 120, xp: 200 },
+                { subject: 'biology', topicName: 'Structural organisation in animals', priority: 'medium', class: 11, allocatedTime: 120, xp: 100 },
+            ],
+            // Day 11
+            [
+                { subject: 'physics', topicName: 'Thermodynamics (physics)', priority: 'critical', class: 11, allocatedTime: 120, xp: 200 },
+                { subject: 'chemistry', topicName: 'States of matter', priority: 'medium', class: 11, allocatedTime: 120, xp: 100 },
+                { subject: 'mathematics', topicName: 'Conic: Circle', priority: 'critical', class: 11, allocatedTime: 120, xp: 200 },
+                { subject: 'biology', topicName: 'Cell – unit of life', priority: 'critical', class: 11, allocatedTime: 120, xp: 200 },
+            ],
+            // Day 12
+            [
+                { subject: 'physics', topicName: 'Kinetic theory', priority: 'medium', class: 11, allocatedTime: 120, xp: 100 },
+                { subject: 'chemistry', topicName: 's-block', priority: 'medium', class: 11, allocatedTime: 120, xp: 100 },
+                { subject: 'mathematics', topicName: 'Parabola', priority: 'critical', class: 11, allocatedTime: 120, xp: 200 },
+                { subject: 'biology', topicName: 'Cell cycle & division', priority: 'critical', class: 11, allocatedTime: 120, xp: 200 },
+            ],
+            // Day 13
+            [
+                { subject: 'physics', topicName: 'Oscillations (SHM)', priority: 'medium', class: 11, allocatedTime: 120, xp: 100 },
+                { subject: 'chemistry', topicName: 'p-block (B, C, N families)', priority: 'high', class: 11, allocatedTime: 120, xp: 150 },
+                { subject: 'mathematics', topicName: 'Ellipse, hyperbola', priority: 'critical', class: 11, allocatedTime: 120, xp: 200 },
+                { subject: 'biology', topicName: 'Transport in plants', priority: 'high', class: 11, allocatedTime: 120, xp: 150 },
+            ],
+            // Day 14
+            [
+                { subject: 'physics', topicName: 'Weekly Test & Analysis', priority: 'critical', class: 11, allocatedTime: 180, xp: 300, isTest: true },
+            ],
+            // Day 15
+            [
+                { subject: 'physics', topicName: 'Waves (basics)', priority: 'high', class: 11, allocatedTime: 120, xp: 150 },
+                { subject: 'chemistry', topicName: 'Organic basics (IUPAC, isomerism)', priority: 'high', class: 11, allocatedTime: 120, xp: 150 },
+                { subject: 'mathematics', topicName: 'Limits', priority: 'critical', class: 11, allocatedTime: 120, xp: 200 },
+                { subject: 'biology', topicName: 'Mineral nutrition', priority: 'high', class: 11, allocatedTime: 120, xp: 150 },
+            ],
+            // Day 16
+            [
+                { subject: 'physics', topicName: 'Waves (Doppler, beats)', priority: 'high', class: 11, allocatedTime: 120, xp: 150 },
+                { subject: 'chemistry', topicName: 'Hydrocarbons', priority: 'medium', class: 11, allocatedTime: 120, xp: 100 },
+                { subject: 'mathematics', topicName: 'Derivatives', priority: 'critical', class: 11, allocatedTime: 120, xp: 200 },
+                { subject: 'biology', topicName: 'Photosynthesis', priority: 'critical', class: 11, allocatedTime: 120, xp: 200 },
+            ],
+            // Day 17
+            [
+                { subject: 'physics', topicName: 'Revision mechanics', priority: 'high', class: 11, allocatedTime: 120, xp: 150 },
+                { subject: 'chemistry', topicName: 'Revision physical chem', priority: 'high', class: 11, allocatedTime: 120, xp: 150 },
+                { subject: 'mathematics', topicName: 'Trig + complex revision', priority: 'high', class: 11, allocatedTime: 120, xp: 150 },
+                { subject: 'biology', topicName: 'Respiration in plants', priority: 'critical', class: 11, allocatedTime: 120, xp: 200 },
+            ],
+            // Day 18
+            [
+                { subject: 'physics', topicName: 'Electrostatics (Coulomb)', priority: 'critical', class: 12, allocatedTime: 120, xp: 200 },
+                { subject: 'chemistry', topicName: 'Solutions', priority: 'high', class: 12, allocatedTime: 120, xp: 150 },
+                { subject: 'mathematics', topicName: 'Matrices', priority: 'critical', class: 12, allocatedTime: 120, xp: 200 },
+                { subject: 'biology', topicName: 'Digestion & absorption', priority: 'critical', class: 11, allocatedTime: 120, xp: 200 },
+            ],
+            // Day 19
+            [
+                { subject: 'physics', topicName: 'Gauss law, E-field', priority: 'critical', class: 12, allocatedTime: 120, xp: 200 },
+                { subject: 'chemistry', topicName: 'Electrochemistry', priority: 'critical', class: 12, allocatedTime: 120, xp: 200 },
+                { subject: 'mathematics', topicName: 'Determinants', priority: 'critical', class: 12, allocatedTime: 120, xp: 200 },
+                { subject: 'biology', topicName: 'Breathing & exchange', priority: 'critical', class: 11, allocatedTime: 120, xp: 200 },
+            ],
+            // Day 20
+            [
+                { subject: 'physics', topicName: 'Potential & capacitors', priority: 'critical', class: 12, allocatedTime: 120, xp: 200 },
+                { subject: 'chemistry', topicName: 'Chemical kinetics', priority: 'critical', class: 12, allocatedTime: 120, xp: 200 },
+                { subject: 'mathematics', topicName: 'Continuity & differentiability', priority: 'high', class: 12, allocatedTime: 120, xp: 150 },
+                { subject: 'biology', topicName: 'Body fluids & circulation', priority: 'critical', class: 11, allocatedTime: 120, xp: 200 },
+            ],
+            // Day 21
+            [
+                { subject: 'physics', topicName: 'Weekly Test & Analysis', priority: 'critical', class: 11, allocatedTime: 180, xp: 300, isTest: true },
+            ],
+            // Day 22
+            [
+                { subject: 'physics', topicName: 'Current electricity', priority: 'critical', class: 12, allocatedTime: 120, xp: 200 },
+                { subject: 'chemistry', topicName: 'Solid state', priority: 'medium', class: 12, allocatedTime: 120, xp: 100 },
+                { subject: 'mathematics', topicName: 'AOD (tangent, maxima-minima)', priority: 'critical', class: 12, allocatedTime: 120, xp: 200 },
+                { subject: 'biology', topicName: 'Excretory system', priority: 'critical', class: 11, allocatedTime: 120, xp: 200 },
+            ],
+            // Day 23
+            [
+                { subject: 'physics', topicName: 'Magnetism (Biot–Savart, Ampere)', priority: 'high', class: 12, allocatedTime: 120, xp: 150 },
+                { subject: 'chemistry', topicName: 'Coordination compounds', priority: 'high', class: 12, allocatedTime: 120, xp: 150 },
+                { subject: 'mathematics', topicName: 'Integrals (basic methods)', priority: 'critical', class: 12, allocatedTime: 120, xp: 200 },
+                { subject: 'biology', topicName: 'Locomotion & movement', priority: 'high', class: 11, allocatedTime: 120, xp: 150 },
+            ],
+            // Day 24
+            [
+                { subject: 'physics', topicName: 'Magnetic dipole, galvanometer', priority: 'high', class: 12, allocatedTime: 120, xp: 150 },
+                { subject: 'chemistry', topicName: 'Haloalkanes', priority: 'high', class: 12, allocatedTime: 120, xp: 150 },
+                { subject: 'mathematics', topicName: 'Definite integrals', priority: 'critical', class: 12, allocatedTime: 120, xp: 200 },
+                { subject: 'biology', topicName: 'Neural control', priority: 'critical', class: 11, allocatedTime: 120, xp: 200 },
+            ],
+            // Day 25
+            [
+                { subject: 'physics', topicName: 'EMI (Faraday, Lenz)', priority: 'high', class: 12, allocatedTime: 120, xp: 150 },
+                { subject: 'chemistry', topicName: 'Alcohols, phenols, ethers', priority: 'high', class: 12, allocatedTime: 120, xp: 150 },
+                { subject: 'mathematics', topicName: 'Differential equations', priority: 'high', class: 12, allocatedTime: 120, xp: 150 },
+                { subject: 'biology', topicName: 'Chemical coordination', priority: 'critical', class: 11, allocatedTime: 120, xp: 200 },
+            ],
+            // Day 26
+            [
+                { subject: 'physics', topicName: 'AC circuits', priority: 'high', class: 12, allocatedTime: 120, xp: 150 },
+                { subject: 'chemistry', topicName: 'Aldehydes, ketones, acids', priority: 'critical', class: 12, allocatedTime: 120, xp: 200 },
+                { subject: 'mathematics', topicName: 'Vectors', priority: 'critical', class: 12, allocatedTime: 120, xp: 200 },
+                { subject: 'biology', topicName: 'Reproduction in organisms', priority: 'high', class: 12, allocatedTime: 120, xp: 150 },
+            ],
+            // Day 27
+            [
+                { subject: 'physics', topicName: 'EM waves', priority: 'medium', class: 12, allocatedTime: 120, xp: 100 },
+                { subject: 'chemistry', topicName: 'Amines', priority: 'medium', class: 12, allocatedTime: 120, xp: 100 },
+                { subject: 'mathematics', topicName: '3D geometry', priority: 'high', class: 12, allocatedTime: 120, xp: 150 },
+                { subject: 'biology', topicName: 'Sexual reproduction in plants', priority: 'high', class: 12, allocatedTime: 120, xp: 150 },
+            ],
+            // Day 28
+            [
+                { subject: 'physics', topicName: 'Weekly Test & Analysis', priority: 'critical', class: 12, allocatedTime: 180, xp: 300, isTest: true },
+            ],
+            // Day 29
+            [
+                { subject: 'physics', topicName: 'Ray optics', priority: 'critical', class: 12, allocatedTime: 120, xp: 200 },
+                { subject: 'chemistry', topicName: 'Biomolecules', priority: 'high', class: 12, allocatedTime: 120, xp: 150 },
+                { subject: 'mathematics', topicName: 'Probability (basics)', priority: 'medium', class: 12, allocatedTime: 120, xp: 100 },
+                { subject: 'biology', topicName: 'Human reproduction', priority: 'critical', class: 12, allocatedTime: 120, xp: 200 },
+            ],
+            // Day 30
+            [
+                { subject: 'physics', topicName: 'Wave optics', priority: 'critical', class: 12, allocatedTime: 120, xp: 200 },
+                { subject: 'chemistry', topicName: 'Polymers + Chem in everyday life', priority: 'low', class: 12, allocatedTime: 120, xp: 50 },
+                { subject: 'mathematics', topicName: 'Probability (Bayes)', priority: 'high', class: 12, allocatedTime: 120, xp: 150 },
+                { subject: 'biology', topicName: 'Reproductive health', priority: 'medium', class: 12, allocatedTime: 120, xp: 100 },
+            ],
+            // Day 31
+            [
+                { subject: 'physics', topicName: 'Photoelectric effect', priority: 'critical', class: 12, allocatedTime: 120, xp: 200 },
+                { subject: 'chemistry', topicName: 'Metallurgy', priority: 'low', class: 12, allocatedTime: 120, xp: 50 },
+                { subject: 'mathematics', topicName: 'LPP', priority: 'medium', class: 12, allocatedTime: 120, xp: 100 },
+                { subject: 'biology', topicName: 'Principles of inheritance', priority: 'critical', class: 12, allocatedTime: 120, xp: 200 },
+            ],
+            // Day 32
+            [
+                { subject: 'physics', topicName: 'Bohr model', priority: 'critical', class: 12, allocatedTime: 120, xp: 200 },
+                { subject: 'chemistry', topicName: 'd- & f-block', priority: 'medium', class: 12, allocatedTime: 120, xp: 100 },
+                { subject: 'mathematics', topicName: 'Probability distributions', priority: 'high', class: 12, allocatedTime: 120, xp: 150 },
+                { subject: 'biology', topicName: 'Mendelian problems', priority: 'critical', class: 12, allocatedTime: 120, xp: 200 },
+            ],
+            // Day 33
+            [
+                { subject: 'physics', topicName: 'Nuclear physics', priority: 'critical', class: 12, allocatedTime: 120, xp: 200 },
+                { subject: 'chemistry', topicName: 'Surface chemistry', priority: 'medium', class: 12, allocatedTime: 120, xp: 100 },
+                { subject: 'mathematics', topicName: 'Calculus revision', priority: 'critical', class: 12, allocatedTime: 120, xp: 200 },
+                { subject: 'biology', topicName: 'Molecular basis of inheritance', priority: 'critical', class: 12, allocatedTime: 120, xp: 200 },
+            ],
+            // Day 34
+            [
+                { subject: 'physics', topicName: 'Semiconductors', priority: 'medium', class: 12, allocatedTime: 120, xp: 100 },
+                { subject: 'chemistry', topicName: 'Semiconductors (Solid State)', priority: 'medium', class: 12, allocatedTime: 120, xp: 100 },
+                { subject: 'mathematics', topicName: 'Vectors + 3D mixed', priority: 'critical', class: 12, allocatedTime: 120, xp: 200 },
+                { subject: 'biology', topicName: 'DNA replication, transcription', priority: 'critical', class: 12, allocatedTime: 120, xp: 200 },
+            ],
+            // Day 35
+            [
+                { subject: 'physics', topicName: 'Weekly Test & Analysis', priority: 'critical', class: 12, allocatedTime: 180, xp: 300, isTest: true },
+            ],
+            // Day 36
+            [
+                { subject: 'physics', topicName: 'Full mechanics revision', priority: 'critical', class: 11, allocatedTime: 120, xp: 200 },
+                { subject: 'chemistry', topicName: 'Organic reaction mechanisms', priority: 'critical', class: 11, allocatedTime: 120, xp: 200 },
+                { subject: 'mathematics', topicName: 'Conics revision', priority: 'critical', class: 11, allocatedTime: 120, xp: 200 },
+                { subject: 'biology', topicName: 'Translation + genetic code', priority: 'critical', class: 12, allocatedTime: 120, xp: 200 },
+            ],
+            // Day 37
+            [
+                { subject: 'physics', topicName: 'Electrostatics + current revision', priority: 'critical', class: 12, allocatedTime: 120, xp: 200 },
+                { subject: 'chemistry', topicName: 'Named reactions', priority: 'critical', class: 12, allocatedTime: 120, xp: 200 },
+                { subject: 'mathematics', topicName: 'Calculus mixed', priority: 'critical', class: 12, allocatedTime: 120, xp: 200 },
+                { subject: 'biology', topicName: 'Evolution', priority: 'high', class: 12, allocatedTime: 120, xp: 150 },
+            ],
+            // Day 38
+            [
+                { subject: 'physics', topicName: 'Magnetism + EMI revision', priority: 'high', class: 12, allocatedTime: 120, xp: 150 },
+                { subject: 'chemistry', topicName: 'Coordination + electrochem revision', priority: 'critical', class: 12, allocatedTime: 120, xp: 200 },
+                { subject: 'mathematics', topicName: 'Algebra mixed', priority: 'high', class: 11, allocatedTime: 120, xp: 150 },
+                { subject: 'biology', topicName: 'Human health & disease', priority: 'medium', class: 12, allocatedTime: 120, xp: 100 },
+            ],
+            // Day 39
+            [
+                { subject: 'physics', topicName: 'Optics revision', priority: 'critical', class: 12, allocatedTime: 120, xp: 200 },
+                { subject: 'chemistry', topicName: 'Physical chem numericals', priority: 'critical', class: 11, allocatedTime: 120, xp: 200 },
+                { subject: 'mathematics', topicName: 'Probability PYQs', priority: 'high', class: 12, allocatedTime: 120, xp: 150 },
+                { subject: 'biology', topicName: 'Food production', priority: 'low', class: 12, allocatedTime: 120, xp: 50 },
+            ],
+            // Day 40
+            [
+                { subject: 'physics', topicName: 'Modern physics revision', priority: 'critical', class: 12, allocatedTime: 120, xp: 200 },
+                { subject: 'chemistry', topicName: 'Inorganic revision', priority: 'high', class: 11, allocatedTime: 120, xp: 150 },
+                { subject: 'mathematics', topicName: 'Full length maths test', priority: 'critical', class: 12, allocatedTime: 120, xp: 200 },
+                { subject: 'biology', topicName: 'Microbes in human welfare', priority: 'medium', class: 12, allocatedTime: 120, xp: 100 },
+            ],
+            // Day 41
+            [
+                { subject: 'physics', topicName: 'Weekly Test & Analysis', priority: 'critical', class: 12, allocatedTime: 180, xp: 300, isTest: true },
+            ],
+            // Day 42
+            [
+                { subject: 'physics', topicName: 'Weak physics topics', priority: 'high', class: 12, allocatedTime: 120, xp: 150 },
+                { subject: 'chemistry', topicName: 'Weak chem topics', priority: 'high', class: 12, allocatedTime: 120, xp: 150 },
+                { subject: 'mathematics', topicName: 'Weak maths topics', priority: 'high', class: 12, allocatedTime: 120, xp: 150 },
+                { subject: 'biology', topicName: 'Biotechnology principles', priority: 'high', class: 12, allocatedTime: 120, xp: 150 },
+            ],
+            // Day 43
+            [
+                { subject: 'physics', topicName: 'Mixed numericals', priority: 'high', class: 12, allocatedTime: 120, xp: 150 },
+                { subject: 'chemistry', topicName: 'Mixed numericals', priority: 'high', class: 12, allocatedTime: 120, xp: 150 },
+                { subject: 'mathematics', topicName: 'Mixed PYQs', priority: 'high', class: 12, allocatedTime: 120, xp: 150 },
+                { subject: 'biology', topicName: 'Biotechnology applications', priority: 'high', class: 12, allocatedTime: 120, xp: 150 },
+            ],
+            // Day 44
+            [
+                { subject: 'physics', topicName: 'Speed test (physics)', priority: 'critical', class: 12, allocatedTime: 120, xp: 200 },
+                { subject: 'chemistry', topicName: 'Speed test (chem)', priority: 'critical', class: 12, allocatedTime: 120, xp: 200 },
+                { subject: 'mathematics', topicName: 'Speed test (maths)', priority: 'critical', class: 12, allocatedTime: 120, xp: 200 },
+                { subject: 'biology', topicName: 'Organisms & populations', priority: 'high', class: 12, allocatedTime: 120, xp: 150 },
+            ],
+            // Day 45
+            [
+                { subject: 'physics', topicName: 'Full syllabus physics test', priority: 'critical', class: 12, allocatedTime: 120, xp: 200 },
+                { subject: 'chemistry', topicName: 'Full syllabus chem test', priority: 'critical', class: 12, allocatedTime: 120, xp: 200 },
+                { subject: 'mathematics', topicName: 'Full syllabus maths test', priority: 'critical', class: 12, allocatedTime: 120, xp: 200 },
+                { subject: 'biology', topicName: 'Ecosystem', priority: 'critical', class: 12, allocatedTime: 120, xp: 200 },
+            ],
+            // Day 46
+            [
+                { subject: 'physics', topicName: 'Error correction', priority: 'high', class: 12, allocatedTime: 120, xp: 150 },
+                { subject: 'chemistry', topicName: 'Error correction', priority: 'high', class: 12, allocatedTime: 120, xp: 150 },
+                { subject: 'mathematics', topicName: 'Error correction', priority: 'high', class: 12, allocatedTime: 120, xp: 150 },
+                { subject: 'biology', topicName: 'Biodiversity', priority: 'high', class: 12, allocatedTime: 120, xp: 150 },
+            ],
+            // Day 47
+            [
+                { subject: 'physics', topicName: 'Revision formulas', priority: 'critical', class: 12, allocatedTime: 120, xp: 200 },
+                { subject: 'chemistry', topicName: 'Revision reactions', priority: 'critical', class: 12, allocatedTime: 120, xp: 200 },
+                { subject: 'mathematics', topicName: 'Revision theorems', priority: 'critical', class: 12, allocatedTime: 120, xp: 200 },
+                { subject: 'biology', topicName: 'Environmental issues', priority: 'medium', class: 12, allocatedTime: 120, xp: 100 },
+            ],
+            // Day 48
+            [
+                { subject: 'physics', topicName: 'Full Mock Test & Analysis', priority: 'critical', class: 12, allocatedTime: 240, xp: 500, isTest: true },
+            ]
+        ];
+
+        // Generate the rest of the 90 days algorithmically or fill with patterns
+        for (let i = 49; i <= 90; i++) {
+            if (i >= 61 && i <= 75) {
+                // Day 61-75: Rapid 2nd Revision
+                if (i % 2 === 0) {
+                     PLAN_90_DAYS.push([
+                        { subject: 'physics', topicName: 'Rotation, Electrostatics, Modern Physics Revision', priority: 'critical', class: 12, allocatedTime: 120, xp: 200 },
+                        { subject: 'mathematics', topicName: 'Calculus, Conics, Vectors Revision', priority: 'critical', class: 12, allocatedTime: 120, xp: 200 },
+                    ]);
+                } else {
+                     PLAN_90_DAYS.push([
+                        { subject: 'chemistry', topicName: 'Thermodynamics, Electrochem, Organic reactions Revision', priority: 'critical', class: 12, allocatedTime: 120, xp: 200 },
+                        { subject: 'biology', topicName: 'Genetics, Cell cycle, Physiology, Ecology Revision', priority: 'critical', class: 12, allocatedTime: 120, xp: 200 },
+                    ]);
+                }
+            } else if (i >= 76 && i <= 85) {
+                // Day 76-85: Full Test Mode (1 Full Mock every 2 days)
+                if (i % 2 === 0) {
+                    PLAN_90_DAYS.push([
+                        { subject: 'physics', topicName: 'Full Mock Test', priority: 'critical', class: 12, allocatedTime: 180, xp: 400, isTest: true },
+                    ]);
+                } else {
+                    PLAN_90_DAYS.push([
+                         { subject: 'physics', topicName: 'Deep Analysis & Error Notebook', priority: 'critical', class: 12, allocatedTime: 180, xp: 400, isTest: true },
+                    ]);
+                }
+            } else if (i >= 86 && i <= 90) {
+                PLAN_90_DAYS.push([
+                     { subject: 'physics', topicName: 'Final Polish: Formulas & Derivations', priority: 'critical', class: 12, allocatedTime: 120, xp: 200 },
+                     { subject: 'chemistry', topicName: 'Final Polish: NCERT Reactions', priority: 'critical', class: 12, allocatedTime: 120, xp: 200 },
+                     { subject: 'mathematics', topicName: 'Final Polish: Light Mock Selection', priority: 'critical', class: 12, allocatedTime: 120, xp: 200 },
+                     { subject: 'biology', topicName: 'Final Polish: NCERT Diagrams', priority: 'critical', class: 12, allocatedTime: 120, xp: 200 },
+                ]);
+            } else {
+                 PLAN_90_DAYS.push([
+                    { subject: 'physics', topicName: 'Buffer / Backlog', priority: 'medium', class: 12, allocatedTime: 120, xp: 100 },
+                    { subject: 'chemistry', topicName: 'Buffer / Backlog', priority: 'medium', class: 12, allocatedTime: 120, xp: 100 },
+                    { subject: 'mathematics', topicName: 'Buffer / Backlog', priority: 'medium', class: 12, allocatedTime: 120, xp: 100 },
+                    { subject: 'biology', topicName: 'Buffer / Backlog', priority: 'medium', class: 12, allocatedTime: 120, xp: 100 },
+                 ]);
             }
+        }
+
+        const SYLLABUS_META = {
+            physics: { name: 'Physics', color: '#ef4444', icon: 'atom' },
+            chemistry: { name: 'Chemistry', color: '#06b6d4', icon: 'flask' },
+            mathematics: { name: 'Math', color: '#f59e0b', icon: 'function' },
+            biology: { name: 'Biology', color: '#22c55e', icon: 'dna' }
         };
 
         // GLOBAL APP STATE
@@ -1450,11 +1735,8 @@
                 sessionsCompleted: 0,
                 lastActiveDate: null
             },
-            taskQueue: {
-                today: [],
-                rescheduled: []
-            },
-            dailyTasks: {} // for legacy compatibility
+            currentDay: 1,
+            dailyStatus: {} // dailyStatus["Day 1"] = { task1: completed, task2: completed }
         };
 
         let currentFilter = 'all';
@@ -1465,15 +1747,10 @@
 
         // Initialization
         function init() {
-            const saved = localStorage.getItem('IAT2026_SMART');
+            const saved = localStorage.getItem('IAT2026_90_DAY_PLANNER');
             if (saved) {
                 appState = JSON.parse(saved);
-
-                // Backwards compatibility migration
-                if (!appState.taskQueue) appState.taskQueue = { today: [], rescheduled: [] };
-
                 updateStreak();
-                generateSmartDailyTasks();
                 renderAll();
             } else {
                 welcomeSetup();
@@ -1486,9 +1763,9 @@
                     <div style="text-align: center; max-width: 400px; background: var(--bg-card); padding: 2rem; border-radius: 1rem; border: 1px solid var(--glass-border);">
                         <div style="font-size: 3rem; margin-bottom: 1rem;">🎯</div>
                         <h2 style="font-size: 1.5rem; margin-bottom: 0.5rem;">Welcome to Dynamic IAT Planner</h2>
-                        <p style="color: var(--text-muted); margin-bottom: 2rem;">Auto-generates your ideal path to IAT 2026.</p>
+                        <p style="color: var(--text-muted); margin-bottom: 2rem;">Your strict 90-day blueprint. No excuses.</p>
                         <input type="text" id="setupName" placeholder="Your Name" style="width: 100%; padding: 1rem; background: var(--bg-secondary); border: 1px solid var(--glass-border); border-radius: 12px; color: white; margin-bottom: 1rem; font-size: 1rem;">
-                        <button onclick="completeSetup()" style="width: 100%; padding: 1rem; background: var(--accent-purple); color: white; border: none; border-radius: 12px; font-weight: 700; cursor: pointer;">Begin</button>
+                        <button onclick="completeSetup()" style="width: 100%; padding: 1rem; background: var(--accent-purple); color: white; border: none; border-radius: 12px; font-weight: 700; cursor: pointer;">Begin Day 1</button>
                     </div>
                 </div>
             `;
@@ -1498,88 +1775,22 @@
             appState.user.name = document.getElementById('setupName').value || 'Aspirant';
             appState.user.startDate = new Date().toISOString();
             appState.stats.lastActiveDate = new Date().toDateString();
-
+            appState.currentDay = 1;
+            
             saveData();
             document.getElementById('welcomeModal').remove();
-            generateSmartDailyTasks();
             renderAll();
         }
 
         function saveData() {
-            localStorage.setItem('IAT2026_SMART', JSON.stringify(appState));
+            localStorage.setItem('IAT2026_90_DAY_PLANNER', JSON.stringify(appState));
         }
 
         function resetData() {
-            if (confirm('Delete all data and restart?')) {
-                localStorage.removeItem('IAT2026_SMART');
+            if (confirm('Delete all progress and restart from Day 1?')) {
+                localStorage.removeItem('IAT2026_90_DAY_PLANNER');
                 location.reload();
             }
-        }
-
-        // Smart Logic
-        function calculateSmartTime(topic) {
-            let baseTime = topic.time || 45;
-            const priorityMultiplier = { 'critical': 1.5, 'high': 1.2, 'medium': 1.0, 'low': 0.8 };
-            const classMultiplier = topic.class === 12 ? 1.1 : 1.0;
-            const finalTime = Math.round(baseTime * (priorityMultiplier[topic.priority] || 1.0) * classMultiplier);
-            return Math.ceil(finalTime / 5) * 5; // round to nearest 5
-        }
-
-        function generateSmartDailyTasks() {
-            const today = new Date().toDateString();
-
-            if (appState.taskQueue.today.length > 0 && appState.taskQueue.today[0].date === today) {
-                return; // Already generated for today
-            }
-
-            const tasks = [];
-            const subjects = Object.keys(SYLLABUS);
-
-            // Re-add any incomplete tasks from yesterday
-            const rescheduled = appState.taskQueue.rescheduled.filter(t => t.scheduledFor === today);
-            rescheduled.forEach(task => {
-                tasks.push({ ...task, isRescheduled: true, date: today });
-            });
-            appState.taskQueue.rescheduled = appState.taskQueue.rescheduled.filter(t => t.scheduledFor !== today);
-
-            // Add new tasks
-            const subjectStats = subjects.map(s => {
-                const completed = SYLLABUS[s].topics.filter(t => t.completed).length;
-                const total = SYLLABUS[s].topics.length;
-                return { subject: s, ratio: total > 0 ? completed / total : 0 };
-            }).sort((a, b) => a.ratio - b.ratio); // focus on lowest completion first
-
-            const neededTasks = 5 - tasks.length;
-            for (let i = 0; i < neededTasks && i < 4; i++) {
-                const subjKey = subjectStats[i % 4].subject;
-                const subject = SYLLABUS[subjKey];
-
-                const incomplete = subject.topics.filter(t => !t.completed);
-                if (incomplete.length > 0) {
-                    const priorityOrder = { critical: 0, high: 1, medium: 2, low: 3 };
-                    incomplete.sort((a, b) => priorityOrder[a.priority] - priorityOrder[b.priority]);
-
-                    const topic = incomplete[0];
-                    const smartTime = calculateSmartTime(topic);
-
-                    tasks.push({
-                        id: Date.now() + i,
-                        subject: subjKey,
-                        topicName: topic.name,
-                        priority: topic.priority,
-                        class: topic.class || 11,
-                        allocatedTime: smartTime,
-                        completed: false,
-                        skipped: false,
-                        date: today,
-                        xp: smartTime * (topic.priority === 'critical' ? 2 : topic.priority === 'high' ? 1.5 : 1)
-                    });
-                }
-            }
-
-            appState.taskQueue.today = tasks;
-            appState.dailyTasks[today] = tasks; // sync legacy
-            saveData();
         }
 
         // Streak
@@ -1610,6 +1821,22 @@
                 }
             }
         }
+        
+        function previousDay() {
+            if (appState.currentDay > 1) {
+                appState.currentDay--;
+                saveData();
+                renderAll();
+            }
+        }
+        
+        function nextDay() {
+            if (appState.currentDay < 90) {
+                appState.currentDay++;
+                saveData();
+                renderAll();
+            }
+        }
 
         // Render functions
         function renderAll() {
@@ -1629,8 +1856,18 @@
             const m = appState.stats.totalFocusMinutes % 60;
             document.getElementById('totalFocusTime').innerHTML = `${h}<span>h</span> ${m.toString().padStart(2, '0')}<span>m</span>`;
 
-            const todayTasks = appState.taskQueue.today;
-            const compTasks = todayTasks.filter(t => t.completed).length;
+            // Calculate completed for today's tasks
+            const dayKey = `Day ${appState.currentDay}`;
+            if (!appState.dailyStatus[dayKey]) {
+                appState.dailyStatus[dayKey] = {};
+            }
+            
+            const todayTasks = PLAN_90_DAYS[appState.currentDay - 1];
+            let compTasks = 0;
+            todayTasks.forEach((t, index) => {
+                 if (appState.dailyStatus[dayKey][index]) compTasks++;
+            });
+
             document.getElementById('tasksCompletedCount').textContent = `${compTasks}/${todayTasks.length}`;
             const pct = todayTasks.length > 0 ? (compTasks / todayTasks.length) * 100 : 0;
             document.getElementById('tasksProgressBar').style.width = `${pct}%`;
@@ -1639,23 +1876,17 @@
         function renderDateStrip() {
             const container = document.getElementById('dateStripContainer');
             if (!container) return;
-            container.innerHTML = '';
-
-            const today = new Date();
-            for (let i = -3; i <= 3; i++) {
-                const d = new Date(today);
-                d.setDate(today.getDate() + i);
-                const isToday = i === 0;
-
-                const el = document.createElement('div');
-                el.className = `date-item ${isToday ? 'active' : ''}`;
-                el.innerHTML = `
-                    <span class="date-day">${d.toLocaleDateString('en-US', { weekday: 'short' })}</span>
-                    <span class="date-num">${d.getDate()}</span>
-                    <span class="date-month">${d.toLocaleDateString('en-US', { month: 'short' })}</span>
-                `;
-                container.appendChild(el);
-            }
+            container.innerHTML = `
+                <div style="display: flex; align-items: center; justify-content: space-between; width: 100%; padding: 0 1rem; color: var(--text-primary);">
+                    <button class="icon-btn" onclick="previousDay()" style="color: var(--accent-purple); border: 1px solid var(--glass-border); background: var(--bg-secondary); padding: 0.5rem; border-radius: 8px;"><i class="ph ph-caret-left"></i> Prev</button>
+                    <div style="font-size: 1.5rem; font-weight: 700; font-family: 'Space Grotesk';">Day ${appState.currentDay} <span style="font-size: 0.9rem; color: var(--text-muted);">of 90</span></div>
+                    <button class="icon-btn" onclick="nextDay()" style="color: var(--accent-purple); border: 1px solid var(--glass-border); background: var(--bg-secondary); padding: 0.5rem; border-radius: 8px;">Next <i class="ph ph-caret-right"></i></button>
+                </div>
+            `;
+            
+            // Re-label Smart Daily Plan section header
+            const titleEl = document.querySelector('.section-title');
+            if(titleEl) titleEl.innerText = `Day ${appState.currentDay} Plan`;
         }
 
         function filterTasks(filter, el) {
@@ -1669,27 +1900,34 @@
             const container = document.getElementById('taskList');
             container.innerHTML = '';
 
-            let tasks = appState.taskQueue.today || [];
+            let rawTasks = PLAN_90_DAYS[appState.currentDay - 1];
+            let tasks = Object.assign([], rawTasks);
+            
+            const dayKey = `Day ${appState.currentDay}`;
+
             if (currentFilter !== 'all') {
                 tasks = tasks.filter(t => t.subject === currentFilter);
             }
 
             let todayXP = 0;
 
-            tasks.forEach(task => {
-                const isCompleted = task.completed;
+            tasks.forEach((task) => {
+                // Find original index to maintain status mapping correctly
+                const originalIndex = rawTasks.indexOf(task);
+                const isCompleted = appState.dailyStatus[dayKey][originalIndex] === true;
+                
                 if (isCompleted) todayXP += Math.floor(task.xp);
 
                 let el = document.createElement('div');
                 el.className = `task-item ${isCompleted ? 'completed' : ''}`;
 
-                const subj = SYLLABUS[task.subject];
+                const subj = task.isTest ? { icon: 'exam', name: 'Test', color: '#6366f1' } : SYLLABUS_META[task.subject];
 
                 // Content
                 el.innerHTML = `
-                    <div class="checkbox" onclick="toggleTask(${task.id})">${isCompleted ? '<i class="ph ph-check"></i>' : ''}</div>
+                    <div class="checkbox" onclick="toggleTask(${originalIndex})">${isCompleted ? '<i class="ph ph-check"></i>' : ''}</div>
                     <div class="task-content">
-                        <div class="task-title" onclick="toggleTask(${task.id})" style="cursor: pointer;">${task.topicName}</div>
+                        <div class="task-title" onclick="toggleTask(${originalIndex})" style="cursor: pointer;">${task.topicName}</div>
                         <div class="task-meta">
                             <span class="priority ${task.priority}">${task.priority}</span>
                             <span class="tag"><i class="ph ph-${subj.icon}"></i> ${subj.name}</span>
@@ -1702,8 +1940,7 @@
                     const actions = document.createElement('div');
                     actions.className = 'task-actions';
                     actions.innerHTML = `
-                        <button class="btn-skip" onclick="skipTask(${task.id})" title="Reschedule for tomorrow"><i class="ph ph-calendar-plus"></i></button>
-                        <button class="task-play-btn" onclick="openFocusModeForTask(${task.id})" title="Start Session"><i class="ph ph-play-circle" style="font-size:1.5rem"></i></button>
+                        <button class="task-play-btn" onclick="openFocusModeForTask(${originalIndex})" title="Start Session"><i class="ph ph-play-circle" style="font-size:1.5rem"></i></button>
                     `;
                     el.appendChild(actions);
                 } else {
@@ -1716,21 +1953,18 @@
                 container.appendChild(el);
             });
 
-            document.getElementById('xpDisplay').textContent = `+${todayXP} XP Today`;
+            document.getElementById('xpDisplay').textContent = `+${todayXP} XP Earned`;
         }
 
         // Actions
-        function toggleTask(id) {
-            const task = appState.taskQueue.today.find(t => t.id === id);
-            if (!task) return;
+        function toggleTask(originalIndex) {
+            const dayKey = `Day ${appState.currentDay}`;
+            const task = PLAN_90_DAYS[appState.currentDay - 1][originalIndex];
+            
+            const wasCompleted = appState.dailyStatus[dayKey][originalIndex] === true;
+            appState.dailyStatus[dayKey][originalIndex] = !wasCompleted;
 
-            task.completed = !task.completed;
-
-            // Mark complete in syllabus
-            const topic = SYLLABUS[task.subject].topics.find(t => t.name === task.topicName);
-            if (topic) topic.completed = task.completed;
-
-            if (task.completed) {
+            if (!wasCompleted) {
                 appState.stats.totalXP += Math.floor(task.xp);
                 showToast('Task Done!', `+${Math.floor(task.xp)} XP`);
                 createConfetti();
@@ -1743,41 +1977,17 @@
             renderAll();
         }
 
-        function skipTask(id) {
-            const taskIndex = appState.taskQueue.today.findIndex(t => t.id === id);
-            if (taskIndex > -1) {
-                const task = appState.taskQueue.today.splice(taskIndex, 1)[0];
-                const tomorrow = new Date();
-                tomorrow.setDate(tomorrow.getDate() + 1);
-                task.scheduledFor = tomorrow.toDateString();
-                appState.taskQueue.rescheduled.push(task);
-
-                // Add a new task to replace it
-                appState.taskQueue.today.push({
-                    ...task,
-                    id: Date.now(),
-                    topicName: `${SYLLABUS[task.subject].topics[0].name} (Replacement)`,
-                    priority: 'medium',
-                    xp: 50,
-                    allocatedTime: 25
-                });
-
-                saveData();
-                showToast('Rescheduled', 'Moved to tomorrow\'s plan');
-                renderAll();
-            }
-        }
-
         // Focus Mode
-        function openFocusModeForTask(id) {
-            const task = appState.taskQueue.today.find(t => t.id === id);
-            if (!task || task.completed) return;
+        function openFocusModeForTask(originalIndex) {
+            const dayKey = `Day ${appState.currentDay}`;
+            const task = PLAN_90_DAYS[appState.currentDay - 1][originalIndex];
+            if (!task || appState.dailyStatus[dayKey][originalIndex]) return;
 
-            currentTaskId = task.id;
+            currentTaskId = originalIndex;
             focusTotalTime = task.allocatedTime * 60;
             focusTimeRemaining = focusTotalTime;
 
-            const subj = SYLLABUS[task.subject];
+            const subj = task.isTest ? { icon: 'exam', name: 'Test', color: '#6366f1' } : SYLLABUS_META[task.subject];
             document.getElementById('focusIcon').innerHTML = `<i class="ph ph-${subj.icon}" style="color:${subj.color}"></i>`;
             document.getElementById('focusTopic').textContent = task.topicName;
             document.getElementById('focusDetails').textContent = `Class ${task.class} • ${task.allocatedTime} mins • ${task.priority.toUpperCase()} priority`;
@@ -1816,13 +2026,13 @@
                 focusTimerInterval = null;
             }
 
-            if (currentTaskId) {
-                const task = appState.taskQueue.today.find(t => t.id === currentTaskId);
-                if (task && !task.completed) {
+            if (currentTaskId !== null) {
+                const dayKey = `Day ${appState.currentDay}`;
+                if (!appState.dailyStatus[dayKey][currentTaskId]) {
                     const timeSpent = Math.ceil((focusTotalTime - focusTimeRemaining) / 60);
                     appState.stats.totalFocusMinutes += timeSpent;
                     appState.stats.sessionsCompleted++;
-                    toggleTask(task.id);
+                    toggleTask(currentTaskId);
                 }
             }
 
@@ -1869,6 +2079,7 @@
         document.addEventListener('DOMContentLoaded', init);
 
     </script>
+</script>
 </body>
 
 </html>
