@@ -1932,21 +1932,6 @@
             document.getElementById('tasksProgressBar').style.width = `${pct}%`;
         }
 
-        function renderDateStrip() {
-            const container = document.getElementById('dateStripContainer');
-            if (!container) return;
-            container.innerHTML = `
-                <div style="display: flex; align-items: center; justify-content: space-between; width: 100%; padding: 0 1rem; color: var(--text-primary);">
-                    <button class="icon-btn" onclick="previousDay()" style="color: var(--accent-purple); border: 1px solid var(--glass-border); background: var(--bg-secondary); padding: 0.5rem; border-radius: 8px;"><i class="ph ph-caret-left"></i> Prev</button>
-                    <div style="font-size: 1.5rem; font-weight: 700; font-family: 'Space Grotesk';">Day ${appState.currentDay} <span style="font-size: 0.9rem; color: var(--text-muted);">of 90</span></div>
-                    <button class="icon-btn" onclick="nextDay()" style="color: var(--accent-purple); border: 1px solid var(--glass-border); background: var(--bg-secondary); padding: 0.5rem; border-radius: 8px;">Next <i class="ph ph-caret-right"></i></button>
-                </div>
-            `;
-
-            // Re-label Smart Daily Plan section header
-            const titleEl = document.querySelector('.section-title');
-            if (titleEl) titleEl.innerText = `Day ${appState.currentDay} Plan`;
-        }
 
         function filterTasks(filter, el) {
             currentFilter = filter;
