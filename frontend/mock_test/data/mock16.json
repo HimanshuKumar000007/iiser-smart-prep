@@ -78,8 +78,8 @@
                 "0.8 Ω",
                 "1.5 Ω"
             ],
-            "correct": 2,
-            "explanation": "<strong>Step 1:</strong> Wheatstone bridge concept or symmetry. If balanced, middle resistor ignored. If Wheatstone bridge formed by 1,1,1,1 => balanced. Req = (1+1)||(1+1) = 2||2 = 1Ω. Wait, let's assume specific complex arrangement. 5 resistors bridge. Req = 1 (if balanced). If generic 'skeleton' cube etc. Let's assume standard bridge. Answer 1 is usually standard.",
+            "correct": 0,
+            "explanation": "<strong>Step 1:</strong> The circuit represents a balanced Wheatstone bridge since all four arms have equal resistance of 1Ω. The middle resistor (galvanometer branch) can be omitted. <br><strong>Step 2:</strong> The equivalent resistance is Req = (1+1) || (1+1) = 2 || 2 = 1Ω.",
             "difficulty": "Hard",
             "imagePrompt": "Complex circuit diagram. Wheatstone bridge structure with galvanometer replaced by resistor. All 5 resistors labeled 1 Ohm. Points A and B across the bridge.",
             "image": "https://res.cloudinary.com/dhb8qmnxt/image/upload/v1771305843/unnamed_dtsp8b.jpg"
@@ -112,7 +112,7 @@
                 "3.14 Å"
             ],
             "correct": 0,
-            "explanation": "<strong>Step 1:</strong> λ = h / √(3mkT). <br><strong>Step 2:</strong> Substitute values. √(3 * 1.67e-27 * 1.38e-23 * 300) ≈ momentum. Result is approx 1.45 Angstrom (standard result for thermal neutron).",
+            "explanation": "<strong>Step 1:</strong> The de Broglie wavelength for a thermal neutron is given by λ = h / √(3mk_BT). <br><strong>Step 2:</strong> Substituting the given values: λ = 6.63×10⁻³⁴ / √(3 * 1.67×10⁻²⁷ * 1.38×10⁻²³ * 300) ≈ 1.45 Å.",
             "difficulty": "Hard",
             "imagePrompt": null
         },
@@ -143,8 +143,8 @@
                 "e(8i + 12j)",
                 "None of these"
             ],
-            "correct": 0,
-            "explanation": "<strong>Step 1:</strong> F = q(v x B). q = -e. <br><strong>Step 2:</strong> v x B = (2i + 3j) x 4k = 8(i x k) + 12(j x k) = 8(-j) + 12(i) = 12i - 8j. <br><strong>Step 3:</strong> F = -e(12i - 8j) = e(-12i + 8j). Wait. v x B = 12i - 8j. F = q(v x B). If q=-e, then e(-12i + 8j). Option 2 matches best if sign considered correctly. Let's recheck. i x k = -j. j x k = i. So 2i x 4k = -8j. 3j x 4k = 12i. v x B = 12i - 8j. Force = -e(12i - 8j). This is e(-12i + 8j).",
+            "correct": 1,
+            "explanation": "<strong>Step 1:</strong> The magnetic force is F = q(v × B), and for an electron q = -e. <br><strong>Step 2:</strong> Perform the cross product v × B = (2i + 3j) × 4k = 8(i × k) + 12(j × k) = 8(-j) + 12(i) = 12i - 8j. <br><strong>Step 3:</strong> Then, F = -e(12i - 8j) = e(-12i + 8j).",
             "difficulty": "Hard",
             "imagePrompt": null
         },
@@ -176,7 +176,7 @@
                 "g sin θ"
             ],
             "correct": 1,
-            "explanation": "<strong>Step 1:</strong> For block to fall freely, the wedge must move out of the way faster than the block falls. Normal reaction N=0. <br><strong>Step 2:</strong> Component of acceleration perpendicular to incline must match g cos θ? Or simply, the vertical component of the wedge surface's acceleration downwards must be g? No, simpler condition: pseudo force ma cos θ? Correct condition for 'falling freely' implies loss of contact. a >= g cot θ.",
+            "explanation": "<strong>Step 1:</strong> For the block to fall freely (acceleration g downwards), the normal force between the block and the wedge must be zero (N = 0). <br><strong>Step 2:</strong> Applying Newton's second law perpendicular to the inclined surface: mg cos θ - ma sin θ = 0. Therefore, a = g cot θ for the block to just lose contact.",
             "difficulty": "Hard",
             "imagePrompt": "Wedge of mass M with angle theta. Block of mass m on top. Force applied to wedge moving it right.",
             "image": "https://res.cloudinary.com/dhb8qmnxt/image/upload/v1771305915/unnamed_uswhqf.jpg"
@@ -233,15 +233,15 @@
             "id": 15,
             "subject": "Physics",
             "section": "A",
-            "question": "A string fixed at both ends oscillates in its 3rd harmonic. The number of nodes and antinodes are:",
+            "question": "Statement I: A hollow conducting sphere placed in a uniform external electric field will have zero electric field inside its cavity. Statement II: The charges on the surface of the sphere redistribute themselves such that the net electric field inside the conductor material and the cavity is zero.",
             "options": [
-                "3, 3",
-                "4, 3",
-                "3, 4",
-                "4, 4"
+                "Both Statement I and II are correct, and II is the correct explanation for I.",
+                "Both Statement I and II are correct, but II is not the explanation for I.",
+                "Statement I is correct but II is incorrect.",
+                "Statement I is incorrect but II is correct."
             ],
-            "correct": 1,
-            "explanation": "<strong>Fact:</strong> 3rd harmonic = 3 loops. Nodes = n+1 = 4. Antinodes = n = 3.",
+            "correct": 0,
+            "explanation": "<strong>Reasoning:</strong> A conductor in electrostatic equilibrium redistributes its free charges on the surface to perfectly cancel the external electric field within its bulk. By Gauss's Law, this redistribution ensures that the electric field inside any hollow cavity enclosed by the conductor also remains strictly zero (classic Faraday cage effect). Hence, Statement II is true and directly explains Statement I.",
             "difficulty": "Hard",
             "imagePrompt": null
         },
@@ -321,7 +321,7 @@
                 "Benzyl acetate"
             ],
             "correct": 1,
-            "explanation": "<strong>Fact:</strong> This is Etard reaction conditions (or variation). Controlled oxidation of methyl group to aldehyde.",
+            "explanation": "<strong>Fact:</strong> Toluene reacts with CrO₃ in acetic anhydride to form a benzylidene diacetate intermediate, which upon hydrolysis gives benzaldehyde. This is a controlled oxidation reaction preventing further oxidation to benzoic acid.",
             "difficulty": "Hard",
             "imagePrompt": null
         },
@@ -475,15 +475,15 @@
             "id": 30,
             "subject": "Chemistry",
             "section": "B",
-            "question": "Which gas is used in the Ostwald process for manufacturing Nitric Acid?",
+            "question": "An enzyme accelerates a biochemical reaction by lowering its activation energy. If a specific enzyme lowers the activation energy of a reaction from 100 kJ/mol to 40 kJ/mol at 300 K, by approximately what factor does the reaction rate increase? (Assume pre-exponential factor A remains constant, and RT ≈ 2.5 kJ/mol at 300 K)",
             "options": [
-                "N₂",
-                "NH₃",
-                "O₂",
-                "NO₂"
+                "e^12",
+                "e^24",
+                "e^40",
+                "e^60"
             ],
             "correct": 1,
-            "explanation": "<strong>Fact:</strong> Catalytic oxidation of Ammonia (NH₃) is the first step.",
+            "explanation": "<strong>Step 1:</strong> The rate constant is given by the Arrhenius equation: k = A * e^(-Ea / RT). <br><strong>Step 2:</strong> The ratio of the catalyzed to uncatalyzed rate is k_cat / k_uncat = e^(-Ea_cat / RT) / e^(-Ea_uncat / RT) = e^((Ea_uncat - Ea_cat) / RT). <br><strong>Step 3:</strong> Difference in activation energy (Ea_uncat - Ea_cat) = 100 - 40 = 60 kJ/mol. <br><strong>Step 4:</strong> Ratio = e^(60 / 2.5) = e^24.",
             "difficulty": "Hard",
             "imagePrompt": null
         },
@@ -716,7 +716,7 @@
             "id": 45,
             "subject": "Mathematics",
             "section": "C",
-            "question": "Solution of differential equation (x + y) dx + (y - x) dy = 0 represents:",
+            "question": "The orthogonal trajectories of the family of straight lines y = cx are given by the differential equation which represents:",
             "options": [
                 "Circles",
                 "Parabolas",
@@ -724,7 +724,7 @@
                 "Straight lines"
             ],
             "correct": 0,
-            "explanation": "<strong>Step 1:</strong> x dx + y dx + y dy - x dy = 0 => x dx + y dy + (y dx - x dy) = 0? Wait. x dx + y dy = d(x²/2 + y²/2). y dx - x dy term suggests polar or something else. Actually, orthogonal trajectories to spirals. Let's check. dy/dx = -(x+y)/(y-x) = (x+y)/(x-y). Homogeneous. ... Result is system of logarithmic spirals. Wait, options are simple conics. Recheck. x dx + y dy - x dy + y dx = 0. x dx + y dy + x dy - y dx = 0? No sign. (x+y)dx + (y-x)dy = 0. xdx + ydx + ydy - xdy = 0. x dx + y dy = x dy - y dx. d(r²/2) = x² d(y/x). r dr = r² cos²... messy. Standard result is logarithmic spirals. But if forced to choose from options... Circle x²+y² = Ke^(2 tan⁻¹(y/x)). Not a simple circle. Let's assume question might be slightly different or 'Circles' is incorrectly expected. Wait, if it was (x-y)dx + (y+x)dy it would be spirals. If coefficients are different... Let's assume 'Logarithmic Spirals' not option. Let's swap to a simpler Hard question to avoid ambiguity.",
+            "explanation": "<strong>Step 1:</strong> The family of given lines is y = cx. Differentiating with respect to x gives dy/dx = c = y/x. <br><strong>Step 2:</strong> For orthogonal trajectories, replace dy/dx with -dx/dy. Hence, -dx/dy = y/x, which simplifies to x dx + y dy = 0. <br><strong>Step 3:</strong> Integrating gives x² + y² = k², which represents a family of concentric circles.",
             "difficulty": "Hard",
             "imagePrompt": null
         },
@@ -958,15 +958,15 @@
             "id": 60,
             "subject": "Biology",
             "section": "D",
-            "question": "Malpighian tubules are excretory organs in:",
+            "question": "A researcher grows a bacterial culture in a medium containing limited glucose and abundant lactose. By continuously monitoring population growth, they observe a brief lag phase followed by exponential growth, then a brief plateau, and finally a second exponential phase. Which of the following is the most logical interpretation of this data?",
             "options": [
-                "Earthworm",
-                "Cockroach",
-                "Frog",
-                "Planaria"
+                "The bacteria utilize lactose first, and the plateau corresponds to the exhaustion of lactose.",
+                "The bacteria undergo a beneficial mutation during the plateau enabling them to metabolize glucose.",
+                "The medium's temperature fluctuated, temporarily inhibiting bacterial replication enzymes.",
+                "The bacteria exhibit diauxic growth, exhausting glucose preferentially before activating the lac operon."
             ],
-            "correct": 1,
-            "explanation": "<strong>Fact:</strong> Insects like Cockroaches use Malpighian tubules for excretion.",
+            "correct": 3,
+            "explanation": "<strong>Data Interpretation:</strong> The biphasic growth curve described is classic diauxic growth. Bacteria will preferentially metabolize glucose, suppressing the lac operon via catabolite repression. The plateau represents the lag time required to transcribe and translate the lac operon genes (like beta-galactosidase) after glucose is completely exhausted, enabling the subsequent metabolism of lactose.",
             "difficulty": "Hard",
             "imagePrompt": null
         }

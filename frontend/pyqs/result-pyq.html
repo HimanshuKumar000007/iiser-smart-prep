@@ -466,14 +466,14 @@
             }
         }
     </style>
-<!-- Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-WHHM4FTNHG"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-WHHM4FTNHG');
-</script>
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-WHHM4FTNHG"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'G-WHHM4FTNHG');
+    </script>
 </head>
 
 <body>
@@ -1051,6 +1051,15 @@
                     optsHtml += `<div style="display:flex; gap:10px; align-items:center; color:${color}; margin-bottom:5px; font-weight:${idx === q.correct || idx === userSel ? '600' : '400'}">${icon} ${opt}</div>`;
                 });
 
+                let imgUrl = q.image || q.images || q.imageUrl;
+                let imgHtml = '';
+                if (imgUrl) {
+                    let srcAttr = imgUrl.startsWith('http') ? imgUrl : `/pyqs/${imgUrl}`;
+                    imgHtml = `<div style="margin-top: 1rem; text-align: center;">
+                        <img src="${srcAttr}" alt="Question Diagram" style="max-width: 100%; max-height: 300px; border-radius: 8px; border: 1px solid var(--border);">
+                    </div>`;
+                }
+
                 const html = `
                     <div class="sol-card" data-status="${status}">
                         <div style="display:flex; justify-content:space-between; margin-bottom:10px;">
@@ -1058,6 +1067,7 @@
                             <span class="status-badge ${badgeClass}">${statusText}</span>
                         </div>
                         <div style="margin-bottom:1rem; font-weight:600;">${q.question}</div>
+                        ${imgHtml}
                         <div style="background:var(--bg-hover); padding:1rem; border-radius:12px; margin-bottom:1rem;">
                             ${optsHtml}
                         </div>

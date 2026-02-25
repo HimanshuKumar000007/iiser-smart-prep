@@ -1096,9 +1096,11 @@
             document.getElementById('qNum').innerText = q.id;
 
             let contentHtml = q.text;
-            if (q.image) {
+            let imgUrl = q.image || q.images || q.imageUrl;
+            if (imgUrl) {
+                let srcAttr = imgUrl.startsWith('http') ? imgUrl : `/pyqs/${imgUrl}`;
                 contentHtml += `<div style="margin-top: 1.5rem; text-align: center;">
-                    <img src="/pyqs/$%7Bq.image%7D" alt="Question Diagram" style="max-width: 100%; max-height: 400px; border-radius: 8px; border: 1px solid var(--border);">
+                    <img src="${srcAttr}" alt="Question Diagram" style="max-width: 100%; max-height: 400px; border-radius: 8px; border: 1px solid var(--border);">
                 </div>`;
             }
             document.getElementById('qText').innerHTML = contentHtml;
