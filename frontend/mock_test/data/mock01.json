@@ -92,10 +92,10 @@
                 "μ₀I/(2R)",
                 "μ₀I/(2√2 R)",
                 "μ₀I/(4R)",
-                "μ₀IR²/(2(R² + R²)^(3/2))"
+                "μ₀I/(4√2 R)"
             ],
             "correct": 3,
-            "explanation": "Magnetic field on axis at distance x from center: B = (μ₀IR²)/(2(R² + x²)^(3/2))<br>At x = R: B = (μ₀IR²)/(2(R² + R²)^(3/2)) = (μ₀IR²)/(2(2R²)^(3/2))<br>This IS option D exactly as written. Perhaps options A, B, C are simplified wrong and D is the correct unsimplified form.",
+            "explanation": "Magnetic field on axis at distance x from center: B = (μ₀IR²)/(2(R² + x²)^(3/2)). At x = R: B = (μ₀IR²)/(2(R² + R²)^(3/2)) = μ₀IR² / (2(2R²)^(3/2)) = μ₀IR² / (4√2 R³) = μ₀I / (4√2 R).",
             "difficulty": "Medium",
             "imagePrompt": null
         },
@@ -487,79 +487,79 @@
             "id": 31,
             "subject": "Mathematics",
             "section": "C",
-            "question": "If A and B are square matrices of the same order such that AB = BA, then which of the following is always true?",
+            "question": "Let A be a 3x3 real matrix with det(A)=−2 and trace(A)=0. If A satisfies A³ − 3A + 2I = 0, then the trace of adj(A) equals:",
             "options": [
-                "(A + B)² = A² + 2AB + B²",
-                "(A − B)(A + B) = A² − AB",
-                "A² − B² = (A − B)(A + B)",
-                "All of the above"
+                "−3",
+                "0",
+                "3",
+                "6"
             ],
             "correct": 0,
-            "explanation": "When AB = BA (matrices commute):<br>(A + B)² = (A + B)(A + B) = A² + AB + BA + B² = A² + 2AB + B² ✓<br>(A − B)(A + B) = A² + AB − BA − B² = A² − B² (since AB = BA) ≠ A² − AB (so B is wrong)<br>Wait, let me reconsider option B:<br>(A − B)(A + B) = A² + AB − BA − B² = A² + AB − AB − B² = A² − B² (not A² − AB)<br>So B is FALSE.<br>The correct answer should be A or C individually, or \"A and C are true\". Given the options, I'll select A.<br>**(Note: In a real exam, this question needs clarification. Both A and C are correct, B is incorrect.)**",
-            "difficulty": "Medium",
+            "explanation": "Given A³ − 3A + 2I = 0, the minimal polynomial divides x³ − 3x + 2 = (x−1)²(x+2).\nThe eigenvalues of A must be roots of this polynomial. For trace(A) = 0 and det(A) = −2, the eigenvalues are 1, 1, and -2.\nThe eigenvalues of adj(A) are det(A)/λ_i, which gives -2, -2, and 1. Alternatively, the trace of adj(A) is the sum of the principal minors, or sum of the products of eigenvalues taken two at a time: (1)(1) + (1)(-2) + (1)(-2) = -3.",
+            "difficulty": "Hard",
             "imagePrompt": null
         },
         {
             "id": 32,
             "subject": "Mathematics",
             "section": "C",
-            "question": "What is the value of lim(x→0) [sin(3x)/sin(5x)]?",
+            "question": "The value of lim(n→∞) ∑(k=1 to n) [n / (n² + k²)] equals:",
             "options": [
-                "3/5",
-                "5/3",
-                "1",
-                "0"
+                "π/4",
+                "π/2",
+                "ln2",
+                "1"
             ],
             "correct": 0,
-            "explanation": "Using L'Hôpital's rule or standard limit:<br>lim(x→0) [sin(3x)/sin(5x)] = lim(x→0) [sin(3x)/3x × 5x/sin(5x) × 3x/5x]<br>= 1 × 1 × (3/5) = 3/5<br>Or using L'Hôpital: lim(x→0) [3cos(3x)]/[5cos(5x)] = 3/5<br>Options B, C, D give incorrect ratios.",
-            "difficulty": "Easy",
+            "explanation": "Rewrite the sum as: lim(n→∞) (1/n) ∑(k=1 to n) [1 / (1 + (k/n)²)].\nThis is a Riemann sum for the integral of 1/(1+x²) from 0 to 1.\n∫₀¹ dx/(1+x²) = [arctan(x)]₀¹ = π/4.",
+            "difficulty": "Medium",
             "imagePrompt": null
         },
         {
             "id": 33,
             "subject": "Mathematics",
             "section": "C",
-            "question": "If f(x) = x³ − 6x² + 11x − 6, then the number of real roots of f(x) = 0 is:",
+            "question": "Let p(x) = x⁴ + ax³ + bx² + cx + d be a polynomial with real coefficients. If p(1)=10, p(2)=20, p(3)=30, and p'(2)=0, then p(0)+p(4) equals:",
             "options": [
-                "0",
-                "1",
-                "2",
-                "3"
+                "40",
+                "48",
+                "64",
+                "72"
             ],
-            "correct": 3,
-            "explanation": "Factor by trying integer roots (rational root theorem: ±1, ±2, ±3, ±6)<br>f(1) = 1 − 6 + 11 − 6 = 0, so (x − 1) is a factor<br>Dividing: x³ − 6x² + 11x − 6 = (x − 1)(x² − 5x + 6) = (x − 1)(x − 2)(x − 3)<br>Roots: x = 1, 2, 3 (all real)<br>Number of real roots = 3<br>Options A, B, C undercount the roots.",
-            "difficulty": "Medium",
+            "correct": 2,
+            "explanation": "Let q(x) = p(x) − 10x. Then q(1)=q(2)=q(3)=0, so q(x) = (x−1)(x−2)(x−3)(x−k).\nSince p'(2)=0, we have q'(2) = p'(2) - 10 = -10.\nq'(x) = (x−2)(x−3)(x−k) + (x−1)(x−3)(x−k) + (x−1)(x−2)(x−k) + (x−1)(x−2)(x−3).\nAt x=2, q'(2) = (1)(−1)(2−k) = k−2. Setting k−2 = -10 gives k = -8.\nSo q(x) = (x−1)(x−2)(x−3)(x+8).\np(0) = q(0) + 0 = (−1)(−2)(−3)(8) = -48.\np(4) = q(4) + 40 = (3)(2)(1)(12) + 40 = 112.\np(0) + p(4) = -48 + 112 = 64.",
+            "difficulty": "Hard",
             "imagePrompt": null
         },
         {
             "id": 34,
             "subject": "Mathematics",
             "section": "C",
-            "question": "The derivative of f(x) = ln(sin x) is:",
+            "question": "If f(x) = tan⁻¹( (√(1+x²) − 1) / x ) for x ≠ 0, and f(0)=0, then f'(0) equals:",
             "options": [
-                "1/sin x",
-                "cot x",
-                "tan x",
-                "cos x"
+                "0",
+                "1/2",
+                "1",
+                "1/4"
             ],
             "correct": 1,
-            "explanation": "Using chain rule: d/dx[ln(sin x)] = (1/sin x) × d/dx(sin x) = (1/sin x) × cos x = cos x/sin x = cot x<br>Options A, C, D are incorrect applications of the chain rule.",
-            "difficulty": "Easy",
+            "explanation": "Using substitution x = tan θ. Then √(1+x²) = sec θ.\nThe expression inside the arc tangent becomes (sec θ - 1) / tan θ = (1 - cos θ) / sin θ = tan(θ/2).\nTherefore, f(x) = tan⁻¹(tan(θ/2)) = θ/2 = (1/2) tan⁻¹ x.\nDifferentiating f(x) gives f'(x) = 1 / (2(1+x²)). Evaluating at x=0 yields f'(0) = 1/2.",
+            "difficulty": "Medium",
             "imagePrompt": null
         },
         {
             "id": 35,
             "subject": "Mathematics",
             "section": "C",
-            "question": "What is the value of 0^(π/2) sin²x dx?",
+            "question": "The value of ∫₀^(π/2) dx / (1 + tan² x) is:",
             "options": [
-                "π/2",
                 "π/4",
-                "π/8",
-                "1"
+                "π/2",
+                "π/(2√2)",
+                "0"
             ],
-            "correct": 1,
-            "explanation": "Using identity: sin²x = (1 − cos(2x))/2<br>∫₀^(π/2) sin²x dx = ∫₀^(π/2) (1 − cos(2x))/2 dx<br>= (1/2)[x − sin(2x)/2]₀^(π/2)<br>= (1/2)[(π/2 − sin(π)/2) − (0 − sin(0)/2)]<br>= (1/2)[(π/2 − 0) − 0] = π/4<br>Options A, C, D use incorrect integration.",
+            "correct": 0,
+            "explanation": "Let I = ∫₀^(π/2) dx / (1 + tan^n x). Using King's property, x → π/2 - x, tan(π/2-x) = cot(x).\nI = ∫₀^(π/2) dx / (1 + cot^n x) = ∫₀^(π/2) tan^n x dx / (1 + tan^n x).\nAdding the two expressions for I gives 2I = ∫₀^(π/2) 1 dx = π/2.\nThus, I = π/4. (This is independent of the exponent as long as it's real)",
             "difficulty": "Medium",
             "imagePrompt": null
         },
@@ -567,15 +567,15 @@
             "id": 36,
             "subject": "Mathematics",
             "section": "C",
-            "question": "The area enclosed by the curves y = x² and y = x is:",
+            "question": "The area of the region bounded by the curves y = x² and y = 2x is:",
             "options": [
-                "1/6",
-                "1/3",
-                "1/2",
-                "2/3"
+                "2/3",
+                "4/3",
+                "8/3",
+                "5/3"
             ],
-            "correct": 0,
-            "explanation": "Find intersection points: x² = x → x² − x = 0 → x(x − 1) = 0 → x = 0, 1<br>Area = ∫₀¹ (x − x²) dx = [x²/2 − x³/3]₀¹ = (1/2 − 1/3) − 0 = 3/6 − 2/6 = 1/6<br>Options B, C, D use incorrect integration or limits.",
+            "correct": 1,
+            "explanation": "Find intersection points: x² = 2x implies x = 0 or x = 2.\nThe curve y = 2x is above y = x² in the interval [0, 2].\nArea = ∫₀² (2x - x²) dx = [x² - x³/3]₀² = 4 - 8/3 = 12/3 - 8/3 = 4/3.",
             "difficulty": "Medium",
             "imagePrompt": null
         },
@@ -583,47 +583,47 @@
             "id": 37,
             "subject": "Mathematics",
             "section": "C",
-            "question": "If the sum of the first n terms of an arithmetic progression is 3n² + 5n, what is the 10th term?",
+            "question": "Let (a_n) be a sequence defined by a_1 = 1 and a_{n+1} = (1 + 2a_n) / a_n for n ≥ 1. If S_n = ∑(k=1 to n) a_k a_{k+1}, then lim(n→∞) S_n equals:",
             "options": [
-                "58",
-                "59",
-                "60",
-                "61"
+                "1/2",
+                "1",
+                "3/2",
+                "2"
             ],
-            "correct": 3,
-            "explanation": "S_n = 3n² + 5n<br>nth term a_n = S_n − S_(n−1)<br>a_10 = S_10 − S_9<br>S_10 = 3(100) + 5(10) = 300 + 50 = 350<br>S_9 = 3(81) + 5(9) = 243 + 45 = 288<br>a_10 = 350 − 288 = 62<br>Wait, calculation gives 62. The closest option is 61 (D).<br>Actually, using general term formula: a_n = 6n + 2<br>a_10 = 6(10) + 2 = 62<br>I'll select D as the intended answer, assuming a typo in the question or options.",
-            "difficulty": "Medium",
+            "correct": 0,
+            "explanation": "Let b_n = 1/a_n. Then the recurrence becomes b_{n+1} = b_n + 2. Thus b_n = 1 + 2(n-1) = 2n-1, so a_n = 1/(2n-1).\nThen a_n * a_{n+1} = 1 / ((2n-1)(2n+1)) = (1/2) * (1/(2n-1) - 1/(2n+1)).\nS_n = (1/2) * (1 - 1/(2n+1)). As n→∞, S_n → 1/2.",
+            "difficulty": "Hard",
             "imagePrompt": null
         },
         {
             "id": 38,
             "subject": "Mathematics",
             "section": "C",
-            "question": "Two dice are thrown simultaneously. What is the probability that the sum of the numbers on the two dice is at least 10?",
+            "question": "Three distinct numbers are selected at random from the set {1, 2, …, 10}. The probability that they form an arithmetic progression is:",
             "options": [
-                "1/12",
                 "1/6",
-                "1/9",
-                "2/9"
+                "2/15",
+                "1/12",
+                "1/15"
             ],
-            "correct": 1,
-            "explanation": "Total outcomes = 6 × 6 = 36<br>Favorable outcomes (sum ≥ 10):<br>Sum = 10: (4,6), (5,5), (6,4) = 3 outcomes<br>Sum = 11: (5,6), (6,5) = 2 outcomes<br>Sum = 12: (6,6) = 1 outcome<br>Total favorable = 3 + 2 + 1 = 6<br>Probability = 6/36 = 1/6<br>Options A, C, D count outcomes incorrectly.",
-            "difficulty": "Easy",
+            "correct": 0,
+            "explanation": "Total number of ways = 10C3 = 120.\nThree numbers a<b<c form an AP if 2b = a + c, i.e., a+c is even, so a,c are both odd or both even.\nOdds in {1..10}: 5 elements. Pairs with a<c: 5C2 = 10. For each, b=(a+c)/2 is an integer in the set.\nEvens in {1..10}: 5 elements. Similarly 10 APs.\nTotal APs = 20. Probability = 20/120 = 1/6.",
+            "difficulty": "Medium",
             "imagePrompt": null
         },
         {
             "id": 39,
             "subject": "Mathematics",
             "section": "C",
-            "question": "The equation of the circle passing through the points (0, 0), (4, 0), and (0, 3) is:",
+            "question": "A circle passes through the point (1, 2) and touches the line x + y = 1 at the point (2, −1). The radius of this circle is:",
             "options": [
-                "x² + y² − 4x − 3y = 0",
-                "x² + y² + 4x + 3y = 0",
-                "x² + y² − 4x + 3y = 0",
-                "x² + y² + 4x − 3y = 0"
+                "√2",
+                "2√2",
+                "5 / √2",
+                "√10"
             ],
-            "correct": 0,
-            "explanation": "General equation: x² + y² + 2gx + 2fy + c = 0<br>Passing through (0, 0): c = 0<br>Passing through (4, 0): 16 + 8g = 0 → g = −2<br>Passing through (0, 3): 9 + 6f = 0 → f = −3/2<br>Equation: x² + y² − 4x − 3y = 0<br>Options B, C, D have incorrect signs.",
+            "correct": 2,
+            "explanation": "The center lies on the normal to x+y=1 through (2,-1). Normal slope is 1, so its equation is y = x - 3.\nLet the center be (h, h-3). Distance to (2,-1) equals distance to (1,2).\nDistance to (2,-1): (h-2)² + (h-3 - (-1))² = (h-2)² + (h-2)².\nDistance to (1,2): (h-1)² + (h-3 - 2)² = (h-1)² + (h-5)².\nSetting 2(h-2)² = (h-1)² + (h-5)² => 2h² - 8h + 8 = 2h² - 12h + 26 => 4h = 18 => h = 4.5. The center is (4.5, 1.5).\nRadius r = √[(4.5 - 2)² + (1.5 - (-1))²] = √(2.5² + 2.5²) = √(12.5) = √50 / 2 = 5 / √2.",
             "difficulty": "Medium",
             "imagePrompt": null
         },
@@ -631,127 +631,127 @@
             "id": 40,
             "subject": "Mathematics",
             "section": "C",
-            "question": "If z = 1 + i, what is |z³|?",
+            "question": "The minimum value of |z - 1| + |z - 5i| for a complex number z is:",
             "options": [
-                "√2",
-                "2",
-                "2√2",
-                "4"
+                "√24",
+                "4",
+                "√26",
+                "6"
             ],
             "correct": 2,
-            "explanation": "|z| = √(1² + 1²) = √2<br>|z³| = |z|³ = (√2)³ = 2√2<br>Options A, B, D use incorrect power rules for modulus.",
-            "difficulty": "Easy",
+            "explanation": "By the triangle inequality, |z - 1| + |z - 5i| = |1 - z| + |z - 5i| ≥ |(1 - z) + (z - 5i)| = |1 - 5i|.\nThe distance |1 - 5i| = √(1² + (-5)²) = √26.\nThis minimum is achieved when z lies on the line segment connecting 1 and 5i.",
+            "difficulty": "Medium",
             "imagePrompt": null
         },
         {
             "id": 41,
             "subject": "Mathematics",
             "section": "C",
-            "question": "**Passage:** Consider the function f(x) = x⁴ − 8x² + 16. At how many points does f(x) have local extrema?",
+            "question": "Passage: Let f(x) = x³ − 3x + 2 and g(x) = 1/f(x).\n\nThe number of points where g(x) is discontinuous is:",
             "options": [
+                "0",
                 "1",
                 "2",
-                "3",
-                "4"
+                "3"
             ],
             "correct": 2,
-            "explanation": "f'(x) = 4x³ − 16x = 4x(x² − 4) = 4x(x − 2)(x + 2)<br>Critical points: x = 0, 2, −2<br>f''(0) = −16 (max)<br>f''(±2) = 32 (min)<br>Total local extrema = 3<br>Options A, B, D count critical points incorrectly.",
-            "difficulty": "Medium",
+            "explanation": "f(x) = x³ - 3x + 2 = (x - 1)²(x + 2). Roots are at x = 1 (double) and x = -2.\ng(x) = 1/f(x) is discontinuous where f(x) = 0, i.e., at x = 1 and x = -2.\nNumber of discontinuity points: 2.",
+            "difficulty": "Easy",
             "imagePrompt": null
         },
         {
             "id": 42,
             "subject": "Mathematics",
             "section": "C",
-            "question": "**Passage:** (Same as Q41) What is the absolute minimum value of f(x)?",
+            "question": "The graph of a function f(x) is shown below. What is the value of ∫_(-2)^2 f(x) dx?",
             "options": [
-                "0",
-                "8",
-                "16",
-                "−16"
+                "2π",
+                "4π",
+                "π",
+                "8π"
             ],
             "correct": 0,
-            "explanation": "f(±2) = 16 − 32 + 16 = 0<br>f(0) = 16<br>Absolute minimum = 0<br>Options B, C, D give incorrect values.",
+            "explanation": "The graph shows a semicircle of radius 2 centered at the origin. The area of a full circle with radius 2 is π(2)² = 4π. The area of the semicircle is 4π/2 = 2π.",
             "difficulty": "Medium",
-            "imagePrompt": null
+            "imagePrompt": "A mathematical graph showing a semi-circle with radius 2 centered at the origin, entirely above the x-axis."
         },
         {
             "id": 43,
             "subject": "Mathematics",
             "section": "C",
-            "question": "The coefficient of x⁵ in the expansion of (1 + x)¹⁰ is:",
+            "question": "What is the equation of the ellipse shown in the figure, given its center is at the origin?",
             "options": [
-                "120",
-                "252",
-                "210",
-                "310"
+                "x²/25 + y²/9 = 1",
+                "x²/10 + y²/6 = 1",
+                "x²/100 + y²/36 = 1",
+                "x²/5 + y²/3 = 1"
             ],
-            "correct": 1,
-            "explanation": "¹⁰C₅ = (10 × 9 × 8 × 7 × 6) / 120 = 252<br>Options A, C, D are incorrect binomial coefficients.",
+            "correct": 0,
+            "explanation": "The figure shows an ellipse with a major axis of 10 along the x-axis (a=5) and a minor axis of 6 along the y-axis (b=3). The equation is x²/a² + y²/b² = 1 => x²/25 + y²/9 = 1.",
             "difficulty": "Easy",
-            "imagePrompt": null
+            "imagePrompt": "A graph of an ellipse centered at the origin. The ellipse extends from x=-5 to x=5 on the major axis and from y=-3 to y=3 on the minor axis."
         },
         {
             "id": 44,
             "subject": "Mathematics",
             "section": "C",
-            "question": "If tan⁻¹(1) + tan⁻¹(2) + tan⁻¹(3) = kπ, what is the value of k?",
+            "question": "Identify the shaded region in the complex plane shown below.",
             "options": [
-                "1/2",
-                "1",
-                "3/4",
-                "2"
+                "|z| > 1 and |z-2i| < 2",
+                "|z| < 1 and |z-2i| > 2",
+                "|z| > 1 and |z-2i| > 2",
+                "1 < |z| < 2"
             ],
-            "correct": 1,
-            "explanation": "tan⁻¹(1) = π/4<br>tan⁻¹(2) + tan⁻¹(3) = π + tan⁻¹[(2+3)/(1−6)] = π + tan⁻¹(−1) = 3π/4<br>Total = π/4 + 3π/4 = π<br>k = 1<br>Options A, C, D use incorrect addition formulas.",
-            "difficulty": "Hard",
-            "imagePrompt": null
+            "correct": 0,
+            "explanation": "The region is outside the unit circle centered at the origin (|z| > 1) and inside the circle of radius 2 centered at 2i (|z-2i| < 2).",
+            "difficulty": "Medium",
+            "imagePrompt": "A shaded circular region in the complex plane that lies outside the circle |z| = 1 and inside the circle |z-2i| = 2."
         },
         {
             "id": 45,
             "subject": "Mathematics",
             "section": "C",
-            "question": "The solution set of the inequality |x − 2| < 3 is:",
+            "question": "The figure shows a vector a in 3D space. What are its direction cosines if it makes equal angles with all three coordinate axes?",
             "options": [
-                "(−1, 5)",
-                "(−5, 1)",
-                "(−∞, −1) ∪ (5, ∞)",
-                "(0, 4)"
+                "1/√3, 1/√3, 1/√3",
+                "1/3, 1/3, 1/3",
+                "1/√2, 1/√2, 0",
+                "1, 1, 1"
             ],
             "correct": 0,
-            "explanation": "−3 < x − 2 < 3<br>−1 < x < 5<br>(−1, 5)<br>Options B, C, D represent incorrect interpretations.",
+            "explanation": "Let the angle be α. Then cos²α + cos²α + cos²α = 1, so 3cos²α = 1 => cos α = 1/√3. The direction cosines are all 1/√3.",
             "difficulty": "Easy",
-            "imagePrompt": null
+            "imagePrompt": "A 3D coordinate system (x,y,z axes) with a vector 'a' originating from the origin and extending into the first octant, clearly showing equal angles with all three axes."
         },
         {
             "id": 46,
             "subject": "Biology",
             "section": "D",
-            "question": "During which phase of the cell cycle does DNA replication occur?",
+            "question": "During DNA replication, the enzyme DNA polymerase III adds nucleotides exclusively in the 5' to 3' direction. This constraint directly necessitates which of the following mechanisms on the lagging strand?",
             "options": [
-                "G₁ phase",
-                "S phase",
-                "G₂ phase",
-                "M phase"
+                "Use of RNA primers at multiple origins",
+                "Synthesis of Okazaki fragments",
+                "Proofreading by 3' to 5' exonuclease activity",
+                "Strand displacement by helicase"
             ],
             "correct": 1,
-            "explanation": "DNA replication occurs during the S phase (synthesis phase).<br>Options A, C are gap phases. Option D is mitosis.",
-            "difficulty": "Easy",
+            "explanation": "DNA polymerase III can only add nucleotides to the 3'-OH end, requiring a free 3' end. Since the two strands are antiparallel and replication forks move unidirectionally, one strand (leading) can be synthesized continuously 5'→3', but the other (lagging) must be synthesized discontinuously in short fragments (Okazaki fragments) that are later joined.",
+            "difficulty": "Medium",
             "imagePrompt": null
         },
         {
             "id": 47,
             "subject": "Biology",
             "section": "D",
-            "question": "In a dihybrid cross between two heterozygous individuals (AaBb × AaBb), what is the probability of obtaining an offspring with genotype AAbb?",
+            "question": "In a plant species, flower color is determined by two genes: A/a and B/b. The presence of at least one dominant allele at each locus (A_B_) produces purple flowers; all other genotypes produce white flowers. If two dihybrid plants (AaBb) are crossed, what is the probability that a purple-flowered offspring is homozygous at both loci?",
             "options": [
-                "1/16",
-                "3/16",
-                "1/8",
-                "1/4"
+                "1/9",
+                "1/3",
+                "4/9",
+                "1/16"
             ],
             "correct": 0,
-            "explanation": "P(AAbb) = P(AA) × P(bb) = (1/4) × (1/4) = 1/16<br>Options B, C, D use incorrect probability multiplication.",
+            "explanation": "Probability of purple phenotype P(A_B_) = (3/4) × (3/4) = 9/16.\nProbability of AABB = (1/4) × (1/4) = 1/16.\nConditional probability P(AABB|A_B_) = (1/16) / (9/16) = 1/9.",
             "difficulty": "Medium",
             "imagePrompt": null
         },
@@ -759,15 +759,15 @@
             "id": 48,
             "subject": "Biology",
             "section": "D",
-            "question": "Which of the following is NOT a function of the liver?",
+            "question": "Which of the following metabolic conversions occurs primarily in the mitochondrial matrix during cellular respiration?",
             "options": [
-                "Detoxification",
-                "Bile production",
-                "Insulin production",
-                "Glycogen storage"
+                "Glucose → Glucose-6-phosphate",
+                "Pyruvate → Acetyl-CoA",
+                "Fructose-1,6-bisphosphate → Glyceraldehyde-3-phosphate",
+                "Phosphoenolpyruvate → Pyruvate"
             ],
-            "correct": 2,
-            "explanation": "Insulin is produced by the pancreas, not the liver.<br>Options A, B, D are liver functions.",
+            "correct": 1,
+            "explanation": "Pyruvate dehydrogenase complex happens in the mitochondrial matrix (link reaction). Options A, C, and D are glycolysis reactions in the cytosol.",
             "difficulty": "Easy",
             "imagePrompt": null
         },
@@ -775,15 +775,15 @@
             "id": 49,
             "subject": "Biology",
             "section": "D",
-            "question": "The process by which green plants use water to synthesize glucose in the presence of sunlight and chlorophyll is called:",
+            "question": "In the light reactions of photosynthesis, the chemiosmotic synthesis of ATP is directly driven by:",
             "options": [
-                "Respiration",
-                "Photosynthesis",
-                "Transpiration",
-                "Assimilation"
+                "The reduction of NADP⁺ to NADPH",
+                "The proton gradient across the thylakoid membrane",
+                "The oxidation of water at Photosystem II",
+                "The flow of electrons from plastoquinone to cytochrome b6f"
             ],
             "correct": 1,
-            "explanation": "Photosynthesis converts light energy to chemical energy (glucose).<br>Option A is breaking down glucose. Option C is water loss. Option D is incorporating nutrients.",
+            "explanation": "Chemiosmosis (Mitchell's theory) states that proton motive force (proton gradient) drives ATP synthesis via ATP synthase.",
             "difficulty": "Easy",
             "imagePrompt": null
         },
@@ -791,31 +791,31 @@
             "id": 50,
             "subject": "Biology",
             "section": "D",
-            "question": "Which enzyme is responsible for unwinding the DNA double helix during replication?",
+            "question": "During translation elongation in prokaryotes, the formation of peptide bonds is catalyzed by:",
             "options": [
-                "DNA polymerase",
-                "RNA primase",
-                "Helicase",
-                "Ligase"
+                "The 16S rRNA component of the small ribosomal subunit",
+                "The 23S rRNA component of the large ribosomal subunit",
+                "The protein EF-Tu",
+                "The Shine-Dalgarno sequence"
             ],
-            "correct": 2,
-            "explanation": "Helicase unwinds the DNA double helix.<br>Options A, B, D perform different functions.",
-            "difficulty": "Easy",
+            "correct": 1,
+            "explanation": "Peptidyl transferase activity, which forms peptide bonds, is a ribozyme function of 23S rRNA in the large (50S) subunit. This is a classic example of RNA catalysis.",
+            "difficulty": "Medium",
             "imagePrompt": null
         },
         {
             "id": 51,
             "subject": "Biology",
             "section": "D",
-            "question": "In humans, the exchange of gases between blood and tissues occurs at the level of:",
+            "question": "In a normal cardiac cycle, the 'lub' (first heart sound) is produced by the closure of which valves, and during which phase of the cardiac cycle does this occur?",
             "options": [
-                "Arteries",
-                "Veins",
-                "Capillaries",
-                "Arterioles"
+                "Semilunar valves; beginning of systole",
+                "Atrioventricular valves; beginning of systole",
+                "Semilunar valves; beginning of diastole",
+                "Atrioventricular valves; beginning of diastole"
             ],
-            "correct": 2,
-            "explanation": "Capillaries have thin walls allowing gas exchange.<br>Options A, B, D have walls too thick for efficient diffusion.",
+            "correct": 1,
+            "explanation": "The 'lub' (S1) sound is produced by closure of the atrioventricular (mitral and tricuspid) valves at the beginning of ventricular systole, preventing backflow into atria.",
             "difficulty": "Easy",
             "imagePrompt": null
         },
@@ -823,15 +823,15 @@
             "id": 52,
             "subject": "Biology",
             "section": "D",
-            "question": "According to Hardy-Weinberg equilibrium, if the frequency of a recessive allele (q) is 0.3, what is the frequency of heterozygotes in the population?",
+            "question": "In a population in Hardy-Weinberg equilibrium, the frequency of the recessive phenotype is 0.16. What is the frequency of heterozygous carriers?",
             "options": [
-                "0.09",
-                "0.21",
-                "0.42",
-                "0.49"
+                "0.24",
+                "0.32",
+                "0.48",
+                "0.64"
             ],
             "correct": 2,
-            "explanation": "p = 1 − q = 0.7<br>Heterozygotes (2pq) = 2 × 0.7 × 0.3 = 0.42<br>Options A (q²), B, D use incorrect formulas.",
+            "explanation": "Recessive phenotype frequency = q² = 0.16, so q = 0.4.\nThen p = 1 - 0.4 = 0.6.\nHeterozygote frequency is 2pq = 2 × 0.6 × 0.4 = 0.48.",
             "difficulty": "Medium",
             "imagePrompt": null
         },
@@ -839,31 +839,31 @@
             "id": 53,
             "subject": "Biology",
             "section": "D",
-            "question": "Which plant hormone is primarily responsible for cell elongation and phototropism?",
+            "question": "A plant seedling growing vertically is placed horizontally. After 24 hours, the shoot curves upward while the root curves downward. This differential response is primarily due to:",
             "options": [
-                "Abscisic acid",
-                "Cytokinin",
-                "Auxin",
-                "Gibberellin"
+                "Unequal distribution of auxin causing stimulation of cell elongation in shoots but inhibition in roots",
+                "Gravitropic sensing by statoliths in root caps only",
+                "Different photoreceptor systems in shoots and roots",
+                "Variation in cytokinin concentration between upper and lower sides"
             ],
-            "correct": 2,
-            "explanation": "Auxin promotes cell elongation and phototropism.<br>Option A inhibits growth. Option B promotes cell division. Option D promotes stem elongation.",
-            "difficulty": "Easy",
+            "correct": 0,
+            "explanation": "The Cholodny-Went model explains gravitropism: auxin redistributes to the lower side, promoting cell elongation in shoots but inhibiting elongation in roots. Roots are more sensitive to auxin, so same concentration inhibits rather than promotes.",
+            "difficulty": "Medium",
             "imagePrompt": null
         },
         {
             "id": 54,
             "subject": "Biology",
             "section": "D",
-            "question": "The resting membrane potential of a typical neuron is approximately:",
+            "question": "During the propagation of an action potential along an unmyelinated axon, the depolarization phase is directly caused by:",
             "options": [
-                "−70 mV",
-                "+70 mV",
-                "−140 mV",
-                "0 mV"
+                "Influx of K⁺ ions through voltage-gated channels",
+                "Efflux of Na⁺ ions through voltage-gated channels",
+                "Influx of Na⁺ ions through voltage-gated channels",
+                "Activation of the Na⁺/K⁺-ATPase pump"
             ],
-            "correct": 0,
-            "explanation": "Typical resting potential is −70 mV.<br>Options B, C, D represent incorrect potentials.",
+            "correct": 2,
+            "explanation": "Depolarization (rising phase): Voltage-gated Na⁺ channels open, Na⁺ rushes in (down electrochemical gradient), making inside positive.",
             "difficulty": "Easy",
             "imagePrompt": null
         },
@@ -871,15 +871,15 @@
             "id": 55,
             "subject": "Biology",
             "section": "D",
-            "question": "In which organelle does the Krebs cycle occur?",
+            "question": "Which of the following processes occurs in the cytosol of a eukaryotic cell?",
             "options": [
-                "Cytoplasm",
-                "Mitochondrial matrix",
-                "Endoplasmic reticulum",
-                "Chloroplast stroma"
+                "Oxidative phosphorylation",
+                "Citric acid cycle",
+                "Glycolysis",
+                "Beta-oxidation of fatty acids"
             ],
-            "correct": 1,
-            "explanation": "Krebs cycle occurs in the mitochondrial matrix.<br>Options A, C, D are incorrect locations.",
+            "correct": 2,
+            "explanation": "Glycolysis happens in the cytosol. The other processed occur in the mitochondria.",
             "difficulty": "Easy",
             "imagePrompt": null
         },
@@ -887,81 +887,81 @@
             "id": 56,
             "subject": "Biology",
             "section": "D",
-            "question": "**Passage:** An ecosystem has four trophic levels... What is the energy transfer efficiency from primary to secondary consumers?",
+            "question": "Passage: In a marine ecosystem, the net primary productivity (NPP) of phytoplankton is 1000 kJ/m²/year. Zooplankton consume 400 kJ/m²/year of this NPP, but lose 320 kJ/m²/year to respiration and waste. Small fish consume the zooplankton, and large fish consume the small fish.\n\nThe ecological efficiency of energy transfer from phytoplankton to zooplankton is approximately:",
             "options": [
-                "1%",
-                "10%",
-                "20%",
-                "50%"
+                "4%",
+                "8%",
+                "40%",
+                "80%"
             ],
             "correct": 1,
-            "explanation": "Efficiency = (100 / 1000) × 100 = 10%<br>Options A, C, D give incorrect percentages.",
-            "difficulty": "Easy",
+            "explanation": "Production of consumer = 400 - 320 = 80.\nEcological efficiency = Production of consumer / Production of prey = 80 / 1000 = 8%.",
+            "difficulty": "Hard",
             "imagePrompt": null
         },
         {
             "id": 57,
             "subject": "Biology",
             "section": "D",
-            "question": "**Passage:** (Same as Q56) If a pollutant shows biomagnification, which trophic level will have the highest concentration?",
+            "question": "Identify the structure marked 'X' in the diagram of a human nephron provided below.",
             "options": [
-                "Producers",
-                "Primary consumers",
-                "Secondary consumers",
-                "Tertiary consumers"
+                "Bowman's capsule",
+                "Glomerulus",
+                "Loop of Henle",
+                "Collecting duct"
             ],
-            "correct": 3,
-            "explanation": "Tertiary consumers accumulate the highest concentration due to biomagnification.<br>Options A, B, C have lower concentrations.",
-            "difficulty": "Medium",
-            "imagePrompt": null
+            "correct": 0,
+            "explanation": "The cup-like structure at the beginning of the nephron that encloses the glomerulus is the Bowman's capsule.",
+            "difficulty": "Easy",
+            "imagePrompt": "A detailed diagram of a human nephron. The cup-shaped structure at the beginning of the tubular component (Bowman's capsule) is clearly marked with a large 'X'."
         },
         {
             "id": 58,
             "subject": "Biology",
             "section": "D",
-            "question": "Which of the following blood groups is considered the universal donor?",
+            "question": "The pedigree chart below tracks a genetic trait. What is the most likely mode of inheritance?",
             "options": [
-                "A",
-                "B",
-                "AB",
-                "O"
+                "Autosomal recessive",
+                "Autosomal dominant",
+                "X-linked recessive",
+                "X-linked dominant"
             ],
-            "correct": 3,
-            "explanation": "Blood group O (specifically O−) is the universal donor.<br>Options A, B, C can cause immune reactions.",
-            "difficulty": "Easy",
-            "imagePrompt": null
+            "correct": 0,
+            "explanation": "Two unaffected parents have an affected daughter. This immediately rules out dominant traits. It also rules out X-linked recessive because an affected daughter would need an affected father. Therefore, it must be autosomal recessive.",
+            "difficulty": "Medium",
+            "imagePrompt": "A classic pedigree chart showing two unaffected parents (a square and a circle, both empty) who have an affected daughter (a filled circle)."
         },
         {
             "id": 59,
             "subject": "Biology",
             "section": "D",
-            "question": "The site of protein synthesis in a cell is:",
+            "question": "The graph shows the effect of substrate concentration on enzyme activity. What does the point 'Vmax/2' correspond to on the x-axis?",
             "options": [
-                "Nucleus",
-                "Ribosome",
-                "Golgi apparatus",
-                "Lysosome"
+                "Km (Michaelis constant)",
+                "Vmax",
+                "Activation energy",
+                "Optimum temperature"
             ],
-            "correct": 1,
-            "explanation": "Ribosomes are the sites of protein synthesis.<br>Option A contains DNA. Option C modifies proteins. Option D digests materials.",
-            "difficulty": "Easy",
-            "imagePrompt": null
+            "correct": 0,
+            "explanation": "In Michaelis-Menten kinetics, the substrate concentration at which the reaction velocity is half of its maximum (Vmax/2) is defined as the Michaelis constant (Km).",
+            "difficulty": "Medium",
+            "imagePrompt": "A Michaelis-Menten enzyme kinetics graph plotting velocity on the y-axis vs substrate concentration on the x-axis. A dotted line from Vmax/2 on the y-axis points down to the x-axis."
         },
         {
             "id": 60,
             "subject": "Biology",
             "section": "D",
-            "question": "In an experiment, a plant was kept in complete darkness for 48 hours. What would be the expected result?",
+            "question": "Based on the provided diagram of the cell cycle, which phase represents DNA synthesis?",
             "options": [
-                "Increased photosynthesis",
-                "Depletion of stored starch",
-                "Increased chlorophyll production",
-                "Enhanced growth"
+                "S phase",
+                "G1 phase",
+                "G2 phase",
+                "M phase"
             ],
-            "correct": 1,
-            "explanation": "Darkness stops photosynthesis; plant uses stored starch (depletion).<br>Options A, C, D require light.",
-            "difficulty": "Medium",
-            "imagePrompt": null
+            "correct": 0,
+            "explanation": "The S (synthesis) phase is the part of the cell cycle in which DNA is replicated.",
+            "difficulty": "Easy",
+            "imagePrompt": "A circular diagram of the cell cycle divided into G1, S, G2, and M phases. The phases are clearly labeled."
         }
     ]
 }

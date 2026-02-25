@@ -23,15 +23,15 @@
             "id": 2,
             "subject": "Physics",
             "section": "A",
-            "question": "A ball is thrown vertically upwards from the ground with initial velocity u. The ball reaches a maximum height h. If air resistance is negligible, the time taken to reach maximum height is:",
+            "question": "A particle of mass m starts from rest at t=0 and moves along a straight line. The acceleration-time graph is a straight line passing through origin, such that a = kt, where k is a positive constant. What is the average velocity of the particle between t=0 and t=t₀?",
             "options": [
-                "√(h/g)",
-                "√(2h/g)",
-                "u/g",
-                "2u/g"
+                "kt₀²/6",
+                "kt₀²/3",
+                "kt₀²/2",
+                "kt₀²"
             ],
-            "correct": 2,
-            "explanation": "<strong>Step 1: At Maximum Height</strong><br>Final velocity v = 0.<br><strong>Step 2: First Equation of Motion</strong><br>v = u - gt.<br>0 = u - gt => t = u/g.",
+            "correct": 0,
+            "explanation": "<strong>Step 1: Determine velocity function</strong><br>a = dv/dt = kt. Integrating with respect to time, v(t) = (1/2)kt² (since initial velocity is zero).<br><strong>Step 2: Determine displacement function</strong><br>v = ds/dt. Integrating v(t) from 0 to t₀ yields Displacement s(t₀) = ∫(1/2)kt² dt = (1/6)kt₀³.<br><strong>Step 3: Average velocity</strong><br>v_avg = Total Displacement / Total Time = s(t₀) / t₀ = (1/6)kt₀².",
             "difficulty": "Easy",
             "imagePrompt": null
         },
@@ -39,15 +39,15 @@
             "id": 3,
             "subject": "Physics",
             "section": "A",
-            "question": "A spring of force constant k is cut into two equal halves. The force constant of each half is:",
+            "question": "An ideal spring of force constant k lies along a smooth plane inclined at an angle θ to the horizontal. An unattached block of mass m is released from rest at a distance h (measured along the incline) above the top of the uncompressed spring. The block compresses the spring. What is the equation to find the maximum compression x of the spring?",
             "options": [
-                "k/2",
-                "k",
-                "2k",
-                "k/4"
+                "kx² - 2mg(h+x\\sinθ) = 0",
+                "kx² - 2mg(h+x)\\sinθ = 0",
+                "kx² - mgx\\sinθ = 0",
+                "kx² - 2mgh\\sinθ = 0"
             ],
-            "correct": 2,
-            "explanation": "<strong>Step 1: Spring Constant Relation</strong><br>k ∝ 1/L (Force constant is inversely proportional to length).<br><strong>Step 2: For Half Length</strong><br>k' = k × (L/(L/2)) = 2k.<br><strong>Conclusion:</strong> Each half has force constant 2k.",
+            "correct": 1,
+            "explanation": "<strong>Step 1: Work-Energy Theorem</strong><br>Applying conservation of mechanical energy from release point to maximum compression. The total distance the block moves along the incline is (h + x).<br><strong>Step 2: Potential Energy Change</strong><br>The vertical height dropped is therefore (h + x) * sin(θ). The loss in gravitational potential energy is mg(h + x)sin(θ).<br><strong>Step 3: Spring Energy</strong><br>The gain in spring potential energy is (1/2)kx². Equating them: mg(h + x)sin(θ) = (1/2)kx², which rearranges to kx² - 2mg(h + x)sin(θ) = 0.",
             "difficulty": "Medium",
             "imagePrompt": null
         },
@@ -103,17 +103,17 @@
             "id": 7,
             "subject": "Physics",
             "section": "A",
-            "question": "A wire of resistance R is stretched to double its length uniformly. Its new resistance becomes:",
+            "question": "The charging of a capacitor C through a resistor R using a DC battery of voltage V₀ is shown above. If a tangent is drawn exactly at t=0 to the exponential charging curve V(t), at what time t will this tangent intersect the asymptotic maximum voltage line V = V₀?",
             "options": [
-                "R/2",
-                "2R",
-                "4R",
-                "R/4"
+                "RC",
+                "RC/2",
+                "RC ln(2)",
+                "2RC"
             ],
-            "correct": 2,
-            "explanation": "<strong>Step 1: Resistance Formula</strong><br>R = ρL/A. Volume = AL = constant.<br><strong>Step 2: New Dimensions</strong><br>L' = 2L => A' = A/2 (volume constant).<br>R' = ρ(2L)/(A/2) = 4ρL/A = 4R.",
+            "correct": 0,
+            "explanation": "<strong>Step 1: Charging Equation</strong><br>The voltage charging curve is V(t) = V₀(1 - e^{−t/RC}).<br><strong>Step 2: Tangent Slope</strong><br>The slope of the tangent at t=0 is the derivative dV/dt evaluated at t=0. dV/dt = (V₀/RC)e^{−t/RC}. At t=0, slope = V₀/RC. Because it passes through origin, the equation of this tangent line is simply y = (V₀/RC)t.<br><strong>Step 3: Intersection Point</strong><br>We must find when the tangent intersects the line y = V₀. Setting (V₀/RC)t = V₀, the V₀ cancels out, yielding t = RC.",
             "difficulty": "Medium",
-            "imagePrompt": null
+            "imagePrompt": "A graph of voltage V across a capacitor vs time t during charging through a resistor R. A tangent line (straight line) is drawn exactly at the origin t=0, intersecting the horizontal maximum steady-state voltage dashed line V=V₀ at a specific point on the time axis."
         },
         {
             "id": 8,
@@ -183,15 +183,15 @@
             "id": 12,
             "subject": "Physics",
             "section": "A",
-            "question": "Which of the following quantities is dimensionless?",
+            "question": "The period of oscillation T of a fluid droplet under surface tension depends on its density ρ, its average radius r, and the surface tension σ. By the method of dimensional analysis, T is directly proportional to:",
             "options": [
-                "Strain",
-                "Stress",
-                "Young's modulus",
-                "Force constant"
+                "√(ρr³/σ)",
+                "√(ρσ/r³)",
+                "√(ρr/σ)",
+                "√(σ/ρr³)"
             ],
             "correct": 0,
-            "explanation": "<strong>Step 1: Definition</strong><br>Strain = Change in dimension / Original dimension = Length / Length.<br><strong>Step 2: Dimensions</strong><br>Strain = [L]/[L] = Dimensionless.<br><strong>Conclusion:</strong> Strain.",
+            "explanation": "<strong>Step 1: Assign Dimensions</strong><br>Time period [T] = T¹. Density [ρ] = ML⁻³. Radius [r] = L¹. Surface tension [σ] = Force/Length = (MLT⁻²)/L = MT⁻².<br><strong>Step 2: Setup Equation</strong><br>Let T ∝ ρᵃ rᵇ σᶜ. Equating powers: T¹ = (ML⁻³)ᵃ(L)ᵇ(MT⁻²)ᶜ = M^{a+c} L^{-3a+b} T^{-2c}.<br><strong>Step 3: Solve System</strong><br>For M: a+c = 0. For L: -3a+b = 0. For T: -2c = 1.<br>From T: c = -1/2. Thus a = 1/2. Thus b = 3(1/2) = 3/2.<br>This gives proportionality T ∝ ρ^{1/2} r^{3/2} σ^{-1/2} = √(ρr³/σ).",
             "difficulty": "Easy",
             "imagePrompt": null
         },
@@ -247,15 +247,15 @@
             "id": 16,
             "subject": "Chemistry",
             "section": "B",
-            "question": "Which of the following has the highest boiling point?",
+            "question": "Consider the boiling points of the noble gases from Helium to Radon. It is experimentally observed that the boiling point steadily increases down the group. Which fundamental physical parameter is most directly responsible for this trend?",
             "options": [
-                "HF",
-                "HCl",
-                "HBr",
-                "HI"
+                "Increase in permanent electric dipole moments",
+                "Increase in atomic polarizability yielding stronger London dispersion forces",
+                "Decrease in the first ionization enthalpy",
+                "Expansion of d-orbitals enabling hydrogen-like bonding interactions"
             ],
-            "correct": 0,
-            "explanation": "<strong>Step 1: Intermolecular Forces</strong><br>HF has strong hydrogen bonding.<br>HCl, HBr, HI have Van der Waals forces (increasing with molecular weight).<br><strong>Step 2: Comparison</strong><br>Hydrogen bonding in HF is stronger than Van der Waals in larger molecules.<br><strong>Conclusion:</strong> HF has highest boiling point.",
+            "correct": 1,
+            "explanation": "<strong>Step 1: Analyze Chemical Bonding</strong><br>Noble gases are monoatomic and strictly non-polar. They do not possess permanent dipole moments, and cannot undergo hydrogen bonding.<br><strong>Step 2: Intermolecular Forces</strong><br>The only intermolecular forces present are weak, temporary induced dipole-induced dipole interactions, known as London dispersion forces.<br><strong>Step 3: Conclusion</strong><br>As atomic size and electron cloud mass increase down the group, the atoms become much more polarizable, creating stronger transient dipoles (London forces), which directly increases the energy (and thus temperature) required to vaporize them.",
             "difficulty": "Easy",
             "imagePrompt": null
         },
@@ -279,15 +279,15 @@
             "id": 18,
             "subject": "Chemistry",
             "section": "B",
-            "question": "The element with electronic configuration [Ar] 3d¹⁰ 4s² 4p⁵ belongs to:",
+            "question": "The electron gain enthalpy of chlorine (Δ_eg_H = -349 kJ/mol) is significantly more negative than that of fluorine (Δ_eg_H = -328 kJ/mol), despite fluorine being the most electronegative element. This classic anomaly is fundamentally due to:",
             "options": [
-                "Group 15",
-                "Group 16",
-                "Group 17",
-                "Group 18"
+                "The strict absence of d-orbitals in the fluorine atom's valence shell.",
+                "The compact atomic size of fluorine causing strong interelectronic repulsion within its 2p subshell.",
+                "The comparatively higher bond dissociation enthalpy of Cl₂ gas versus F₂ gas.",
+                "Fluorine's rigid inability to expand its octet to accommodate the incoming stabilizing electron."
             ],
-            "correct": 2,
-            "explanation": "<strong>Step 1: Count Valence Electrons</strong><br>4s² 4p⁵ = 7 valence electrons.<br><strong>Step 2: Group Number</strong><br>7 valence electrons => Group 17 (Halogens).<br><strong>Conclusion:</strong> Group 17.",
+            "correct": 1,
+            "explanation": "<strong>Step 1: Locate Added Electron</strong><br>When an electron is added to F, it enters the n=2 quantum level. When added to Cl, it enters the much larger n=3 level.<br><strong>Step 2: Repulsion Forces</strong><br>The n=2 shell in fluorine is extremely compact. Forcing an extra electron into this small space creates huge electron-electron repulsion between the existing 7 valence electrons and the incoming one, significantly lowering the overall energy release.<br><strong>Conclusion:</strong> Chlorine's larger 3p subshell diffuses this repulsion, making its electron gain enthalpy more exothermic.",
             "difficulty": "Easy",
             "imagePrompt": null
         },
@@ -327,15 +327,15 @@
             "id": 21,
             "subject": "Chemistry",
             "section": "B",
-            "question": "The pH of 0.01 M HCl solution is:",
+            "question": "A 50.0 mL solution of 0.1 M acetic acid (CH₃COOH, Ka = 1.8 × 10⁻⁵) is carefully titrated with exactly 50.0 mL of 0.1 M NaOH. What is the approximate pH of the resulting solution at 298 K?",
             "options": [
-                "1",
-                "2",
-                "0.01",
-                "13"
+                "7.00",
+                "8.72",
+                "5.28",
+                "9.15"
             ],
             "correct": 1,
-            "explanation": "<strong>Step 1: Strong Acid</strong><br>HCl completely dissociates: [H⁺] = 0.01 M = 10⁻² M.<br><strong>Step 2: pH Formula</strong><br>pH = -log[H⁺] = -log(10⁻²) = 2.",
+            "explanation": "<strong>Step 1: Stoichiometry</strong><br>Equimolar amounts of weak acid and strong base mix, perfectly neutralizing to form aqueous sodium acetate (a salt of a weak acid and strong base). Because the volumes add up (50+50=100mL), the concentration of the salt is halved to C = 0.05 M.<br><strong>Step 2: Hydrolysis Formula</strong><br>The salt undergoes anionic hydrolysis yielding a basic pH. Formula: pH = 7 + (1/2)pKa + (1/2)log(C).<br><strong>Step 3: Calculation</strong><br>pKa = -log(1.8 × 10⁻⁵) ≈ 4.74.<br>log(0.05) = log(5 × 10⁻²) = 0.7 - 2 = -1.3.<br>pH = 7 + (4.74/2) + (-1.3/2) = 7 + 2.37 - 0.65 = 8.72.",
             "difficulty": "Easy",
             "imagePrompt": null
         },
@@ -359,15 +359,15 @@
             "id": 23,
             "subject": "Chemistry",
             "section": "B",
-            "question": "The shape of PCl₅ molecule is:",
+            "question": "According to Molecular Orbital Theory (MOT), what happens to the bond order and magnetic behavior when one electron is completely removed from an O₂ molecule to form the O₂⁺ stable ion?",
             "options": [
-                "Trigonal bipyramidal",
-                "Tetrahedral",
-                "Square pyramidal",
-                "Octahedral"
+                "Bond order increases from 2.0 to 2.5; it becomes diamagnetic.",
+                "Bond order decreases from 2.0 to 1.5; it remains paramagnetic.",
+                "Bond order increases from 2.0 to 2.5; it remains paramagnetic.",
+                "Bond order decreases; it becomes entirely diamagnetic."
             ],
-            "correct": 0,
-            "explanation": "<strong>Step 1: Electron Pairs</strong><br>P has 5 valence electrons + 5 from Cl = 5 bond pairs, 0 lone pairs.<br><strong>Step 2: VSEPR Theory</strong><br>5 electron pairs => Trigonal bipyramidal geometry.",
+            "correct": 2,
+            "explanation": "<strong>Step 1: MOT Configuration of O₂</strong><br>O₂ has 16 electrons. The last two valence electrons singly occupy the degenerate π*2p antibonding orbitals. Bond order BO = (Bonding - Antibonding)/2 = (10 - 6)/2 = 2.0. With 2 unpaired electrons, it is paramagnetic.<br><strong>Step 2: Formation of O₂⁺</strong><br>Removing one electron removes it from the antibonding π*2p. BO = (10 - 5)/2 = 2.5. Since the bond order increases, the bond gets stronger and shorter. One unpaired electron still remains in the π* orbital, so it remains paramagnetic.",
             "difficulty": "Easy",
             "imagePrompt": null
         },
@@ -727,17 +727,17 @@
             "id": 46,
             "subject": "Biology",
             "section": "D",
-            "question": "DNA replication occurs during which phase of the cell cycle?",
+            "question": "**Passage:** A population of actively dividing mammalian cells in a laboratory culture is treated with colchicine, an alkaloid poison that strictly inhibits microtubule polymerization and spindle fiber assembly. After 24 hours of continuous exposure, the cells are analyzed using flow cytometry to measure DNA content using a fluorescent dye.<br><br>Compared to an untreated asynchronous control culture, the flow cytometry profile of the colchicine-treated cells will show a massive accumulation of cells primarily in which phase, and with what corresponding relative amount of DNA content?",
             "options": [
-                "G1 phase",
-                "S phase",
-                "G2 phase",
-                "M phase"
+                "G1 phase, with 2C DNA content",
+                "S phase, with an intermediate DNA content spanning between 2C and 4C",
+                "G2 / M phase transition, with strictly 4C DNA content",
+                "G0 (quiescent) phase, with 2C DNA content"
             ],
-            "correct": 1,
-            "explanation": "<strong>Step 1: Cell Cycle Phases</strong><br>G1: Cell growth. S: DNA synthesis. G2: Preparation for division. M: Mitosis.<br><strong>Conclusion:</strong> DNA replication occurs in S phase.",
+            "correct": 2,
+            "explanation": "<strong>Step 1: Mechanism of Colchicine</strong><br>Colchicine binds to tubulin dimers, preventing them from assembling into microtubules. This prevents the formation of the mitotic spindle.<br><strong>Step 2: Cell Cycle Arrest</strong><br>Without a functional spindle, cells cannot pull sister chromatids apart during anaphase, causing them to arrest at the metaphase checkpoint (M phase).<br><strong>Step 3: DNA Content Analysis</strong><br>Because these cells have already successfully progressed through and completed the S phase (DNA replication), their DNA content mathematically doubled from 2C to 4C. They are now stuck at 4C.",
             "difficulty": "Easy",
-            "imagePrompt": null
+            "imagePrompt": ""
         },
         {
             "id": 47,
@@ -759,15 +759,15 @@
             "id": 48,
             "subject": "Biology",
             "section": "D",
-            "question": "Crossing over occurs during:",
+            "question": "**Passage:** In Drosophila melanogaster, three distinct linked autosomal genes A, B, and C govern distinct phenotypic traits. An extensive test-cross of a heterozygote mapped the recombination frequencies (RF) between the loci as follows: RF(A, B) = 18%, RF(B, C) = 5%, and RF(A, C) = 13%.<br><br>Based purely on this empirical linkage map data, what is the most likely linear gene order on the chromosome, and what well-known phenomenon limits using simple addition of RF percentages to predict larger map distances accurately?",
             "options": [
-                "Prophase I of meiosis",
-                "Metaphase I of meiosis",
-                "Prophase II of meiosis",
-                "Anaphase I of meiosis"
+                "Order A-C-B; Epistatic masking",
+                "Order A-C-B; Undetected double crossovers",
+                "Order C-A-B; Pleiotropy",
+                "Order B-A-C; Incomplete penetrance"
             ],
-            "correct": 0,
-            "explanation": "<strong>Step 1: Meiosis Stages</strong><br>Crossing over (exchange of genetic material) occurs between homologous chromosomes.<br><strong>Step 2: Timing</strong><br>This happens during Prophase I (pachytene stage).<br><strong>Conclusion:</strong> Prophase I of meiosis.",
+            "correct": 1,
+            "explanation": "<strong>Step 1: Mapping the Order</strong><br>The largest recombination frequency represents the two genes that are furthest apart on the chromosome. RF(A, B) is 18%, so A and B act as the boundaries. Gene C must be mapped somewhere between them. Since RF(A,C)=13 and RF(C,B)=5, the strict linear map is A---C---B. (13+5 = 18).<br><strong>Step 2: Mapping Limitations</strong><br>While this short map is perfectly additive, standard linkage maps over longer physical distances notoriously underestimate true map distances due to undetected double crossovers. If two crossovers occur between A and B, parental gene combinations are restored, masquerading as 'non-recombinant', falsely dropping the apparent percentage.",
             "difficulty": "Easy",
             "imagePrompt": null
         },
@@ -807,15 +807,15 @@
             "id": 51,
             "subject": "Biology",
             "section": "D",
-            "question": "The site of protein synthesis in a cell is:",
+            "question": "A mutant strain of *E. coli* is discovered that produces severely truncated, non-functional proteins when cultured at high temperatures. Biochemical analysis reveals that while the initiation complex forms perfectly and the first few amino acids are correctly linked, the translating ribosome frequently shifts its reading frame by +1 or -1 nucleotide during subsequent elongation. A structural defect in which specific cellular component is the most probable cause of this gross phenotype?",
             "options": [
-                "Nucleus",
-                "Ribosome",
-                "Mitochondria",
-                "Chloroplast"
+                "The Shine-Dalgarno consensus sequence located on the mRNA transcript",
+                "The 3' to 5' proofreading exonuclease domain of DNA Polymerase III",
+                "A base-modification enzyme acting exclusively on the anticodon loop of a tRNA cluster",
+                "The decoding fidelity center of the 16S rRNA housed within the 30S ribosomal subunit"
             ],
-            "correct": 1,
-            "explanation": "<strong>Step 1: Protein Synthesis</strong><br>Translation occurs at ribosomes.<br>Ribosomes read mRNA and assemble amino acids.<br><strong>Conclusion:</strong> Ribosome.",
+            "correct": 3,
+            "explanation": "<strong>Step 1: Analyze the Error Phase</strong><br>The error is 'frame-shifting during elongation'. Shine-Dalgarno is involved uniquely in initiation (which works fine here). DNA Pol III functions purely in DNA replication.<br><strong>Step 2: Identify Translational Mechanism</strong><br>While an anticodon mutation might cause one specific codon to misread, a global failure forcing frequent frame-shifts indicates the core physical 'track' mechanism is loose. The 16S rRNA (part of the small 30S subunit) forms the critical decoding center that physically monitors the strict codon-anticodon geometry at the A-site, keeping the ribosomal complex locked tightly into the single reading frame.",
             "difficulty": "Easy",
             "imagePrompt": null
         },
@@ -855,15 +855,15 @@
             "id": 54,
             "subject": "Biology",
             "section": "D",
-            "question": "The enzyme responsible for nitrogen fixation in legumes is:",
+            "question": "**Passage:** A researcher creates two specific CRISPR knockout mutants of a symbiotic *Rhizobium* species. Mutant α lacks a functional nitrogenase enzyme complex. Mutant β lacks functional nitrate reductase. Both mutant strains are separately inoculated into leguminous host plants and grown in severely nitrogen-depleted soil under a strict completely sealed N₂ atmospheric environment.<br><br>What will be the biological survival outcome for the host plants infected by each specific mutant strain after several weeks?",
             "options": [
-                "Nitrogenase",
-                "Nitrate reductase",
-                "Urease",
-                "Protease"
+                "Plants hosting Mutant α will thrive; Plants with Mutant β will die of nitrogen starvation.",
+                "Both groups of host plants will thrive equally and show normal green growth.",
+                "Plants hosting Mutant α will die of nitrogen starvation; Plants with Mutant β will thrive.",
+                "Both groups of host plants will die equally of acute nitrogen deficiency."
             ],
-            "correct": 0,
-            "explanation": "<strong>Step 1: Nitrogen Fixation</strong><br>N₂ → NH₃ conversion by bacteria.<br><strong>Step 2: Enzyme</strong><br>Nitrogenase catalyzes this reduction in root nodules.<br><strong>Conclusion:</strong> Nitrogenase.",
+            "correct": 2,
+            "explanation": "<strong>Step 1: Symbiotic Biochemistry</strong><br>Leguminous plants rely exclusively on root-nodule bacteria (*Rhizobium*) to fix inert atmospheric N₂ gas into usable ammonia. This fundamental step is catalyzed exclusively by the enzyme nitrogenase.<br><strong>Step 2: Evaluate Mutant α</strong><br>Mutant α lacks nitrogenase. It cannot fix N₂, so the host plant starves and dies.<br><strong>Step 3: Evaluate Mutant β</strong><br>Nitrate reductase is an enzyme used strictly to assimilate existing soil nitrates (NO₃⁻ → NO₂⁻). Because the soil is already extremely nitrate-depleted, and the bacteria simply needs to fix pure N₂ gas via healthy nitrogenase, the loss of nitrate reductase is entirely benign to this symbiotic pathway. Therefore, Mutant β fixes nitrogen fine, and its plants thrive.",
             "difficulty": "Easy",
             "imagePrompt": null
         },
@@ -871,17 +871,17 @@
             "id": 55,
             "subject": "Biology",
             "section": "D",
-            "question": "The theory of natural selection was proposed by:",
+            "question": "The histograms Graph A, Graph B, and Graph C visually demonstrate different foundational modes of natural selection acting on a polygenic continuous trait. Suppose a massive multi-year drought selectively eliminates seeds of average median size, leaving an abundance of only extremely small soft seeds and extremely large, hard seeds. Which graph most accurately represents the future phenotypic distribution of beak sizes in a finch population adapting strictly to this drought scenario?",
             "options": [
-                "Lamarck",
-                "Darwin",
-                "Mendel",
-                "Hugo de Vries"
+                "Graph A (representing Directional Selection)",
+                "Graph B (representing Stabilizing Selection)",
+                "Graph C (representing Disruptive Selection)",
+                "None; phenotypic evolution cannot graphically occur in this rapid bimodal manner."
             ],
-            "correct": 1,
-            "explanation": "<strong>Step 1: Evolution Theories</strong><br>Darwin proposed natural selection as the mechanism of evolution.<br><strong>Conclusion:</strong> Darwin.",
+            "correct": 2,
+            "explanation": "<strong>Step 1: Interpret the Environmental Pressure</strong><br>The environment sharply selects AGAINST the average, intermediate phenotype (median seeds are gone), while heavily favoring both highly divergent extreme phenotypes (small/soft and large/hard).<br><strong>Step 2: Match to Selection Mechanics</strong><br>This bimodal pressure splits the population's evolutionary trajectory into two divergent specialist groups (e.g. finches with small beaks for small seeds, and large beaks for hard seeds). This perfectly traces out the two-peaked distribution depicted in Graph C, universally categorized by evolutionary biologists as Disruptive Selection.",
             "difficulty": "Easy",
-            "imagePrompt": null
+            "imagePrompt": "Three distinct bell-curve histograms representing phenotype distribution in an original population (light grey line) and a future updated population (dark grey line). Graph A shows the entire dark curve shifting bodily to the right. Graph B shows the dark curve remaining centered but becoming much taller and narrower. Graph C shows a deep dip in the center of the dark curve, creating a highly prominent two-peaked (bimodal) distribution on the far left and right extremes."
         },
         {
             "id": 56,
@@ -951,17 +951,17 @@
             "id": 60,
             "subject": "Biology",
             "section": "D",
-            "question": "Ozone layer in the atmosphere is important because it:",
+            "question": "An environmental protection agency maps the water quality metrics of a flowing river subjected to severe acute organic pollution dumping at Point B. In the immediate stretch of water between Point B and Point C (directly downstream of the discharge zone), how will the interrelated measurements of Biochemical Oxygen Demand (BOD) and Dissolved Oxygen (DO) most likely conceptually behave in the graph?",
             "options": [
-                "Absorbs UV radiation",
-                "Provides oxygen",
-                "Reflects radio waves",
-                "Maintains temperature"
+                "Both the BOD line and the DO line will rise sharply and peak in parallel.",
+                "The BOD line will fall sharply, subsequently causing the DO line to rise rapidly.",
+                "The BOD line will spike sharply, causing a corresponding drastic rapid drop in the DO line.",
+                "Both metrics remain fully steady due to the constant flowing water's intrinsic buffering capacity."
             ],
-            "correct": 0,
-            "explanation": "<strong>Step 1: Ozone Layer Function</strong><br>Located in stratosphere.<br>Absorbs harmful UV-B and UV-C radiation.<br><strong>Conclusion:</strong> Absorbs UV radiation.",
+            "correct": 2,
+            "explanation": "<strong>Step 1: Define the Metrics</strong><br>Raw organic sewage provides a massive food source for aerobic decomposing bacteria. As these bacteria geometrically multiply to consume the waste, their demand for molecular oxygen skyrockets, causing BOD to spike aggressively upwards.<br><strong>Step 2: Interpret the Inverse Relationship</strong><br>Because these millions of bacteria are actively pulling the physical oxygen molecules out of the water to fuel their metabolic breakdown of the sewage, the actual ambient supply of Dissolved Oxygen (DO) left for fish crashes aggressively. The graph therefore shows an immediate spike in red BOD triggering a deadly corresponding crash in blue DO.",
             "difficulty": "Easy",
-            "imagePrompt": null
+            "imagePrompt": "A conceptual line graph mapping a river's flow downstream from Point A to Point D on the X-axis. At Point B, a massive untreated sewage discharge pipe enters the river. The graph tracks two dependent variable lines mapped alongside the river's stretch: a blue line representing Dissolved Oxygen (DO) concentration, and a red line representing Biochemical Oxygen Demand (BOD) load."
         }
     ]
 }

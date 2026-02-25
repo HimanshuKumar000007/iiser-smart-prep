@@ -493,7 +493,7 @@
             "id": 31,
             "subject": "Mathematics",
             "section": "C",
-            "question": "If matrix A = [[2, 3], [4, 5]] and I is the identity matrix of order 2, then (A − 2I)(A − 3I) equals:",
+            "question": "If matrix A = [[4, −1], [2, 1]] and I is the identity matrix of order 2, then (A − 2I)(A − 3I) equals:",
             "options": [
                 "Zero matrix",
                 "[[−3, 9], [12, 3]]",
@@ -501,7 +501,7 @@
                 "[[0, 3], [4, 0]]"
             ],
             "correct": 0,
-            "explanation": "<strong>Step 1: Compute (A - 2I)</strong><br>A = [[2, 3], [4, 5]], 2I = [[2, 0], [0, 2]].<br>A - 2I = [[2-2, 3-0], [4-0, 5-2]] = [[0, 3], [4, 3]].<br><strong>Step 2: Compute (A - 3I)</strong><br>3I = [[3, 0], [0, 3]].<br>A - 3I = [[2-3, 3-0], [4-0, 5-3]] = [[-1, 3], [4, 2]].<br><strong>Step 3: Multiply the Matrices</strong><br>[[0, 3], [4, 3]] × [[-1, 3], [4, 2]]<br>Row 1: (0)(-1) + (3)(4) = 12; (0)(3) + (3)(2) = 6.<br>Row 2: (4)(-1) + (3)(4) = 8; (4)(3) + (3)(2) = 18.<br>Result = [[12, 6], [8, 18]].<br><strong>Teacher Note:</strong> Wait, the Cayley-Hamilton theorem suggests A² - trace(A)A + det(A)I = 0. Trace=7, Det=-2. A² - 7A - 2I = 0.<br>Let's check the multiplication again. The question probably relies on roots 2 and 5 of some equation? No, eigenvalues of A are roots of λ² - 7λ - 2. Not 2 and 3.<br>Wait, let's re-read the intended question from similar exams. Often roots match eigenvalues. Here they don't.<br><strong>Correction in Computation:</strong> My Matrix Multiplication: <br>R1C1: 0 + 12 = 12. R1C2: 0 + 6 = 6. <br>R2C1: -4 + 12 = 8. R2C2: 12 + 6 = 18. <br>Result is NOT zero matrix. <br>However, if the question meant roots of characteristic eq... <br>Given the Correct Option is '0', there might be a typo in the question coefficients or the matrix A. <br><em>Standard Answer Key logic:</em> Assuming the question implies A satisfies (A-xI)(A-yI)=0, then x,y are eigenvalues. <br><strong>Step 4: Conclusion</strong><br>Ideally, if A had eigenvalues 2 and 3, result would be 0. For this specific matrix, it is not. But marking 'Zero matrix' as per standard key for this type of template question.",
+            "explanation": "Step 1: Compute (A - 2I)\nA = [[4, -1], [2, 1]], 2I = [[2, 0], [0, 2]].\nA - 2I = [[2, -1], [2, -1]].\nStep 2: Compute (A - 3I)\n3I = [[3, 0], [0, 3]].\nA - 3I = [[1, -1], [2, -2]].\nStep 3: Multiply the Matrices\n[[2, -1], [2, -1]] × [[1, -1], [2, -2]]\nRow 1: (2)(1) + (-1)(2) = 0; (2)(-1) + (-1)(-2) = 0.\nRow 2: (2)(1) + (-1)(2) = 0; (2)(-1) + (-1)(-2) = 0.\nResult = [[0, 0], [0, 0]].\nAlternatively, observe that the characteristic equation of A is λ² - 5λ + 6 = 0, meaning its eigenvalues are 2 and 3, bringing the factored characteristic polynomial to (A-2I)(A-3I) = 0 by the Cayley-Hamilton theorem.",
             "difficulty": "Medium",
             "imagePrompt": null
         },
@@ -593,13 +593,13 @@
             "section": "C",
             "question": "In how many ways can the letters of the word \"PERMUTATION\" be arranged such that all vowels come together?",
             "options": [
-                "5!×7!",
+                "(7! × 5!)/2",
                 "4!×8!",
-                "5!×6!",
+                "5!×7!",
                 "6!×5!"
             ],
             "correct": 0,
-            "explanation": "<strong>Step 1: Identify Letters</strong><br>Word: PERMUTATION (11 letters).<br>Vowels: E, U, A, I, O (5 vowels).<br>Consonants: P, R, M, T, T, N (6 consonants). Note T is repeated twice.<br><strong>Step 2: Group Vowels</strong><br>Treat (EUAIO) as 1 unit. Total entities = 6 consonants + 1 vowel unit = 7.<br><strong>Step 3: Arrange Entities</strong><br>Arrangements of 7 entities (where T is repeated 2 times) = 7! / 2!.<br><strong>Step 4: Arrange Vowels Internally</strong><br>Arrangements of 5 distinct vowels = 5!.<br><strong>Step 5: Total Arrangements</strong><br>Total = (7! / 2!) × 5!.<br>Comparing with options, Option A is 5! × 7!. This matches if we ignore the division by 2! (perhaps T repetition ignored in options or typo). Best match is 5! × 7!.",
+            "explanation": "Step 1: Identify Letters\nWord: PERMUTATION (11 letters). Vowels: E, U, A, I, O (5 distinct vowels). Consonants: P, R, M, T, T, N (6 consonants). Note T is repeated twice.\nStep 2: Group Vowels\nTreat (EUAIO) as 1 unit. Total entities = 6 consonants + 1 vowel unit = 7 entities.\nStep 3: Arrange Entities\nArrangements of 7 entities (where T is repeated 2 times) = 7! / 2!.\nStep 4: Arrange Vowels Internally\nArrangements of 5 distinct vowels = 5!.\nStep 5: Total Arrangements\nTotal = (7! / 2!) × 5! = (7! × 5!) / 2.",
             "difficulty": "Hard",
             "imagePrompt": null
         },
@@ -723,11 +723,11 @@
             "options": [
                 "x² − y² = C",
                 "x² + y² + 2xy = C",
-                "tan⁻¹(y/x) = ln|x| + C",
+                "tan⁻¹(y/x) = ½ ln(x² + y²) + C",
                 "y² = 2xy + x² + C"
             ],
             "correct": 2,
-            "explanation": "<strong>Step 1: Identify Type</strong><br>This is a homogeneous differential equation.<br><strong>Step 2: Substitute</strong><br>Put y = vx, so dy/dx = v + x(dv/dx).<br>v + x(dv/dx) = (x + vx)/(x - vx) = (1+v)/(1-v).<br>x(dv/dx) = (1+v)/(1-v) - v = (1+v-v+v²)/(1-v) = (1+v²)/(1-v).<br><strong>Step 3: Integrate</strong><br>∫ (1-v)/(1+v²) dv = ∫ dx/x<br>∫ 1/(1+v²) dv - ∫ v/(1+v²) dv = ln|x| + C<br>tan⁻¹v - 0.5 ln(1+v²) = ln|x| + C.<br><strong>Step 4: Check Options</strong><br>The option C is 'tan⁻¹(y/x) = ln|x| + C'. My derivation has an extra term. Let's re-evaluate standard results or just match closest form. Detailed solution yields implicit log terms usually. However, option C is the standard form for simpler linear homogeneous eqs. Wait, ∫v/(1+v²) is ln(1+v²). Actually, tan⁻¹(y/x) = ln(√(x²+y²)) + C. ln|x| + ln√(1+v²) = ln(x√(1+(y/x)²)) = ln√(x²+y²). Yes, it matches approximately or exact depending on constant C arrangement.",
+            "explanation": "Rewrite as: (x-y)dy = (x+y)dx\nExpand: x dy - y dy = x dx + y dx\nRearrange: x dy - y dx = x dx + y dy\nDivide by x² + y²:\n(x dy - y dx) / (x² + y²) = (x dx + y dy) / (x² + y²)\nIntegrating both sides directly:\nd(tan⁻¹(y/x)) = d(½ ln(x² + y²))\ntan⁻¹(y/x) = ½ ln(x² + y²) + C.",
             "difficulty": "Hard",
             "imagePrompt": null
         },

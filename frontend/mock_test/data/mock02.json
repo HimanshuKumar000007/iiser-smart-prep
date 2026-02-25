@@ -82,12 +82,12 @@
             "question": "Double-slit: phase difference π/3 at point y. d=0.5 mm, λ=500 nm, D=2 m. Find y (small-angle).",
             "options": [
                 "0.577 mm",
-                "0.289 mm",
+                "0.333 mm",
                 "0.866 mm",
                 "1.154 mm"
             ],
             "correct": 1,
-            "explanation": "Phase difference Δφ is related to path difference Δx by Δφ = (2π/λ)Δx. Also for small angles, Δx = d(y/D). So, Δφ = (2π/λ) * (dy/D). Given Δφ = π/3, we have π/3 = (2π/λ)(dy/D). Simplifying, 1/3 = (2d y)/(λ D) => y = (λ D)/(6 d). Substituting values: λ=5e-7 m, D=2 m, d=5e-4 m. y = (5e-7 * 2) / (6 * 5e-4) = (10e-7) / (30e-4) = (1/3) * 10^-3 m = 0.333 mm. The closest option listed is 0.289 mm."
+            "explanation": "Phase difference Δφ is related to path difference Δx by Δφ = (2π/λ)Δx. Also for small angles, Δx = d(y/D). So, Δφ = (2π/λ) * (dy/D). Given Δφ = π/3, we have π/3 = (2π/λ)(dy/D). Simplifying, 1/3 = (2d y)/(λ D) => y = (λ D)/(6 d). Substituting values: λ=500e-9 m, D=2 m, d=0.5e-3 m. y = (500e-9 * 2) / (6 * 0.5e-3) = (1e-6) / (3e-3) = 0.333e-3 m = 0.333 mm."
         },
         {
             "id": 7,
@@ -124,12 +124,12 @@
             "question": "Proton KE=1.6 keV moves perpendicular to B=0.01 T. Radius of path (m)?",
             "options": [
                 "0.31 m",
-                "0.48 m",
+                "0.58 m",
                 "0.15 m",
                 "0.95 m"
             ],
             "correct": 1,
-            "explanation": "First find velocity from Kinetic Energy. KE = 1.6 keV = 1600 eV. 1 eV = 1.602e-19 J, so KE = 1600 * 1.602e-19 = 2.5632e-16 J. KE = 0.5 mv² => v = sqrt(2*KE/m). Proton mass m ≈ 1.67e-27 kg. v = sqrt(2*2.5632e-16 / 1.67e-27) ≈ 5.54e5 m/s. Radius r = mv / (qB). Charge q = 1.602e-19 C. r = (1.67e-27 * 5.54e5) / (1.602e-19 * 0.01) ≈ 9.25e-22 / 1.602e-21 ≈ 0.577 m. The nearest option is 0.48 m (likely due to approximation differences in constants used in the question source)."
+            "explanation": "First find velocity from Kinetic Energy. KE = 1.6 keV = 1600 eV. 1 eV = 1.6e-19 J, so KE = 2.56e-16 J. KE = 0.5 mv² => v = sqrt(2*KE/m). Proton mass m ≈ 1.67e-27 kg. v ≈ 5.54e5 m/s. Radius r = mv / (qB). Charge q = 1.6e-19 C. r = (1.67e-27 * 5.54e5) / (1.6e-19 * 0.01) ≈ 0.578 m. Nearest rounded option is 0.58 m."
         },
         {
             "id": 10,
@@ -164,15 +164,15 @@
             "id": 12,
             "subject": "Physics",
             "section": "A",
-            "question": "Capacitor discharging q(t) = C V₀ e^(-t/RC). Find t₁ such that dq/dt = -q/(2RC).",
+            "question": "A capacitor C initially charged to V₀ is discharged through a resistor R. At what time t₁ is the discharging current exactly half of its initial value?",
             "options": [
-                "t₁ = (ln 2) RC",
-                "t₁ = (ln 2) RC / 2",
-                "t₁ = (ln 4) RC",
-                "t₁ = 0"
+                "t₁ = RC ln 2",
+                "t₁ = (RC ln 2)/2",
+                "t₁ = RC ln 4",
+                "t₁ = 2RC"
             ],
             "correct": 0,
-            "explanation": "The current is dq/dt. Differentiating q(t) = q₀ e^(-t/RC), we get dq/dt = - (q₀/RC) e^(-t/RC). The problem asks when dq/dt = -q/(2RC). Substituting q(t): -(q₀/RC)e^(-t/RC) = -(q₀ e^(-t/RC)) / (2RC). Canceling common terms implies 1/RC = 1/(2RC) which suggests a misinterpretation of the condition or simplified model context. Let's assume it asks when rate is half of initial rate. Initial rate (t=0) = -q₀/RC. We want rate = (1/2)(-q₀/RC). So -(q₀/RC)e^(-t/RC) = -q₀/(2RC). e^(-t/RC) = 1/2. -t/RC = ln(1/2) = -ln 2. t = RC ln 2."
+            "explanation": "The current is I(t) = (V₀/R)e^(-t/RC). The initial current is I₀ = V₀/R. We want I(t) = I₀/2, so e^(-t/RC) = 1/2. Taking natural log gives -t/RC = -ln 2, so t = RC ln 2."
         },
         {
             "id": 13,

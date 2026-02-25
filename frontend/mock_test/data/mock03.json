@@ -39,15 +39,15 @@
             "id": 3,
             "subject": "Physics",
             "section": "A",
-            "question": "A block slides on a rough curved track (radius of curvature R) with initial speed <i>v</i><sub>0</sub> at top. It leaves the track when normal force becomes zero. At what height from bottom does it leave? (Assume no friction.)",
+            "question": "A particle of mass m is projected from the lowest point of a smooth vertical circular track of radius R with a velocity v₀ = √(7gR). What is the normal reaction at the highest point of its path?",
             "options": [
-                "<i>v</i><sub>0</sub><sup>2</sup>/(2g)",
-                "R − <i>v</i><sub>0</sub><sup>2</sup>/(2g)",
-                "R cos⁻¹(gR/<i>v</i><sub>0</sub><sup>2</sup>)",
-                "R(1 − <i>v</i><sub>0</sub><sup>2</sup>/(2gR))"
+                "mg",
+                "2mg",
+                "3mg",
+                "4mg"
             ],
-            "correct": 3,
-            "explanation": "<b>Step 1: Condition for Leaving Track</b><br>The block leaves when the Normal force N = 0. Based on centripetal force: <br>mg cosθ - N = mv²/R implies mg cosθ = mv²/R.<br><br><b>Step 2: Conservation of Energy</b><br>Initial Energy (Top) = Final Energy (at angle θ).<br>(1/2)mv₀² + mgR = (1/2)mv² + mgR cosθ.<br>v² = v₀² + 2gR(1 - cosθ).<br><br><b>Step 3: Solve System</b><br>From Step 1, v² = gR cosθ.<br>Substitute: gR cosθ = v₀² + 2gR - 2gR cosθ<br>3gR cosθ = v₀² + 2gR<br>cosθ = (v₀² + 2gR) / 3gR.<br>Height h = R(1 - cosθ) is wrong. Height from bottom is R(1 - cosθ) if θ is from bottom? Usually θ is from vertical top. Height from bottom is y = R - R cosθ (if θ from bottom) or R + R cosθ? Let's assume h measured from bottom. Standard result yields h = R + ... actually option matches R(1 - v₀²/2gR)?? Let's check the options again. Actually, if it leaves at N=0, and we check the valid option structure... <br><b>Step 4: Final Check</b><br>The correct option given is D. Let's trust the derivation relevant to that result.",
+            "correct": 1,
+            "explanation": "Energy conservation from bottom to top: 1/2 m v₀² = 1/2 m v² + mg(2R).\n1/2 m (7gR) = 1/2 m v² + 2mgR => 7gR = v² + 4gR => v² = 3gR.\nAt the highest point, Normal Reaction N + mg = m v² / R = 3mg => N = 2mg.",
             "difficulty": "Hard",
             "imagePrompt": "Black-and-white exam diagram of a smooth circular arc of radius R with a block at top given initial speed v0. Label R, v0, show point where block leaves (normal=0). Annotate heights relative to bottom. Minimalist.",
             "image": "https://res.cloudinary.com/dhb8qmnxt/image/upload/v1769258518/bbabff68-b73e-426d-b701-463eb5f793c1_xycbxk.png"
@@ -56,15 +56,15 @@
             "id": 4,
             "subject": "Physics",
             "section": "A",
-            "question": "Two capacitors C and 4C initially uncharged are connected in series to battery V; then battery removed and series connection replaced by parallel connection between them. Final energy stored is fraction of initial energy?",
+            "question": "A parallel plate capacitor carries a charge Q and is disconnected from the battery. If the plates are pulled apart to double the separation, the energy stored in the capacitor:",
             "options": [
-                "1/2",
-                "1/4",
-                "1/3",
-                "2/3"
+                "Doubles",
+                "Halves",
+                "Remains same",
+                "Quadruples"
             ],
-            "correct": 1,
-            "explanation": "<b>Step 1: Series Connection</b><br>Equivalent capacitance Cs = (C × 4C) / (C + 4C) = 4C/5.<br>Charge stored Q = Cs × V = (4C/5)V.<br>Initial Energy Ui = Q² / 2Cs = (16C²V²/25) / (8C/5) = 2/5 CV².<br><br><b>Step 2: Parallel Connection</b><br>When reconnected in parallel (plates of same polarity together), total charge is conserved: Q_total = Q.<br>Total Capacitance Cp = C + 4C = 5C.<br>Final Energy Uf = Q² / 2Cp = [(4C/5)V]² / (2 × 5C) = (16C²V²/25) / 10C = (16/250)CV² = (4/125)CV².<br><br><b>Step 3: Ratio</b><br>Ratio = Uf / Ui = (4/125) / (2/5) = (4/125) × (5/2) = 20/250 = 2/25. Wait, this matches none. Let's re-read: 'battery removed'. If they are connected + to - (opposite), charge is different. Assuming standard parallel (charge redistribution): Ratio = 2/25 is not 1/4. <br><b>Re-evaluating Option</b>: If we assume common potential V_common = Q/C_total = (4CV/5)/5C = 4V/25. Energy = 1/2 C_total V_common² = 1/2(5C)(16V²/625) = 40/1250 CV² = 4/125. The ratio is indeed 2/25. Is there a mistake in my logic? Maybe Initial Energy U = 1/2 Ceq V² = 1/2 (4C/5) V² = 2/5 CV². Final = 1/2 (5C) (4V/25)²... The intended answer is 1/4. This implies perhaps a specific loss condition or different setup. <br><b>Conclusion</b>: Based on the provided correct key, we follow the standard loss formula: Loss = C1C2(V1-V2)²/2(C1+C2). But here single battery. Let's assume the explanation provided in the key is the target logic.",
+            "correct": 0,
+            "explanation": "Since disconnected, charge Q is constant. Capacitance C' = ε₀A/(2d) = C/2. Energy U = Q²/(2C). New energy U' = Q²/(2C') = Q²/(2(C/2)) = 2 [Q²/(2C)] = 2U. Thus, energy doubles.",
             "difficulty": "Medium",
             "imagePrompt": null
         },
@@ -79,7 +79,7 @@
                 "I A / d",
                 "I² A / d²"
             ],
-            "correct": 1,
+            "correct": 0,
             "explanation": "<b>Step 1: Magnetic Field of Wire</b><br>Field B at distance d from an infinite wire carrying current I is B = (μ₀I) / (2πd).<br><br><b>Step 2: Magnetic Moment of Loop</b><br>Magnetic moment m = I_loop × Area = I × A (assuming same current I).<br><br><b>Step 3: Torque Calculation</b><br>Torque τ = m × B.<br>Magnitude τ = (IA) × (μ₀I / 2πd) ∝ I²A/d.",
             "difficulty": "Hard",
             "imagePrompt": null
@@ -175,7 +175,7 @@
                 "−kq/a",
                 "kq/(√3 a)"
             ],
-            "correct": 1,
+            "correct": 0,
             "explanation": "<b>Step 1: Distance to Centroid</b><br>For equilateral triangle side 'a', distance from vertex to centroid r = a/√3.<br><br><b>Step 2: Superposition Principle</b><br>Potential V is scalar sum: V = k(q1/r + q2/r + q3/r) = (k/r)(q1 + q2 + q3).<br><br><b>Step 3: Calculation</b><br>Charts: +q, +q, -2q.<br>Sum = q + q - 2q = 0.<br>V = (k/r)(0) = 0.",
             "difficulty": "Hard",
             "imagePrompt": "Equilateral triangle vertices with three point charges +q, +q, -2q; side length a; compute potential at centroid. Clean exam diagram.",
@@ -272,7 +272,7 @@
                 "Co³⁺",
                 "Ni²⁺"
             ],
-            "correct": 0,
+            "correct": 2,
             "explanation": "<b>Step 1: Crystal Field Theory</b><br>Low-spin complexes form when Crystal Field Splitting Energy (Δo) is large.<br><br><b>Step 2: Analyze Ions</b><br>Fe²⁺ (d6), Co³⁺ (d6), Ni²⁺ (d8), Mn²⁺ (d5).<br>Co³⁺ has a high charge density, leading to a very large Δo.<br><br><b>Step 3: Conclusion</b><br>Co³⁺ almost always forms low-spin diamagnetic complexes (d6, t2g6 eg0), even with weak ligands like water.",
             "difficulty": "Hard",
             "imagePrompt": null
@@ -304,7 +304,7 @@
                 "Ortho carbon on ring",
                 "Carbonyl oxygen"
             ],
-            "correct": 0,
+            "correct": 3,
             "explanation": "<b>Step 1: Resonance Effects</b><br>The -COOH group is electron-withdrawing, deactivating the benzene ring (making ring carbons less negative).<br><br><b>Step 2: Identify Electron Rich Site</b><br>While the ring is deactivated, the carbonyl oxygen has lone pairs and pulls electron density via resonance, making it the most electron-rich (negative) site in the molecule.<br><br><b>Step 3: Conclusion</b><br>The carbonyl oxygen is most susceptible to electrophilic attack (protonation).",
             "difficulty": "Hard",
             "imagePrompt": "Benzoic acid resonance canonical forms showing delocalization; label carbons ortho, meta, para; show resonance arrows.",
@@ -337,7 +337,7 @@
                 "NaOH",
                 "CH₃COOH"
             ],
-            "correct": 0,
+            "correct": 1,
             "explanation": "<b>Step 1: Definition of Amphoteric</b><br>An amphoteric substance can act as both an acid (proton donor) and a base (proton acceptor).<br><br><b>Step 2: Evaluate Options</b><br>H₂O can accept H⁺ to form H₃O⁺ (base) and donate H⁺ to form OH⁻ (acid).<br>Use as solvent demonstrates this property perfectly.",
             "difficulty": "Medium",
             "imagePrompt": null
@@ -353,7 +353,7 @@
                 "3",
                 "4"
             ],
-            "correct": 0,
+            "correct": 2,
             "explanation": "<b>Step 1: n+1 Rule</b><br>In NMR, a signal is split into n+1 peaks, where n is the number of equivalent neighboring protons.<br><br><b>Step 2: Analyze Quartet</b><br>A quartet has 4 peaks.<br>n + 1 = 4 ⇒ n = 3.<br><br><b>Step 3: Conclusion</b><br>The proton has 3 equivalent neighbors (e.g., a methyl group -CH₃).",
             "difficulty": "Hard",
             "imagePrompt": null
@@ -369,7 +369,7 @@
                 "Lowering temperature",
                 "Using non-polar solvent"
             ],
-            "correct": 0,
+            "correct": 1,
             "explanation": "<b>Step 1: SN1 Mechanism</b><br>The rate-determining step is the formation of the carbocation intermediate.<br><br><b>Step 2: Solvent Effect</b><br>A polar protic solvent creates a solvation shell that stabilizes the transition state and the carbocation/leaving group ions via hydrogen bonding and dipole interactions.<br><br><b>Step 3: Conclusion</b><br>Using a polar protic solvent significantly lowers activation energy and speeds up SN1.",
             "difficulty": "Hard",
             "imagePrompt": null
@@ -385,7 +385,7 @@
                 "4",
                 "8"
             ],
-            "correct": 0,
+            "correct": 2,
             "explanation": "<b>Step 1: Stereoisomer Formula</b><br>Max number of stereoisomers = 2ⁿ, where n is the number of chiral centers.<br><br><b>Step 2: Apply to Question</b><br>n = 2.<br>Max isomers = 2² = 4.<br>(Since 'not meso' is specified, we don't subtract any).",
             "difficulty": "Medium",
             "imagePrompt": null
@@ -433,7 +433,7 @@
                 "Azeotrope when solution shows non-ideal positive or negative deviation giving constant-boiling mixture",
                 "Azeotrope impossible for ideal solutions"
             ],
-            "correct": 0,
+            "correct": 2,
             "explanation": "<b>Step 1: Raoult's Law Deviations</b><br>Azeotropes form when a solution shows large positive or negative deviations from ideal behavior.<br><br><b>Step 2: Consequence</b><br>The vapor pressure vs composition curve shows a maximum or minimum, meaning the liquid and vapor phases have the same composition at that point.<br><br><b>Step 3: Conclusion</b><br>Formation is due to non-ideal behavior (interaction energies A-A, B-B ≠ A-B).",
             "difficulty": "Hard",
             "imagePrompt": null
@@ -442,15 +442,15 @@
             "id": 28,
             "subject": "Chemistry",
             "section": "B",
-            "question": "Which orbital hybridization allows for maximum π-backbonding from metal to ligand (e.g., CO)?",
+            "question": "In metal carbonyls, the carbon atom of the CO ligand is hybridized as:",
             "options": [
                 "sp³",
                 "sp²",
                 "sp",
                 "dsp²"
             ],
-            "correct": 0,
-            "explanation": "<b>Step 1: Backbonding Mechanism</b><br>Metal donates electron density from a filled d-orbital into the ligand's empty π* antibonding orbital.<br><br><b>Step 2: Carbonyl Ligand</b><br>The Carbon in CO is sp hybridized. The sp hybridization allows for linear geometry and effective overlap of its π* orbitals with metal d-orbitals.<br><br><b>Step 3: Conclusion</b><br>sp hybridization is characteristic of CO in these complexes.",
+            "correct": 2,
+            "explanation": "The CO ligand is linear and the carbon atom is sp hybridized, allowing effective overlap for sigma donation and pi backbonding to the metal.",
             "difficulty": "Hard",
             "imagePrompt": null
         },
@@ -514,7 +514,7 @@
                 "6",
                 "2"
             ],
-            "correct": 0,
+            "correct": 1,
             "explanation": "<b>Step 1: Substitution</b><br>Let y = x². The equation becomes y² - 10y + 9 = 0.<br><br><b>Step 2: Factorize</b><br>(y - 9)(y - 1) = 0.<br>So y = 9 or y = 1.<br><br><b>Step 3: Find x</b><br>x² = 9 ⇒ x = ±3.<br>x² = 1 ⇒ x = ±1.<br><br><b>Step 4: Sum of Positive Roots</b><br>Positive roots are 3 and 1.<br>Sum = 3 + 1 = 4.",
             "difficulty": "Hard",
             "imagePrompt": null
@@ -530,7 +530,7 @@
                 "<i>x</i><sup><i>n</i></sup> / <i>n</i>!",
                 "<i>e</i><sup><i>ax</i></sup>/<i>n</i>!"
             ],
-            "correct": 0,
+            "correct": 1,
             "explanation": "<b>Step 1: Taylor Series for e^u</b><br>e^u = 1 + u + u²/2! + ... + uⁿ/n! + ...<br><br><b>Step 2: Substitute u = ax</b><br>e^{ax} = Σ (ax)ⁿ / n! = Σ (aⁿ xⁿ) / n!.<br><br><b>Step 3: Identify n-th Term</b><br>The term of order n is (aⁿ xⁿ) / n!.",
             "difficulty": "Hard",
             "imagePrompt": null
@@ -546,7 +546,7 @@
                 "det A − det B",
                 "trace A × trace B"
             ],
-            "correct": 0,
+            "correct": 1,
             "explanation": "<b>Step 1: Property of Determinants</b><br>The determinant of a product of matrices is the product of their determinants.<br><br><b>Step 2: Formula</b><br>det(AB) = det(A) × det(B).",
             "difficulty": "Medium",
             "imagePrompt": null
@@ -579,7 +579,7 @@
                 "5/12",
                 "1/4"
             ],
-            "correct": 0,
+            "correct": 2,
             "explanation": "<b>Step 1: Total Outcomes</b><br>Two dice: 6 × 6 = 36 outcomes.<br><br><b>Step 2: Favorable Outcomes (Prime Sums)</b><br>Possible primes ≤ 12: 2, 3, 5, 7, 11.<br>- Sum 2: (1,1) [1]<br>- Sum 3: (1,2), (2,1) [2]<br>- Sum 5: (1,4), (2,3), (3,2), (4,1) [4]<br>- Sum 7: (1,6), (2,5), (3,4), (4,3), (5,2), (6,1) [6]<br>- Sum 11: (5,6), (6,5) [2]<br>Total favorable = 1 + 2 + 4 + 6 + 2 = 15.<br><br><b>Step 3: Probability</b><br>P = 15/36 = 5/12.",
             "difficulty": "Medium",
             "imagePrompt": null
@@ -620,15 +620,15 @@
             "id": 39,
             "subject": "Mathematics",
             "section": "C",
-            "question": "Let <i>a</i><sub><i>n</i></sub> be defined by recurrence <i>a</i><sub><i>n</i>+1</sub> = 3 <i>a</i><sub><i>n</i></sub> − 2, with <i>a</i><sub>0</sub> = 1. Closed form for <i>a</i><sub><i>n</i></sub> is:",
+            "question": "Let a_n be defined by recurrence a_{n+1} = 3 a_n − 2, with a_0 = 2. Closed form for a_n is:",
             "options": [
                 "3<sup><i>n</i></sup> − 2",
                 "3<sup><i>n</i></sup> + 1",
                 "3<sup><i>n</i></sup> + 2",
                 "3<sup><i>n</i></sup> − 1"
             ],
-            "correct": 0,
-            "explanation": "<b>Step 1: Analyze Recurrence</b><br>a_{n+1} = 3 a_n - 2, a_0 = 1.<br>a_1 = 3(1) - 2 = 1.<br>a_2 = 3(1) - 2 = 1.<br><br><b>Step 2: Conclusion</b><br>a_n is constant 1 for all n.<br>We check options to see which gives 1.<br>Option B (placeholder in logic) might be 3^n - something? Actually, if a_n=1, only constant formula fits. But assuming typo in question/options relations, mathematically a_n=1 is the closed form.",
+            "correct": 1,
+            "explanation": "a_0 = 2. a_1 = 3(2) - 2 = 4. a_2 = 3(4) - 2 = 10. Checking options for n=0,1,2, only 3^n + 1 gives 2, 4, 10. Thus it is the correct closed form.",
             "difficulty": "Hard",
             "imagePrompt": null
         },
@@ -691,7 +691,7 @@
                 "Divergent",
                 "Convergent to 0"
             ],
-            "correct": 0,
+            "correct": 1,
             "explanation": "<b>Step 1: Alternating Series Test</b><br>Series Σ (-1)ⁿ / √n.<br>Terms 1/√n decrease to 0.<br>So it converges.<br><br><b>Step 2: Absolute Convergence</b><br>Consider Σ |a_n| = Σ 1/√n = Σ 1/n^(1/2).<br>This is a p-series with p = 1/2 ≤ 1, so it diverges.<br><br><b>Step 3: Conclusion</b><br>Convergent but not absolutely ⇒ Conditionally Convergent.",
             "difficulty": "Hard",
             "imagePrompt": null
@@ -723,7 +723,7 @@
                 "2R √(1 − m²)",
                 "2R"
             ],
-            "correct": 0,
+            "correct": 3,
             "explanation": "<b>Step 1: Analyze Geometry</b><br>Circle x² + y² = R² has center (0,0) and radius R.<br>Line y = mx passes through the origin (0,0).<br><br><b>Step 2: Chord Property</b><br>Since the line passes through the center, the chord is a diameter.<br><br><b>Step 3: Length</b><br>Length of diameter = 2R.",
             "difficulty": "Hard",
             "imagePrompt": "A circle x² + y² = R² and line y = mx intersect. The chord length inside circle equals:",
@@ -740,7 +740,7 @@
                 "Primase",
                 "Topoisomerase"
             ],
-            "correct": 0,
+            "correct": 1,
             "explanation": "<b>Step 1: DNA Replication Enzymes</b><br>Helicase: Unzips/unwinds the double helix.<br>DNA Polymerase: Synthesizes new strands.<br>Ligase: Joins fragments.<br><br><b>Step 2: Match Function</b><br>The enzyme responsible for unwinding is Helicase.",
             "difficulty": "Medium",
             "imagePrompt": null
@@ -772,7 +772,7 @@
                 "Disruptive selection",
                 "Balancing selection"
             ],
-            "correct": 0,
+            "correct": 1,
             "explanation": "<b>Step 1: Selection Types</b><br>Stabilizing: Favors average.<br>Disruptive: Favors both extremes.<br>Directional: Favors one extreme phenotype.<br><br><b>Step 2: Analyze Passage</b><br>Only 'A' individuals survive. This favors one specific phenotype/direction.<br><br><b>Step 3: Conclusion</b><br>This is Directional Selection.",
             "difficulty": "Medium",
             "imagePrompt": null
@@ -788,7 +788,7 @@
                 "Genetic drift",
                 "Natural selection"
             ],
-            "correct": 0,
+            "correct": 2,
             "explanation": "<b>Step 1: Identify Mechanism</b><br>In small, isolated populations, random sampling errors have a large impact on allele frequencies.<br><br><b>Step 2: Genetic Drift</b><br>This random fluctuation is called Genetic Drift.<br>It can fix or lose alleles rapidly compared to selection in small populations.",
             "difficulty": "Hard",
             "imagePrompt": null
@@ -820,7 +820,7 @@
                 "Vitamin D",
                 "Vitamin K"
             ],
-            "correct": 0,
+            "correct": 1,
             "explanation": "<b>Step 1: Collagen Synthesis</b><br>Collagen requires hydroxylation of proline and lysine residues to form stable triple helices.<br><br><b>Step 2: Co-factor</b><br>The enzyme prolyl hydroxylase requires Vitamin C (Ascorbic Acid) as a co-factor.<br><br><b>Step 3: Deficiency</b><br>Lack of Vitamin C leads to unstable collagen ⇒ Scurvy.",
             "difficulty": "Hard",
             "imagePrompt": null
@@ -836,7 +836,7 @@
                 "Zero-order kinetics only",
                 "Cooperative binding"
             ],
-            "correct": 0,
+            "correct": 1,
             "explanation": "<b>Step 1: Michaelis-Menten Plot</b><br>A plot of Reaction Velocity (V) vs Substrate Concentration [S] is hyperbolic.<br><br><b>Step 2: Saturation</b><br>As [S] increases, V increases but eventually levels off at Vmax (enzyme saturation).<br><br><b>Step 3: Conclusion</b><br>This is characteristic of Michaelis-Menten saturation kinetics.",
             "difficulty": "Medium",
             "imagePrompt": "Enzyme velocity vs substrate concentration curve approaching Vmax; label Vmax and Km.",
@@ -869,7 +869,7 @@
                 "Golgi apparatus",
                 "Lysosome"
             ],
-            "correct": 0,
+            "correct": 1,
             "explanation": "<b>Step 1: Organelle Functions</b><br>Rough ER: Protein synthesis.<br>Smooth ER: Lipid/Steroid synthesis and Detoxification.<br>Golgi: Packaging.<br><br><b>Step 2: Liver Function</b><br>Liver cells (hepatocytes) are rich in Smooth ER for detoxifying drugs and synthesizing lipids.",
             "difficulty": "Medium",
             "imagePrompt": null
@@ -885,7 +885,7 @@
                 "Unchanged",
                 "Becomes zero"
             ],
-            "correct": 0,
+            "correct": 1,
             "explanation": "<b>Step 1: Doubling Time Formula</b><br>For exponential growth, doubling time t_gen = ln(2) / k, where k is the specific growth rate.<br><br><b>Step 2: Relation</b><br>t_gen is inversely proportional to k.<br><br><b>Step 3: Analyze Change</b><br>If k increases, the denominator increases, so t_gen decreases (bacteria divide faster).",
             "difficulty": "Hard",
             "imagePrompt": null
@@ -917,7 +917,7 @@
                 "IgG",
                 "IgE"
             ],
-            "correct": 0,
+            "correct": 2,
             "explanation": "<b>Step 1: Antibody Functions</b><br>IgM: First responder.<br>IgA: Mucosal.<br>IgE: Allergies.<br>IgG: Main systemic antibody, long-lasting.<br><br><b>Step 2: Placental Transfer</b><br>Only IgG has specific receptors (FcRn) allowing it to cross the placenta from mother to fetus.",
             "difficulty": "Hard",
             "imagePrompt": null
@@ -933,7 +933,7 @@
                 "Plant cells",
                 "Fungal cells"
             ],
-            "correct": 0,
+            "correct": 2,
             "explanation": "<b>Step 1: Identify Structures</b><br>Large Central Vacuole: Maintains turgor pressure (Plant).<br>Chloroplasts: Photosynthesis (Plant).<br><br><b>Step 2: Exclusion</b><br>Animals, Fungi, and Bacteria lack this specific combination (Bacteria have no organelles, Animals no chloroplasts).<br><br><b>Step 3: Conclusion</b><br>Plant cells.",
             "difficulty": "Medium",
             "imagePrompt": "Micrograph shows cells with large central vacuole and chloroplasts. These are likely:",
@@ -966,7 +966,7 @@
                 "Heterozygotes equal fitness as homozygotes",
                 "Heterozygote advantage decreases genetic diversity"
             ],
-            "correct": 0,
+            "correct": 1,
             "explanation": "<b>Step 1: Definition</b><br>Heterozygote advantage occurs when the heterozygous genotype (Aa) has higher fitness than either homozygote (AA or aa).<br><br><b>Step 2: Classic Example</b><br>Sickle Cell Trait: HbA/HbS individuals are protected against malaria (better fitness) compared to HbA/HbA (malaria risk) or HbS/HbS (sickle cell disease).",
             "difficulty": "Hard",
             "imagePrompt": null
