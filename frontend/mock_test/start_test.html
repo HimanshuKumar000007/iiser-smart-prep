@@ -1124,10 +1124,9 @@
 
             let contentHtml = q.text;
             let imgUrl = q.image || q.images || q.imageUrl;
-            if (imgUrl) {
-                let srcAttr = imgUrl.startsWith('http') ? imgUrl : `/mock_test/${imgUrl}`;
+            if (imgUrl && imgUrl.startsWith('http')) {
                 contentHtml += `<div style="margin-top: 1.5rem; text-align: center;">
-                    <img src="${srcAttr}" alt="Question Diagram" style="max-width: 100%; max-height: 400px; border-radius: 8px; border: 1px solid var(--border);">
+                    <img src="${imgUrl}" alt="Question Diagram" style="max-width: 100%; max-height: 400px; border-radius: 8px; border: 1px solid var(--border);">
                 </div>`;
             }
             document.getElementById('qText').innerHTML = contentHtml;
