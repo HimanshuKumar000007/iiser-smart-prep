@@ -590,7 +590,7 @@ ${question}
 // Rate limit tracker: { "ip_YYYY-MM-DD": count }
 const chatUsage = new Map();
 const DAILY_LIMIT = 30;
-const MAX_TOKENS = 450; // ≈ 300 words
+const MAX_TOKENS = 800; // enough for complete answers (~600 words)
 
 const IISER_SYSTEM_PROMPT = `You are an expert AI tutor specialized exclusively for the IISER IAT (Indian Institutes of Science Education and Research Aptitude Test).
 Help students with Physics, Chemistry, Mathematics and Biology at Class 11-12 level.
