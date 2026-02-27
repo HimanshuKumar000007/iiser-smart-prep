@@ -6,40 +6,205 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI Tutor — IISER Smart Prep</title>
     <meta name="description"
-        content="Ask any IISER IAT doubt instantly. AI-powered tutor for Physics, Chemistry, Math and Biology.">
+        content="Ask any IISER IAT doubt instantly. Premium AI tutor for Physics, Chemistry, Math and Biology.">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,300;0,14..32,400;0,14..32,500;0,14..32,600;0,14..32,700;1,14..32,400&display=swap"
+        rel="stylesheet">
+
     <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg: #07080f;
+            --surface: #0e0f1d;
+            --border: rgba(255, 255, 255, 0.07);
+            --purple: #7c3aed;
+            --indigo: #4f46e5;
+            --glow: rgba(124, 58, 237, 0.35);
+            --text: #e2e8f0;
+            --muted: #64748b;
+            --user-bg: linear-gradient(135deg, #4f46e5, #7c3aed);
+        }
+
         body {
             font-family: 'Inter', sans-serif;
-            background: #0f1117;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
         }
 
-        /* Gradient background */
-        .bg-gradient-main {
-            background: radial-gradient(ellipse at top left, rgba(99, 102, 241, 0.15) 0%, transparent 50%),
-                radial-gradient(ellipse at bottom right, rgba(139, 92, 246, 0.1) 0%, transparent 50%),
-                #0f1117;
+        /* ── Animated background ── */
+        .bg-scene {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            overflow: hidden;
         }
 
-        .glass-panel {
-            background: rgba(255, 255, 255, 0.04);
-            backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
+        .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.18;
+            animation: drift 18s ease-in-out infinite alternate;
         }
 
-        .message-bubble {
-            animation: slideIn 0.25s ease-out;
+        .orb-1 {
+            width: 500px;
+            height: 500px;
+            background: var(--purple);
+            top: -15%;
+            left: -10%;
+            animation-duration: 20s;
         }
 
-        @keyframes slideIn {
+        .orb-2 {
+            width: 400px;
+            height: 400px;
+            background: #1d4ed8;
+            bottom: -10%;
+            right: -5%;
+            animation-duration: 25s;
+            animation-delay: -8s;
+        }
+
+        .orb-3 {
+            width: 300px;
+            height: 300px;
+            background: #6d28d9;
+            top: 40%;
+            left: 50%;
+            animation-duration: 15s;
+            animation-delay: -4s;
+        }
+
+        @keyframes drift {
+            from {
+                transform: translate(0, 0) scale(1);
+            }
+
+            to {
+                transform: translate(40px, 30px) scale(1.1);
+            }
+        }
+
+        /* ── Header ── */
+        .header {
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            background: rgba(7, 8, 15, 0.8);
+            backdrop-filter: blur(24px);
+            border-bottom: 1px solid var(--border);
+            padding: 12px 20px;
+        }
+
+        .header-inner {
+            max-width: 780px;
+            margin: auto;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-ring {
+            width: 38px;
+            height: 38px;
+            border-radius: 12px;
+            flex-shrink: 0;
+            background: linear-gradient(135deg, var(--indigo), var(--purple));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 20px var(--glow);
+        }
+
+        .status-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: #4ade80;
+            box-shadow: 0 0 8px #4ade80;
+            animation: pulse-green 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse-green {
+
+            0%,
+            100% {
+                box-shadow: 0 0 6px #4ade80;
+                opacity: 1;
+            }
+
+            50% {
+                box-shadow: 0 0 14px #4ade80;
+                opacity: 0.7;
+            }
+        }
+
+        /* ── Chat area ── */
+        #chatWrapper {
+            flex: 1;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            z-index: 1;
+        }
+
+        #chatContainer {
+            flex: 1;
+            overflow-y: auto;
+            padding: 28px 20px 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            max-width: 780px;
+            width: 100%;
+            margin: 0 auto;
+            scroll-behavior: smooth;
+        }
+
+        #chatContainer::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        #chatContainer::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        #chatContainer::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.12);
+            border-radius: 4px;
+        }
+
+        /* ── Welcome ── */
+        #welcomeBlock {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 0 20px;
+            gap: 20px;
+            text-align: center;
+            animation: fadeUp 0.6s ease-out;
+        }
+
+        @keyframes fadeUp {
             from {
                 opacity: 0;
-                transform: translateY(8px);
+                transform: translateY(16px);
             }
 
             to {
@@ -48,403 +213,656 @@
             }
         }
 
-        .typing-indicator span {
-            animation: blink 1.4s infinite both;
-            display: inline-block;
-            width: 7px;
-            height: 7px;
-            background-color: #818cf8;
-            border-radius: 50%;
-            margin: 0 2px;
+        .welcome-logo {
+            width: 72px;
+            height: 72px;
+            border-radius: 22px;
+            background: linear-gradient(135deg, var(--indigo), var(--purple));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 40px var(--glow), 0 8px 32px rgba(0, 0, 0, 0.4);
+            animation: float 3s ease-in-out infinite;
         }
 
-        .typing-indicator span:nth-child(2) {
-            animation-delay: 0.2s;
-        }
-
-        .typing-indicator span:nth-child(3) {
-            animation-delay: 0.4s;
-        }
-
-        @keyframes blink {
+        @keyframes float {
 
             0%,
             100% {
-                opacity: 0.2;
+                transform: translateY(0);
             }
 
             50% {
-                opacity: 1;
+                transform: translateY(-6px);
             }
         }
 
-        .code-block {
-            position: relative;
+        .welcome-title {
+            font-size: 1.75rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
         }
 
-        .copy-btn {
-            position: absolute;
-            top: 8px;
-            right: 8px;
-            opacity: 0;
-            transition: opacity 0.2s;
+        .welcome-title span {
+            background: linear-gradient(135deg, #a5b4fc, #c4b5fd, #818cf8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
-        .code-block:hover .copy-btn {
-            opacity: 1;
+        /* ── Chips ── */
+        .chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            justify-content: center;
+            max-width: 560px;
         }
 
-        /* Custom scrollbar */
-        .custom-scrollbar::-webkit-scrollbar {
-            width: 5px;
+        .chip {
+            font-size: 0.75rem;
+            color: #a5b4fc;
+            padding: 7px 14px;
+            border-radius: 20px;
+            border: 1px solid rgba(124, 58, 237, 0.35);
+            background: rgba(124, 58, 237, 0.08);
+            cursor: pointer;
+            transition: all 0.22s ease;
+            font-weight: 500;
+            letter-spacing: 0.01em;
         }
 
-        .custom-scrollbar::-webkit-scrollbar-track {
-            background: transparent;
+        .chip:hover {
+            background: rgba(124, 58, 237, 0.22);
+            border-color: rgba(124, 58, 237, 0.7);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px rgba(124, 58, 237, 0.25);
+            color: #c4b5fd;
         }
 
-        .custom-scrollbar::-webkit-scrollbar-thumb {
-            background: rgba(148, 163, 184, 0.3);
-            border-radius: 4px;
+        .chip:active {
+            transform: translateY(0);
         }
 
-        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-            background: rgba(148, 163, 184, 0.5);
+        /* ── Messages ── */
+        .msg-row {
+            display: flex;
+            animation: msgIn 0.3s cubic-bezier(0.22, 1, 0.36, 1);
         }
 
-        /* Input auto-grow */
-        textarea {
-            overflow-y: hidden;
+        .msg-row.user {
+            justify-content: flex-end;
         }
 
-        /* Prose styling for AI output */
+        .msg-row.ai {
+            justify-content: flex-start;
+            gap: 10px;
+        }
+
+        @keyframes msgIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .ai-avatar {
+            width: 30px;
+            height: 30px;
+            border-radius: 10px;
+            flex-shrink: 0;
+            margin-top: 2px;
+            background: linear-gradient(135deg, var(--indigo), var(--purple));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 12px var(--glow);
+        }
+
+        .msg-user {
+            max-width: 75%;
+            padding: 11px 16px;
+            background: var(--user-bg);
+            border-radius: 18px 18px 4px 18px;
+            font-size: 0.875rem;
+            line-height: 1.6;
+            color: #fff;
+            box-shadow: 0 4px 20px rgba(79, 70, 229, 0.4);
+        }
+
+        .msg-ai {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .msg-ai-inner {
+            background: rgba(14, 15, 29, 0.7);
+            border: 1px solid var(--border);
+            border-radius: 4px 18px 18px 18px;
+            padding: 14px 18px;
+            backdrop-filter: blur(12px);
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.3);
+        }
+
+        /* ── AI content markdown ── */
+        .ai-content {
+            font-size: 0.875rem;
+            line-height: 1.75;
+        }
+
         .ai-content h1,
         .ai-content h2,
         .ai-content h3 {
             color: #e2e8f0;
             font-weight: 600;
-            margin: 0.75em 0 0.4em;
+            margin: 1em 0 0.4em;
+            font-size: 1em;
+        }
+
+        .ai-content h2 {
+            font-size: 1.05em;
         }
 
         .ai-content p {
             color: #cbd5e1;
             margin: 0.4em 0;
-            line-height: 1.7;
         }
 
         .ai-content ul,
         .ai-content ol {
-            padding-left: 1.4em;
+            padding-left: 1.25em;
             color: #cbd5e1;
+            margin: 0.4em 0;
         }
 
         .ai-content li {
-            margin: 0.25em 0;
+            margin: 0.3em 0;
+        }
+
+        .ai-content strong {
+            color: #e2e8f0;
+            font-weight: 600;
+        }
+
+        .ai-content em {
+            color: #a5b4fc;
+            font-style: italic;
         }
 
         .ai-content code:not(pre code) {
-            background: rgba(99, 102, 241, 0.2);
-            color: #a5b4fc;
-            padding: 1px 6px;
-            border-radius: 4px;
-            font-size: 0.88em;
+            background: rgba(124, 58, 237, 0.18);
+            color: #c4b5fd;
+            padding: 2px 7px;
+            border-radius: 5px;
+            font-size: 0.82em;
+            border: 1px solid rgba(124, 58, 237, 0.25);
         }
 
         .ai-content pre {
-            background: #1e1e2e !important;
-            border-radius: 10px;
+            background: #0d0e1a !important;
+            border-radius: 12px;
             margin: 0.75em 0;
             overflow-x: auto;
+            border: 1px solid var(--border);
+            position: relative;
+        }
+
+        .ai-content pre code {
+            font-size: 0.8em !important;
         }
 
         .ai-content blockquote {
-            border-left: 3px solid #6366f1;
+            border-left: 3px solid var(--purple);
             padding-left: 1em;
             color: #94a3b8;
             margin: 0.5em 0;
+            font-style: italic;
         }
 
         .ai-content table {
             width: 100%;
             border-collapse: collapse;
             margin: 0.75em 0;
+            font-size: 0.85em;
         }
 
         .ai-content th,
         .ai-content td {
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 0.4em 0.75em;
+            border: 1px solid var(--border);
+            padding: 7px 12px;
             color: #cbd5e1;
         }
 
         .ai-content th {
-            background: rgba(99, 102, 241, 0.15);
+            background: rgba(124, 58, 237, 0.12);
             color: #e2e8f0;
+            font-weight: 600;
         }
 
-        /* Send button pulse when active */
-        @keyframes pulse-ring {
-            0% {
-                box-shadow: 0 0 0 0 rgba(99, 102, 241, 0.4);
-            }
+        .ai-content a {
+            color: #818cf8;
+            text-decoration: underline;
+        }
 
-            70% {
-                box-shadow: 0 0 0 8px rgba(99, 102, 241, 0);
-            }
+        /* cursor blink while streaming */
+        .cursor::after {
+            content: '▋';
+            display: inline-block;
+            color: var(--purple);
+            animation: blink-caret 0.8s step-end infinite;
+            margin-left: 1px;
+        }
 
+        @keyframes blink-caret {
+
+            0%,
             100% {
-                box-shadow: 0 0 0 0 rgba(99, 102, 241, 0);
+                opacity: 1
+            }
+
+            50% {
+                opacity: 0
             }
         }
 
-        #sendBtn:not(:disabled):hover {
-            animation: pulse-ring 1s ease-out;
-        }
-
-        /* Suggestion chips */
-        .chip {
-            border: 1px solid rgba(99, 102, 241, 0.4);
-            background: rgba(99, 102, 241, 0.08);
+        /* copy button */
+        .copy-btn {
+            position: absolute;
+            top: 8px;
+            right: 10px;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid var(--border);
+            color: #94a3b8;
+            padding: 3px 10px;
+            border-radius: 6px;
+            font-size: 0.7rem;
+            cursor: pointer;
+            opacity: 0;
             transition: all 0.2s;
+            font-family: inherit;
         }
 
-        .chip:hover {
-            background: rgba(99, 102, 241, 0.2);
-            border-color: rgba(99, 102, 241, 0.7);
-            transform: translateY(-1px);
+        .ai-content pre:hover .copy-btn {
+            opacity: 1;
+        }
+
+        .copy-btn:hover {
+            background: rgba(124, 58, 237, 0.3);
+            color: #c4b5fd;
+        }
+
+        /* ── Typing indicator ── */
+        .typing-dots {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            padding: 4px 0;
+        }
+
+        .typing-dots span {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: var(--purple);
+            animation: bounce-dot 1.4s ease-in-out infinite;
+        }
+
+        .typing-dots span:nth-child(2) {
+            animation-delay: .2s;
+            background: #6d28d9;
+        }
+
+        .typing-dots span:nth-child(3) {
+            animation-delay: .4s;
+            background: #4f46e5;
+        }
+
+        @keyframes bounce-dot {
+
+            0%,
+            80%,
+            100% {
+                transform: translateY(0) scale(1);
+                opacity: 0.6;
+            }
+
+            40% {
+                transform: translateY(-6px) scale(1.1);
+                opacity: 1;
+            }
+        }
+
+        /* ── Input area ── */
+        .input-wrap {
+            position: sticky;
+            bottom: 0;
+            z-index: 10;
+            padding: 12px 20px 18px;
+            background: linear-gradient(to top, rgba(7, 8, 15, 1) 70%, rgba(7, 8, 15, 0));
+        }
+
+        .input-box {
+            max-width: 780px;
+            margin: 0 auto;
+            background: rgba(14, 15, 29, 0.9);
+            border: 1px solid rgba(124, 58, 237, 0.3);
+            border-radius: 18px;
+            padding: 12px 12px 8px 16px;
+            backdrop-filter: blur(20px);
+            box-shadow: 0 0 0 1px rgba(124, 58, 237, 0.1), 0 8px 32px rgba(0, 0, 0, 0.4);
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .input-box:focus-within {
+            border-color: rgba(124, 58, 237, 0.6);
+            box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.12), 0 8px 32px rgba(0, 0, 0, 0.4);
+        }
+
+        .input-row {
+            display: flex;
+            gap: 10px;
+            align-items: flex-end;
+        }
+
+        textarea#userInput {
+            flex: 1;
+            background: transparent;
+            border: none;
+            outline: none;
+            color: var(--text);
+            font-size: 0.9rem;
+            font-family: inherit;
+            resize: none;
+            line-height: 1.6;
+            max-height: 160px;
+            overflow-y: auto;
+            padding: 4px 0;
+        }
+
+        textarea#userInput::placeholder {
+            color: var(--muted);
+        }
+
+        textarea#userInput::-webkit-scrollbar {
+            width: 3px;
+        }
+
+        textarea#userInput::-webkit-scrollbar-thumb {
+            background: var(--border);
+            border-radius: 3px;
+        }
+
+        #sendBtn {
+            width: 38px;
+            height: 38px;
+            border-radius: 12px;
+            flex-shrink: 0;
+            background: linear-gradient(135deg, var(--indigo), var(--purple));
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+            box-shadow: 0 0 16px var(--glow);
+            color: white;
+        }
+
+        #sendBtn:hover:not(:disabled) {
+            transform: scale(1.08);
+            box-shadow: 0 0 24px var(--glow);
+        }
+
+        #sendBtn:active:not(:disabled) {
+            transform: scale(0.96);
+        }
+
+        #sendBtn:disabled {
+            opacity: 0.35;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+
+        .input-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 4px 2px 0;
+            font-size: 0.7rem;
+            color: var(--muted);
+        }
+
+        /* ── Usage badge ── */
+        #usageCounter {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 0.72rem;
+            font-weight: 500;
+            background: rgba(124, 58, 237, 0.12);
+            border: 1px solid rgba(124, 58, 237, 0.25);
+            padding: 3px 10px;
+            border-radius: 20px;
+            color: #a5b4fc;
+            transition: all 0.3s;
+        }
+
+        #usageCounter.warn {
+            background: rgba(251, 146, 60, 0.12);
+            border-color: rgba(251, 146, 60, 0.35);
+            color: #fb923c;
+        }
+
+        #usageCounter.danger {
+            background: rgba(248, 113, 113, 0.12);
+            border-color: rgba(248, 113, 113, 0.35);
+            color: #f87171;
+        }
+
+        /* ── Error bubble ── */
+        .msg-error {
+            background: rgba(220, 38, 38, 0.1);
+            border: 1px solid rgba(220, 38, 38, 0.25);
+            color: #fca5a5;
+            border-radius: 12px;
+            padding: 10px 16px;
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
     </style>
+
     <!-- Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-WHHM4FTNHG"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
         function gtag() { dataLayer.push(arguments); }
-        gtag('js', new Date());
-        gtag('config', 'G-WHHM4FTNHG');
+        gtag('js', new Date()); gtag('config', 'G-WHHM4FTNHG');
     </script>
 </head>
 
-<body class="bg-gradient-main text-slate-100 min-h-screen flex flex-col">
+<body>
+
+    <!-- Animated orb background -->
+    <div class="bg-scene">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+        <div class="orb orb-3"></div>
+    </div>
 
     <!-- Header -->
-    <header class="glass-panel sticky top-0 z-50 border-b border-white/[0.06]">
-        <div class="max-w-3xl mx-auto px-4 py-3 flex items-center gap-3">
-            <a href="/frontend/index.html" class="text-slate-400 hover:text-white transition-colors mr-1" title="Home">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+    <header class="header">
+        <div class="header-inner">
+            <a href="/frontend/index.html" style="color:#64748b;display:flex;align-items:center;transition:color 0.2s;"
+                onmouseover="this.style.color='#e2e8f0'" onmouseout="this.style.color='#64748b'">
+                <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M15 19l-7-7 7-7" />
                 </svg>
             </a>
-            <div
-                class="w-8 h-8 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-xl flex items-center justify-center shadow-lg flex-shrink-0">
-                <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div class="logo-ring">
+                <svg width="18" height="18" fill="none" stroke="white" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                         d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
                 </svg>
             </div>
-            <div>
-                <h1 class="font-semibold text-sm text-white leading-tight">IISER AI Tutor</h1>
-                <p class="text-xs text-slate-500">Ask any IAT doubt — Physics, Chem, Math, Bio</p>
+            <div style="flex:1">
+                <div style="font-weight:600;font-size:0.9rem;letter-spacing:-0.01em;">IISER AI Tutor</div>
+                <div style="font-size:0.7rem;color:#475569;">Physics · Chem · Math · Bio</div>
             </div>
-            <div class="ml-auto flex items-center gap-1.5">
-                <span class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span>
-                <span class="text-xs text-slate-500" id="usageCounter">30 left today</span>
+            <div style="display:flex;align-items:center;gap:8px">
+                <div class="status-dot"></div>
+                <div id="usageCounter">
+                    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2.5">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                    </svg>
+                    <span id="usageNum">30</span> left
+                </div>
             </div>
         </div>
     </header>
 
-    <!-- Chat Area -->
-    <main class="flex-1 max-w-3xl mx-auto w-full px-4 py-6 flex flex-col gap-4">
+    <!-- Chat -->
+    <div id="chatWrapper">
+        <div id="chatContainer">
 
-        <div id="chatContainer" class="flex-1 flex flex-col gap-5 min-h-[60vh] overflow-y-auto custom-scrollbar pb-2">
-
-            <!-- Welcome -->
-            <div id="welcomeBlock" class="flex flex-col items-center justify-center py-10 gap-6 text-center">
-                <div
-                    class="w-16 h-16 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-2xl flex items-center justify-center shadow-2xl">
-                    <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            <!-- Welcome screen -->
+            <div id="welcomeBlock">
+                <div class="welcome-logo">
+                    <svg width="34" height="34" fill="none" stroke="white" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"
                             d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
                     </svg>
                 </div>
                 <div>
-                    <h2 class="text-2xl font-bold text-white mb-1">Hi, I'm your IAT Tutor 👋</h2>
-                    <p class="text-slate-400 text-sm">Ask me anything about Physics, Chemistry, Math or Biology</p>
+                    <div class="welcome-title">Hi, I'm your <span>IAT Tutor</span> 👋</div>
+                    <div style="color:#64748b;font-size:0.875rem;margin-top:6px;">Ask anything — get instant, clear
+                        explanations</div>
                 </div>
-                <!-- Suggestion Chips -->
-                <div class="flex flex-wrap gap-2 justify-center max-w-lg">
-                    <button onclick="useChip(this)"
-                        class="chip text-xs text-indigo-300 px-3 py-1.5 rounded-full cursor-pointer">
-                        Explain quantum numbers 🔬
-                    </button>
-                    <button onclick="useChip(this)"
-                        class="chip text-xs text-indigo-300 px-3 py-1.5 rounded-full cursor-pointer">
-                        Solve: integrate x²·eˣ dx 📐
-                    </button>
-                    <button onclick="useChip(this)"
-                        class="chip text-xs text-indigo-300 px-3 py-1.5 rounded-full cursor-pointer">
-                        What is Hardy-Weinberg equilibrium? 🧬
-                    </button>
-                    <button onclick="useChip(this)"
-                        class="chip text-xs text-indigo-300 px-3 py-1.5 rounded-full cursor-pointer">
-                        Difference between SN1 and SN2 ⚗️
-                    </button>
-                    <button onclick="useChip(this)"
-                        class="chip text-xs text-indigo-300 px-3 py-1.5 rounded-full cursor-pointer">
-                        What topics come in IISER IAT? 📝
-                    </button>
+                <div class="chips">
+                    <div class="chip" onclick="useChip(this)">⚛️ Explain quantum numbers</div>
+                    <div class="chip" onclick="useChip(this)">📐 Integrate x²·eˣ dx</div>
+                    <div class="chip" onclick="useChip(this)">🧬 Hardy-Weinberg equilibrium</div>
+                    <div class="chip" onclick="useChip(this)">⚗️ SN1 vs SN2 reactions</div>
+                    <div class="chip" onclick="useChip(this)">📋 IISER IAT topics list</div>
+                    <div class="chip" onclick="useChip(this)">🌊 Interference vs Diffraction</div>
                 </div>
             </div>
 
         </div>
+    </div>
 
-        <!-- Input Box -->
-        <div class="glass-panel rounded-2xl p-3 border border-white/[0.08] sticky bottom-4">
-            <div class="flex gap-2 items-end">
-                <textarea id="userInput" rows="1" placeholder="Ask any IAT doubt..."
-                    class="flex-1 bg-transparent border-none outline-none text-white placeholder-slate-500 resize-none custom-scrollbar text-sm py-2 px-2"
-                    onkeydown="handleKeyDown(event)" oninput="autoResize(this)"></textarea>
-                <button onclick="sendMessage()" id="sendBtn"
-                    class="bg-gradient-to-br from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white p-2.5 rounded-xl transition-all transform hover:scale-105 disabled:opacity-40 disabled:cursor-not-allowed disabled:scale-100 shadow-lg flex-shrink-0">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+    <!-- Input -->
+    <div class="input-wrap">
+        <div class="input-box">
+            <div class="input-row">
+                <textarea id="userInput" rows="1" placeholder="Ask any IAT doubt…" onkeydown="handleKeyDown(event)"
+                    oninput="autoResize(this)"></textarea>
+                <button id="sendBtn" onclick="sendMessage()" title="Send">
+                    <svg width="17" height="17" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2"
                             d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
                     </svg>
                 </button>
             </div>
-            <p class="text-xs text-slate-600 px-2 pt-1">Enter to send · Shift+Enter for new line</p>
+            <div class="input-meta">
+                <span>↵ Send &nbsp;·&nbsp; ⇧↵ New line</span>
+                <span style="color:#334155;font-size:0.65rem">Powered by DeepSeek</span>
+            </div>
         </div>
-    </main>
+    </div>
 
     <script>
-        // ─────────────────────────────────────────────
-        //  CONFIGURATION — API key is safe on the server
-        // ─────────────────────────────────────────────
+        // ── Config ──────────────────────────────────────────
         const AI_CONFIG = {
-            // Calls our own backend proxy — DeepSeek key never exposed to browser
             url: 'https://api.iisersmartprep.space/api/ai-chat',
-            systemPrompt: `You are an expert AI tutor for the IISER IAT (Indian Institutes of Science Education and Research Aptitude Test). 
-You help Indian students with Physics, Chemistry, Mathematics and Biology at Class 11-12 level. 
-Give clear, concise explanations. Use LaTeX-style notation where helpful. 
-Be encouraging and supportive. If asked about topics outside IAT, still answer helpfully.`
+            systemPrompt: `You are an expert AI tutor for IISER IAT. Help with Physics, Chemistry, Math, Biology.`
         };
 
-        // ─────────────────────────────────────────────
-        //  State
-        // ─────────────────────────────────────────────
+        // ── State ────────────────────────────────────────────
         let messages = [{ role: 'system', content: AI_CONFIG.systemPrompt }];
         let isStreaming = false;
+        let dailyRemaining = 30;
 
-        // ─────────────────────────────────────────────
-        //  Chip click
-        // ─────────────────────────────────────────────
-        function useChip(btn) {
-            const text = btn.innerText.replace(/[🔬📐🧬⚗️📝]/gu, '').trim();
+        // ── Chip click ───────────────────────────────────────
+        function useChip(el) {
+            const text = el.innerText.replace(/^[^\w]*/u, '').trim();
             document.getElementById('userInput').value = text;
             sendMessage();
         }
 
-        // ─────────────────────────────────────────────
-        //  Input helpers
-        // ─────────────────────────────────────────────
-        function autoResize(textarea) {
-            textarea.style.height = 'auto';
-            textarea.style.height = Math.min(textarea.scrollHeight, 180) + 'px';
+        // ── Input helpers ────────────────────────────────────
+        function autoResize(ta) {
+            ta.style.height = 'auto';
+            ta.style.height = Math.min(ta.scrollHeight, 160) + 'px';
         }
-
         function handleKeyDown(e) {
-            if (e.key === 'Enter' && !e.shiftKey) {
-                e.preventDefault();
-                sendMessage();
-            }
+            if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); }
         }
 
-        // ─────────────────────────────────────────────
-        //  Send message
-        // ─────────────────────────────────────────────
+        // ── Send ─────────────────────────────────────────────
         async function sendMessage() {
             const input = document.getElementById('userInput');
             const sendBtn = document.getElementById('sendBtn');
             const content = input.value.trim();
-
             if (!content || isStreaming) return;
 
-            // Hide welcome block on first message
-            const welcome = document.getElementById('welcomeBlock');
-            if (welcome) welcome.remove();
+            document.getElementById('welcomeBlock')?.remove();
 
-            // Add user bubble
-            appendBubble(content, true);
+            appendUserMsg(content);
             messages.push({ role: 'user', content });
-            input.value = '';
-            input.style.height = 'auto';
+            input.value = ''; input.style.height = 'auto';
 
-            // Typing indicator
             showTyping();
-            isStreaming = true;
-            sendBtn.disabled = true;
+            isStreaming = true; sendBtn.disabled = true;
 
             try {
                 const fullText = await streamResponse();
                 messages.push({ role: 'assistant', content: fullText });
             } catch (err) {
                 removeTyping();
-                appendErrorBubble(err.message);
+                appendError(err.message);
             } finally {
-                isStreaming = false;
-                sendBtn.disabled = false;
+                isStreaming = false; sendBtn.disabled = false;
             }
         }
 
-        // ─────────────────────────────────────────────
-        //  Stream response from DeepSeek
-        // ─────────────────────────────────────────────
+        // ── Stream ───────────────────────────────────────────
         async function streamResponse() {
-            const response = await fetch(AI_CONFIG.url, {
+            const res = await fetch(AI_CONFIG.url, {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    messages: messages
-                })
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ messages })
             });
 
-            if (!response.ok) {
-                const err = await response.json().catch(() => ({}));
-                // User-friendly message for rate limit
-                if (response.status === 429) {
-                    throw new Error(err.error || '🌙 You\'ve used all 30 questions for today. Come back tomorrow!');
-                }
-                throw new Error(err.error || `Error ${response.status}: ${response.statusText}`);
+            if (!res.ok) {
+                const err = await res.json().catch(() => ({}));
+                if (res.status === 429) throw new Error(err.error || '🌙 Daily limit reached. Come back tomorrow!');
+                throw new Error(err.error || `Error ${res.status}`);
             }
 
-            // Update usage counter from server header
-            const remaining = response.headers.get('X-Daily-Remaining');
-            if (remaining !== null) {
-                const counter = document.getElementById('usageCounter');
-                if (counter) {
-                    const n = parseInt(remaining);
-                    counter.textContent = `${n} left today`;
-                    counter.style.color = n <= 5 ? '#f87171' : n <= 10 ? '#fb923c' : '';
-                }
-            }
+            // Update counter
+            const rem = res.headers.get('X-Daily-Remaining');
+            if (rem !== null) updateCounter(parseInt(rem));
 
             removeTyping();
-
-            // Create AI bubble
-            const container = document.getElementById('chatContainer');
-            const bubble = createAIBubble();
+            const bubble = appendAIBubble();
             const contentDiv = bubble.querySelector('.ai-content');
-            container.appendChild(bubble);
+            contentDiv.classList.add('cursor');
 
-            const reader = response.body.getReader();
+            const reader = res.body.getReader();
             const decoder = new TextDecoder();
             let fullText = '';
+            const container = document.getElementById('chatContainer');
 
             while (true) {
                 const { done, value } = await reader.read();
                 if (done) break;
-
                 const lines = decoder.decode(value).split('\n');
                 for (const line of lines) {
                     if (!line.trim() || line.trim() === 'data: [DONE]') continue;
@@ -464,98 +882,107 @@ Be encouraging and supportive. If asked about topics outside IAT, still answer h
                 }
             }
 
+            contentDiv.classList.remove('cursor');
             container.scrollTop = container.scrollHeight;
             return fullText;
         }
 
-        // ─────────────────────────────────────────────
-        //  DOM helpers
-        // ─────────────────────────────────────────────
-        function appendBubble(text, isUser) {
-            const container = document.getElementById('chatContainer');
-            const bubble = document.createElement('div');
-            bubble.className = `message-bubble flex ${isUser ? 'justify-end' : 'justify-start'}`;
-            bubble.innerHTML = isUser
-                ? `<div class="max-w-[78%] bg-indigo-600/80 backdrop-blur rounded-2xl rounded-tr-sm px-4 py-2.5 text-sm text-white">${escapeHtml(text)}</div>`
-                : ``;
-            container.appendChild(bubble);
-            container.scrollTop = container.scrollHeight;
-            return bubble;
+        // ── DOM helpers ──────────────────────────────────────
+        function appendUserMsg(text) {
+            const c = document.getElementById('chatContainer');
+            const row = document.createElement('div');
+            row.className = 'msg-row user';
+            row.innerHTML = `<div class="msg-user">${escapeHtml(text)}</div>`;
+            c.appendChild(row); c.scrollTop = c.scrollHeight;
         }
 
-        function createAIBubble() {
-            const bubble = document.createElement('div');
-            bubble.className = 'message-bubble flex justify-start gap-3';
-            bubble.innerHTML = `
-                <div class="w-7 h-7 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5 shadow">
-                    <svg class="w-3.5 h-3.5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
-                    </svg>
-                </div>
-                <div class="flex-1 min-w-0">
-                    <div class="ai-content text-sm overflow-x-auto"></div>
-                </div>`;
-            return bubble;
+        function appendAIBubble() {
+            const c = document.getElementById('chatContainer');
+            const row = document.createElement('div');
+            row.className = 'msg-row ai';
+            row.innerHTML = `
+            <div class="ai-avatar">
+                <svg width="14" height="14" fill="none" stroke="white" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
+                </svg>
+            </div>
+            <div class="msg-ai"><div class="msg-ai-inner"><div class="ai-content"></div></div></div>`;
+            c.appendChild(row); c.scrollTop = c.scrollHeight;
+            return row;
         }
 
-        function appendErrorBubble(msg) {
-            const container = document.getElementById('chatContainer');
-            const bubble = document.createElement('div');
-            bubble.className = 'message-bubble flex justify-start';
-            bubble.innerHTML = `
-                <div class="max-w-[78%] bg-red-900/40 border border-red-500/30 rounded-2xl px-4 py-2.5 text-sm text-red-300">
-                    ⚠️ ${escapeHtml(msg)}
-                </div>`;
-            container.appendChild(bubble);
-            container.scrollTop = container.scrollHeight;
+        function appendError(msg) {
+            const c = document.getElementById('chatContainer');
+            const row = document.createElement('div');
+            row.className = 'msg-row ai';
+            row.innerHTML = `
+            <div class="ai-avatar" style="background:rgba(220,38,38,0.3);">
+                <svg width="14" height="14" fill="none" stroke="#fca5a5" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+            </div>
+            <div class="msg-ai"><div class="msg-error">${escapeHtml(msg)}</div></div>`;
+            c.appendChild(row); c.scrollTop = c.scrollHeight;
         }
 
         function showTyping() {
-            const container = document.getElementById('chatContainer');
-            const el = document.createElement('div');
-            el.id = 'typingIndicator';
-            el.className = 'message-bubble flex justify-start gap-3';
-            el.innerHTML = `
-                <div class="w-7 h-7 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-lg flex items-center justify-center flex-shrink-0 shadow">
-                    <svg class="w-3.5 h-3.5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
-                    </svg>
+            const c = document.getElementById('chatContainer');
+            const row = document.createElement('div');
+            row.id = 'typingRow'; row.className = 'msg-row ai';
+            row.innerHTML = `
+            <div class="ai-avatar">
+                <svg width="14" height="14" fill="none" stroke="white" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
+                </svg>
+            </div>
+            <div class="msg-ai">
+                <div class="msg-ai-inner">
+                    <div class="typing-dots"><span></span><span></span><span></span></div>
                 </div>
-                <div class="typing-indicator flex items-center gap-1 py-2">
-                    <span></span><span></span><span></span>
-                </div>`;
-            container.appendChild(el);
-            container.scrollTop = container.scrollHeight;
+            </div>`;
+            c.appendChild(row); c.scrollTop = c.scrollHeight;
         }
+        function removeTyping() { document.getElementById('typingRow')?.remove(); }
 
-        function removeTyping() {
-            document.getElementById('typingIndicator')?.remove();
+        function updateCounter(n) {
+            dailyRemaining = n;
+            const el = document.getElementById('usageCounter');
+            const num = document.getElementById('usageNum');
+            if (num) num.textContent = n;
+            if (el) {
+                el.className = 'usageCounter';
+                if (n <= 5) el.id = 'usageCounter', el.className = 'warn', el.style.cssText = 'display:flex;align-items:center;gap:5px;font-size:.72rem;font-weight:500;background:rgba(248,113,113,.12);border:1px solid rgba(248,113,113,.35);padding:3px 10px;border-radius:20px;color:#f87171;';
+                else if (n <= 10) el.style.cssText = 'display:flex;align-items:center;gap:5px;font-size:.72rem;font-weight:500;background:rgba(251,146,60,.12);border:1px solid rgba(251,146,60,.35);padding:3px 10px;border-radius:20px;color:#fb923c;';
+                else el.style.cssText = '';
+            }
         }
 
         function escapeHtml(text) {
-            const div = document.createElement('div');
-            div.textContent = text;
-            return div.innerHTML;
+            const d = document.createElement('div');
+            d.textContent = text;
+            return d.innerHTML;
         }
 
         function addCopyButtons(container) {
             container.querySelectorAll('pre').forEach(pre => {
                 if (pre.querySelector('.copy-btn')) return;
                 const btn = document.createElement('button');
-                btn.className = 'copy-btn bg-slate-700 hover:bg-slate-600 text-slate-300 px-2 py-1 rounded text-xs transition-all';
+                btn.className = 'copy-btn';
                 btn.textContent = 'Copy';
                 btn.onclick = () => {
                     navigator.clipboard.writeText(pre.querySelector('code')?.textContent || '');
-                    btn.textContent = 'Copied!';
+                    btn.textContent = '✓ Copied';
                     setTimeout(() => btn.textContent = 'Copy', 2000);
                 };
-                pre.classList.add('code-block');
-                pre.style.position = 'relative';
                 pre.appendChild(btn);
             });
         }
     </script>
 
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-WHHM4FTNHG"></script>
 </body>
 
 </html>
