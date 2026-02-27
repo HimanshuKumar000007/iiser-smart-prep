@@ -584,6 +584,93 @@ ${question}
   }
 });
 
+// =======================
+// 🤖 AI TUTOR CHAT PROXY
+// =======================
+// Rate limit tracker: { "ip_YYYY-MM-DD": count }
+const chatUsage = new Map();
+const DAILY_LIMIT = 30;
+const MAX_TOKENS = 450; // ≈ 300 words
+
+const IISER_SYSTEM_PROMPT = `You are an expert AI tutor specialized exclusively for the IISER IAT (Indian Institutes of Science Education and Research Aptitude Test).
+Help students with Physics, Chemistry, Mathematics and Biology at Class 11-12 level.
+Rules:
+- Keep answers concise and under 300 words.
+- Use step-by-step explanations for problems.
+- Focus only on IAT-relevant topics.
+- Be encouraging and supportive.
+- If asked something unrelated to studies, politely redirect to IAT topics.`;
+
+app.post("/api/ai-chat", async (req, res) => {
+  try {
+    // ── Rate limiting by IP ──────────────────────────
+    const ip = req.headers["x-forwarded-for"]?.split(",")[0]?.trim() || req.socket.remoteAddress || "unknown";
+    const day = new Date().toISOString().slice(0, 10); // "YYYY-MM-DD"
+    const key = `${ip}_${day}`;
+
+    const used = chatUsage.get(key) || 0;
+    if (used >= DAILY_LIMIT) {
+      return res.status(429).json({
+        error: `Daily limit of ${DAILY_LIMIT} questions reached. Come back tomorrow! 🌙`
+      });
+    }
+    chatUsage.set(key, used + 1);
+
+    // Clean up old keys every 500 requests to avoid memory leak
+    if (chatUsage.size > 500) {
+      for (const [k] of chatUsage) {
+        if (!k.endsWith(day)) chatUsage.delete(k);
+      }
+    }
+
+    // ── Build messages with enforced system prompt ───
+    const { messages } = req.body;
+    if (!messages || !Array.isArray(messages)) {
+      return res.status(400).json({ error: "messages array required" });
+    }
+
+    // Strip any system messages from client, inject our own
+    const userMessages = messages.filter(m => m.role !== "system");
+    const fullMessages = [
+      { role: "system", content: IISER_SYSTEM_PROMPT },
+      ...userMessages
+    ];
+
+    // ── Call DeepSeek (cheapest model) ───────────────
+    const deepseekRes = await fetch("https://api.deepseek.com/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        "Authorization": `Bearer ${process.env.DEEPSEEK_API_KEY}`,
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        model: "deepseek-chat",   // cheapest model
+        messages: fullMessages,
+        stream: true,
+        max_tokens: MAX_TOKENS         // enforce ~300-word limit
+      })
+    });
+
+    if (!deepseekRes.ok) {
+      const err = await deepseekRes.json().catch(() => ({}));
+      return res.status(deepseekRes.status).json({ error: err.error?.message || "DeepSeek error" });
+    }
+
+    // ── Stream response to browser ───────────────────
+    res.setHeader("Content-Type", "text/event-stream");
+    res.setHeader("Cache-Control", "no-cache");
+    res.setHeader("Connection", "keep-alive");
+    res.setHeader("X-Daily-Remaining", String(DAILY_LIMIT - used - 1));
+
+    deepseekRes.body.pipe(res);
+
+  } catch (err) {
+    console.error("AI Chat proxy error:", err);
+    res.status(500).json({ error: "AI service unavailable. Please try again." });
+  }
+});
+
+
 app.listen(PORT, () => {
   console.log("Server running on port", PORT);
 });
