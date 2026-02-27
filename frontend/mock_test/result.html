@@ -4,94 +4,80 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Smart Analytics 2.0 | IISER Prep</title>
+    <title>IISER Insight | Advanced Performance Analytics</title>
 
-    <!-- Fonts -->
     <link
-        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap"
         rel="stylesheet">
-    <!-- Icons -->
     <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
-    <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <style>
-        /* =========================================
-           1. MODERN VARIABLES (Theme System)
-           ========================================= */
         :root {
-            /* Light Theme Default */
             --primary: #6366f1;
-            --primary-glow: rgba(99, 102, 241, 0.3);
+            --primary-glow: rgba(99, 102, 241, 0.4);
             --secondary: #0ea5e9;
+            --accent: #8b5cf6;
             --success: #10b981;
-            --danger: #ef4444;
             --warning: #f59e0b;
-            --dark: #0f172a;
+            --danger: #ef4444;
 
-            --bg-body: #f3f4f6;
-            --bg-card: #ffffff;
-            --bg-hover: #f8fafc;
-            --text-main: #1e293b;
-            --text-muted: #64748b;
-            --border: #e2e8f0;
-
-            --glass: rgba(255, 255, 255, 0.9);
-            --shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.025);
-            --radius: 20px;
-        }
-
-        [data-theme="dark"] {
             --bg-body: #0f172a;
-            --bg-card: #1e293b;
-            --bg-hover: #334155;
+            --bg-card: rgba(30, 41, 59, 0.7);
+            --bg-hover: rgba(51, 65, 85, 0.5);
             --text-main: #f8fafc;
             --text-muted: #94a3b8;
-            --border: #334155;
-            --glass: rgba(30, 41, 59, 0.9);
-            --shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+            --border: rgba(148, 163, 184, 0.1);
+
+            --glass: rgba(15, 23, 42, 0.6);
+            --shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            --radius: 16px;
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            transition: background 0.3s, color 0.3s;
         }
 
         body {
-            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-family: 'Inter', sans-serif;
             background: var(--bg-body);
             color: var(--text-main);
-            padding-bottom: 5rem;
+            min-height: 100vh;
             overflow-x: hidden;
+            background-image:
+                radial-gradient(circle at 0% 0%, rgba(99, 102, 241, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 100% 100%, rgba(14, 165, 233, 0.15) 0%, transparent 50%);
         }
 
-        h1,
-        h2,
-        h3,
-        h4,
-        .brand {
-            font-family: 'Outfit', sans-serif;
+        .bg-mesh {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.4;
+            background:
+                linear-gradient(rgba(99, 102, 241, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(99, 102, 241, 0.03) 1px, transparent 1px);
+            background-size: 40px 40px;
         }
 
-        /* =========================================
-           2. NAVIGATION & HEADER
-           ========================================= */
         header {
-            background: var(--glass);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
             position: sticky;
             top: 0;
             z-index: 100;
+            background: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(20px);
             border-bottom: 1px solid var(--border);
             padding: 1rem 0;
         }
 
         .container {
-            width: 90%;
-            max-width: 1280px;
+            width: 92%;
+            max-width: 1400px;
             margin: 0 auto;
         }
 
@@ -102,33 +88,41 @@
         }
 
         .brand {
-            font-weight: 800;
-            font-size: 1.4rem;
-            color: var(--primary);
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 700;
+            font-size: 1.5rem;
+            background: linear-gradient(135deg, #fff 0%, #94a3b8 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
         }
 
-        .theme-toggle {
-            cursor: pointer;
-            padding: 8px;
-            border-radius: 50%;
-            background: var(--bg-hover);
-            color: var(--text-main);
-            font-size: 1.2rem;
-            border: 1px solid var(--border);
+        .brand i {
+            font-size: 1.8rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
-        /* =========================================
-           3. HERO SCORE CARD
-           ========================================= */
+        .ai-badge {
+            font-size: 0.65rem;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            color: white;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
         .hero-section {
-            margin-top: 2rem;
+            margin-top: 3rem;
             display: grid;
-            grid-template-columns: 1.5fr 1fr;
-            gap: 1.5rem;
-            margin-bottom: 2rem;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 3rem;
         }
 
         @media (max-width: 900px) {
@@ -140,178 +134,268 @@
         .glass-card {
             background: var(--bg-card);
             border-radius: var(--radius);
-            padding: 2rem;
-            box-shadow: var(--shadow);
+            padding: 2.5rem;
             border: 1px solid var(--border);
+            backdrop-filter: blur(20px);
             position: relative;
             overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
 
-        /* Floating decoration */
+        .glass-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow);
+            border-color: rgba(99, 102, 241, 0.3);
+        }
+
         .glass-card::before {
             content: '';
             position: absolute;
-            top: -50px;
-            right: -50px;
-            width: 150px;
-            height: 150px;
-            background: var(--primary);
-            filter: blur(80px);
-            opacity: 0.15;
-            z-index: 0;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
         }
 
         .score-hero {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            z-index: 1;
             position: relative;
+            z-index: 1;
         }
 
         .main-score {
-            font-size: 4.5rem;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 6rem;
             font-weight: 800;
             line-height: 1;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            background: linear-gradient(135deg, #fff 0%, var(--primary) 100%);
             -webkit-background-clip: text;
-            background-clip: text;
             -webkit-text-fill-color: transparent;
+            position: relative;
+        }
+
+        .main-score::after {
+            content: '/240';
+            font-size: 1.5rem;
+            color: var(--text-muted);
+            -webkit-text-fill-color: var(--text-muted);
+            position: absolute;
+            top: 10px;
+            right: -60px;
+            font-weight: 400;
         }
 
         .score-meta {
-            font-size: 1.2rem;
+            font-size: 0.9rem;
             color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 2px;
             margin-bottom: 0.5rem;
         }
 
+        .rank-display {
+            text-align: right;
+        }
+
         .rank-badge {
-            background: var(--text-main);
-            color: var(--bg-card);
-            padding: 0.5rem 1.2rem;
-            border-radius: 50px;
-            font-weight: 700;
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            font-size: 0.9rem;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            color: var(--success);
+            padding: 0.75rem 1.5rem;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
         }
 
-        /* =========================================
-           4. TABS
-           ========================================= */
+        .percentile {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        .percentile-label {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .insight-panel {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(139, 92, 246, 0.05) 100%);
+            border: 1px solid rgba(99, 102, 241, 0.2);
+        }
+
+        .insight-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 1.5rem;
+            color: var(--primary);
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .insight-text {
+            font-size: 1.1rem;
+            line-height: 1.7;
+            color: var(--text-main);
+            font-weight: 400;
+        }
+
+        .insight-highlight {
+            color: var(--secondary);
+            font-weight: 600;
+        }
+
+        .insight-danger {
+            color: var(--danger);
+            font-weight: 600;
+        }
+
+        .insight-success {
+            color: var(--success);
+            font-weight: 600;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .stat-box {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 12px;
+            padding: 1.25rem;
+            border: 1px solid var(--border);
+        }
+
+        .stat-label {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-value {
+            font-size: 1.75rem;
+            font-weight: 700;
+            font-family: 'Space Grotesk', sans-serif;
+        }
+
+        .tabs-container {
+            margin-bottom: 2rem;
+            position: relative;
+        }
+
         .tabs-wrapper {
-            background: var(--bg-card);
+            display: inline-flex;
+            gap: 0.5rem;
+            background: rgba(255, 255, 255, 0.03);
             padding: 0.5rem;
             border-radius: 50px;
-            display: inline-flex;
-            gap: 5px;
             border: 1px solid var(--border);
-            margin-bottom: 2rem;
-            box-shadow: var(--shadow);
         }
 
         .tab-btn {
-            padding: 0.6rem 1.5rem;
+            padding: 0.75rem 1.5rem;
             border-radius: 40px;
             font-weight: 600;
             font-size: 0.9rem;
             color: var(--text-muted);
             cursor: pointer;
             transition: all 0.3s ease;
+            border: none;
+            background: transparent;
+            font-family: inherit;
         }
 
         .tab-btn.active {
             background: var(--primary);
             color: white;
-            box-shadow: 0 4px 12px var(--primary-glow);
+            box-shadow: 0 4px 20px var(--primary-glow);
         }
 
-        /* =========================================
-           5. DASHBOARD GRID
-           ========================================= */
-        .grid-layout {
+        .tab-btn:hover:not(.active) {
+            color: var(--text-main);
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .view-section {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .view-section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .charts-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 1.5rem;
-            animation: fadeIn 0.8s ease;
-        }
-
-        .col-span-1 {
-            grid-column: span 1;
-        }
-
-        .col-span-2 {
-            grid-column: span 2;
-        }
-
-        .col-span-3 {
-            grid-column: span 3;
+            margin-bottom: 2rem;
         }
 
         @media (max-width: 1024px) {
-
-            .col-span-2,
-            .col-span-1 {
-                grid-column: span 3;
-            }
-
-            .grid-layout {
+            .charts-grid {
                 grid-template-columns: 1fr;
             }
         }
 
-        .card-header {
+        .chart-card {
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            border: 1px solid var(--border);
+        }
+
+        .chart-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 1.5rem;
         }
 
-        .card-title {
-            font-size: 1.1rem;
-            font-weight: 700;
-            color: var(--text-main);
+        .chart-title {
+            font-weight: 600;
+            font-size: 1rem;
             display: flex;
             align-items: center;
             gap: 8px;
         }
 
-        /* Insight Cards */
-        .insight-row {
+        .chart-container {
+            position: relative;
+            height: 250px;
+        }
+
+        .qmap-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1rem;
-            margin-bottom: 1rem;
-        }
-
-        .mini-stat {
-            background: var(--bg-hover);
-            padding: 1rem;
-            border-radius: 12px;
-            border: 1px solid var(--border);
-        }
-
-        .mini-stat-label {
-            font-size: 0.8rem;
-            color: var(--text-muted);
-            font-weight: 600;
-            text-transform: uppercase;
-        }
-
-        .mini-stat-val {
-            font-size: 1.5rem;
-            font-weight: 800;
-            color: var(--text-main);
-            margin-top: 5px;
-        }
-
-        /* Question Map */
-        .map-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(35px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(40px, 1fr));
             gap: 8px;
+            padding: 1rem;
         }
 
         .q-dot {
@@ -321,296 +405,213 @@
             justify-content: center;
             border-radius: 8px;
             font-size: 0.8rem;
-            font-weight: 700;
+            font-weight: 600;
             cursor: pointer;
-            transition: transform 0.2s;
-            background: var(--bg-hover);
+            transition: all 0.2s ease;
+            background: rgba(255, 255, 255, 0.05);
             color: var(--text-muted);
+            border: 1px solid transparent;
         }
 
         .q-dot:hover {
-            transform: scale(1.15);
+            transform: scale(1.1);
+            border-color: var(--primary);
             z-index: 2;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
 
         .q-dot.correct {
-            background: var(--success);
-            color: white;
+            background: rgba(16, 185, 129, 0.2);
+            color: var(--success);
+            border-color: rgba(16, 185, 129, 0.5);
         }
 
         .q-dot.wrong {
-            background: var(--danger);
-            color: white;
+            background: rgba(239, 68, 68, 0.2);
+            color: var(--danger);
+            border-color: rgba(239, 68, 68, 0.5);
         }
 
         .q-dot.skipped {
-            background: var(--border);
+            background: rgba(148, 163, 184, 0.1);
             color: var(--text-muted);
         }
 
-        /* Solution Styling */
-        .sol-card {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            padding: 1.5rem;
-            margin-bottom: 1rem;
-            position: relative;
-            transition: transform 0.2s;
-        }
-
-        .sol-card:hover {
-            transform: translateY(-2px);
-            box-shadow: var(--shadow);
-        }
-
-        .status-badge {
-            font-size: 0.75rem;
-            font-weight: 700;
-            padding: 4px 10px;
-            border-radius: 6px;
-            text-transform: uppercase;
-        }
-
-        .bg-correct {
-            background: #dcfce7;
-            color: #166534;
-        }
-
-        .bg-wrong {
-            background: #fee2e2;
-            color: #991b1b;
-        }
-
-        .bg-skipped {
-            background: #f1f5f9;
-            color: #475569;
-        }
-
-        /* Animations */
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        /* Potential Score Bar */
-        .potential-bar-bg {
-            height: 10px;
-            background: var(--bg-hover);
-            border-radius: 10px;
-            margin-top: 10px;
-            overflow: hidden;
-            position: relative;
-        }
-
-        .potential-bar-fill {
-            height: 100%;
-            background: linear-gradient(90deg, var(--primary), var(--secondary));
-            border-radius: 10px;
-        }
-
-        .potential-marker {
-            position: absolute;
-            top: 0;
-            bottom: 0;
-            width: 2px;
-            background: var(--text-main);
-            z-index: 2;
-        }
-
-        /* Mobile Responsiveness for Tabs */
-        @media (max-width: 650px) {
-            .tabs-wrapper {
-                display: flex;
-                overflow-x: auto;
-                justify-content: flex-start;
-                width: 100%;
-                border-radius: 15px;
-                padding: 5px;
-                border: none;
-                box-shadow: none;
-                background: transparent;
-            }
-
-            /* Hide scrollbar */
-            .tabs-wrapper::-webkit-scrollbar {
-                display: none;
-            }
-
-            .tabs-wrapper {
-                -ms-overflow-style: none;
-                scrollbar-width: none;
-            }
-
-            .tab-btn {
-                flex-shrink: 0;
-                white-space: nowrap;
-                padding: 0.6rem 1rem;
-                background: var(--bg-card);
-                border: 1px solid var(--border);
-                margin-right: 8px;
-            }
-
-            .tab-btn.active {
-                background: var(--primary);
-                border-color: var(--primary);
-                box-shadow: 0 4px 10px var(--primary-glow);
-            }
-        }
-
-        /* =========================================
-           6. IISER PREDICTOR STYLES
-           ========================================= */
-        .predictor-section {
-            margin-top: 2rem;
+        .predictor-hero {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(14, 165, 233, 0.1) 100%);
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            text-align: center;
+            padding: 3rem;
             margin-bottom: 2rem;
         }
 
+        .predictor-rank {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 4rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #fff 0%, var(--primary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin: 1rem 0;
+        }
+
         .predictor-controls {
-            background: var(--bg-card);
-            border-radius: var(--radius);
-            padding: 1.5rem;
-            border: 1px solid var(--border);
-            margin-bottom: 1.5rem;
             display: flex;
             gap: 1rem;
-            flex-wrap: wrap;
+            justify-content: center;
             align-items: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
         }
 
         .category-select {
-            padding: 0.75rem 1rem;
-            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.05);
             border: 1px solid var(--border);
-            background: var(--bg-hover);
             color: var(--text-main);
+            padding: 0.75rem 1.5rem;
+            border-radius: 12px;
             font-family: inherit;
-            font-weight: 600;
+            font-size: 0.95rem;
             cursor: pointer;
-            min-width: 150px;
+            min-width: 200px;
         }
 
-        .predictor-btn {
-            padding: 0.75rem 1.5rem;
-            background: var(--primary);
+        .predict-btn {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
             color: white;
             border: none;
+            padding: 0.75rem 2rem;
             border-radius: 12px;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s;
-            box-shadow: 0 4px 12px var(--primary-glow);
+            font-family: inherit;
+            font-size: 0.95rem;
         }
 
-        .predictor-btn:hover {
+        .predict-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 16px var(--primary-glow);
+            box-shadow: 0 10px 30px var(--primary-glow);
         }
 
         .iiser-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 1rem;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 1.5rem;
         }
 
         .iiser-card {
             background: var(--bg-card);
-            border: 2px solid var(--border);
-            border-radius: 16px;
+            border-radius: var(--radius);
             padding: 1.5rem;
+            border: 1px solid var(--border);
             position: relative;
-            transition: all 0.3s;
+            overflow: hidden;
+            transition: all 0.3s ease;
         }
 
-        .iiser-card.eligible {
-            border-color: var(--success);
-            background: linear-gradient(145deg, var(--bg-card), rgba(16, 185, 129, 0.05));
+        .iiser-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: var(--border);
         }
 
-        .iiser-card.not-eligible {
-            opacity: 0.6;
-            filter: grayscale(0.5);
+        .iiser-card.safe::before {
+            background: var(--success);
+        }
+
+        .iiser-card.borderline::before {
+            background: var(--warning);
+        }
+
+        .iiser-card.unlikely::before {
+            background: var(--danger);
+        }
+
+        .iiser-card.safe {
+            border-color: rgba(16, 185, 129, 0.3);
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.05) 0%, transparent 100%);
         }
 
         .iiser-card.borderline {
-            border-color: var(--warning);
-            background: linear-gradient(145deg, var(--bg-card), rgba(245, 158, 11, 0.05));
+            border-color: rgba(245, 158, 11, 0.3);
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.05) 0%, transparent 100%);
         }
 
         .iiser-header {
             display: flex;
             justify-content: space-between;
-            align-items: center;
+            align-items: flex-start;
             margin-bottom: 1rem;
         }
 
         .iiser-name {
             font-weight: 700;
             font-size: 1.1rem;
-            color: var(--text-main);
+            margin-bottom: 0.25rem;
         }
 
-        .iiser-status {
-            padding: 4px 12px;
+        .iiser-location {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .probability-badge {
+            padding: 0.5rem 1rem;
             border-radius: 20px;
             font-size: 0.75rem;
             font-weight: 700;
             text-transform: uppercase;
         }
 
-        .iiser-status.safe {
-            background: #dcfce7;
-            color: #166534;
+        .prob-high {
+            background: rgba(16, 185, 129, 0.2);
+            color: var(--success);
         }
 
-        .iiser-status.possible {
-            background: #fef3c7;
-            color: #92400e;
+        .prob-med {
+            background: rgba(245, 158, 11, 0.2);
+            color: var(--warning);
         }
 
-        .iiser-status.unlikely {
-            background: #fee2e2;
-            color: #991b1b;
+        .prob-low {
+            background: rgba(239, 68, 68, 0.2);
+            color: var(--danger);
         }
 
         .iiser-stats {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 0.75rem;
-            margin-top: 1rem;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--border);
         }
 
         .iiser-stat {
-            background: var(--bg-hover);
-            padding: 0.75rem;
-            border-radius: 8px;
             text-align: center;
+        }
+
+        .iiser-stat-value {
+            font-size: 1.25rem;
+            font-weight: 700;
+            font-family: 'Space Grotesk', sans-serif;
+            margin-bottom: 0.25rem;
         }
 
         .iiser-stat-label {
             font-size: 0.7rem;
             color: var(--text-muted);
             text-transform: uppercase;
-            margin-bottom: 4px;
-        }
-
-        .iiser-stat-val {
-            font-size: 1rem;
-            font-weight: 700;
-            color: var(--text-main);
+            letter-spacing: 0.5px;
         }
 
         .probability-bar {
             height: 6px;
-            background: var(--bg-hover);
+            background: rgba(255, 255, 255, 0.1);
             border-radius: 3px;
             margin-top: 1rem;
             overflow: hidden;
@@ -619,780 +620,1199 @@
         .probability-fill {
             height: 100%;
             border-radius: 3px;
-            transition: width 0.8s ease;
+            transition: width 1s ease;
         }
 
-        .probability-text {
-            font-size: 0.8rem;
-            color: var(--text-muted);
-            margin-top: 0.5rem;
-            text-align: right;
-        }
-
-        .rank-estimate {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            color: white;
-            padding: 1.5rem;
-            border-radius: var(--radius);
-            text-align: center;
+        .filter-tabs {
+            display: flex;
+            gap: 0.5rem;
             margin-bottom: 1.5rem;
+            flex-wrap: wrap;
         }
 
-        .rank-estimate h3 {
+        .filter-btn {
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            border: 1px solid var(--border);
+            background: transparent;
+            color: var(--text-muted);
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 0.85rem;
+            transition: all 0.3s;
+        }
+
+        .filter-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .solution-card {
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            border: 1px solid var(--border);
+            transition: all 0.3s ease;
+        }
+
+        .solution-card:hover {
+            border-color: rgba(99, 102, 241, 0.3);
+            transform: translateX(5px);
+        }
+
+        .sol-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .sol-meta {
+            display: flex;
+            gap: 0.75rem;
+            align-items: center;
+        }
+
+        .sol-badge {
+            padding: 0.35rem 0.75rem;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .badge-correct {
+            background: rgba(16, 185, 129, 0.15);
+            color: var(--success);
+        }
+
+        .badge-wrong {
+            background: rgba(239, 68, 68, 0.15);
+            color: var(--danger);
+        }
+
+        .badge-skipped {
+            background: rgba(148, 163, 184, 0.15);
+            color: var(--text-muted);
+        }
+
+        .subject-tag {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            background: rgba(255, 255, 255, 0.05);
+            padding: 0.35rem 0.75rem;
+            border-radius: 6px;
+        }
+
+        .difficulty-tag {
+            font-size: 0.7rem;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+
+        .diff-easy {
+            background: rgba(16, 185, 129, 0.15);
+            color: var(--success);
+        }
+
+        .diff-medium {
+            background: rgba(245, 158, 11, 0.15);
+            color: var(--warning);
+        }
+
+        .diff-hard {
+            background: rgba(239, 68, 68, 0.15);
+            color: var(--danger);
+        }
+
+        .sol-question {
+            font-size: 1.05rem;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+            color: var(--text-main);
+        }
+
+        .sol-options {
+            display: grid;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .sol-option {
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 0.95rem;
+        }
+
+        .sol-option.correct {
+            background: rgba(16, 185, 129, 0.1);
+            border-color: var(--success);
+            color: var(--success);
+        }
+
+        .sol-option.wrong {
+            background: rgba(239, 68, 68, 0.1);
+            border-color: var(--danger);
+            color: var(--danger);
+        }
+
+        .sol-explanation {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 8px;
+            padding: 1rem;
+            margin-top: 1rem;
             font-size: 0.9rem;
-            opacity: 0.9;
-            margin-bottom: 0.5rem;
+            line-height: 1.6;
+            color: var(--text-muted);
+            border-left: 3px solid var(--primary);
         }
 
-        .rank-number {
-            font-size: 3rem;
-            font-weight: 800;
-            line-height: 1;
+        .typing-cursor {
+            display: inline-block;
+            width: 2px;
+            height: 1.2em;
+            background: var(--primary);
+            margin-left: 4px;
+            animation: blink 1s infinite;
+            vertical-align: middle;
         }
 
-        .rank-range {
-            font-size: 0.9rem;
-            opacity: 0.9;
-            margin-top: 0.5rem;
+        @keyframes blink {
+
+            0%,
+            50% {
+                opacity: 1;
+            }
+
+            51%,
+            100% {
+                opacity: 0;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .main-score {
+                font-size: 4rem;
+            }
+
+            .main-score::after {
+                right: -40px;
+                font-size: 1rem;
+            }
+
+            .predictor-rank {
+                font-size: 2.5rem;
+            }
+
+            .tabs-wrapper {
+                overflow-x: auto;
+                width: 100%;
+                border-radius: 12px;
+            }
+
+            .tab-btn {
+                white-space: nowrap;
+            }
+        }
+
+        /* No Data State */
+        .no-data-container {
+            text-align: center;
+            padding: 6rem 2rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .no-data-icon {
+            font-size: 6rem;
+            color: var(--text-muted);
+            opacity: 0.3;
+            margin-bottom: 2rem;
+        }
+
+        .no-data-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--text-main);
+        }
+
+        .no-data-text {
+            color: var(--text-muted);
+            line-height: 1.8;
+            margin-bottom: 2rem;
+            font-size: 1.1rem;
+        }
+
+        .action-btn {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            color: white;
+            border: none;
+            padding: 1rem 2.5rem;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 1rem;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+        }
+
+        .action-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px var(--primary-glow);
+        }
+
+        .secondary-btn {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--text-main);
+            margin-left: 1rem;
+        }
+
+        .secondary-btn:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: var(--primary);
+        }
+
+        .hidden {
+            display: none !important;
         }
     </style>
-    <!-- Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-WHHM4FTNHG"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag() { dataLayer.push(arguments); }
-        gtag('js', new Date());
-        gtag('config', 'G-WHHM4FTNHG');
-    </script>
-    <base target="_blank">
 </head>
 
 <body>
+    <div class="bg-mesh"></div>
 
     <header>
         <div class="container nav-flex">
             <div class="brand">
-                <i class="ri-dashboard-3-fill"></i> IISER Analytics <span
-                    style="font-size:0.7rem; background:var(--primary); color:white; padding:2px 6px; border-radius:4px; margin-left:5px;">AI
-                    BETA</span>
+                <i class="ri-brain-line"></i>
+                IISER Insight
+                <span class="ai-badge">AI Powered</span>
             </div>
-            <div style="display:flex; gap:15px; align-items:center;">
-                <button class="theme-toggle" onclick="toggleTheme()"><i class="ri-moon-line"
-                        id="themeIcon"></i></button>
-                <a href="/mock_test/full_mock_test_homepage.html"
-                    style="text-decoration:none; color:var(--text-muted); font-weight:600; font-size:0.9rem;">Exit</a>
+            <div style="display:flex; gap:1rem; align-items:center;">
+                <button onclick="clearData()" class="action-btn secondary-btn"
+                    style="padding:0.5rem 1rem; font-size:0.85rem;">
+                    <i class="ri-delete-bin-line"></i> Clear Data
+                </button>
             </div>
         </div>
     </header>
 
     <div class="container">
-
-        <!-- Hero Section -->
-        <div class="hero-section">
-            <div class="glass-card">
-                <div class="score-meta">Total Score</div>
-                <div class="score-hero">
-                    <div class="main-score" id="totalScore">0</div>
-                    <div style="text-align:right;">
-                        <div class="rank-badge"><i class="ri-trophy-line"></i> AIR <span id="rankPredictor">--</span>
-                        </div>
-                        <div style="margin-top:10px; font-size:0.9rem; color:var(--text-muted);">Percentile: <strong
-                                id="percentileVal">--</strong></div>
-                    </div>
-                </div>
-                <!-- Potential Score Viz -->
-                <div style="margin-top:2rem;">
-                    <div style="display:flex; justify-content:space-between; font-size:0.85rem; margin-bottom:5px;">
-                        <span>Actual Score</span>
-                        <span style="color:var(--success); font-weight:700;">Potential Score: <span
-                                id="potentialScore">--</span></span>
-                    </div>
-                    <div class="potential-bar-bg">
-                        <div class="potential-bar-fill" id="scoreBar" style="width:0%"></div>
-                        <!-- Marker for Potential -->
-                        <div class="potential-marker" id="potentialMarker"
-                            style="left:0%; border-left: 2px dashed var(--text-muted); background:transparent;"></div>
-                    </div>
-                    <div style="font-size:0.8rem; color:var(--text-muted); margin-top:5px; text-align:right;">
-                        *If you avoided silly mistakes & attempted easy questions.
-                    </div>
-                </div>
+        <!-- NO DATA STATE -->
+        <div id="noDataState" class="no-data-container">
+            <div class="no-data-icon">
+                <i class="ri-file-search-line"></i>
             </div>
-
-            <!-- AI Insight Box -->
-            <div class="glass-card" style="background: linear-gradient(145deg, var(--bg-card), var(--bg-hover));">
-                <div class="card-title"><i class="ri-magic-line" style="color:var(--primary);"></i> Smart Insights</div>
-                <div id="aiInsights"
-                    style="margin-top:1rem; font-size:0.95rem; line-height:1.6; color:var(--text-muted);">
-                    Analyzing your performance data...
-                </div>
-                <div class="insight-row" style="margin-top:1.5rem; margin-bottom:0;">
-                    <div class="mini-stat">
-                        <div class="mini-stat-label">Accuracy</div>
-                        <div class="mini-stat-val" id="accuracyVal" style="color:var(--primary);">0%</div>
-                    </div>
-                    <div class="mini-stat">
-                        <div class="mini-stat-label">Neg. Marks</div>
-                        <div class="mini-stat-val" id="negMarks" style="color:var(--danger);">0</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Navigation Tabs -->
-        <div style="text-align:center;">
-            <div class="tabs-wrapper">
-                <div class="tab-btn active" onclick="switchView('overview')">Overview</div>
-                <div class="tab-btn" onclick="switchView('predictor')">IISER Predictor</div>
-                <div class="tab-btn" onclick="switchView('comparison')">Comparison</div>
-                <div class="tab-btn" onclick="switchView('time')">Pace Analysis</div>
-                <div class="tab-btn" onclick="switchView('solutions')">Solutions</div>
-            </div>
-        </div>
-
-        <!-- VIEW 1: OVERVIEW -->
-        <div id="view-overview" class="grid-layout">
-
-            <!-- Marks Distribution -->
-            <div class="glass-card col-span-1">
-                <div class="card-header">
-                    <div class="card-title">Score Breakdown</div>
-                </div>
-                <div style="height:220px;">
-                    <canvas id="scoreDoughnut"></canvas>
-                </div>
-            </div>
-
-            <!-- Subject Performance -->
-            <div class="glass-card col-span-2">
-                <div class="card-header">
-                    <div class="card-title">Subject Strength</div>
-                </div>
-                <div style="height:220px;">
-                    <canvas id="subjectBar"></canvas>
-                </div>
-            </div>
-
-            <!-- Question Map -->
-            <div class="glass-card col-span-3">
-                <div class="card-header">
-                    <div class="card-title">Question Map <span
-                            style="font-size:0.8rem; font-weight:400; color:var(--text-muted); margin-left:10px;">(Click
-                            to view solution)</span></div>
-                    <div style="display:flex; gap:10px; font-size:0.8rem;">
-                        <span style="color:var(--success)">● Correct</span>
-                        <span style="color:var(--danger)">● Wrong</span>
-                        <span style="color:var(--text-muted)">● Skipped</span>
-                    </div>
-                </div>
-                <div class="map-grid" id="qMap"></div>
-            </div>
-        </div>
-
-        <!-- VIEW 2: IISER PREDICTOR -->
-        <div id="view-predictor" class="predictor-section" style="display:none;">
-            <div class="rank-estimate">
-                <h3>Estimated All India Rank (IAT)</h3>
-                <div class="rank-number" id="estimatedRank">--</div>
-                <div class="rank-range" id="rankRangeText">Select your category to see predictions</div>
-            </div>
-
-            <div class="predictor-controls">
-                <div style="display:flex; align-items:center; gap:0.5rem;">
-                    <i class="ri-user-settings-line" style="font-size:1.2rem; color:var(--primary);"></i>
-                    <span style="font-weight:600;">Category:</span>
-                </div>
-                <select class="category-select" id="categorySelect" onchange="updatePredictor()">
-                    <option value="general">General (UR)</option>
-                    <option value="ews">GEN-EWS</option>
-                    <option value="obc">OBC-NCL</option>
-                    <option value="sc">SC</option>
-                    <option value="st">ST</option>
-                    <option value="pwd">PwD (General)</option>
-                </select>
-                <button class="predictor-btn" onclick="updatePredictor()">
-                    <i class="ri-refresh-line"></i> Update Prediction
+            <h2 class="no-data-title">No Exam Data Found</h2>
+            <p class="no-data-text">
+                You haven't taken any mock test yet. Complete a test to see your AI-powered performance analysis,
+                including detailed insights, IISER predictions, and personalized recommendations.
+            </p>
+            <div>
+                <a href="/mock_test" class="action-btn">
+                    <i class="ri-play-circle-line"></i> Start Mock Test
+                </a>
+                <button onclick="loadDemoData()" class="action-btn secondary-btn">
+                    <i class="ri-flask-line"></i> View Demo
                 </button>
             </div>
+        </div>
 
-            <div class="card-header" style="margin-bottom:1rem;">
-                <div class="card-title"><i class="ri-building-2-line" style="color:var(--primary);"></i> IISER Admission
-                    Chances</div>
-                <span style="font-size:0.8rem; color:var(--text-muted);">Based on 2024-2025 cutoff trends</span>
-            </div>
-
-            <div class="iiser-grid" id="iiserGrid">
-                <!-- IISER cards will be generated here -->
-            </div>
-
-            <div
-                style="margin-top:2rem; background:var(--bg-card); border-radius:var(--radius); padding:1.5rem; border:1px solid var(--border);">
-                <div class="card-title" style="margin-bottom:1rem;"><i class="ri-information-line"
-                        style="color:var(--secondary);"></i> Understanding Your Chances</div>
-                <div
-                    style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:1rem; font-size:0.9rem; color:var(--text-muted);">
-                    <div style="display:flex; align-items:center; gap:0.5rem;">
-                        <span style="width:12px; height:12px; background:var(--success); border-radius:50%;"></span>
-                        <span><strong>High Probability:</strong> Score well above cutoff</span>
+        <!-- MAIN DASHBOARD (Hidden until data exists) -->
+        <div id="mainDashboard" class="hidden">
+            <!-- Hero Section -->
+            <div class="hero-section">
+                <div class="glass-card">
+                    <div class="score-meta">Total Score</div>
+                    <div class="score-hero">
+                        <div class="main-score" id="totalScore">0</div>
+                        <div class="rank-display">
+                            <div class="rank-badge">
+                                <i class="ri-trophy-line"></i>
+                                AIR <span id="rankDisplay">--</span>
+                            </div>
+                            <div class="percentile" id="percentileDisplay">--%</div>
+                            <div class="percentile-label">Percentile</div>
+                        </div>
                     </div>
-                    <div style="display:flex; align-items:center; gap:0.5rem;">
-                        <span style="width:12px; height:12px; background:var(--warning); border-radius:50%;"></span>
-                        <span><strong>Borderline:</strong> Within ±10 marks of cutoff</span>
+
+                    <div style="margin-top:2rem;">
+                        <div
+                            style="display:flex; justify-content:space-between; margin-bottom:0.5rem; font-size:0.9rem;">
+                            <span style="color:var(--text-muted)">Score Distribution</span>
+                            <span style="color:var(--success)">Potential: <span id="potentialScore">--</span></span>
+                        </div>
+                        <div
+                            style="height:8px; background:rgba(255,255,255,0.05); border-radius:4px; overflow:hidden; position:relative;">
+                            <div id="scoreBar"
+                                style="height:100%; width:0%; background:linear-gradient(90deg, var(--primary), var(--secondary)); border-radius:4px; transition:width 1s ease;">
+                            </div>
+                            <div id="potentialMarker"
+                                style="position:absolute; top:0; bottom:0; width:2px; background:var(--success); left:0%; transition:left 1s ease;">
+                            </div>
+                        </div>
+                        <div
+                            style="display:flex; justify-content:space-between; margin-top:0.5rem; font-size:0.8rem; color:var(--text-muted);">
+                            <span>0</span>
+                            <span>60</span>
+                            <span>120</span>
+                            <span>180</span>
+                            <span>240</span>
+                        </div>
                     </div>
-                    <div style="display:flex; align-items:center; gap:0.5rem;">
-                        <span style="width:12px; height:12px; background:var(--danger); border-radius:50%;"></span>
-                        <span><strong>Low Chance:</strong> Below expected cutoff</span>
+                </div>
+
+                <div class="glass-card insight-panel">
+                    <div class="insight-header">
+                        <i class="ri-robot-2-line"></i>
+                        AI Performance Analysis
+                    </div>
+                    <div class="insight-text" id="aiInsightText">
+                        Waiting for data...
+                        <span class="typing-cursor"></span>
+                    </div>
+
+                    <div class="stats-grid">
+                        <div class="stat-box">
+                            <div class="stat-label">Accuracy</div>
+                            <div class="stat-value" id="accuracyStat" style="color:var(--primary)">--%</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-label">Negatives Lost</div>
+                            <div class="stat-value" id="negativesStat" style="color:var(--danger)">--</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-label">Silly Mistakes</div>
+                            <div class="stat-value" id="sillyStat" style="color:var(--warning)">--</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-label">Missed Easy</div>
+                            <div class="stat-value" id="missedStat" style="color:var(--secondary)">--</div>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <!-- VIEW 3: COMPARISON -->
-        <div id="view-comparison" class="grid-layout" style="display:none;">
-            <div class="glass-card col-span-3">
-                <div class="card-header">
-                    <div class="card-title">You vs. Topper vs. Average</div>
-                </div>
-                <div style="height:350px;">
-                    <canvas id="comparisonChart"></canvas>
-                </div>
-                <div style="margin-top:1rem; text-align:center; font-size:0.9rem; color:var(--text-muted);">
-                    Comparison based on historical data for this difficulty level.
-                </div>
-            </div>
-        </div>
-
-        <!-- VIEW 4: TIME & PACE -->
-        <div id="view-time" class="grid-layout" style="display:none;">
-            <div class="glass-card col-span-2">
-                <div class="card-header">
-                    <div class="card-title">Exam Pace Analysis</div>
-                </div>
-                <div style="height:300px;">
-                    <canvas id="paceChart"></canvas>
-                </div>
-                <div style="font-size:0.8rem; color:var(--text-muted); margin-top:10px;">
-                    Shows time spent per question. Spikes indicate hard questions or getting stuck.
+            <!-- Tabs -->
+            <div class="tabs-container">
+                <div class="tabs-wrapper">
+                    <button class="tab-btn active" onclick="switchTab('overview')">Overview</button>
+                    <button class="tab-btn" onclick="switchTab('predictor')">IISER Predictor</button>
+                    <button class="tab-btn" onclick="switchTab('comparison')">Comparison</button>
+                    <button class="tab-btn" onclick="switchTab('time')">Time Analysis</button>
+                    <button class="tab-btn" onclick="switchTab('solutions')">Solutions</button>
                 </div>
             </div>
 
-            <div class="glass-card col-span-1">
-                <div class="card-header">
-                    <div class="card-title">Time Metrics</div>
+            <!-- Views -->
+            <div id="view-overview" class="view-section active">
+                <div class="charts-grid">
+                    <div class="chart-card">
+                        <div class="chart-header">
+                            <div class="chart-title"><i class="ri-pie-chart-line" style="color:var(--primary)"></i>
+                                Score Breakdown</div>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="breakdownChart"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="chart-card" style="grid-column: span 2;">
+                        <div class="chart-header">
+                            <div class="chart-title"><i class="ri-bar-chart-grouped-line"
+                                    style="color:var(--secondary)"></i> Subject Performance</div>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="subjectChart"></canvas>
+                        </div>
+                    </div>
                 </div>
 
-                <div style="margin-bottom:1.5rem;">
-                    <div style="font-size:0.85rem; color:var(--text-muted);">Avg. Time (Correct Answers)</div>
-                    <div style="font-size:1.8rem; font-weight:700; color:var(--success);" id="avgCorrectTime">--</div>
-                </div>
-
-                <div style="margin-bottom:1.5rem;">
-                    <div style="font-size:0.85rem; color:var(--text-muted);">Total Time Wasted (Wrong Answers)</div>
-                    <div style="font-size:1.8rem; font-weight:700; color:var(--danger);" id="timeWasted">--</div>
-                </div>
-
-                <div style="padding:1rem; background:var(--bg-hover); border-radius:12px; font-size:0.9rem;">
-                    <i class="ri-flashlight-line" style="color:var(--warning)"></i>
-                    <strong>Fastest Solve:</strong> <span id="fastestQ">--</span>
+                <div class="glass-card">
+                    <div class="chart-header">
+                        <div class="chart-title"><i class="ri-map-2-line" style="color:var(--accent)"></i> Question Map
+                        </div>
+                        <div style="display:flex; gap:1rem; font-size:0.85rem; color:var(--text-muted);">
+                            <span><span style="color:var(--success)">●</span> Correct</span>
+                            <span><span style="color:var(--danger)">●</span> Wrong</span>
+                            <span><span style="color:var(--text-muted)">●</span> Skipped</span>
+                        </div>
+                    </div>
+                    <div class="qmap-grid" id="questionMap"></div>
                 </div>
             </div>
-        </div>
 
-        <!-- VIEW 5: SOLUTIONS -->
-        <div id="view-solutions" style="display:none;">
-            <div class="container" style="max-width:800px;">
-                <div style="display:flex; gap:10px; margin-bottom:1.5rem; overflow-x:auto; padding-bottom:5px;">
-                    <button class="tab-btn active" onclick="filterSol('all', this)"
-                        style="border:1px solid var(--border)">All</button>
-                    <button class="tab-btn" onclick="filterSol('wrong', this)"
-                        style="border:1px solid var(--border)">Incorrect</button>
-                    <button class="tab-btn" onclick="filterSol('skipped', this)"
-                        style="border:1px solid var(--border)">Unattempted</button>
+            <div id="view-predictor" class="view-section">
+                <div class="glass-card predictor-hero">
+                    <div
+                        style="color:var(--text-muted); text-transform:uppercase; letter-spacing:2px; font-size:0.9rem;">
+                        Estimated All India Rank</div>
+                    <div class="predictor-rank" id="predictorRank">--</div>
+                    <div style="color:var(--text-muted); margin-bottom:1.5rem;" id="rankRange">Select category to view
+                        prediction</div>
+
+                    <div class="predictor-controls">
+                        <select class="category-select" id="categorySelect" onchange="updatePredictor()">
+                            <option value="general">General (UR)</option>
+                            <option value="ews">GEN-EWS</option>
+                            <option value="obc">OBC-NCL</option>
+                            <option value="sc">SC</option>
+                            <option value="st">ST</option>
+                            <option value="pwd">PwD</option>
+                        </select>
+                        <button class="predict-btn" onclick="updatePredictor()">
+                            <i class="ri-refresh-line"></i> Update Prediction
+                        </button>
+                    </div>
                 </div>
-                <div id="solutionsList"></div>
+
+                <div class="iiser-grid" id="iiserGrid"></div>
+            </div>
+
+            <div id="view-comparison" class="view-section">
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <div class="chart-title"><i class="ri-user-star-line" style="color:var(--warning)"></i> You vs
+                            Topper vs Average</div>
+                    </div>
+                    <div class="chart-container" style="height:400px;">
+                        <canvas id="comparisonChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <div id="view-time" class="view-section">
+                <div class="charts-grid">
+                    <div class="chart-card" style="grid-column: span 2;">
+                        <div class="chart-header">
+                            <div class="chart-title"><i class="ri-time-line" style="color:var(--primary)"></i> Time Per
+                                Question</div>
+                        </div>
+                        <div class="chart-container" style="height:300px;">
+                            <canvas id="timeChart"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="chart-card">
+                        <div class="chart-header">
+                            <div class="chart-title"><i class="ri-dashboard-line" style="color:var(--success)"></i> Time
+                                Metrics</div>
+                        </div>
+                        <div style="padding:1rem;">
+                            <div style="margin-bottom:2rem;">
+                                <div style="color:var(--text-muted); font-size:0.85rem; margin-bottom:0.5rem;">Avg Time
+                                    (Correct)</div>
+                                <div style="font-size:2.5rem; font-weight:700; color:var(--success);"
+                                    id="avgCorrectTime">--s</div>
+                            </div>
+                            <div style="margin-bottom:2rem;">
+                                <div style="color:var(--text-muted); font-size:0.85rem; margin-bottom:0.5rem;">Time
+                                    Wasted (Wrong)</div>
+                                <div style="font-size:2.5rem; font-weight:700; color:var(--danger);" id="timeWasted">--m
+                                </div>
+                            </div>
+                            <div style="background:rgba(255,255,255,0.03); padding:1rem; border-radius:8px;">
+                                <div style="color:var(--text-muted); font-size:0.8rem; margin-bottom:0.5rem;"><i
+                                        class="ri-flashlight-line" style="color:var(--warning)"></i> Fastest Solve</div>
+                                <div style="font-weight:600;" id="fastestSolve">--</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="view-solutions" class="view-section">
+                <div class="filter-tabs">
+                    <button class="filter-btn active" onclick="filterSolutions('all')">All Questions</button>
+                    <button class="filter-btn" onclick="filterSolutions('wrong')">Incorrect</button>
+                    <button class="filter-btn" onclick="filterSolutions('skipped')">Unattempted</button>
+                    <button class="filter-btn" onclick="filterSolutions('hard')">Hard Questions</button>
+                </div>
+                <div id="solutionsContainer"></div>
             </div>
         </div>
-
     </div>
 
     <script>
         // =========================================
-        // GLOBAL STATE
+        // STRICT DATA CHECKING - NO DUMMY DATA BY DEFAULT
         // =========================================
-        let resultData = null;
-        let originalQuestions = null;
-        let charts = {};
-        let currentCategory = 'general';
 
-        // IISER Cutoff Data (2024-2025 based) [^1^][^2^][^6^][^9^]
+        let examData = null;
+        let charts = {};
+        let isDemoMode = false;
+
+        // IISER 2024-25 Cutoff Data
         const iiserData = [
             {
-                name: "IISc Bangalore",
-                shortName: "IISc",
-                type: "Premier",
-                cutoffs: {
-                    general: { min: 200, max: 240, rank: "1-40" },
-                    ews: { min: 195, max: 240, rank: "5-35" },
-                    obc: { min: 195, max: 240, rank: "5-35" },
-                    sc: { min: 150, max: 240, rank: "15-75" },
-                    st: { min: 135, max: 240, rank: "15-100" },
-                    pwd: { min: 180, max: 240, rank: "1-25" }
-                },
-                seats: 120,
-                location: "Bangalore",
-                color: "#8b5cf6"
+                name: "IISc Bangalore", short: "IISc", type: "Premier", location: "Bangalore", seats: 120, color: "#8b5cf6",
+                cutoffs: { general: 220, ews: 215, obc: 215, sc: 180, st: 160, pwd: 200 }
             },
             {
-                name: "IIT Madras (BS-MS)",
-                shortName: "IIT-M",
-                type: "Premier",
-                cutoffs: {
-                    general: { min: 185, max: 240, rank: "10-85" },
-                    ews: { min: 180, max: 240, rank: "10-50" },
-                    obc: { min: 180, max: 240, rank: "10-58" },
-                    sc: { min: 140, max: 240, rank: "25-220" },
-                    st: { min: 120, max: 240, rank: "20-120" },
-                    pwd: { min: 160, max: 240, rank: "1-25" }
-                },
-                seats: 85,
-                location: "Chennai",
-                color: "#f59e0b"
+                name: "IIT Madras BS-MS", short: "IIT-M", type: "Premier", location: "Chennai", seats: 85, color: "#f59e0b",
+                cutoffs: { general: 200, ews: 195, obc: 195, sc: 160, st: 140, pwd: 180 }
             },
             {
-                name: "IISER Pune",
-                shortName: "IISER-P",
-                type: "Established",
-                cutoffs: {
-                    general: { min: 170, max: 240, rank: "10-717" },
-                    ews: { min: 160, max: 240, rank: "15-371" },
-                    obc: { min: 160, max: 240, rank: "15-371" },
-                    sc: { min: 130, max: 240, rank: "35-266" },
-                    st: { min: 110, max: 240, rank: "25-65" },
-                    pwd: { min: 140, max: 240, rank: "10-100" }
-                },
-                seats: 288,
-                location: "Pune",
-                color: "#ec4899"
+                name: "IISER Pune", short: "IISER-P", type: "Established", location: "Pune", seats: 288, color: "#ec4899",
+                cutoffs: { general: 185, ews: 180, obc: 180, sc: 145, st: 125, pwd: 165 }
             },
             {
-                name: "IISER Kolkata",
-                shortName: "IISER-K",
-                type: "Established",
-                cutoffs: {
-                    general: { min: 160, max: 240, rank: "50-1100" },
-                    ews: { min: 150, max: 240, rank: "30-817" },
-                    obc: { min: 150, max: 240, rank: "30-817" },
-                    sc: { min: 115, max: 240, rank: "50-364" },
-                    st: { min: 100, max: 240, rank: "105-217" },
-                    pwd: { min: 130, max: 240, rank: "20-150" }
-                },
-                seats: 280,
-                location: "Kolkata",
-                color: "#06b6d4"
+                name: "IISER Kolkata", short: "IISER-K", type: "Established", location: "Kolkata", seats: 280, color: "#06b6d4",
+                cutoffs: { general: 175, ews: 170, obc: 170, sc: 135, st: 115, pwd: 155 }
             },
             {
-                name: "IISER Bhopal",
-                shortName: "IISER-B",
-                type: "Established",
-                cutoffs: {
-                    general: { min: 145, max: 240, rank: "150-1650" },
-                    ews: { min: 138, max: 240, rank: "65-1305" },
-                    obc: { min: 138, max: 240, rank: "65-1305" },
-                    sc: { min: 115, max: 240, rank: "45-600" },
-                    st: { min: 95, max: 240, rank: "115-297" },
-                    pwd: { min: 120, max: 240, rank: "30-200" }
-                },
-                seats: 300,
-                location: "Bhopal",
-                color: "#10b981"
+                name: "IISER Bhopal", short: "IISER-B", type: "Established", location: "Bhopal", seats: 300, color: "#10b981",
+                cutoffs: { general: 165, ews: 160, obc: 160, sc: 125, st: 105, pwd: 145 }
             },
             {
-                name: "IISER Mohali",
-                shortName: "IISER-M",
-                type: "Established",
-                cutoffs: {
-                    general: { min: 145, max: 240, rank: "100-2229" },
-                    ews: { min: 142, max: 240, rank: "1332" },
-                    obc: { min: 142, max: 240, rank: "1332" },
-                    sc: { min: 105, max: 240, rank: "55-550" },
-                    st: { min: 95, max: 240, rank: "100-256" },
-                    pwd: { min: 120, max: 240, rank: "50-250" }
-                },
-                seats: 270,
-                location: "Mohali",
-                color: "#6366f1"
+                name: "IISER Mohali", short: "IISER-M", type: "Established", location: "Mohali", seats: 270, color: "#6366f1",
+                cutoffs: { general: 160, ews: 155, obc: 155, sc: 120, st: 100, pwd: 140 }
             },
             {
-                name: "IISER Thiruvananthapuram",
-                shortName: "IISER-TVM",
-                type: "Established",
-                cutoffs: {
-                    general: { min: 135, max: 240, rank: "200-2965" },
-                    ews: { min: 120, max: 240, rank: "50-1241" },
-                    obc: { min: 120, max: 240, rank: "50-1241" },
-                    sc: { min: 95, max: 240, rank: "60-681" },
-                    st: { min: 85, max: 240, rank: "130-302" },
-                    pwd: { min: 110, max: 240, rank: "100-400" }
-                },
-                seats: 320,
-                location: "Thiruvananthapuram",
-                color: "#f97316"
+                name: "IISER Thiruvananthapuram", short: "IISER-TVM", type: "Established", location: "TVM", seats: 320, color: "#f97316",
+                cutoffs: { general: 150, ews: 145, obc: 145, sc: 110, st: 90, pwd: 130 }
             },
             {
-                name: "IISER Tirupati",
-                shortName: "IISER-TPT",
-                type: "Newer",
-                cutoffs: {
-                    general: { min: 125, max: 240, rank: "300-3470" },
-                    ews: { min: 115, max: 240, rank: "70-1461" },
-                    obc: { min: 115, max: 240, rank: "70-1461" },
-                    sc: { min: 90, max: 240, rank: "80-738" },
-                    st: { min: 75, max: 240, rank: "138-316" },
-                    pwd: { min: 100, max: 240, rank: "150-500" }
-                },
-                seats: 350,
-                location: "Tirupati",
-                color: "#84cc16"
+                name: "IISER Tirupati", short: "IISER-TPT", type: "Newer", location: "Tirupati", seats: 350, color: "#84cc16",
+                cutoffs: { general: 140, ews: 135, obc: 135, sc: 100, st: 80, pwd: 120 }
             },
             {
-                name: "IISER Berhampur",
-                shortName: "IISER-BMP",
-                type: "Newer",
-                cutoffs: {
-                    general: { min: 115, max: 240, rank: "400-4500" },
-                    ews: { min: 100, max: 240, rank: "80-1634" },
-                    obc: { min: 100, max: 240, rank: "80-1634" },
-                    sc: { min: 85, max: 240, rank: "100-739" },
-                    st: { min: 65, max: 240, rank: "144-322" },
-                    pwd: { min: 90, max: 240, rank: "200-600" }
-                },
-                seats: 300,
-                location: "Berhampur",
-                color: "#14b8a6"
+                name: "IISER Berhampur", short: "IISER-BMP", type: "Newer", location: "Berhampur", seats: 300, color: "#14b8a6",
+                cutoffs: { general: 130, ews: 125, obc: 125, sc: 90, st: 70, pwd: 110 }
             }
         ];
 
-        // Marks vs Rank mapping for better estimation [^2^][^11^]
-        const marksVsRank = [
-            { marks: 200, rank: 1, maxRank: 80 },
-            { marks: 180, rank: 81, maxRank: 200 },
-            { marks: 160, rank: 201, maxRank: 400 },
-            { marks: 140, rank: 401, maxRank: 800 },
-            { marks: 120, rank: 801, maxRank: 1500 },
-            { marks: 110, rank: 1501, maxRank: 2000 },
-            { marks: 100, rank: 2001, maxRank: 2500 },
-            { marks: 90, rank: 2501, maxRank: 3500 },
-            { marks: 80, rank: 3501, maxRank: 4500 },
-            { marks: 70, rank: 4501, maxRank: 6000 },
-            { marks: 60, rank: 6001, maxRank: 8000 },
-            { marks: 0, rank: 8001, maxRank: 10000 }
+        const rankMapping = [
+            { marks: 200, rank: 1, percentile: 99.99 },
+            { marks: 190, rank: 25, percentile: 99.83 },
+            { marks: 180, rank: 75, percentile: 99.50 },
+            { marks: 170, rank: 200, percentile: 98.67 },
+            { marks: 160, rank: 450, percentile: 97.00 },
+            { marks: 150, rank: 900, percentile: 94.00 },
+            { marks: 140, rank: 1600, percentile: 89.33 },
+            { marks: 130, rank: 2500, percentile: 83.33 },
+            { marks: 120, rank: 3800, percentile: 74.67 },
+            { marks: 110, rank: 5500, percentile: 63.33 },
+            { marks: 100, rank: 7500, percentile: 50.00 },
+            { marks: 90, rank: 10000, percentile: 33.33 },
+            { marks: 80, rank: 12500, percentile: 16.67 },
+            { marks: 0, rank: 15000, percentile: 0 }
         ];
 
-        // =========================================
-        // INITIALIZATION
-        // =========================================
-        window.onload = async function () {
-            // 1. Theme Check
-            if (localStorage.getItem('theme') === 'dark') document.body.setAttribute('data-theme', 'dark');
-
-            try {
-                // 2. Load Result Data
-                const storedResult = localStorage.getItem('mockTestResult');
-
-                // --- DEBUG/DEMO DATA FOR PREVIEW IF NO DATA EXISTS ---
-                if (!storedResult) {
-                    console.log("No data found, generating DEMO data.");
-                    resultData = generateDemoData();
-                } else {
-                    resultData = JSON.parse(storedResult);
-                }
-
-                // 3. Load Question Data
-                const mockId = resultData.mockId || 1;
-                const fileId = mockId.toString().padStart(2, '0');
-
-                try {
-                    const response = await fetch(`data/mock${fileId}.json`);
-                    if (!response.ok) throw new Error("JSON Missing");
-                    const json = await response.json();
-                    originalQuestions = json.questions;
-                } catch (e) {
-                    console.warn("Could not load original questions. Using placeholders.");
-                    originalQuestions = generateDemoQuestions(resultData);
-                }
-
-                // 4. Run Analytics
-                initDashboard();
-
-            } catch (e) {
-                console.error("Critical Error", e);
-                alert("Error loading analytics. Check console.");
-            }
+        // Initialize - STRICT CHECK
+        window.onload = function () {
+            checkForRealData();
         };
 
-        // =========================================
-        // CORE ANALYTICS
-        // =========================================
-        function initDashboard() {
+        // Check for REAL data only - NO auto-generated dummy data
+        function checkForRealData() {
+            try {
+                const storedResult = localStorage.getItem('mockTestResult');
+                const storedQuestions = localStorage.getItem('mockTestQuestions');
+
+                // STRICT validation - must have both and must have actual responses
+                if (!storedResult || !storedQuestions) {
+                    showNoData();
+                    return;
+                }
+
+                const result = JSON.parse(storedResult);
+                const questions = JSON.parse(storedQuestions);
+
+                // Validate data structure
+                if (!result || !questions || !Array.isArray(result.userResponses) || result.userResponses.length === 0) {
+                    showNoData();
+                    return;
+                }
+
+                // Check if this is actual attempt data (has real timestamps or attempt markers)
+                // or if it's all empty/default
+                const hasRealAttempt = result.userResponses.some(r =>
+                    r.selection !== null || r.timeSpent > 0 || r.visited === true
+                );
+
+                if (!hasRealAttempt) {
+                    showNoData();
+                    return;
+                }
+
+                // Valid real data found
+                isDemoMode = false;
+                processRealData(result, questions);
+                showDashboard();
+
+            } catch (e) {
+                console.error('Error checking data:', e);
+                showNoData();
+            }
+        }
+
+        function showNoData() {
+            document.getElementById('noDataState').classList.remove('hidden');
+            document.getElementById('mainDashboard').classList.add('hidden');
+            examData = null;
+        }
+
+        function showDashboard() {
+            document.getElementById('noDataState').classList.add('hidden');
+            document.getElementById('mainDashboard').classList.remove('hidden');
+
             calculateMetrics();
-            renderHeader();
-            renderCharts();
-            renderQuestionMap();
-            renderSolutions();
-            generateInsights();
-            updatePredictor(); // Initialize predictor
+            renderDashboard();
+            startTypingEffect();
+        }
+
+        // ONLY called when user explicitly clicks "View Demo"
+        function loadDemoData() {
+            isDemoMode = true;
+
+            // Generate realistic demo data
+            const subjects = ['Physics', 'Chemistry', 'Mathematics', 'Biology'];
+            const difficulties = ['Easy', 'Medium', 'Hard'];
+
+            let responses = [];
+
+            for (let i = 1; i <= 60; i++) {
+                const subject = subjects[Math.floor((i - 1) / 15)];
+                const difficulty = difficulties[Math.floor(Math.random() * 3)];
+
+                let status, timeSpent, selection;
+                const rand = Math.random();
+
+                if (difficulty === 'Easy') {
+                    if (rand < 0.85) {
+                        status = 'correct';
+                        selection = 0;
+                        timeSpent = 30 + Math.random() * 40;
+                    } else if (rand < 0.95) {
+                        status = 'wrong';
+                        selection = Math.floor(Math.random() * 3) + 1;
+                        timeSpent = 45 + Math.random() * 60;
+                    } else {
+                        status = 'skipped';
+                        selection = null;
+                        timeSpent = 10 + Math.random() * 15;
+                    }
+                } else if (difficulty === 'Medium') {
+                    if (rand < 0.60) {
+                        status = 'correct';
+                        selection = 0;
+                        timeSpent = 60 + Math.random() * 60;
+                    } else if (rand < 0.85) {
+                        status = 'wrong';
+                        selection = Math.floor(Math.random() * 3) + 1;
+                        timeSpent = 90 + Math.random() * 90;
+                    } else {
+                        status = 'skipped';
+                        selection = null;
+                        timeSpent = 20 + Math.random() * 30;
+                    }
+                } else {
+                    if (rand < 0.35) {
+                        status = 'correct';
+                        selection = 0;
+                        timeSpent = 120 + Math.random() * 100;
+                    } else if (rand < 0.70) {
+                        status = 'wrong';
+                        selection = Math.floor(Math.random() * 3) + 1;
+                        timeSpent = 150 + Math.random() * 120;
+                    } else {
+                        status = 'skipped';
+                        selection = null;
+                        timeSpent = 30 + Math.random() * 45;
+                    }
+                }
+
+                responses.push({
+                    id: i,
+                    subject: subject,
+                    difficulty: difficulty,
+                    status: status,
+                    selection: selection,
+                    correct: 0,
+                    timeSpent: Math.round(timeSpent),
+                    question: `Demo ${difficulty} ${subject} question about core concepts.`,
+                    options: ['Correct Answer', 'Distractor B', 'Distractor C', 'Distractor D'],
+                    explanation: `This is demo explanation for ${subject}. In real mode, this contains detailed solution.`,
+                    userAnswer: selection !== null ? ['A', 'B', 'C', 'D'][selection] : null,
+                    correctAnswer: 'A'
+                });
+            }
+
+            const correct = responses.filter(r => r.status === 'correct').length;
+            const wrong = responses.filter(r => r.status === 'wrong').length;
+            const skipped = responses.filter(r => r.status === 'skipped').length;
+            const score = (correct * 4) - (wrong * 1);
+
+            examData = {
+                score: score,
+                correct: correct,
+                wrong: wrong,
+                skipped: skipped,
+                responses: responses,
+                subjectScores: {
+                    Physics: responses.filter(r => r.subject === 'Physics' && r.status === 'correct').length * 4 -
+                        responses.filter(r => r.subject === 'Physics' && r.status === 'wrong').length,
+                    Chemistry: responses.filter(r => r.subject === 'Chemistry' && r.status === 'correct').length * 4 -
+                        responses.filter(r => r.subject === 'Chemistry' && r.status === 'wrong').length,
+                    Mathematics: responses.filter(r => r.subject === 'Mathematics' && r.status === 'correct').length * 4 -
+                        responses.filter(r => r.subject === 'Mathematics' && r.status === 'wrong').length,
+                    Biology: responses.filter(r => r.subject === 'Biology' && r.status === 'correct').length * 4 -
+                        responses.filter(r => r.subject === 'Biology' && r.status === 'wrong').length
+                },
+                totalQuestions: 60,
+                examDate: new Date().toISOString(),
+                duration: 180,
+                isDemo: true
+            };
+
+            showDashboard();
+        }
+
+        function clearData() {
+            localStorage.removeItem('mockTestResult');
+            localStorage.removeItem('mockTestQuestions');
+            showNoData();
+        }
+
+        // Process Real Exam Data
+        function processRealData(result, questions) {
+            const responses = result.userResponses.map((resp, idx) => {
+                const question = questions.find(q => q.id === resp.id) || questions[idx] || {};
+
+                let status = 'skipped';
+                if (resp.selection !== null && resp.selection !== undefined) {
+                    const correctAnswer = question.correct !== undefined ? question.correct : 0;
+                    status = resp.selection === correctAnswer ? 'correct' : 'wrong';
+                }
+
+                return {
+                    id: resp.id || idx + 1,
+                    subject: question.subject || 'Physics',
+                    difficulty: question.difficulty || 'Medium',
+                    status: status,
+                    selection: resp.selection,
+                    correct: question.correct !== undefined ? question.correct : 0,
+                    timeSpent: resp.timeSpent || 0,
+                    question: question.question || `Question ${resp.id || idx + 1}`,
+                    options: question.options || ['A', 'B', 'C', 'D'],
+                    explanation: question.explanation || 'No explanation available.',
+                    userAnswer: resp.selection !== null && resp.selection !== undefined ?
+                        (question.options ? question.options[resp.selection] : String.fromCharCode(65 + resp.selection)) : null,
+                    correctAnswer: question.options ? question.options[question.correct || 0] : 'A'
+                };
+            });
+
+            const correct = responses.filter(r => r.status === 'correct').length;
+            const wrong = responses.filter(r => r.status === 'wrong').length;
+            const skipped = responses.filter(r => r.status === 'skipped').length;
+            const score = (correct * 4) - (wrong * 1);
+
+            const subjectScores = {};
+            ['Physics', 'Chemistry', 'Mathematics', 'Biology'].forEach(subj => {
+                const subjCorrect = responses.filter(r => r.subject === subj && r.status === 'correct').length;
+                const subjWrong = responses.filter(r => r.subject === subj && r.status === 'wrong').length;
+                subjectScores[subj] = (subjCorrect * 4) - (subjWrong * 1);
+            });
+
+            examData = {
+                score: score,
+                correct: correct,
+                wrong: wrong,
+                skipped: skipped,
+                responses: responses,
+                subjectScores: subjectScores,
+                totalQuestions: responses.length,
+                examDate: result.examDate || new Date().toISOString(),
+                duration: result.duration || 180,
+                isDemo: false
+            };
         }
 
         function calculateMetrics() {
-            // Enhanced metrics calculation
-            let potentialScore = resultData.score;
-            let lostNegatives = 0;
-            let sillyMistakes = 0;
-            let easySkipped = 0;
+            if (!examData) return;
 
-            // Calculate negative marks lost and potential improvements
-            if (originalQuestions && resultData.userResponses) {
-                resultData.userResponses.forEach(res => {
-                    const q = originalQuestions.find(q => q.id === res.id);
-                    if (q) {
-                        // Wrong answers lose marks
-                        if (res.selection !== null && res.selection !== q.correct) {
-                            lostNegatives += 1; // Assuming -1 per wrong answer
+            examData.sillyMistakes = examData.responses.filter(r =>
+                r.status === 'wrong' && r.difficulty === 'Easy'
+            ).length;
 
-                            // Silly mistakes: Wrong on Easy questions
-                            if (q.difficulty === 'Easy') {
-                                sillyMistakes++;
-                            }
-                        }
+            examData.missedEasy = examData.responses.filter(r =>
+                r.status === 'skipped' && r.difficulty === 'Easy'
+            ).length;
 
-                        // Skipped easy questions
-                        if (res.selection === null && q.difficulty === 'Easy') {
-                            easySkipped++;
-                        }
-                    }
-                });
-            } else {
-                // Fallback calculation
-                lostNegatives = resultData.wrong * 1;
-            }
+            const potentialGain = (examData.sillyMistakes * 5) + (examData.missedEasy * 4);
+            examData.potentialScore = Math.min(240, examData.score + potentialGain);
+            examData.lostNegatives = examData.wrong;
 
-            // Potential score = Current + Lost negatives back + Easy skipped questions
-            const missedOpportunity = (easySkipped * 4) + (sillyMistakes * 5); // +4 for correct, +1 for avoiding negative
-            resultData.potentialScore = Math.min(240, resultData.score + lostNegatives + missedOpportunity);
-            resultData.lostNegatives = lostNegatives;
-            resultData.sillyMistakes = sillyMistakes;
-            resultData.easySkipped = easySkipped;
+            const attempted = examData.correct + examData.wrong;
+            examData.accuracy = attempted > 0 ? Math.round((examData.correct / attempted) * 100) : 0;
+
+            const correctTimes = examData.responses
+                .filter(r => r.status === 'correct')
+                .map(r => r.timeSpent);
+            examData.avgCorrectTime = correctTimes.length > 0 ?
+                Math.round(correctTimes.reduce((a, b) => a + b, 0) / correctTimes.length) : 0;
+
+            const wrongTime = examData.responses
+                .filter(r => r.status === 'wrong')
+                .reduce((sum, r) => sum + r.timeSpent, 0);
+            examData.timeWasted = Math.round(wrongTime / 60);
+
+            const fastest = examData.responses
+                .filter(r => r.status === 'correct')
+                .sort((a, b) => a.timeSpent - b.timeSpent)[0];
+            examData.fastestSolve = fastest ? `Q${fastest.id} (${fastest.timeSpent}s)` : '--';
+
+            examData.subjectAccuracy = {};
+            ['Physics', 'Chemistry', 'Mathematics', 'Biology'].forEach(subj => {
+                const subjResponses = examData.responses.filter(r => r.subject === subj);
+                const subjAttempted = subjResponses.filter(r => r.status !== 'skipped').length;
+                const subjCorrect = subjResponses.filter(r => r.status === 'correct').length;
+                examData.subjectAccuracy[subj] = subjAttempted > 0 ?
+                    Math.round((subjCorrect / subjAttempted) * 100) : 0;
+            });
         }
 
-        function renderHeader() {
-            // Scores
-            animateValue("totalScore", 0, resultData.score, 1000);
-            document.getElementById('potentialScore').innerText = resultData.potentialScore;
-            document.getElementById('negMarks').innerText = "-" + resultData.lostNegatives;
+        function renderDashboard() {
+            if (!examData) return;
 
-            // Accuracy
-            const attempts = resultData.correct + resultData.wrong;
-            const acc = attempts ? Math.round((resultData.correct / attempts) * 100) : 0;
-            document.getElementById('accuracyVal').innerText = acc + "%";
+            animateValue('totalScore', 0, examData.score, 1500);
+            document.getElementById('potentialScore').textContent = examData.potentialScore;
 
-            // Improved Rank Estimation based on marks [^2^][^11^]
-            const estimatedRank = estimateRank(resultData.score);
-            document.getElementById('rankPredictor').innerText = estimatedRank.display;
+            const rankInfo = calculateRank(examData.score);
+            document.getElementById('rankDisplay').textContent = rankInfo.display;
+            document.getElementById('percentileDisplay').textContent = rankInfo.percentile + '%';
+            document.getElementById('predictorRank').textContent = rankInfo.display;
+            document.getElementById('rankRange').textContent =
+                `Expected Rank Range: ${rankInfo.min} - ${rankInfo.max} | Percentile: ${rankInfo.percentile}%`;
 
-            // Percentile calculation (inverse of rank)
-            const totalStudents = 15000; // Approximate IAT takers
-            const percentile = Math.max(0, (1 - (estimatedRank.avg / totalStudents)) * 100).toFixed(1);
-            document.getElementById('percentileVal').innerText = percentile + "%";
-
-            // Bar Viz
-            const maxScore = 240;
-            const scorePct = (resultData.score / maxScore) * 100;
-            const potPct = (resultData.potentialScore / maxScore) * 100;
+            document.getElementById('accuracyStat').textContent = examData.accuracy + '%';
+            document.getElementById('negativesStat').textContent = '-' + examData.lostNegatives;
+            document.getElementById('sillyStat').textContent = examData.sillyMistakes;
+            document.getElementById('missedStat').textContent = examData.missedEasy;
 
             setTimeout(() => {
-                document.getElementById('scoreBar').style.width = scorePct + "%";
-                document.getElementById('potentialMarker').style.left = Math.min(potPct, 100) + "%";
+                const scorePct = (examData.score / 240) * 100;
+                const potentialPct = (examData.potentialScore / 240) * 100;
+                document.getElementById('scoreBar').style.width = scorePct + '%';
+                document.getElementById('potentialMarker').style.left = potentialPct + '%';
             }, 500);
+
+            document.getElementById('avgCorrectTime').textContent = examData.avgCorrectTime + 's';
+            document.getElementById('timeWasted').textContent = examData.timeWasted + 'm';
+            document.getElementById('fastestSolve').textContent = examData.fastestSolve;
+
+            renderCharts();
+            renderQuestionMap();
+            renderIISERGrid();
+            renderSolutions();
         }
 
-        function estimateRank(marks) {
-            // Find the appropriate rank range based on marks [^2^][^11^]
-            for (let i = 0; i < marksVsRank.length; i++) {
-                if (marks >= marksVsRank[i].marks) {
-                    return {
-                        min: marksVsRank[i].rank,
-                        max: marksVsRank[i].maxRank,
-                        avg: Math.round((marksVsRank[i].rank + marksVsRank[i].maxRank) / 2),
-                        display: marks >= 200 ? "Top 50" : `${marksVsRank[i].rank}-${marksVsRank[i].maxRank}`
-                    };
+        function calculateRank(marks) {
+            let lower = rankMapping[rankMapping.length - 1];
+            let upper = rankMapping[0];
+
+            for (let i = 0; i < rankMapping.length; i++) {
+                if (marks >= rankMapping[i].marks) {
+                    lower = rankMapping[i];
+                    upper = rankMapping[i - 1] || lower;
+                    break;
                 }
             }
-            return { min: 8001, max: 10000, avg: 9000, display: "8000+" };
-        }
 
-        function generateInsights() {
-            const el = document.getElementById('aiInsights');
-            if (!resultData || !originalQuestions) {
-                el.innerHTML = "Insights will load once question data is available.";
-                return;
+            if (lower.marks === upper.marks) {
+                return {
+                    min: lower.rank,
+                    max: lower.rank * 2,
+                    avg: lower.rank,
+                    percentile: lower.percentile,
+                    display: marks >= 200 ? 'Top 50' : `${lower.rank}-${lower.rank * 2}`
+                };
             }
 
-            // 1. AGGREGATE DATA
-            let stats = {};
-            let hardCorrect = 0;
-            let timeWastedOnWrong = 0;
+            const ratio = (marks - lower.marks) / (upper.marks - lower.marks);
+            const interpolatedRank = Math.round(lower.rank + (upper.rank - lower.rank) * ratio);
+            const interpolatedPercentile = (lower.percentile + (upper.percentile - lower.percentile) * ratio).toFixed(2);
 
-            // Initialize stats for each subject
-            originalQuestions.forEach(q => {
-                if (!stats[q.subject]) stats[q.subject] = { correct: 0, wrong: 0, skipped: 0, total: 0, timeCorrect: [], timeWrong: [] };
-            });
+            return {
+                min: Math.round(interpolatedRank * 0.8),
+                max: Math.round(interpolatedRank * 1.2),
+                avg: interpolatedRank,
+                percentile: interpolatedPercentile,
+                display: marks >= 200 ? 'Top 50' :
+                    marks >= 190 ? 'Top 100' :
+                        `${Math.round(interpolatedRank * 0.8)}-${Math.round(interpolatedRank * 1.2)}`
+            };
+        }
 
-            // Process responses
-            originalQuestions.forEach(q => {
-                const res = resultData.userResponses ? resultData.userResponses.find(r => r.id === q.id) : null;
-                stats[q.subject].total++;
+        function startTypingEffect() {
+            const insights = generateAIInsights();
+            const element = document.getElementById('aiInsightText');
+            let index = 0;
 
-                if (res) {
-                    if (res.selection === q.correct) {
-                        stats[q.subject].correct++;
-                        if (res.timeSpent) stats[q.subject].timeCorrect.push(res.timeSpent);
-                        if (q.difficulty === 'Hard') hardCorrect++;
-                    } else if (res.selection !== null) {
-                        stats[q.subject].wrong++;
-                        if (res.timeSpent) {
-                            stats[q.subject].timeWrong.push(res.timeSpent);
-                            timeWastedOnWrong += res.timeSpent;
-                        }
-                    } else {
-                        stats[q.subject].skipped++;
-                    }
+            function type() {
+                if (index < insights.length) {
+                    element.innerHTML = insights.substring(0, index) + '<span class="typing-cursor"></span>';
+                    index += 3;
+                    setTimeout(type, 15);
                 } else {
-                    stats[q.subject].skipped++;
+                    element.innerHTML = insights;
+                }
+            }
+
+            setTimeout(type, 300);
+        }
+
+        function generateAIInsights() {
+            if (!examData) return 'No data available.';
+
+            let insights = '';
+            const rankInfo = calculateRank(examData.score);
+
+            if (examData.score >= 180) {
+                insights += `<span class="insight-success">Outstanding performance!</span> With ${examData.score} marks, you're in the top 0.5%. `;
+            } else if (examData.score >= 150) {
+                insights += `<span class="insight-highlight">Excellent work!</span> Your score of ${examData.score} places you in the top 5% (AIR ${rankInfo.display}). `;
+            } else if (examData.score >= 120) {
+                insights += `<span class="insight-highlight">Strong foundation.</span> Scoring ${examData.score} puts you in competitive range. `;
+            } else if (examData.score >= 90) {
+                insights += `<span class="insight-highlight">Good effort.</span> At ${examData.score} marks, targeted improvement needed. `;
+            } else {
+                insights += `<span class="insight-danger">Critical attention needed.</span> Your score of ${examData.score} requires systematic revision. `;
+            }
+
+            if (examData.sillyMistakes > 0) {
+                const gain = examData.sillyMistakes * 5;
+                insights += `<br><br><span class="insight-danger">Priority Alert:</span> ${examData.sillyMistakes} silly mistakes on easy questions cost you ${gain} marks.`;
+            }
+
+            if (examData.missedEasy > 0) {
+                insights += `<br><br><span class="insight-warning">Missed Opportunities:</span> You skipped ${examData.missedEasy} easy questions worth ${examData.missedEasy * 4} marks.`;
+            }
+
+            const subjectScores = Object.entries(examData.subjectScores).sort((a, b) => b[1] - a[1]);
+            if (subjectScores[0][1] - subjectScores[3][1] > 20) {
+                insights += `<br><br><span class="insight-highlight">Subject Gap:</span> ${subjectScores[0][0]} is much stronger than ${subjectScores[3][0]}. Focus on ${subjectScores[3][0]}.`;
+            }
+
+            if (examData.timeWasted > 15) {
+                insights += `<br><br><span class="insight-danger">Time Issue:</span> ${examData.timeWasted} minutes wasted on wrong answers. Use the 2-minute rule.`;
+            }
+
+            const potentialJump = examData.potentialScore - examData.score;
+            if (potentialJump > 30) {
+                insights += `<br><br><span class="insight-success">High Potential:</span> Reach ${examData.potentialScore} marks (+${potentialJump}) with improvements.`;
+            }
+
+            insights += `<br><br><div style="font-size:0.85rem; color:var(--text-muted); margin-top:1rem; border-top:1px solid var(--border); padding-top:1rem;">`;
+            insights += `<i class="ri-time-line"></i> ${new Date().toLocaleString()} | `;
+            insights += isDemoMode ? 'DEMO MODE' : 'REAL EXAM DATA';
+            insights += `</div>`;
+
+            return insights;
+        }
+
+        function renderCharts() {
+            if (!examData) return;
+
+            Chart.defaults.color = '#94a3b8';
+            Chart.defaults.font.family = 'Inter';
+
+            Object.values(charts).forEach(chart => {
+                if (chart) chart.destroy();
+            });
+
+            const ctx1 = document.getElementById('breakdownChart').getContext('2d');
+            charts.breakdown = new Chart(ctx1, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Correct (+4)', 'Wrong (-1)', 'Skipped (0)'],
+                    datasets: [{
+                        data: [examData.correct, examData.wrong, examData.skipped],
+                        backgroundColor: ['#10b981', '#ef4444', '#334155'],
+                        borderWidth: 0,
+                        hoverOffset: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    cutout: '75%',
+                    plugins: {
+                        legend: { position: 'bottom', labels: { usePointStyle: true, padding: 20 } }
+                    }
                 }
             });
 
-            // 2. ANALYZE STRENGTHS & WEAKNESSES
-            let strongest = { subj: 'None', acc: -1, avgTime: 0 };
-            let weakest = { subj: 'None', acc: 101, avgTime: 0 };
-
-            for (const [subj, data] of Object.entries(stats)) {
-                if (data.total === 0) continue;
-                const attempts = data.correct + data.wrong;
-                const accuracy = attempts > 0 ? (data.correct / attempts) * 100 : 0;
-                const avgTime = data.timeCorrect.length ? (data.timeCorrect.reduce((a, b) => a + b, 0) / data.timeCorrect.length) : 0;
-
-                if (attempts > 0 && accuracy > strongest.acc) {
-                    strongest = { subj: subj, acc: accuracy, avgTime: avgTime };
+            const ctx2 = document.getElementById('subjectChart').getContext('2d');
+            charts.subject = new Chart(ctx2, {
+                type: 'bar',
+                data: {
+                    labels: ['Physics', 'Chemistry', 'Maths', 'Biology'],
+                    datasets: [{
+                        label: 'Score',
+                        data: [
+                            examData.subjectScores.Physics || 0,
+                            examData.subjectScores.Chemistry || 0,
+                            examData.subjectScores.Mathematics || 0,
+                            examData.subjectScores.Biology || 0
+                        ],
+                        backgroundColor: ['#6366f1', '#8b5cf6', '#ec4899', '#10b981'],
+                        borderRadius: 6,
+                        barThickness: 50
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        y: { beginAtZero: true, max: 70, grid: { color: 'rgba(255,255,255,0.05)' } },
+                        x: { grid: { display: false } }
+                    }
                 }
-                if (attempts > 0 && accuracy < weakest.acc) {
-                    weakest = { subj: subj, acc: accuracy, avgTime: avgTime };
+            });
+
+            const ctx3 = document.getElementById('comparisonChart').getContext('2d');
+            const yourScores = [
+                examData.subjectScores.Physics || 0,
+                examData.subjectScores.Chemistry || 0,
+                examData.subjectScores.Mathematics || 0,
+                examData.subjectScores.Biology || 0
+            ];
+            const topperScores = yourScores.map(s => Math.min(60, Math.round(s * 1.2)));
+            const avgScores = yourScores.map(s => Math.max(5, Math.round(s * 0.6)));
+
+            charts.comparison = new Chart(ctx3, {
+                type: 'bar',
+                data: {
+                    labels: ['Physics', 'Chemistry', 'Maths', 'Biology'],
+                    datasets: [
+                        { label: 'You', data: yourScores, backgroundColor: '#6366f1', borderRadius: 4 },
+                        { label: '90th %ile', data: topperScores, backgroundColor: 'rgba(16, 185, 129, 0.7)', borderRadius: 4 },
+                        { label: '50th %ile', data: avgScores, backgroundColor: 'rgba(100, 116, 139, 0.5)', borderRadius: 4 }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: { beginAtZero: true, max: 70, grid: { color: 'rgba(255,255,255,0.05)' } },
+                        x: { grid: { display: false } }
+                    }
                 }
-            }
+            });
 
-            // 3. GENERATE SMART TEXT
-            let html = '';
+            const ctx4 = document.getElementById('timeChart').getContext('2d');
+            const timeData = examData.responses.map(r => r.timeSpent);
 
-            // Overall performance summary
-            if (resultData.score >= 180) {
-                html += `<strong style="color:var(--success)">Outstanding performance!</strong> You're in the top tier. `;
-            } else if (resultData.score >= 140) {
-                html += `<strong style="color:var(--primary)">Good performance!</strong> With some improvements, you can reach top IISERs. `;
-            } else if (resultData.score >= 100) {
-                html += `<strong style="color:var(--warning)">Decent attempt.</strong> Focus on weak areas to improve your rank. `;
-            } else {
-                html += `<strong style="color:var(--danger)">Needs improvement.</strong> Don't worry, consistent practice will help. `;
-            }
-
-            // Silly Mistakes (Priority Insight)
-            if (resultData.sillyMistakes > 0) {
-                const potentialGain = resultData.sillyMistakes * 5; // +4 for correct, +1 for avoiding negative
-                html += `<br><br>You made <strong style="color:var(--danger)">${resultData.sillyMistakes} silly mistakes</strong> on Easy questions. 
-                        Fixing these would boost your score by <strong style="color:var(--success)">+${potentialGain}</strong> marks! `;
-            }
-
-            // Skipped easy questions
-            if (resultData.easySkipped > 0) {
-                html += `<br>You skipped <strong style="color:var(--warning)">${resultData.easySkipped} Easy questions</strong>. 
-                        Attempting these could add <strong style="color:var(--success)">+${resultData.easySkipped * 4}</strong> marks. `;
-            }
-
-            // Subject insights
-            if (strongest.subj !== 'None' && strongest.acc > 80) {
-                html += `<br><br>Your <strong>${strongest.subj}</strong> is exceptional (${Math.round(strongest.acc)}% accuracy). `;
-            }
-
-            if (weakest.subj !== 'None' && weakest.subj !== strongest.subj && weakest.acc < 50) {
-                html += `Prioritize <strong>${weakest.subj}</strong> revision (only ${Math.round(weakest.acc)}% accuracy).`;
-            }
-
-            // Hard questions insight
-            if (hardCorrect > 3) {
-                html += `<br><br>🔥 Impressive: You solved <strong style="color:var(--secondary)">${hardCorrect} Hard problems</strong> correctly!`;
-            }
-
-            // Time management
-            if (timeWastedOnWrong > 300) {
-                const wastedMins = Math.round(timeWastedOnWrong / 60);
-                html += `<br><br>⚠️ You spent <strong>${wastedMins} minutes</strong> on wrong answers. Consider skipping uncertain questions earlier.`;
-            }
-
-            el.innerHTML = html;
+            charts.time = new Chart(ctx4, {
+                type: 'line',
+                data: {
+                    labels: timeData.map((_, i) => `Q${i + 1}`),
+                    datasets: [{
+                        label: 'Time',
+                        data: timeData,
+                        borderColor: '#f59e0b',
+                        backgroundColor: 'rgba(245, 158, 11, 0.1)',
+                        fill: true,
+                        tension: 0.3,
+                        pointRadius: 2,
+                        pointHoverRadius: 5
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: { beginAtZero: true, grid: { color: 'rgba(255,255,255,0.05)' } },
+                        x: { display: true, grid: { display: false }, ticks: { maxTicksLimit: 20 } }
+                    }
+                }
+            });
         }
 
-        // =========================================
-        // IISER PREDICTOR LOGIC
-        // =========================================
+        function renderQuestionMap() {
+            if (!examData) return;
+
+            const container = document.getElementById('questionMap');
+            container.innerHTML = '';
+
+            examData.responses.forEach(q => {
+                const dot = document.createElement('div');
+                dot.className = `q-dot ${q.status}`;
+                dot.textContent = q.id;
+                dot.title = `Q${q.id}: ${q.subject} | ${q.difficulty} | ${q.status}`;
+                dot.onclick = () => {
+                    switchTab('solutions');
+                    setTimeout(() => {
+                        const cards = document.querySelectorAll('.solution-card');
+                        if (cards[q.id - 1]) {
+                            cards[q.id - 1].scrollIntoView({ behavior: 'smooth', block: 'center' });
+                            cards[q.id - 1].style.borderColor = 'var(--primary)';
+                            setTimeout(() => cards[q.id - 1].style.borderColor = '', 2000);
+                        }
+                    }, 100);
+                };
+                container.appendChild(dot);
+            });
+        }
+
+        function renderIISERGrid() {
+            updatePredictor();
+        }
+
         function updatePredictor() {
+            if (!examData) return;
+
             const category = document.getElementById('categorySelect').value;
-            currentCategory = category;
-
-            const score = resultData.score;
-            const rankEstimate = estimateRank(score);
-
-            // Update rank display
-            document.getElementById('estimatedRank').innerText = rankEstimate.display;
-            document.getElementById('rankRangeText').innerText = `Estimated Rank Range: ${rankEstimate.min} - ${rankEstimate.max} (Category: ${category.toUpperCase()})`;
-
-            // Generate IISER cards
-            renderIISERCards(score, category);
-        }
-
-        function renderIISERCards(score, category) {
-            const grid = document.getElementById('iiserGrid');
-            grid.innerHTML = '';
+            const score = examData.score;
+            const container = document.getElementById('iiserGrid');
+            container.innerHTML = '';
 
             iiserData.forEach(iiser => {
                 const cutoff = iiser.cutoffs[category];
-                const minCutoff = cutoff.min;
-                const maxCutoff = cutoff.max;
+                const buffer = score - cutoff;
 
-                // Determine eligibility status
-                let status = 'unlikely';
-                let statusText = 'Low Chance';
-                let cardClass = 'not-eligible';
-                let probability = 0;
+                let status, probClass, cardClass, probability;
 
-                if (score >= minCutoff + 10) {
-                    status = 'safe';
-                    statusText = 'High Probability';
-                    cardClass = 'eligible';
-                    probability = Math.min(100, 85 + (score - minCutoff) * 2);
-                } else if (score >= minCutoff - 5) {
-                    status = 'possible';
-                    statusText = 'Borderline';
-                    cardClass = 'borderline';
-                    probability = 50 + (score - (minCutoff - 5)) * 5;
-                } else if (score >= minCutoff - 15) {
-                    status = 'possible';
-                    statusText = 'Possible (Late Rounds)';
-                    cardClass = 'borderline';
-                    probability = Math.max(10, 30 + (score - (minCutoff - 15)) * 2);
+                if (buffer >= 20) {
+                    status = 'Very High'; probClass = 'prob-high'; cardClass = 'safe'; probability = Math.min(99, 85 + buffer);
+                } else if (buffer >= 10) {
+                    status = 'High'; probClass = 'prob-high'; cardClass = 'safe'; probability = 70 + buffer;
+                } else if (buffer >= 0) {
+                    status = 'Likely'; probClass = 'prob-high'; cardClass = 'safe'; probability = 50 + (buffer * 2);
+                } else if (buffer >= -10) {
+                    status = 'Borderline'; probClass = 'prob-med'; cardClass = 'borderline'; probability = 40 + (buffer + 10) * 2;
+                } else if (buffer >= -20) {
+                    status = 'Possible'; probClass = 'prob-med'; cardClass = 'borderline'; probability = Math.max(10, 20 + (buffer + 20));
+                } else {
+                    status = 'Unlikely'; probClass = 'prob-low'; cardClass = 'unlikely'; probability = Math.max(1, 10 + buffer);
                 }
 
-                // Special case for IISc and IIT Madras (very competitive)
-                if ((iiser.name.includes('IISc') || iiser.name.includes('IIT Madras')) && score < minCutoff - 5) {
-                    probability = Math.max(5, probability - 20);
+                if ((iiser.short === 'IISc' || iiser.short === 'IIT-M') && buffer < 5) {
+                    probability = Math.max(0, probability - 15);
+                    if (probability < 20) status = 'Very Unlikely';
                 }
+
+                let expectedRound = '';
+                if (probability > 80) expectedRound = 'Round 1';
+                else if (probability > 60) expectedRound = 'Round 2';
+                else if (probability > 40) expectedRound = 'Round 3';
+                else if (probability > 20) expectedRound = 'Spot Round';
+                else expectedRound = 'Unlikely';
 
                 const card = document.createElement('div');
                 card.className = `iiser-card ${cardClass}`;
@@ -1400,446 +1820,180 @@
                     <div class="iiser-header">
                         <div>
                             <div class="iiser-name" style="color:${iiser.color}">${iiser.name}</div>
-                            <div style="font-size:0.8rem; color:var(--text-muted);">${iiser.location} • ${iiser.seats} seats</div>
+                            <div class="iiser-location">${iiser.location} • ${iiser.seats} seats</div>
                         </div>
-                        <span class="iiser-status ${status}">${statusText}</span>
+                        <span class="probability-badge ${probClass}">${status}</span>
                     </div>
-                    
                     <div class="iiser-stats">
                         <div class="iiser-stat">
+                            <div class="iiser-stat-value" style="color:${buffer >= 0 ? 'var(--success)' : 'var(--danger)'}">${score}</div>
                             <div class="iiser-stat-label">Your Score</div>
-                            <div class="iiser-stat-val" style="color:${score >= minCutoff ? 'var(--success)' : 'var(--danger)'}">${score}</div>
                         </div>
                         <div class="iiser-stat">
-                            <div class="iiser-stat-label">Cutoff (Est.)</div>
-                            <div class="iiser-stat-val">${minCutoff}+</div>
+                            <div class="iiser-stat-value">${cutoff}</div>
+                            <div class="iiser-stat-label">Cutoff</div>
                         </div>
                         <div class="iiser-stat">
-                            <div class="iiser-stat-label">Closing Rank</div>
-                            <div class="iiser-stat-val" style="font-size:0.85rem;">${cutoff.rank}</div>
-                        </div>
-                        <div class="iiser-stat">
-                            <div class="iiser-stat-label">Gap</div>
-                            <div class="iiser-stat-val" style="color:${score >= minCutoff ? 'var(--success)' : 'var(--warning)'}">
-                                ${score >= minCutoff ? '+' : ''}${score - minCutoff}
-                            </div>
+                            <div class="iiser-stat-value" style="color:${buffer >= 0 ? 'var(--success)' : 'var(--warning)'}">${buffer > 0 ? '+' : ''}${buffer}</div>
+                            <div class="iiser-stat-label">Buffer</div>
                         </div>
                     </div>
-                    
                     <div class="probability-bar">
                         <div class="probability-fill" style="width:${probability}%; background:${probability > 70 ? 'var(--success)' : probability > 40 ? 'var(--warning)' : 'var(--danger)'}"></div>
                     </div>
-                    <div class="probability-text">Admission Probability: ${Math.round(probability)}%</div>
+                    <div style="display:flex; justify-content:space-between; font-size:0.8rem; color:var(--text-muted); margin-top:0.5rem;">
+                        <span>Probability: ${Math.round(probability)}%</span>
+                        <span>Expected: ${expectedRound}</span>
+                    </div>
                 `;
-
-                grid.appendChild(card);
+                container.appendChild(card);
             });
-        }
-
-        // =========================================
-        // CHARTS (CHART.JS)
-        // =========================================
-        function renderCharts() {
-            Chart.defaults.font.family = "'Plus Jakarta Sans', sans-serif";
-            Chart.defaults.color = getComputedStyle(document.body).getPropertyValue('--text-muted');
-
-            // 1. DOUGHNUT (Score Breakdown)
-            const ctx1 = document.getElementById('scoreDoughnut').getContext('2d');
-            charts.doughnut = new Chart(ctx1, {
-                type: 'doughnut',
-                data: {
-                    labels: ['Correct', 'Wrong', 'Skipped'],
-                    datasets: [{
-                        data: [resultData.correct, resultData.wrong, resultData.skipped],
-                        backgroundColor: ['#10b981', '#ef4444', '#e2e8f0'],
-                        borderWidth: 0,
-                        hoverOffset: 10
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: { legend: { position: window.innerWidth < 700 ? 'bottom' : 'right' } },
-                    cutout: '70%'
-                }
-            });
-
-            // 2. BAR (Subjects)
-            const ctx2 = document.getElementById('subjectBar').getContext('2d');
-            charts.bar = new Chart(ctx2, {
-                type: 'bar',
-                data: {
-                    labels: ['Physics', 'Chemistry', 'Maths', 'Biology'],
-                    datasets: [{
-                        label: 'Your Score',
-                        data: [
-                            resultData.sectionScore?.Physics || 0,
-                            resultData.sectionScore?.Chemistry || 0,
-                            resultData.sectionScore?.Mathematics || 0,
-                            resultData.sectionScore?.Biology || 0
-                        ],
-                        backgroundColor: ['#6366f1', '#8b5cf6', '#ec4899', '#10b981'],
-                        borderRadius: 6
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: { legend: { display: false } },
-                    scales: { y: { beginAtZero: true, grid: { color: 'rgba(0,0,0,0.05)' } }, x: { grid: { display: false } } }
-                }
-            });
-
-            // 3. COMPARISON (Multi-Bar)
-            const ctx3 = document.getElementById('comparisonChart').getContext('2d');
-            // Simulated comparison data based on actual trends
-            const yourScores = [
-                resultData.sectionScore?.Physics || 0,
-                resultData.sectionScore?.Chemistry || 0,
-                resultData.sectionScore?.Mathematics || 0,
-                resultData.sectionScore?.Biology || 0
-            ];
-
-            // Topper scores (90th percentile)
-            const topperScores = yourScores.map(s => Math.min(60, Math.max(s + 10, 45)));
-            // Average scores (50th percentile)
-            const avgScores = yourScores.map(s => Math.max(10, s - 15));
-
-            charts.compare = new Chart(ctx3, {
-                type: 'bar',
-                data: {
-                    labels: ['Physics', 'Chemistry', 'Maths', 'Biology'],
-                    datasets: [
-                        { label: 'You', data: yourScores, backgroundColor: '#6366f1', borderRadius: 4 },
-                        { label: 'Topper (90th %ile)', data: topperScores, backgroundColor: '#10b981', borderRadius: 4 },
-                        { label: 'Average (50th %ile)', data: avgScores, backgroundColor: '#94a3b8', borderRadius: 4 }
-                    ]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    scales: { y: { beginAtZero: true, grid: { color: 'rgba(0,0,0,0.05)' } }, x: { grid: { display: false } } }
-                }
-            });
-
-            // 4. PACE (Line)
-            let timeData = resultData.userResponses?.map((r, i) => r.timeSpent || Math.floor(Math.random() * 120) + 10) ||
-                Array.from({ length: 60 }, () => Math.floor(Math.random() * 100));
-
-            const ctx4 = document.getElementById('paceChart').getContext('2d');
-            charts.pace = new Chart(ctx4, {
-                type: 'line',
-                data: {
-                    labels: timeData.map((_, i) => i + 1),
-                    datasets: [{
-                        label: 'Time Spent (sec)',
-                        data: timeData,
-                        borderColor: '#f59e0b',
-                        backgroundColor: 'rgba(245, 158, 11, 0.1)',
-                        fill: true,
-                        tension: 0.4,
-                        pointRadius: 2
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    scales: { y: { beginAtZero: true }, x: { display: false } },
-                    plugins: { legend: { display: false } }
-                }
-            });
-
-            // Fill Pace Stats
-            const correctResponses = resultData.userResponses?.filter(r => {
-                const q = originalQuestions?.find(q => q.id === r.id);
-                return q && r.selection === q.correct && r.timeSpent;
-            }) || [];
-
-            const correctTimes = correctResponses.map(r => r.timeSpent);
-            const avgTime = correctTimes.length ? (correctTimes.reduce((a, b) => a + b, 0) / correctTimes.length) : 0;
-            document.getElementById('avgCorrectTime').innerText = Math.round(avgTime) + "s";
-
-            // Calc Total Wasted
-            const wrongResponses = resultData.userResponses?.filter(r => {
-                const q = originalQuestions?.find(q => q.id === r.id);
-                return q && r.selection !== null && r.selection !== q.correct && r.timeSpent;
-            }) || [];
-
-            const wasted = wrongResponses.reduce((a, b) => a + (b.timeSpent || 0), 0);
-            document.getElementById('timeWasted').innerText = Math.round(wasted / 60) + "m";
-
-            // Fastest
-            let fastest = { id: '-', t: 9999 };
-            correctResponses.forEach(r => {
-                if (r.timeSpent < fastest.t) fastest = { id: r.id, t: r.timeSpent };
-            });
-            if (fastest.id !== '-') document.getElementById('fastestQ').innerText = `Q${fastest.id} (${Math.round(fastest.t)}s)`;
-        }
-
-        // =========================================
-        // DOM RENDERING
-        // =========================================
-        function renderQuestionMap() {
-            const map = document.getElementById('qMap');
-            map.innerHTML = '';
-
-            const totalQ = originalQuestions ? originalQuestions.length : 60;
-            const responses = resultData.userResponses || [];
-
-            for (let i = 1; i <= totalQ; i++) {
-                const res = responses.find(r => r.id === i);
-                const q = originalQuestions?.find(q => q.id === i);
-                const div = document.createElement('div');
-                let cls = 'skipped';
-
-                if (res && q) {
-                    if (res.selection === q.correct) cls = 'correct';
-                    else if (res.selection !== null) cls = 'wrong';
-                } else if (res) {
-                    // Fallback if questions not loaded
-                    if (res.selection === res.correct) cls = 'correct';
-                    else if (res.selection !== null) cls = 'wrong';
-                }
-
-                div.className = `q-dot ${cls}`;
-                div.innerText = i;
-                div.onclick = () => {
-                    switchView('solutions');
-                    // Could add scroll to specific question here
-                };
-                map.appendChild(div);
-            }
         }
 
         function renderSolutions() {
-            const list = document.getElementById('solutionsList');
-            list.innerHTML = '';
+            if (!examData) return;
 
-            if (!originalQuestions) {
-                list.innerHTML = '<div style="text-align:center; padding:2rem; color:var(--text-muted);">Question data not available. Solutions cannot be displayed.</div>';
-                return;
-            }
+            const container = document.getElementById('solutionsContainer');
+            container.innerHTML = '';
 
-            originalQuestions.forEach(q => {
-                const userRes = resultData.userResponses?.find(r => r.id === q.id);
-                const userSel = userRes ? userRes.selection : null;
-                const isCorrect = userSel === q.correct;
-                const isSkipped = userSel === null;
-                const isWrong = !isSkipped && !isCorrect;
+            examData.responses.forEach((q, idx) => {
+                const card = document.createElement('div');
+                card.className = 'solution-card';
+                card.dataset.status = q.status;
+                card.dataset.difficulty = q.difficulty;
 
-                let status = isCorrect ? 'correct' : (isSkipped ? 'skipped' : 'wrong');
-                let badgeClass = isCorrect ? 'bg-correct' : (isSkipped ? 'bg-skipped' : 'bg-wrong');
-                let statusText = isCorrect ? 'Correct' : (isSkipped ? 'Unattempted' : 'Incorrect');
+                const statusClass = q.status === 'correct' ? 'badge-correct' :
+                    q.status === 'wrong' ? 'badge-wrong' : 'badge-skipped';
+                const statusText = q.status === 'correct' ? 'Correct (+4)' :
+                    q.status === 'wrong' ? 'Incorrect (-1)' : 'Unattempted (0)';
 
-                let optsHtml = '';
-                q.options.forEach((opt, idx) => {
-                    let color = 'var(--text-muted)';
-                    let icon = '<i class="ri-checkbox-blank-circle-line"></i>';
+                const diffClass = q.difficulty === 'Easy' ? 'diff-easy' :
+                    q.difficulty === 'Medium' ? 'diff-medium' : 'diff-hard';
 
-                    if (idx === q.correct) {
-                        color = 'var(--success)';
-                        icon = '<i class="ri-checkbox-circle-fill"></i>';
-                    } else if (idx === userSel) {
-                        color = 'var(--danger)';
-                        icon = '<i class="ri-close-circle-fill"></i>';
+                let optionsHtml = '';
+                q.options.forEach((opt, optIdx) => {
+                    let optClass = '';
+                    let icon = '<i class="ri-checkbox-blank-circle-line" style="opacity:0.3;"></i>';
+                    let label = String.fromCharCode(65 + optIdx) + '.';
+
+                    if (optIdx === q.correct) {
+                        optClass = 'correct';
+                        icon = '<i class="ri-checkbox-circle-fill" style="color:var(--success);"></i>';
+                    } else if (optIdx === q.selection) {
+                        optClass = 'wrong';
+                        icon = '<i class="ri-close-circle-fill" style="color:var(--danger);"></i>';
                     }
 
-                    optsHtml += `<div style="display:flex; gap:10px; align-items:center; color:${color}; margin-bottom:5px; font-weight:${idx === q.correct || idx === userSel ? '600' : '400'}">${icon} ${opt}</div>`;
+                    optionsHtml += `
+                        <div class="sol-option ${optClass}">
+                            ${icon}
+                            <span style="font-weight:600; min-width:25px;">${label}</span>
+                            <span>${opt}</span>
+                        </div>
+                    `;
                 });
 
-                const timeSpent = userRes?.timeSpent ? `<span style="margin-left:auto; font-size:0.8rem; color:var(--text-muted);"><i class="ri-time-line"></i> ${userRes.timeSpent}s</span>` : '';
+                const timeColor = q.timeSpent > 120 ? 'var(--danger)' :
+                    q.timeSpent > 60 ? 'var(--warning)' : 'var(--success)';
 
-                let imgUrl = q.image || q.images || q.imageUrl;
-                let imgHtml = '';
-                if (imgUrl && imgUrl.startsWith('http')) {
-                    imgHtml = `<div style="margin-top: 1rem; text-align: center;">
-                        <img src="${imgUrl}" alt="Question Diagram" style="max-width: 100%; max-height: 300px; border-radius: 8px; border: 1px solid var(--border);">
-                    </div>`;
-                }
-
-                const html = `
-                    <div class="sol-card" data-status="${status}">
-                        <div style="display:flex; justify-content:space-between; margin-bottom:10px; align-items:center;">
-                            <div style="display:flex; align-items:center; gap:10px;">
-                                <span style="font-weight:700; color:var(--primary);">Q${q.id}</span>
-                                <span class="status-badge ${badgeClass}">${statusText}</span>
-                                <span style="font-size:0.8rem; color:var(--text-muted); background:var(--bg-hover); padding:2px 8px; border-radius:4px;">${q.subject}</span>
-                                ${q.difficulty ? `<span style="font-size:0.8rem; color:var(--text-muted);">${q.difficulty}</span>` : ''}
-                            </div>
-                            ${timeSpent}
+                card.innerHTML = `
+                    <div class="sol-header">
+                        <div class="sol-meta">
+                            <span class="sol-badge ${statusClass}">${statusText}</span>
+                            <span class="subject-tag">${q.subject}</span>
+                            <span class="difficulty-tag ${diffClass}">${q.difficulty}</span>
                         </div>
-                        <div style="margin-bottom:1rem; font-weight:600;">${q.question}</div>
-                        ${imgHtml}
-                        <div style="background:var(--bg-hover); padding:1rem; border-radius:12px; margin-bottom:1rem;">
-                            ${optsHtml}
-                        </div>
-                        <details style="cursor:pointer; color:var(--text-muted); font-size:0.9rem;">
-                            <summary style="font-weight:600;">Show Explanation</summary>
-                            <p style="margin-top:10px; line-height:1.5;">${q.explanation || 'No explanation available.'}</p>
-                        </details>
+                        <span style="color:${timeColor}; font-size:0.85rem; font-weight:600;">
+                            <i class="ri-time-line"></i> ${q.timeSpent}s
+                        </span>
                     </div>
+                    <div class="sol-question"><strong>Q${q.id}.</strong> ${q.question}</div>
+                    <div class="sol-options">${optionsHtml}</div>
+                    <details class="sol-explanation">
+                        <summary style="cursor:pointer; font-weight:600; color:var(--text-main); list-style:none; display:flex; align-items:center; gap:0.5rem;">
+                            <i class="ri-add-circle-line" style="color:var(--primary);"></i> View Detailed Solution
+                        </summary>
+                        <div style="margin-top:1rem; padding-top:1rem; border-top:1px solid var(--border);">
+                            <div style="margin-bottom:1rem;">
+                                <strong style="color:var(--success);">Correct Answer: ${q.correctAnswer}</strong>
+                                ${q.userAnswer ? `<span style="color:var(--text-muted); margin-left:1rem;">Your Answer: ${q.userAnswer}</span>` : ''}
+                            </div>
+                            <div style="line-height:1.8; margin-bottom:1rem;">${q.explanation}</div>
+                            <div style="background:rgba(99, 102, 241, 0.1); padding:1rem; border-radius:8px; border-left:3px solid var(--primary);">
+                                <strong style="color:var(--primary);"><i class="ri-lightbulb-line"></i> AI Tip:</strong>
+                                <span style="color:var(--text-muted);"> ${getSmartTip(q)}</span>
+                            </div>
+                        </div>
+                    </details>
                 `;
-                list.innerHTML += html;
+
+                container.appendChild(card);
             });
         }
 
-        // =========================================
-        // INTERACTIONS
-        // =========================================
-        function switchView(view) {
-            // Hide all views
-            document.getElementById('view-overview').style.display = 'none';
-            document.getElementById('view-predictor').style.display = 'none';
-            document.getElementById('view-comparison').style.display = 'none';
-            document.getElementById('view-time').style.display = 'none';
-            document.getElementById('view-solutions').style.display = 'none';
-
-            // Show selected view
-            const target = document.getElementById(`view-${view}`);
-            if (view === 'overview') {
-                target.style.display = 'grid';
-            } else {
-                target.style.display = 'block';
+        function getSmartTip(q) {
+            if (q.status === 'wrong' && q.difficulty === 'Easy') {
+                return `You got an EASY question wrong. Review ${q.subject} fundamentals - this could have been +4 marks.`;
+            } else if (q.status === 'skipped' && q.difficulty === 'Easy') {
+                return `You skipped an EASY question! Easy questions have >80% accuracy. Always attempt them.`;
+            } else if (q.status === 'wrong' && q.timeSpent > 120) {
+                return `You spent ${q.timeSpent}s on this wrong answer. Use the 2-minute rule and skip earlier.`;
+            } else if (q.status === 'correct' && q.difficulty === 'Hard' && q.timeSpent < 60) {
+                return `Excellent! Fast correct solution on a HARD question. This is your strength area.`;
+            } else if (q.status === 'correct' && q.timeSpent > 150) {
+                return `Correct but slow (${q.timeSpent}s). Practice similar problems for speed.`;
             }
+            return `Analyze this ${q.difficulty} ${q.subject} question. Understand why the correct answer works.`;
+        }
 
-            // Trigger chart resize if needed
-            if (view === 'comparison' || view === 'time') {
-                window.dispatchEvent(new Event('resize'));
-            }
+        function filterSolutions(type) {
+            const cards = document.querySelectorAll('.solution-card');
+            const buttons = document.querySelectorAll('.filter-btn');
 
-            // Update tab buttons
-            document.querySelectorAll('.tabs-wrapper .tab-btn').forEach(b => b.classList.remove('active'));
+            buttons.forEach(btn => btn.classList.remove('active'));
             event.target.classList.add('active');
-        }
 
-        function filterSol(type, btn) {
-            const cards = document.querySelectorAll('.sol-card');
-            cards.forEach(c => {
-                c.style.display = (type === 'all' || c.dataset.status === type) ? 'block' : 'none';
+            cards.forEach(card => {
+                let show = false;
+                if (type === 'all') show = true;
+                else if (type === 'hard') show = card.dataset.difficulty === 'Hard';
+                else show = card.dataset.status === type;
+
+                card.style.display = show ? 'block' : 'none';
             });
-            document.querySelectorAll('#view-solutions .tab-btn').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
         }
 
-        function toggleTheme() {
-            const body = document.body;
-            const isDark = body.getAttribute('data-theme') === 'dark';
-            const icon = document.getElementById('themeIcon');
+        function switchTab(tabName) {
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
 
-            if (isDark) {
-                body.removeAttribute('data-theme');
-                localStorage.setItem('theme', 'light');
-                icon.className = 'ri-moon-line';
-            } else {
-                body.setAttribute('data-theme', 'dark');
-                localStorage.setItem('theme', 'dark');
-                icon.className = 'ri-sun-line';
+            document.querySelectorAll('.view-section').forEach(view => view.classList.remove('active'));
+            document.getElementById(`view-${tabName}`).classList.add('active');
+
+            if (tabName === 'comparison' || tabName === 'time' || tabName === 'overview') {
+                setTimeout(() => {
+                    Object.values(charts).forEach(chart => {
+                        if (chart) chart.resize();
+                    });
+                }, 100);
             }
-
-            updateChartTheme(!isDark);
-        }
-
-        function updateChartTheme(isDark) {
-            const textColor = isDark ? '#94a3b8' : '#64748b';
-            const gridColor = isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)';
-
-            Object.values(charts).forEach(chart => {
-                if (chart && chart.options) {
-                    if (chart.options.scales?.x) chart.options.scales.x.grid.color = gridColor;
-                    if (chart.options.scales?.y) chart.options.scales.y.grid.color = gridColor;
-                    chart.defaults = chart.defaults || {};
-                    chart.defaults.color = textColor;
-                    chart.update();
-                }
-            });
         }
 
         function animateValue(id, start, end, duration) {
-            if (start === end) return;
-            const range = end - start;
-            let current = start;
-            const increment = end > start ? 1 : -1;
-            const stepTime = Math.abs(Math.floor(duration / range));
             const obj = document.getElementById(id);
+            const range = end - start;
+            const stepTime = Math.max(Math.abs(Math.floor(duration / range)), 50);
 
-            // Prevent infinite loop if stepTime is 0
-            const actualStepTime = Math.max(stepTime, 10);
-            const steps = Math.ceil(duration / actualStepTime);
-            const stepValue = range / steps;
-
-            let step = 0;
-            const timer = setInterval(function () {
-                step++;
-                current = Math.round(start + (stepValue * step));
-                if ((increment > 0 && current >= end) || (increment < 0 && current <= end)) {
+            let current = start;
+            const timer = setInterval(() => {
+                current += Math.ceil(range / (duration / stepTime));
+                if ((range > 0 && current >= end) || (range < 0 && current <= end)) {
                     current = end;
                     clearInterval(timer);
                 }
-                obj.innerHTML = current;
-            }, actualStepTime);
+                obj.textContent = current;
+            }, stepTime);
         }
-
-        // =========================================
-        // DEMO DATA GENERATORS
-        // =========================================
-        function generateDemoData() {
-            // Generate realistic demo data
-            const correct = Math.floor(Math.random() * 30) + 25; // 25-55 correct
-            const wrong = Math.floor(Math.random() * 15) + 5; // 5-20 wrong
-            const skipped = 60 - correct - wrong;
-            const score = (correct * 4) - (wrong * 1);
-
-            return {
-                score: score,
-                correct: correct,
-                wrong: wrong,
-                skipped: skipped,
-                mockId: 1,
-                sectionScore: {
-                    Physics: Math.floor(score * 0.3),
-                    Chemistry: Math.floor(score * 0.25),
-                    Mathematics: Math.floor(score * 0.25),
-                    Biology: Math.floor(score * 0.2)
-                },
-                userResponses: Array.from({ length: 60 }, (_, i) => {
-                    const rand = Math.random();
-                    let selection = null;
-                    let correctAns = 0;
-
-                    if (rand > 0.2) { // 80% attempted
-                        selection = Math.random() > 0.3 ? 0 : Math.floor(Math.random() * 4); // 70% correct of attempted
-                    }
-
-                    return {
-                        id: i + 1,
-                        selection: selection,
-                        correct: 0, // Answer key
-                        timeSpent: Math.floor(Math.random() * 120) + 10
-                    };
-                })
-            };
-        }
-
-        function generateDemoQuestions(resData) {
-            const subjects = ['Physics', 'Chemistry', 'Mathematics', 'Biology'];
-            const difficulties = ['Easy', 'Medium', 'Hard'];
-
-            return Array.from({ length: 60 }, (_, i) => {
-                const subject = subjects[Math.floor(i / 15)] || 'Physics';
-                const difficulty = difficulties[Math.floor(Math.random() * 3)];
-
-                return {
-                    id: i + 1,
-                    question: `Sample ${difficulty} Question ${i + 1} in ${subject} (Demo Mode)`,
-                    options: ["Option A (Correct)", "Option B", "Option C", "Option D"],
-                    correct: 0,
-                    explanation: `This is a demo explanation for a ${difficulty} level ${subject} question. In actual mode, this would contain detailed solution steps.`,
-                    subject: subject,
-                    difficulty: difficulty
-                };
-            });
-        }
-
     </script>
 </body>
 
