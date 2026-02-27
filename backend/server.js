@@ -662,7 +662,19 @@ app.post("/api/ai-chat", async (req, res) => {
     res.setHeader("Connection", "keep-alive");
     res.setHeader("X-Daily-Remaining", String(DAILY_LIMIT - used - 1));
 
-    deepseekRes.body.pipe(res);
+    // Pump Web ReadableStream chunks to the Express response
+    const reader = deepseekRes.body.getReader();
+    const pump = async () => {
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) { res.end(); break; }
+        res.write(value);
+      }
+    };
+    pump().catch(err => {
+      console.error("Stream pump error:", err);
+      res.end();
+    });
 
   } catch (err) {
     console.error("AI Chat proxy error:", err);
