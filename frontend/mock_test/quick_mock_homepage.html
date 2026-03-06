@@ -1296,8 +1296,7 @@
                 // Generate 40 Quick Mocks
                 this.data.quickMocks = Array.from({ length: 40 }, (_, i) => ({
                     id: i + 1,
-                    name: `Quick Mock ${i + 1}`,
-                    free: i < 4,
+                    free: true, // i < 4,
                     subject: 'misc'
                 }));
 
@@ -1408,7 +1407,7 @@
                         mocks: Array.from({ length: 4 }, (_, i) => ({
                             id: mockId++,
                             name: `Mock ${String(mockId - 1).padStart(3, '0')}`,
-                            free: false
+                            free: true // false
                         }))
                     }));
                 });
@@ -1418,7 +1417,7 @@
              * Check if user has Pro access
              */
             checkProStatus() {
-                this.state.isPro = localStorage.getItem('IAT_PLAN') === 'PRO';
+                this.state.isPro = true; // localStorage.getItem('IAT_PLAN') === 'PRO';
             }
 
             /**
