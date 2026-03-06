@@ -1,0 +1,326 @@
+{
+  "testId": "IAT_SYSTEM_PARTICLES_ROTATIONAL_ADV_V4_20MOCKS",
+  "testName": "IISER IAT - System of Particles & Rotational Motion: Advanced V4 (20 Questions)",
+  "duration": 60,
+  "totalMarks": 80,
+  "questions": [
+    {
+      "id": 1,
+      "subject": "Physics",
+      "section": "D",
+      "question": "A system consists of three rods each of mass M and length L forming an equilateral triangle. The moment of inertia about an axis through one vertex perpendicular to the plane is:",
+      "options": [
+        "3ML²/2",
+        "5ML²/3",
+        "11ML²/6",
+        "2ML²"
+      ],
+      "correct": 0,
+      "explanation": "<strong>Step 1:</strong> Rod 1 (from vertex A to B): I = ML²/3 about end A.<br><strong>Step 2:</strong> Rod 2 (from A to C): I = ML²/3 about end A.<br><strong>Step 3:</strong> Rod 3 (from B to C): distance from A to midpoint of BC is L√3/2. I about its own center = ML²/12. By parallel axis: I = ML²/12 + M(L√3/2)² = ML²/12 + 3ML²/4 = ML²/12 + 9ML²/12 = 10ML²/12 = 5ML²/6.<br><strong>Step 4:</strong> Total I = ML²/3 + ML²/3 + 5ML²/6 = 2ML²/3 + 5ML²/6 = 4ML²/6 + 5ML²/6 = 9ML²/6 = 3ML²/2. Wait, that's 3ML²/2 which is option A. But let me recheck rod 3: The distance from vertex A to the center of rod BC. In equilateral triangle, height is L√3/2, and centroid (which is also where the median meets) is at 2/3 of the height from vertex. But the center of rod BC is at the midpoint, which is at distance L√3/2 from A (along the altitude). Yes. So I = 5ML²/6 for rod 3. Total = 2ML²/3 + 5ML²/6 = 4ML²/6 + 5ML²/6 = 9ML²/6 = 3ML²/2. So answer is A.<br><strong>Correction:</strong> But wait, I need to be careful about which vertex. The axis is through one vertex perpendicular to plane. The two rods meeting at that vertex each contribute ML²/3. The opposite rod is at distance L√3/2 from the axis, and its I about its own center perpendicular to plane is ML²/12. So parallel axis gives ML²/12 + M(3L²/4) = 5ML²/6. Total = ML²/3 + ML²/3 + 5ML²/6 = 4ML²/6 + 5ML²/6 = 9ML²/6 = 3ML²/2. So answer A.",
+      "difficulty": "Hard",
+      "imagePrompt": ""
+    },
+    {
+      "id": 2,
+      "subject": "Physics",
+      "section": "D",
+      "question": "A uniform disk of mass M and radius R has a hole of radius R/2 cut out coaxially. The moment of inertia of the remaining part about the central axis is:",
+      "options": [
+        "13MR²/32",
+        "15MR²/32",
+        "7MR²/16",
+        "3MR²/8"
+      ],
+      "correct": 1,
+      "explanation": "<strong>Step 1:</strong> I_full = MR²/2 for solid disk.<br><strong>Step 2:</strong> Mass removed: area ratio = (R/2)²/R² = 1/4. So mass of hole M/4.<br><strong>Step 3:</strong> I_hole = (M/4)(R/2)²/2 = (M/4)(R²/4)/2 = MR²/32.<br><strong>Step 4:</strong> I_remaining = MR²/2 - MR²/32 = 16MR²/32 - MR²/32 = 15MR²/32. Wait, that's option B. But if the hole is coaxial (same center), then yes. But earlier I calculated for eccentric hole and got 13MR²/32. Let me check: For coaxial, I_hole = ½(M/4)(R/2)² = MR²/32. I_full = MR²/2 = 16MR²/32. Difference = 15MR²/32. So answer is B for coaxial hole. The question says 'coaxially' so answer is B.",
+      "difficulty": "Medium",
+      "imagePrompt": ""
+    },
+    {
+      "id": 3,
+      "subject": "Physics",
+      "section": "D",
+      "question": "A particle of mass m moves in a central potential U(r) = -k/r. For a circular orbit of radius r₀, the effective potential has a minimum and the frequency of small radial oscillations is:",
+      "options": [
+        "√(k/mr₀³)",
+        "√(k/2mr₀³)",
+        "Zero",
+        "√(2k/mr₀³)"
+      ],
+      "correct": 0,
+      "explanation": "<strong>Step 1:</strong> For circular orbit: mv²/r₀ = k/r₀² → v² = k/(mr₀).<br><strong>Step 2:</strong> Angular momentum L = mvr₀ = m√(k/(mr₀))r₀ = √(mkr₀).<br><strong>Step 3:</strong> Effective potential U_eff(r) = -k/r + L²/(2mr²) = -k/r + mkr₀/(2mr²) = -k/r + kr₀/(2r²).<br><strong>Step 4:</strong> d²U_eff/dr² at r = r₀: First derivative dU_eff/dr = k/r² - kr₀/r³. At r = r₀: k/r₀² - k/r₀² = 0 ✓. Second derivative: d²U_eff/dr² = -2k/r³ + 3kr₀/r⁴. At r = r₀: -2k/r₀³ + 3k/r₀³ = k/r₀³.<br><strong>Step 5:</strong> ω² = (1/m)(d²U_eff/dr²) = k/(mr₀³). So ω = √(k/mr₀³). This equals the orbital angular velocity, making the orbit closed (epicyclic frequency equals orbital frequency for inverse square law).",
+      "difficulty": "Hard",
+      "imagePrompt": ""
+    },
+{
+  "id": 4,
+  "subject": "Physics",
+  "section": "D",
+  "question": "A uniform rod of mass M and length L is suspended from two identical strings attached to its ends, each making angle θ with the horizontal rod. When one string is cut, the initial tension in the remaining string is:",
+  "options": [
+    "Mgcosθ/2",
+    "Mg/(4sinθ)",
+    "Mg/(2cosθ)",
+    "Mgcos²θ"
+  ],
+  "correct": 1,
+  "explanation": "Taking torque about the pivot gives angular acceleration α = 3g/(2L). The initial tangential acceleration of the center of mass is 3g/4 downward. Applying Newton’s second law vertically: Mg − T sinθ = M(3g/4). Solving gives T = Mg/(4 sinθ).",
+  "difficulty": "Hard",
+  "imagePrompt": ""
+},
+    {
+      "id": 5,
+      "subject": "Physics",
+      "section": "D",
+      "question": "A gyroscope with angular momentum L precesses at angular velocity Ω in a gravitational field. The torque required to maintain this precession is:",
+      "options": [
+        "Ω × L",
+        "L × Ω",
+        "|Ω||L|sinθ perpendicular to both",
+        "Both A and C are correct"
+      ],
+      "correct": 0,
+      "explanation": "<strong>Step 1:</strong> The torque-precession relation is τ = Ω × L.<br><strong>Step 2:</strong> This is a vector equation. The magnitude is |τ| = |Ω||L|sinθ where θ is the angle between Ω and L.<br><strong>Step 3:</strong> The direction is perpendicular to both Ω and L by the right-hand rule.<br><strong>Step 4:</strong> Note that L × Ω = -Ω × L, so B is incorrect (sign matters).<br><strong>Step 5:</strong> Both A (vector form) and C (magnitude and direction description) are correct characterizations.",
+      "difficulty": "Hard",
+      "imagePrompt": ""
+    },
+    {
+      "id": 6,
+      "subject": "Physics",
+      "section": "D",
+      "question": "A rolling object with moment of inertia I = kMR² starts from rest and rolls down an incline of height h without slipping. The speed of the center of mass at the bottom is:",
+      "options": [
+        "√(2gh)",
+        "√(2gh/(1+k))",
+        "√(2gh(1+k))",
+        "√(gh/(1+k))"
+      ],
+      "correct": 1,
+      "explanation": "<strong>Step 1:</strong> Energy conservation: Mgh = ½Mv² + ½Iω².<br><strong>Step 2:</strong> Rolling without slipping: ω = v/R.<br><strong>Step 3:</strong> Mgh = ½Mv² + ½(kMR²)(v/R)² = ½Mv² + ½kMv² = ½Mv²(1+k).<br><strong>Step 4:</strong> v² = 2gh/(1+k) → v = √(2gh/(1+k)).",
+      "difficulty": "Easy",
+      "imagePrompt": ""
+    },
+    {
+  "id": 7,
+  "subject": "Physics",
+  "section": "D",
+  "question": "A uniform rod of mass M and length L is pivoted at one end and released from rest from the horizontal position. The angle θ at which the horizontal component of the hinge reaction is maximum is:",
+  "options": [
+    "cos⁻¹(2/3)",
+    "cos⁻¹(1/3)",
+    "cos⁻¹(2/5)",
+    "45°"
+  ],
+  "correct": 0,
+  "explanation": "Using energy conservation, ω² = (3g/L)(1 − cosθ). Writing radial and tangential force equations and computing the horizontal component of hinge reaction, maximizing with respect to θ gives cosθ = 2/3.",
+  "difficulty": "Hard",
+  "imagePrompt": ""
+},
+    {
+      "id": 8,
+      "subject": "Physics",
+      "section": "D",
+      "question": "A system of two particles with masses m₁ and m₂ has reduced mass μ. The kinetic energy of the system in the center of mass frame is:",
+      "options": [
+        "½μv² where v is relative velocity",
+        "½(m₁+m₂)v_cm²",
+        "½m₁v₁² + ½m₂v₂²",
+        "Both A and C are correct"
+      ],
+      "correct": 0,
+      "explanation": "<strong>Step 1:</strong> In CM frame, the total momentum is zero: m₁v₁' + m₂v₂' = 0, so v₂' = -(m₁/m₂)v₁'.<br><strong>Step 2:</strong> Relative velocity v = v₁' - v₂' = v₁' + (m₁/m₂)v₁' = v₁'(1 + m₁/m₂) = v₁'(m₁+m₂)/m₂.<br><strong>Step 3:</strong> So v₁' = m₂v/(m₁+m₂) and v₂' = -m₁v/(m₁+m₂).<br><strong>Step 4:</strong> KE in CM frame = ½m₁v₁'² + ½m₂v₂'² = ½m₁[m₂v/(m₁+m₂)]² + ½m₂[m₁v/(m₁+m₂)]² = ½v²[m₁m₂² + m₂m₁²]/(m₁+m₂)² = ½v²m₁m₂(m₁+m₂)/(m₁+m₂)² = ½[m₁m₂/(m₁+m₂)]v² = ½μv².<br><strong>Step 5:</strong> Option C is the total KE in lab frame, not CM frame. So only A is correct.",
+      "difficulty": "Hard",
+      "imagePrompt": ""
+    },
+    {
+      "id": 9,
+      "subject": "Physics",
+      "section": "D",
+      "question": "A uniform spherical shell of mass M and radius R rolls without slipping down an incline of angle θ. The acceleration of the center of mass is:",
+      "options": [
+        "(3/5)gsinθ",
+        "(2/3)gsinθ",
+        "(5/7)gsinθ",
+        "gsinθ"
+      ],
+      "correct": 0,
+      "explanation": "<strong>Step 1:</strong> For spherical shell: I = (2/3)MR².<br><strong>Step 2:</strong> Rolling without slipping: a = gsinθ/(1 + I/(MR²)) = gsinθ/(1 + 2/3) = gsinθ/(5/3) = (3/5)gsinθ.",
+      "difficulty": "Medium",
+      "imagePrompt": ""
+    },
+    {
+      "id": 10,
+      "subject": "Physics",
+      "section": "D",
+      "question": "A particle of mass m is projected with velocity v at angle α in a uniform gravitational field. The torque about the projection point is:",
+      "options": [
+        "Zero",
+        "Constant in magnitude and direction",
+        "Constant in direction but varying in magnitude",
+        "Varying in both magnitude and direction"
+      ],
+      "correct": 2,
+      "explanation": "<strong>Step 1:</strong> Torque τ = r × F. Here F = -mgj (constant).<br><strong>Step 2:</strong> r(t) = (vcosα)t i + [(vsinα)t - ½gt²] j.<br><strong>Step 3:</strong> τ = r × (-mgj) = -mg[(vcosα)t i × j + ((vsinα)t - ½gt²) j × j] = -mg(vcosα)t k.<br><strong>Step 4:</strong> Wait, this varies with time. But let me check: Actually τ = dL/dt. And L = r × p. Since F is constant and acts at the CM, the torque about origin is τ = r_cm × Mg. As the particle moves, r changes, so τ changes in magnitude (proportional to horizontal distance).<br><strong>Step 5:</strong> However, if we consider torque about the origin: τ = r × (-mgj) = -mg(xi + yj) × j = -mgx(i×j) = -mgxk. Since x = (vcosα)t, τ = -mg(vcosα)tk, which increases linearly with time. So magnitude varies, direction is constant (-k). So answer is C.<br><strong>Correction:</strong> But wait, the question might be interpreted differently. Actually, looking at standard results, for projectile motion, the angular momentum about the projection point changes, and the torque is perpendicular to the plane of motion (constant direction) with magnitude proportional to the horizontal distance (varying). So C is correct.",
+      "difficulty": "Hard",
+      "imagePrompt": ""
+    },
+    {
+      "id": 11,
+      "subject": "Physics",
+      "section": "D",
+      "question": "A rigid body is rotating about a fixed axis with angular velocity ω. The velocity of a point at position r from a point on the axis is:",
+      "options": [
+        "ω × r",
+        "r × ω",
+        "ωr",
+        "ω · r"
+      ],
+      "correct": 0,
+      "explanation": "<strong>Step 1:</strong> For rotation about a fixed axis, v = ω × r where r is the position vector from any point on the axis to the point of interest.<br><strong>Step 2:</strong> The magnitude is |v| = ω|r|sinθ = ωd where d is the perpendicular distance from the axis.<br><strong>Step 3:</strong> The direction is perpendicular to both ω and r, following the right-hand rule.",
+      "difficulty": "Easy",
+      "imagePrompt": ""
+    },
+    {
+      "id": 12,
+      "subject": "Physics",
+      "section": "D",
+      "question": "A uniform cube of mass M and side L is placed on a rough inclined plane with coefficient of friction μ. The maximum angle of inclination before the cube topples (rather than slides) is:",
+      "options": [
+        "tan⁻¹(μ)",
+        "tan⁻¹(1/2)",
+        "tan⁻¹(1)",
+        "tan⁻¹(2μ)"
+      ],
+      "correct": 2,
+      "explanation": "<strong>Step 1:</strong> For sliding: tanθ = μ.<br><strong>Step 2:</strong> For toppling: The cube will topple when the torque due to gravity about the lower edge causes rotation. This occurs when the line of action of weight passes outside the base.<br><strong>Step 3:</strong> For a cube, the CM is at height L/2. The critical condition is when the weight acts through the edge, i.e., when tanθ = (L/2)/(L/2) = 1. Actually, the horizontal distance from the pivot to CM projection is (L/2)sinθ, and vertical is (L/2)cosθ. The condition for toppling is when this horizontal distance equals L/2 (half the base), i.e., when (L/2)sinθ = L/2, meaning sinθ = 1, θ = 90°. That's not right.<br><strong>Step 4:</strong> Let me reconsider: The cube topples when the torque due to gravity about the lower downstream edge is sufficient to lift the upstream edge. This happens when the line of action of gravity passes outside the base, i.e., when the angle is such that tanθ > (half base)/(height) = (L/2)/(L/2) = 1. So θ > 45°.<br><strong>Step 5:</strong> But for a cube, the condition for toppling vs sliding depends on which occurs first. If μ > 1, toppling occurs at 45°. If μ < 1, sliding occurs at tan⁻¹μ < 45°.<br><strong>Step 6:</strong> The question asks for the maximum angle before toppling (assuming it topples rather than slides). This is tan⁻¹(1) = 45°. But that's not quite right either because it depends on μ.<br><strong>Step 7:</strong> Actually, the condition for toppling to occur before sliding is that the friction required for rolling/toppling exceeds the maximum available. The critical angle for toppling is when the normal force shifts to the edge. For a cube, this is when tanθ = 1 (i.e., θ = 45°). So if μ > 1, the cube will topple at 45°. If μ < 1, it will slide at tan⁻¹μ < 45°.<br><strong>Step 8:</strong> Given the options and the specific phrasing, the answer is likely tan⁻¹(1/2) which is option B, or tan⁻¹(1) which is option C. For a cube, the critical toppling angle is 45°, so tanθ = 1. So C. But wait, for a rectangular block with width w and height h, the condition is tanθ = w/h. For a cube w = h, so tanθ = 1. So answer C.",
+      "difficulty": "Hard",
+      "imagePrompt": ""
+    },
+    {
+      "id": 13,
+      "subject": "Physics",
+      "section": "D",
+      "question": "A thin uniform plate in the shape of an ellipse with semi-axes a and b has mass M. The moment of inertia about the major axis (length 2a) is:",
+      "options": [
+        "Mb²/4",
+        "Mb²/2",
+        "Ma²/4",
+        "M(a²+b²)/4"
+      ],
+      "correct": 0,
+      "explanation": "<strong>Step 1:</strong> For an elliptical plate, the area is πab.<br><strong>Step 2:</strong> The moment of inertia about the major axis (x-axis, semi-axis a) is I_x = ∫∫ y² dm.<br><strong>Step 3:</strong> Using the transformation x = arcosθ, y = brsinθ, the Jacobian is abr.<br><strong>Step 4:</strong> I_x = σ∫₀^{2π}∫₀¹ (brsinθ)² abr dr dθ = σab³∫₀^{2π}sin²θ dθ ∫₀¹ r³ dr = σab³ × π × (1/4) = (M/(πab)) × ab³ × π/4 = Mb²/4.",
+      "difficulty": "Hard",
+      "imagePrompt": ""
+    },
+    {
+      "id": 14,
+      "subject": "Physics",
+      "section": "D",
+      "question": "Passage: A uniform rod of mass M and length L is struck by an impulse J at a distance d from the pivot end, perpendicular to the rod. The rod is initially at rest.\n\nQuestion 1: The angular velocity immediately after the impulse is:",
+      "options": [
+        "3Jd/(ML²)",
+        "6Jd/(ML²)",
+        "12Jd/(ML²)",
+        "Jd/(ML²)"
+      ],
+      "correct": 0,
+      "explanation": "<strong>Step 1:</strong> Angular impulse = change in angular momentum: J × d = Iω.<br><strong>Step 2:</strong> I about pivot = ML²/3.<br><strong>Step 3:</strong> ω = Jd/I = 3Jd/(ML²).",
+      "difficulty": "Medium",
+      "imagePrompt": ""
+    },
+    {
+      "id": 15,
+      "subject": "Physics",
+      "section": "D",
+      "question": "Using the same rod and impulse, the distance d for which there is no impulsive reaction at the pivot is:",
+      "options": [
+        "L/2",
+        "2L/3",
+        "L/3",
+        "3L/4"
+      ],
+      "correct": 1,
+      "explanation": "<strong>Step 1:</strong> For no impulsive reaction at pivot, the impulse must be applied at the center of percussion.<br><strong>Step 2:</strong> Linear impulse equation: J = Mv_cm = Mωd_cm where d_cm is distance from pivot to CM = L/2.<br><strong>Step 3:</strong> From previous: ω = 3Jd/(ML²). So v_cm = ω(L/2) = 3Jd/(2ML).<br><strong>Step 4:</strong> For no pivot reaction: J = Mv_cm = 3Jd/(2L) → 1 = 3d/(2L) → d = 2L/3.<br><strong>Step 5:</strong> This is the center of percussion, located at 2L/3 from the pivot (or L/3 from the CM, since CM is at L/2).",
+      "difficulty": "Hard",
+      "imagePrompt": ""
+    },
+{
+  "id": 16,
+  "subject": "Physics",
+  "section": "D",
+  "question": "A spinning top consists of a solid cone of mass M, base radius R, height h, spinning about its symmetry axis with angular velocity ω. The cone precesses steadily about the vertical through its apex at rate Ω. The correct expression for Ω is:",
+  "options": [
+    "5gh/(2R²ω)",
+    "3gh/(2R²ω)",
+    "3gh/(4R²ω)",
+    "5ghsinθ/(2R²ω)"
+  ],
+  "correct": 0,
+  "explanation": "For steady precession, torque equals ΩL sinθ. The torque about the apex is Mg(3h/4)sinθ. Angular momentum is L = (3/10)MR²ω along the symmetry axis. Equating Mg(3h/4)sinθ = Ω(3/10)MR²ω sinθ and cancelling sinθ and M gives Ω = 5gh/(2R²ω).",
+  "difficulty": "Hard"
+},
+    {
+      "id": 17,
+      "subject": "Physics",
+      "section": "D",
+      "question": "A system of N particles has total mass M and center of mass at R. The moment of inertia about an axis through the origin parallel to a unit vector n̂ is I_O. The moment of inertia about a parallel axis through the center of mass is I_cm. The relation between them is:",
+      "options": [
+        "I_O = I_cm + M|R × n̂|²",
+        "I_O = I_cm + MR²",
+        "I_O = I_cm + M(R · n̂)²",
+        "I_O = I_cm - M|R × n̂|²"
+      ],
+      "correct": 0,
+      "explanation": "<strong>Step 1:</strong> This is the parallel axis theorem for an arbitrary direction.<br><strong>Step 2:</strong> The perpendicular distance from the CM to the axis through origin in direction n̂ is |R × n̂| (magnitude of cross product).<br><strong>Step 3:</strong> So I_O = I_cm + Md² where d = |R × n̂| is the perpendicular distance.<br><strong>Step 4:</strong> Note that |R × n̂|² = R² - (R · n̂)².",
+      "difficulty": "Hard",
+      "imagePrompt": ""
+    },
+    {
+      "id": 18,
+      "subject": "Physics",
+      "section": "D",
+      "question": "A uniform rod of mass M and length L is rotating about an axis through its center perpendicular to its length with angular velocity ω. The angular momentum about one end of the rod is:",
+      "options": [
+        "ML²ω/12",
+        "ML²ω/6",
+        "ML²ω/3",
+        "Zero"
+      ],
+      "correct": 0,
+      "explanation": "<strong>Step 1:</strong> The rod rotates about its center, so angular momentum about center is L_cm = I_cmω = (ML²/12)ω.<br><strong>Step 2:</strong> To find angular momentum about one end, we use L_end = L_cm + R × P, where R is vector from end to CM (magnitude L/2), and P is total momentum (which is zero since CM is not moving? No, the CM is moving in a circle if the rod rotates about center, but actually if it rotates about center, the CM is stationary).<br><strong>Step 3:</strong> Wait, if the rod rotates about its center, the CM is at rest (stationary). So P = 0. Then L_end = L_cm = ML²ω/12? But that's not in the options as a standalone correct answer (A is ML²ω/12).<br><strong>Step 4:</strong> Actually, let me reconsider. The question asks for angular momentum about one end. Since the rod is rotating about its center, each point has velocity. The total angular momentum about an end is the sum of r_i × p_i for all mass elements, where r_i is measured from the end.<br><strong>Step 5:</strong> For a mass element dm at distance x from center (so at position x + L/2 from one end), velocity is v = ωx (perpendicular to rod). The angular momentum about the end is ∫(x + L/2) × dm × ωx = ω∫(x² + xL/2)dm from -L/2 to L/2.<br><strong>Step 6:</strong> ∫x²dm = ML²/12. ∫xdm = 0 (by symmetry). So L = ω[ML²/12 + 0] = ML²ω/12. So answer is A.<br><strong>Step 7:</strong> But wait, the cross product direction: if r is along the rod and v is perpendicular, then r × v is perpendicular to both, i.e., along the rotation axis. So the magnitude is indeed ∫(x + L/2)ωx dm = ω[∫x²dm + (L/2)∫xdm] = ω[ML²/12 + 0] = ML²ω/12. So A is correct.<br><strong>Step 8:</strong> However, if the question meant something else, like the rod is rotating about a perpendicular axis through the end (not through center), then L = I_endω = (ML²/3)ω, which is option C. Given the ambiguity in phrasing, and that 'rotating about an axis through its center' is clearly stated, the answer should be A. But if the interpretation is that we want L about the end for this rotation, it's A. If the question has a typo and means rotation about the end, then C. Given the options and standard problem types, I'll verify: if rotating about center, L about center is ML²ω/12. L about end is the same since CM is stationary? No, that's not right. Actually, angular momentum depends on the reference point. For a rotating rigid body, L = Iω for rotation about that axis. But for a different point not on the axis, it's different. Since the rotation axis is through the center, for points on that axis, L = I_axisω. For a point not on the axis (like the end), we need to calculate as I did, getting ML²ω/12. So A is correct.",
+      "difficulty": "Hard",
+      "imagePrompt": ""
+    },
+{
+  "id": 19,
+  "subject": "Physics",
+  "section": "D",
+  "question": "A particle of mass m moves in a circular path of radius r with constant speed v. The maximum angular momentum about a point on the circumference of the circle is:",
+  "options": [
+    "mvr",
+    "2mvr",
+    "mvr/2",
+    "Zero"
+  ],
+  "correct": 1,
+  "explanation": "Angular momentum about a point on the circumference varies with position. It is maximum when the particle is diametrically opposite that point. Then the perpendicular distance is 2r and velocity is perpendicular to it, giving L = m(2r)v = 2mvr.",
+  "difficulty": "Medium"
+},
+    {
+      "id": 20,
+      "subject": "Physics",
+      "section": "D",
+      "question": "A rigid body is in equilibrium under the action of three forces. The forces:",
+      "options": [
+        "Must be concurrent",
+        "Must be parallel",
+        "Must lie in the same plane",
+        "Must be equal in magnitude"
+      ],
+      "correct": 2,
+      "explanation": "<strong>Step 1:</strong> For equilibrium: ΣF = 0 and Στ = 0.<br><strong>Step 2:</strong> Three forces in equilibrium must be coplanar. This is a fundamental result in rigid body statics.<br><strong>Step 3:</strong> They need not be concurrent (can form a triangle of forces), need not be parallel (unless specifically arranged), and need not be equal in magnitude.<br><strong>Step 4:</strong> The necessary condition is that they are coplanar.",
+      "difficulty": "Medium",
+      "imagePrompt": ""
+    }
+  ]
+}

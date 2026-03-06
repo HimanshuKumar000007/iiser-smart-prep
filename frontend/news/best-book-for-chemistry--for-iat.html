@@ -1361,7 +1361,7 @@
                 <a href="/#features">Features</a>
                 <a href="/#pricing">Pricing</a>
                 <a href="/#faq">FAQ</a>
-                <div class="auth-buttons" id="auth-buttons-container" style="display: flex; gap: 0.75rem; align-items: center;">
+                <div class="auth-buttons" style="display: flex; gap: 0.75rem; align-items: center;">
                     <a href="/login.html" class="btn btn-outline"
                         style="padding: 0.5rem 1.2rem; font-size: 0.85rem;">Log In</a>
                     <a href="/login.html?mode=signup" class="btn btn-primary"
@@ -1797,7 +1797,8 @@
                         <p>Get branch-wise adaptive tests that identify your weak reactions, formulas, and calculation
                             patterns.</p>
                         <div class="cta-buttons">
-                            <a href="javascript:void(0)" onclick="alert('Chemistry Sectional Test coming soon!')" class="btn btn-primary">
+                            <a href="javascript:void(0)" onclick="alert('Chemistry Sectional Test coming soon!')"
+                                class="btn btn-primary">
                                 Start Chemistry Sectional
                                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                     stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -1816,7 +1817,7 @@
                 <!-- SIDEBAR -->
                 <aside class="article-sidebar fade-in-up">
                     <!-- Quick Links -->
-                    <div class="sidebar-card pro-hidden">
+                    <div class="sidebar-card">
                         <h4>Related Resources</h4>
                         <a href="/news/iat-2026-notification.html" class="sidebar-link">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
@@ -1868,27 +1869,6 @@
                             </button>
                         </div>
                     </div>
-
-                    <!-- Daily Reaction -->
-                    <div class="sidebar-card" style="background: var(--secondary); color: white;">
-                        <h4 style="color: white; border-bottom-color: rgba(255,255,255,0.2);">Reaction of the Day</h4>
-                        <div style="padding: 1rem 0; text-align: center;">
-                            <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">⚗️</div>
-                            <p style="font-size: 0.9rem; color: var(--text-light); margin-bottom: 1rem;">One high-yield
-                                organic reaction daily with mechanism video.</p>
-                            <a href="#" class="btn btn-primary"
-                                style="width: 100%; background: var(--chem-primary);">View Today's Reaction</a>
-                        </div>
-                    </div>
-
-                    <!-- Sticky CTA -->
-                    <div class="sidebar-card"
-                        style="background: linear-gradient(135deg, var(--chem-soft), #fff5f5); border-color: var(--chem-light);">
-                        <h4>Chemistry Weak?</h4>
-                        <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 1rem;">Get branch-specific
-                            AI tutoring with personalized reaction sets and formula drills.</p>
-                        <a href="/#pricing" class="btn btn-primary" style="width: 100%;">Start AI Tutor</a>
-                    </div>
                 </aside>
             </div>
         </div>
@@ -1922,8 +1902,8 @@
                                     Tutor</a></li>
                             <li><a href="/mock_test/full_mock_test_homepage.html"
                                     style="color: var(--text-muted); font-size: 0.9rem;">Mock Tests</a></li>
-                            <li><a href="/#pricing"
-                                    style="color: var(--text-muted); font-size: 0.9rem;">Pricing</a></li>
+                            <li><a href="/#pricing" style="color: var(--text-muted); font-size: 0.9rem;">Pricing</a>
+                            </li>
                         </ul>
                     </div>
                     <div>
@@ -1943,8 +1923,8 @@
                         <ul style="display: flex; flex-direction: column; gap: 0.75rem;">
                             <li><a href="/#faq" style="color: var(--text-muted); font-size: 0.9rem;">FAQ</a>
                             </li>
-                            <li><a href="/contact-us.html"
-                                    style="color: var(--text-muted); font-size: 0.9rem;">Contact</a></li>
+                            <li><a href="/contact.html" style="color: var(--text-muted); font-size: 0.9rem;">Contact</a>
+                            </li>
                             <li><a href="/privacy.html" style="color: var(--text-muted); font-size: 0.9rem;">Privacy
                                     Policy</a></li>
                         </ul>
@@ -2118,34 +2098,6 @@
         document.addEventListener('keydown', function (event) {
             if (event.key === "Escape") closeModal();
         });
-    </script>
-
-    <!-- Auth & Pro Logic -->
-    <script src="/config.js"></script>
-    <script>
-        // --- Auth State Check ---
-        const token = localStorage.getItem("IAT_TOKEN");
-
-        function updateButtons() {
-            const container = document.getElementById("auth-buttons-container");
-            if (!container) return;
-
-            if (token) {
-                container.innerHTML = `
-                    <a href="/mock_test/full_mock_test_homepage.html" class="btn btn-primary" style="padding: 0.5rem 1rem;">Dashboard</a>
-                    <button onclick="logout()" class="btn btn-outline" style="border:none; color: var(--text-muted);">Logout</button>
-                `;
-            }
-        }
-
-        if (typeof updateButtons === 'function') {
-            updateButtons();
-        }
-
-        function logout() {
-            localStorage.clear();
-            window.location.href = '/index.html';
-        }
     </script>
 </body>
 

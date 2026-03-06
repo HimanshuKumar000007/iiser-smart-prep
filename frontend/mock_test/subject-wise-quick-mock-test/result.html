@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Subject Analysis | IISER Prep</title>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&family=Plus+Jakarta+Sans:wght@400;600;700&display=swap"
+        rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        :root {
+            --primary: #6366f1;
+            --success: #10b981;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+            --bg-body: #f3f4f6;
+            --bg-card: #ffffff;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --radius: 16px;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: var(--bg-body);
+            color: var(--text-main);
+            margin: 0;
+            padding: 2rem 0;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .glass-card {
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            padding: 2rem;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+            margin-bottom: 2rem;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .brand {
+            font-family: 'Outfit';
+            font-weight: 800;
+            font-size: 1.5rem;
+            color: var(--primary);
+        }
+
+        .score-hero {
+            text-align: center;
+            padding: 2rem 0;
+        }
+
+        .main-score {
+            font-size: 4rem;
+            font-weight: 800;
+            color: var(--primary);
+        }
+
+        .score-label {
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .stat-card {
+            background: var(--bg-body);
+            padding: 1.5rem;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .stat-val {
+            font-size: 1.5rem;
+            font-weight: 800;
+        }
+
+        .stat-label {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 0.5rem;
+        }
+
+        .tab {
+            cursor: pointer;
+            font-weight: 600;
+            color: var(--text-muted);
+            padding: 0.5rem 1rem;
+        }
+
+        .tab.active {
+            color: var(--primary);
+            border-bottom: 2px solid var(--primary);
+        }
+
+        .sol-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .sol-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            padding: 1.5rem;
+            border-radius: 12px;
+        }
+
+        .sol-header {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+            align-items: center;
+        }
+
+        .badge {
+            font-size: 0.7rem;
+            font-weight: 700;
+            padding: 2px 8px;
+            border-radius: 4px;
+            text-transform: uppercase;
+        }
+
+        .badge-correct {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .badge-wrong {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .badge-skipped {
+            background: #f1f5f9;
+            color: #475569;
+        }
+
+        .btn-home {
+            display: inline-block;
+            background: var(--primary);
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 700;
+            margin-top: 1rem;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="brand">Subject Analytics</div>
+            <a href="../quick_mock_homepage.html" class="btn-home">Home</a>
+        </div>
+
+        <div class="glass-card score-hero">
+            <div class="score-label">Your Final Score</div>
+            <div class="main-score" id="totalScore">0</div>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-val" id="correctVal" style="color:var(--success)">0</div>
+                    <div class="stat-label">Correct</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-val" id="wrongVal" style="color:var(--danger)">0</div>
+                    <div class="stat-label">Wrong</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-val" id="skippedVal">0</div>
+                    <div class="stat-label">Skipped</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="tabs">
+            <div class="tab active" id="tabSummary" onclick="switchView('summary')">Summary</div>
+            <div class="tab" id="tabSolutions" onclick="switchView('solutions')">Solutions</div>
+        </div>
+
+        <div id="view-summary" class="glass-card">
+            <canvas id="scoreChart" style="max-height: 300px;"></canvas>
+        </div>
+
+        <div id="view-solutions" style="display:none;">
+            <div class="sol-list" id="solutionsList"></div>
+        </div>
+    </div>
+
+    <script src="../quick_mocks_config.js"></script>
+    <script>
+        const resultData = JSON.parse(localStorage.getItem('mockTestResult'));
+        let originalQuestions = null;
+
+        window.onload = async () => {
+            if (!resultData) {
+                alert("No results found");
+                window.location.href = '../quick_mock_homepage.html';
+                return;
+            }
+
+            document.getElementById('totalScore').innerText = resultData.score;
+            document.getElementById('correctVal').innerText = resultData.correct;
+            document.getElementById('wrongVal').innerText = resultData.wrong;
+            document.getElementById('skippedVal').innerText = resultData.skipped;
+
+            renderChart();
+            loadQuestions();
+        };
+
+        async function loadQuestions() {
+            try {
+                const mockConfig = window.QUICK_MOCKS_CONFIG.find(m => m.id == resultData.mockId);
+                if (mockConfig) {
+                    const res = await fetch(`../${mockConfig.path}`);
+                    const data = await res.json();
+                    originalQuestions = data.questions;
+                    renderSolutions();
+                }
+            } catch (e) { console.error("Error loading questions", e); }
+        }
+
+        function renderChart() {
+            const ctx = document.getElementById('scoreChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Correct', 'Wrong', 'Skipped'],
+                    datasets: [{
+                        data: [resultData.correct, resultData.wrong, resultData.skipped],
+                        backgroundColor: ['#10b981', '#ef4444', '#cbd5e1']
+                    }]
+                },
+                options: { maintainAspectRatio: false }
+            });
+        }
+
+        function renderSolutions() {
+            const list = document.getElementById('solutionsList');
+            if (!originalQuestions) return;
+
+            list.innerHTML = originalQuestions.map(q => {
+                const res = resultData.userResponses.find(r => r.id === q.id);
+                const userSel = res ? res.selection : null;
+                const isCorrect = userSel === q.correct;
+                const isSkipped = userSel === null;
+
+                let badge = isCorrect ? '<span class="badge badge-correct">Correct</span>' : (isSkipped ? '<span class="badge badge-skipped">Skipped</span>' : '<span class="badge badge-wrong">Wrong</span>');
+
+                let options = q.options.map((opt, i) => {
+                    let color = i === q.correct ? 'var(--success)' : (i === userSel ? 'var(--danger)' : 'inherit');
+                    let weight = (i === q.correct || i === userSel) ? 'bold' : 'normal';
+                    return `<div style="color:${color}; font-weight:${weight}; margin-bottom:4px;">${i === q.correct ? '✓' : (i === userSel ? '✗' : '○')} ${opt}</div>`;
+                }).join('');
+
+                return `
+                    <div class="sol-card">
+                        <div class="sol-header">
+                            <span style="font-weight:800;">Q${q.id}</span> ${badge}
+                        </div>
+                        <div style="margin-bottom:1rem; font-weight:600;">${q.question}</div>
+                        <div style="background:var(--bg-body); padding:1rem; border-radius:8px; margin-bottom:1rem;">${options}</div>
+                        <details><summary style="cursor:pointer; font-size:0.8rem; color:var(--text-muted);">Explanation</summary><p style="font-size:0.9rem; padding:10px 0;">${q.explanation || 'No explanation.'}</p></details>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function switchView(view) {
+            document.getElementById('view-summary').style.display = view === 'summary' ? 'block' : 'none';
+            document.getElementById('view-solutions').style.display = view === 'solutions' ? 'block' : 'none';
+            document.getElementById('tabSummary').classList.toggle('active', view === 'summary');
+            document.getElementById('tabSolutions').classList.toggle('active', view === 'solutions');
+        }
+    </script>
+</body>
+
+</html>

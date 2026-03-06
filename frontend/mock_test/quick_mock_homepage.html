@@ -4,26 +4,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Select Quick Mock | IISER Smart Prep</title>
-
-    <!-- Google Fonts: Inter -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+    <title>IISER Smart Prep | Quick Mocks</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
         rel="stylesheet">
-
     <style>
         /* =========================================
-           1. SHARED DESIGN SYSTEM (From Home Page)
+           1. SHARED DESIGN SYSTEM
            ========================================= */
         :root {
             /* Palette: Indigo & Slate */
             --primary: #4f46e5;
             --primary-dark: #4338ca;
             --primary-soft: #e0e7ff;
-
             --secondary: #0f172a;
-            /* Slate 900 */
 
             --text-main: #1e293b;
             --text-muted: #64748b;
@@ -34,18 +27,33 @@
             --border: #e2e8f0;
 
             --success: #10b981;
-            /* Green for Free tag */
+            --warning: #f59e0b;
+            --error: #ef4444;
             --lock: #64748b;
-            /* Color for lock icon */
 
+            /* Subject Colors */
+            --physics: #3b82f6;
+            --chemistry: #ec4899;
+            --math: #f59e0b;
+            --biology: #10b981;
+            --misc: #8b5cf6;
+
+            --radius-sm: 8px;
             --radius-md: 12px;
             --radius-lg: 24px;
             --radius-pill: 100px;
 
             --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
             --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            --shadow-glow: 0 0 20px -5px var(--primary);
 
             --container-width: 1140px;
+
+            --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-base: 200ms cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-slow: 300ms cubic-bezier(0.16, 1, 0.3, 1);
+            --transition-spring: 500ms cubic-bezier(0.34, 1.56, 0.64, 1);
         }
 
         * {
@@ -56,17 +64,24 @@
             -webkit-tap-highlight-color: transparent;
         }
 
+        html {
+            scroll-behavior: smooth;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
         body {
-            font-family: 'Inter', sans-serif;
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
             color: var(--text-main);
             background: var(--bg-wash);
             line-height: 1.6;
+            min-height: 100vh;
         }
 
         a {
             text-decoration: none;
             color: inherit;
-            transition: all 0.2s ease;
+            transition: all var(--transition-base);
         }
 
         .container {
@@ -76,66 +91,9 @@
         }
 
         /* =========================================
-           2. COMPONENTS (Buttons & Cards)
+           2. FLOATING HEADER
            ========================================= */
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            padding: 0.6rem 1.5rem;
-            border-radius: var(--radius-pill);
-            font-weight: 600;
-            font-size: 0.9rem;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            gap: 0.5rem;
-            border: none;
-        }
-
-        .btn-primary {
-            background: var(--primary);
-            color: white;
-            box-shadow: 0 4px 6px rgba(79, 70, 229, 0.2);
-        }
-
-        .btn-primary:hover {
-            background: var(--primary-dark);
-            transform: translateY(-1px);
-        }
-
-        .btn-primary:disabled {
-            background: var(--text-light);
-            cursor: not-allowed;
-            transform: none;
-            box-shadow: none;
-        }
-
-        .btn-lock {
-            background: var(--bg-wash);
-            color: var(--text-muted);
-            border: 1px solid var(--border);
-        }
-
-        .btn-lock:hover {
-            background: #e2e8f0;
-            color: var(--secondary);
-        }
-
-        .btn-outline {
-            background: transparent;
-            color: var(--text-main);
-            border: 1px solid var(--border);
-        }
-
-        .btn-outline:hover {
-            border-color: var(--text-main);
-            background: white;
-        }
-
-        /* =========================================
-           3. FLOATING HEADER (From Home Page)
-           ========================================= */
-        header {
+        .header {
             position: fixed;
             top: 20px;
             left: 0;
@@ -144,30 +102,30 @@
             display: flex;
             justify-content: center;
             pointer-events: none;
-            transition: top 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            transition: top var(--transition-slow);
         }
 
-        header.scrolled {
+        .header.scrolled {
             top: 0;
         }
 
-        .nav-container {
+        .header__container {
             pointer-events: auto;
             background: rgba(255, 255, 255, 0.9);
             backdrop-filter: blur(16px);
             border: 1px solid rgba(255, 255, 255, 0.5);
             box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.08);
             padding: 0.75rem 1.5rem;
-            border-radius: 100px;
+            border-radius: var(--radius-pill);
             display: flex;
             align-items: center;
             justify-content: space-between;
             width: 90%;
             max-width: var(--container-width);
-            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            transition: all var(--transition-slow);
         }
 
-        header.scrolled .nav-container {
+        .header.scrolled .header__container {
             width: 100%;
             max-width: 100%;
             border-radius: 0;
@@ -179,219 +137,702 @@
             padding: 1rem 2rem;
         }
 
-        .logo {
-            font-size: 1.1rem;
-            font-weight: 800;
-            color: var(--secondary);
+        .header__brand {
             display: flex;
             align-items: center;
-            gap: 0.5rem;
+            gap: 0.75rem;
+            font-weight: 800;
+            font-size: 1.1rem;
+            color: var(--secondary);
+            letter-spacing: -0.02em;
         }
 
-        .logo span {
+        .header__logo {
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .header__brand span {
             color: var(--primary);
         }
 
+        .header__exit {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            border: 1px solid var(--border);
+            background: transparent;
+            color: var(--text-muted);
+            font-size: 0.875rem;
+            font-weight: 600;
+            border-radius: var(--radius-pill);
+            cursor: pointer;
+            transition: all var(--transition-base);
+        }
+
+        .header__exit:hover {
+            border-color: var(--text-main);
+            color: var(--secondary);
+            background: white;
+        }
+
         /* =========================================
-           4. PAGE LAYOUT
+           3. PAGE LAYOUT & HERO
            ========================================= */
         .page-wrapper {
             padding-top: 8rem;
             padding-bottom: 4rem;
         }
 
-        /* Hero-ish Title */
-        .page-header {
+        .hero {
             text-align: center;
             max-width: 700px;
             margin: 0 auto 3rem;
+            animation: fadeIn var(--transition-slow);
         }
 
-        .page-header h1 {
-            font-size: 2.5rem;
+        .hero__title {
+            font-size: clamp(2rem, 5vw, 2.5rem);
             font-weight: 800;
             color: var(--secondary);
             letter-spacing: -0.03em;
             margin-bottom: 0.5rem;
+            line-height: 1.2;
         }
 
-        .page-header p {
+        .hero__subtitle {
             color: var(--text-muted);
             font-size: 1.1rem;
+            font-weight: 500;
         }
 
         /* =========================================
-           5. TEST CARDS GRID
+           4. STATS BAR
            ========================================= */
-        .grid-3 {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 1.5rem;
+        .stats {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 2.5rem;
+            flex-wrap: wrap;
+            animation: fadeIn var(--transition-slow) 0.1s both;
         }
 
-        .test-card {
-            background: white;
-            border: 1px solid var(--border);
-            border-radius: var(--radius-md);
-            padding: 1.5rem;
+        .stat {
             display: flex;
             flex-direction: column;
-            transition: all 0.3s ease;
-            position: relative;
-        }
-
-        .test-card.locked {
-            opacity: 0.9;
-            background: #fafafa;
-        }
-
-        .test-card.locked .icon-box {
-            background: #f1f5f9;
-            color: var(--text-light);
-        }
-
-        .test-card:hover {
-            transform: translateY(-4px);
+            align-items: center;
+            padding: 1rem 2rem;
+            background: white;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border);
             box-shadow: var(--shadow-sm);
+            min-width: 120px;
+            transition: all var(--transition-base);
+        }
+
+        .stat:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
             border-color: var(--primary-soft);
         }
 
-        .card-top {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 1rem;
+        .stat__value {
+            font-size: 1.75rem;
+            font-weight: 800;
+            color: var(--primary);
+            line-height: 1;
+            letter-spacing: -0.02em;
         }
 
-        .test-icon {
-            width: 42px;
-            height: 42px;
-            background: var(--primary-soft);
+        .stat__label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-top: 0.25rem;
+        }
+
+        /* =========================================
+           5. FILTER TABS
+           ========================================= */
+        .filter-wrapper {
+            background: white;
+            padding: 0.5rem;
+            border-radius: var(--radius-pill);
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow-sm);
+            margin-bottom: 2rem;
+            animation: fadeIn var(--transition-slow) 0.2s both;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .filter-tabs {
+            display: flex;
+            gap: 0.25rem;
+            min-width: max-content;
+            padding: 0.25rem;
+        }
+
+        .filter-tab {
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.625rem 1.25rem;
+            border: none;
+            background: transparent;
+            color: var(--text-muted);
+            font-size: 0.875rem;
+            font-weight: 600;
+            border-radius: var(--radius-pill);
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all var(--transition-base);
+        }
+
+        .filter-tab:hover {
+            color: var(--text-main);
+            background: var(--bg-wash);
+        }
+
+        .filter-tab.active {
+            color: white;
+            background: var(--primary);
+            box-shadow: 0 4px 6px rgba(79, 70, 229, 0.2);
+        }
+
+        .filter-tab__count {
+            font-size: 0.75rem;
+            padding: 0.125rem 0.5rem;
+            background: var(--bg-wash);
+            color: var(--text-muted);
+            border-radius: var(--radius-pill);
+            font-weight: 700;
+            transition: all var(--transition-base);
+        }
+
+        .filter-tab.active .filter-tab__count {
+            background: rgba(255, 255, 255, 0.25);
+            color: white;
+        }
+
+        /* =========================================
+           6. SEARCH
+           ========================================= */
+        .search {
+            position: relative;
+            margin-bottom: 2.5rem;
+            animation: fadeIn var(--transition-slow) 0.3s both;
+        }
+
+        .search__input {
+            width: 100%;
+            padding: 1rem 1rem 1rem 3rem;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-pill);
+            font-size: 1rem;
+            font-weight: 500;
+            background: white;
+            transition: all var(--transition-base);
+            color: var(--text-main);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .search__input::placeholder {
+            color: var(--text-light);
+        }
+
+        .search__input:hover {
+            border-color: var(--text-light);
+        }
+
+        .search__input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px var(--primary-soft), var(--shadow-sm);
+        }
+
+        .search__icon {
+            position: absolute;
+            left: 1.25rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-light);
+            pointer-events: none;
+            transition: color var(--transition-base);
+        }
+
+        .search__input:focus+.search__icon {
             color: var(--primary);
-            border-radius: 10px;
+        }
+
+        /* =========================================
+           7. SECTION HEADERS
+           ========================================= */
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin: 2.5rem 0 1.5rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 2px solid var(--border);
+            animation: slideIn var(--transition-slow);
+        }
+
+        .section-header__icon {
+            width: 40px;
+            height: 40px;
+            border-radius: var(--radius-sm);
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 1.25rem;
+            background: var(--primary-soft);
+            color: var(--primary);
         }
 
-        .badge {
-            font-size: 0.75rem;
+        .section-header__title {
+            font-size: 1.25rem;
             font-weight: 700;
+            color: var(--secondary);
+        }
+
+        /* =========================================
+           8. QUICK MOCKS GRID
+           ========================================= */
+        .quick-mocks {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .quick-mock {
+            position: relative;
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: 1.5rem 1rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all var(--transition-spring);
+            overflow: hidden;
+        }
+
+        .quick-mock:hover {
+            border-color: var(--primary);
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .quick-mock.free {
+            border: 2px solid var(--primary);
+            background: linear-gradient(to bottom, #fff, #f5f3ff);
+        }
+
+        .quick-mock.locked {
+            opacity: 0.9;
+            background: #fafafa;
+            cursor: not-allowed;
+        }
+
+        .quick-mock.locked:hover {
+            transform: none;
+            border-color: var(--border);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .quick-mock__badge {
+            position: absolute;
+            top: 0.75rem;
+            right: 0.75rem;
+            width: 8px;
+            height: 8px;
+            background: var(--success);
+            border-radius: 50%;
+            box-shadow: 0 0 0 2px white;
+        }
+
+        .quick-mock__badge::before {
+            content: '';
+            position: absolute;
+            inset: -4px;
+            border-radius: 50%;
+            background: var(--success);
+            animation: pulse-ring 2s infinite;
+        }
+
+        .quick-mock__lock {
+            position: absolute;
+            top: 0.75rem;
+            right: 0.75rem;
+            color: var(--text-light);
+            font-size: 0.875rem;
+        }
+
+        .quick-mock__number {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--primary);
+            line-height: 1;
+            margin-bottom: 0.25rem;
+            display: flex;
+            align-items: baseline;
+            justify-content: center;
+            gap: 2px;
+        }
+
+        .quick-mock__number span {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--text-light);
+        }
+
+        .quick-mock.locked .quick-mock__number {
+            color: var(--text-muted);
+        }
+
+        .quick-mock__meta {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+        }
+
+        .quick-mock__tag {
+            display: inline-flex;
+            align-items: center;
             padding: 0.25rem 0.75rem;
-            border-radius: 100px;
+            border-radius: var(--radius-pill);
+            font-size: 0.625rem;
+            font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 0.05em;
         }
 
-        .badge-free {
+        .quick-mock__tag--free {
             background: #dcfce7;
             color: #15803d;
         }
 
-        .badge-pro {
+        .quick-mock__tag--pro {
             background: var(--secondary);
             color: white;
-            display: flex;
-            align-items: center;
-            gap: 4px;
         }
 
-        .test-title {
-            font-size: 1.1rem;
+        /* =========================================
+           9. TOPICS ACCORDION
+           ========================================= */
+        .topics {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .topic {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            transition: all var(--transition-base);
+            animation: slideIn var(--transition-slow) both;
+        }
+
+        .topic:hover {
+            border-color: var(--primary-soft);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .topic.expanded {
+            border-color: var(--primary);
+            box-shadow: var(--shadow-md), var(--shadow-glow);
+        }
+
+        .topic__header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem 1.25rem;
+            cursor: pointer;
+            background: white;
+            transition: background var(--transition-base);
+        }
+
+        .topic:hover .topic__header {
+            background: var(--bg-wash);
+        }
+
+        .topic__info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .topic__icon {
+            width: 48px;
+            height: 48px;
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            transition: all var(--transition-spring);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .topic:hover .topic__icon {
+            transform: scale(1.05);
+        }
+
+        .topic__title {
+            font-size: 1rem;
             font-weight: 700;
             color: var(--text-main);
-            margin-bottom: 0.2rem;
+            margin-bottom: 0.25rem;
         }
 
-        .test-meta {
-            font-size: 0.85rem;
-            color: var(--text-muted);
-            display: flex;
-            gap: 1rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .meta-item {
+        .topic__meta {
             display: flex;
             align-items: center;
-            gap: 4px;
+            gap: 0.5rem;
+            font-size: 0.8125rem;
+            color: var(--text-muted);
+            font-weight: 500;
         }
 
-        /* Card Button Area */
-        .card-action {
-            margin-top: auto;
+        .topic__meta-dot {
+            width: 4px;
+            height: 4px;
+            background: var(--text-light);
+            border-radius: 50%;
         }
 
-        .btn-full {
-            width: 100%;
+        .topic__arrow {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: var(--bg-wash);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-muted);
+            transition: all var(--transition-spring);
+            border: 1px solid var(--border);
         }
 
-        @media (max-width: 768px) {
-            header {
-                top: 0;
-            }
-
-            .nav-container {
-                padding: 0.75rem 1rem;
-                width: 100%;
-                border-radius: 0;
-                border: none;
-                border-bottom: 1px solid var(--border);
-            }
-
-            .logo span {
-                display: none;
-            }
-
-            .page-header h1 {
-                font-size: 2rem;
-            }
+        .topic.expanded .topic__arrow {
+            transform: rotate(180deg);
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
         }
 
-        /* Modal Styles */
-        .modal-overlay {
+        /* Topic Content */
+        .topic__content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height var(--transition-slow);
+            background: var(--bg-wash);
+        }
+
+        .topic.expanded .topic__content {
+            max-height: 600px;
+        }
+
+        .topic__mocks {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 0.75rem;
+            padding: 1rem;
+        }
+
+        .mock-card {
+            position: relative;
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            padding: 1rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all var(--transition-spring);
+        }
+
+        .mock-card:hover {
+            border-color: var(--primary);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .mock-card.locked {
+            opacity: 0.7;
+            background: #fafafa;
+            cursor: not-allowed;
+        }
+
+        .mock-card.locked:hover {
+            transform: none;
+            border-color: var(--border);
+            box-shadow: none;
+        }
+
+        .mock-card__lock {
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            color: var(--text-light);
+            font-size: 0.75rem;
+        }
+
+        .mock-card__number {
+            font-size: 0.875rem;
+            font-weight: 800;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .mock-card.locked .mock-card__number {
+            color: var(--text-muted);
+        }
+
+        .mock-card__meta {
+            font-size: 0.6875rem;
+            color: var(--text-muted);
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .mock-card__tag {
+            display: inline-flex;
+            padding: 0.125rem 0.5rem;
+            border-radius: var(--radius-pill);
+            font-size: 0.625rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .mock-card__tag--free {
+            background: #dcfce7;
+            color: #15803d;
+        }
+
+        .mock-card__tag--pro {
+            background: var(--secondary);
+            color: white;
+        }
+
+        /* Subject Colors */
+        .topic--physics .topic__icon {
+            background: #dbeafe;
+        }
+
+        .topic--chemistry .topic__icon {
+            background: #fce7f3;
+        }
+
+        .topic--math .topic__icon {
+            background: #fef3c7;
+        }
+
+        .topic--biology .topic__icon {
+            background: #d1fae5;
+        }
+
+        /* =========================================
+           10. EMPTY STATE
+           ========================================= */
+        .empty {
+            text-align: center;
+            padding: 4rem 1rem;
+            color: var(--text-muted);
+            display: none;
+        }
+
+        .empty.show {
+            display: block;
+            animation: fadeIn var(--transition-slow);
+        }
+
+        .empty__icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 1rem;
+            background: var(--bg-wash);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            border: 2px solid var(--border);
+        }
+
+        .empty__title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 0.5rem;
+        }
+
+        /* =========================================
+           11. UPGRADE MODAL
+           ========================================= */
+        .modal {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(15, 23, 42, 0.6);
-            backdrop-filter: blur(4px);
+            inset: 0;
             z-index: 2000;
             display: flex;
             align-items: center;
             justify-content: center;
+            padding: 1rem;
             opacity: 0;
             visibility: hidden;
-            transition: all 0.3s ease;
+            transition: all var(--transition-slow);
         }
 
-        .modal-overlay.show {
+        .modal.show {
             opacity: 1;
             visibility: visible;
         }
 
-        .modal-card {
-            background: white;
-            width: 90%;
+        .modal__overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(4px);
+        }
+
+        .modal__content {
+            position: relative;
+            width: 100%;
             max-width: 450px;
+            background: white;
             border-radius: var(--radius-lg);
             padding: 2.5rem;
             text-align: center;
             transform: scale(0.95);
-            transition: 0.3s ease;
+            transition: all var(--transition-spring);
             box-shadow: var(--shadow-lg);
-            position: relative;
         }
 
-        .modal-overlay.show .modal-card {
+        .modal.show .modal__content {
             transform: scale(1);
         }
 
-        .modal-icon {
-            width: 60px;
-            height: 60px;
+        .modal__icon {
+            width: 64px;
+            height: 64px;
+            margin: 0 auto 1.5rem;
             background: var(--primary-soft);
             color: var(--primary);
             border-radius: 50%;
@@ -399,430 +840,930 @@
             align-items: center;
             justify-content: center;
             font-size: 1.75rem;
-            margin: 0 auto 1.5rem;
+            position: relative;
         }
 
-        .modal-card h2 {
+        .modal__icon::before {
+            content: '';
+            position: absolute;
+            inset: -4px;
+            border-radius: 50%;
+            background: var(--primary);
+            opacity: 0.2;
+            animation: pulse-ring 2s infinite;
+        }
+
+        .modal__title {
+            font-size: 1.5rem;
+            font-weight: 800;
             color: var(--secondary);
             margin-bottom: 0.5rem;
         }
 
-        .price-tag {
-            font-size: 2.5rem;
+        .modal__text {
+            color: var(--text-muted);
+            font-size: 1rem;
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+
+        .modal__price {
+            font-size: 3rem;
             font-weight: 800;
             color: var(--primary);
-            display: block;
-            margin: 1.5rem 0;
+            margin-bottom: 1.5rem;
+            line-height: 1;
             letter-spacing: -0.02em;
         }
 
-        .feature-check {
-            text-align: left;
+        .modal__features {
             background: var(--bg-wash);
-            padding: 1rem;
             border-radius: var(--radius-md);
+            padding: 1.25rem;
             margin-bottom: 1.5rem;
+            text-align: left;
         }
 
-        .feature-check li {
-            list-style: none;
-            margin-bottom: 0.5rem;
-            font-size: 0.9rem;
+        .modal__feature {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 0.9375rem;
+            color: var(--text-main);
+            font-weight: 500;
+            padding: 0.5rem 0;
+        }
+
+        .modal__feature::before {
+            content: '✓';
+            width: 20px;
+            height: 20px;
+            background: var(--success);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            font-weight: 800;
+            flex-shrink: 0;
+        }
+
+        .modal__btn {
+            width: 100%;
+            padding: 0.875rem;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: var(--radius-pill);
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all var(--transition-base);
+            box-shadow: 0 4px 6px rgba(79, 70, 229, 0.2);
+            margin-bottom: 0.75rem;
+        }
+
+        .modal__btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-1px);
+            box-shadow: 0 10px 15px rgba(79, 70, 229, 0.3);
+        }
+
+        .modal__btn-secondary {
+            width: 100%;
+            padding: 0.75rem;
+            background: transparent;
+            color: var(--text-muted);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-pill);
+            font-size: 0.9375rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all var(--transition-base);
+        }
+
+        .modal__btn-secondary:hover {
+            border-color: var(--text-main);
+            color: var(--secondary);
+            background: white;
+        }
+
+        /* =========================================
+           12. TOAST NOTIFICATION
+           ========================================= */
+        .toast {
+            position: fixed;
+            top: 100px;
+            left: 50%;
+            transform: translateX(-50%) translateY(-20px);
+            background: var(--secondary);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: var(--radius-pill);
+            font-weight: 600;
+            font-size: 0.9375rem;
+            z-index: 3000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all var(--transition-spring);
+            box-shadow: var(--shadow-lg);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .toast.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        .toast--success {
+            background: var(--success);
+        }
+
+        .toast--error {
+            background: var(--error);
+        }
+
+        /* =========================================
+           13. ANIMATIONS
+           ========================================= */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes pulse-ring {
+            0% {
+                transform: scale(0.8);
+                opacity: 0.5;
+            }
+
+            100% {
+                transform: scale(1.3);
+                opacity: 0;
+            }
+        }
+
+        /* =========================================
+           14. RESPONSIVE
+           ========================================= */
+        @media (max-width: 768px) {
+            .header__container {
+                padding: 0.75rem 1rem;
+            }
+
+            .page-wrapper {
+                padding-top: 6rem;
+            }
+
+            .hero__title {
+                font-size: 1.75rem;
+            }
+
+            .stats {
+                gap: 0.5rem;
+            }
+
+            .stat {
+                min-width: 100px;
+                padding: 0.75rem 1rem;
+            }
+
+            .quick-mocks {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 0.75rem;
+            }
+
+            .quick-mock {
+                padding: 1.25rem 0.75rem;
+            }
+
+            .topic__mocks {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .filter-tab {
+                padding: 0.5rem 1rem;
+                font-size: 0.8125rem;
+            }
+
+            .modal__content {
+                padding: 2rem 1.5rem;
+            }
+
+            .modal__price {
+                font-size: 2.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .quick-mocks {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .topic__mocks {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Reduced Motion */
+        @media (prefers-reduced-motion: reduce) {
+
+            *,
+            *::before,
+            *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+
+        /* Print Styles */
+        @media print {
+
+            .header,
+            .filter-wrapper,
+            .search,
+            .modal,
+            .toast {
+                display: none !important;
+            }
         }
     </style>
-    <!-- Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-WHHM4FTNHG"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag() { dataLayer.push(arguments); }
-        gtag('js', new Date());
-        gtag('config', 'G-WHHM4FTNHG');
-    </script>
+    <base target="_blank">
 </head>
 
 <body>
-
-    <!-- 1. FLOATING NAVIGATION -->
-    <header>
-        <div class="nav-container">
-            <a href="/index.html" class="logo">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
-                    stroke-linecap="round" stroke-linejoin="round">
-                    <path
-                        d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z">
-                    </path>
-                </svg>
+    <!-- Header -->
+    <header class="header" id="header">
+        <div class="header__container">
+            <div class="header__brand">
+                <div class="header__logo">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path
+                            d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z">
+                        </path>
+                    </svg>
+                </div>
                 IISER Smart Prep <span>Quick Mocks</span>
-            </a>
-            <div style="display: flex; gap: 1rem; align-items: center;">
-                <a href="/index.html" class="btn btn-outline" style="padding: 0.5rem 1rem; font-size: 0.8rem;">Exit</a>
             </div>
+            <button class="header__exit" onclick="app.navigateTo('/')">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                    <polyline points="16 17 21 12 16 7"></polyline>
+                    <line x1="21" y1="12" x2="9" y2="12"></line>
+                </svg>
+                Exit
+            </button>
         </div>
     </header>
 
-    <div class="page-wrapper container">
-
-        <!-- 2. PAGE HEADER -->
-        <div class="page-header">
-            <h1>Select Quick Mock</h1>
-            <p>High Yield Practice • 15 Questions • 30 Minutes</p>
-        </div>
-
-        <!-- 3. TEST GRID -->
-        <div class="grid-3" id="testGrid"></div>
-
-        <script>
-            // Dynamic card generation for all 40 mocks
-            const testGrid = document.getElementById('testGrid');
-            const FREE_LIMIT = 10; // Mocks 1-10 are free
-            const TOTAL_MOCKS = 40;
-
-            // Mocks with image prompts (show 🖼️ icon)
-            const imageMocks = [11, 12, 13, 14, 15, 16, 17, 18, 19, 22, 27, 28, 31, 32];
-
-            // Labels for mocks
-            const mockLabels = {
-                1: 'Mixed Subjects', 2: 'Physics Focus', 3: 'Math Challenge',
-                4: 'Biology Basics', 5: 'Chemistry Core', 6: 'All Rounder',
-                7: 'Conceptual Mix', 8: 'Logical Reasoning', 9: 'Quick Drill',
-                10: 'Rapid Fire', 11: 'Image Special', 12: 'Visual Physics',
-                13: 'Diagram Master', 14: 'Graph Analysis', 15: 'Figure Based',
-                16: 'Visual Chemistry', 17: 'Image MCQs', 18: 'Picture Quiz',
-                19: 'Very Hard • Images', 20: 'Hard Challenge', 21: 'Standard Mix',
-                22: 'Easy • Images', 23: 'Very Easy Mix', 24: 'Very Hard',
-                25: 'Very Hard', 26: 'Very Hard', 27: 'Image Special',
-                28: 'Image Special', 29: 'Very Hard', 30: 'Very Hard',
-                31: 'Image Special', 32: 'Image Special', 33: 'Very Easy',
-                34: 'Very Easy', 35: 'Very Easy', 36: 'Very Easy',
-                37: 'Very Hard', 38: 'Very Hard', 39: 'Very Hard', 40: 'Very Hard'
-            };
-
-            for (let i = 1; i <= TOTAL_MOCKS; i++) {
-                const isFree = i <= FREE_LIMIT;
-                const hasImage = imageMocks.includes(i);
-                const num = String(i).padStart(2, '0');
-                const label = mockLabels[i] || 'Mixed Subjects';
-                const icon = hasImage ? '🖼️' : '⚡';
-
-                const card = document.createElement('div');
-                card.className = 'test-card' + (isFree ? '' : ' locked');
-                card.innerHTML = `
-                    <div class="card-top">
-                        <div class="test-icon">${icon}</div>
-                        <span class="badge ${isFree ? 'badge-free' : 'badge-pro'}">${isFree ? 'Free' : 'PRO'}</span>
-                    </div>
-                    <h3 class="test-title">Quick Mock ${num}</h3>
-                    <p style="font-size:0.9rem;color:var(--text-muted);margin-bottom:0.5rem;">${label}</p>
-                    <div class="test-meta">
-                        <span class="meta-item">⏱️ 30 Min</span>
-                        <span class="meta-item">📝 64 Marks</span>
-                    </div>
-                    <div class="card-action">
-                        <button class="btn ${isFree ? 'btn-primary' : 'btn-lock'} btn-full" onclick="startQuickMock(${i})">${isFree ? 'Start Test' : 'Unlock Test'}</button>
-                    </div>
-                `;
-                testGrid.appendChild(card);
-            }
-        </script>
-    </div>
-
-    <!-- FOOTER -->
-    <footer style="background: white; border-top: 1px solid var(--border); padding: 5rem 0 2rem; margin-top: 4rem;">
+    <!-- Main Content -->
+    <main class="page-wrapper">
         <div class="container">
-            <div
-                style="display: flex; flex-wrap: wrap; gap: 3rem; justify-content: space-between; margin-bottom: 3rem;">
-                <div style="max-width: 320px;">
-                    <a href="/index.html" class="logo" style="margin-bottom: 1rem;">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                            <path
-                                d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z">
-                            </path>
-                        </svg>
-                        IISER Smart Prep
-                    </a>
-                    <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 1rem;">Empowering scientific
-                        minds to reach India's premier research institutes through data and strategy.</p>
-                </div>
+            <!-- Hero -->
+            <section class="hero">
+                <h1 class="hero__title">Select Your Mock Test</h1>
+                <p class="hero__subtitle">Master every topic with targeted practice sessions</p>
+            </section>
 
-                <div style="display: flex; gap: 4rem; flex-wrap: wrap;">
-                    <div>
-                        <h4 style="margin-bottom: 1rem; font-size: 0.9rem; font-weight: 700; color: var(--secondary);">
-                            Platform</h4>
-                        <ul style="display: flex; flex-direction: column; gap: 0.75rem;">
-                            <li><a href="/ai_tutor.html" style="color: var(--text-muted); font-size: 0.9rem;">AI
-                                    Tutor</a></li>
-                            <li><a href="/mock_test/full_mock_test_homepage.html"
-                                    style="color: var(--text-muted); font-size: 0.9rem;">Mock Tests</a></li>
-                            <li><a href="/#pricing" style="color: var(--text-muted); font-size: 0.9rem;">Pricing</a>
-                            </li>
-                        </ul>
-                    </div>
-                    <div>
-                        <h4 style="margin-bottom: 1rem; font-size: 0.9rem; font-weight: 700; color: var(--secondary);">
-                            Support</h4>
-                        <ul style="display: flex; flex-direction: column; gap: 0.75rem;">
-                            <li><a href="/#faq" style="color: var(--text-muted); font-size: 0.9rem;">FAQ</a>
-                            </li>
-                            <li><a href="/contact-us.html"
-                                    style="color: var(--text-muted); font-size: 0.9rem;">Contact</a></li>
-                            <li><a href="/privacy.html" style="color: var(--text-muted); font-size: 0.9rem;">Privacy
-                                    Policy</a></li>
-                            <li><a href="/terms.html" style="color: var(--text-muted); font-size: 0.9rem;">Terms &
-                                    Conditions</a></li>
-                        </ul>
-                    </div>
+            <!-- Stats -->
+            <div class="stats">
+                <div class="stat">
+                    <span class="stat__value">172</span>
+                    <span class="stat__label">Total Mocks</span>
+                </div>
+                <div class="stat">
+                    <span class="stat__value">40</span>
+                    <span class="stat__label">Quick Tests</span>
+                </div>
+                <div class="stat">
+                    <span class="stat__value">4</span>
+                    <span class="stat__label">Subjects</span>
                 </div>
             </div>
-            <div
-                style="text-align: center; border-top: 1px solid var(--border); padding-top: 2rem; color: var(--text-light); font-size: 0.85rem;">
-                &copy; 2026 IISER Smart Prep. All rights reserved. Not affiliated with IISERs Joint Admissions
-                Committee.
+
+            <!-- Filters -->
+            <div class="filter-wrapper">
+                <div class="filter-tabs" role="tablist" aria-label="Filter mocks by subject">
+                    <button class="filter-tab active" data-filter="all" data-subject="all" role="tab"
+                        aria-selected="true" onclick="app.setFilter('all')">
+                        📚 All <span class="filter-tab__count">71</span>
+                    </button>
+                    <button class="filter-tab" data-filter="misc" data-subject="misc" role="tab" aria-selected="false"
+                        onclick="app.setFilter('misc')">
+                        ⚡ Quick <span class="filter-tab__count">40</span>
+                    </button>
+                    <button class="filter-tab" data-filter="physics" data-subject="physics" role="tab"
+                        aria-selected="false" onclick="app.setFilter('physics')">
+                        ⚛️ Physics <span class="filter-tab__count">28</span>
+                    </button>
+                    <button class="filter-tab" data-filter="chemistry" data-subject="chemistry" role="tab"
+                        aria-selected="false" onclick="app.setFilter('chemistry')">
+                        🧪 Chemistry <span class="filter-tab__count">19</span>
+                    </button>
+                    <button class="filter-tab" data-filter="math" data-subject="math" role="tab" aria-selected="false"
+                        onclick="app.setFilter('math')">
+                        📐 Math <span class="filter-tab__count">15</span>
+                    </button>
+                    <button class="filter-tab" data-filter="biology" data-subject="biology" role="tab"
+                        aria-selected="false" onclick="app.setFilter('biology')">
+                        🧬 Biology <span class="filter-tab__count">9</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Search -->
+            <div class="search">
+                <input type="text" class="search__input" id="searchInput" placeholder="Search topics or mock tests..."
+                    oninput="app.handleSearch(this.value)" aria-label="Search topics">
+                <svg class="search__icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                    stroke-width="2">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <path d="m21 21-4.35-4.35"></path>
+                </svg>
+            </div>
+
+            <!-- Content Area -->
+            <div id="contentArea">
+                <!-- Quick Mocks Section -->
+                <div id="quickMocksSection">
+                    <div class="section-header">
+                        <div class="section-header__icon">⚡</div>
+                        <h2 class="section-header__title">Quick Mocks (40 Mixed Tests)</h2>
+                    </div>
+                    <div class="quick-mocks" id="quickMocksGrid"></div>
+                </div>
+
+                <!-- Subject Topics -->
+                <div class="topics" id="topicsList"></div>
+            </div>
+
+            <!-- Empty State -->
+            <div class="empty" id="emptyState">
+                <div class="empty__icon">🔍</div>
+                <h3 class="empty__title">No results found</h3>
+                <p>Try adjusting your search or browse all subjects</p>
             </div>
         </div>
-    </footer>
+    </main>
 
-    <!-- UPGRADE MODAL -->
-    <div id="upgradeModal" class="modal-overlay pro-hidden">
-        <div class="modal-card">
-            <div style="position: absolute; top: 1rem; right: 1rem; cursor: pointer; color: var(--text-light);"
-                onclick="closeUpgradeModal()">✕</div>
-
-            <div class="modal-icon">🔓</div>
-            <h2>Unlock Pro Series</h2>
-            <p style="color: var(--text-muted);">Gain the edge over 50,000+ aspirants.</p>
-
-            <span class="price-tag">₹199</span>
-
-            <div class="feature-check">
-                <li><span style="color: var(--success);">✔</span> Unlimited Quick Mocks</li>
-                <li><span style="color: var(--success);">✔</span> Full Mock Series</li>
+    <!-- Upgrade Modal -->
+    <div class="modal" id="upgradeModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+        <div class="modal__overlay" onclick="app.closeModal()"></div>
+        <div class="modal__content">
+            <div class="modal__icon">🔒</div>
+            <h2 class="modal__title" id="modalTitle">Unlock Pro Access</h2>
+            <p class="modal__text">Get unlimited access to all 172+ mock tests with detailed solutions and analytics</p>
+            <div class="modal__price">₹199</div>
+            <div class="modal__features">
+                <div class="modal__feature">All 172+ Mock Tests</div>
+                <div class="modal__feature">Detailed Solutions</div>
+                <div class="modal__feature">Performance Analytics</div>
+                <div class="modal__feature">Ad-free Experience</div>
             </div>
-
-            <button class="btn btn-primary btn-full btn-upgrade-now" onclick="buyPro()" style="padding: 1rem;">Unlock
-                Access Now</button>
-            <p style="font-size: 0.8rem; color: var(--text-light); margin-top: 1rem;">Secure Payment via Razorpay</p>
+            <button class="modal__btn" onclick="app.goToPricing()">Upgrade Now</button>
+            <button class="modal__btn-secondary" onclick="app.closeModal()">Maybe Later</button>
         </div>
     </div>
 
-    <!-- AUTH SHEET (Login Prompt) -->
-    <div id="auth-sheet-overlay" class="modal-overlay" onclick="closeAuthSheet()">
-        <div class="modal-card"
-            style="margin-top: auto; margin-bottom: 0; border-radius: 24px 24px 0 0; width: 100%; max-width: 600px; transform: translateY(100%); transition: transform 0.3s ease;">
-            <div style="width: 40px; height: 4px; background: #e2e8f0; border-radius: 10px; margin: 0 auto 1.5rem;">
-            </div>
-            <h3>Authentication Required</h3>
-            <p style="color: var(--text-muted); margin-bottom: 2rem;">Please log in to attempt mock tests and save your
-                progress.</p>
-            <div style="display: flex; gap: 1rem;">
-                <button onclick="redirectToAuth('login')" class="btn btn-primary btn-full">Log In</button>
-                <button onclick="redirectToAuth('signup')" class="btn btn-outline btn-full">Sign Up</button>
-            </div>
-        </div>
-    </div>
+    <!-- Toast -->
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-    <!-- JAVASCRIPT LOGIC -->
-    <script src="/config.js"></script>
     <script>
-        // 1. AUTH & PLAN STATE MANAGEMENT
-        const token = localStorage.getItem("IAT_TOKEN");
+        /**
+         * IISER Smart Prep - Mock Test Application
+         * Modern, accessible, and performant JavaScript architecture
+         */
 
-        function isProUser() {
-            return localStorage.getItem("IAT_PLAN") === "PRO";
-        }
-
-        // 🔒 ALWAYS START LOCKED
-        lockUI();
-
-        // 🔄 THEN SYNC FROM BACKEND
-        syncPlanFromBackend();
-
-        function lockUI() {
-            // Revert UI to locked state by default? 
-            // In this specific page, we rely on HTML default state (card.locked).
-            // But if we want to ensure it, we could force add class if not PRO.
-            // For now, HTML structure starts as locked for id 2 & 3.
-        }
-
-        // ✅ SINGLE SOURCE OF TRUTH
-        async function syncPlanFromBackend() {
-            if (!token) return;
-
-            try {
-                const res = await fetch("https://api.iisersmartprep.space/api/me", {
-                    headers: { "Authorization": "Bearer " + token }
-                });
-
-                if (!res.ok) return;
-
-                const user = await res.json();
-
-                // 🔥 SAVE PLAN LOCALLY
-                localStorage.setItem("IAT_PLAN", user.plan);
-
-                if (user.plan === "PRO") {
-                    unlockUI();
-                }
-            } catch (e) {
-                console.error("Plan sync failed", e);
-            }
-        }
-
-        function unlockUI() {
-            document.querySelectorAll('.test-card.locked').forEach(card => {
-                card.classList.remove('locked');
-                const btn = card.querySelector('.btn-lock');
-                if (btn) {
-                    btn.className = 'btn btn-primary btn-full';
-                    btn.innerText = 'Start Test';
-                }
-                const badge = card.querySelector('.badge-pro');
-                if (badge) badge.style.display = 'none';
-            });
-        }
-
-        // 2. MOCK TEST ENTRY LOGIC
-        async function startQuickMock(id) {
-            const token = localStorage.getItem("IAT_TOKEN");
-
-            if (!token) {
-                openAuthSheet();
-                return;
-            }
-
-            // Free mock checks
-            if (id <= 10) {
-                goToTest(id);
-                return;
-            }
-
-            // 🔥 CHECK PLAN LIVE
-            try {
-                const res = await fetch("https://api.iisersmartprep.space/api/me", {
-                    headers: { "Authorization": "Bearer " + token }
-                });
-
-                if (!res.ok) throw new Error("Auth failed");
-
-                const user = await res.json();
-
-                // Sync source of truth
-                localStorage.setItem("IAT_PLAN", user.plan);
-
-                if (user.plan === "PRO") {
-                    goToTest(id);
-                } else {
-                    window.location.href = '/#pricing';
-                }
-            } catch (err) {
-                console.error(err);
-                window.location.href = '/#pricing';
-            }
-        }
-
-        function goToTest(id) {
-            localStorage.setItem("CURRENT_MOCK", id);
-            localStorage.setItem("CURRENT_MOCK_ID", id);
-            localStorage.setItem("CURRENT_MOCK_TYPE", "QUICK");
-            window.location.href = '/mock_test/start_test.html';
-        }
-
-        // 3. MODAL CONTROLS
-        function openUpgradeModal() {
-            document.getElementById('upgradeModal').classList.add('show');
-        }
-        function closeUpgradeModal() {
-            document.getElementById('upgradeModal').classList.remove('show');
-        }
-
-        function openAuthSheet() {
-            const sheet = document.getElementById('auth-sheet-overlay');
-            sheet.classList.add('show');
-            setTimeout(() => {
-                sheet.querySelector('.modal-card').style.transform = 'translateY(0)';
-            }, 10);
-        }
-        function closeAuthSheet() {
-            const sheet = document.getElementById('auth-sheet-overlay');
-            sheet.querySelector('.modal-card').style.transform = 'translateY(100%)';
-            setTimeout(() => {
-                sheet.classList.remove('show');
-            }, 300);
-        }
-
-        function redirectToAuth(mode) {
-            const currentUrl = encodeURIComponent(window.location.href);
-            const loginPath = "../login.html";
-            window.location.href = `${loginPath}?mode=${mode}&redirect=${currentUrl}`;
-        }
-
-        // 4. RAZORPAY PAYMENT LOGIC
-        async function buyPro() {
-            const token = localStorage.getItem("IAT_TOKEN");
-            if (!token) { closeUpgradeModal(); openAuthSheet(); return; }
-
-            const btn = document.querySelector('.btn-upgrade-now');
-            const originalText = btn.innerText;
-            btn.innerText = "Processing...";
-            btn.disabled = true;
-
-            try {
-                // Create Order
-                const res = await fetch("https://api.iisersmartprep.space/api/create-order", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json", "Authorization": `Bearer ${token}` }
-                });
-                const data = await res.json();
-                console.log("ORDER DATA:", data);
-
-                if (data.error) throw new Error(data.error);
-
-                // Initialize Razorpay
-                const options = {
-                    key: data.key,
-                    amount: data.amount,
-                    currency: data.currency,
-                    order_id: data.order_id,
-                    name: "IISER Smart Prep",
-                    description: "Pro Plan Upgrade",
-                    handler: function (response) { verifyPayment(response); },
-                    theme: { color: "#4f46e5" }
+        class MockTestApp {
+            constructor() {
+                this.state = {
+                    filter: 'all',
+                    searchQuery: '',
+                    expandedTopic: null,
+                    isPro: false
                 };
-                const rzp = new Razorpay(options);
-                rzp.open();
 
-            } catch (err) {
-                alert("Payment Init Failed: " + err.message);
-                btn.innerText = originalText;
-                btn.disabled = false;
+                this.data = {
+                    quickMocks: [],
+                    subjects: {}
+                };
+
+                this.init();
             }
-        }
 
-        async function verifyPayment(response) {
-            const token = localStorage.getItem("IAT_TOKEN");
-            try {
-                const res = await fetch("https://api.iisersmartprep.space/api/verify-payment", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json", "Authorization": `Bearer ${token}` },
-                    body: JSON.stringify(response)
+            /**
+             * Initialize application
+             */
+            init() {
+                this.generateData();
+                this.checkProStatus();
+                this.render();
+                this.setupEventListeners();
+                this.setupKeyboardShortcuts();
+                this.setupAccessibility();
+            }
+
+            /**
+             * Generate mock data
+             */
+            generateData() {
+                // Generate 40 Quick Mocks
+                this.data.quickMocks = Array.from({ length: 40 }, (_, i) => ({
+                    id: i + 1,
+                    name: `Quick Mock ${i + 1}`,
+                    free: i < 4,
+                    subject: 'misc'
+                }));
+
+                // Subject configurations
+                const subjectConfig = {
+                    physics: {
+                        color: '#3b82f6',
+                        topics: [
+                            ['Units and Measurements', '📏'],
+                            ['Motion in a Straight Line', '🚀'],
+                            ['Motion in a Plane', '📐'],
+                            ['Laws of Motion', '⚖️'],
+                            ['Work, Energy and Power', '⚡'],
+                            ['System of Particles and Rotational Motion', '🔄'],
+                            ['Gravitation', '🌍'],
+                            ['Mechanical Properties of Solids', '🧱'],
+                            ['Mechanical Properties of Fluids', '💧'],
+                            ['Thermal Properties of Matter', '🌡️'],
+                            ['Thermodynamics', '🔥'],
+                            ['Kinetic Theory', '💨'],
+                            ['Oscillations', '📳'],
+                            ['Waves', '〰️'],
+                            ['Electric Charges and Fields', '⚡'],
+                            ['Electrostatic Potential and Capacitance', '🔋'],
+                            ['Current Electricity', '💡'],
+                            ['Moving Charges and Magnetism', '🧲'],
+                            ['Magnetism and Matter', '🧭'],
+                            ['Electromagnetic Induction', '⚡'],
+                            ['Alternating Current', '🔌'],
+                            ['Electromagnetic Waves', '📻'],
+                            ['Ray Optics and Optical Instruments', '👁️'],
+                            ['Wave Optics', '🌈'],
+                            ['Dual Nature of Radiation and Matter', '✨'],
+                            ['Atoms', '⚛️'],
+                            ['Nuclei', '🔬'],
+                            ['Semiconductor Electronics', '💻']
+                        ]
+                    },
+                    chemistry: {
+                        color: '#ec4899',
+                        topics: [
+                            ['Some Basic Concepts of Chemistry', '⚛️'],
+                            ['Structure of the Atom', '🔭'],
+                            ['Classification of Elements and Periodicity', '📊'],
+                            ['Chemical Bonding and Molecular Structure', '🔗'],
+                            ['The d- & f-block elements', '🧪'],
+                            ['Coordination compounds', '🧬'],
+                            ['Thermodynamics', '🌡️'],
+                            ['Equilibrium', '⚖️'],
+                            ['Redox Reactions', '⚡'],
+                            ['Solutions', '💧'],
+                            ['Electrochemistry', '🔋'],
+                            ['Chemical Kinetics', '⏱️'],
+                            ['Organic Chemistry - Basic Principles', '🧫'],
+                            ['Hydrocarbons', '⛽'],
+                            ['Haloalkanes and haloarenes', '🧪'],
+                            ['Alcohols, phenols, and ethers', '🍷'],
+                            ['Aldehydes, ketones, and carboxylic acids', '🧬'],
+                            ['Organic compounds containing nitrogen', '🧪'],
+                            ['Biomolecules', '🧬']
+                        ]
+                    },
+                    math: {
+                        color: '#f59e0b',
+                        topics: [
+                            ['Sets and Logic', '🧮'],
+                            ['Relations & functions', '📈'],
+                            ['Basic counting techniques', '🔢'],
+                            ['Complex numbers, linear and quadratic equations', '🔣'],
+                            ['Trigonometric functions', '📐'],
+                            ['Vectors', '➡️'],
+                            ['Matrices & determinants', '🔲'],
+                            ['Coordinate geometry', '📍'],
+                            ['Three-dimensional geometry', '🔷'],
+                            ['Sequences & series', '📊'],
+                            ['Limit & continuity', '➰'],
+                            ['Differentiation', '📉'],
+                            ['Integration', '∫'],
+                            ['Differential equations', '∂'],
+                            ['Statistics, Probability & Linear Programming', '📊']
+                        ]
+                    },
+                    biology: {
+                        color: '#10b981',
+                        topics: [
+                            ['Diversity in the Living World', '🌿'],
+                            ['Structural Organisation In Plants And Animals', '🌱'],
+                            ['Cell: Structure And Functions', '🧬'],
+                            ['Plant Physiology', '🌻'],
+                            ['Human Physiology', '🫀'],
+                            ['Reproduction', '🧫'],
+                            ['Biology In Human Welfare', '💊'],
+                            ['Biotechnology', '🔬'],
+                            ['Ecology', '🌍']
+                        ]
+                    }
+                };
+
+                let mockId = 41;
+
+                // Generate subject topics with mocks
+                Object.entries(subjectConfig).forEach(([subject, config]) => {
+                    this.data.subjects[subject] = config.topics.map(([name, icon], index) => ({
+                        id: `${subject}-${index + 1}`,
+                        name,
+                        icon,
+                        subject,
+                        mocks: Array.from({ length: 4 }, (_, i) => ({
+                            id: mockId++,
+                            name: `Mock ${String(mockId - 1).padStart(3, '0')}`,
+                            free: false
+                        }))
+                    }));
                 });
-                const vData = await res.json();
-                if (vData.success) {
-                    localStorage.setItem("IAT_PLAN", "PRO");
-                    closeUpgradeModal();
-                    unlockUI();
-                    alert("🎉 Welcome to Pro! All tests unlocked.");
-                } else {
-                    alert("Payment verification failed.");
+            }
+
+            /**
+             * Check if user has Pro access
+             */
+            checkProStatus() {
+                this.state.isPro = localStorage.getItem('IAT_PLAN') === 'PRO';
+            }
+
+            /**
+             * Set active filter
+             */
+            setFilter(filter) {
+                this.state.filter = filter;
+                this.state.expandedTopic = null;
+
+                // Update UI
+                document.querySelectorAll('.filter-tab').forEach(tab => {
+                    const isActive = tab.dataset.filter === filter;
+                    tab.classList.toggle('active', isActive);
+                    tab.setAttribute('aria-selected', isActive);
+                });
+
+                this.render();
+            }
+
+            /**
+             * Handle search input
+             */
+            handleSearch(query) {
+                this.state.searchQuery = query.toLowerCase().trim();
+                this.state.expandedTopic = null;
+                this.render();
+            }
+
+            /**
+             * Toggle topic expansion
+             */
+            toggleTopic(topicId) {
+                const topicEl = document.getElementById(`topic-${topicId}`);
+                if (!topicEl) return;
+
+                // Close previous
+                if (this.state.expandedTopic && this.state.expandedTopic !== topicId) {
+                    const prevEl = document.getElementById(`topic-${this.state.expandedTopic}`);
+                    if (prevEl) prevEl.classList.remove('expanded');
                 }
-            } catch (e) {
-                console.error(e);
-                alert("Error verifying payment.");
+
+                // Toggle current
+                if (topicEl.classList.contains('expanded')) {
+                    topicEl.classList.remove('expanded');
+                    this.state.expandedTopic = null;
+                } else {
+                    topicEl.classList.add('expanded');
+                    this.state.expandedTopic = topicId;
+
+                    // Smooth scroll to topic if needed
+                    setTimeout(() => {
+                        topicEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                    }, 100);
+                }
+            }
+
+            /**
+             * Start a mock test
+             */
+            startMock(mockId, isFree, type) {
+                const token = localStorage.getItem('IAT_TOKEN');
+
+                if (!token) {
+                    this.showToast('Please login first', 'error');
+                    return;
+                }
+
+                if (!isFree && !this.state.isPro) {
+                    this.openModal();
+                    return;
+                }
+
+                // Save state and navigate
+                localStorage.setItem('CURRENT_MOCK', mockId);
+                localStorage.setItem('CURRENT_MOCK_ID', mockId);
+                localStorage.setItem('CURRENT_MOCK_TYPE', type === 'quick' ? 'QUICK' : 'SUBJECT');
+
+                this.showToast('Starting mock test...', 'success');
+
+                setTimeout(() => {
+                    const page = type === 'subject' ? '/mock_test/subject-wise-quick-mock-test/start_test.html' : '/mock_test/start_test.html';
+                    this.navigateTo(page);
+                }, 600);
+            }
+
+            /**
+             * Render the application
+             */
+            render() {
+                const { filter, searchQuery } = this.state;
+                const hasSearch = searchQuery.length > 0;
+
+                // Show/hide sections based on filter
+                const quickSection = document.getElementById('quickMocksSection');
+                const topicsList = document.getElementById('topicsList');
+
+                if (filter === 'all' || filter === 'misc') {
+                    quickSection.style.display = 'block';
+                    this.renderQuickMocks();
+                } else {
+                    quickSection.style.display = 'none';
+                }
+
+                if (filter !== 'misc') {
+                    topicsList.style.display = 'flex';
+                    this.renderSubjectTopics();
+                } else {
+                    topicsList.style.display = 'none';
+                }
+
+                // Check for empty state
+                const hasContent = this.hasVisibleContent();
+                document.getElementById('emptyState').classList.toggle('show', !hasContent);
+            }
+
+            /**
+             * Render quick mocks grid
+             */
+            renderQuickMocks() {
+                const grid = document.getElementById('quickMocksGrid');
+                const filtered = this.filterItems(this.data.quickMocks);
+
+                grid.innerHTML = filtered.map((mock, index) => `
+                    <div class="quick-mock ${mock.free ? 'free' : 'locked'}" 
+                         onclick="app.startMock(${mock.id}, ${mock.free}, 'quick')"
+                         style="animation-delay: ${index * 0.05}s">
+                        ${mock.free ? '<div class="quick-mock__badge"></div>' : '<div class="quick-mock__lock">🔒</div>'}
+                        <div class="quick-mock__number">${mock.id}<span>/40</span></div>
+                        <div class="quick-mock__meta">⏱️ 30 min • 15 Qs</div>
+                        <span class="quick-mock__tag ${mock.free ? 'quick-mock__tag--free' : 'quick-mock__tag--pro'}">
+                            ${mock.free ? 'Free' : 'Pro'}
+                        </span>
+                    </div>
+                `).join('');
+            }
+
+            /**
+             * Render subject topics
+             */
+            renderSubjectTopics() {
+                const container = document.getElementById('topicsList');
+                const subjectsToRender = this.state.filter === 'all'
+                    ? ['physics', 'chemistry', 'math', 'biology']
+                    : [this.state.filter];
+
+                let html = '';
+
+                subjectsToRender.forEach((subject, subjectIndex) => {
+                    const topics = this.data.subjects[subject];
+                    const filteredTopics = this.filterItems(topics, 'name');
+
+                    if (filteredTopics.length === 0) return;
+
+                    const subjectMeta = {
+                        physics: { icon: '⚛️', color: '#3b82f6', title: 'Physics' },
+                        chemistry: { icon: '🧪', color: '#ec4899', title: 'Chemistry' },
+                        math: { icon: '📐', color: '#f59e0b', title: 'Mathematics' },
+                        biology: { icon: '🧬', color: '#10b981', title: 'Biology' }
+                    }[subject];
+
+                    html += `
+                        <div class="section-header" style="animation-delay: ${subjectIndex * 0.1}s">
+                            <div class="section-header__icon" style="background: ${subjectMeta.color}20; color: ${subjectMeta.color};">
+                                ${subjectMeta.icon}
+                            </div>
+                            <h2 class="section-header__title" style="color: ${subjectMeta.color};">
+                                ${subjectMeta.title} (${filteredTopics.length} Topics)
+                            </h2>
+                        </div>
+                    `;
+
+                    html += filteredTopics.map((topic, topicIndex) => `
+                        <div class="topic topic--${subject}" 
+                             id="topic-${topic.id}"
+                             style="animation-delay: ${(subjectIndex * 0.1) + (topicIndex * 0.05)}s">
+                            <div class="topic__header" onclick="app.toggleTopic('${topic.id}')">
+                                <div class="topic__info">
+                                    <div class="topic__icon">${topic.icon}</div>
+                                    <div>
+                                        <div class="topic__title">${topic.name}</div>
+                                        <div class="topic__meta">
+                                            <span>📋 ${topic.mocks.length} mocks</span>
+                                            <span class="topic__meta-dot"></span>
+                                            <span>⏱️ 15 questions each</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="topic__arrow">▼</div>
+                            </div>
+                            <div class="topic__content">
+                                <div class="topic__mocks">
+                                    ${topic.mocks.map(mock => `
+                                        <div class="mock-card ${mock.free ? '' : 'locked'}" 
+                                             onclick="app.startMock(${mock.id}, ${mock.free}, 'subject')">
+                                            ${!mock.free ? '<div class="mock-card__lock">🔒</div>' : ''}
+                                            <div class="mock-card__number">${mock.name}</div>
+                                            <div class="mock-card__meta">⏱️ 30 min</div>
+                                            <span class="mock-card__tag ${mock.free ? 'mock-card__tag--free' : 'mock-card__tag--pro'}">
+                                                ${mock.free ? 'Free' : 'Pro'}
+                                            </span>
+                                        </div>
+                                    `).join('')}
+                                </div>
+                            </div>
+                        </div>
+                    `).join('');
+                });
+
+                container.innerHTML = html;
+            }
+
+            /**
+             * Filter items based on search query
+             */
+            filterItems(items, key = 'name') {
+                if (!this.state.searchQuery) return items;
+                return items.filter(item => item[key].toLowerCase().includes(this.state.searchQuery));
+            }
+
+            /**
+             * Check if any content is visible
+             */
+            hasVisibleContent() {
+                const { filter, searchQuery } = this.state;
+
+                if (filter === 'all' || filter === 'misc') {
+                    const quickMocks = this.filterItems(this.data.quickMocks);
+                    if (quickMocks.length > 0) return true;
+                }
+
+                if (filter !== 'misc') {
+                    const subjects = filter === 'all' ? ['physics', 'chemistry', 'math', 'biology'] : [filter];
+                    return subjects.some(subject => this.filterItems(this.data.subjects[subject], 'name').length > 0);
+                }
+
+                return false;
+            }
+
+            /**
+             * Modal controls
+             */
+            openModal() {
+                document.getElementById('upgradeModal').classList.add('show');
+                document.body.style.overflow = 'hidden';
+            }
+
+            closeModal() {
+                document.getElementById('upgradeModal').classList.remove('show');
+                document.body.style.overflow = '';
+            }
+
+            /**
+             * Navigation
+             */
+            navigateTo(path) {
+                window.location.href = path;
+            }
+
+            goToPricing() {
+                this.navigateTo('/#pricing');
+            }
+
+            /**
+             * Toast notifications
+             */
+            showToast(message, type = 'success') {
+                const toast = document.getElementById('toast');
+                toast.textContent = message;
+                toast.className = `toast toast--${type}`;
+
+                requestAnimationFrame(() => {
+                    toast.classList.add('show');
+                });
+
+                setTimeout(() => {
+                    toast.classList.remove('show');
+                }, 3000);
+            }
+
+            /**
+             * Setup event listeners
+             */
+            setupEventListeners() {
+                // Header scroll effect
+                let lastScroll = 0;
+                window.addEventListener('scroll', () => {
+                    const header = document.getElementById('header');
+                    const currentScroll = window.pageYOffset;
+
+                    if (currentScroll > 50) {
+                        header.classList.add('scrolled');
+                    } else {
+                        header.classList.remove('scrolled');
+                    }
+
+                    lastScroll = currentScroll;
+                }, { passive: true });
+            }
+
+            /**
+             * Keyboard shortcuts
+             */
+            setupKeyboardShortcuts() {
+                document.addEventListener('keydown', (e) => {
+                    // ESC to close modal
+                    if (e.key === 'Escape') {
+                        this.closeModal();
+                    }
+
+                    // / to focus search
+                    if (e.key === '/' && document.activeElement.tagName !== 'INPUT') {
+                        e.preventDefault();
+                        document.getElementById('searchInput').focus();
+                    }
+                });
+            }
+
+            /**
+             * Accessibility enhancements
+             */
+            setupAccessibility() {
+                // Trap focus in modal when open
+                const modal = document.getElementById('upgradeModal');
+                const focusableElements = modal.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+
+                modal.addEventListener('keydown', (e) => {
+                    if (e.key !== 'Tab') return;
+
+                    const firstFocusable = focusableElements[0];
+                    const lastFocusable = focusableElements[focusableElements.length - 1];
+
+                    if (e.shiftKey && document.activeElement === firstFocusable) {
+                        e.preventDefault();
+                        lastFocusable.focus();
+                    } else if (!e.shiftKey && document.activeElement === lastFocusable) {
+                        e.preventDefault();
+                        firstFocusable.focus();
+                    }
+                });
             }
         }
-    </script>
-    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 
+        // Initialize app
+        const app = new MockTestApp();
+    </script>
 </body>
 
 </html>
