@@ -1453,7 +1453,7 @@
              * Check if user has Pro access
              */
             checkProStatus() {
-                this.state.isPro = true; // localStorage.getItem('IAT_PLAN') === 'PRO';
+                this.state.isPro = localStorage.getItem('IAT_PLAN') === 'PRO';
             }
 
             /**
@@ -1575,19 +1575,22 @@
             renderQuickMocks() {
                 const grid = document.getElementById('quickMocksGrid');
                 const filtered = this.filterItems(this.data.quickMocks);
+                const isPro = this.state.isPro;
 
-                grid.innerHTML = filtered.map((mock, index) => `
-                    <div class="quick-mock ${mock.free ? 'free' : 'locked'}" 
+                grid.innerHTML = filtered.map((mock, index) => {
+                    const isUnlocked = mock.free || isPro;
+                    return `
+                    <div class="quick-mock ${isUnlocked ? 'free' : 'locked'}" 
                          onclick="app.startMock(${mock.id}, ${mock.free}, 'quick')"
                          style="animation-delay: ${index * 0.05}s">
-                        ${mock.free ? '<div class="quick-mock__badge"></div>' : '<div class="quick-mock__lock">🔒</div>'}
+                        ${isUnlocked ? '<div class="quick-mock__badge"></div>' : '<div class="quick-mock__lock">🔒</div>'}
                         <div class="quick-mock__number">${mock.id}<span>/40</span></div>
                         <div class="quick-mock__meta">⏱️ 30 min • 15 Qs</div>
-                        <span class="quick-mock__tag ${mock.free ? 'quick-mock__tag--free' : 'quick-mock__tag--pro'}">
+                        <span class="quick-mock__tag ${isUnlocked ? 'quick-mock__tag--free' : 'quick-mock__tag--pro'}">
                             ${mock.free ? 'Free' : 'Pro'}
                         </span>
                     </div>
-                `).join('');
+                `}).join('');
             }
 
             /**
@@ -1645,18 +1648,20 @@
                             </div>
                             <div class="topic__content">
                                 <div class="topic__mocks">
-                                    ${topic.mocks.map(mock => `
-                                        <div class="mock-card ${mock.free ? '' : 'locked'}" 
-                                             onclick="app.startMock(${mock.id}, ${mock.free}, 'subject')">
-                                            ${!mock.free ? '<div class="mock-card__lock">🔒</div>' : ''}
-                                            <div class="mock-card__number">${mock.name}</div>
-                                            <div class="mock-card__meta">⏱️ 30 min</div>
-                                            <span class="mock-card__tag ${mock.free ? 'mock-card__tag--free' : 'mock-card__tag--pro'}">
-                                                ${mock.free ? 'Free' : 'Pro'}
-                                            </span>
-                                        </div>
-                                    `).join('')}
-                                </div>
+                                ${topic.mocks.map(mock => {
+                        const isUnlocked = mock.free || this.state.isPro;
+                        return `
+                                    <div class="mock-card ${isUnlocked ? '' : 'locked'}" 
+                                         onclick="app.startMock(${mock.id}, ${mock.free}, 'subject')">
+                                        ${!isUnlocked ? '<div class="mock-card__lock">🔒</div>' : ''}
+                                        <div class="mock-card__number">${mock.name}</div>
+                                        <div class="mock-card__meta">⏱️ 30 min</div>
+                                        <span class="mock-card__tag ${isUnlocked ? 'mock-card__tag--free' : 'mock-card__tag--pro'}">
+                                            ${mock.free ? 'Free' : 'Pro'}
+                                        </span>
+                                    </div>
+                                `}).join('')}
+                            </div>
                             </div>
                         </div>
                     `).join('');
