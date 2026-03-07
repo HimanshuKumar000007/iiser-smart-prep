@@ -51,14 +51,15 @@ window.QUICK_MOCKS_CONFIG = (function () {
 
     function generateTopicMocks(subject, topics, icon) {
         const mocks = [];
-        topics.forEach(topic => {
+        topics.forEach((topic, index) => {
+            const isFreeTopic = subject === 'physics' && (index === 0 || index === 1);
             for (let i = 1; i <= 4; i++) {
                 mocks.push({
                     id: currentId++,
                     label: `${topic.name} - Mock ${String(i).padStart(2, '0')}`,
                     category: subject,
                     icon: icon,
-                    isFree: false,
+                    isFree: isFreeTopic,
                     path: `subject-wise-quick-mock-test/${subject}/${topic.folder}/mock-${i}.json`
                 });
             }
