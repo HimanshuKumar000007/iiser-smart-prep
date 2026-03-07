@@ -9,8 +9,16 @@
     <!-- Professional Font: Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!-- Professional Font: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
         rel="stylesheet">
+
+    <!-- MathJax for rendering LaTeX math formulas -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
 
     <!-- Icons -->
     <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
@@ -975,6 +983,11 @@
             } else {
                 btnNext.innerHTML = '<span>Save & Next</span>';
                 btnNext.onclick = saveNext;
+            }
+
+            // MathJax re-render for dynamically loaded question and options
+            if (window.MathJax) {
+                MathJax.typesetPromise([document.getElementById('qText'), document.getElementById('optList')]).catch((err) => console.log(err.message));
             }
         }
 

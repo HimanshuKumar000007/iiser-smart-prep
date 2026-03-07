@@ -121,7 +121,7 @@ window.QUICK_MOCKS_CONFIG = (function () {
     ];
 
     const mathTopics = [
-        { name: 'Sets and Logic', folder: 'sets-and-logic' },
+        { name: 'Sets and Logic', folder: '1.sets-and-logic' },
         { name: 'Relations & functions', folder: 'relations-and-functions' },
         { name: 'Basic counting techniques', folder: 'basic-counting-techniques' },
         { name: 'Complex numbers and equations', folder: 'complex-numbers-linear-and-quadratic-equations' },

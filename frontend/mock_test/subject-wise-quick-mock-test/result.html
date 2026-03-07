@@ -12,6 +12,11 @@
     <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
+    <!-- MathJax for rendering LaTeX math formulas -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+
     <style>
         :root {
             --primary: #6366f1;
@@ -298,6 +303,11 @@
                     </div>
                 `;
             }).join('');
+
+            // MathJax re-render
+            if (window.MathJax) {
+                MathJax.typesetPromise([list]).catch((err) => console.log(err.message));
+            }
         }
 
         function switchView(view) {
