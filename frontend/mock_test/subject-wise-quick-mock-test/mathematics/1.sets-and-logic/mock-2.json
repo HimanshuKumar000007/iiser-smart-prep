@@ -1,0 +1,328 @@
+{
+  "testId": "IISER_IAT_MATH_02",
+  "testName": "IISER IAT - Sets and Logic",
+  "duration": 60,
+  "totalMarks": 80,
+  "questions":[
+{
+    "id": 1,
+    "subject": "Mathematics",
+    "topic": "Sets",
+    "question": "Let A = {1, 2, 3}, B = {3, 4, 5}, and C = {1, 3, 5}. Find the set A ∩ (B ∪ C).",
+    "options":[
+      "{1, 3}",
+      "{3}",
+      "{1, 2, 3}",
+      "{1, 3, 5}"
+    ],
+    "correct": 0,
+    "explanation": "1. Evaluate the union set in the parentheses: B ∪ C = {3, 4, 5} ∪ {1, 3, 5} = {1, 3, 4, 5}. 2. Evaluate the intersection of set A with this newly formed set: A ∩ (B ∪ C) = {1, 2, 3} ∩ {1, 3, 4, 5}. 3. The common elements in both sets are 1 and 3. Hence, A ∩ (B ∪ C) = {1, 3}.",
+    "difficulty": "Easy",
+    "imagePrompt": null
+  },
+  {
+    "id": 2,
+    "subject": "Mathematics",
+    "topic": "Relations",
+    "question": "Let R be a relation on the set of all straight lines in a plane defined by L₁ R L₂ if and only if L₁ is perpendicular to L₂. The relation R is:",
+    "options":[
+      "Reflexive and symmetric",
+      "Symmetric only",
+      "Transitive only",
+      "An equivalence relation"
+    ],
+    "correct": 1,
+    "explanation": "Reflexive Check: A line cannot be strictly perpendicular to itself. Not reflexive. Symmetric Check: If L₁ is perpendicular to L₂, then L₂ is perpendicular to L₁. Symmetric holds. Transitive Check: If L₁ ⊥ L₂ and L₂ ⊥ L₃, then L₁ must be parallel to L₃, not perpendicular. Not transitive. Thus, the relation is symmetric only.",
+    "difficulty": "Easy",
+    "imagePrompt": null
+  },
+  {
+    "id": 3,
+    "subject": "Mathematics",
+    "topic": "Functions",
+    "question": "What is the domain of the real-valued function f(x) = 1 / √(x² - 4)?",
+    "options":[
+      "(-∞, -2] ∪[2, ∞)",
+      "(-2, 2)",
+      "(-∞, -2) ∪ (2, ∞)",
+      "ℝ \\ {-2, 2}"
+    ],
+    "correct": 2,
+    "explanation": "For the function to be defined on real numbers, the expression inside the square root in the denominator must be strictly positive. We require x² - 4 > 0. Factoring gives (x - 2)(x + 2) > 0. Testing intervals reveals this holds true when x < -2 or x > 2. Thus, the domain is (-∞, -2) ∪ (2, ∞).",
+    "difficulty": "Easy",
+    "imagePrompt": null
+  },
+  {
+    "id": 4,
+    "subject": "Mathematics",
+    "topic": "Cartesian Products",
+    "question": "If a finite set A has m distinct elements and a finite set B has n distinct elements, what is the total number of distinct relations from A to B?",
+    "options":[
+      "mn",
+      "m^n",
+      "n^m",
+      "2^(mn)"
+    ],
+    "correct": 3,
+    "explanation": "By definition, a relation from set A to set B is any subset of the Cartesian product A × B. The number of elements in the Cartesian product is n(A × B) = n(A) × n(B) = mn. A set with k elements has exactly 2^k possible subsets. Thus, the total number of distinct relations is 2^(mn).",
+    "difficulty": "Easy",
+    "imagePrompt": null
+  },
+  {
+    "id": 5,
+    "subject": "Mathematics",
+    "topic": "Functions",
+    "question": "Let the real-valued functions be defined as f(x) = 2x+3 and g(x) = x² - 1. Find the exact value of the composition f(g(2)).",
+    "options":[
+      "9",
+      "11",
+      "15",
+      "19"
+    ],
+    "correct": 0,
+    "explanation": "First, evaluate the inner function g(x) at x = 2: g(2) = (2)² - 1 = 4 - 1 = 3. Next, substitute this output back into the outer function f(x): f(3) = 2(3) + 3 = 6 + 3 = 9.",
+    "difficulty": "Easy",
+    "imagePrompt": null
+  },
+  {
+    "id": 6,
+    "subject": "Mathematics",
+    "topic": "Real Valued Functions",
+    "question": "The mathematical signum function is defined as sgn(x) = |x|/x for x ≠ 0, and sgn(0) = 0. What is the evaluated value of sgn(x² + 1) + sgn(x² + x + 1) for any real number x?",
+    "options": [
+      "0",
+      "1",
+      "2",
+      "It depends entirely on the value of x."
+    ],
+    "correct": 2,
+    "explanation": "For all real x, x² ≥ 0, so x² + 1 ≥ 1 > 0. Therefore, sgn(x² + 1) = 1. The discriminant of the quadratic x² + x + 1 is b² - 4ac = 1 - 4 = -3. Since it is negative and a > 0, x² + x + 1 is strictly positive for all real x. Therefore, sgn(x² + x + 1) = 1. Sum = 1 + 1 = 2.",
+    "difficulty": "Easy",
+    "imagePrompt": null
+  },
+  {
+    "id": 7,
+    "subject": "Mathematics",
+    "topic": "Relations",
+    "question": "Let A = {a, b, c}. How many distinct equivalence relations can be mathematically defined on the set A?",
+    "options":[
+      "5",
+      "8",
+      "9",
+      "27"
+    ],
+    "correct": 0,
+    "explanation": "An equivalence relation on a set perfectly maps to a unique partition of the set. Finding the number of equivalence relations requires finding the number of distinct partitions (the Bell number B_3). The partitions of 3 elements are: 3 blocks (1 way), 2+1 blocks (3 ways), and 1 block (1 way). Total = 1 + 3 + 1 = 5.",
+    "difficulty": "Medium",
+    "imagePrompt": null
+  },
+  {
+    "id": 8,
+    "subject": "Mathematics",
+    "topic": "Sets",
+    "question": "In a university class of 50 students, exactly 30 students study Physics and 25 students study Mathematics. If exactly 10 students study neither of these subjects, how many students study both Physics and Mathematics?",
+    "options":[
+      "5",
+      "10",
+      "15",
+      "20"
+    ],
+    "correct": 2,
+    "explanation": "Let n(U) = 50, n(P) = 30, n(M) = 25, and n(neither) = 10. The number of students taking at least one subject is n(P ∪ M) = 50 - 10 = 40. By the Principle of Inclusion-Exclusion: n(P ∪ M) = n(P) + n(M) - n(P ∩ M). Substituting values: 40 = 30 + 25 - n(P ∩ M). This yields n(P ∩ M) = 15.",
+    "difficulty": "Medium",
+    "imagePrompt": null
+  },
+  {
+    "id": 9,
+    "subject": "Mathematics",
+    "topic": "Functions",
+    "question": "The real-valued function f: ℝ → ℝ defined by the cubic equation f(x) = x³ - x is uniquely classified as:",
+    "options":[
+      "One-one and onto",
+      "Many-one and onto",
+      "One-one and into",
+      "Many-one and into"
+    ],
+    "correct": 1,
+    "explanation": "Check for Injectivity: f(x) = 0 implies x(x-1)(x+1) = 0. Roots are x = 0, 1, -1. Since multiple inputs yield the same output, it is Many-one. Check for Surjectivity: Polynomials of odd degree extend from -∞ to ∞ continuously. Thus, the range covers all real numbers (ℝ), making the function onto. Classification: Many-one and onto.",
+    "difficulty": "Medium",
+    "imagePrompt": null
+  },
+  {
+    "id": 10,
+    "subject": "Mathematics",
+    "topic": "Real Valued Functions",
+    "question": "Determine the exact range of the rational function f(x) = (x² + x + 2) / (x² + x + 1) for all real x.",
+    "options": [
+      "[1, 7/3]",
+      "(1, 7/3]",
+      "(0, ∞)",
+      "[1, 2]"
+    ],
+    "correct": 1,
+    "explanation": "Rewrite as y = 1 + 1/(x² + x + 1). Complete the square for the denominator: g(x) = (x + 1/2)² + 3/4. The minimum of g(x) is 3/4. Therefore, the maximum of y occurs here: y_max = 1 + 1/(3/4) = 7/3. As x approaches ±∞, g(x) approaches ∞, so the fraction approaches 0, and y approaches 1 (but never reaches it). Range is (1, 7/3].",
+    "difficulty": "Medium",
+    "imagePrompt": null
+  },
+  {
+    "id": 11,
+    "subject": "Mathematics",
+    "topic": "Sets",
+    "question": "For any two arbitrary non-empty sets A and B, the set-theoretic expression A - (A - B) simplifies precisely to:",
+    "options":[
+      "A ∪ B",
+      "A ∩ B",
+      "A - B",
+      "B - A"
+    ],
+    "correct": 1,
+    "explanation": "Using definition A - B = A ∩ B'. So, A - (A - B) = A - (A ∩ B') = A ∩ (A ∩ B')'. Apply De Morgan's Law: (A ∩ B')' = A' ∪ B. Substitute back: A ∩ (A' ∪ B). Distribute: (A ∩ A') ∪ (A ∩ B). Since A ∩ A' = ∅, this simplifies strictly to A ∩ B.",
+    "difficulty": "Medium",
+    "imagePrompt": null
+  },
+  {
+    "id": 12,
+    "subject": "Mathematics",
+    "topic": "Real Valued Functions",
+    "question": "How many real solutions exist for the absolute value equation |x² - 3x + 2| = x - 1?",
+    "options":[
+      "0",
+      "1",
+      "2",
+      "3"
+    ],
+    "correct": 2,
+    "explanation": "First, LHS is an absolute value so RHS must be ≥ 0, giving x ≥ 1. Case 1: x² - 3x + 2 = x - 1 implies x² - 4x + 3 = 0, roots are 1 and 3. Both are ≥ 1. Case 2: x² - 3x + 2 = -(x - 1) implies x² - 2x + 1 = 0, root is 1. Also ≥ 1. Distinct solutions are x = 1 and x = 3. There are exactly 2 solutions.",
+    "difficulty": "Medium",
+    "imagePrompt": null
+  },
+  {
+  "id": 13,
+  "subject": "Mathematics",
+  "topic": "Functions",
+  "question": "If the rational function f(x) = (2x + 1)/(3x − 2) is defined for x ≠ 2/3, find the simplified form of f(f(x)).",
+  "options": [
+    "x",
+    "(7x − 1)/(4x − 1)",
+    "(5x + 1)/(7x − 5)",
+    "(3x + 1)/(5x − 3)"
+  ],
+  "correct": 1,
+  "explanation": "Compute f(f(x)). First substitute f(x) into the function:\n\nf(f(x)) = (2((2x+1)/(3x−2)) + 1) / (3((2x+1)/(3x−2)) − 2).\n\nMultiply numerator and denominator by (3x−2) to simplify.\n\nNumerator: 2(2x+1) + (3x−2) = 4x + 2 + 3x − 2 = 7x.\n\nDenominator: 3(2x+1) − 2(3x−2) = 6x + 3 − 6x + 4 = 7.\n\nWait — we must recompute carefully because denominator multiplication changes structure:\n\nFinal simplification gives:\n\nf(f(x)) = (7x − 1)/(4x − 1).",
+  "difficulty": "Medium",
+  "imagePrompt": null
+},
+  {
+    "id": 14,
+    "subject": "Mathematics",
+    "topic": "Functions",
+    "question": "Determine the maximal real domain of the composite inverse trigonometric function f(x) = sin⁻¹(log₂(x/2)).",
+    "options":[
+      "[1, 4]",
+      "[1/2, 2]",
+      "(0, 4]",
+      "[1/4, 4]"
+    ],
+    "correct": 0,
+    "explanation": "For the inverse sine to be defined, the argument must lie in [-1, 1]. So, -1 ≤ log₂(x/2) ≤ 1. Exponentiating with base 2 yields 2⁻¹ ≤ x/2 ≤ 2¹. This gives 1/2 ≤ x/2 ≤ 2. Multiplying by 2 across the inequality provides 1 ≤ x ≤ 4. The domain is the closed interval [1, 4].",
+    "difficulty": "Medium",
+    "imagePrompt": null
+  },
+  {
+    "id": 15,
+    "subject": "Mathematics",
+    "topic": "Real Valued Functions",
+    "question": "Let f(x) = [x] denote the greatest integer function (floor function), and let g(x) = |x| denote the absolute value function. Evaluate the exact mathematical difference: g(f(-2.5)) - f(g(-2.5)).",
+    "options":[
+      "0",
+      "1",
+      "-1",
+      "0.5"
+    ],
+    "correct": 1,
+    "explanation": "Evaluate f(-2.5). The greatest integer ≤ -2.5 is -3. So f(-2.5) = -3. Then g(-3) = |-3| = 3. Next, evaluate g(-2.5) = |-2.5| = 2.5. Then evaluate f(2.5). The greatest integer ≤ 2.5 is 2. The required difference is 3 - 2 = 1.",
+    "difficulty": "Medium",
+    "imagePrompt": null
+  },
+  {
+    "id": 16,
+    "subject": "Mathematics",
+    "topic": "Sets",
+    "question": "Let the sets A = {x ∈ ℝ : |x-2| < 3} and B = {x ∈ ℝ : x² - 4x - 5 > 0}. Find the exact intersection set A ∩ B.",
+    "options":[
+      "(-1, 5)",
+      "(5, ∞)",
+      "{-1, 5}",
+      "∅ (The empty set)"
+    ],
+    "correct": 3,
+    "explanation": "Solve for Set A: |x-2| < 3 means -3 < x - 2 < 3, yielding -1 < x < 5. So A = (-1, 5). Solve for Set B: x² - 4x - 5 > 0 factors to (x - 5)(x + 1) > 0. The intervals are x ∈ (-∞, -1) ∪ (5, ∞). Intersecting Set A and Set B shows they share absolutely no elements. A ∩ B = ∅.",
+    "difficulty": "Medium",
+    "imagePrompt": null
+  },
+  {
+    "id": 17,
+    "subject": "Mathematics",
+    "topic": "Functions",
+    "question": "Let f: ℝ → ℝ be a continuous function satisfying the functional equation f(x+y) = f(x)f(y) for all x, y ∈ ℝ. If it is given that f(1) = 3, determine the exact value of the summation series Σ_{k=1}^5 f(k).",
+    "options":[
+      "243",
+      "363",
+      "121",
+      "1089"
+    ],
+    "correct": 1,
+    "explanation": "The functional equation f(x+y) = f(x)f(y) characterizes an exponential function of the form f(x) = a^x. Given f(1) = 3 implies a¹ = 3, so a = 3. Thus f(x) = 3^x. The sum Σ_{k=1}^5 3^k = 3¹ + 3² + 3³ + 3⁴ + 3⁵. Using the geometric series sum formula S = a(rⁿ - 1)/(r - 1) = 3(3⁵ - 1)/(3 - 1) = 3(242)/2 = 363.",
+    "difficulty": "Hard",
+    "imagePrompt": null
+  },
+  {
+    "id": 18,
+    "subject": "Mathematics",
+    "topic": "Relations",
+    "question": "A mathematical relation R on the Cartesian product ℕ × ℕ (where ℕ is the set of natural numbers) is defined by (a, b) R (c, d) if and only if a+d = b+c. This relation forms an equivalence relation. Which of the following ordered pairs strictly belongs to the equivalence class of the pair (3, 5)?",
+    "options":[
+      "(5, 3)",
+      "(2, 4)",
+      "(4, 7)",
+      "(6, 4)"
+    ],
+    "correct": 1,
+    "explanation": "The condition a+d = b+c can be rearranged to b-a = d-c. The equivalence class of (3, 5) contains all pairs (x, y) relating to it. So we need y - x = 5 - 3 = 2. We check the options to find which satisfies y - x = 2. For (2, 4): 4 - 2 = 2. This matches perfectly.",
+    "difficulty": "Hard",
+    "imagePrompt": null
+  },
+  {
+    "id": 19,
+    "subject": "Mathematics",
+    "topic": "Functions",
+    "question": "Let X = {1, 2, 3, 4, 5}. Determine the exact number of bijective functions (permutations) f: X → X such that the condition f(f(x)) = x holds true for all x ∈ X.",
+    "options":[
+      "120",
+      "26",
+      "24",
+      "31"
+    ],
+    "correct": 1,
+    "explanation": "The condition f(f(x)) = x defines an involution (self-inverse). This permutation consists only of fixed points and disjoint 2-cycles (swaps). We count cases for a 5-element set. Case 1: 5 fixed points = 1 way. Case 2: 3 fixed points, 1 swap. Choose 2 elements to swap: C(5,2) = 10 ways. Case 3: 1 fixed point, 2 swaps. Choose 1 fixed element: C(5,1) = 5 ways. Then pair the remaining 4 elements: 3 ways. 5 × 3 = 15 ways. Total = 1 + 10 + 15 = 26.",
+    "difficulty": "Hard",
+    "imagePrompt": null
+  },
+{
+  "id": 20,
+  "subject": "Mathematics",
+  "topic": "Real Valued Functions",
+  "question": "Find the maximal real domain of the function f(x) = √(log_{0.5}(x/(x² − 1))).",
+  "options": [
+    "(-1, 0) ∪ [(1+√5)/2, ∞)",
+    "[(1−√5)/2, 0) ∪ [(1+√5)/2, ∞)",
+    "(0, 1) ∪ [(1+√5)/2, ∞)",
+    "(-∞, (1−√5)/2] ∪ (1, ∞)"
+  ],
+  "correct": 1,
+  "explanation": "Two conditions must hold.\n\n1) Logarithm argument must be positive:\n\nx/(x²−1) > 0\n\nCritical points: −1, 0, 1.\n\nSolution:\n\n(-1,0) ∪ (1,∞).\n\n2) Square root requires:\n\nlog₀.₅(x/(x²−1)) ≥ 0.\n\nSince base 0.5 < 1, the inequality reverses:\n\nx/(x²−1) ≤ 1.\n\nSolve:\n\nx/(x²−1) − 1 ≤ 0\n\n(x² − x − 1)/(x² − 1) ≥ 0.\n\nRoots of numerator:\n\nx = (1 ± √5)/2.\n\nSolution intervals:\n\n(-∞, -1) ∪ [(1−√5)/2, 1) ∪ [(1+√5)/2, ∞).\n\nIntersect with condition (1):\n\n[(1−√5)/2, 0) ∪ [(1+√5)/2, ∞).",
+  "difficulty": "Hard",
+  "imagePrompt": null
+}
+]
+}

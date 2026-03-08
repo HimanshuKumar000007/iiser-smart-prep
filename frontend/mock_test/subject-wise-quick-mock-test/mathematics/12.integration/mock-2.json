@@ -1,0 +1,348 @@
+{
+  "testId": "IISER_IAT_INTEGRATION_V2_TEXT",
+  "testName": "IISER IAT - Integration & Applications (Version 2)",
+  "duration": 60,
+  "totalMarks": 80,
+  "questions":[
+    {
+      "id": 1,
+      "subject": "Mathematics",
+      "topic": "Integration",
+      "subtopic": "Evaluation of integrals of some standard types",
+      "question": "Evaluate the indefinite integral: ∫ 1 / √(4 - x²) dx",
+      "options":[
+        "(1/2) sin⁻¹(x/2) + C",
+        "sin⁻¹(x/2) + C",
+        "sin⁻¹(2x) + C",
+        "ln|x + √(4 - x²)| + C"
+      ],
+      "correct": 1,
+      "explanation": "This perfectly matches the standard integral formula ∫ 1 / √(a² - x²) dx = sin⁻¹(x/a) + C. Here, a² = 4, which means a = 2. Substituting a=2 directly yields sin⁻¹(x/2) + C.",
+      "difficulty": "Easy",
+      "imagePrompt": null
+    },
+    {
+      "id": 2,
+      "subject": "Mathematics",
+      "topic": "Integration",
+      "subtopic": "Integration by substitution",
+      "question": "What is the precise mathematical value of the definite integral ∫ (from 0 to π/2) e^(sin x) cos x dx?",
+      "options":[
+        "e",
+        "e - 1",
+        "1",
+        "0"
+      ],
+      "correct": 1,
+      "explanation": "Utilize u-substitution. Let u = sin x. Then the derivative du = cos x dx. Change the integration limits: When x = 0, u = sin(0) = 0. When x = π/2, u = sin(π/2) = 1. The entire integral transforms cleanly to ∫ (from 0 to 1) e^u du. Evaluating this yields [e^u] from 0 to 1 = e¹ - e⁰ = e - 1.",
+      "difficulty": "Easy",
+      "imagePrompt": null
+    },
+    {
+      "id": 3,
+      "subject": "Mathematics",
+      "topic": "Integration",
+      "subtopic": "Integration by substitution",
+      "question": "Which of the following functions F(x) represents the general antiderivative of f(x) = x e^(x²)?",
+      "options":[
+        "e^(x²) + C",
+        "(1/2) e^(x²) + C",
+        "x² e^(x²) + C",
+        "2 e^(x²) + C"
+      ],
+      "correct": 1,
+      "explanation": "To find the integral ∫ x e^(x²) dx, use substitution. Let u = x². Then du = 2x dx, which rearranges to x dx = du / 2. Substitute into the integral: ∫ e^u (du / 2) = (1/2) ∫ e^u du. This evaluates to (1/2) e^u + C. Substituting u back gives (1/2) e^(x²) + C.",
+      "difficulty": "Easy",
+      "imagePrompt": null
+    },
+    {
+      "id": 4,
+      "subject": "Mathematics",
+      "topic": "Integration",
+      "subtopic": "Area under simple curves",
+      "question": "Determine the exact area bounded strictly by the continuous curve y = x³, the vertical lines x = -1 and x = 1, and the x-axis.",
+      "options":[
+        "0 sq. units",
+        "1/2 sq. units",
+        "1/4 sq. units",
+        "2 sq. units"
+      ],
+      "correct": 1,
+      "explanation": "The term 'Area bounded' implies absolute geometric area, not the net signed definite integral. Since y = x³ is negative from x=-1 to 0 and positive from x=0 to 1, we split the integral: Area = ∫|-1 to 0| |x³| dx + ∫|0 to 1| |x³| dx. Due to symmetry, this is 2 * ∫|0 to 1| x³ dx. Integrating gives 2 * [x⁴/4] from 0 to 1 = 2 * (1/4) = 1/2 sq. units.",
+      "difficulty": "Easy",
+      "imagePrompt": null
+    },
+    {
+      "id": 5,
+      "subject": "Mathematics",
+      "topic": "Integration",
+      "subtopic": "Integrals using trigonometric identities",
+      "question": "Evaluate the integral: ∫ tan² x dx",
+      "options":[
+        "tan x - x + C",
+        "sec² x + C",
+        "(tan³ x)/3 + C",
+        "sec x tan x + C"
+      ],
+      "correct": 0,
+      "explanation": "There is no direct antiderivative for tan²x. Apply the Pythagorean trigonometric identity: tan² x = sec² x - 1. The integral becomes ∫ (sec² x - 1) dx. Split this into two standard integrals: ∫ sec² x dx - ∫ 1 dx. Evaluating these yields exactly tan x - x + C.",
+      "difficulty": "Easy",
+      "imagePrompt": null
+    },
+    {
+      "id": 6,
+      "subject": "Mathematics",
+      "topic": "Integration",
+      "subtopic": "Basic properties of definite integrals",
+      "question": "Using standard properties of definite integrals, evaluate I = ∫ (from -π to π) x⁴ sin³ x dx.",
+      "options":[
+        "π⁴",
+        "2π⁴",
+        "0",
+        "2π/5"
+      ],
+      "correct": 2,
+      "explanation": "Let f(x) = x⁴ sin³ x. Check for symmetry by evaluating f(-x) = (-x)⁴ (sin(-x))³ = x⁴ (-sin x)³ = -x⁴ sin³ x = -f(x). Because f(x) strictly satisfies f(-x) = -f(x), it is an odd function. A fundamental property of definite integrals dictates that the integral of any odd function over a perfectly symmetric interval [-a, a] is exactly 0.",
+      "difficulty": "Easy",
+      "imagePrompt": null
+    },
+    {
+      "id": 7,
+      "subject": "Mathematics",
+      "topic": "Integration",
+      "subtopic": "Basic properties of definite integrals",
+      "question": "Evaluate the definite integral: ∫ (from 0 to π/4) ln(1 + tan x) dx",
+      "options":[
+        "(π/8) ln 2",
+        "(π/4) ln 2",
+        "(π/2) ln 2",
+        "0"
+      ],
+      "correct": 0,
+      "explanation": "Let I = ∫ ln(1 + tan x) dx. Apply King's property ∫ f(x)dx = ∫ f(a-x)dx. I = ∫ ln(1 + tan(π/4 - x)) dx. Use identity tan(π/4 - x) = (1 - tan x)/(1 + tan x). I = ∫ ln[1 + (1-tan x)/(1+tan x)] dx = ∫ ln[2 / (1+tan x)] dx. Split log: I = ∫ ln 2 dx - ∫ ln(1 + tan x) dx. This means I = (ln 2)[x] - I. 2I = (π/4)ln 2 ⟹ I = (π/8)ln 2.",
+      "difficulty": "Medium",
+      "imagePrompt": null
+    },
+    {
+      "id": 8,
+      "subject": "Mathematics",
+      "topic": "Integration",
+      "subtopic": "Area between two simple curves",
+      "question": "Calculate the finite area tightly enclosed between the straight line y = x and the simple parabola y = x².",
+      "options":[
+        "1/3 sq. units",
+        "1/6 sq. units",
+        "1/2 sq. units",
+        "1 sq. units"
+      ],
+      "correct": 1,
+      "explanation": "First, find intersection points by equating the functions: x² = x ⟹ x(x - 1) = 0 ⟹ x = 0, x = 1. In the interval (0, 1), the line y = x lies strictly above the parabola y = x² (e.g., at x=0.5, 0.5 > 0.25). The bounded area is ∫ (x - x²) dx from 0 to 1. Integrating yields [x²/2 - x³/3] from 0 to 1 = 1/2 - 1/3 = 1/6 sq. units.",
+      "difficulty": "Medium",
+      "imagePrompt": null
+    },
+    {
+      "id": 9,
+      "subject": "Mathematics",
+      "topic": "Integration",
+      "subtopic": "Integration by parts",
+      "question": "Find the value of the integral: ∫ e^x ((x-1) / x²) dx",
+      "options":[
+        "e^x / x + C",
+        "e^x / x² + C",
+        "e^x ln x + C",
+        "x e^x + C"
+      ],
+      "correct": 0,
+      "explanation": "Rewrite the integrand algebraically to match a standard mathematical template: e^x ((x-1)/x²) = e^x (x/x² - 1/x²) = e^x (1/x - 1/x²). This perfectly matches the classic integral identity ∫ e^x [f(x) + f'(x)] dx = e^x f(x) + C. Here, setting f(x) = 1/x reveals its exact derivative is f'(x) = -1/x². Substituting these back yields e^x (1/x) + C = e^x / x + C.",
+      "difficulty": "Medium",
+      "imagePrompt": null
+    },
+    {
+      "id": 10,
+      "subject": "Mathematics",
+      "topic": "Integration",
+      "subtopic": "Basic properties of definite integrals",
+      "question": "The velocity of a moving particle travelling along the x-axis is given by the function v(t) = 3t² - 6t. What is the total physical distance strictly traveled by the particle between time t = 0 and t = 5?",
+      "options":[
+        "10",
+        "-25",
+        "58",
+        "42"
+      ],
+      "correct": 2,
+      "explanation": "Total distance requires integrating the absolute value of velocity: D = ∫|v(t)| dt. Roots of v(t): 3t² - 6t = 0 ⟹ 3t(t - 2) = 0 ⟹ t=0, t=2. Velocity is negative for 0 < t < 2 (moving backwards) and positive for t > 2 (moving forwards). Split integral: D = -∫(3t² - 6t) dt [0 to 2] + ∫(3t² - 6t) dt [2 to 5]. Antiderivative is t³ - 3t². Part 1: -[(8 - 12) - 0] = 4. Part 2:[(125 - 75) - (8 - 12)] = 50 - (-4) = 54. Total D = 4 + 54 = 58.",
+      "difficulty": "Medium",
+      "imagePrompt": null
+    },
+    {
+      "id": 11,
+      "subject": "Mathematics",
+      "topic": "Integration",
+      "subtopic": "Integration by partial fractions",
+      "question": "Evaluate the indefinite integral: ∫ 1 / (x(x⁴ + 1)) dx",
+      "options":[
+        "(1/4) ln| x⁴ / (x⁴+1) | + C",
+        "ln| x / (x⁴+1) | + C",
+        "(1/4) ln| (x⁴+1) / x⁴ | + C",
+        "(1/2) tan⁻¹(x²) + C"
+      ],
+      "correct": 0,
+      "explanation": "Multiply numerator and denominator by x³: ∫ x³ / (x⁴(x⁴ + 1)) dx. Use u-substitution: Let u = x⁴. Then du = 4x³ dx ⟹ x³ dx = du / 4. The integral becomes (1/4) ∫ 1 / (u(u+1)) du. Apply partial fractions: 1/(u(u+1)) = 1/u - 1/(u+1). Integral is (1/4) (ln|u| - ln|u+1|) + C = (1/4) ln|u / (u+1)| + C. Substitute u back: (1/4) ln| x⁴ / (x⁴+1) | + C.",
+      "difficulty": "Medium",
+      "imagePrompt": null
+    },
+    {
+      "id": 12,
+      "subject": "Mathematics",
+      "topic": "Integration",
+      "subtopic": "Fundamental theorem of calculus",
+      "question": "Let f(x) be a continuous function such that ∫ (from 0 to a) f(x) dx = a²/2 + a. What is the exact value of f(3)?",
+      "options":[
+        "4.5",
+        "3",
+        "4",
+        "7.5"
+      ],
+      "correct": 2,
+      "explanation": "Apply the Fundamental Theorem of Calculus by differentiating both sides of the given equation with respect to the variable upper limit parameter a. d/da[ ∫_0^a f(x) dx ] = d/da [ a²/2 + a ]. The left side simplifies strictly to f(a). The right side differentiates to a + 1. Therefore, the function is explicitly defined as f(x) = x + 1. Evaluating at x=3 yields f(3) = 3 + 1 = 4.",
+      "difficulty": "Medium",
+      "imagePrompt": null
+    },
+    {
+      "id": 13,
+      "subject": "Mathematics",
+      "topic": "Integration",
+      "subtopic": "Area between two simple curves",
+      "question": "PASSAGE: Region R in the first quadrant is bounded by parabola y² = 4x and line x - y = 0. \nWhat are the exact geometric coordinates of the non-zero intersection point between these two curves?",
+      "options":[
+        "(2, 2)",
+        "(4, 4)",
+        "(8, 8)",
+        "(4, 2)"
+      ],
+      "correct": 1,
+      "explanation": "We need to find the intersection of y² = 4x and x - y = 0. The second equation implies x = y. Substitute x = y into the first equation: y² = 4y. Rearranging yields y² - 4y = 0 ⟹ y(y - 4) = 0. The solutions are y = 0 and y = 4. Since x = y, the corresponding points are (0, 0) and (4, 4). The non-zero intersection point is explicitly (4, 4).",
+      "difficulty": "Medium",
+      "imagePrompt": null
+    },
+    {
+      "id": 14,
+      "subject": "Mathematics",
+      "topic": "Integration",
+      "subtopic": "Area between two simple curves",
+      "question": "PASSAGE CONTINUED: If calculating the area of region R by strictly integrating with respect to the y-axis, which of the following definitive integral setups is mathematically correct?",
+      "options":[
+        "∫ (from 0 to 4) ( y - y²/4 ) dy",
+        "∫ (from 0 to 4) ( y²/4 - y ) dy",
+        "∫ (from 0 to 2) ( y - y²/4 ) dy",
+        "∫ (from 0 to 4) ( √(4x) - x ) dy"
+      ],
+      "correct": 0,
+      "explanation": "Integrating w.r.t y requires horizontal strips. Area = ∫ (x_right - x_left) dy. From the previous question, the y-bounds are [0, 4]. Express x in terms of y. For the line: x_right = y. For the parabola: x_left = y²/4. In this region, the line has greater x-values than the parabola. The correct setup is ∫_0^4 (y - y²/4) dy.",
+      "difficulty": "Medium",
+      "imagePrompt": null
+    },
+    {
+      "id": 15,
+      "subject": "Mathematics",
+      "topic": "Integration",
+      "subtopic": "Area between two simple curves",
+      "question": "PASSAGE CONTINUED: What is the exact evaluated numerical area of this bounded region R?",
+      "options":[
+        "8/3 sq. units",
+        "4/3 sq. units",
+        "32/3 sq. units",
+        "16/3 sq. units"
+      ],
+      "correct": 0,
+      "explanation": "Evaluate Area = ∫ (from 0 to 4) (y - y²/4) dy. The antiderivative is [y²/2 - y³/12]. Substitute the upper bound 4: (16/2 - 64/12) = 8 - 16/3. Find a common denominator: 24/3 - 16/3 = 8/3. The lower bound 0 contributes exactly 0. Thus, the area is 8/3 sq. units.",
+      "difficulty": "Medium",
+      "imagePrompt": null
+    },
+    {
+      "id": 16,
+      "subject": "Mathematics",
+      "topic": "Integration",
+      "subtopic": "Properties of definite integrals",
+      "question": "Evaluate the definite integral: ∫ (from 0 to 1) ln(1+x) / (1+x²) dx",
+      "options":[
+        "(π/4) ln 2",
+        "(π/8) ln 2",
+        "(π/2) ln 2",
+        "π ln 2"
+      ],
+      "correct": 1,
+      "explanation": "Use trig substitution: x = tanθ. dx = sec²θ dθ. Limits change: x=0 ⟹ θ=0; x=1 ⟹ θ=π/4. Integral becomes ∫ ln(1+tanθ) / (1+tan²θ) * sec²θ dθ. Since 1+tan²θ = sec²θ, terms cancel perfectly. I = ∫ (from 0 to π/4) ln(1+tanθ) dθ. This is a known identity evaluating strictly to (π/8) ln 2.",
+      "difficulty": "Hard",
+      "imagePrompt": null
+    },
+    {
+      "id": 17,
+      "subject": "Mathematics",
+      "topic": "Integration",
+      "subtopic": "Fundamental theorem of calculus",
+      "question": "Evaluate the limit of the sum: \\lim_{n \\to \\infty}[ 1/(n+1) + 1/(n+2) + ... + 1/(2n) ]",
+      "options":[
+        "ln 2",
+        "1",
+        "ln 3",
+        "0"
+      ],
+      "correct": 0,
+      "explanation": "Transform into a Riemann definite integral. Factor out 1/n: S = lim (1/n)[ n/(n+1) + n/(n+2) + ... + n/(2n) ]. S = lim (1/n)[ 1/(1+1/n) + 1/(1+2/n) + ... + 1/(1+n/n) ]. This is compactly written as lim (1/n) Σ 1/(1 + k/n). This corresponds to the integral ∫ 1/(1+x) dx from 0 to 1. Evaluating: [ln|1+x|] from 0 to 1 = ln(2) - ln(1) = ln 2.",
+      "difficulty": "Hard",
+      "imagePrompt": null
+    },
+    {
+      "id": 18,
+      "subject": "Mathematics",
+      "topic": "Integration",
+      "subtopic": "Area between two simple curves",
+      "question": "Find the exact area tightly bounded by the specific curves y = √x, 2y - x + 3 = 0, and the x-axis, located exclusively in the first quadrant.",
+      "options":[
+        "9 sq. units",
+        "27/4 sq. units",
+        "25/3 sq. units",
+        "18 sq. units"
+      ],
+      "correct": 0,
+      "explanation": "Find intersections in Q1. Parabola x = y² and line x = 2y + 3. Equating: y² - 2y - 3 = 0 ⟹ (y-3)(y+1) = 0. In Q1, y = 3, so x = 9. Intersection is (9, 3). Line intersects x-axis (y=0) at x=3. Parabola intersects origin. Easiest method is integrating w.r.t y from 0 to 3. Right curve x_R = 2y+3, Left curve x_L = y². Area = ∫ (from 0 to 3) (2y + 3 - y²) dy = [y² + 3y - y³/3] from 0 to 3. Evaluates to 9 + 9 - 9 = 9.",
+      "difficulty": "Hard",
+      "imagePrompt": null
+    },
+    {
+      "id": 19,
+      "subject": "Mathematics",
+      "topic": "Integration",
+      "subtopic": "Properties of definite integrals",
+      "question": "If I_n = ∫ (from 0 to π/4) tanⁿ x dx, what is the exact mathematical value of I_n + I_{n-2}?",
+      "options":[
+        "1/n",
+        "1/(n+1)",
+        "1/(n-1)",
+        "1/(n-2)"
+      ],
+      "correct": 2,
+      "explanation": "I_n + I_{n-2} = ∫ tanⁿ x dx + ∫ tanⁿ⁻² x dx. Factor out tanⁿ⁻² x: ∫ tanⁿ⁻² x (tan² x + 1) dx. Use the identity tan² x + 1 = sec² x. Integral becomes ∫ tanⁿ⁻² x sec² x dx. Use u-substitution: u = tan x, du = sec² x dx. Limits: x=0 ⟹ u=0; x=π/4 ⟹ u=1. Integral transforms to ∫ uⁿ⁻² du from 0 to 1. Evaluate: [uⁿ⁻¹ / (n-1)] from 0 to 1 = 1/(n-1) - 0 = 1/(n-1).",
+      "difficulty": "Hard",
+      "imagePrompt": null
+    },
+    {
+      "id": 20,
+      "subject": "Mathematics",
+      "topic": "Integration",
+      "subtopic": "Properties of definite integrals",
+      "question": "Let f(x) be a strictly positive, continuous function defined on [0, 1]. Evaluate the specific integral: ∫ (from 0 to 1) f(x) / (f(x) + f(1-x)) dx",
+      "options":[
+        "1",
+        "1/2",
+        "2",
+        "0"
+      ],
+      "correct": 1,
+      "explanation": "Let I = ∫ f(x) / (f(x) + f(1-x)) dx. Apply King's Rule: ∫ f(x)dx = ∫ f(a-x)dx. Substitute x with (1-x). I = ∫ f(1-x) / (f(1-x) + f(1-(1-x))) dx = ∫ f(1-x) / (f(1-x) + f(x)) dx. Notice denominators are identical. Add the two equations for I: 2I = ∫[f(x) + f(1-x)] / [f(x) + f(1-x)] dx = ∫ 1 dx from 0 to 1. 2I = [x] from 0 to 1 = 1. Therefore, I = 1/2.",
+      "difficulty": "Hard",
+      "imagePrompt": null
+    }
+  ]
+}

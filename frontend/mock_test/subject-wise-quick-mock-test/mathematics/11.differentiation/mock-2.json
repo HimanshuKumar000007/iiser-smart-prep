@@ -1,0 +1,348 @@
+{
+  "testId": "IISER_IAT_DERIV_MOCK_V4",
+  "testName": "IISER IAT - Differentiation & Application of Derivatives (Version 4)",
+  "duration": 60,
+  "totalMarks": 80,
+  "questions":[
+    {
+      "id": 1,
+      "subject": "Mathematics",
+      "topic": "Differentiation",
+      "subtopic": "Derivative of composite functions via chain rule",
+      "question": "Evaluate the limit derivative. Let y = Σ_{k=1}^∞ tan⁻¹[x / (1 + k(k+1)x²)]. Find the value of dy/dx at x = 1.",
+      "options":[
+        "-1/2",
+        "1/2",
+        "-1",
+        "π/4"
+      ],
+      "correct": 0,
+      "explanation": "Rewrite the general term: tan⁻¹[((k+1)x - kx) / (1 + ((k+1)x)(kx))] = tan⁻¹((k+1)x) - tan⁻¹(kx). The sum up to n terms telescopes: S_n = tan⁻¹((n+1)x) - tan⁻¹(x). As n→∞, for x>0, tan⁻¹((n+1)x) → π/2. Thus y = π/2 - tan⁻¹(x) = cot⁻¹(x). Differentiating yields y' = -1/(1+x²). Evaluating at x=1 gives -1/2.",
+      "difficulty": "Medium",
+      "imagePrompt": null
+    },
+    {
+      "id": 2,
+      "subject": "Mathematics",
+      "topic": "Application of Derivatives",
+      "subtopic": "maxima and minima",
+      "question": "A point P lies on the parabola y = x². Let A be the point (0, 3). What is the shortest possible distance from point A to the curve?",
+      "options":[
+        "√3",
+        "√11 / 2",
+        "3/2",
+        "3"
+      ],
+      "correct": 1,
+      "explanation": "The distance squared is D(x) = x² + (x² - 3)². D(x) = x⁴ - 5x² + 9. To minimize, D'(x) = 4x³ - 10x = 2x(2x² - 5) = 0. Critical points at x=0, x=±√(5/2). D''(x) confirms minima at x=±√(5/2). Substituting x² = 5/2 back into D(x) gives D_min = (5/2)² - 5(5/2) + 9 = 25/4 - 50/4 + 36/4 = 11/4. Shortest distance d = √(11/4) = √11 / 2.",
+      "difficulty": "Hard",
+      "imagePrompt": null
+    },
+    {
+      "id": 3,
+      "subject": "Mathematics",
+      "topic": "Differentiation",
+      "subtopic": "Definition of derivative",
+      "question": "Let g(x) = ∫(from sin x to cos x) e^{-t²} dt. What is the value of g'(π/4)?",
+      "options":[
+        "-√2 e^{-1/2}",
+        "√2 e^{-1/2}",
+        "-2 e^{-1/2}",
+        "0"
+      ],
+      "correct": 0,
+      "explanation": "Use Newton-Leibniz: g'(x) = e^{-cos²x}*(-sin x) - e^{-sin²x}*(cos x). At x = π/4, sin x = cos x = 1/√2, so sin²x = cos²x = 1/2. Substitute these: g'(π/4) = e^{-1/2}(-1/√2) - e^{-1/2}(1/√2) = (-2/√2)e^{-1/2} = -√2 e^{-1/2}.",
+      "difficulty": "Hard",
+      "imagePrompt": null
+    },
+    {
+      "id": 4,
+      "subject": "Mathematics",
+      "topic": "Differentiation",
+      "subtopic": "Second order derivatives",
+      "question": "If y = e^{a sin⁻¹ x}, which of the following differential equations does y satisfy?",
+      "options":[
+        "(1-x²)y'' + x y' - a² y = 0",
+        "(1-x²)y'' - x y' - a² y = 0",
+        "(1-x²)y'' - x y' + a² y = 0",
+        "(1-x²)y'' + x y' + a² y = 0"
+      ],
+      "correct": 1,
+      "explanation": "y' = e^{a sin⁻¹ x} * a/√(1-x²) => √(1-x²) y' = ay. Square both sides: (1-x²)(y')² = a²y². Differentiate implicitly: (1-x²)2y'y'' + (y')²(-2x) = a²(2yy'). Divide by 2y' to get (1-x²)y'' - xy' = a²y, which rearranges to (1-x²)y'' - xy' - a²y = 0.",
+      "difficulty": "Hard",
+      "imagePrompt": null
+    },
+    {
+      "id": 5,
+      "subject": "Mathematics",
+      "topic": "Application of Derivatives",
+      "subtopic": "tangents and normals",
+      "question": "What is the shortest distance between the parabola y = x² + 2 and the straight line y = x - 1?",
+      "options":[
+        "7 / (4√2)",
+        "9 / (4√2)",
+        "11 / (4√2)",
+        "13 / (4√2)"
+      ],
+      "correct": 2,
+      "explanation": "Shortest distance is along the common normal, meaning the tangent to the curve is parallel to the line. Line slope m=1. Set parabola derivative to 1: y' = 2x = 1 => x = 1/2. Find y: y = (1/2)² + 2 = 9/4. Point is (1/2, 9/4). Distance from point to line x-y-1=0 is D = |1/2 - 9/4 - 1| / √(1² + (-1)²) = |-11/4| / √2 = 11 / (4√2).",
+      "difficulty": "Hard",
+      "imagePrompt": null
+    },
+    {
+      "id": 6,
+      "subject": "Mathematics",
+      "topic": "Differentiation",
+      "subtopic": "Derivative of functions in parametric forms",
+      "question": "A curve is defined parametrically by x = a(cos t + t sin t) and y = a(sin t - t cos t), where t > 0. Find the value of d²y/dx² at t = π/4.",
+      "options":[
+        "4√2 / aπ",
+        "8√2 / aπ",
+        "2√2 / aπ",
+        "√2 / aπ"
+      ],
+      "correct": 1,
+      "explanation": "dx/dt = at cos t. dy/dt = at sin t. First derivative dy/dx = tan t. Second derivative involves chain rule: d²y/dx² = d/dx(tan t) = d/dt(tan t) * (dt/dx) = sec²t * (1 / at cos t) = sec³t / at. At t = π/4, sec(π/4) = √2, so sec³(π/4) = 2√2. Value is (2√2) / (a * π/4) = 8√2 / aπ.",
+      "difficulty": "Hard",
+      "imagePrompt": null
+    },
+    {
+      "id": 7,
+      "subject": "Mathematics",
+      "topic": "Application of Derivatives",
+      "subtopic": "increasing/decreasing functions",
+      "question": "Let f(x) = ∫(from 0 to x) e^{t³} (t² - 1)(t-2)³ dt. In which of the following intervals is f(x) strictly increasing?",
+      "options":[
+        "(-∞, -1) ∪ (1, 2)",
+        "(-1, 1) ∪ (2, ∞)",
+        "(1, 2)",
+        "(-∞, 1) ∪ (2, ∞)"
+      ],
+      "correct": 1,
+      "explanation": "f'(x) = e^{x³}(x-1)(x+1)(x-2)³. e^{x³} is always positive. Critical points at x = -1, 1, 2. Using the wavy curve method on (x-1)(x+1)(x-2)³: For x > 2, sign is (+). For 1 < x < 2, sign is (-). For -1 < x < 1, sign is (+). For x < -1, sign is (-). The function increases where f'(x) > 0, which is (-1, 1) ∪ (2, ∞).",
+      "difficulty": "Hard",
+      "imagePrompt": null
+    },
+    {
+      "id": 8,
+      "subject": "Mathematics",
+      "topic": "Application of Derivatives",
+      "subtopic": "Definition of derivative",
+      "question": "Let f(x) be a polynomial of degree 4 such that f(1)=1, f(2)=2, f(3)=3, f(4)=4, and f(5)=6. How many distinct real roots does the equation f''(x) = 0 possess?",
+      "options":[
+        "0",
+        "1",
+        "2",
+        "3"
+      ],
+      "correct": 2,
+      "explanation": "Define g(x) = f(x) - x, a degree 4 polynomial. Since g(1)=g(2)=g(3)=g(4)=0, g(x) = k(x-1)(x-2)(x-3)(x-4). Using f(5)=6, g(5)=1 => 24k=1 => k=1/24. Since g(x) has 4 distinct real roots, Rolle's Theorem guarantees g'(x) has 3 distinct real roots, and g''(x) has 2 distinct real roots. Since f''(x) = g''(x), it has exactly 2 roots.",
+      "difficulty": "Hard",
+      "imagePrompt": null
+    },
+    {
+      "id": 9,
+      "subject": "Mathematics",
+      "topic": "Application of Derivatives",
+      "subtopic": "maxima and minima",
+      "question": "A polynomial f(x) of degree 3 has a local maximum at x = -1 and a local minimum at x = 1. If f(-1) = 10 and f(1) = -6, find the value of f(2).",
+      "options":[
+        "6",
+        "8",
+        "10",
+        "12"
+      ],
+      "correct": 2,
+      "explanation": "f'(x) must have roots at ±1, so f'(x) = k(x² - 1). Integrating gives f(x) = k(x³/3 - x) + C. Using f(-1)=10 and f(1)=-6 gives two equations: 2k/3 + C = 10 and -2k/3 + C = -6. Adding gives 2C=4 => C=2. Subtracting gives 4k/3 = 16 => k=12. So f(x) = 4x³ - 12x + 2. Then f(2) = 4(8) - 12(2) + 2 = 10.",
+      "difficulty": "Medium",
+      "imagePrompt": null
+    },
+    {
+      "id": 10,
+      "subject": "Mathematics",
+      "topic": "Application of Derivatives",
+      "subtopic": "Rate of change",
+      "question": "Water is being poured into an inverted right circular cone of base radius 5 cm and height 10 cm at a constant rate of 10 cm³/s. Simultaneously, a small leak at the vertex drains water at a rate of 2√h cm³/s, where h is the instantaneous depth of the water. Find the rate at which the water level is rising when the depth is 4 cm.",
+      "options":[
+        "3/(2π) cm/s",
+        "5/(2π) cm/s",
+        "3/π cm/s",
+        "4/π cm/s"
+      ],
+      "correct": 0,
+      "explanation": "Similar triangles give r/h = 5/10 = 1/2, so r = h/2. Volume V = (1/3)πr²h = πh³/12. dV/dt = (π/4)h²(dh/dt). The net rate of volume change is dV/dt = 10 - 2√h. At h=4, dV/dt = 10 - 2(2) = 6. Set 6 = (π/4)(4)²(dh/dt) = 4π(dh/dt). Thus, dh/dt = 6/(4π) = 3/(2π).",
+      "difficulty": "Hard",
+      "imagePrompt": null
+    },
+    {
+      "id": 11,
+      "subject": "Mathematics",
+      "topic": "Differentiation",
+      "subtopic": "Derivative of inverse trigonometric",
+      "question": "Let f(x) = x⁵ + 2x³ + 3x + 1 and let g(x) be the inverse function of f(x). Find the value of the second derivative g''(7).",
+      "options":[
+        "-2/343",
+        "-4/343",
+        "4/343",
+        "2/343"
+      ],
+      "correct": 1,
+      "explanation": "By inverse rule, g'(x) = 1/f'(g(x)). Then g''(x) = -f''(g(x)) / [f'(g(x))]³. To find g(7), set f(x)=7. By inspection, x=1 works, so g(7)=1. f'(x) = 5x⁴ + 6x² + 3, so f'(1) = 14. f''(x) = 20x³ + 12x, so f''(1) = 32. g''(7) = -f''(1)/[f'(1)]³ = -32 / 14³ = -32 / 2744 = -4 / 343.",
+      "difficulty": "Hard",
+      "imagePrompt": null
+    },
+    {
+      "id": 12,
+      "subject": "Mathematics",
+      "topic": "Application of Derivatives",
+      "subtopic": "tangents and normals",
+      "question": "The normal to the curve x³ + y³ = 3axy (where a > 0) at the point (3a/2, 3a/2) strictly passes through which of the following points?",
+      "options":[
+        "(0, a)",
+        "(a, 0)",
+        "(0, 0)",
+        "(-a, a)"
+      ],
+      "correct": 2,
+      "explanation": "Implicit differentiation: 3x² + 3y²y' = 3a(y + xy'). Rearranging gives y' = (ay - x²) / (y² - ax). At (3a/2, 3a/2), y' = (3a²/2 - 9a²/4) / (9a²/4 - 3a²/2) = -1. Tangent slope is -1, so normal slope is 1. Equation of normal: y - 3a/2 = 1(x - 3a/2), yielding y = x. This line clearly passes through the origin (0,0).",
+      "difficulty": "Medium",
+      "imagePrompt": null
+    },
+    {
+      "id": 13,
+      "subject": "Mathematics",
+      "topic": "Application of Derivatives",
+      "subtopic": "tangents and normals",
+      "question": "The cubic curve y = ax³ + bx² + cx + 5 touches the x-axis at P(-2, 0) and cuts the y-axis at a point Q where its gradient is exactly 3. Find the value of a+b+c.",
+      "options":[
+        "3/4",
+        "5/4",
+        "7/4",
+        "9/4"
+      ],
+      "correct": 2,
+      "explanation": "Touches x-axis at P(-2,0) means f(-2)=0 and f'(-2)=0. Cuts y-axis at Q means x=0, giving y=5. Gradient at Q is 3 means f'(0)=3. Since f'(x)=3ax²+2bx+c, f'(0)=3 implies c=3. f(-2) = -8a+4b-6+5 = 0 => -8a+4b=1. f'(-2) = 12a-4b+3=0 => 12a-4b=-3. Add them: 4a = -2 => a=-1/2. Substitute a: 4 + 4b = 1 => b=-3/4. Sum a+b+c = -1/2 - 3/4 + 3 = 7/4.",
+      "difficulty": "Hard",
+      "imagePrompt": null
+    },
+    {
+      "id": 14,
+      "subject": "Mathematics",
+      "topic": "Application of Derivatives",
+      "subtopic": "increasing/decreasing functions",
+      "question": "For what values of the parameter k is the function f(x) = kx³ - 9kx² + 9x + 3 strictly increasing across the entire domain of real numbers ℝ?",
+      "options":[
+        "k ∈ (0, 1/3]",
+        "k ∈ [0, 1/3]",
+        "k ∈ [0, 3]",
+        "k ∈ (0, 3)"
+      ],
+      "correct": 1,
+      "explanation": "f'(x) = 3kx² - 18kx + 9 ≥ 0 for all x. Divide by 3: kx² - 6kx + 3 ≥ 0. If k=0, 3 ≥ 0 holds. If k≠0, we need k>0 and discriminant Δ ≤ 0. 36k² - 12k ≤ 0 implies 12k(3k-1) ≤ 0. Since k>0, k ≤ 1/3. Uniting both cases gives k ∈[0, 1/3].",
+      "difficulty": "Hard",
+      "imagePrompt": null
+    },
+    {
+      "id": 15,
+      "subject": "Mathematics",
+      "topic": "Application of Derivatives",
+      "subtopic": "maxima and minima",
+      "question": "Find the global (absolute) maximum value of the function f(x) = (x² - x + 1) e⁻ˣ on the interval [0, ∞).",
+      "options":[
+        "1/e",
+        "3/e²",
+        "1",
+        "e"
+      ],
+      "correct": 2,
+      "explanation": "f'(x) = (2x-1)e⁻ˣ - (x²-x+1)e⁻ˣ = e⁻ˣ(-x²+3x-2) = -e⁻ˣ(x-1)(x-2). Critical points are 1 and 2. Evaluate at criticals and boundary: f(0)=1, f(1)=1/e ≈ 0.368, f(2)=3/e² ≈ 0.406. As x→∞, f(x)→0. Comparing values {1, 1/e, 3/e², 0}, the absolute maximum is 1 at x=0.",
+      "difficulty": "Hard",
+      "imagePrompt": null
+    },
+    {
+      "id": 16,
+      "subject": "Mathematics",
+      "topic": "Differentiation",
+      "subtopic": "Definition of derivative",
+      "question": "Let f(x) be a differentiable function satisfying the functional relation f(x+y) = f(x) + f(y) + 2xy - 1 for all x, y ∈ ℝ. If f'(0) = √3, what is the value of f(√3)?",
+      "options":[
+        "4",
+        "5",
+        "6",
+        "7"
+      ],
+      "correct": 3,
+      "explanation": "Set x=y=0 to find f(0): f(0) = 2f(0) - 1 => f(0)=1. Define derivative f'(x) = lim_{h→0} [f(x+h)-f(x)]/h. Substitute relation: lim[f(x)+f(h)+2xh-1-f(x)]/h = lim [f(h)-1]/h + 2x. Since f(0)=1, this is f'(0) + 2x = √3 + 2x. Integrating gives f(x) = x² + √3x + C. Since f(0)=1, C=1. Evaluate at x=√3: f(√3) = 3 + 3 + 1 = 7.",
+      "difficulty": "Hard",
+      "imagePrompt": null
+    },
+    {
+      "id": 17,
+      "subject": "Mathematics",
+      "topic": "Application of Derivatives",
+      "subtopic": "tangents and normals",
+      "question": "What is the acute angle of intersection between the curves y = x² and x² + y² = 2 in the first quadrant?",
+      "options":[
+        "tan⁻¹(2)",
+        "tan⁻¹(3)",
+        "tan⁻¹(1/3)",
+        "tan⁻¹(√2)"
+      ],
+      "correct": 1,
+      "explanation": "Find intersection: y + y² = 2 => y² + y - 2 = 0 => y=1 (since 1st quadrant). So x=1. Point is (1,1). Curve 1 (y=x²): y'=2x. At (1,1), m₁=2. Curve 2 (circle): 2x+2yy'=0 => y'=-x/y. At (1,1), m₂=-1. Angle tan θ = |(m₁-m₂)/(1+m₁m₂)| = |(2 - (-1))/(1 + 2(-1))| = |3/-1| = 3. So θ = tan⁻¹(3).",
+      "difficulty": "Medium",
+      "imagePrompt": null
+    },
+    {
+      "id": 18,
+      "subject": "Mathematics",
+      "topic": "Differentiation",
+      "subtopic": "Derivative of implicit functions",
+      "question": "If the implicit equation √(1-x²) + √(1-y²) = a(x-y) holds true for |x| ≤ 1, |y| ≤ 1, which of the following expressions correctly represents dy/dx?",
+      "options":[
+        "√( (1-y²) / (1-x²) )",
+        "√( (1-x²) / (1-y²) )",
+        "(1-y²) / (1-x²)",
+        "-√( (1-y²) / (1-x²) )"
+      ],
+      "correct": 0,
+      "explanation": "Substitute x = sin A, y = sin B. The equation becomes cos A + cos B = a(sin A - sin B). Using sum-to-product formulas gives 2cos((A+B)/2)cos((A-B)/2) = 2a sin((A-B)/2)cos((A+B)/2). Simplifying gives cot((A-B)/2) = a => A-B = 2cot⁻¹(a). Resubstitute: sin⁻¹x - sin⁻¹y = 2cot⁻¹a. Differentiating implicitly gives 1/√(1-x²) - (1/√(1-y²))y' = 0, which yields y' = √( (1-y²) / (1-x²) ).",
+      "difficulty": "Hard",
+      "imagePrompt": null
+    },
+    {
+      "id": 19,
+      "subject": "Mathematics",
+      "topic": "Application of Derivatives",
+      "subtopic": "maxima and minima",
+      "question": "A right circular cylinder is to be inscribed within a sphere of fixed radius R. What is the altitude (height) of the cylinder that maximizes its volume?",
+      "options":[
+        "R / √3",
+        "2R / √3",
+        "R√2 / 3",
+        "2R / 3"
+      ],
+      "correct": 1,
+      "explanation": "Let cylinder radius be r and half-height be y. By Pythagoras on sphere cross-section, r² = R² - y². Cylinder volume V = πr²(2y) = 2π(R²y - y³). To maximize, dV/dy = 2π(R² - 3y²) = 0 => y = R/√3. The total altitude is 2y = 2R/√3.",
+      "difficulty": "Hard",
+      "imagePrompt": null
+    },
+    {
+      "id": 20,
+      "subject": "Mathematics",
+      "topic": "Differentiation",
+      "subtopic": "Derivative of sum, difference, product, and quotient of functions",
+      "question": "Suppose f(x) is a differentiable function such that f(2) = 4 and f'(2) = 1. Evaluate the limit: \\lim_{x \\to 2} \\frac{x^2 f(2) - 4 f(x)}{x - 2}.",
+      "options":[
+        "8",
+        "10",
+        "12",
+        "16"
+      ],
+      "correct": 2,
+      "explanation": "This limit evaluates to a 0/0 form. Apply L'Hôpital's Rule by differentiating numerator and denominator w.r.t x. Note f(2) is a constant. d/dx[x²f(2) - 4f(x)] = 2xf(2) - 4f'(x). Denominator derivative is 1. The limit becomes 2(2)f(2) - 4f'(2) = 4(4) - 4(1) = 16 - 4 = 12.",
+      "difficulty": "Hard",
+      "imagePrompt": null
+    }
+  ]
+}

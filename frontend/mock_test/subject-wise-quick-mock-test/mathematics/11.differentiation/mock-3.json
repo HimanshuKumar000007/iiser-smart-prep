@@ -1,0 +1,328 @@
+{
+  "testId": "IISER_IAT_DERIV_MOCK_V3_VH",
+  "testName": "IISER IAT - Differentiation & Application of Derivatives (Version 3)",
+  "duration": 60,
+  "totalMarks": 80,
+  "questions":[
+    {
+      "id": 1,
+      "subject": "Mathematics",
+      "topic": "Differentiation",
+      "subtopic": "Derivative of inverse trigonometric functions",
+      "question": "Let y = sec⁻¹(1 / (2x² - 1)). If 0 < x < 1/√2, what is the exact value of dy/dx?",
+      "options":[
+        "2 / √(1-x²)",
+        "-2 / √(1-x²)",
+        "1 / √(1-x²)",
+        "-1 / √(1-x²)"
+      ],
+      "correct": 1,
+      "explanation": "Substitute x = cos θ. For 0 < x < 1/√2, θ is in (π/4, π/2). The term 1/(2x²-1) becomes 1/cos(2θ) = sec(2θ). So y = sec⁻¹(sec 2θ). Since θ is in (π/4, π/2), 2θ is in (π/2, π), which is in the principal domain of sec⁻¹. Thus y = 2θ = 2cos⁻¹ x. Differentiating yields dy/dx = 2(-1/√(1-x²)) = -2/√(1-x²).",
+      "difficulty": "Easy"
+    },
+    {
+      "id": 2,
+      "subject": "Mathematics",
+      "topic": "Application of Derivatives",
+      "subtopic": "maxima and minima",
+      "question": "What is the absolute minimum value of the function f(x) = x^x for x > 0?",
+      "options":[
+        "1",
+        "e",
+        "e^(-1/e)",
+        "e^(1/e)"
+      ],
+      "correct": 2,
+      "explanation": "Rewrite f(x) = e^(x ln x). Derivative f'(x) = x^x(1 + ln x). Setting f'(x) = 0 gives ln x = -1, so x = 1/e. The second derivative confirms this is a minimum. Minimum value f(1/e) = (1/e)^(1/e) = e^(-1/e).",
+      "difficulty": "Easy"
+    },
+    {
+      "id": 3,
+      "subject": "Mathematics",
+      "topic": "Differentiation",
+      "subtopic": "Second order derivatives",
+      "question": "Consider the function f(x) = |x³|. Which of the following statements about its second derivative at the origin, f''(0), is strictly true?",
+      "options":[
+        "f''(0) = 0",
+        "f''(0) = 6",
+        "f''(0) = -6",
+        "f''(0) does not exist."
+      ],
+      "correct": 0,
+      "explanation": "f(x) = x³ for x ≥ 0 and -x³ for x < 0. The first derivative is 3x² for x ≥ 0 and -3x² for x < 0; f'(0)=0. The second derivative is 6x for x ≥ 0 and -6x for x < 0. Both left and right hand limits of f''(x) as x approaches 0 are 0. Thus f''(0) exists and equals 0.",
+      "difficulty": "Easy"
+    },
+    {
+      "id": 4,
+      "subject": "Mathematics",
+      "topic": "Differentiation",
+      "subtopic": "Derivative of implicit functions",
+      "question": "If x^y = e^(x-y), what is the value of dy/dx exactly at x=1?",
+      "options":[
+        "-1",
+        "1",
+        "0",
+        "e"
+      ],
+      "correct": 2,
+      "explanation": "Take natural log: y ln x = x - y. Isolate y: y(1 + ln x) = x => y = x / (1 + ln x). Apply quotient rule: y' = [1(1+ln x) - x(1/x)] / (1+ln x)² = ln x / (1+ln x)². At x=1, ln(1)=0, so y'(1) = 0 / 1² = 0.",
+      "difficulty": "Easy"
+    },
+    {
+      "id": 5,
+      "subject": "Mathematics",
+      "topic": "Application of Derivatives",
+      "subtopic": "tangents and normals",
+      "question": "Find the equation of the normal to the curve y = x + sin x cos x at the point where x = π/2.",
+      "options":[
+        "y = π/2",
+        "x = π/2",
+        "y = x",
+        "y = -x + π"
+      ],
+      "correct": 1,
+      "explanation": "y = x + (sin 2x)/2. Derivative dy/dx = 1 + cos 2x. At x = π/2, dy/dx = 1 + cos(π) = 1 - 1 = 0. Since the tangent is perfectly horizontal, the normal must be perfectly vertical. A vertical line passing through x = π/2 is strictly x = π/2.",
+      "difficulty": "Easy"
+    },
+    {
+      "id": 6,
+      "subject": "Mathematics",
+      "topic": "Application of Derivatives",
+      "subtopic": "Rate of change",
+      "question": "The volume of a metallic cube is increasing at a constant rate of 9 cm³/s. At what exact rate is the total surface area of the cube increasing when the length of an edge is precisely 10 cm?",
+      "options":[
+        "0.36 cm²/s",
+        "3.6 cm²/s",
+        "1.8 cm²/s",
+        "36 cm²/s"
+      ],
+      "correct": 1,
+      "explanation": "Volume V = x³, so dV/dt = 3x²(dx/dt). 9 = 3(10²)(dx/dt) => dx/dt = 9/300 = 3/100 cm/s. Surface area S = 6x², so dS/dt = 12x(dx/dt). Substitute knowns: dS/dt = 12(10)(3/100) = 360/100 = 3.6 cm²/s.",
+      "difficulty": "Easy"
+    },
+    {
+      "id": 7,
+      "subject": "Mathematics",
+      "topic": "Differentiation",
+      "subtopic": "Derivative of implicit functions",
+      "question": "If sin(xy) + cos(xy) = 1 and xy ≠ 0, what is the expression for dy/dx?",
+      "options":[
+        "y/x",
+        "-y/x",
+        "x/y",
+        "-x/y"
+      ],
+      "correct": 1,
+      "explanation": "Differentiate implicitly: cos(xy)(xy' + y) - sin(xy)(xy' + y) = 0. Factor out (xy' + y) to get (xy' + y)[cos(xy) - sin(xy)] = 0. For this to hold generally, the independent term must be 0: xy' + y = 0. Thus y' = -y/x.",
+      "difficulty": "Medium"
+    },
+    {
+      "id": 8,
+      "subject": "Mathematics",
+      "topic": "Application of Derivatives",
+      "subtopic": "tangents and normals",
+      "question": "Determine the number of unique tangents to the curve y = x³ - 3x² + 3x + 2 that are perfectly parallel to the x-axis.",
+      "options":[
+        "0",
+        "1",
+        "2",
+        "3"
+      ],
+      "correct": 1,
+      "explanation": "A tangent parallel to the x-axis has slope zero. y' = 3x² - 6x + 3 = 3(x-1)². Setting y' = 0 gives x = 1. There is exactly one point on the curve where the derivative zeroes out. Thus, there is exactly 1 such tangent.",
+      "difficulty": "Medium"
+    },
+    {
+      "id": 9,
+      "subject": "Mathematics",
+      "topic": "Application of Derivatives",
+      "subtopic": "tangents and normals",
+      "question": "A curve is defined parametrically by x = a(θ + sinθ) and y = a(1 - cosθ). What is the mathematical length of the normal to the curve at any arbitrary parameter θ? (Length of normal is defined as the distance along the normal from the point of tangency to the x-axis).",
+      "options":[
+        "2a sin(θ/2) tan(θ/2)",
+        "a sinθ",
+        "2a cos(θ/2)",
+        "2a sin²(θ/2) sec(θ/2)"
+      ],
+      "correct": 3,
+      "explanation": "dx/dθ = a(1+cosθ), dy/dθ = a sinθ. Tangent slope y' = sinθ / (1+cosθ) = tan(θ/2). The length of the normal is L_N = |y √(1 + (y')²)|. Substitute y and y': L_N = a(1-cosθ)√(1 + tan²(θ/2)) = a[2sin²(θ/2)]sec(θ/2). Thus L_N = 2a sin²(θ/2) sec(θ/2).",
+      "difficulty": "Medium"
+    },
+    {
+      "id": 10,
+      "subject": "Mathematics",
+      "topic": "Application of Derivatives",
+      "subtopic": "Definition of derivative",
+      "question": "In the application of Lagrange's Mean Value Theorem for the quadratic function f(x) = Ax² + Bx + C defined over the closed interval [a, b], the specific value of c in (a, b) that satisfies the theorem is universally given by:",
+      "options":[
+        "√(ab)",
+        "2ab / (a+b)",
+        "(a+b) / 2",
+        "(b-a) / 2"
+      ],
+      "correct": 2,
+      "explanation": "LMVT states f'(c) = [f(b) - f(a)] / (b-a). For f(x)=Ax²+Bx+C, f'(x)=2Ax+B. The right side[A(b²-a²) + B(b-a)] / (b-a) simplifies to A(b+a) + B. Equating gives 2Ac + B = A(a+b) + B, resolving strictly to c = (a+b)/2.",
+      "difficulty": "Medium"
+    },
+    {
+      "id": 11,
+      "subject": "Mathematics",
+      "topic": "Application of Derivatives",
+      "subtopic": "maxima and minima",
+      "question": "Let the polynomial f(x) = x³ + ax² + bx + c possess a stationary point at x = 1 and a point of inflection exactly at x = 2. Find the value of the constant b.",
+      "options":[
+        "-6",
+        "3",
+        "9",
+        "12"
+      ],
+      "correct": 2,
+      "explanation": "f'(x) = 3x² + 2ax + b. Stationary at x=1 implies f'(1) = 3 + 2a + b = 0. f''(x) = 6x + 2a. Inflection at x=2 implies f''(2) = 12 + 2a = 0, meaning a = -6. Substituting a into the first equation: 3 - 12 + b = 0, which yields b = 9.",
+      "difficulty": "Medium"
+    },
+    {
+      "id": 12,
+      "subject": "Mathematics",
+      "topic": "Differentiation",
+      "subtopic": "Derivative of composite functions via chain rule",
+      "question": "Evaluate the derivative of the function u = tan⁻¹((√(1+x²) - 1) / x) with respect to the function v = tan⁻¹ x.",
+      "options":[
+        "1",
+        "2",
+        "1/2",
+        "-1/2"
+      ],
+      "correct": 2,
+      "explanation": "Let x = tan θ. Then v = θ. For u, substituting x gives tan⁻¹((sec θ - 1)/tan θ) = tan⁻¹((1-cos θ)/sin θ) = tan⁻¹(tan(θ/2)) = θ/2. So u = (1/2)v. Differentiating u directly with respect to v gives du/dv = 1/2.",
+      "difficulty": "Medium"
+    },
+    {
+      "id": 13,
+      "subject": "Mathematics",
+      "topic": "Application of Derivatives",
+      "subtopic": "maxima and minima",
+      "question": "A wire of length 20 cm is cut into two pieces. One piece is bent to form a circle and the other is bent to form a square. For the sum of the areas of these two shapes to be mathematically minimized, what must be the ratio of the side length of the square (a) to the radius of the circle (r)?",
+      "options":[
+        "1 : 1",
+        "2 : 1",
+        "π : 1",
+        "1 : 2"
+      ],
+      "correct": 1,
+      "explanation": "Let wire lengths be x (circle) and 20-x (square). 2πr = x ⇒ r = x/2π. 4a = 20-x ⇒ a = (20-x)/4. Total area A = πr² + a² = x²/(4π) + (20-x)²/16. To minimize, dA/dx = x/(2π) - (20-x)/8 = 0. Solving gives x/(2π) = (20-x)/8. Notice r = x/2π and a/2 = (20-x)/8. Thus r = a/2, meaning a = 2r, so a:r is 2:1.",
+      "difficulty": "Medium"
+    },
+    {
+      "id": 14,
+      "subject": "Mathematics",
+      "topic": "Application of Derivatives",
+      "subtopic": "increasing/decreasing functions",
+      "question": "For what strict interval of x is the rational function f(x) = x / (1+x²) monotonically increasing?",
+      "options":[
+        "(-∞, -1) ∪ (1, ∞)",
+        "(-1, 1)",
+        "(0, ∞)",
+        "ℝ"
+      ],
+      "correct": 1,
+      "explanation": "A function is increasing where f'(x) > 0. Using the quotient rule: f'(x) = [(1+x²)(1) - x(2x)] / (1+x²)² = (1 - x²) / (1+x²)². Since the denominator is always positive, we only need 1 - x² > 0. This gives x² < 1, which maps to the interval (-1, 1).",
+      "difficulty": "Medium"
+    },
+    {
+      "id": 15,
+      "subject": "Mathematics",
+      "topic": "Differentiation",
+      "subtopic": "Logarithmic derivative",
+      "question": "If x^m y^n = (x+y)^(m+n) for positive real numbers x and y, which of the following is the exact expression for dy/dx?",
+      "options":[
+        "x/y",
+        "-y/x",
+        "y/x",
+        "(m/n) * (y/x)"
+      ],
+      "correct": 2,
+      "explanation": "Take the natural logarithm: m ln x + n ln y = (m+n) ln(x+y). Differentiating implicitly: m/x + (n/y)y' = [(m+n)/(x+y)](1 + y'). Grouping y' terms and simplifying algebraically perfectly isolates y', yielding dy/dx = y/x.",
+      "difficulty": "Medium"
+    },
+    {
+      "id": 16,
+      "subject": "Mathematics",
+      "topic": "Differentiation",
+      "subtopic": "Second order derivatives",
+      "question": "Let y = e^x sin x. If the 4th order derivative of y with respect to x is denoted by y⁽⁴⁾, which of the following linear differential equations is satisfied by y?",
+      "options":[
+        "y⁽⁴⁾ - 4y = 0",
+        "y⁽⁴⁾ + 4y = 0",
+        "y⁽⁴⁾ + 2y = 0",
+        "y⁽⁴⁾ - 2y = 0"
+      ],
+      "correct": 1,
+      "explanation": "y = e^x sin x. y' = e^x(sin x + cos x). y'' = e^x(sin x + cos x + cos x - sin x) = 2e^x cos x. y''' = 2e^x(cos x - sin x). y⁽⁴⁾ = 2e^x(cos x - sin x - sin x - cos x) = 2e^x(-2sin x) = -4e^x sin x = -4y. Thus, y⁽⁴⁾ + 4y = 0.",
+      "difficulty": "Hard"
+    },
+    {
+      "id": 17,
+      "subject": "Mathematics",
+      "topic": "Application of Derivatives",
+      "subtopic": "maxima and minima",
+      "question": "Determine the absolute minimum value of the trigonometric function f(x) = sin⁴ x + cos⁴ x over all real x.",
+      "options":[
+        "1",
+        "1/4",
+        "1/2",
+        "3/4"
+      ],
+      "correct": 2,
+      "explanation": "Rewrite algebraically: f(x) = (sin² x + cos² x)² - 2sin² x cos² x = 1 - 2(sin x cos x)² = 1 - 2(sin(2x)/2)² = 1 - (1/2)sin²(2x). To find the minimum, maximize the subtracted term. The maximum of sin²(2x) is 1. Thus, f(x)_min = 1 - 1/2(1) = 1/2.",
+      "difficulty": "Hard"
+    },
+    {
+      "id": 18,
+      "subject": "Mathematics",
+      "topic": "Application of Derivatives",
+      "subtopic": "tangents and normals",
+      "question": "What is the acute angle of intersection between the curves y² = 4x and x² + y² = 5 at their point of intersection in the first quadrant?",
+      "options":[
+        "tan⁻¹(2)",
+        "tan⁻¹(3)",
+        "tan⁻¹(1/3)",
+        "tan⁻¹(√2)"
+      ],
+      "correct": 1,
+      "explanation": "Find intersection: x² + 4x - 5 = 0 gives x=1 (in Q1). Point is (1,2). Find slopes. Curve 1: 2y y' = 4 => y' = 2/y. At (1,2), m₁ = 1. Curve 2: 2x + 2y y' = 0 => y' = -x/y. At (1,2), m₂ = -1/2. Angle tan θ = |(m₁-m₂)/(1+m₁m₂)| = |(1 - (-1/2)) / (1 - 1/2)| = |1.5 / 0.5| = 3. θ = tan⁻¹(3).",
+      "difficulty": "Hard"
+    },
+    {
+      "id": 19,
+      "subject": "Mathematics",
+      "topic": "Application of Derivatives",
+      "subtopic": "maxima and minima",
+      "question": "A cubic polynomial curve f(x) has a local maximum at x=-1 with a maximum value of 10. It has a local minimum precisely at x=1. If the y-intercept of the curve is 5, what is the exact local minimum value of f(x)?",
+      "options":[
+        "0",
+        "-5",
+        "2",
+        "-10"
+      ],
+      "correct": 0,
+      "explanation": "f'(x) has roots at 1, -1. Thus f'(x) = k(x-1)(x+1) = k(x²-1). Integrating gives f(x) = k(x³/3 - x) + C. Given f(0)=5, C=5. Given f(-1)=10, k(-1/3 + 1) + 5 = 10 => k(2/3) = 5 => k = 15/2. Minimum is at x=1. f(1) = (15/2)(1/3 - 1) + 5 = (15/2)(-2/3) + 5 = -5 + 5 = 0.",
+      "difficulty": "Hard"
+    },
+    {
+      "id": 20,
+      "subject": "Mathematics",
+      "topic": "Application of Derivatives",
+      "subtopic": "Definition of derivative",
+      "question": "Apply Rolle's Theorem to the function f(x) = e^x sin x in the closed interval [0, π]. What is the exact value of c ∈ (0, π) that perfectly satisfies the theorem?",
+      "options":[
+        "π/2",
+        "π/4",
+        "3π/4",
+        "5π/6"
+      ],
+      "correct": 2,
+      "explanation": "f(0)=0 and f(π)=0, satisfying endpoints. Rolle's demands f'(c) = 0. f'(x) = e^x sin x + e^x cos x = e^x(sin x + cos x). Set e^c(sin c + cos c) = 0. Since e^c > 0, we must have sin c + cos c = 0, which means tan c = -1. The only angle in (0, π) with a tangent of -1 is 3π/4.",
+      "difficulty": "Hard"
+    }
+  ]
+}

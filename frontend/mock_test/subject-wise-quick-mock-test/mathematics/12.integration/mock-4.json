@@ -1,0 +1,328 @@
+{
+  "testId": "IISER_IAT_INTEGRATION_V4",
+  "testName": "IISER IAT Mock Test - Integration & Applications (Version 4)",
+  "duration": 60,
+  "totalMarks": 80,
+  "questions":[
+    {
+      "id": 1,
+      "subject": "Mathematics",
+      "topic": "Integration",
+      "subtopic": "Integration by substitution",
+      "question": "Evaluate the indefinite integral: \\int \\frac{3x^2}{1+x^3} \\, dx",
+      "options":[
+        "\\ln|x^3| + C",
+        "\\ln|1+x^3| + C",
+        "\\frac{1}{(1+x^3)^2} + C",
+        "3x^3 + C"
+      ],
+      "correct": 1,
+      "explanation": "Use substitution: let u = 1 + x³. Then du = 3x² dx. The integral transforms to ∫ du/u, which integrates to ln|u| + C. Substituting back gives ln|1+x³| + C.",
+      "difficulty": "Easy"
+    },
+    {
+      "id": 2,
+      "subject": "Mathematics",
+      "topic": "Integration",
+      "subtopic": "Properties of definite integrals",
+      "question": "Evaluate the definite integral: \\int_{-1}^{1} x^5 e^{x^2} \\, dx",
+      "options":[
+        "e - 1",
+        "2e",
+        "0",
+        "1"
+      ],
+      "correct": 2,
+      "explanation": "Let f(x) = x⁵ e^(x²). Check for symmetry: f(-x) = (-x)⁵ e^((-x)²) = -x⁵ e^(x²) = -f(x). Since f(x) is an odd function, the definite integral over any perfectly symmetric interval [-a, a] evaluates to exactly 0.",
+      "difficulty": "Easy"
+    },
+    {
+      "id": 3,
+      "subject": "Mathematics",
+      "topic": "Integration",
+      "subtopic": "Evaluation of integrals of some standard types",
+      "question": "Find the general antiderivative: \\int \\sec x (\\sec x + \\tan x) \\, dx",
+      "options":[
+        "\\tan x + \\sec x + C",
+        "\\sec^2 x + \\tan x + C",
+        "\\ln|\\sec x + \\tan x| + C",
+        "\\sec x \\tan x + C"
+      ],
+      "correct": 0,
+      "explanation": "Expand the integrand to get ∫ (sec² x + sec x tan x) dx. This splits into two standard integral forms: ∫ sec² x dx + ∫ sec x tan x dx. The standard antiderivatives are tan x and sec x respectively, yielding tan x + sec x + C.",
+      "difficulty": "Easy"
+    },
+    {
+      "id": 4,
+      "subject": "Mathematics",
+      "topic": "Applications of Integration",
+      "subtopic": "Finding the area of region under simple curves",
+      "question": "What is the exact area bounded by the curve y = e^x, the x-axis, and the vertical lines x = 0 and x = ln 2?",
+      "options":[
+        "e sq. units",
+        "1 sq. unit",
+        "2 sq. units",
+        "ln 2 sq. units"
+      ],
+      "correct": 1,
+      "explanation": "The area under the curve is given by the definite integral Area = ∫ (from 0 to ln 2) e^x dx. The antiderivative of e^x is e^x. Evaluating at the bounds gives [e^x]₀^(ln 2) = e^(ln 2) - e⁰ = 2 - 1 = 1 sq. unit.",
+      "difficulty": "Easy"
+    },
+    {
+      "id": 5,
+      "subject": "Mathematics",
+      "topic": "Integration",
+      "subtopic": "Integration by substitution",
+      "question": "Evaluate the indefinite integral: \\int \\frac{e^{\\tan^{-1}x}}{1+x^2} \\, dx",
+      "options":[
+        "e^{\\tan^{-1}x} + C",
+        "\\frac{e^{\\tan^{-1}x}}{1+x^2} + C",
+        "\\ln|1+x^2| + C",
+        "e^x \\tan^{-1}x + C"
+      ],
+      "correct": 0,
+      "explanation": "Use substitution: Let u = tan⁻¹ x. Then du = 1/(1+x²) dx. The integral immediately simplifies to ∫ e^u du, which integrates to e^u + C. Substitute u back to get e^(tan⁻¹x) + C.",
+      "difficulty": "Easy"
+    },
+    {
+      "id": 6,
+      "subject": "Mathematics",
+      "topic": "Integration",
+      "subtopic": "Fundamental theorem of calculus",
+      "question": "Find the derivative of the function F(x) = \\int_0^{x^3} \\sin t \\, dt with respect to x.",
+      "options":[
+        "\\cos(x^3)",
+        "3x^2 \\sin(x^3)",
+        "\\sin(x^3)",
+        "-3x^2 \\cos(x^3)"
+      ],
+      "correct": 1,
+      "explanation": "Apply Leibniz's Rule for differentiating an integral with variable limits: d/dx ∫ f(t) dt[from a(x) to b(x)] = f(b(x))b'(x) - f(a(x))a'(x). Here b(x) = x³ and b'(x) = 3x². So the derivative is sin(x³) * 3x² - sin(0)*0 = 3x² sin(x³).",
+      "difficulty": "Easy"
+    },
+    {
+      "id": 7,
+      "subject": "Mathematics",
+      "topic": "Integration",
+      "subtopic": "Properties of definite integrals",
+      "question": "Evaluate the definite integral: \\int_0^{\\pi/2} \\frac{1}{1+\\sqrt{\\tan x}} \\, dx",
+      "options":[
+        "π/2",
+        "π/4",
+        "π/8",
+        "1"
+      ],
+      "correct": 1,
+      "explanation": "Rewrite as I = ∫ √cos x / (√cos x + √sin x) dx. Using King's Property x → π/2 - x, it becomes I = ∫ √sin x / (√sin x + √cos x) dx. Adding the two I equations gives 2I = ∫ 1 dx from 0 to π/2. 2I = π/2, meaning I = π/4.",
+      "difficulty": "Medium"
+    },
+    {
+      "id": 8,
+      "subject": "Mathematics",
+      "topic": "Applications of Integration",
+      "subtopic": "Finding the area of the region between two simple curves",
+      "question": "Calculate the area of the finite region bounded by the parabola y = x² and the modulus function y = |x|.",
+      "options":[
+        "1/6 sq. units",
+        "2/3 sq. units",
+        "1/3 sq. units",
+        "1 sq. unit"
+      ],
+      "correct": 2,
+      "explanation": "Find intersections: x² = |x| gives x=0, x=±1. By symmetry around the y-axis, Area = 2 * ∫(from 0 to 1) (x - x²) dx. Integral is [x²/2 - x³/3] from 0 to 1 = 1/2 - 1/3 = 1/6. Total Area = 2 * (1/6) = 1/3 sq. units.",
+      "difficulty": "Medium"
+    },
+    {
+      "id": 9,
+      "subject": "Mathematics",
+      "topic": "Integration",
+      "subtopic": "Integration by parts",
+      "question": "Evaluate the indefinite integral: \\int x \\cos x \\, dx",
+      "options":[
+        "x \\sin x - \\cos x + C",
+        "x \\sin x + \\cos x + C",
+        "x \\cos x + \\sin x + C",
+        "\\frac{x^2}{2} \\sin x + C"
+      ],
+      "correct": 1,
+      "explanation": "Apply integration by parts: ∫ u dv = uv - ∫ v du. Set u = x (du = dx) and dv = cos x dx (v = sin x). Integral becomes x sin x - ∫ sin x dx. Antiderivative of sin x is -cos x, yielding x sin x + cos x + C.",
+      "difficulty": "Medium"
+    },
+    {
+      "id": 10,
+      "subject": "Mathematics",
+      "topic": "Integration",
+      "subtopic": "Properties of definite integrals",
+      "question": "Evaluate the definite integral: \\int_0^4 |x - 2| \\, dx",
+      "options":[
+        "0",
+        "2",
+        "4",
+        "8"
+      ],
+      "correct": 2,
+      "explanation": "The modulus |x-2| changes definition at x=2. Split the integral: ∫_0² -(x-2)dx + ∫_2⁴ (x-2)dx. This represents two distinct triangular geometric areas above the x-axis. Triangle 1 (base 2, height 2) Area = 2. Triangle 2 (base 2, height 2) Area = 2. Total area = 2 + 2 = 4.",
+      "difficulty": "Medium"
+    },
+    {
+      "id": 11,
+      "subject": "Mathematics",
+      "topic": "Integration",
+      "subtopic": "Integration by partial fractions",
+      "question": "Evaluate the indefinite integral: \\int \\frac{e^x}{e^{2x} - 5e^x + 6} \\, dx",
+      "options":[
+        "\\ln|\\frac{e^x-2}{e^x-3}| + C",
+        "\\ln|\\frac{e^x-3}{e^x-2}| + C",
+        "\\ln|(e^x-3)(e^x-2)| + C",
+        "\\frac{1}{e^x-3} - \\frac{1}{e^x-2} + C"
+      ],
+      "correct": 1,
+      "explanation": "Use substitution u = e^x, du = e^x dx. Integral becomes ∫ du / (u² - 5u + 6). Factor denominator: (u-3)(u-2). Using partial fractions, 1/((u-3)(u-2)) = 1/(u-3) - 1/(u-2). Integrating gives ln|u-3| - ln|u-2| + C = ln|(u-3)/(u-2)| + C. Substitute u=e^x back to get the final answer.",
+      "difficulty": "Medium"
+    },
+    {
+      "id": 12,
+      "subject": "Mathematics",
+      "topic": "Integration",
+      "subtopic": "Evaluation of integrals of some standard types",
+      "question": "Evaluate the definite integral: \\int_0^{\\pi/2} \\sin^3 x \\, dx",
+      "options":[
+        "2/3",
+        "1/3",
+        "3/4",
+        "4/3"
+      ],
+      "correct": 0,
+      "explanation": "Rewrite sin³ x = sin x (1 - cos² x). Integral becomes ∫ (1 - cos² x)sin x dx. Use u = cos x, du = -sin x dx. Limits shift from x=0→u=1 to x=π/2→u=0. Integral becomes ∫(from 1 to 0) (1-u²)(-du) = ∫(from 0 to 1) (1-u²) du = [u - u³/3]₀¹ = 1 - 1/3 = 2/3.",
+      "difficulty": "Medium"
+    },
+    {
+      "id": 13,
+      "subject": "Mathematics",
+      "topic": "Integration",
+      "subtopic": "Fundamental theorem of calculus",
+      "question": "Evaluate the limit of the sum: \\lim_{n \\to \\infty} \\left( \\frac{1}{n+1} + \\frac{1}{n+2} + \\dots + \\frac{1}{6n} \\right)",
+      "options":[
+        "\\ln 5",
+        "\\ln 6",
+        "\\ln 7",
+        "1"
+      ],
+      "correct": 1,
+      "explanation": "Rewrite as limit of sum from k=1 to 5n of 1/(n+k). Factor out 1/n: lim (1/n) Σ 1/(1+k/n). This converts to Riemann integral ∫ dx/(1+x). The upper limit corresponds to max(k/n) = 5n/n = 5. Evaluate ∫_0⁵ 1/(1+x) dx = [ln(1+x)]_0⁵ = ln(6) - ln(1) = ln 6.",
+      "difficulty": "Medium"
+    },
+    {
+      "id": 14,
+      "subject": "Mathematics",
+      "topic": "Applications of Integration",
+      "subtopic": "Finding the area of the region between two simple curves",
+      "question": "Find the area of the region bounded by the curves y = \\cos x, y = \\sin x, and the y-axis in the first quadrant.",
+      "options":[
+        "\\sqrt{2} sq. units",
+        "\\sqrt{2} + 1 sq. units",
+        "\\sqrt{2} - 1 sq. units",
+        "1 sq. unit"
+      ],
+      "correct": 2,
+      "explanation": "Curves intersect at x = π/4. Between x=0 and x=π/4, cos x > sin x. The bounded area is ∫(from 0 to π/4) (cos x - sin x) dx. Evaluating the integral gives[sin x + cos x]₀^(π/4) = (1/√2 + 1/√2) - (0 + 1) = 2/√2 - 1 = √2 - 1 sq. units.",
+      "difficulty": "Medium"
+    },
+    {
+      "id": 15,
+      "subject": "Mathematics",
+      "topic": "Integration",
+      "subtopic": "Integrals involving exponential functions",
+      "question": "Evaluate the indefinite integral: \\int e^x \\left(\\frac{1-\\sin x}{1-\\cos x}\\right) \\, dx",
+      "options":[
+        "e^x \\cot(x/2) + C",
+        "-e^x \\cot(x/2) + C",
+        "e^x \\tan(x/2) + C",
+        "-e^x \\tan(x/2) + C"
+      ],
+      "correct": 1,
+      "explanation": "Use half-angle identities on the fraction: (1 - 2sin(x/2)cos(x/2)) / (2sin²(x/2)) = (1/2)csc²(x/2) - cot(x/2). The integral takes the classic form ∫e^x[f(x) + f'(x)]dx. Here, if f(x) = -cot(x/2), then f'(x) = (1/2)csc²(x/2). The solution formula e^xf(x)+C yields -e^x cot(x/2) + C.",
+      "difficulty": "Medium"
+    },
+    {
+      "id": 16,
+      "subject": "Mathematics",
+      "topic": "Integration",
+      "subtopic": "Properties of definite integrals",
+      "question": "Evaluate the definite integral: \\int_{-\\pi}^{\\pi} \\frac{\\cos^2 x}{1 + e^x} \\, dx",
+      "options":[
+        "π",
+        "π/2",
+        "π/4",
+        "0"
+      ],
+      "correct": 1,
+      "explanation": "Use property ∫f(x)dx[a to b] = ∫f(a+b-x)dx. Let I be the integral. Replace x with -x: I = ∫ [cos²(-x) / (1+e⁻ˣ)] dx = ∫[e^x cos²x / (e^x+1)] dx. Adding the two forms gives 2I = ∫ cos²x dx from -π to π. Since cos²x is even, 2I = 2 ∫_0^π cos²x dx. Evaluating yields I = π/2.",
+      "difficulty": "Medium"
+    },
+    {
+      "id": 17,
+      "subject": "Mathematics",
+      "topic": "Integration",
+      "subtopic": "Fundamental theorem of calculus",
+      "question": "Evaluate the limit: \\lim_{x \\to 0} \\frac{\\int_0^{x^2} \\sec^2 t \\, dt}{x \\sin x}",
+      "options":[
+        "0",
+        "1",
+        "2",
+        "∞"
+      ],
+      "correct": 1,
+      "explanation": "This is a 0/0 limit. Apply L'Hopital's rule. Differentiate numerator using Leibniz rule: sec²(x²) * 2x. Differentiate denominator: sin x + x cos x. Limit becomes lim [2x sec²(x²)] /[sin x + x cos x]. Divide top and bottom by x: lim [2 sec²(x²)] / [sin(x)/x + cos x]. Evaluating at x→0 yields 2(1) / (1 + 1) = 1.",
+      "difficulty": "Hard"
+    },
+    {
+      "id": 18,
+      "subject": "Mathematics",
+      "topic": "Applications of Integration",
+      "subtopic": "Finding the area of the region between two simple curves",
+      "question": "Find the exact area of the geometric region common to the circle x² + y² = 8 and the parabola y² = 2x.",
+      "options":[
+        "4/3 + 2π sq. units",
+        "8/3 + π sq. units",
+        "2/3 + 2π sq. units",
+        "4/3 + π sq. units"
+      ],
+      "correct": 0,
+      "explanation": "Find intersection: substitute y²=2x into circle eq: x² + 2x - 8 = 0. Roots are x=2, -4. Keep x=2 (since y²≥0). Area is symmetric over x-axis. Total Area = 2*[ ∫(0 to 2) √(2x) dx + ∫(2 to 2√2) √(8-x²) dx ]. Part 1 = √2[ (2/3)x^(3/2) ]₀² = 8/3. Part 2 evaluates using the standard circular integral formula to π - 2. Total Area = 2*(8/3 + π - 2) = 4/3 + 2π.",
+      "difficulty": "Hard"
+    },
+    {
+      "id": 19,
+      "subject": "Mathematics",
+      "topic": "Integration",
+      "subtopic": "Properties of definite integrals",
+      "question": "Evaluate the definite integral: \\int_0^\\pi \\ln(1 - \\cos x) \\, dx",
+      "options":[
+        "π ln 2",
+        "-π ln 2",
+        "-(π/2) ln 2",
+        "0"
+      ],
+      "correct": 1,
+      "explanation": "Apply King's property (x → π-x) to get I = ∫ ln(1 + cos x) dx. Adding both gives 2I = ∫ ln(1 - cos²x) dx = ∫ ln(sin²x) dx = 2 ∫ ln(sin x) dx from 0 to π. Using symmetry, this equals 4 ∫_0^(π/2) ln(sin x) dx. The standard result for this is -π/2 ln 2. So 2I = 4(-π/2 ln 2) = -2π ln 2. Thus I = -π ln 2.",
+      "difficulty": "Hard"
+    },
+    {
+      "id": 20,
+      "subject": "Mathematics",
+      "topic": "Integration",
+      "subtopic": "Integration by parts",
+      "question": "Let I_n = \\int_0^1 (1-x^2)^n \\, dx for integers n ≥ 1. Which of the following recurrence relations strictly holds true?",
+      "options":[
+        "I_n = 2n/(2n+1) I_{n-1}",
+        "I_n = (2n-1)/(2n+1) I_{n-1}",
+        "I_n = 2n/(2n-1) I_{n-1}",
+        "I_n = n/(n+1) I_{n-1}"
+      ],
+      "correct": 0,
+      "explanation": "Use integration by parts: u = (1-x²)ⁿ, dv = dx. I_n = [x(1-x²)ⁿ]₀¹ - ∫ x * n(1-x²)ⁿ⁻¹(-2x) dx = 2n ∫ x²(1-x²)ⁿ⁻¹ dx. Substitute x² = 1 - (1-x²). I_n = 2n ∫[1 - (1-x²)](1-x²)ⁿ⁻¹ dx = 2n[I_{n-1} - I_n]. Rearranging gives I_n + 2n I_n = 2n I_{n-1}, which simplifies exactly to I_n = [2n/(2n+1)] I_{n-1}.",
+      "difficulty": "Hard"
+    }
+  ]
+}

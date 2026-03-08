@@ -1,0 +1,348 @@
+{
+  "testId": "IISER_IAT_INTEGRATION_V3",
+  "testName": "IISER IAT Mock Test: Integration & Applications (Version 3)",
+  "duration": 60,
+  "totalMarks": 80,
+  "questions":[
+    {
+      "id": 1,
+      "subject": "Mathematics",
+      "topic": "Integration",
+      "subtopic": "Properties of definite integrals",
+      "question": "Evaluate the definite integral: \\int_0^{\\pi/2} \\frac{\\cos x}{\\sin x + \\cos x} \\, dx.",
+      "options":[
+        "π/2",
+        "π/4",
+        "π/8",
+        "0"
+      ],
+      "correct": 1,
+      "explanation": "Use King's property: ∫f(x)dx from 0 to a = ∫f(a-x)dx from 0 to a. Replacing x with (π/2 - x) changes cos x to sin x and sin x to cos x. Adding the original integral I and the new form I gives 2I = ∫1 dx from 0 to π/2 = π/2. Thus I = π/4.",
+      "difficulty": "Easy",
+      "imagePrompt": null
+    },
+    {
+      "id": 2,
+      "subject": "Mathematics",
+      "topic": "Integration",
+      "subtopic": "Integration by parts",
+      "question": "Find the value of the indefinite integral: \\int \\frac{e^x(x \\ln x + 1)}{x} \\, dx.",
+      "options":[
+        "e^x \\ln x + C",
+        "x e^x + C",
+        "\\frac{e^x}{\\ln x} + C",
+        "e^x \\ln(1+x) + C"
+      ],
+      "correct": 0,
+      "explanation": "Rewrite the integrand as e^x(ln x + 1/x). This matches the standard form ∫e^x[f(x) + f'(x)]dx, where f(x) = ln x and f'(x) = 1/x. The result is e^x f(x) + C, which is e^x ln x + C.",
+      "difficulty": "Easy",
+      "imagePrompt": null
+    },
+    {
+      "id": 3,
+      "subject": "Mathematics",
+      "topic": "Integration",
+      "subtopic": "Properties of definite integrals",
+      "question": "Evaluate \\int_{-a}^a x^3 \\cos x \\, dx.",
+      "options":[
+        "\\frac{a^4 \\sin a}{4}",
+        "π",
+        "2 \\int_0^a x^3 \\cos x \\, dx",
+        "0"
+      ],
+      "correct": 3,
+      "explanation": "Let f(x) = x³ cos x. Test for symmetry: f(-x) = (-x)³ cos(-x) = -x³ cos x = -f(x). Since f(x) is an odd function, its integral over the symmetric interval [-a, a] is exactly 0.",
+      "difficulty": "Easy",
+      "imagePrompt": null
+    },
+    {
+      "id": 4,
+      "subject": "Mathematics",
+      "topic": "Integration",
+      "subtopic": "Integration by substitution",
+      "question": "Evaluate the integral: \\int \\frac{dx}{x \\ln x \\ln(\\ln x)}.",
+      "options":[
+        "\\ln(\\ln x) + C",
+        "\\ln|\\ln(\\ln x)| + C",
+        "\\frac{1}{\\ln x} + C",
+        "\\ln|x| + C"
+      ],
+      "correct": 1,
+      "explanation": "Use substitution u = ln(ln x). Then du = (1/ln x)*(1/x) dx = dx / (x ln x). The integral simplifies to ∫du/u = ln|u| + C. Substituting back gives ln|ln(ln x)| + C.",
+      "difficulty": "Easy",
+      "imagePrompt": null
+    },
+    {
+      "id": 5,
+      "subject": "Mathematics",
+      "topic": "Integration",
+      "subtopic": "Area under simple curves",
+      "question": "The area enclosed by the curve y = x|x|, the x-axis, and the ordinates x = -1 and x = 1 is:",
+      "options":[
+        "0",
+        "1/3",
+        "2/3",
+        "1/2"
+      ],
+      "correct": 2,
+      "explanation": "Area is the integral of the absolute value of the function: ∫|-1 to 1| |x|x|| dx = ∫|-1 to 1| x² dx. Since x² is an even function, this is 2 * ∫|0 to 1| x² dx = 2 * [x³/3] from 0 to 1 = 2/3.",
+      "difficulty": "Easy",
+      "imagePrompt": null
+    },
+    {
+      "id": 6,
+      "subject": "Mathematics",
+      "topic": "Integration",
+      "subtopic": "Properties of definite integrals",
+      "question": "Evaluate \\int_0^1 x(1-x)^n \\, dx.",
+      "options":[
+        "\\frac{1}{n(n+1)}",
+        "\\frac{1}{(n+1)(n+2)}",
+        "\\frac{1}{n+1}",
+        "\\frac{1}{n+2}"
+      ],
+      "correct": 1,
+      "explanation": "Use the property ∫f(x)dx = ∫f(a-x)dx. The integral becomes ∫(1-x)(1-(1-x))^n dx = ∫(1-x)x^n dx = ∫(x^n - x^{n+1}) dx. Integrating from 0 to 1 gives[x^{n+1}/(n+1) - x^{n+2}/(n+2)] from 0 to 1 = 1/(n+1) - 1/(n+2) = 1/((n+1)(n+2)).",
+      "difficulty": "Easy",
+      "imagePrompt": null
+    },
+    {
+      "id": 7,
+      "subject": "Mathematics",
+      "topic": "Integration",
+      "subtopic": "Properties of definite integrals",
+      "question": "Evaluate the definite integral: \\int_0^\\pi \\frac{x \\tan x}{\\sec x + \\tan x} \\, dx.",
+      "options":[
+        "\\pi(\\frac{\\pi}{2} - 1)",
+        "\\frac{\\pi^2}{2}",
+        "\\pi(\\pi - 2)",
+        "\\frac{\\pi}{2} - 1"
+      ],
+      "correct": 0,
+      "explanation": "Rewrite as ∫x sin x / (1 + sin x) dx. Using x → π - x gives I = ∫(π - x) sin x / (1 + sin x) dx. Adding 2I = π ∫sin x / (1 + sin x) dx = π ∫(1 - 1/(1+sin x)) dx. This evaluates to π[x - (tan x - sec x)] from 0 to π, which is π(π - 2). Thus I = π(π/2 - 1).",
+      "difficulty": "Medium",
+      "imagePrompt": null
+    },
+    {
+      "id": 8,
+      "subject": "Mathematics",
+      "topic": "Integration",
+      "subtopic": "Fundamental theorem of calculus",
+      "question": "Let f(x) be a continuous function such that \\int_0^x f(t) \\, dt = x + \\int_x^1 t f(t) \\, dt. Find f(x).",
+      "options":[
+        "\\frac{1}{1-x}",
+        "\\frac{1}{1+x}",
+        "1+x",
+        "1-x"
+      ],
+      "correct": 1,
+      "explanation": "Differentiate both sides with respect to x using Leibniz's rule: f(x) = 1 - x f(x). Rearranging gives f(x)(1+x) = 1, so f(x) = 1 / (1+x).",
+      "difficulty": "Medium",
+      "imagePrompt": null
+    },
+    {
+      "id": 9,
+      "subject": "Mathematics",
+      "topic": "Integration",
+      "subtopic": "Area between two simple curves",
+      "question": "Find the exact area of the region bounded by the curves y = \\sqrt{x} and y = x^2.",
+      "options":[
+        "1/3 sq. units",
+        "2/3 sq. units",
+        "1/6 sq. units",
+        "1/2 sq. units"
+      ],
+      "correct": 0,
+      "explanation": "Intersection points are at x=0 and x=1. The upper curve is y = √x and the lower curve is y = x². Area = ∫(√x - x²) dx from 0 to 1 = [2/3 x^{3/2} - x³/3] from 0 to 1 = 2/3 - 1/3 = 1/3.",
+      "difficulty": "Medium",
+      "imagePrompt": null
+    },
+    {
+      "id": 10,
+      "subject": "Mathematics",
+      "topic": "Integration",
+      "subtopic": "Evaluation of integrals of some standard types",
+      "question": "Evaluate the integral: \\int \\frac{x^2 - 1}{x^4 + 1} \\, dx.",
+      "options":[
+        "\\frac{1}{2\\sqrt{2}} \\ln\\left| \\frac{x^2 - \\sqrt{2}x + 1}{x^2 + \\sqrt{2}x + 1} \\right| + C",
+        "\\frac{1}{2\\sqrt{2}} \\tan^{-1}\\left( \\frac{x^2 - 1}{\\sqrt{2}x} \\right) + C",
+        "\\frac{1}{2} \\ln\\left| \\frac{x^2 - 1}{x^2 + 1} \\right| + C",
+        "\\frac{1}{\\sqrt{2}} \\ln\\left| \\frac{x^2 - \\sqrt{2}x + 1}{x^2 + \\sqrt{2}x + 1} \\right| + C"
+      ],
+      "correct": 0,
+      "explanation": "Divide numerator and denominator by x²: ∫(1 - 1/x²) / (x² + 1/x²) dx. Let u = x + 1/x, du = (1 - 1/x²)dx. The denominator is u² - 2. Integral becomes ∫du / (u² - (√2)²). Using the standard formula gives (1/2√2)ln|(u-√2)/(u+√2)|. Substitute u back to get the final answer.",
+      "difficulty": "Medium",
+      "imagePrompt": null
+    },
+    {
+      "id": 11,
+      "subject": "Mathematics",
+      "topic": "Integration",
+      "subtopic": "Area under simple curves",
+      "question": "Find the area of the region bounded by the curve |x| + |y| = 1.",
+      "options":[
+        "1 sq. unit",
+        "2 sq. units",
+        "4 sq. units",
+        "1/2 sq. units"
+      ],
+      "correct": 1,
+      "explanation": "The equation |x| + |y| = 1 forms a square with vertices at (1,0), (0,1), (-1,0), and (0,-1). The area in the first quadrant is a triangle with base 1 and height 1, area = 1/2. Because of symmetry across all four quadrants, total area = 4 * 1/2 = 2 sq. units.",
+      "difficulty": "Medium",
+      "imagePrompt": null
+    },
+    {
+      "id": 12,
+      "subject": "Mathematics",
+      "topic": "Integration",
+      "subtopic": "Fundamental theorem of calculus",
+      "question": "Evaluate the limit: \\lim_{n \\to \\infty} \\frac{1}{n} \\left( \\sin\\frac{\\pi}{n} + \\sin\\frac{2\\pi}{n} + \\dots + \\sin\\frac{(n-1)\\pi}{n} \\right).",
+      "options":[
+        "2/\\pi",
+        "1/\\pi",
+        "\\pi/2",
+        "2"
+      ],
+      "correct": 0,
+      "explanation": "This limit of a sum represents a Riemann integral. It converts to ∫sin(πx) dx from 0 to 1. The integral evaluates to[-cos(πx)/π] from 0 to 1 = (-cos(π)/π) - (-cos(0)/π) = 1/π + 1/π = 2/π.",
+      "difficulty": "Medium",
+      "imagePrompt": null
+    },
+    {
+      "id": 13,
+      "subject": "Mathematics",
+      "topic": "Integration",
+      "subtopic": "Properties of definite integrals",
+      "question": "Evaluate the definite integral: \\int_0^{\\pi/2} \\ln(\\tan x) \\, dx.",
+      "options":[
+        "\\pi/2",
+        "\\pi",
+        "0",
+        "-\\pi/2"
+      ],
+      "correct": 2,
+      "explanation": "Use King's property: I = ∫ln(tan(π/2 - x)) dx = ∫ln(cot x) dx = ∫ln(1/tan x) dx = -∫ln(tan x) dx = -I. Thus 2I = 0, which means I = 0.",
+      "difficulty": "Medium",
+      "imagePrompt": null
+    },
+    {
+      "id": 14,
+      "subject": "Mathematics",
+      "topic": "Integration",
+      "subtopic": "Integrals involving exponential functions",
+      "question": "Evaluate \\int e^x \\left( \\frac{2 + \\sin 2x}{1 + \\cos 2x} \\right) \\, dx.",
+      "options":[
+        "e^x \\sin x + C",
+        "e^x \\cos x + C",
+        "e^x \\cot x + C",
+        "e^x \\tan x + C"
+      ],
+      "correct": 3,
+      "explanation": "Simplify the fraction using double angle formulas: (2 + 2sin x cos x)/(2cos² x) = 1/cos² x + (sin x cos x)/cos² x = sec² x + tan x. The integral is ∫e^x(tan x + sec² x) dx. This matches the form ∫e^x[f(x) + f'(x)]dx = e^x f(x) + C, where f(x) = tan x. Answer is e^x tan x + C.",
+      "difficulty": "Medium",
+      "imagePrompt": null
+    },
+    {
+      "id": 15,
+      "subject": "Mathematics",
+      "topic": "Integration",
+      "subtopic": "Area under simple curves",
+      "question": "The area of the region bounded by the curve y = \\sin x, the x-axis, and the vertical lines x = 0 and x = 2\\pi is:",
+      "options":[
+        "0",
+        "2",
+        "4",
+        "\\pi"
+      ],
+      "correct": 2,
+      "explanation": "Area bounded implies the absolute geometric area. Area = ∫|0 to π| sin x dx + ∫|π to 2π| |sin x| dx. Since the lobes are symmetric, Area = 2 * ∫|0 to π| sin x dx = 2 * [-cos x]_0^π = 2 * (1 - (-1)) = 4.",
+      "difficulty": "Medium",
+      "imagePrompt": null
+    },
+    {
+      "id": 16,
+      "subject": "Mathematics",
+      "topic": "Integration",
+      "subtopic": "Properties of definite integrals",
+      "question": "Evaluate the definite integral: I = \\int_0^{\\pi/4} \\ln(1 + \\tan x) \\, dx.",
+      "options":[
+        "\\frac{\\pi}{8} \\ln 2",
+        "\\frac{\\pi}{4} \\ln 2",
+        "\\frac{\\pi}{2} \\ln 2",
+        "\\pi \\ln 2"
+      ],
+      "correct": 0,
+      "explanation": "Apply x → π/4 - x. I = ∫ln(1 + tan(π/4 - x)) dx = ∫ln(1 + (1-tan x)/(1+tan x)) dx = ∫ln(2 / (1+tan x)) dx = ∫ln 2 dx - ∫ln(1+tan x) dx = (π/4)ln 2 - I. 2I = (π/4)ln 2, so I = (π/8)ln 2.",
+      "difficulty": "Hard",
+      "imagePrompt": null
+    },
+    {
+      "id": 17,
+      "subject": "Mathematics",
+      "topic": "Integration",
+      "subtopic": "Integration by parts",
+      "question": "If I_n = \\int_0^1 x^n e^x \\, dx, then what is the relationship between I_n and I_{n-1}?",
+      "options":[
+        "I_n + n I_{n-1} = e",
+        "I_n - n I_{n-1} = e",
+        "I_n + n I_{n-1} = 1",
+        "I_n - n I_{n-1} = 1"
+      ],
+      "correct": 0,
+      "explanation": "Use integration by parts with u=x^n and dv=e^x dx. I_n = [x^n e^x]_0^1 - ∫_0^1 n x^{n-1} e^x dx = e - n I_{n-1}. Rearranging gives I_n + n I_{n-1} = e.",
+      "difficulty": "Hard",
+      "imagePrompt": null
+    },
+    {
+      "id": 18,
+      "subject": "Mathematics",
+      "topic": "Integration",
+      "subtopic": "Area between two simple curves",
+      "question": "Find the area enclosed by the loop of the curve y^2 = x^2(1 - x).",
+      "options":[
+        "4/15",
+        "8/15",
+        "16/15",
+        "2/15"
+      ],
+      "correct": 1,
+      "explanation": "The loop exists for 0 ≤ x ≤ 1 since x²(1-x) ≥ 0. Due to symmetry, Area = 2 ∫_0^1 x√(1-x) dx. Use substitution u=1-x, du=-dx. Area = 2 ∫_0^1 (1-u)√u du = 2 ∫_0^1 (u^{1/2} - u^{3/2}) du = 2[ (2/3)u^{3/2} - (2/5)u^{5/2} ]_0^1 = 2(2/3 - 2/5) = 2(4/15) = 8/15.",
+      "difficulty": "Hard",
+      "imagePrompt": null
+    },
+    {
+      "id": 19,
+      "subject": "Mathematics",
+      "topic": "Integration",
+      "subtopic": "Fundamental theorem of calculus",
+      "question": "Evaluate the limit: \\lim_{n \\to \\infty} \\left( \\frac{1}{n^2+1^2} + \\frac{2}{n^2+2^2} + \\dots + \\frac{n}{n^2+n^2} \\right).",
+      "options":[
+        "\\frac{1}{2} \\ln 2",
+        "\\ln 2",
+        "\\frac{\\pi}{4}",
+        "\\frac{\\pi}{2}"
+      ],
+      "correct": 0,
+      "explanation": "Factor out 1/n to form a Riemann sum: S_n = (1/n) Σ (k/n) / (1 + (k/n)²). This corresponds to ∫_0^1 x / (1+x²) dx. Substitute u = 1+x², du = 2x dx. The integral becomes (1/2) ∫_1^2 du/u = (1/2) [ln u]_1^2 = (1/2) ln 2.",
+      "difficulty": "Hard",
+      "imagePrompt": null
+    },
+    {
+      "id": 20,
+      "subject": "Mathematics",
+      "topic": "Integration",
+      "subtopic": "Properties of definite integrals",
+      "question": "Evaluate the integral: \\int_0^{\\pi/2} \\frac{dx}{1 + \\tan^3 x}.",
+      "options":[
+        "π/4",
+        "π/2",
+        "π/3",
+        "π/8"
+      ],
+      "correct": 0,
+      "explanation": "Let I = ∫_0^{π/2} dx / (1 + tan³ x) = ∫_0^{π/2} cos³ x / (cos³ x + sin³ x) dx. Using King's property x → π/2 - x, I = ∫_0^{π/2} sin³ x / (sin³ x + cos³ x) dx. Adding gives 2I = ∫_0^{π/2} 1 dx = π/2. Thus I = π/4.",
+      "difficulty": "Hard",
+      "imagePrompt": null
+    }
+  ]
+}

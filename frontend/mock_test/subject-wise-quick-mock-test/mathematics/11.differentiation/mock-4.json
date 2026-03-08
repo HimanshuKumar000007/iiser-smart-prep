@@ -1,0 +1,348 @@
+{
+  "testId": "IISER_IAT_DERIV_MOCK_V4_VH",
+  "testName": "IISER IAT - Differentiation & Application of Derivatives (Version 4)",
+  "duration": 60,
+  "totalMarks": 80,
+  "questions":[
+    {
+      "id": 1,
+      "subject": "Mathematics",
+      "topic": "Differentiation",
+      "subtopic": "Derivative of composite functions via chain rule",
+      "question": "Let y = log_x(ln x). Which of the following expressions correctly represents dy/dx?",
+      "options":[
+        "1 / (x ln x)",
+        "(1 - ln(ln x)) / (x (ln x)²)",
+        "ln(ln x) / (x ln x)",
+        "1 / (x ln x) - ln(ln x) / (x ln x)"
+      ],
+      "correct": 1,
+      "explanation": "Convert the base of the logarithm using the change of base formula: y = ln(ln x) / ln x. Apply the quotient rule: y' =[ (ln x) * d/dx(ln(ln x)) - ln(ln x) * d/dx(ln x) ] / (ln x)². Calculate derivatives: d/dx(ln(ln x)) = 1/(x ln x), and d/dx(ln x) = 1/x. Substitute back: y' =[ (ln x)*(1/(x ln x)) - ln(ln x)*(1/x) ] / (ln x)² = [ 1/x - ln(ln x)/x ] / (ln x)² = (1 - ln(ln x)) / (x (ln x)²).",
+      "difficulty": "Easy",
+      "imagePrompt": null
+    },
+    {
+      "id": 2,
+      "subject": "Mathematics",
+      "topic": "Differentiation",
+      "subtopic": "Definition of derivative",
+      "question": "Find the number of points in the interval (0, 2π) where the function f(x) = |cos x - sin x| is strictly non-differentiable.",
+      "options":[
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "correct": 1,
+      "explanation": "The absolute value function f(x) = |g(x)| is generally non-differentiable at points where g(x) = 0, provided g'(x) ≠ 0 (creating sharp corners). Set g(x) = cos x - sin x = 0. This implies tan x = 1. In the interval (0, 2π), this occurs at exactly two points: x = π/4 and x = 5π/4. Since the derivative g'(x) is non-zero at both these points, sharp corners exist. Thus, non-differentiable at exactly 2 points.",
+      "difficulty": "Easy",
+      "imagePrompt": null
+    },
+    {
+      "id": 3,
+      "subject": "Mathematics",
+      "topic": "Application of Derivatives",
+      "subtopic": "Rate of change",
+      "question": "If the radius of a spherical balloon increases at a rate of 0.1 cm/s, what is the exact rate of change of its volume with respect to its surface area when the radius is exactly 10 cm?",
+      "options":[
+        "5 cm",
+        "10 cm",
+        "2.5 cm",
+        "0.5 cm"
+      ],
+      "correct": 0,
+      "explanation": "We need the rate of change of Volume (V) with respect to Surface Area (S), which is dV/dS. Using the chain rule: dV/dS = (dV/dr) / (dS/dr). For a sphere: V = (4/3)πr³ ⇒ dV/dr = 4πr². S = 4πr² ⇒ dS/dr = 8πr. Therefore, dV/dS = (4πr²) / (8πr) = r/2. This result is entirely independent of the time rate dr/dt. At r = 10 cm, dV/dS = 10/2 = 5 cm.",
+      "difficulty": "Easy",
+      "imagePrompt": null
+    },
+    {
+      "id": 4,
+      "subject": "Mathematics",
+      "topic": "Application of Derivatives",
+      "subtopic": "tangents and normals",
+      "question": "The tangent to the curve y = x³ - 6x² + 9x + 4 is parallel to the x-axis at x = p and x = q. What is the precise numerical value of p+q?",
+      "options":[
+        "2",
+        "4",
+        "6",
+        "8"
+      ],
+      "correct": 1,
+      "explanation": "A tangent parallel to the x-axis means its slope is zero: dy/dx = 0. y' = 3x² - 12x + 9 = 0. Divide by 3: x² - 4x + 3 = 0. Factor: (x-1)(x-3) = 0. The roots are x=1 and x=3, corresponding to p and q. Therefore, p+q = 1 + 3 = 4. Alternatively, by Vieta's formulas on the quadratic derivative, sum of roots p+q = -(-12)/3 = 4.",
+      "difficulty": "Easy",
+      "imagePrompt": null
+    },
+    {
+      "id": 5,
+      "subject": "Mathematics",
+      "topic": "Application of Derivatives",
+      "subtopic": "maxima and minima",
+      "question": "Determine the maximum slope of the curve defined by y = -x³ + 3x² + 9x - 27.",
+      "options":[
+        "0",
+        "12",
+        "16",
+        "32"
+      ],
+      "correct": 1,
+      "explanation": "Let the slope function be m(x) = dy/dx = -3x² + 6x + 9. To find the maximum slope, maximize m(x). Take derivative: m'(x) = -6x + 6. Set m'(x) = 0 ⇒ x = 1. Second derivative m''(x) = -6 < 0 confirms a maximum. Substitute x=1 back into the slope equation: m_max = -3(1)² + 6(1) + 9 = -3 + 6 + 9 = 12.",
+      "difficulty": "Easy",
+      "imagePrompt": null
+    },
+    {
+      "id": 6,
+      "subject": "Mathematics",
+      "topic": "Differentiation",
+      "subtopic": "Derivative of inverse trigonometric functions",
+      "question": "Let y = sin⁻¹(2x / (1+x²)). For x > 1, what is the exact value of dy/dx?",
+      "options":[
+        "2 / (1+x²)",
+        "-2 / (1+x²)",
+        "1 / (1+x²)",
+        "-1 / (1+x²)"
+      ],
+      "correct": 1,
+      "explanation": "Let x = tan θ. For x > 1, θ ∈ (π/4, π/2). Substitute x: 2x/(1+x²) = 2tanθ/(1+tan²θ) = sin(2θ). So, y = sin⁻¹(sin(2θ)). Since θ ∈ (π/4, π/2), we have 2θ ∈ (π/2, π), which falls strictly outside the principal branch of sin⁻¹[-π/2, π/2]. We must use the identity sin(π - 2θ) = sin(2θ), as π - 2θ falls in (0, π/2). Thus, y = π - 2θ. Substitute back: y = π - 2tan⁻¹x. Differentiating yields dy/dx = -2 / (1+x²).",
+      "difficulty": "Easy",
+      "imagePrompt": null
+    },
+    {
+      "id": 7,
+      "subject": "Mathematics",
+      "topic": "Application of Derivatives",
+      "subtopic": "tangents and normals",
+      "question": "A curve is represented by the implicit equation x²y + y²x = 6. What is the equation of the normal to the curve precisely at the point (1, 2)?",
+      "options":[
+        "5x - 4y + 3 = 0",
+        "4x - 5y + 6 = 0",
+        "5x - 8y + 11 = 0",
+        "5x + 4y - 13 = 0"
+      ],
+      "correct": 2,
+      "explanation": "Implicitly differentiate with respect to x: (2xy + x²y') + (2yy'x + y²) = 0. Group y' terms: y'(x² + 2xy) = -(2xy + y²). Thus y' = -(2xy + y²) / (x² + 2xy). Evaluate slope m_T at (1, 2): m_T = -(2(1)(2) + 2²) / (1² + 2(1)(2)) = -(4+4)/(1+4) = -8/5. The slope of the normal is m_N = 5/8. Equation: y - 2 = 5/8(x - 1) ⇒ 8y - 16 = 5x - 5 ⇒ 5x - 8y + 11 = 0.",
+      "difficulty": "Medium",
+      "imagePrompt": null
+    },
+    {
+      "id": 8,
+      "subject": "Mathematics",
+      "topic": "Application of Derivatives",
+      "subtopic": "Rate of change",
+      "question": "A water tank has the shape of an inverted right circular cone with its semi-vertical angle being tan⁻¹(0.5). Water is poured into it at a constant rate of 5 m³/hr. Determine the rate at which the level of the water is actively rising exactly when the depth of water in the tank is 4 m.",
+      "options":[
+        "5 / 16π m/hr",
+        "5 / 4π m/hr",
+        "5 / 8π m/hr",
+        "5 / 32π m/hr"
+      ],
+      "correct": 1,
+      "explanation": "Let radius be r and depth be h. Given semi-vertical angle α: tan α = r/h = 0.5 = 1/2 ⇒ r = h/2. Volume V = (1/3)πr²h = (1/3)π(h/2)²h = (π/12)h³. Differentiate wrt t: dV/dt = (π/12)(3h²)(dh/dt) = (π/4)h²(dh/dt). Given dV/dt = 5. Substitute h = 4: 5 = (π/4)(4)²(dh/dt) = 4π(dh/dt). Solving yields dh/dt = 5 / 4π m/hr.",
+      "difficulty": "Medium",
+      "imagePrompt": null
+    },
+    {
+      "id": 9,
+      "subject": "Mathematics",
+      "topic": "Application of Derivatives",
+      "subtopic": "increasing/decreasing functions",
+      "question": "Let f(x) be a strictly increasing, differentiable function mapping ℝ → ℝ. If g(x) = f(x) - f(2x) + f(3x), which of the following statements must logically be true regarding g'(x)?",
+      "options":[
+        "g'(x) > 0 for all x ∈ ℝ",
+        "g'(x) < 0 for all x ∈ ℝ",
+        "g'(x) can be zero, but only at x=0",
+        "The sign of g'(x) cannot be conclusively determined without knowing f(x)."
+      ],
+      "correct": 3,
+      "explanation": "g'(x) = f'(x) - 2f'(2x) + 3f'(3x). We know f'(x) > 0 for all x. Test with two increasing functions. Case 1: f(x) = x ⇒ f'(x) = 1. g'(x) = 1 - 2(1) + 3(1) = 2 > 0. Case 2: Suppose f'(x) drops sharply, e.g., f'(1) = 100, f'(2) = 1000, f'(3) = 1. Evaluating at x=1: g'(1) = 100 - 2000 + 3 = -1897 < 0. Since valid functions yield both positive and negative results, the sign cannot be universally determined.",
+      "difficulty": "Medium",
+      "imagePrompt": null
+    },
+    {
+      "id": 10,
+      "subject": "Mathematics",
+      "topic": "Differentiation",
+      "subtopic": "Definition of derivative",
+      "question": "The values of constants a and b such that the function f(x) = x² + 3x + a (for x ≤ 1) and f(x) = bx + 2 (for x > 1) is everywhere differentiable are:",
+      "options":[
+        "a=3, b=5",
+        "a=5, b=3",
+        "a=4, b=5",
+        "a=5, b=4"
+      ],
+      "correct": 0,
+      "explanation": "For differentiability, it must be continuous at x=1. LHL = 1² + 3(1) + a = 4 + a. RHL = b(1) + 2 = b + 2. Equating gives 4 + a = b + 2 ⇒ b - a = 2 (Eq 1). For differentiability, LHD = RHD at x=1. LHD = d/dx(x² + 3x + a) at x=1 is 2x + 3 = 5. RHD = d/dx(bx + 2) at x=1 is b. Equating gives b = 5. Substitute b into Eq 1: 5 - a = 2 ⇒ a = 3.",
+      "difficulty": "Medium",
+      "imagePrompt": null
+    },
+    {
+      "id": 11,
+      "subject": "Mathematics",
+      "topic": "Differentiation",
+      "subtopic": "Logarithmic derivative",
+      "question": "Let y = x^(sin x). What is the precise mathematical value of dy/dx exactly at x = π/2?",
+      "options":[
+        "0",
+        "1",
+        "π/2",
+        "2/π"
+      ],
+      "correct": 1,
+      "explanation": "Use logarithmic differentiation: ln y = sin x ln x. Differentiate implicitly: (1/y)y' = cos x ln x + (sin x)/x. So y' = x^(sin x) * (cos x ln x + (sin x)/x). Evaluate at x = π/2: y(π/2) = (π/2)¹ = π/2. cos(π/2) = 0, so the first inner term is 0. sin(π/2) = 1, so the second inner term is 1/(π/2) = 2/π. y' = (π/2) * (0 + 2/π) = 1.",
+      "difficulty": "Medium",
+      "imagePrompt": null
+    },
+    {
+      "id": 12,
+      "subject": "Mathematics",
+      "topic": "Application of Derivatives",
+      "subtopic": "Definition of derivative",
+      "question": "Consider the cubic polynomial f(x) = x³ - 3x² + 6x - 1. Which of the following best describes the nature of its roots?",
+      "options":[
+        "Three distinct real roots.",
+        "One real root and two complex conjugate roots.",
+        "Three real roots, two of which are identical.",
+        "A single real root of multiplicity 3."
+      ],
+      "correct": 1,
+      "explanation": "Find critical points using the first derivative: f'(x) = 3x² - 6x + 6 = 3(x² - 2x + 2). Calculate the discriminant of the quadratic: Δ = (-2)² - 4(1)(2) = 4 - 8 = -4 < 0. Since the derivative has no real roots and a positive leading coefficient, f'(x) > 0 for all real x. Because the function is strictly monotonically increasing and is an odd-degree polynomial, it crosses the x-axis exactly once. Thus, it has one real root and two complex conjugate roots.",
+      "difficulty": "Medium",
+      "imagePrompt": null
+    },
+    {
+      "id": 13,
+      "subject": "Mathematics",
+      "topic": "Application of Derivatives",
+      "subtopic": "maxima and minima",
+      "question": "If the function f(x) = 2x³ - 9ax² + 12a²x + 1 (where a > 0) attains a local maximum at x=p and a local minimum at x=q such that p² = q, find the value of a.",
+      "options":[
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "correct": 1,
+      "explanation": "Find critical points: f'(x) = 6x² - 18ax + 12a² = 6(x² - 3ax + 2a²) = 6(x-a)(x-2a) = 0. Roots are x=a and x=2a. Use second derivative to identify max/min: f''(x) = 12x - 18a. At x=a, f''(a) = 12a - 18a = -6a < 0 (Local Max, so p = a). At x=2a, f''(2a) = 24a - 18a = 6a > 0 (Local Min, so q = 2a). Given p² = q, substitute to get a² = 2a. Since a > 0, dividing by a yields a = 2.",
+      "difficulty": "Medium",
+      "imagePrompt": null
+    },
+    {
+      "id": 14,
+      "subject": "Mathematics",
+      "topic": "Application of Derivatives",
+      "subtopic": "tangents and normals",
+      "question": "Two perfectly parallel lines act as tangents to the function f(x) = x³ - 3x² + 2x. If the distance between the two points of tangency along the x-axis is exactly 2, what is the common gradient (slope) of these two tangent lines?",
+      "options":[
+        "1",
+        "2",
+        "-1",
+        "-2"
+      ],
+      "correct": 1,
+      "explanation": "Parallel tangents have equal slopes: m = f'(x) = 3x² - 6x + 2. Let the points be x₁ and x₂. 3x² - 6x + (2-m) = 0. By Vieta's, x₁ + x₂ = 2 and x₁x₂ = (2-m)/3. We are given |x₁ - x₂| = 2. Using (x₁-x₂)² = (x₁+x₂)² - 4x₁x₂, substitute knowns: 2² = 2² - 4(2-m)/3. This gives 0 = -4(2-m)/3, implying 2-m = 0. Thus the common gradient m = 2.",
+      "difficulty": "Medium",
+      "imagePrompt": null
+    },
+    {
+      "id": 15,
+      "subject": "Mathematics",
+      "topic": "Application of Derivatives",
+      "subtopic": "tangents and normals",
+      "question": "Let h(x) = f(g(x)). If g(1) = 2, g'(1) = 3, f(2) = 4, and f'(2) = 5, what is the equation of the tangent line to the curve y = h(x) exactly at the point where x = 1?",
+      "options":[
+        "y = 15x - 11",
+        "y = 15x - 7",
+        "y = 5x - 1",
+        "y = 5x + 1"
+      ],
+      "correct": 0,
+      "explanation": "Point of tangency: y₁ = h(1) = f(g(1)) = f(2) = 4. Point is (1, 4). Slope m = h'(1). By chain rule, h'(x) = f'(g(x)) * g'(x). h'(1) = f'(g(1)) * g'(1) = f'(2) * 3 = 5 * 3 = 15. Equation of line: y - y₁ = m(x - x₁). y - 4 = 15(x - 1) ⇒ y = 15x - 15 + 4 ⇒ y = 15x - 11.",
+      "difficulty": "Medium",
+      "imagePrompt": null
+    },
+    {
+      "id": 16,
+      "subject": "Mathematics",
+      "topic": "Differentiation",
+      "subtopic": "Second order derivatives",
+      "question": "Let f(x) = x⁵ + x³ + x and g(x) = f⁻¹(x). Find the exact value of g''(3).",
+      "options":[
+        "-4/27",
+        "-8/343",
+        "-26/729",
+        "-14/27"
+      ],
+      "correct": 2,
+      "explanation": "By inverse function theorems, g''(x) = -f''(g(x)) / [f'(g(x))]³. Evaluate at x=3. First find y = g(3), meaning f(y) = 3. By inspection, f(1) = 1 + 1 + 1 = 3, so g(3) = 1. Find derivatives of f(x) at x=1: f'(x) = 5x⁴ + 3x² + 1 ⇒ f'(1) = 5 + 3 + 1 = 9. f''(x) = 20x³ + 6x ⇒ f''(1) = 20 + 6 = 26. Substitute into formula: g''(3) = -26 / 9³ = -26 / 729.",
+      "difficulty": "Hard",
+      "imagePrompt": null
+    },
+    {
+      "id": 17,
+      "subject": "Mathematics",
+      "topic": "Application of Derivatives",
+      "subtopic": "tangents and normals",
+      "question": "Find the absolute minimum distance between a point on the parabola y = x² - 1 and a point on the line y = x - 3.",
+      "options":[
+        "7 / (4√2)",
+        "9 / (4√2)",
+        "7 / (2√2)",
+        "9 / (2√2)"
+      ],
+      "correct": 0,
+      "explanation": "Shortest distance is along the common normal. The tangent to the parabola at the closest point is parallel to the line. Line slope m=1. Set parabola derivative to 1: y' = 2x = 1 ⇒ x = 1/2. Find y: y = (1/2)² - 1 = -3/4. Closest point is (1/2, -3/4). Use point-to-line distance to x - y - 3 = 0: D = |1(1/2) - 1(-3/4) - 3| / √(1²+(-1)²) = |1/2 + 3/4 - 12/4| / √2 = |-7/4| / √2 = 7 / (4√2).",
+      "difficulty": "Hard",
+      "imagePrompt": null
+    },
+    {
+      "id": 18,
+      "subject": "Mathematics",
+      "topic": "Application of Derivatives",
+      "subtopic": "maxima and minima",
+      "question": "Find the absolute maximum value of f(x) = x³ - 3x + 2 on the interval [-2, 2].",
+      "options":[
+        "0",
+        "2",
+        "4",
+        "6"
+      ],
+      "correct": 2,
+      "explanation": "Find critical points: f'(x) = 3x² - 3 = 0 ⇒ x = ±1. Evaluate function at critical points and boundaries: f(-2) = -8 + 6 + 2 = 0. f(-1) = -1 + 3 + 2 = 4. f(1) = 1 - 3 + 2 = 0. f(2) = 8 - 6 + 2 = 4. Comparing the values {0, 4, 0, 4}, the absolute maximum is 4.",
+      "difficulty": "Hard",
+      "imagePrompt": null
+    },
+    {
+      "id": 19,
+      "subject": "Mathematics",
+      "topic": "Differentiation",
+      "subtopic": "Derivative of implicit functions",
+      "question": "If y = (x + √(1+x²))^n, then which of the following second-order differential equations strictly holds true?",
+      "options":[
+        "(1+x²)y'' + x y' - n² y = 0",
+        "(1+x²)y'' - x y' + n² y = 0",
+        "(1+x²)y'' + x y' + n² y = 0",
+        "(1-x²)y'' - x y' - n² y = 0"
+      ],
+      "correct": 0,
+      "explanation": "y' = n(x + √(1+x²))^(n-1) * (1 + x/√(1+x²)). Simplify bracket: (√(1+x²) + x) / √(1+x²). Substitute back: y' = n(x + √(1+x²))^n / √(1+x²) = ny / √(1+x²). Cross multiply: √(1+x²)y' = ny. Square both sides: (1+x²)(y')² = n²y². Differentiate implicitly: (1+x²)2y'y'' + (y')²(2x) = n²(2yy'). Divide entirely by 2y' to get (1+x²)y'' + xy' - n²y = 0.",
+      "difficulty": "Hard",
+      "imagePrompt": null
+    },
+    {
+      "id": 20,
+      "subject": "Mathematics",
+      "topic": "Application of Derivatives",
+      "subtopic": "Definition of derivative",
+      "question": "Apply Rolle's Theorem to the function f(x) = e^x sin x in the closed interval [0, π]. What is the exact value of c ∈ (0, π) that perfectly satisfies the theorem?",
+      "options":[
+        "π/2",
+        "π/4",
+        "3π/4",
+        "5π/6"
+      ],
+      "correct": 2,
+      "explanation": "Check endpoints: f(0)=0 and f(π)=0. Conditions satisfied. Rolle's demands f'(c) = 0. f'(x) = e^x sin x + e^x cos x = e^x(sin x + cos x). Set e^c(sin c + cos c) = 0. Since e^c > 0, we must have sin c + cos c = 0, meaning tan c = -1. The only angle in (0, π) with a tangent of -1 is c = π - π/4 = 3π/4.",
+      "difficulty": "Hard",
+      "imagePrompt": null
+    }
+  ]
+}

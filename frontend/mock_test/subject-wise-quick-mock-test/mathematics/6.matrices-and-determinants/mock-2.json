@@ -1,0 +1,328 @@
+{
+  "testId": "IISER_IAT_MATRICES_02",
+  "testName": "IISER IAT - Matrices & Determinants (Version 2)",
+  "duration": 60,
+  "totalMarks": 80,
+  "questions": [
+    {
+      "id": 1,
+      "subject": "Mathematics",
+      "topic": "Matrices",
+      "question": "If A is a matrix of order m x n and B is a matrix such that AB' and B'A are both defined, what is the order of matrix B?",
+      "options": [
+        "m x m",
+        "n x n",
+        "n x m",
+        "m x n"
+      ],
+      "correct": 3,
+      "explanation": "Let order of B be p x q. Then B' is q x p. For AB' (m x n times q x p), n must equal q. For B'A (q x p times m x n), p must equal m. Thus, B is m x n.",
+      "difficulty": "Easy",
+      "imagePrompt": ""
+    },
+    {
+      "id": 2,
+      "subject": "Mathematics",
+      "topic": "Matrices",
+      "question": "For any square matrix A, the matrix A + A^T is always:",
+      "options": [
+        "Symmetric",
+        "Skew-symmetric",
+        "Identity",
+        "Null"
+      ],
+      "correct": 0,
+      "explanation": "Let P = A + A^T. P^T = (A + A^T)^T = A^T + (A^T)^T = A^T + A = P. Since P^T = P, the matrix is symmetric.",
+      "difficulty": "Easy",
+      "imagePrompt": ""
+    },
+{
+  "id": 3,
+  "subject": "Mathematics",
+  "topic": "Determinants",
+  "question": "The value of the determinant |[[1, a, b+c], [1, b, c+a], [1, c, a+b]]| is:",
+  "options": [
+    "a + b + c",
+    "(a+b)(b+c)(c+a)",
+    "0",
+    "1"
+  ],
+  "correct": 2,
+  "explanation": "Apply column operation C3 → C3 − C2. The third column becomes (b+c−a, c+a−b, a+b−c). Now apply row operations R2 → R2 − R1 and R3 → R3 − R1. The resulting rows become linearly dependent, giving determinant = 0.",
+  "difficulty": "Easy"
+},
+    {
+      "id": 4,
+      "subject": "Mathematics",
+      "topic": "Matrices",
+      "question": "If A is an invertible matrix of order 2 and det(A) = 5, then det(A⁻¹) is:",
+      "options": [
+        "5",
+        "1/5",
+        "25",
+        "-5"
+      ],
+      "correct": 1,
+      "explanation": "Property of determinants: det(A⁻¹) = 1 / det(A). Thus, 1/5.",
+      "difficulty": "Easy",
+      "imagePrompt": ""
+    },
+    {
+      "id": 5,
+      "subject": "Mathematics",
+      "topic": "Matrices",
+      "question": "If matrix A = [[1, 2], [2, x]] is singular, then the value of x is:",
+      "options": [
+        "0",
+        "1",
+        "2",
+        "4"
+      ],
+      "correct": 3,
+      "explanation": "For singular matrix, determinant is 0. |A| = 1*x - 2*2 = x - 4 = 0. So x = 4.",
+      "difficulty": "Easy",
+      "imagePrompt": ""
+    },
+    {
+      "id": 6,
+      "subject": "Mathematics",
+      "topic": "Determinants",
+      "question": "Let A = diag(2, 3, 4). Then the determinant of A² is:",
+      "options": [
+        "24",
+        "576",
+        "9",
+        "29"
+      ],
+      "correct": 1,
+      "explanation": "|A| = 2*3*4 = 24. |A²| = |A|² = 24² = 576.",
+      "difficulty": "Easy",
+      "imagePrompt": ""
+    },
+    {
+      "id": 7,
+      "subject": "Mathematics",
+      "topic": "Matrices",
+      "question": "If A and B are two matrices such that AB = A and BA = B, then B² is equal to:",
+      "options": [
+        "A",
+        "B",
+        "I",
+        "O"
+      ],
+      "correct": 1,
+      "explanation": "Multiply BA=B by B on the right: (BA)B = B². So B(AB) = B². Since AB=A, substitute: BA = B². Since BA=B, we get B = B².",
+      "difficulty": "Medium",
+      "imagePrompt": ""
+    },
+    {
+      "id": 8,
+      "subject": "Mathematics",
+      "topic": "Determinants",
+      "question": "Using the determinant method, what is the area of the triangle with vertices A(1, 0), B(6, 0), and C(4, 3)?",
+      "options": [
+        "15 sq units",
+        "7.5 sq units",
+        "10 sq units",
+        "5 sq units"
+      ],
+      "correct": 1,
+      "explanation": "Area = 0.5 * |det([[1, 0, 1], [6, 0, 1], [4, 3, 1]])|. Determinant expansion along column 2 gives -3(1-6) = 15. Area = 0.5 * 15 = 7.5.",
+      "difficulty": "Medium",
+      "image": "https://res.cloudinary.com/dri07sck1/image/upload/v1772949171/800fe311-bfc2-4002-b1f0-f73a4181aa50_t6exk7.png",
+      "imagePrompt": "A Cartesian coordinate system showing a triangle with vertices marked at points A(1, 0), B(6, 0), and C(4, 3)."
+    },
+    {
+      "id": 9,
+      "subject": "Mathematics",
+      "topic": "Determinants",
+      "question": "If A = [[α, 2], [2, α]] and |A³| = 125, then the value of α is:",
+      "options": [
+        "± 1",
+        "± 2",
+        "± 3",
+        "± 5"
+      ],
+      "correct": 2,
+      "explanation": "|A³| = |A|³ = 125, so |A| = 5. |A| = α² - 4. α² - 4 = 5 implies α² = 9, so α = ±3.",
+      "difficulty": "Medium",
+      "imagePrompt": ""
+    },
+    {
+      "id": 10,
+      "subject": "Mathematics",
+      "topic": "Determinants",
+      "question": "Let A be a square matrix of order 3. If the determinant of A is 3, what is the value of the determinant of (2A)^T?",
+      "options": [
+        "6",
+        "12",
+        "24",
+        "54"
+      ],
+      "correct": 2,
+      "explanation": "|(2A)^T| = |2A| = 2³|A| = 8 * 3 = 24.",
+      "difficulty": "Medium",
+      "imagePrompt": ""
+    },
+    {
+      "id": 11,
+      "subject": "Mathematics",
+      "topic": "Determinants",
+      "question": "Using the Rule of Sarrus or standard expansion, calculate the determinant of M = [[2, 0, 1], [3, 1, 2], [1, 2, 0]].",
+      "options": [
+        "-5",
+        "-3",
+        "0",
+        "5"
+      ],
+      "correct": 1,
+      "explanation": "Right-diagonals: (2*1*0) + (0*2*1) + (1*3*2) = 6. Left-diagonals: (1*1*1) + (2*2*2) + (0*3*0) = 1 + 8 + 0 = 9. Det = 6 - 9 = -3.",
+      "difficulty": "Medium",
+      "image":"https://res.cloudinary.com/dri07sck1/image/upload/v1772949235/842668f3-7f13-4b8c-90c5-c6b1a158c180_wgbxmj.png",
+      "imagePrompt": "A diagram showing the 'Rule of Sarrus' layout for a 3x3 determinant calculation."
+    },
+{
+  "id": 12,
+  "subject": "Mathematics",
+  "topic": "Matrices",
+  "question": "If A is a skew-symmetric matrix of order 3, then the matrix A⁴ is:",
+  "options": [
+    "Skew-symmetric",
+    "Symmetric",
+    "Diagonal",
+    "Null"
+  ],
+  "correct": 1,
+  "explanation": "For skew-symmetric matrix A, Aᵀ = −A. Taking transpose: (A⁴)ᵀ = (Aᵀ)⁴ = (−A)⁴ = A⁴. Hence A⁴ is symmetric.",
+  "difficulty": "Medium"
+},
+    {
+      "id": 13,
+      "subject": "Mathematics",
+      "topic": "Determinants",
+      "question": "Passage: Consider x+y+z=6, x+2y+3z=10, x+2y+az=b. The system has a **unique solution** if:",
+      "options": [
+        "a = 3",
+        "a ≠ 3",
+        "a = 3, b = 10",
+        "a = 3, b ≠ 10"
+      ],
+      "correct": 1,
+      "explanation": "Unique solution requires det(Coeff) ≠ 0. Det = (a-3). So a ≠ 3.",
+      "difficulty": "Medium",
+      "imagePrompt": ""
+    },
+    {
+      "id": 14,
+      "subject": "Mathematics",
+      "topic": "Determinants",
+      "question": "Passage: The system has **infinitely many solutions** if:",
+      "options": [
+        "a ≠ 3",
+        "a = 3, b ≠ 10",
+        "a = 3, b = 10",
+        "b ≠ 10"
+      ],
+      "correct": 2,
+      "explanation": "Requires det=0 (a=3) and consistent equations (planes overlapping). For a=3, last two eqns match only if b=10.",
+      "difficulty": "Medium",
+      "imagePrompt": ""
+    },
+    {
+      "id": 15,
+      "subject": "Mathematics",
+      "topic": "Determinants",
+      "question": "Passage: The system has **no solution** if:",
+      "options": [
+        "a = 3, b = 10",
+        "a ≠ 3, b = 10",
+        "a = 3, b ≠ 10",
+        "a ≠ 3, b ≠ 10"
+      ],
+      "correct": 2,
+      "explanation": "Requires det=0 (a=3) but inconsistent equations (parallel planes). If a=3 and b≠10, equations contradict.",
+      "difficulty": "Hard",
+      "imagePrompt": ""
+    },
+    {
+      "id": 16,
+      "subject": "Mathematics",
+      "topic": "Matrices",
+      "question": "If the point (1, 0) is rotated by 30° and then by 15° using matrix multiplication around the origin, the final coordinates are:",
+      "options": [
+        "(1/√2, 1/√2)",
+        "(1/2, √3/2)",
+        "(√3/2, 1/2)",
+        "(0, 1)"
+      ],
+      "correct": 0,
+      "explanation": "Total rotation 45°. x' = x cos 45 - y sin 45, y' = x sin 45 + y cos 45. x'=1/√2, y'=1/√2.",
+      "difficulty": "Medium",
+      "image":"https://res.cloudinary.com/dri07sck1/image/upload/v1772949290/c7fd3fd6-442a-48b5-8756-c68876931f7f_yrhyia.png",
+      "imagePrompt": "A diagram showing the transformation of a point P(x,y) to P'(x',y') via rotation by an angle θ counter-clockwise about the origin."
+    },
+    {
+      "id": 17,
+      "subject": "Mathematics",
+      "topic": "Matrices",
+      "question": "If A = [[0, 1], [0, 0]], then (aI + bA)ⁿ is equal to:",
+      "options": [
+        "aⁿ I + n aⁿ⁻¹ b A",
+        "aⁿ I + bⁿ A",
+        "aⁿ I + n aⁿ b A",
+        "aⁿ I + aⁿ⁻¹ b A"
+      ],
+      "correct": 0,
+      "explanation": "A² = 0. Using Binomial expansion (since I and A commute), only the first two terms survive. C(n,0)(aI)ⁿ + C(n,1)(aI)ⁿ⁻¹(bA). = aⁿ I + n aⁿ⁻¹ b A.",
+      "difficulty": "Hard",
+      "imagePrompt": ""
+    },
+    {
+      "id": 18,
+      "subject": "Mathematics",
+      "topic": "Matrices",
+      "question": "Let P be a 3x3 matrix such that P^T = 2P + I. Then which of the following is true?",
+      "options": [
+        "P = -I",
+        "P = I",
+        "P = -1/3 I",
+        "Such a matrix P does not exist for real entries"
+      ],
+      "correct": 0,
+      "explanation": "Take transpose: (P^T)^T = (2P+I)^T => P = 2P^T + I. Substitute P^T from original: P = 2(2P+I) + I = 4P + 3I. -3P = 3I => P = -I.",
+      "difficulty": "Hard",
+      "imagePrompt": ""
+    },
+    {
+      "id": 19,
+      "subject": "Mathematics",
+      "topic": "Determinants",
+      "question": "If f(x) is the determinant of [[1, x, x+1], [2x, x(x-1), x(x+1)], [3x(x-1), x(x-1)(x-2), x(x+1)(x-1)]], then f(100) is:",
+      "options": [
+        "0",
+        "100",
+        "1",
+        "-1"
+      ],
+      "correct": 0,
+      "explanation": "Factoring out common terms from rows/cols reveals two identical rows or columns after simplification, resulting in the determinant being identically zero for all x.",
+      "difficulty": "Hard",
+      "imagePrompt": ""
+    },
+{
+  "id": 20,
+  "subject": "Mathematics",
+  "topic": "Matrices",
+  "question": "Let A and B be two 3×3 non-zero real matrices such that AB = O. Then which of the following must be true?",
+  "options": [
+    "|A| = 0 and |B| = 0",
+    "Either |A| = 0 or |B| = 0",
+    "A = O or B = O",
+    "|A| ≠ 0 and |B| ≠ 0"
+  ],
+  "correct": 0,
+  "explanation": "Taking determinants: |AB| = |A||B|. Since AB = O, |AB| = 0, so |A||B| = 0. If |A| ≠ 0 then A is invertible, giving B = O (contradiction since B ≠ 0). Similarly if |B| ≠ 0 then A = O (contradiction). Hence both determinants must be zero.",
+  "difficulty": "Hard"
+}
+  ]
+}

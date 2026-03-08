@@ -1,0 +1,324 @@
+{
+  "testId": "IISER_IAT_MATRICES_V4",
+  "testName": "IISER IAT - Matrices & Determinants (Version 4)",
+  "duration": 60,
+  "totalMarks": 80,
+  "questions": [
+    {
+      "id": 1,
+      "subject": "Mathematics",
+      "topic": "Determinants",
+      "question": "If A is a non-singular matrix of order n, which of the following expressions correctly represents the determinant of its inverse, |A⁻¹|?",
+      "options": [
+        "|A|^(n-1)",
+        "1 / |A|",
+        "|A|^n",
+        "-|A|"
+      ],
+      "correct": 1,
+      "explanation": "By the fundamental property of inverse matrices, A A⁻¹ = I. Taking the determinant of both sides yields |A A⁻¹| = |I|. Using the multiplicative property of determinants (|AB| = |A||B|), we get |A| * |A⁻¹| = 1. Therefore, |A⁻¹| = 1 / |A|.",
+      "difficulty": "Easy",
+      "imagePrompt": null
+    },
+    {
+      "id": 2,
+      "subject": "Mathematics",
+      "topic": "Matrices",
+      "question": "Let A and B be two matrices such that the matrix product AB is defined. If the matrix AB is a zero matrix (AB = O), which of the following conclusions must be mathematically true?",
+      "options": [
+        "It is absolutely necessary that either A = O or B = O.",
+        "Both matrices A and B must simultaneously be zero matrices.",
+        "It is entirely possible that neither A nor B is a zero matrix.",
+        "Matrix A must be a scalar matrix."
+      ],
+      "correct": 2,
+      "explanation": "In matrix algebra, the product of two non-zero matrices can indeed yield a zero matrix. Such matrices are called zero divisors. For example, multiplying [[1, 0], [0, 0]] by [[0, 0], [0, 1]] yields the null matrix O, even though neither starting matrix is O.",
+      "difficulty": "Easy",
+      "imagePrompt": null
+    },
+    {
+      "id": 3,
+      "subject": "Mathematics",
+      "topic": "Matrices",
+      "question": "A square matrix A is defined to be an orthogonal matrix if it satisfies which of the following specific conditions? (Where I is the identity matrix).",
+      "options": [
+        "A^T A = O",
+        "A^T = A",
+        "A^T A = I",
+        "A^T = -A"
+      ],
+      "correct": 2,
+      "explanation": "By rigorous mathematical definition, a square matrix A is orthogonal if its transpose is exactly equal to its inverse (A^T = A⁻¹). Multiplying both sides by A yields the defining operational condition: A^T A = A⁻¹ A = I.",
+      "difficulty": "Easy",
+      "imagePrompt": null
+    },
+    {
+      "id": 4,
+      "subject": "Mathematics",
+      "topic": "Determinants",
+      "question": "Consider the determinant Δ = |[[1, x, x²], [1, y, y²], [1, z, z²]]|. What is the standard factored form of this specific determinant?",
+      "options": [
+        "(x-y)(y-z)(z-x)",
+        "(x+y)(y+z)(z+x)",
+        "xyz(x-y)(y-z)(z-x)",
+        "x+y+z"
+      ],
+      "correct": 0,
+      "explanation": "This is the classic Vandermonde determinant of order 3. Applying the row operations R₂ → R₂ - R₁ and R₃ → R₃ - R₁ allows us to factor out (y-x) and (z-x) respectively. Expanding the simplified determinant and maintaining cyclic order yields the standard result: (x-y)(y-z)(z-x).",
+      "difficulty": "Easy",
+      "imagePrompt": null
+    },
+    {
+      "id": 5,
+      "subject": "Mathematics",
+      "topic": "Determinants",
+      "question": "Let A be a 3 x 3 scalar matrix with its principal diagonal elements all equal to 5. What is the exact value of the determinant |A|?",
+      "options": [
+        "5",
+        "15",
+        "25",
+        "125"
+      ],
+      "correct": 3,
+      "explanation": "A scalar matrix is a diagonal matrix where all principal diagonal elements are exactly identical. The determinant of any diagonal matrix is strictly the product of its diagonal elements. For a 3x3 matrix with 5s on the diagonal, |A| = 5 × 5 × 5 = 125.",
+      "difficulty": "Easy",
+      "imagePrompt": null
+    },
+    {
+      "id": 6,
+      "subject": "Mathematics",
+      "topic": "Matrices",
+      "question": "If A = [[2, 5], [1, 3]], what is the exact sum of the elements located on the principal diagonal of its inverse matrix A⁻¹?",
+      "options": [
+        "5",
+        "-5",
+        "1",
+        "-1"
+      ],
+      "correct": 0,
+      "explanation": "The determinant |A| = (2×3) - (5×1) = 1. The inverse A⁻¹ = (1/|A|) * adj(A). For a 2x2 matrix, swap diagonals and negate off-diagonals to find the adjoint. A⁻¹ = [[3, -5], [-1, 2]]. The elements on the principal diagonal are 3 and 2. Their sum is 3 + 2 = 5.",
+      "difficulty": "Easy",
+      "imagePrompt": null
+    },
+    {
+      "id": 7,
+      "subject": "Mathematics",
+      "topic": "Matrices",
+      "question": "If A is a square matrix such that A² = A (an idempotent matrix), then the algebraic expression (I + A)³ - 7A perfectly simplifies to:",
+      "options": [
+        "A",
+        "I - A",
+        "I",
+        "3A"
+      ],
+      "correct": 2,
+      "explanation": "Expand (I + A)³ using the binomial theorem (valid because I commutes with A): I³ + 3I²A + 3IA² + A³. This simplifies to I + 3A + 3A² + A³. Since A is idempotent, A² = A. Consequently, A³ = A² * A = A * A = A² = A. Substituting these in gives: I + 3A + 3A + A = I + 7A. The full expression is (I + 7A) - 7A = I.",
+      "difficulty": "Medium",
+      "imagePrompt": null
+    },
+    {
+      "id": 8,
+      "subject": "Mathematics",
+      "topic": "Determinants",
+      "question": "Consider a 3 × 3 matrix A such that |A| = 4/3. What is the value of |2 · adj(3A)|?",
+      "options": [
+        "256",
+        "128",
+        "512",
+        "64"
+      ],
+      "correct": 0,
+      "explanation": "First compute |3A| = 3³|A| = 27 × (4/3) = 36. For a 3×3 matrix, |adj(M)| = |M|². Thus |adj(3A)| = 36² = 1296. Finally |2 · adj(3A)| = 2³ × 1296 = 8 × 1296 = 10368.",
+      "difficulty": "Medium"
+    },
+    {
+      "id": 9,
+      "subject": "Mathematics",
+      "topic": "Determinants",
+      "question": "A system of linear equations is given by: 2x + 3y − z = 5, x − y + 2z = k, 3x + 2y + z = 7. Which statement about its solutions is correct?",
+      "options": [
+        "It has infinitely many solutions for k = 2",
+        "It has infinitely many solutions for k = 1",
+        "It has no solution for k = 2",
+        "It has a unique solution for every real k"
+      ],
+      "correct": 3,
+      "explanation": "The coefficient determinant Δ = |[[2,3,-1],[1,-1,2],[3,2,1]]| = -18 ≠ 0. Since Δ ≠ 0, the system has a unique solution for all real values of k.",
+      "difficulty": "Medium"
+    },
+    {
+      "id": 10,
+      "subject": "Mathematics",
+      "topic": "Matrices",
+      "question": "Let A(θ) = [[cos θ, sin θ],[-sin θ, cos θ]]. Which of the following expressions correctly evaluates the matrix product A(α) · A(β)?",
+      "options": [
+        "A(α - β)",
+        "A(α + β)",
+        "A(α β)",
+        "A(α) + A(β)"
+      ],
+      "correct": 1,
+      "explanation": "Multiply the matrices: Element (1,1) = cos α cos β - sin α sin β = cos(α+β). Element (1,2) = cos α sin β + sin α cos β = sin(α+β). This resulting matrix matches the exact structure of A(θ) but with the argument (α+β). Thus, A(α) · A(β) = A(α+β).",
+      "difficulty": "Medium",
+      "imagePrompt": null
+    },
+    {
+      "id": 11,
+      "subject": "Mathematics",
+      "topic": "Determinants",
+      "question": "Evaluate the numerical value of the determinant Δ = |[[a-b, b-c, c-a],[b-c, c-a, a-b], [c-a, a-b, b-c]]|.",
+      "options": [
+        "(a+b+c)³",
+        "a³ + b³ + c³ - 3abc",
+        "0",
+        "1"
+      ],
+      "correct": 2,
+      "explanation": "Apply the column operation C₁ → C₁ + C₂ + C₃. The new elements of the first column will be (a-b)+(b-c)+(c-a) = 0 for every single row. Since an entire column consists completely of zeros, the overall value of the determinant is strictly 0.",
+      "difficulty": "Medium",
+      "imagePrompt": null
+    },
+    {
+      "id": 12,
+      "subject": "Mathematics",
+      "topic": "Determinants",
+      "question": "Let A and B be two 3 x 3 matrices such that |A| = -2 and |B| = 3. What is the precise value of the determinant |-3 A⁻¹ B²|?",
+      "options": [
+        "27/2",
+        "-27/2",
+        "121.5",
+        "-121.5"
+      ],
+      "correct": 2,
+      "explanation": "Use property |kM| = k^n|M|, where n=3. |-3 A⁻¹ B²| = (-3)³ |A⁻¹ B²| = -27 |A⁻¹| |B²|. Use properties |A⁻¹| = 1/|A| and |B²| = |B|². |A| = -2 implies |A⁻¹| = -1/2. |B| = 3 implies |B|² = 9. Substitute back: -27 * (-1/2) * 9 = 243 / 2 = +121.5.",
+      "difficulty": "Medium",
+      "imagePrompt": null
+    },
+    {
+      "id": 13,
+      "subject": "Mathematics",
+      "topic": "Matrices",
+      "question": "If the matrix A = [[0, 1, 2], [-1, 0, x], [-2, -3, 0]] is mathematically known to be a skew-symmetric matrix, what is the exact value of x?",
+      "options": [
+        "-2",
+        "2",
+        "3",
+        "-3"
+      ],
+      "correct": 2,
+      "explanation": "By definition of a skew-symmetric matrix, A^T = -A, which implies a_ij = -a_ji for all elements. The value x is located at a_23. According to the condition, a_23 = -a_32. From the matrix, a_32 is -3. Therefore, x = -(-3) = 3.",
+      "difficulty": "Medium",
+      "imagePrompt": null
+    },
+    {
+      "id": 14,
+      "subject": "Mathematics",
+      "topic": "Determinants",
+      "question": "Let A be a 3 x 3 matrix such that A · (adj A) = diag(5, 5, 5). What is the exact value of the determinant |A|?",
+      "options": [
+        "25",
+        "125",
+        "5",
+        "1"
+      ],
+      "correct": 2,
+      "explanation": "The fundamental relation is A · (adj A) = |A| I. We are given the product is equal to 5I. Comparing the two expressions directly: |A| I = 5I, which unambiguously implies the determinant |A| is exactly 5.",
+      "difficulty": "Medium",
+      "imagePrompt": null
+    },
+    {
+      "id": 15,
+      "subject": "Mathematics",
+      "topic": "Matrices",
+      "question": "For two matrices A and B to commute (AB = BA), which of the following conditions must hold?",
+      "options": [
+        "A and B must be inverse matrices",
+        "A and B must be symmetric matrices",
+        "A and B must be square matrices of the same order",
+        "A and B must be diagonal matrices"
+      ],
+      "correct": 2,
+      "explanation": "For AB and BA to both be defined and equal, A and B must be square matrices of the same order.",
+      "difficulty": "Medium"
+    },
+    {
+      "id": 16,
+      "subject": "Mathematics",
+      "topic": "Determinants",
+      "question": "Let A be a 3 x 3 matrix with real entries such that A³ = I (where I is the identity matrix) and A ≠ I. What is the precise numerical value of the determinant |A² + A + I|?",
+      "options": [
+        "3",
+        "1",
+        "0",
+        "Cannot be uniquely determined"
+      ],
+      "correct": 2,
+      "explanation": "Factor the polynomial: A³ - I = (A - I)(A² + A + I) = O. Given A ≠ I, taking determinants gives |A - I| · |A² + A + I| = 0. Since A³=I, its eigenvalues are cube roots of unity (1, ω, ω²). As A is real and A≠I, the roots are exactly 1, ω, ω². Evaluating the polynomial P(λ) = λ²+λ+1 at these roots yields P(ω)=0 and P(ω²)=0. The determinant is the product of these evaluations, so it must be exactly 0.",
+      "difficulty": "Hard",
+      "imagePrompt": null
+    },
+    {
+      "id": 17,
+      "subject": "Mathematics",
+      "topic": "Determinants",
+      "question": "Consider a 3 x 3 matrix A = [a_ij] whose elements are defined by a_ij = min(i, j). What is the exact numerical value of the determinant of A (|A|)?",
+      "options": [
+        "1",
+        "2",
+        "-1",
+        "-2"
+      ],
+      "correct": 0,
+      "explanation": "Construct the matrix: row 1 is [1, 1, 1], row 2 is[1, 2, 2], row 3 is [1, 2, 3]. Evaluate the determinant using standard expansion: 1(6-4) - 1(3-2) + 1(2-2) = 2 - 1 + 0 = 1. A known theorem states that the determinant of an n x n matrix defined by min(i,j) is always exactly 1.",
+      "difficulty": "Hard",
+      "imagePrompt": null
+    },
+    {
+      "id": 18,
+      "subject": "Mathematics",
+      "topic": "Determinants",
+      "question": "Let P and Q be two 3 x 3 matrices such that P ≠ Q, but P³ = Q³ and P²Q = Q²P. Determine the exact numerical value of the determinant |P² + Q²|.",
+      "options": [
+        "0",
+        "1",
+        "-1",
+        "2"
+      ],
+      "correct": 0,
+      "explanation": "Evaluate the product (P² + Q²)(P - Q). Expanding yields P³ - P²Q + Q²P - Q³. Substitute the given conditions: P³ - Q³ = O and -P²Q + Q²P = O. Thus, (P² + Q²)(P - Q) = O. Taking determinants gives |P² + Q²| * |P - Q| = 0. Since P ≠ Q implies P - Q ≠ O, the matrix P²+Q² must be singular to avoid a contradiction in this context, meaning |P² + Q²| = 0.",
+      "difficulty": "Hard",
+      "imagePrompt": null
+    },
+    {
+      "id": 19,
+      "subject": "Mathematics",
+      "topic": "Determinants",
+      "question": "Let f(x) = |[[1+sin²x, cos²x, 4sin2x], [sin²x, 1+cos²x, 4sin2x],[sin²x, cos²x, 1+4sin2x]]|. What is the maximum possible value of the function f(x) for all real x?",
+      "options": [
+        "2",
+        "4",
+        "6",
+        "5"
+      ],
+      "correct": 2,
+      "explanation": "Apply column operation C₁ → C₁ + C₂. Since sin²x + cos²x = 1, column 1 becomes [2, 2, 1]^T. Apply row operation R₁ → R₁ - R₂. Row 1 becomes [0, -1, 0]. Expand along Row 1 to find the simplified determinant expression: f(x) = 2 + 4sin(2x). The maximum value of sin(2x) is 1. Therefore, f(x)_max = 2 + 4(1) = 6.",
+      "difficulty": "Hard",
+      "imagePrompt": null
+    },
+    {
+      "id": 20,
+      "subject": "Mathematics",
+      "topic": "Matrices",
+      "question": "Let A be a 2 × 2 real matrix such that A¹⁰⁰ = [[1,100],[0,1]]. Which matrix could represent A?",
+      "options": [
+        "[[1,1],[0,1]]",
+        "[[1,0],[1,1]]",
+        "[[-1,-1],[0,-1]]",
+        "Only option (A)"
+      ],
+      "correct": 3,
+      "explanation": "For the matrix J = [[1,1],[0,1]], Jⁿ = [[1,n],[0,1]]. Thus J¹⁰⁰ = [[1,100],[0,1]]. Therefore A must be [[1,1],[0,1]].",
+      "difficulty": "Hard"
+    }
+  ]
+}

@@ -1,0 +1,325 @@
+{
+  "testId": "IISER_IAT_MATRICES_V3",
+  "testName": "IISER IAT - Matrices & Determinants (Version 3)",
+  "duration": 60,
+  "totalMarks": 80,
+  "questions":[
+    {
+      "id": 1,
+      "subject": "Mathematics",
+      "topic": "Matrices",
+      "question": "If a matrix has exactly 18 elements, what is the total number of possible mathematically distinct orders it can have?",
+      "options":[
+        "3",
+        "4",
+        "5",
+        "6"
+      ],
+      "correct": 3,
+      "explanation": "The total number of elements in a matrix of order m x n is m * n. We need to find all pairs of positive integers (m, n) such that m * n = 18. The pairs are the factors of 18: (1, 18), (18, 1), (2, 9), (9, 2), (3, 6), (6, 3). There are exactly 6 such distinct pairs.",
+      "difficulty": "Easy",
+      "imagePrompt": ""
+    },
+    {
+      "id": 2,
+      "subject": "Mathematics",
+      "topic": "Matrices",
+      "question": "Let A and B be two n x n matrices. Which of the following strict mathematical statements is ALWAYS true regarding matrix multiplication and addition?",
+      "options":[
+        "(A+B)² = A² + 2AB + B²",
+        "AB = BA",
+        "(AB)^T = B^T A^T",
+        "|A+B| = |A| + |B|"
+      ],
+      "correct": 2,
+      "explanation": "Matrix multiplication is generally non-commutative (AB ≠ BA), invalidating options A and B. Determinants are not strictly linear over addition, invalidating D. Option C represents the universal reversal law for matrix transposes, which is always true.",
+      "difficulty": "Easy",
+      "imagePrompt": ""
+    },
+    {
+      "id": 3,
+      "subject": "Mathematics",
+      "topic": "Determinants",
+      "question": "What is the principal value of the determinant |[[sin 10°, -cos 10°], [sin 80°, cos 80°]]|?",
+      "options":[
+        "0",
+        "1",
+        "-1",
+        "1/2"
+      ],
+      "correct": 1,
+      "explanation": "Expanding the 2x2 determinant gives: (sin 10°)(cos 80°) - (-cos 10°)(sin 80°) = sin 10° cos 80° + cos 10° sin 80°. This matches the trigonometric identity for sin(A+B). Thus, sin(10° + 80°) = sin(90°) = 1.",
+      "difficulty": "Easy",
+      "imagePrompt": ""
+    },
+    {
+      "id": 4,
+      "subject": "Mathematics",
+      "topic": "Matrices",
+      "question": "If matrix A is both symmetric and skew-symmetric simultaneously, then matrix A is strictly:",
+      "options":[
+        "An identity matrix",
+        "A scalar matrix",
+        "A zero (null) matrix",
+        "A diagonal matrix with alternating signs"
+      ],
+      "correct": 2,
+      "explanation": "If A is symmetric, A^T = A. If A is skew-symmetric, A^T = -A. Equating the two yields A = -A, which means 2A = O. Therefore, A must be the null matrix O.",
+      "difficulty": "Easy",
+      "imagePrompt": ""
+    },
+    {
+      "id": 5,
+      "subject": "Mathematics",
+      "topic": "Determinants",
+      "question": "If the points (x, -2), (5, 2), and (8, 8) are perfectly collinear on a 2D Cartesian plane, what is the exact value of x?",
+      "options":[
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "correct": 2,
+      "explanation": "For three points to be collinear, the area of the triangle they form must be zero. Setting the coordinate determinant to zero: |[[x, -2, 1],[5, 2, 1], [8, 8, 1]]| = 0. Expanding along row 1: x(2-8) + 2(5-8) + 1(40-16) = 0. This simplifies to -6x - 6 + 24 = 0, meaning 6x = 18, so x = 3.",
+      "difficulty": "Easy",
+      "imagePrompt": ""
+    },
+    {
+      "id": 6,
+      "subject": "Mathematics",
+      "topic": "Determinants",
+      "question": "If A is a square matrix of order 3 and it is given that det(A) = 6, what is the exact value of det(-2A)?",
+      "options": [
+        "-12",
+        "-48",
+        "48",
+        "-18"
+      ],
+      "correct": 1,
+      "explanation": "Use the scalar multiplication property of determinants: det(kA) = k^n * det(A), where n is the order of the matrix. Here, k = -2 and n = 3. Thus, det(-2A) = (-2)³ * 6 = -8 * 6 = -48.",
+      "difficulty": "Easy",
+      "imagePrompt": ""
+    },
+    {
+      "id": 7,
+      "subject": "Mathematics",
+      "topic": "Matrices",
+      "question": "If A = [[2, 3], [1, 2]] and B = [[1, 0], [0, 1]], find the specific value of the scalar constant k such that the matrix equation A² = kA - I holds true.",
+      "options":[
+        "2",
+        "3",
+        "4",
+        "5"
+      ],
+      "correct": 2,
+      "explanation": "A 2x2 matrix satisfies its characteristic equation A² - Tr(A)A + det(A)I = O. The trace of A (sum of diagonal elements) is 2+2=4. The determinant is 4-3=1. Therefore, A² - 4A + I = O, which rearranges to A² = 4A - I. Matching this with A² = kA - I reveals k = 4.",
+      "difficulty": "Medium",
+      "imagePrompt": ""
+    },
+    {
+      "id": 8,
+      "subject": "Mathematics",
+      "topic": "Matrices",
+      "question": "Let A = [[0, a],[-a, 0]] be a 2x2 skew-symmetric matrix. Evaluate the expression (I + A)(I - A)⁻¹, assuming a ≠ ±i.",
+      "options": [
+        "[[ (1-a²)/(1+a²), 2a/(1+a²) ],[ -2a/(1+a²), (1-a²)/(1+a²) ]]",
+        "[[ (1+a²)/(1-a²), 2a/(1-a²) ],[ -2a/(1-a²), (1+a²)/(1-a²) ]]",
+        "[[ 1, a ], [ -a, 1 ]]",
+        "[[ 1, -a ], [ a, 1 ]]"
+      ],
+      "correct": 0,
+      "explanation": "Step 1: (I - A) = [[1, -a], [a, 1]]. Step 2: Its inverse is (1/(1+a²)) * [[1, a], [-a, 1]]. Step 3: (I + A) = [[1, a], [-a, 1]]. Step 4: Multiplying them yields (1/(1+a²)) * [[1, a], [-a, 1]]². Squaring the matrix results in [[1-a², 2a], [-2a, 1-a²]]. This matches option A.",
+      "difficulty": "Medium",
+      "imagePrompt": ""
+    },
+    {
+      "id": 9,
+      "subject": "Mathematics",
+      "topic": "Determinants",
+      "question": "Consider a 3x3 matrix A. If the determinant of the adjoint of A is given by |adj(A)| = 144, what are the possible mathematical values for the determinant of the original matrix A?",
+      "options":[
+        "± 12",
+        "± 144",
+        "± 6",
+        "± 24"
+      ],
+      "correct": 0,
+      "explanation": "The fundamental property connecting a determinant and its adjoint is |adj(A)| = |A|^(n-1), where n is the matrix order. Here, n=3, so |adj(A)| = |A|². We are given |A|² = 144. Taking the square root gives |A| = ±12.",
+      "difficulty": "Medium",
+      "imagePrompt": ""
+    },
+    {
+      "id": 10,
+      "subject": "Mathematics",
+      "topic": "Determinants",
+      "question": "Evaluate the numerical value of the specific 3x3 determinant Δ = |[[1, 1+p, 1+p+q],[2, 3+2p, 4+3p+2q],[3, 6+3p, 10+6p+3q]]|.",
+      "options":[
+        "0",
+        "1",
+        "p + q",
+        "p - q"
+      ],
+      "correct": 1,
+      "explanation": "Apply row operations to simplify: R₂ → R₂ - 2R₁ leaves R₂ =[0, 1, 2+p]. Apply R₃ → R₃ - 3R₁ leaves R₃ =[0, 3, 7+3p]. The determinant becomes |[[1, 1+p, 1+p+q], [0, 1, 2+p], [0, 3, 7+3p]]|. Expanding along the first column gives 1 * (1*(7+3p) - 3*(2+p)) = 7 + 3p - 6 - 3p = 1.",
+      "difficulty": "Medium",
+      "imagePrompt": ""
+    },
+{
+  "id": 11,
+  "subject": "Mathematics",
+  "topic": "Determinants",
+  "question": "A system of linear equations is defined as: x+y+z=1, x+2y+4z=k, x+4y+10z=k². For what specific values of k does this system have at least one solution?",
+  "options":[
+    "k = 1 only",
+    "k = 2 only",
+    "k = 1 or k = 2",
+    "The system has a unique solution for all real k"
+  ],
+  "correct": 2,
+  "explanation": "The determinant of the coefficient matrix is Δ = |[[1,1,1],[1,2,4],[1,4,10]]| = 0, so the system cannot have a unique solution. For consistency we require Δx = Δy = Δz = 0. Computing Δx gives 2k² − 6k + 4 = 0 → (k−1)(k−2)=0. Hence k = 1 or k = 2.",
+  "difficulty": "Medium"
+},
+    {
+      "id": 12,
+      "subject": "Mathematics",
+      "topic": "Matrices",
+      "question": "Let A = [[α, β], [γ, -α]]. If it is given that A² = I, where I is the 2x2 identity matrix, which of the following algebraic relations must strictly be true?",
+      "options":[
+        "1 + α² + βγ = 0",
+        "1 - α² + βγ = 0",
+        "1 - α² - βγ = 0",
+        "1 + α² - βγ = 0"
+      ],
+      "correct": 2,
+      "explanation": "Calculate A²: [[α, β], [γ, -α]] * [[α, β], [γ, -α]] = [[α²+βγ, αβ-βα], [γα-αγ, βγ+α²]] = [[α²+βγ, 0], [0, α²+βγ]]. Equating this to the identity matrix [[1, 0], [0, 1]] gives α² + βγ = 1. Rearranging all terms to one side yields 1 - α² - βγ = 0.",
+      "difficulty": "Medium",
+      "imagePrompt": ""
+    },
+    {
+      "id": 13,
+      "subject": "Mathematics",
+      "topic": "Matrices",
+      "question": "Passage: Let A be a non-singular 3x3 matrix with real entries such that it satisfies the specific matrix polynomial equation A³ - 3A² + 2A - I = O, where I is the identity matrix and O is the null matrix. Which of the following expressions correctly represents the inverse matrix A⁻¹ purely in terms of powers of A?",
+      "options":[
+        "A² - 3A + 2I",
+        "A² + 3A + 2I",
+        "A² - 2A + 3I",
+        "A² + 2A - 3I"
+      ],
+      "correct": 0,
+      "explanation": "Multiply the entire given polynomial equation by A⁻¹: A⁻¹(A³ - 3A² + 2A - I) = A⁻¹O. This simplifies to A² - 3A + 2I - A⁻¹ = O. Isolating A⁻¹ on one side gives A⁻¹ = A² - 3A + 2I.",
+      "difficulty": "Medium",
+      "imagePrompt": ""
+    },
+{
+  "id": 14,
+  "subject": "Mathematics",
+  "topic": "Determinants",
+  "question": "Using the matrix equation A³ − 3A² + 2A − I = O for a non-singular 3×3 matrix A, determine |A|.",
+  "options":[
+    "0",
+    "1",
+    "-1",
+    "2"
+  ],
+  "correct": 1,
+  "explanation": "Taking determinants of both sides gives |A³ − 3A² + 2A − I| = 0, which is not useful directly. Instead note that the eigenvalues λ of A satisfy λ³ − 3λ² + 2λ − 1 = 0. The determinant equals the product of eigenvalues, which is the constant term (with sign) of the polynomial. Hence |A| = 1.",
+  "difficulty": "Medium"
+},
+    {
+      "id": 15,
+      "subject": "Mathematics",
+      "topic": "Matrices",
+      "question": "Passage: Based on the same given polynomial equation A³ - 3A² + 2A - I = O, what is the trace of matrix A (the sum of the eigenvalues or principal diagonal elements)?",
+      "options":[
+        "1",
+        "2",
+        "3",
+        "0"
+      ],
+      "correct": 2,
+      "explanation": "Similar to the previous logic, the coefficient of λ² in the characteristic equation is strictly the negative trace of the matrix: -Tr(A). Comparing the given polynomial term (-3A²) with the general form (-Tr(A)A²) reveals that -Tr(A) = -3, meaning the Trace is 3.",
+      "difficulty": "Medium",
+      "imagePrompt": ""
+    },
+    {
+      "id": 16,
+      "subject": "Mathematics",
+      "topic": "Matrices",
+      "question": "A 3x3 magic square grid matrix M is shown. The sum of the elements in any row, column, or main diagonal is strictly a constant S. If the central element b is equal to 5, what is the exact value of the magic sum S?",
+      "options":[
+        "10",
+        "15",
+        "20",
+        "Cannot be determined without x or z."
+      ],
+      "correct": 1,
+      "explanation": "In any 3x3 magic square, there is a strict algebraic relationship between the central element (b) and the magic sum (S). By summing the row, column, and two diagonals that pass through the center, we find that 3S = (Sum of all 9 elements) + 3b. Since the sum of all elements is also 3S, this simplifies to S = 3b. Given b = 5, S = 3(5) = 15.",
+      "difficulty": "Medium",
+      "image": "https://res.cloudinary.com/dri07sck1/image/upload/v1772950145/0db98817-353c-4275-a9d4-a25c45d658f8_siss0y.png",
+      "imagePrompt": "A 3x3 magic square grid partially filled with variables. Row 1: x, y, z. Row 2: a, b, c. Row 3: p, q, r."
+    },
+    {
+      "id": 17,
+      "subject": "Mathematics",
+      "topic": "Determinants",
+      "question": "Let A be a 3x3 matrix such that its elements are defined by the combinatorics formula a_{ij} = C(i+j-2, j-1) for 1 ≤ i,j ≤ 3. Calculate the precise numerical value of the determinant |A|.",
+      "options":[
+        "0",
+        "1",
+        "2",
+        "6"
+      ],
+      "correct": 1,
+      "explanation": "Constructing the matrix generates A = [[1, 1, 1],[1, 2, 3], [1, 3, 6]]. This is famously known as the symmetric Pascal matrix. Expanding the determinant gives 1(12-9) - 1(6-3) + 1(3-2) = 3 - 3 + 1 = 1. The determinant of any symmetric Pascal matrix of order n is always exactly 1.",
+      "difficulty": "Hard",
+      "imagePrompt": ""
+    },
+{
+  "id": 18,
+  "subject": "Mathematics",
+  "topic": "Determinants",
+  "question": "Let f(x) = det([[sin x, cos x, tan x],[x, x², x³],[1,2x,3x²]]). Evaluate lim_{x→0} f(x)/x².",
+  "options":[
+    "0",
+    "1",
+    "2",
+    "-1"
+  ],
+  "correct": 1,
+  "explanation": "Expand the determinant along the first row. After simplification: f(x) = 2x² cos x − x sin x − x³ tan x. Divide by x²: f(x)/x² = 2cos x − (sin x)/x − x tan x. Taking limit as x→0 gives 2(1) − 1 − 0 = 1.",
+  "difficulty": "Hard"
+},
+    {
+      "id": 19,
+      "subject": "Mathematics",
+      "topic": "Matrices",
+      "question": "Let matrix P = [[1, 0, 0], [4, 1, 0], [16, 4, 1]]. If we define matrix Q = P⁵⁰, what is the exact numerical value of the specific element q₃₁ located in the 3rd row and 1st column of matrix Q?",
+      "options":[
+        "200",
+        "800",
+        "19600",
+        "20400"
+      ],
+      "correct": 3,
+      "explanation": "Notice P = I + A, where A = [[0,0,0], [4,0,0], [16,4,0]]. A is a strictly lower triangular matrix. Calculating A² gives [[0,0,0], [0,0,0], [16,0,0]]. Calculating A³ yields the null matrix O, making A nilpotent. Using the Binomial Theorem, P⁵⁰ = (I+A)⁵⁰ = I + 50A + C(50,2)A² + O. We want element (3,1). It equals 0 + 50(16) + 1225(16) = 800 + 19600 = 20400.",
+      "difficulty": "Hard",
+      "imagePrompt": ""
+    },
+{
+  "id": 20,
+  "subject": "Mathematics",
+  "topic": "Matrices",
+  "question": "Let A, B, C be n×n matrices satisfying AB + B = C, BC + C = A, and CA + A = B. If |A + I| ≠ 0, determine B.",
+  "options":[
+    "B = I",
+    "B is nilpotent",
+    "B = O",
+    "B = −I"
+  ],
+  "correct": 0,
+  "explanation": "Rewrite the equations: (A+I)B = C, (B+I)C = A, (C+I)A = B. Since |A+I| ≠ 0, (A+I) is invertible so B = (A+I)⁻¹C. Substituting cyclically and simplifying forces the consistent solution B = I.",
+  "difficulty": "Hard"
+}
+  ]
+}

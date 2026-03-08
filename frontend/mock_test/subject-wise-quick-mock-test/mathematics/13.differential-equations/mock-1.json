@@ -1,0 +1,351 @@
+{
+  "testId": "IISER_IAT_DE_HARD_V1",
+  "testName": "IISER IAT - Advanced Differential Equations (Hard)",
+  "duration": 90,
+  "totalMarks": 100,
+  "questions": [
+{
+    "id": 1,
+    "subject": "Mathematics",
+    "topic": "Differential Equations",
+    "subtopic": "Order and Degree",
+    "question": "Determine the order and degree of the following differential equation:\n$\\left(\\frac{d^2y}{dx^2}\\right)^3 + \\left(\\frac{dy}{dx}\\right)^4 + \\sin\\left(\\frac{dy}{dx}\\right) = 0$",
+    "options":[
+      "Order 2, Degree 3",
+      "Order 2, Degree 4",
+      "Order 2, Degree not defined",
+      "Order not defined, Degree 3"
+    ],
+    "correct": 2,
+    "explanation": "<strong>Step 1:</strong> The order is the highest derivative present, which is d²y/dx², so Order = 2.<br><strong>Step 2:</strong> Degree is only defined if the equation is a polynomial in its derivatives. The presence of sin(dy/dx) violates this. Thus, degree is not defined.",
+    "difficulty": "Easy",
+    "imagePrompt": ""
+  },
+  {
+    "id": 2,
+    "subject": "Mathematics",
+    "topic": "Differential Equations",
+    "subtopic": "Order and Degree",
+    "question": "Consider the differential equation $y = x \\frac{dy}{dx} + a \\sqrt{1 + \\left(\\frac{dy}{dx}\\right)^2}$. What is the sum of the order and the degree of this differential equation?",
+    "options": [
+      "1",
+      "2",
+      "3",
+      "4"
+    ],
+    "correct": 2,
+    "explanation": "<strong>Step 1:</strong> Isolate the radical: y - x y' = a√(1 + (y')²).<br><strong>Step 2:</strong> Square both sides to polynomialize: (y - xy')² = a²(1 + (y')²). Expanding yields (x²-a²)(y')² - 2xyy' + y² - a² = 0.<br><strong>Step 3:</strong> The highest derivative is y' (Order = 1). Its highest power is 2 (Degree = 2). Sum = 3.",
+    "difficulty": "Easy",
+    "imagePrompt": ""
+  },
+  {
+    "id": 3,
+    "subject": "Mathematics",
+    "topic": "Differential Equations",
+    "subtopic": "Formation of a differential equation",
+    "question": "Form the differential equation representing the family of curves given by $y = A \\cos x + B \\sin x$, where $A$ and $B$ are arbitrary constants.",
+    "options":[
+      "y'' + 9y = 0",
+      "y'' + y = 0",
+      "y'' - y = 0",
+      "y'' + 3y = 0"
+    ],
+    "correct": 1,
+    "explanation": "<strong>Step 1:</strong> Two arbitrary constants require differentiating twice. First derivative: y' = -A sin x + B cos x.<br><strong>Step 2:</strong> Second derivative: y'' = -A cos x - B sin x.<br><strong>Step 3:</strong> Factor out -1: y'' = -(A cos x + B sin x) = -y. Thus, y'' + y = 0.",
+    "difficulty": "Easy",
+    "imagePrompt": ""
+  },
+  {
+    "id": 4,
+    "subject": "Mathematics",
+    "topic": "Differential Equations",
+    "subtopic": "Solution by separation of variables",
+    "question": "Find the general solution of the differential equation $\\frac{dy}{dx} = \\frac{1+y^2}{1+x^2}$.",
+    "options":[
+      "(x-y)/(1+xy) = C",
+      "(y-x)/(1+xy) = C",
+      "(y+x)/(1-xy) = C",
+      "xy = C"
+    ],
+    "correct": 1,
+    "explanation": "<strong>Step 1:</strong> Separate variables: dy/(1+y²) = dx/(1+x²).<br><strong>Step 2:</strong> Integrate both sides to get tan⁻¹y = tan⁻¹x + C₁.<br><strong>Step 3:</strong> Rearrange and use trig identities: tan⁻¹y - tan⁻¹x = C₁ ⇒ tan⁻¹[(y-x)/(1+xy)] = C₁ ⇒ (y-x)/(1+xy) = tan(C₁) = C.",
+    "difficulty": "Easy",
+    "imagePrompt": ""
+  },
+  {
+    "id": 5,
+    "subject": "Mathematics",
+    "topic": "Differential Equations",
+    "subtopic": "Linear Differential Equations",
+    "question": "What is the integrating factor of the linear differential equation $x \\ln x \\frac{dy}{dx} + y = 2 \\ln x$?",
+    "options":[
+      "\\ln x",
+      "x \\ln x",
+      "e^{\\ln x}",
+      "1 / \\ln x"
+    ],
+    "correct": 0,
+    "explanation": "<strong>Step 1:</strong> Divide by x ln x to get standard form: dy/dx + [1/(x ln x)]y = 2/x².<br><strong>Step 2:</strong> The Integrating Factor (IF) is e^∫P(x)dx. Here P(x) = 1/(x ln x).<br><strong>Step 3:</strong> Let u = ln x, du = 1/x dx. IF = e^∫(1/u)du = e^(ln u) = u = ln x.",
+    "difficulty": "Easy",
+    "imagePrompt": ""
+  },
+  {
+    "id": 6,
+    "subject": "Mathematics",
+    "topic": "Differential Equations",
+    "subtopic": "Formation of a differential equation",
+    "question": "Which of the following differential equations corresponds to the slope field showing concentric circular patterns around the origin?",
+    "options":[
+      "dy/dx = x/y",
+      "dy/dx = -x/y",
+      "dy/dx = y/x",
+      "dy/dx = -y/x"
+    ],
+    "correct": 1,
+    "explanation": "<strong>Step 1:</strong> Concentric circles centered at the origin have the equation x² + y² = C².<br><strong>Step 2:</strong> Differentiate implicitly with respect to x: 2x + 2y(dy/dx) = 0.<br><strong>Step 3:</strong> Solving for dy/dx yields dy/dx = -x/y.",
+    "difficulty": "Easy",
+    "image":"https://res.cloudinary.com/dhb8qmnxt/image/upload/v1772985914/6a6c3b2c-68b9-4e33-9353-0e8d0ceb81f7_f82rrw.png",
+    "imagePrompt": "A direction field (slope field) on a 2D Cartesian plane showing short line segments. The segments perfectly form concentric circular patterns around the origin. For instance, at (1,0) the segment is completely vertical, at (0,1) it is completely horizontal, and at (1,1) it has a slope of -1."
+  },
+  {
+    "id": 7,
+    "subject": "Mathematics",
+    "topic": "Differential Equations",
+    "subtopic": "Homogeneous differential equation",
+    "question": "Solve the homogeneous differential equation $(x^2 + y^2) dx = 2xy dy$.",
+    "options":[
+      "x² - y² = Cx",
+      "x² + y² = Cx",
+      "x² - y² = Cy",
+      "x² + y² = Cy"
+    ],
+    "correct": 0,
+    "explanation": "<strong>Step 1:</strong> Rewrite as dy/dx = (x²+y²)/(2xy). Let y = vx, then dy/dx = v + x(dv/dx).<br><strong>Step 2:</strong> Substitute: v + x(dv/dx) = (1+v²)/(2v). This simplifies to x(dv/dx) = (1-v²)/(2v).<br><strong>Step 3:</strong> Separate variables: 2v/(1-v²) dv = dx/x. Integrating gives -ln(1-v²) = ln x + C ⇒ 1/(1-v²) = Kx.<br><strong>Step 4:</strong> Substitute v = y/x to get x²/(x²-y²) = Kx ⇒ x² - y² = Cx.",
+    "difficulty": "Medium",
+    "imagePrompt": ""
+  },
+  {
+    "id": 8,
+    "subject": "Mathematics",
+    "topic": "Differential Equations",
+    "subtopic": "Formation of a differential equation",
+    "question": "Find the differential equation of the family of all circles touching the x-axis at the origin.",
+    "options":[
+      "dy/dx = (x² - y²) / (2xy)",
+      "dy/dx = (2xy) / (x² - y²)",
+      "dy/dx = (x² + y²) / (2xy)",
+      "dy/dx = (2xy) / (x² + y²)"
+    ],
+    "correct": 1,
+    "explanation": "<strong>Step 1:</strong> Such circles have centers on the y-axis at (0, a) and radius a. Equation: x² + (y-a)² = a² ⇒ x² + y² - 2ay = 0.<br><strong>Step 2:</strong> Isolate parameter a: a = (x²+y²)/(2y).<br><strong>Step 3:</strong> Differentiate with respect to x: 0 =[2y(2x + 2yy') - (x²+y²)(2y')] / 4y².<br><strong>Step 4:</strong> Simplify numerator: 4xy + 4y²y' - 2x²y' - 2y²y' = 0 ⇒ 4xy + 2y²y' - 2x²y' = 0 ⇒ y'(x²-y²) = 2xy ⇒ y' = 2xy/(x²-y²).",
+    "difficulty": "Medium",
+    "imagePrompt": ""
+  },
+  {
+    "id": 9,
+    "subject": "Mathematics",
+    "topic": "Differential Equations",
+    "subtopic": "Linear Differential Equations",
+    "question": "Find the general solution of the linear differential equation $x \\frac{dy}{dx} + 2y = x^2 \\log_e x$.",
+    "options":[
+      "y = (x²/4) log_e x - x²/16 + C x⁻²",
+      "y = (x²/2) log_e x - x²/4 + C x⁻²",
+      "y = (x²/4) log_e x + x²/16 + C x⁻²",
+      "y = x² log_e x - x² + C x⁻²"
+    ],
+    "correct": 0,
+    "explanation": "<strong>Step 1:</strong> Divide by x: dy/dx + (2/x)y = x log_e x. The IF = e^∫(2/x)dx = x².<br><strong>Step 2:</strong> Multiply DE by IF: y x² = ∫ x³ log_e x dx.<br><strong>Step 3:</strong> Use integration by parts (u=log_e x, dv=x³dx): ∫ = (x⁴/4)log_e x - ∫(x⁴/4)(1/x)dx = (x⁴/4)log_e x - x⁴/16 + C.<br><strong>Step 4:</strong> Divide by x²: y = (x²/4)log_e x - x²/16 + Cx⁻².",
+    "difficulty": "Medium",
+    "imagePrompt": ""
+  },
+  {
+    "id": 10,
+    "subject": "Mathematics",
+    "topic": "Differential Equations",
+    "subtopic": "Solution by separation of variables",
+    "question": "According to Newton's law of cooling: dT/dt = -k(T - T_s). A heated metal block cools from 80°C to 60°C in exactly 10 minutes. The surrounding room temperature is kept strictly constant at 20°C. What is the exact value of the cooling constant k (in min⁻¹)?",
+    "options":[
+      "(1/10) \\ln(1.5)",
+      "(1/10) \\ln(1.2)",
+      "10 \\ln(1.5)",
+      "\\ln(1.5)"
+    ],
+    "correct": 0,
+    "explanation": "<strong>Step 1:</strong> Separate variables and integrate: ∫ dT/(T-20) = -k ∫ dt ⇒ ln(T-20) = -kt + C.<br><strong>Step 2:</strong> At t=0, T=80, so C = ln(60). Equation is (T-20)/60 = e^{-kt}.<br><strong>Step 3:</strong> At t=10, T=60. (60-20)/60 = e^{-10k} ⇒ 40/60 = e^{-10k} ⇒ 2/3 = e^{-10k}.<br><strong>Step 4:</strong> Take ln: -10k = ln(2/3) ⇒ 10k = ln(1.5) ⇒ k = (1/10)ln(1.5).",
+    "difficulty": "Medium",
+    "imagePrompt": ""
+  },
+  {
+    "id": 11,
+    "subject": "Mathematics",
+    "topic": "Differential Equations",
+    "subtopic": "Solution by separation of variables",
+    "question": "Using the same cooling model, what will be the temperature of the metal block after an additional 10 minutes have elapsed (i.e., at t = 20 minutes)?",
+    "options":[
+      "40°C",
+      "46.67°C",
+      "50°C",
+      "45°C"
+    ],
+    "correct": 1,
+    "explanation": "<strong>Step 1:</strong> We use the equation (T-20)/60 = e^{-kt}. We want T at t=20.<br><strong>Step 2:</strong> Evaluate e^{-20k} = (e^{-10k})². From the previous question, e^{-10k} = 2/3.<br><strong>Step 3:</strong> e^{-20k} = (2/3)² = 4/9.<br><strong>Step 4:</strong> (T-20)/60 = 4/9 ⇒ T-20 = 240/9 = 80/3 ≈ 26.67. Thus, T = 46.67°C.",
+    "difficulty": "Medium",
+    "imagePrompt": ""
+  },
+  {
+    "id": 12,
+    "subject": "Mathematics",
+    "topic": "Differential Equations",
+    "subtopic": "Formation of a differential equation",
+    "question": "The curve geometrically described in the figure satisfies which of the following differential equations?",
+    "options":[
+      "x (dy/dx) + y = 0",
+      "y (dy/dx) + x = 0",
+      "x (dy/dx) - y = 0",
+      "y (dy/dx) - x = 0"
+    ],
+    "correct": 0,
+    "explanation": "<strong>Step 1:</strong> Equation of tangent at P(x,y) is Y - y = y'(X - x).<br><strong>Step 2:</strong> X-intercept T occurs when Y=0, yielding X_T = x - y/y'. Y-intercept N occurs when X=0, yielding Y_N = y - x y'.<br><strong>Step 3:</strong> Since P is the midpoint of TN, 2x = X_T + 0 ⇒ 2x = x - y/y' ⇒ x = -y/y'.<br><strong>Step 4:</strong> Rearrange to get xy' = -y ⇒ x(dy/dx) + y = 0.",
+    "difficulty": "Medium",
+    "image":"https://res.cloudinary.com/dhb8qmnxt/image/upload/v1772985977/5615364e-4159-4303-abf2-09c6b1f4c5f4_bz9uav.png",
+    "imagePrompt": "A curve in the first quadrant of a Cartesian plane. The tangent to the curve at an arbitrary point P(x, y) meets the x-axis at point T and the y-axis at point N. The point P is visibly the exact midpoint of the line segment TN. A right triangle is formed by the tangent line, the x-axis, and the y-axis."
+  },
+  {
+    "id": 13,
+    "subject": "Mathematics",
+    "topic": "Differential Equations",
+    "subtopic": "Linear Differential Equations",
+    "question": "Find the general solution of the differential equation $(x + 2y^3) \\frac{dy}{dx} = y$.",
+    "options":[
+      "x = y³ + Cy",
+      "x = y² + Cy",
+      "y = x³ + Cx",
+      "y = x² + Cx"
+    ],
+    "correct": 0,
+    "explanation": "<strong>Step 1:</strong> Invert to form a linear DE in x: dx/dy = (x + 2y³)/y = x/y + 2y².<br><strong>Step 2:</strong> Rewrite: dx/dy - (1/y)x = 2y². The integrating factor is e^∫(-1/y)dy = 1/y.<br><strong>Step 3:</strong> Multiply by IF: x(1/y) = ∫(2y²)(1/y)dy = ∫2y dy = y² + C.<br><strong>Step 4:</strong> Multiply by y to isolate x: x = y³ + Cy.",
+    "difficulty": "Medium",
+    "imagePrompt": ""
+  },
+  {
+    "id": 14,
+    "subject": "Mathematics",
+    "topic": "Differential Equations",
+    "subtopic": "Solution by separation of variables",
+    "question": "Let y(x) be the solution to the differential equation dy/dx = y tan x with the initial condition y(0) = 1. What is the exact value of y(π/4)?",
+    "options":[
+      "1/\\sqrt{2}",
+      "\\sqrt{2}",
+      "1",
+      "2"
+    ],
+    "correct": 1,
+    "explanation": "<strong>Step 1:</strong> Separate variables: dy/y = tan x dx.<br><strong>Step 2:</strong> Integrate both sides: ln y = ln(sec x) + C.<br><strong>Step 3:</strong> Apply y(0)=1: ln(1) = ln(sec 0) + C ⇒ 0 = 0 + C ⇒ C = 0. Therefore, y = sec x.<br><strong>Step 4:</strong> Evaluate at π/4: y(π/4) = sec(π/4) = √2.",
+    "difficulty": "Medium",
+    "imagePrompt": ""
+  },
+  {
+    "id": 15,
+    "subject": "Mathematics",
+    "topic": "Differential Equations",
+    "subtopic": "Homogeneous differential equation",
+    "question": "Find the particular solution of the homogeneous differential equation dy/dx = y/x + sin(y/x), given that y(1) = π/2.",
+    "options":[
+      "y = 2x tan⁻¹ x",
+      "y = x tan⁻¹(x/2)",
+      "y = 2x sin⁻¹ x",
+      "y = x sin⁻¹(2x)"
+    ],
+    "correct": 0,
+    "explanation": "<strong>Step 1:</strong> Substitute y = vx, then dy/dx = v + x(dv/dx).<br><strong>Step 2:</strong> Equation becomes v + x(dv/dx) = v + sin v ⇒ x(dv/dx) = sin v.<br><strong>Step 3:</strong> Separate variables: csc v dv = dx/x. Integrate: ln|csc v - cot v| = ln x + C ⇒ ln|tan(v/2)| = ln(Kx) ⇒ tan(y/2x) = Kx.<br><strong>Step 4:</strong> Use y(1)=π/2: tan(π/4) = K(1) ⇒ K=1. Solution is tan(y/2x) = x ⇒ y = 2x tan⁻¹x.",
+    "difficulty": "Medium",
+    "imagePrompt": ""
+  },
+  {
+    "id": 16,
+    "subject": "Mathematics",
+    "topic": "Differential Equations",
+    "subtopic": "Linear Differential Equations",
+    "question": "Solve the initial value problem $\\cos x \\frac{dy}{dx} + y \\sin x = 1$, given $y(0) = 2$.",
+    "options":[
+      "y = \\sin x + 2 \\cos x",
+      "y = 2 \\sin x + \\cos x",
+      "y = \\cos x + 2 \\sin x",
+      "y = \\sin x - 2 \\cos x"
+    ],
+    "correct": 0,
+    "explanation": "<strong>Step 1:</strong> Divide by cos x to get standard linear form: dy/dx + y tan x = sec x.<br><strong>Step 2:</strong> Integrating Factor IF = e^∫tan x dx = sec x.<br><strong>Step 3:</strong> Multiply by IF: y sec x = ∫sec² x dx = tan x + C.<br><strong>Step 4:</strong> Apply y(0)=2: 2(1) = 0 + C ⇒ C=2. Thus y sec x = tan x + 2, giving y = sin x + 2 cos x.",
+    "difficulty": "Medium",
+    "imagePrompt": ""
+  },
+  {
+    "id": 17,
+    "subject": "Mathematics",
+    "topic": "Differential Equations",
+    "subtopic": "Linear Differential Equations",
+    "question": "A curve y=f(x) satisfies the linear differential equation dy/dx = x + y with the initial condition y(0)=1. Find the exact area bounded by this curve, the x-axis, and the vertical lines x=0 and x=1.",
+    "options":[
+      "2e - 3.5",
+      "e - 1.5",
+      "2e - 2.5",
+      "e - 0.5"
+    ],
+    "correct": 0,
+    "explanation": "<strong>Step 1:</strong> Solve dy/dx - y = x. IF = e⁻ˣ. y e⁻ˣ = ∫x e⁻ˣ dx = -x e⁻ˣ - e⁻ˣ + C. Thus y = -x - 1 + C eˣ.<br><strong>Step 2:</strong> Apply y(0)=1: 1 = -1 + C ⇒ C=2. Equation is y = 2eˣ - x - 1.<br><strong>Step 3:</strong> Integrate to find area: ∫_0^1 (2eˣ - x - 1) dx = [2eˣ - x²/2 - x]_0^1.<br><strong>Step 4:</strong> Evaluate: (2e - 1.5) - (2) = 2e - 3.5.",
+    "difficulty": "Hard",
+    "imagePrompt": ""
+  },
+  {
+    "id": 18,
+    "subject": "Mathematics",
+    "topic": "Differential Equations",
+    "subtopic": "Formation of a differential equation",
+    "question": "A closed curve passes through the point (1, 1) and has the geometric property that the length of the subnormal at any point (x,y) on the curve is exactly equal to its abscissa x. Which of the following is the equation of this curve?",
+    "options":[
+      "x² + y² = 2",
+      "x² - y² = 2",
+      "y² = 2x",
+      "x² + y² = 1"
+    ],
+    "correct": 0,
+    "explanation": "<strong>Step 1:</strong> Length of subnormal is |y dy/dx|. Thus |y dy/dx| = x. This yields y dy/dx = ±x.<br><strong>Step 2:</strong> Since it is a *closed* curve, it must form an ellipse/circle, necessitating y dy/dx = -x. (The positive case forms a hyperbola).<br><strong>Step 3:</strong> Separate and integrate: y dy = -x dx ⇒ y²/2 = -x²/2 + C/2 ⇒ x² + y² = C.<br><strong>Step 4:</strong> Using point (1,1): 1 + 1 = C ⇒ C=2. The curve is x² + y² = 2.",
+    "difficulty": "Hard",
+    "imagePrompt": ""
+  },
+  {
+    "id": 19,
+    "subject": "Mathematics",
+    "topic": "Differential Equations",
+    "subtopic": "Solution by separation of variables",
+    "question": "Let A(t) be the amount of salt (in kg) remaining in the tank at time t minutes. Which of the following represents the amount of salt inside the tank after exactly 20 minutes?",
+    "options":[
+      "10 e^{-1} kg",
+      "10 e^{-2} kg",
+      "5 e^{-1} kg",
+      "5 e^{-2} kg"
+    ],
+    "correct": 0,
+    "explanation": "<strong>Step 1:</strong> Setup DE: dA/dt = Rate In - Rate Out. Rate In = 0 (pure water). Rate Out = (A/100) * 5 = 0.05 A.<br><strong>Step 2:</strong> dA/dt = -0.05 A. Integrating gives A(t) = A₀ e^{-0.05 t}.<br><strong>Step 3:</strong> Initial salt A₀ = 10 kg. Thus A(t) = 10 e^{-0.05 t}.<br><strong>Step 4:</strong> At t=20, A(20) = 10 e^{-0.05 * 20} = 10 e⁻¹ kg.",
+    "difficulty": "Hard",
+    "image":"https://res.cloudinary.com/dhb8qmnxt/image/upload/v1772986064/37d069db-8a2d-4b22-bca1-e3636b96deba_cow0rm.png",
+    "imagePrompt": "A diagram of an industrial mixing tank system. Tank A contains 100 liters of water with 10 kg of salt fully dissolved in it. A pipe pours pure water into Tank A at a steady rate of 5 liters/minute. A propeller stirs the mixture. Another pipe drains the well-mixed solution out of Tank A at the exact same rate of 5 liters/minute."
+  },
+  {
+    "id": 20,
+    "subject": "Mathematics",
+    "topic": "Differential Equations",
+    "subtopic": "Linear Differential Equations",
+    "question": "Let y(x) be the strictly positive solution of the differential equation dy/dx + (1/(x²-1))y = 0 for x > 1, such that y(2) = √3. Evaluate the limit lim_{x → ∞} y(x).",
+    "options":[
+      "1",
+      "√3",
+      "0",
+      "∞"
+    ],
+    "correct": 0,
+    "explanation": "<strong>Step 1:</strong> Separate variables: dy/y = -1/(x²-1) dx.<br><strong>Step 2:</strong> Integrate using partial fractions: ln y = -1/2 ln|(x-1)/(x+1)| + C = 1/2 ln((x+1)/(x-1)) + C. Thus y = K √[(x+1)/(x-1)].<br><strong>Step 3:</strong> Find K using y(2) = √3: √3 = K √3/1 ⇒ K=1. So y(x) = √[(x+1)/(x-1)].<br><strong>Step 4:</strong> Take the limit as x→∞: lim √[(1+1/x)/(1-1/x)] = √1 = 1.",
+    "difficulty": "Hard",
+    "imagePrompt": ""
+  }
+]
+}
