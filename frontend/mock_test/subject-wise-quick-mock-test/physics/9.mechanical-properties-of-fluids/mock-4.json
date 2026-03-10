@@ -1,247 +1,322 @@
 {
-  "testId": "QUICK_TOPIC",
-  "duration": 30,
-  "totalMarks": 64,
+  "testId": "IAT_THERMODYNAMICS_UNIQUE_20MOCKS",
+  "testName": "IISER IAT - Thermodynamics: Advanced & Unique Problems (20 Questions)",
+  "duration": 60,
+  "totalMarks": 80,
   "questions": [
     {
       "id": 1,
       "subject": "Physics",
-      "section": "MCQ",
-      "question": "[Mechanical Properties of Fluids] Practice Question 1: What is the primary concept behind this topic?",
+      "section": "D",
+      "question": "A blackbody at temperature T has peak wavelength λ_max. When the temperature is increased such that the total radiated power doubles, the new peak wavelength is approximately:",
       "options": [
-        "Concept A",
-        "Concept B",
-        "Concept C",
-        "Concept D"
+        "0.84λ_max",
+        "0.91λ_max",
+        "1.06λ_max",
+        "1.19λ_max"
       ],
       "correct": 0,
-      "explanation": "This is a placeholder explanation for Mechanical Properties of Fluids question 1.",
-      "difficulty": "Medium"
+      "explanation": "<strong>Step 1:</strong> Stefan-Boltzmann law: P ∝ T⁴. If P doubles: P'/P = 2 = (T'/T)⁴.<br><strong>Step 2:</strong> Therefore T'/T = 2^(1/4) ≈ 1.189.<br><strong>Step 3:</strong> Wien's displacement law: λ_max T = constant = b. So λ'_max = λ_max × (T/T') = λ_max/1.189 ≈ 0.84λ_max.<br><strong>Step 4:</strong> The peak shifts to shorter wavelength (bluer) as temperature increases.",
+      "difficulty": "Medium",
+      "imagePrompt": ""
     },
     {
       "id": 2,
       "subject": "Physics",
-      "section": "MCQ",
-      "question": "[Mechanical Properties of Fluids] Practice Question 2: What is the primary concept behind this topic?",
+      "section": "D",
+      "question": "An ideal gas undergoes a process where PVⁿ = constant. The molar heat capacity for this process is zero when n equals:",
       "options": [
-        "Concept A",
-        "Concept B",
-        "Concept C",
-        "Concept D"
+        "0",
+        "1",
+        "γ",
+        "∞"
       ],
-      "correct": 0,
-      "explanation": "This is a placeholder explanation for Mechanical Properties of Fluids question 2.",
-      "difficulty": "Medium"
+      "correct": 2,
+      "explanation": "<strong>Step 1:</strong> First law: dQ = dU + dW = C_VdT + PdV. For 1 mole: C = dQ/dT = C_V + P(dV/dT).<br><strong>Step 2:</strong> From PVⁿ = C and PV = RT: TV^(n-1) = constant. Differentiate: V^(n-1)dT + (n-1)TV^(n-2)dV = 0.<br><strong>Step 3:</strong> dV/dT = -V/((n-1)T) = -R/((n-1)P) using PV = RT. So C = C_V - R/(n-1) = C_V - (C_P - C_V)/(n-1).<br><strong>Step 4:</strong> For C = 0: C_V = (C_P - C_V)/(n-1) → n-1 = (C_P - C_V)/C_V = γ - 1 → n = γ. This is adiabatic process.",
+      "difficulty": "Hard",
+      "imagePrompt": ""
     },
     {
       "id": 3,
       "subject": "Physics",
-      "section": "MCQ",
-      "question": "[Mechanical Properties of Fluids] Practice Question 3: What is the primary concept behind this topic?",
+      "section": "D",
+      "question": "A Carnot engine operates between reservoirs at T₁ and T₂ (T₁ > T₂). Its efficiency is η. If both temperatures are increased by ΔT, the new efficiency η' is:",
       "options": [
-        "Concept A",
-        "Concept B",
-        "Concept C",
-        "Concept D"
+        "Greater than η",
+        "Less than η",
+        "Equal to η",
+        "Depends on ΔT"
       ],
-      "correct": 0,
-      "explanation": "This is a placeholder explanation for Mechanical Properties of Fluids question 3.",
-      "difficulty": "Medium"
+      "correct": 1,
+      "explanation": "<strong>Step 1:</strong> Original efficiency: η = 1 - T₂/T₁.<br><strong>Step 2:</strong> New efficiency: η' = 1 - (T₂ + ΔT)/(T₁ + ΔT) = (T₁ + ΔT - T₂ - ΔT)/(T₁ + ΔT) = (T₁ - T₂)/(T₁ + ΔT).<br><strong>Step 3:</strong> Compare: η = (T₁ - T₂)/T₁. Since T₁ + ΔT > T₁, we have η' < η.<br><strong>Step 4:</strong> Increasing both temperatures equally reduces efficiency because the ratio T₂/T₁ increases when both are increased by same amount (for T₁ > T₂).",
+      "difficulty": "Hard",
+      "imagePrompt": ""
     },
     {
       "id": 4,
       "subject": "Physics",
-      "section": "MCQ",
-      "question": "[Mechanical Properties of Fluids] Practice Question 4: What is the primary concept behind this topic?",
+      "section": "D",
+      "question": "Two identical bodies with heat capacity C at temperatures T₁ and T₂ (T₁ > T₂) are brought into thermal contact. The maximum work extractable using a Carnot engine is:",
       "options": [
-        "Concept A",
-        "Concept B",
-        "Concept C",
-        "Concept D"
+        "C(T₁ - T₂)",
+        "C(T₁ + T₂ - 2√(T₁T₂))",
+        "C(√T₁ - √T₂)²",
+        "Both B and C"
       ],
-      "correct": 0,
-      "explanation": "This is a placeholder explanation for Mechanical Properties of Fluids question 4.",
-      "difficulty": "Medium"
+      "correct": 3,
+      "explanation": "<strong>Step 1:</strong> Maximum work is extracted when entropy change is zero (reversible process). Final equilibrium temperature T_f satisfies: ∫dQ/T = 0.<br><strong>Step 2:</strong> For equal heat capacities: C ln(T_f/T₁) + C ln(T_f/T₂) = 0 → ln(T_f²/(T₁T₂)) = 0 → T_f = √(T₁T₂).<br><strong>Step 3:</strong> Work W = Q₁ - Q₂ = C(T₁ - T_f) - C(T_f - T₂) = C(T₁ + T₂ - 2T_f) = C(T₁ + T₂ - 2√(T₁T₂)) = C(√T₁ - √T₂)².<br><strong>Step 4:</strong> Both expressions B and C are equivalent: (√T₁ - √T₂)² = T₁ + T₂ - 2√(T₁T₂).",
+      "difficulty": "Hard",
+      "imagePrompt": ""
     },
     {
       "id": 5,
       "subject": "Physics",
-      "section": "MCQ",
-      "question": "[Mechanical Properties of Fluids] Practice Question 5: What is the primary concept behind this topic?",
+      "section": "D",
+      "question": "An ideal gas is taken through a cycle consisting of: (1) isochoric heating from (P₁,V₁) to (P₂,V₁), (2) isobaric expansion to (P₂,V₂), (3) isochoric cooling to (P₁,V₂), (4) isobaric compression back to (P₁,V₁). The net work done by the gas is:",
       "options": [
-        "Concept A",
-        "Concept B",
-        "Concept C",
-        "Concept D"
+        "Zero",
+        "(P₂ - P₁)(V₂ - V₁)",
+        "P₂V₂ - P₁V₁",
+        "½(P₂ - P₁)(V₂ - V₁)"
       ],
-      "correct": 0,
-      "explanation": "This is a placeholder explanation for Mechanical Properties of Fluids question 5.",
-      "difficulty": "Medium"
+      "correct": 1,
+      "explanation": "<strong>Step 1:</strong> Work in isochoric processes (1 and 3) is zero.<br><strong>Step 2:</strong> Work in isobaric expansion (2): W₂ = P₂(V₂ - V₁).<br><strong>Step 3:</strong> Work in isobaric compression (4): W₄ = P₁(V₁ - V₂) = -P₁(V₂ - V₁).<br><strong>Step 4:</strong> Net work: W = P₂(V₂ - V₁) - P₁(V₂ - V₁) = (P₂ - P₁)(V₂ - V₁). This equals the area of the rectangle in PV diagram.",
+      "difficulty": "Medium",
+      "imagePrompt": ""
     },
     {
       "id": 6,
       "subject": "Physics",
-      "section": "MCQ",
-      "question": "[Mechanical Properties of Fluids] Practice Question 6: What is the primary concept behind this topic?",
+      "section": "D",
+      "question": "The internal energy of n moles of an ideal gas depends only on temperature. For a van der Waals gas, (∂U/∂V)_T is:",
       "options": [
-        "Concept A",
-        "Concept B",
-        "Concept C",
-        "Concept D"
+        "Zero",
+        "n²a/V²",
+        "nRT/V",
+        "-n²a/V²"
       ],
-      "correct": 0,
-      "explanation": "This is a placeholder explanation for Mechanical Properties of Fluids question 6.",
-      "difficulty": "Medium"
+      "correct": 1,
+      "explanation": "<strong>Step 1:</strong> Thermodynamic relation: (∂U/∂V)_T = T(∂P/∂T)_V - P.<br><strong>Step 2:</strong> Van der Waals equation: (P + n²a/V²)(V - nb) = nRT → P = nRT/(V - nb) - n²a/V².<br><strong>Step 3:</strong> (∂P/∂T)_V = nR/(V - nb). Therefore: (∂U/∂V)_T = T × nR/(V - nb) - [nRT/(V - nb) - n²a/V²] = n²a/V².<br><strong>Step 4:</strong> The internal energy increases with volume due to attractive forces (parameter a) between molecules.",
+      "difficulty": "Hard",
+      "imagePrompt": ""
     },
     {
       "id": 7,
       "subject": "Physics",
-      "section": "MCQ",
-      "question": "[Mechanical Properties of Fluids] Practice Question 7: What is the primary concept behind this topic?",
+      "section": "D",
+      "question": "A magnetic material has magnetization M and magnetic field B. The appropriate thermodynamic potential for which temperature and magnetic field are natural variables is:",
       "options": [
-        "Concept A",
-        "Concept B",
-        "Concept C",
-        "Concept D"
+        "Internal energy U",
+        "Enthalpy H",
+        "Helmholtz free energy F",
+        "Gibbs free energy G"
       ],
-      "correct": 0,
-      "explanation": "This is a placeholder explanation for Mechanical Properties of Fluids question 7.",
-      "difficulty": "Medium"
+      "correct": 3,
+      "explanation": "<strong>Step 1:</strong> For magnetic systems: dU = TdS + BdM.<br><strong>Step 2:</strong> Helmholtz free energy: F = U - TS → dF = -SdT + BdM (natural variables: T and M).<br><strong>Step 3:</strong> Gibbs free energy: G = U - TS - BM → dG = -SdT - MdB.<br><strong>Step 4:</strong> Therefore Gibbs free energy has natural variables T and B."
     },
     {
       "id": 8,
       "subject": "Physics",
-      "section": "MCQ",
-      "question": "[Mechanical Properties of Fluids] Practice Question 8: What is the primary concept behind this topic?",
+      "section": "D",
+      "question": "An ideal refrigerator operates between -3°C and 27°C. The coefficient of performance is approximately:",
       "options": [
-        "Concept A",
-        "Concept B",
-        "Concept C",
-        "Concept D"
+        "9",
+        "10",
+        "11",
+        "12"
       ],
       "correct": 0,
-      "explanation": "This is a placeholder explanation for Mechanical Properties of Fluids question 8.",
-      "difficulty": "Medium"
+      "explanation": "<strong>Step 1:</strong> COP for refrigerator: COP = T_cold/(T_hot - T_cold).<br><strong>Step 2:</strong> Convert to Kelvin: T_cold = 270 K, T_hot = 300 K.<br><strong>Step 3:</strong> COP = 270/(300 - 270) = 270/30 = 9.<br><strong>Step 4:</strong> This means 9 joules of heat are removed from cold reservoir for every joule of work input.",
+      "difficulty": "Easy",
+      "imagePrompt": ""
     },
     {
       "id": 9,
       "subject": "Physics",
-      "section": "MCQ",
-      "question": "[Mechanical Properties of Fluids] Practice Question 9: What is the primary concept behind this topic?",
+      "section": "D",
+      "question": "A gas has equation of state P(V - b) = RT where b is constant. The Joule-Thomson coefficient μ_JT = (∂T/∂P)_H is:",
       "options": [
-        "Concept A",
-        "Concept B",
-        "Concept C",
-        "Concept D"
+        "Zero",
+        "b/C_P",
+        "-b/C_P",
+        "V/C_P"
       ],
-      "correct": 0,
-      "explanation": "This is a placeholder explanation for Mechanical Properties of Fluids question 9.",
-      "difficulty": "Medium"
+      "correct": 2,
+      "explanation": "<strong>Step 1:</strong> μ_JT = (1/C_P)[T(∂V/∂T)_P - V].<br><strong>Step 2:</strong> From equation: V = RT/P + b → (∂V/∂T)_P = R/P.<br><strong>Step 3:</strong> μ_JT = (1/C_P)[TR/P - (RT/P + b)] = -b/C_P.<br><strong>Step 4:</strong> Therefore Joule-Thomson coefficient is negative and independent of temperature."
     },
     {
       "id": 10,
       "subject": "Physics",
-      "section": "MCQ",
-      "question": "[Mechanical Properties of Fluids] Practice Question 10: What is the primary concept behind this topic?",
+      "section": "D",
+      "question": "The entropy of mixing for two ideal gases each of n moles, initially separated, is:",
       "options": [
-        "Concept A",
-        "Concept B",
-        "Concept C",
-        "Concept D"
+        "2nRln2",
+        "nRln2",
+        "0",
+        "4nRln2"
       ],
       "correct": 0,
-      "explanation": "This is a placeholder explanation for Mechanical Properties of Fluids question 10.",
-      "difficulty": "Medium"
+      "explanation": "<strong>Step 1:</strong> Entropy of mixing: ΔS = -R[n₁ln(V_f/V₁) + n₂ln(V_f/V₂)].<br><strong>Step 2:</strong> For each gas, initial volume V, final volume 2V (Gibbs paradox avoided by distinguishability).<br><strong>Step 3:</strong> For gas 1: ΔS₁ = nRln(2V/V) = nRln2. Similarly for gas 2: ΔS₂ = nRln2.<br><strong>Step 4:</strong> Total ΔS = 2nRln2. This is the entropy increase due to irreversible mixing.",
+      "difficulty": "Medium",
+      "imagePrompt": ""
     },
     {
       "id": 11,
       "subject": "Physics",
-      "section": "MCQ",
-      "question": "[Mechanical Properties of Fluids] Practice Question 11: What is the primary concept behind this topic?",
+      "section": "D",
+      "question": "A heat engine operates between three reservoirs at T₁ > T₂ > T₃. It absorbs heat Q₁ from T₁, rejects Q₃ to T₃, and delivers work W. The maximum efficiency is achieved when heat exchange with T₂ is:",
       "options": [
-        "Concept A",
-        "Concept B",
-        "Concept C",
-        "Concept D"
+        "Zero (no interaction with T₂)",
+        "Positive (absorbs from T₂)",
+        "Negative (rejects to T₂)",
+        "Any value gives same efficiency"
       ],
       "correct": 0,
-      "explanation": "This is a placeholder explanation for Mechanical Properties of Fluids question 11.",
-      "difficulty": "Medium"
+      "explanation": "<strong>Step 1:</strong> For maximum efficiency (reversible operation), total entropy change must be zero.<br><strong>Step 2:</strong> If engine interacts with T₂, entropy change: -Q₁/T₁ ± Q₂/T₂ - Q₃/T₃ = 0.<br><strong>Step 3:</strong> Carnot's theorem: efficiency between two reservoirs depends only on their temperatures. Adding intermediate reservoir cannot increase efficiency beyond Carnot limit between extreme temperatures.<br><strong>Step 4:</strong> Maximum efficiency η_max = 1 - T₃/T₁ is achieved with no heat exchange with intermediate reservoir T₂. Any interaction with T₂ reduces efficiency.",
+      "difficulty": "Hard",
+      "imagePrompt": ""
     },
     {
       "id": 12,
       "subject": "Physics",
-      "section": "MCQ",
-      "question": "[Mechanical Properties of Fluids] Practice Question 12: What is the primary concept behind this topic?",
+      "section": "D",
+      "question": "The Clausius-Clapeyron equation describes phase coexistence. For water near 0°C, dP/dT is negative because:",
       "options": [
-        "Concept A",
-        "Concept B",
-        "Concept C",
-        "Concept D"
+        "Ice has higher density than water",
+        "Ice has lower density than water",
+        "Latent heat is negative",
+        "Specific heat of ice is higher"
       ],
-      "correct": 0,
-      "explanation": "This is a placeholder explanation for Mechanical Properties of Fluids question 12.",
-      "difficulty": "Medium"
+      "correct": 1,
+      "explanation": "<strong>Step 1:</strong> Clausius-Clapeyron: dP/dT = L/(TΔV) where L is latent heat, ΔV is volume change.<br><strong>Step 2:</strong> For ice-water transition: L > 0 (melting requires heat), T > 0.<br><strong>Step 3:</strong> ΔV = V_water - V_ice < 0 because ice expands on freezing (V_ice > V_water).<br><strong>Step 4:</strong> Therefore dP/dT = L/(TΔV) < 0. Increasing pressure lowers melting point, explaining why ice skates work and glaciers move.",
+      "difficulty": "Medium",
+      "imagePrompt": ""
     },
     {
       "id": 13,
       "subject": "Physics",
-      "section": "MCQ",
-      "question": "[Mechanical Properties of Fluids] Practice Question 13: What is the primary concept behind this topic?",
+      "section": "D",
+      "question": "An ideal gas undergoes free expansion into vacuum from volume V to 2V. The temperature change is:",
       "options": [
-        "Concept A",
-        "Concept B",
-        "Concept C",
-        "Concept D"
+        "Zero for ideal gas",
+        "Positive",
+        "Negative",
+        "Depends on γ"
       ],
       "correct": 0,
-      "explanation": "This is a placeholder explanation for Mechanical Properties of Fluids question 13.",
-      "difficulty": "Medium"
+      "explanation": "<strong>Step 1:</strong> Free expansion: no external work (W = 0), no heat exchange (Q = 0, insulated).<br><strong>Step 2:</strong> First law: ΔU = Q - W = 0.<br><strong>Step 3:</strong> For ideal gas, U depends only on T. Since ΔU = 0, we have ΔT = 0.<br><strong>Step 4:</strong> This is Joule's law. Real gases may show temperature change due to intermolecular forces.",
+      "difficulty": "Easy",
+      "imagePrompt": ""
     },
     {
       "id": 14,
       "subject": "Physics",
-      "section": "MCQ",
-      "question": "[Mechanical Properties of Fluids] Practice Question 14: What is the primary concept behind this topic?",
+      "section": "D",
+      "question": "Passage: A photon gas in a cavity of volume V at temperature T has internal energy U = aVT⁴ and pressure P = U/3V where a is radiation constant.\n\nQuestion 1: The adiabatic index γ for photon gas is:",
       "options": [
-        "Concept A",
-        "Concept B",
-        "Concept C",
-        "Concept D"
+        "4/3",
+        "5/3",
+        "1",
+        "2"
       ],
       "correct": 0,
-      "explanation": "This is a placeholder explanation for Mechanical Properties of Fluids question 14.",
-      "difficulty": "Medium"
+      "explanation": "<strong>Step 1:</strong> For adiabatic process: dU + PdV = 0 (first law with dQ = 0).<br><strong>Step 2:</strong> U = aVT⁴, so dU = aT⁴dV + 4aVT³dT. Also P = aT⁴/3.<br><strong>Step 3:</strong> Adiabatic condition: aT⁴dV + 4aVT³dT + (aT⁴/3)dV = 0 → (4aT⁴/3)dV + 4aVT³dT = 0.<br><strong>Step 4:</strong> Divide by 4aVT³: (T/3V)dV + dT = 0 → dT/T = -dV/(3V) → TV^(1/3) = constant. Or from PV^(4/3) = constant, we get γ = 4/3.",
+      "difficulty": "Hard",
+      "imagePrompt": ""
     },
     {
       "id": 15,
       "subject": "Physics",
-      "section": "MCQ",
-      "question": "[Mechanical Properties of Fluids] Practice Question 15: What is the primary concept behind this topic?",
+      "section": "D",
+      "question": "Using the photon gas relations, if the volume expands adiabatically to double its value, the temperature becomes:",
       "options": [
-        "Concept A",
-        "Concept B",
-        "Concept C",
-        "Concept D"
+        "T/2",
+        "T/2^(1/3)",
+        "T/2^(4/3)",
+        "2T"
       ],
-      "correct": 0,
-      "explanation": "This is a placeholder explanation for Mechanical Properties of Fluids question 15.",
-      "difficulty": "Medium"
+      "correct": 1,
+      "explanation": "<strong>Step 1:</strong> From previous: TV^(1/3) = constant for adiabatic process.<br><strong>Step 2:</strong> T₁V₁^(1/3) = T₂V₂^(1/3).<br><strong>Step 3:</strong> With V₂ = 2V₁: T₂ = T₁(V₁/V₂)^(1/3) = T/2^(1/3).<br><strong>Step 4:</strong> Temperature decreases but less than volume expansion, unlike ideal gas where TV^(γ-1) = constant with γ = 5/3 giving stronger cooling.",
+      "difficulty": "Hard",
+      "imagePrompt": ""
     },
     {
       "id": 16,
       "subject": "Physics",
-      "section": "MCQ",
-      "question": "[Mechanical Properties of Fluids] Practice Question 16: What is the primary concept behind this topic?",
+      "section": "D",
+      "question": "A system has negative temperature when:",
       "options": [
-        "Concept A",
-        "Concept B",
-        "Concept C",
-        "Concept D"
+        "Energy is minimized",
+        "Entropy decreases with increasing energy",
+        "Temperature is below absolute zero",
+        "System is in ground state"
+      ],
+      "correct": 1,
+      "explanation": "<strong>Step 1:</strong> Thermodynamic definition: 1/T = (∂S/∂U)_V,N.<br><strong>Step 2:</strong> Normally, adding energy increases entropy: (∂S/∂U) > 0, so T > 0.<br><strong>Step 3:</strong> In systems with energy upper bound (e.g., spin systems in magnetic field), near maximum energy, adding energy decreases entropy: (∂S/∂U) < 0, giving T < 0.<br><strong>Step 4:</strong> Negative temperature is hotter than positive temperature (energy flows from negative to positive T).",
+      "difficulty": "Hard",
+      "imagePrompt": ""
+    },
+    {
+      "id": 17,
+      "subject": "Physics",
+      "section": "D",
+      "question": "The efficiency of an Otto cycle (idealized gasoline engine) with compression ratio r and γ = C_P/C_V is:",
+      "options": [
+        "1 - 1/r^(γ-1)",
+        "1 - 1/r^γ",
+        "1 - r^(-γ)",
+        "1 - r^(γ-1)"
       ],
       "correct": 0,
-      "explanation": "This is a placeholder explanation for Mechanical Properties of Fluids question 16.",
-      "difficulty": "Medium"
+      "explanation": "<strong>Step 1:</strong> Using adiabatic relations: T₂/T₁ = r^(γ-1).<br><strong>Step 2:</strong> Efficiency η = 1 - Q_out/Q_in.<br><strong>Step 3:</strong> After algebra: η = 1 - 1/r^(γ-1).<br><strong>Step 4:</strong> Efficiency increases with compression ratio r."
+    },
+    {
+      "id": 18,
+      "subject": "Physics",
+      "section": "D",
+      "question": "A paramagnetic salt follows Curie's law: χ = C/T. In an adiabatic demagnetization process, if magnetic field is reduced from B to B/10, the final temperature is approximately (initial T = 1 K):",
+      "options": [
+        "0.1 K",
+        "0.01 K",
+        "0.5 K",
+        "0.001 K"
+      ],
+      "correct": 0,
+      "explanation": "<strong>Step 1:</strong> For adiabatic demagnetization of paramagnet: entropy S depends on B/T (from statistical mechanics).<br><strong>Step 2:</strong> Adiabatic means constant entropy, so B/T = constant.<br><strong>Step 3:</strong> Therefore T_f/T_i = B_f/B_i = 1/10. With T_i = 1 K: T_f = 0.1 K.<br><strong>Step 4:</strong> This is the principle of magnetic cooling used to reach millikelvin temperatures.",
+      "difficulty": "Hard",
+      "imagePrompt": ""
+    },
+    {
+      "id": 19,
+      "subject": "Physics",
+      "section": "D",
+      "question": "The third law of thermodynamics implies that as T → 0:",
+      "options": [
+        "Entropy of any system approaches zero",
+        "Entropy of perfect crystal approaches zero",
+        "Heat capacity approaches infinity",
+        "Thermal expansion coefficient increases"
+      ],
+      "correct": 1,
+      "explanation": "<strong>Step 1:</strong> Third law: As temperature approaches absolute zero, the entropy of a perfect crystal approaches a constant minimum (taken as zero).<br><strong>Step 2:</strong> This is the Nernst-Simon statement. It applies specifically to perfect crystals (unique ground state).<br><strong>Step 3:</strong> Amorphous solids or systems with degenerate ground states may have residual entropy at T = 0.<br><strong>Step 4:</strong> The law implies heat capacities must go to zero as T → 0 (consistent with C → 0), and absolute zero is unattainable in finite steps.",
+      "difficulty": "Medium",
+      "imagePrompt": ""
+    },
+    {
+      "id": 20,
+      "subject": "Physics",
+      "section": "D",
+      "question": "A rubber band is stretched adiabatically. Its temperature:",
+      "options": [
+        "Increases",
+        "Decreases",
+        "Remains constant",
+        "Depends on material"
+      ],
+      "correct": 0,
+      "explanation": "<strong>Step 1:</strong> For rubber band (polymer), stretching aligns polymer chains, reducing entropy.<br><strong>Step 2:</strong> Thermodynamic relation: dU = TdS + fdL where f is tension, L is length.<br><strong>Step 3:</strong> For adiabatic stretching (dS < 0 due to ordering), and since rubber elasticity is primarily entropic: if dS < 0 and process is adiabatic (no heat exchange), the temperature must increase to maintain energy balance.<br><strong>Step 4:</strong> This is the Gough-Joule effect: rubber heats when stretched adiabatically, opposite to ideal gas behavior.",
+      "difficulty": "Hard",
+      "imagePrompt": ""
     }
   ]
 }

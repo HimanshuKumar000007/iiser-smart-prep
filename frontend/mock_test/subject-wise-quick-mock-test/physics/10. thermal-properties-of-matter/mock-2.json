@@ -1,247 +1,322 @@
 {
-  "testId": "QUICK_TOPIC",
-  "duration": 30,
-  "totalMarks": 64,
+  "testId": "IAT_ELECTROSTATICS_20MOCKS",
+  "testName": "IISER IAT - Electrostatics: Advanced & Unique Problems (20 Questions)",
+  "duration": 60,
+  "totalMarks": 80,
   "questions": [
     {
       "id": 1,
       "subject": "Physics",
-      "section": "MCQ",
-      "question": "[Thermal Properties of Matter] Practice Question 1: What is the primary concept behind this topic?",
+      "section": "D",
+      "question": "A charge q is placed at the center of a neutral conducting spherical shell of inner radius a and outer radius b. The potential of the shell is:",
       "options": [
-        "Concept A",
-        "Concept B",
-        "Concept C",
-        "Concept D"
+        "q/(4πε₀a)",
+        "q/(4πε₀b)",
+        "Zero",
+        "q/(4πε₀)(1/a - 1/b)"
       ],
-      "correct": 0,
-      "explanation": "This is a placeholder explanation for Thermal Properties of Matter question 1.",
-      "difficulty": "Medium"
+      "correct": 1,
+      "explanation": "<strong>Step 1:</strong> By electrostatic induction, -q appears on inner surface (r = a) and +q on outer surface (r = b).<br><strong>Step 2:</strong> The shell is an equipotential. Potential at any point inside conductor (including outer surface) is due to all charges: center q, inner surface -q, and outer surface +q.<br><strong>Step 3:</strong> Potential at r = b: V = (1/4πε₀)[q/b (from center) + (-q)/b (from inner surface, at distance b) + q/b (from outer surface)] = q/(4πε₀b).<br><strong>Step 4:</strong> The -q and +q on surfaces cancel their contributions at external points, leaving only the effective external charge q at center.",
+      "difficulty": "Hard",
+      "imagePrompt": ""
     },
     {
       "id": 2,
       "subject": "Physics",
-      "section": "MCQ",
-      "question": "[Thermal Properties of Matter] Practice Question 2: What is the primary concept behind this topic?",
+      "section": "D",
+      "question": "Two point charges +q and -q are placed at (0,0,d) and (0,0,-d) respectively. The electric field at point (x,0,0) on the x-axis is directed:",
       "options": [
-        "Concept A",
-        "Concept B",
-        "Concept C",
-        "Concept D"
+        "Along +x",
+        "Along -x",
+        "Along +z",
+        "Along -z"
       ],
-      "correct": 0,
-      "explanation": "This is a placeholder explanation for Thermal Properties of Matter question 2.",
-      "difficulty": "Medium"
+      "correct": 3,
+      "explanation": "<strong>Step 1:</strong> This is an electric dipole oriented along z-axis.<br><strong>Step 2:</strong> At equatorial point (perpendicular bisector), the field is anti-parallel to dipole moment.<br><strong>Step 3:</strong> Dipole moment p = q(2d) in +z direction. Field at equatorial point is opposite to p, so in -z direction.<br><strong>Step 4:</strong> Wait, let me verify with calculation. Field from +q at (0,0,d): points from charge to point, has -z component. Field from -q at (0,0,-d): points toward charge, has -z component. Both add in -z direction. So answer is D (-z).",
+      "difficulty": "Medium",
+      "imagePrompt": ""
     },
     {
       "id": 3,
       "subject": "Physics",
-      "section": "MCQ",
-      "question": "[Thermal Properties of Matter] Practice Question 3: What is the primary concept behind this topic?",
+      "section": "D",
+      "question": "A uniformly charged disk of radius R has surface charge density σ. The electric field at distance z along axis is E = (σ/2ε₀)[1 - z/√(z²+R²)]. For z >> R, this reduces to:",
       "options": [
-        "Concept A",
-        "Concept B",
-        "Concept C",
-        "Concept D"
+        "σR²/(4ε₀z²)",
+        "σπR²/(4πε₀z²)",
+        "Q/(4πε₀z²)",
+        "Both B and C"
       ],
-      "correct": 0,
-      "explanation": "This is a placeholder explanation for Thermal Properties of Matter question 3.",
-      "difficulty": "Medium"
+      "correct": 3,
+      "explanation": "<strong>Step 1:</strong> For z >> R: z/√(z²+R²) = z/(z√(1+R²/z²)) ≈ 1/(1 + R²/2z²) ≈ 1 - R²/2z².<br><strong>Step 2:</strong> So 1 - z/√(z²+R²) ≈ 1 - (1 - R²/2z²) = R²/2z².<br><strong>Step 3:</strong> E ≈ (σ/2ε₀)(R²/2z²) = σπR²/(4πε₀z²) = Q/(4πε₀z²) where Q = σπR².<br><strong>Step 4:</strong> Both forms B and C are equivalent, representing the point charge limit.",
+      "difficulty": "Medium",
+      "imagePrompt": ""
     },
     {
       "id": 4,
       "subject": "Physics",
-      "section": "MCQ",
-      "question": "[Thermal Properties of Matter] Practice Question 4: What is the primary concept behind this topic?",
+      "section": "D",
+      "question": "A charge Q is distributed uniformly throughout a sphere of radius R. The electrostatic self-energy of this configuration is:",
       "options": [
-        "Concept A",
-        "Concept B",
-        "Concept C",
-        "Concept D"
+        "3Q²/(20πε₀R)",
+        "3Q²/(8πε₀R)",
+        "Q²/(8πε₀R)",
+        "Q²/(4πε₀R)"
       ],
       "correct": 0,
-      "explanation": "This is a placeholder explanation for Thermal Properties of Matter question 4.",
-      "difficulty": "Medium"
+      "explanation": "<strong>Step 1:</strong> Energy U = (ε₀/2)∫E²dV. Inside sphere (r < R): E = Qr/(4πε₀R³). Outside: E = Q/(4πε₀r²).<br><strong>Step 2:</strong> U = (ε₀/2)[∫₀ᴿ (Qr/4πε₀R³)²4πr²dr + ∫ᴿ^∞ (Q/4πε₀r²)²4πr²dr].<br><strong>Step 3:</strong> = (Q²/8πε₀)[∫₀ᴿ r⁴/R⁶ dr + ∫ᴿ^∞ r⁻² dr] = (Q²/8πε₀)[1/5R + 1/R] = (Q²/8πε₀)(6/5R) = 3Q²/(20πε₀R).<br><strong>Step 4:</strong> This is the work needed to assemble the charged sphere.",
+      "difficulty": "Hard",
+      "imagePrompt": ""
     },
     {
       "id": 5,
       "subject": "Physics",
-      "section": "MCQ",
-      "question": "[Thermal Properties of Matter] Practice Question 5: What is the primary concept behind this topic?",
+      "section": "D",
+      "question": "Two concentric spherical shells of radii a and b (a < b) carry charges Q_a and Q_b. The potential difference V_a - V_b is:",
       "options": [
-        "Concept A",
-        "Concept B",
-        "Concept C",
-        "Concept D"
+        "(Q_a/4πε₀)(1/a - 1/b)",
+        "(Q_a + Q_b)/4πε₀(1/a - 1/b)",
+        "Q_a/4πε₀a - Q_b/4πε₀b",
+        "(Q_a/4πε₀)(1/a - 1/b) + Q_b/4πε₀(1/a - 1/b)"
       ],
       "correct": 0,
-      "explanation": "This is a placeholder explanation for Thermal Properties of Matter question 5.",
-      "difficulty": "Medium"
+      "explanation": "<strong>Step 1:</strong> Potential at r = a: V_a = (1/4πε₀)[Q_a/a + Q_b/b].<br><strong>Step 2:</strong> Potential at r = b: V_b = (1/4πε₀)[Q_a/b + Q_b/b] = (Q_a + Q_b)/(4πε₀b).<br><strong>Step 3:</strong> V_a - V_b = (1/4πε₀)[Q_a/a + Q_b/b - Q_a/b - Q_b/b] = (Q_a/4πε₀)(1/a - 1/b).<br><strong>Step 4:</strong> The outer charge Q_b doesn't contribute to potential difference (same potential at both radii).",
+      "difficulty": "Medium",
+      "imagePrompt": ""
     },
     {
       "id": 6,
       "subject": "Physics",
-      "section": "MCQ",
-      "question": "[Thermal Properties of Matter] Practice Question 6: What is the primary concept behind this topic?",
+      "section": "D",
+      "question": "A dipole with moment p is placed in a uniform electric field E. The minimum work required to rotate it from stable equilibrium to θ = 180° is:",
       "options": [
-        "Concept A",
-        "Concept B",
-        "Concept C",
-        "Concept D"
+        "0",
+        "pE",
+        "2pE",
+        "pE/2"
       ],
-      "correct": 0,
-      "explanation": "This is a placeholder explanation for Thermal Properties of Matter question 6.",
-      "difficulty": "Medium"
+      "correct": 2,
+      "explanation": "<strong>Step 1:</strong> Potential energy U = -p·E = -pEcosθ.<br><strong>Step 2:</strong> Stable equilibrium: θ = 0, U = -pE.<br><strong>Step 3:</strong> At θ = 180°: U = -pE(-1) = +pE.<br><strong>Step 4:</strong> Work required = ΔU = pE - (-pE) = 2pE. This is the energy barrier for dipole flip.",
+      "difficulty": "Easy",
+      "imagePrompt": ""
     },
     {
       "id": 7,
       "subject": "Physics",
-      "section": "MCQ",
-      "question": "[Thermal Properties of Matter] Practice Question 7: What is the primary concept behind this topic?",
+      "section": "D",
+      "question": "A parallel plate capacitor with plate area A and separation d is half-filled with dielectric (constant K) of thickness d/2. The capacitance is:",
       "options": [
-        "Concept A",
-        "Concept B",
-        "Concept C",
-        "Concept D"
+        "ε₀A(K+1)/2d",
+        "2ε₀AK/(d(K+1))",
+        "ε₀A/d × 2K/(K+1)",
+        "ε₀A/d × (K+1)/2"
       ],
-      "correct": 0,
-      "explanation": "This is a placeholder explanation for Thermal Properties of Matter question 7.",
-      "difficulty": "Medium"
+      "correct": 2,
+      "explanation": "<strong>Step 1:</strong> This is series combination: air gap (d/2, ε₀) and dielectric (d/2, Kε₀).<br><strong>Step 2:</strong> C_air = ε₀A/(d/2) = 2ε₀A/d. C_diel = 2Kε₀A/d.<br><strong>Step 3:</strong> Series: 1/C = 1/C_air + 1/C_diel = d/(2ε₀A) + d/(2Kε₀A) = (d/2ε₀A)(1 + 1/K) = (d/2ε₀A)(K+1)/K.<br><strong>Step 4:</strong> C = (2ε₀A/d) × K/(K+1) = (ε₀A/d) × 2K/(K+1).",
+      "difficulty": "Hard",
+      "imagePrompt": ""
     },
     {
       "id": 8,
       "subject": "Physics",
-      "section": "MCQ",
-      "question": "[Thermal Properties of Matter] Practice Question 8: What is the primary concept behind this topic?",
+      "section": "D",
+      "question": "A point charge q is placed at distance a from an infinite grounded conducting plane. The force on the charge is:",
       "options": [
-        "Concept A",
-        "Concept B",
-        "Concept C",
-        "Concept D"
+        "q²/(16πε₀a²) toward plane",
+        "q²/(4πε₀a²) away from plane",
+        "q²/(8πε₀a²) toward plane",
+        "Zero"
       ],
       "correct": 0,
-      "explanation": "This is a placeholder explanation for Thermal Properties of Matter question 8.",
-      "difficulty": "Medium"
+      "explanation": "<strong>Step 1:</strong> Method of images: replace plane with image charge -q at distance a behind plane.<br><strong>Step 2:</strong> Force on real charge = attraction to image charge: F = q²/(4πε₀(2a)²) = q²/(16πε₀a²).<br><strong>Step 3:</strong> Direction is toward the image, i.e., toward the plane.<br><strong>Step 4:</strong> This is the attractive force between charge and induced negative charge on plane.",
+      "difficulty": "Medium",
+      "imagePrompt": ""
     },
     {
       "id": 9,
       "subject": "Physics",
-      "section": "MCQ",
-      "question": "[Thermal Properties of Matter] Practice Question 9: What is the primary concept behind this topic?",
+      "section": "D",
+      "question": "A capacitor C is charged to voltage V and then connected to an identical uncharged capacitor. The final energy is:",
       "options": [
-        "Concept A",
-        "Concept B",
-        "Concept C",
-        "Concept D"
+        "½CV²",
+        "CV²",
+        "¼CV²",
+        "½CV²/2"
       ],
-      "correct": 0,
-      "explanation": "This is a placeholder explanation for Thermal Properties of Matter question 9.",
-      "difficulty": "Medium"
+      "correct": 2,
+      "explanation": "<strong>Step 1:</strong> Initial charge Q = CV, initial energy U_i = ½CV².<br><strong>Step 2:</strong> When connected, charge redistributes. Total capacitance = 2C (parallel).<br><strong>Step 3:</strong> Final voltage V_f = Q/(2C) = CV/(2C) = V/2.<br><strong>Step 4:</strong> Final energy U_f = ½(2C)(V/2)² = C(V²/4) = ¼CV². Energy is lost (½ → ¼) due to sparking/resistance during charge redistribution.",
+      "difficulty": "Medium",
+      "imagePrompt": ""
     },
     {
       "id": 10,
       "subject": "Physics",
-      "section": "MCQ",
-      "question": "[Thermal Properties of Matter] Practice Question 10: What is the primary concept behind this topic?",
+      "section": "D",
+      "question": "The electric field in a region is E = axî where a is constant. The charge density in the region is:",
       "options": [
-        "Concept A",
-        "Concept B",
-        "Concept C",
-        "Concept D"
+        "aε₀",
+        "0",
+        "aε₀x",
+        "a/ε₀"
       ],
       "correct": 0,
-      "explanation": "This is a placeholder explanation for Thermal Properties of Matter question 10.",
-      "difficulty": "Medium"
+      "explanation": "<strong>Step 1:</strong> Gauss's law in differential form: ∇·E = ρ/ε₀.<br><strong>Step 2:</strong> ∇·E = ∂E_x/∂x + ∂E_y/∂y + ∂E_z/∂z = ∂(ax)/∂x = a.<br><strong>Step 3:</strong> Therefore ρ = ε₀(∇·E) = aε₀.<br><strong>Step 4:</strong> The charge density is uniform (constant) throughout the region, despite the field varying linearly with x.",
+      "difficulty": "Medium",
+      "imagePrompt": ""
     },
     {
       "id": 11,
       "subject": "Physics",
-      "section": "MCQ",
-      "question": "[Thermal Properties of Matter] Practice Question 11: What is the primary concept behind this topic?",
+      "section": "D",
+      "question": "A conducting sphere of radius R has charge Q. A point charge q is brought from infinity to distance 2R from center. The work done by external agent is:",
       "options": [
-        "Concept A",
-        "Concept B",
-        "Concept C",
-        "Concept D"
+        "qQ/(8πε₀R)",
+        "qQ/(4πε₀R)",
+        "qQ/(8πε₀R) + q²/(16πε₀R)",
+        "Zero"
       ],
       "correct": 0,
-      "explanation": "This is a placeholder explanation for Thermal Properties of Matter question 11.",
-      "difficulty": "Medium"
+      "explanation": "<strong>Step 1:</strong> Outside a charged conducting sphere, the electric field is identical to that of a point charge Q located at its center.<br><strong>Step 2:</strong> The potential at distance r = 2R is V = Q/(4πε₀(2R)) = Q/(8πε₀R).<br><strong>Step 3:</strong> Work done in bringing charge q from infinity is W = qV.<br><strong>Step 4:</strong> Therefore W = qQ/(8πε₀R). No additional q² term appears since the sphere already has fixed charge Q."
     },
     {
       "id": 12,
       "subject": "Physics",
-      "section": "MCQ",
-      "question": "[Thermal Properties of Matter] Practice Question 12: What is the primary concept behind this topic?",
+      "section": "D",
+      "question": "A dielectric slab of thickness t is inserted between plates of capacitor (separation d, area A). The capacitance increases by factor:",
       "options": [
-        "Concept A",
-        "Concept B",
-        "Concept C",
-        "Concept D"
+        "d/(d-t+t/K)",
+        "K",
+        "(d-t)/d + tK/d",
+        "d/(d-t)"
       ],
       "correct": 0,
-      "explanation": "This is a placeholder explanation for Thermal Properties of Matter question 12.",
-      "difficulty": "Medium"
+      "explanation": "<strong>Step 1:</strong> Series combination: air gap (d-t) and dielectric (t).<br><strong>Step 2:</strong> C_air = ε₀A/(d-t), C_diel = Kε₀A/t.<br><strong>Step 3:</strong> 1/C = (d-t)/(ε₀A) + t/(Kε₀A) = [K(d-t) + t]/(Kε₀A).<br><strong>Step 4:</strong> C = Kε₀A/[K(d-t) + t] = ε₀A/[d - t + t/K]. Original C₀ = ε₀A/d. Ratio: C/C₀ = d/[d-t+t/K].",
+      "difficulty": "Hard",
+      "imagePrompt": ""
     },
     {
       "id": 13,
       "subject": "Physics",
-      "section": "MCQ",
-      "question": "[Thermal Properties of Matter] Practice Question 13: What is the primary concept behind this topic?",
+      "section": "D",
+      "question": "Two charges +4q and -q are placed at x = 0 and x = d. The neutral point (zero field) is at:",
       "options": [
-        "Concept A",
-        "Concept B",
-        "Concept C",
-        "Concept D"
+        "x = d/2",
+        "x = 2d",
+        "x = d/3",
+        "No neutral point exists"
       ],
-      "correct": 0,
-      "explanation": "This is a placeholder explanation for Thermal Properties of Matter question 13.",
-      "difficulty": "Medium"
+      "correct": 1,
+      "explanation": "<strong>Step 1:</strong> Let neutral point be at x > d (to the right of both charges, where fields can oppose).<br><strong>Step 2:</strong> Field from +4q: 4q/(4πε₀x²) to right. Field from -q: q/(4πε₀(x-d)²) to left (toward -q).<br><strong>Step 3:</strong> For zero field: 4/x² = 1/(x-d)² → 2/x = 1/(x-d) → 2(x-d) = x → 2x - 2d = x → x = 2d.<br><strong>Step 4:</strong> At x = 2d: distance to +4q is 2d, to -q is d. Field ratio (4/(2d)²)/(1/d²) = 4/4 = 1. Fields cancel.",
+      "difficulty": "Medium",
+      "imagePrompt": ""
     },
     {
       "id": 14,
       "subject": "Physics",
-      "section": "MCQ",
-      "question": "[Thermal Properties of Matter] Practice Question 14: What is the primary concept behind this topic?",
+      "section": "D",
+      "question": "Passage: A spherical capacitor consists of an inner sphere of radius a and an outer concentric shell of radius b (b > a). The space between them is filled with a dielectric whose relative permittivity varies as K(r) = K0 (r/a), where r is the radial distance from the center.\n\nQuestion: The capacitance of the capacitor is:",
       "options": [
-        "Concept A",
-        "Concept B",
-        "Concept C",
-        "Concept D"
+        "8πε0K0 a b² / (b² − a²)",
+        "4πε0K0 ab / (b − a)",
+        "4πε0K0 a ln(b/a)",
+        "8πε0K0 a² b / (b² − a²)"
       ],
       "correct": 0,
-      "explanation": "This is a placeholder explanation for Thermal Properties of Matter question 14.",
-      "difficulty": "Medium"
+      "explanation": "<strong>Step 1:</strong> Using Gauss's law in dielectric: D = Q/(4πr²).<br><strong>Step 2:</strong> Electric field E = D/(ε0K(r)) = Q/(4πr²ε0K0(r/a)) = Qa/(4πε0K0 r³).<br><strong>Step 3:</strong> Potential difference V = ∫ₐᵇ E dr = Qa/(4πε0K0) ∫ₐᵇ r⁻³ dr.<br><strong>Step 4:</strong> ∫ r⁻³ dr = −1/(2r²). Evaluating from a to b gives V = Q(b² − a²)/(8πε0K0 a b²).<br><strong>Step 5:</strong> Capacitance C = Q/V = 8πε0K0 a b² / (b² − a²)."
     },
     {
       "id": 15,
       "subject": "Physics",
-      "section": "MCQ",
-      "question": "[Thermal Properties of Matter] Practice Question 15: What is the primary concept behind this topic?",
+      "section": "D",
+      "question": "Using the same spherical capacitor with dielectric K(r) = K0 (r/a), the energy stored when charge Q is placed on it is:",
       "options": [
-        "Concept A",
-        "Concept B",
-        "Concept C",
-        "Concept D"
+        "Q²/(2C)",
+        "Q²(b² − a²)/(16πε₀K₀ a b²)",
+        "Q²(b − a)/(8πε₀K₀ a²)",
+        "Q²/(8πε₀K₀a) ln(b/a)"
       ],
-      "correct": 0,
-      "explanation": "This is a placeholder explanation for Thermal Properties of Matter question 15.",
-      "difficulty": "Medium"
+      "correct": 1,
+      "explanation": "<strong>Step 1:</strong> Energy stored in a capacitor is U = Q²/(2C).<br><strong>Step 2:</strong> From previous result, C = 8πε₀K₀ a b²/(b² − a²).<br><strong>Step 3:</strong> Substituting gives U = Q²(b² − a²)/(16πε₀K₀ a b²).<br><strong>Step 4:</strong> The logarithmic form applies only when K ∝ a/r, not when K ∝ r/a."
     },
     {
       "id": 16,
       "subject": "Physics",
-      "section": "MCQ",
-      "question": "[Thermal Properties of Matter] Practice Question 16: What is the primary concept behind this topic?",
+      "section": "D",
+      "question": "A dipole p is placed at distance r from a point charge q on the dipole axis. The force on the dipole is:",
       "options": [
-        "Concept A",
-        "Concept B",
-        "Concept C",
-        "Concept D"
+        "qp/(2πε₀r³)",
+        "qp/(πε₀r³)",
+        "2qp/(πε₀r³)",
+        "Zero"
       ],
       "correct": 0,
-      "explanation": "This is a placeholder explanation for Thermal Properties of Matter question 16.",
-      "difficulty": "Medium"
+      "explanation": "<strong>Step 1:</strong> Field from charge q at distance r: E = q/(4πε₀r²).<br><strong>Step 2:</strong> Field gradient dE/dr = -2q/(4πε₀r³) = -q/(2πε₀r³).<br><strong>Step 3:</strong> Force on dipole: F = p(dE/dr) = p × q/(2πε₀r³) = qp/(2πε₀r³).<br><strong>Step 4:</strong> The force is attractive if p points toward q (negative charge end closer), repulsive otherwise. Magnitude is qp/(2πε₀r³).",
+      "difficulty": "Hard",
+      "imagePrompt": ""
+    },
+    {
+      "id": 17,
+      "subject": "Physics",
+      "section": "D",
+      "question": "A parallel plate capacitor is charged and disconnected from battery. A dielectric slab is inserted. Which quantity remains constant?",
+      "options": [
+        "Potential difference",
+        "Electric field",
+        "Charge",
+        "Energy"
+      ],
+      "correct": 2,
+      "explanation": "<strong>Step 1:</strong> Disconnected from battery: no path for charge to leave or enter.<br><strong>Step 2:</strong> Therefore charge Q on plates remains constant (conservation of charge).<br><strong>Step 3:</strong> Inserting dielectric increases capacitance C, decreases voltage V = Q/C, decreases field E = V/d, and decreases energy U = Q²/2C.<br><strong>Step 4:</strong> The energy decrease means work is done by the system (dielectric pulled in).",
+      "difficulty": "Easy",
+      "imagePrompt": ""
+    },
+    {
+      "id": 18,
+      "subject": "Physics",
+      "section": "D",
+      "question": "The electric potential in a region is V = 3x² + 2y² - z². The electric field at (1,1,1) is:",
+      "options": [
+        "-(6i + 4j - 2k)",
+        "6i + 4j - 2k",
+        "-(3i + 2j - k)",
+        "3i + 2j - k"
+      ],
+      "correct": 0,
+      "explanation": "<strong>Step 1:</strong> Electric field E = -∇V = -(∂V/∂x i + ∂V/∂y j + ∂V/∂z k).<br><strong>Step 2:</strong> ∂V/∂x = 6x, ∂V/∂y = 4y, ∂V/∂z = -2z.<br><strong>Step 3:</strong> At (1,1,1): E = -(6(1)i + 4(1)j - 2(1)k) = -(6i + 4j - 2k).<br><strong>Step 4:</strong> The field points in direction of steepest potential decrease.",
+      "difficulty": "Easy",
+      "imagePrompt": ""
+    },
+    {
+      "id": 19,
+      "subject": "Physics",
+      "section": "D",
+      "question": "A charged soap bubble of radius R and surface tension T has excess pressure ΔP = 4T/R (electrostatic effects negligible). If it has charge Q, the additional pressure due to electrostatic repulsion is:",
+      "options": [
+        "Q²/(32π²ε₀R⁴)",
+        "Q²/(8πε₀R⁴)",
+        "σ²/2ε₀ where σ = Q/4πR²",
+        "Both A and C equivalent"
+      ],
+      "correct": 3,
+      "explanation": "<strong>Step 1:</strong> For conducting sphere, electrostatic pressure (outward) = σ²/2ε₀ = (Q/4πR²)²/2ε₀ = Q²/(32π²ε₀R⁴).<br><strong>Step 2:</strong> This is the electrostatic stress on the surface.<br><strong>Step 3:</strong> Both forms A and C express the same quantity, just in different variables.<br><strong>Step 4:</strong> The total excess pressure becomes ΔP_total = 4T/R - Q²/(32π²ε₀R⁴) (electrostatic reduces effective surface tension).",
+      "difficulty": "Hard",
+      "imagePrompt": ""
+    },
+    {
+      "id": 20,
+      "subject": "Physics",
+      "section": "D",
+      "question": "In a Van de Graaff generator, the maximum potential is limited by:",
+      "options": [
+        "The speed of the belt",
+        "Dielectric breakdown of surrounding gas",
+        "The charge capacity of the dome",
+        "Corona discharge from sharp edges"
+      ],
+      "correct": 1,
+      "explanation": "<strong>Step 1:</strong> Van de Graaff generator accumulates charge on a metal dome.<br><strong>Step 2:</strong> The electric field at surface E = V/R. When E exceeds dielectric strength of surrounding gas (~3 MV/m for air), electrical breakdown occurs.<br><strong>Step 3:</strong> This causes spark discharge, limiting maximum voltage.<br><strong>Step 4:</strong> Operating in high-pressure gas or with larger radius dome allows higher voltages.",
+      "difficulty": "Easy",
+      "imagePrompt": ""
     }
   ]
 }

@@ -1,247 +1,329 @@
 {
-  "testId": "QUICK_TOPIC",
-  "duration": 30,
-  "totalMarks": 64,
+  "testId": "IAT_AC_MOCK_V4",
+  "testName": "IISER IAT - Alternating Current (Version 4)",
+  "duration": 60,
+  "totalMarks": 80,
   "questions": [
     {
       "id": 1,
       "subject": "Physics",
-      "section": "MCQ",
-      "question": "[Alternating Current] Practice Question 1: What is the primary concept behind this topic?",
+      "topic": "Transformers",
+      "question": "The core of a transformer is laminated specifically to reduce which of the following?",
       "options": [
-        "Concept A",
-        "Concept B",
-        "Concept C",
-        "Concept D"
+        "Eddy current loss",
+        "Hysteresis loss",
+        "Copper loss",
+        "Flux leakage"
       ],
       "correct": 0,
-      "explanation": "This is a placeholder explanation for Alternating Current question 1.",
-      "difficulty": "Medium"
+      "explanation": "The changing magnetic flux in a transformer core induces small circulating currents within the core material itself, known as Eddy currents. These currents dissipate energy as heat (I²R loss). Laminating the core restricts the path for these Eddy currents, vastly increasing resistance and reducing energy loss.",
+      "difficulty": "Easy",
+      "imagePrompt": ""
     },
     {
       "id": 2,
       "subject": "Physics",
-      "section": "MCQ",
-      "question": "[Alternating Current] Practice Question 2: What is the primary concept behind this topic?",
+      "topic": "AC voltage applied to a capacitor",
+      "question": "In a purely capacitive circuit, if the frequency of the applied AC source is halved, the capacitive reactance will:",
       "options": [
-        "Concept A",
-        "Concept B",
-        "Concept C",
-        "Concept D"
+        "Halve",
+        "Double",
+        "Remain the same",
+        "Quadruple"
       ],
-      "correct": 0,
-      "explanation": "This is a placeholder explanation for Alternating Current question 2.",
-      "difficulty": "Medium"
+      "correct": 1,
+      "explanation": "Capacitive reactance is given by X_C = 1 / (2πfC). Since X_C is inversely proportional to frequency (f), if the frequency is halved (f' = f/2), the denominator becomes half, meaning the overall reactance X_C will exactly double.",
+      "difficulty": "Easy",
+      "imagePrompt": ""
     },
     {
       "id": 3,
       "subject": "Physics",
-      "section": "MCQ",
-      "question": "[Alternating Current] Practice Question 3: What is the primary concept behind this topic?",
+      "topic": "AC voltage applied to an inductor",
+      "question": "In a purely inductive AC circuit, what is the exact phase relationship between the alternating voltage and the alternating current?",
       "options": [
-        "Concept A",
-        "Concept B",
-        "Concept C",
-        "Concept D"
+        "Current leads the voltage by π/2 radians.",
+        "Current lags the voltage by π/2 radians.",
+        "Current is perfectly in phase with the voltage.",
+        "Current lags the voltage by π/4 radians."
       ],
-      "correct": 0,
-      "explanation": "This is a placeholder explanation for Alternating Current question 3.",
-      "difficulty": "Medium"
+      "correct": 1,
+      "explanation": "For a pure inductor, the voltage across it is given by V = L(dI/dt). If the current is I = I₀ sin(ωt), then the derivative yields V = I₀ ω L cos(ωt) = V₀ sin(ωt + π/2). Since voltage is at ωt + π/2 while current is at ωt, the current mathematically lags the voltage by exactly π/2 radians.",
+      "difficulty": "Easy",
+      "imagePrompt": ""
     },
     {
       "id": 4,
       "subject": "Physics",
-      "section": "MCQ",
-      "question": "[Alternating Current] Practice Question 4: What is the primary concept behind this topic?",
+      "topic": "Power in AC circuit: the power factor",
+      "question": "What is the exact numerical value of the power factor for a purely resistive AC circuit?",
       "options": [
-        "Concept A",
-        "Concept B",
-        "Concept C",
-        "Concept D"
+        "0",
+        "0.5",
+        "1",
+        "Infinity"
       ],
-      "correct": 0,
-      "explanation": "This is a placeholder explanation for Alternating Current question 4.",
-      "difficulty": "Medium"
+      "correct": 2,
+      "explanation": "Power factor is defined as cos(φ), where φ is the phase difference between voltage and current. In a purely resistive circuit, voltage and current waveforms rise and fall in perfect synchronization, meaning phase difference φ = 0°. Calculating cos(0°) yields exactly 1.",
+      "difficulty": "Easy",
+      "imagePrompt": ""
     },
     {
       "id": 5,
       "subject": "Physics",
-      "section": "MCQ",
-      "question": "[Alternating Current] Practice Question 5: What is the primary concept behind this topic?",
+      "topic": "AC voltage applied to a series LCR circuit",
+      "question": "At the specific condition of electrical resonance in a series LCR circuit, the total impedance of the circuit is:",
       "options": [
-        "Concept A",
-        "Concept B",
-        "Concept C",
-        "Concept D"
+        "Maximum and equal to ωL",
+        "Minimum and strictly equal to R",
+        "Zero",
+        "Maximum and equal to 1/(ωC)"
       ],
-      "correct": 0,
-      "explanation": "This is a placeholder explanation for Alternating Current question 5.",
-      "difficulty": "Medium"
+      "correct": 1,
+      "explanation": "The total impedance of a series LCR circuit is Z = √[R² + (X_L - X_C)²]. At resonance, inductive reactance perfectly cancels capacitive reactance (X_L = X_C). The reactive term becomes zero, leaving Z = √[R² + 0] = R. Because the added positive term is zero, impedance Z reaches its absolute minimum.",
+      "difficulty": "Easy",
+      "imagePrompt": ""
     },
     {
       "id": 6,
       "subject": "Physics",
-      "section": "MCQ",
-      "question": "[Alternating Current] Practice Question 6: What is the primary concept behind this topic?",
+      "topic": "Representation of AC current and voltage by rotating vectors – phasors",
+      "question": "In a series LCR circuit, what is the phase difference between the instantaneous voltage across the inductor (V_L) and the instantaneous voltage across the capacitor (V_C)?",
       "options": [
-        "Concept A",
-        "Concept B",
-        "Concept C",
-        "Concept D"
+        "0°",
+        "90°",
+        "180°",
+        "45°"
       ],
-      "correct": 0,
-      "explanation": "This is a placeholder explanation for Alternating Current question 6.",
-      "difficulty": "Medium"
+      "correct": 2,
+      "explanation": "In a series LCR circuit, current I is the uniform reference phasor. The voltage across the inductor (V_L) leads the current by 90° (+π/2). The voltage across the capacitor (V_C) lags the current by 90° (-π/2). The total phase difference between V_L and V_C is 90° - (-90°) = 180°. They are completely anti-parallel.",
+      "difficulty": "Easy",
+      "imagePrompt": ""
     },
     {
       "id": 7,
       "subject": "Physics",
-      "section": "MCQ",
-      "question": "[Alternating Current] Practice Question 7: What is the primary concept behind this topic?",
+      "topic": "Transformers",
+      "question": "Based on the transformer schematic provided, what is the theoretical voltage developed across the secondary open terminals?",
       "options": [
-        "Concept A",
-        "Concept B",
-        "Concept C",
-        "Concept D"
+        "11 V",
+        "2200 V",
+        "4400 V",
+        "440 V"
       ],
-      "correct": 0,
-      "explanation": "This is a placeholder explanation for Alternating Current question 7.",
-      "difficulty": "Medium"
+      "correct": 2,
+      "explanation": "The ideal transformer voltage ratio equation is V_s / V_p = N_s / N_p. Given V_p = 220 V, N_p = 100, and N_s = 2000. Rearranging for V_s gives V_s = V_p × (N_s / N_p) = 220 × (2000 / 100) = 220 × 20 = 4400 V.",
+      "difficulty": "Medium",
+      "imagePrompt": "A schematic diagram of a step-up transformer. The primary coil is labeled with N_p = 100 turns and is connected to an AC voltage source of 220 V. The secondary coil is labeled with N_s = 2000 turns and has open terminals."
     },
     {
       "id": 8,
       "subject": "Physics",
-      "section": "MCQ",
-      "question": "[Alternating Current] Practice Question 8: What is the primary concept behind this topic?",
+      "topic": "AC voltage applied to a resistor",
+      "question": "An AC voltage V = 100 sin(100π t) Volts is connected across a 20 Ω pure resistor. What is the time taken for the current to rise from zero to its absolute peak value for the first time?",
       "options": [
-        "Concept A",
-        "Concept B",
-        "Concept C",
-        "Concept D"
+        "5 ms",
+        "10 ms",
+        "20 ms",
+        "2.5 ms"
       ],
       "correct": 0,
-      "explanation": "This is a placeholder explanation for Alternating Current question 8.",
-      "difficulty": "Medium"
+      "explanation": "The angular frequency is ω = 100π rad/s. The time period T = 2π / ω = 2π / 100π = 0.02 s = 20 ms. A standard sine wave rises from zero to its absolute peak in exactly one-quarter of a full cycle (T/4). Time to peak = 20 ms / 4 = 5 ms.",
+      "difficulty": "Medium",
+      "imagePrompt": ""
     },
     {
       "id": 9,
       "subject": "Physics",
-      "section": "MCQ",
-      "question": "[Alternating Current] Practice Question 9: What is the primary concept behind this topic?",
+      "topic": "Power in AC circuit: the power factor",
+      "question": "An LCR series circuit consists of R = 30 Ω, X_L = 80 Ω, and X_C = 40 Ω connected to an AC source of 100 V (RMS). What is the average power dissipated in the entire circuit?",
       "options": [
-        "Concept A",
-        "Concept B",
-        "Concept C",
-        "Concept D"
+        "120 W",
+        "160 W",
+        "200 W",
+        "240 W"
       ],
       "correct": 0,
-      "explanation": "This is a placeholder explanation for Alternating Current question 9.",
-      "difficulty": "Medium"
+      "explanation": "First, calculate impedance: Z = √[R² + (X_L - X_C)²] = √[30² + (80 - 40)²] = √[30² + 40²] = √2500 = 50 Ω. Next, find RMS current: I_rms = V_rms / Z = 100 / 50 = 2 A. Finally, average power is dissipated only by the resistor: P_avg = I_rms² R = (2)² × 30 = 4 × 30 = 120 W.",
+      "difficulty": "Medium",
+      "imagePrompt": ""
     },
     {
       "id": 10,
       "subject": "Physics",
-      "section": "MCQ",
-      "question": "[Alternating Current] Practice Question 10: What is the primary concept behind this topic?",
+      "topic": "Transformers",
+      "question": "A practical transformer has an overall efficiency of 80%. It operates with an input power of 4 kW and a primary voltage of 100 V. If the secondary voltage is stepped up to 200 V, what are the steady RMS primary and secondary currents respectively?",
       "options": [
-        "Concept A",
-        "Concept B",
-        "Concept C",
-        "Concept D"
+        "40 A, 16 A",
+        "40 A, 20 A",
+        "20 A, 16 A",
+        "20 A, 40 A"
       ],
       "correct": 0,
-      "explanation": "This is a placeholder explanation for Alternating Current question 10.",
-      "difficulty": "Medium"
+      "explanation": "Primary input power P_in = 4 kW = 4000 W. Primary current I_p = P_in / V_p = 4000 / 100 = 40 A. The transformer is 80% efficient, so output power P_out = 0.80 × 4000 = 3200 W. Secondary current I_s = P_out / V_s = 3200 / 200 = 16 A.",
+      "difficulty": "Medium",
+      "imagePrompt": ""
     },
     {
       "id": 11,
       "subject": "Physics",
-      "section": "MCQ",
-      "question": "[Alternating Current] Practice Question 11: What is the primary concept behind this topic?",
+      "topic": "AC voltage applied to a series LCR circuit",
+      "question": "In the provided LCR resonance curve, the horizontal width marked by the arrow exactly between f₁ and f₂ represents which specific circuit parameter?",
       "options": [
-        "Concept A",
-        "Concept B",
-        "Concept C",
-        "Concept D"
+        "The resonant frequency",
+        "The bandwidth of the circuit",
+        "The geometric mean frequency",
+        "The average half-power frequency"
       ],
-      "correct": 0,
-      "explanation": "This is a placeholder explanation for Alternating Current question 11.",
-      "difficulty": "Medium"
+      "correct": 1,
+      "explanation": "The graph shows an LCR resonance frequency response. The horizontal dashed line is drawn at I = I₀ / √2, which dictates the half-power points. The frequencies f₁ and f₂ are the lower and upper cutoff frequencies. The numerical difference between them, Δf = f₂ - f₁, is technically defined as the bandwidth of the circuit.",
+      "difficulty": "Medium",
+      "imagePrompt": "A 2D Cartesian graph showing the resonance curve for a series LCR circuit. The x-axis is frequency f, and the y-axis is Current I. The curve has a bell-like shape with a peak current I₀. A horizontal dashed line is drawn at I = I₀ / √2, intersecting the curve at two frequencies, f₁ and f₂, marked on the x-axis. An arrow indicates the width between f₁ and f₂."
     },
     {
       "id": 12,
       "subject": "Physics",
-      "section": "MCQ",
-      "question": "[Alternating Current] Practice Question 12: What is the primary concept behind this topic?",
+      "topic": "AC voltage applied to a series LCR circuit",
+      "question": "An alternating EMF of angular frequency ω is applied across an unknown inductance L and a known capacitance C in series. If it is observed that the total current leads the applied voltage by exactly π/2 radians, which of the following mathematical conditions must be true?",
       "options": [
-        "Concept A",
-        "Concept B",
-        "Concept C",
-        "Concept D"
+        "ωL > 1/(ωC)",
+        "ωL < 1/(ωC)",
+        "ωL = 1/(ωC)",
+        "ω = 0"
       ],
-      "correct": 0,
-      "explanation": "This is a placeholder explanation for Alternating Current question 12.",
-      "difficulty": "Medium"
+      "correct": 1,
+      "explanation": "If current leads voltage by exactly 90° (π/2 radians), the entire series circuit must behave as a pure, ideal capacitor. In a series LC circuit, the net reactance is X_net = |X_L - X_C|. For it to act purely capacitively, the capacitive reactance must completely dominate the inductive reactance. Thus, X_C > X_L ⟹ 1/(ωC) > ωL ⟹ ωL < 1/(ωC).",
+      "difficulty": "Medium",
+      "imagePrompt": ""
     },
     {
       "id": 13,
       "subject": "Physics",
-      "section": "MCQ",
-      "question": "[Alternating Current] Practice Question 13: What is the primary concept behind this topic?",
+      "topic": "Power in AC circuit: the power factor",
+      "question": "A specific choke coil operates on a 220 V, 50 Hz AC mains and draws a steady current of 5 A. If the active power dissipated as heat in the coil is measured to be 550 W, what is the phase difference between the voltage and the current?",
       "options": [
-        "Concept A",
-        "Concept B",
-        "Concept C",
-        "Concept D"
+        "π/3 radians",
+        "π/4 radians",
+        "π/6 radians",
+        "π/2 radians"
       ],
       "correct": 0,
-      "explanation": "This is a placeholder explanation for Alternating Current question 13.",
-      "difficulty": "Medium"
+      "explanation": "The formula for average active power is P = V_rms I_rms cos(φ). Substituting the given values: 550 = 220 × 5 × cos(φ) ⟹ 550 = 1100 × cos(φ). Solving for the power factor yields cos(φ) = 550 / 1100 = 0.5. The phase angle whose cosine is 0.5 is 60°, which converts to π/3 radians.",
+      "difficulty": "Medium",
+      "imagePrompt": ""
     },
     {
       "id": 14,
       "subject": "Physics",
-      "section": "MCQ",
-      "question": "[Alternating Current] Practice Question 14: What is the primary concept behind this topic?",
+      "topic": "Representation of AC current and voltage by rotating vectors – phasors",
+      "question": "In the AC circuit represented by the given phasor diagram, the applied source voltage:",
       "options": [
-        "Concept A",
-        "Concept B",
-        "Concept C",
-        "Concept D"
+        "Leads the current",
+        "Lags the current",
+        "Is perfectly in phase with the current",
+        "Is zero"
       ],
-      "correct": 0,
-      "explanation": "This is a placeholder explanation for Alternating Current question 14.",
-      "difficulty": "Medium"
+      "correct": 1,
+      "explanation": "The phasor diagram shows V_C (downward) is physically longer than V_L (upward). The net reactive voltage V_net_y = V_L - V_C will therefore point downwards along the negative y-axis. The overall resultant voltage V (vector sum of V_R and V_net_y) will lie strictly in the fourth quadrant. Since current I lies on the positive x-axis and voltage V is below it, voltage rotates behind the current. Thus, voltage lags current.",
+      "difficulty": "Medium",
+      "image": "https://res.cloudinary.com/dhb8qmnxt/image/upload/v1772722729/0887c2a6-1360-452d-864d-ce21e7898976_ye84ia.png",
+      "imagePrompt": "A 2D phasor diagram for a series LCR circuit. The x-axis points to the right, and the y-axis points up. A vector labeled I points along the positive x-axis. A vector V_R also points along the positive x-axis. A vector V_L points along the positive y-axis. A vector V_C points along the negative y-axis. The physical length of the V_C vector is visibly greater than the length of the V_L vector."
     },
     {
       "id": 15,
       "subject": "Physics",
-      "section": "MCQ",
-      "question": "[Alternating Current] Practice Question 15: What is the primary concept behind this topic?",
+      "topic": "AC voltage applied to a series LCR circuit",
+      "question": "An AC source of variable angular frequency ω is connected to a standard LCR series circuit. As ω is smoothly increased from zero towards infinity, the total impedance (Z) of the circuit:",
       "options": [
-        "Concept A",
-        "Concept B",
-        "Concept C",
-        "Concept D"
+        "Increases continuously",
+        "Decreases continuously",
+        "Increases, reaches a maximum, then decreases",
+        "Decreases, reaches a minimum, then increases"
       ],
-      "correct": 0,
-      "explanation": "This is a placeholder explanation for Alternating Current question 15.",
-      "difficulty": "Medium"
+      "correct": 3,
+      "explanation": "Impedance Z = √[R² + (ωL - 1/ωC)²]. As ω → 0, 1/ωC → ∞, making Z → ∞. As ω increases, capacitive reactance drops and Z decreases. At resonance (ω = 1/√(LC)), the reactive terms cancel and Z reaches its absolute minimum (Z = R). As ω → ∞, inductive reactance ωL → ∞, causing Z to increase again. Thus, it decreases, hits a minimum, and increases.",
+      "difficulty": "Medium",
+      "imagePrompt": ""
     },
     {
       "id": 16,
       "subject": "Physics",
-      "section": "MCQ",
-      "question": "[Alternating Current] Practice Question 16: What is the primary concept behind this topic?",
+      "topic": "Transformers",
+      "question": "In a standard step-up transformer, the primary-to-secondary turns ratio is 1:2. A steady Leclanché cell (a pure DC source) of EMF 1.5 V is connected across the primary terminals. What is the steady voltage developed across the secondary terminals?",
       "options": [
-        "Concept A",
-        "Concept B",
-        "Concept C",
-        "Concept D"
+        "3.0 V",
+        "1.5 V",
+        "0.75 V",
+        "0 V"
+      ],
+      "correct": 3,
+      "explanation": "A Leclanché cell provides a steady, unchanging Direct Current (DC). Transformers operate strictly via electromagnetic induction, which mandates a dynamically changing magnetic flux (dΦ/dt ≠ 0). Because the DC source creates a static magnetic field, the rate of change of flux is absolute zero. Therefore, exactly 0 V is induced across the secondary.",
+      "difficulty": "Medium",
+      "imagePrompt": ""
+    },
+    {
+      "id": 17,
+      "subject": "Physics",
+      "topic": "Power in AC circuit: the power factor",
+      "question": "A series LCR circuit with R = 50 Ω, L = 0.5 H, and C = 200 μF is connected to an AC source described by the equation V(t) = 200√2 sin(100 t) Volts. What is the exact instantaneous power dissipated by the circuit strictly at the time t = π/400 seconds?",
+      "options": [
+        "0 W",
+        "400 W",
+        "800 W",
+        "1600 W"
+      ],
+      "correct": 2,
+      "explanation": "ω = 100 rad/s. X_L = 100 × 0.5 = 50 Ω. X_C = 1 / (100 × 200 × 10⁻⁶) = 1 / 0.02 = 50 Ω. Since X_L = X_C, the circuit is in perfect resonance. Z = R = 50 Ω. Current I(t) = V(t)/Z = (200√2/50) sin(100t) = 4√2 sin(100t). Instantaneous power P(t) = V(t)I(t) = 1600 sin²(100t). At t = π/400, 100t = π/4. sin(π/4) = 1/√2, so sin²(π/4) = 1/2. P(π/400) = 1600 × (1/2) = 800 W.",
+      "difficulty": "Hard",
+      "imagePrompt": ""
+    },
+    {
+      "id": 18,
+      "subject": "Physics",
+      "topic": "Transformers",
+      "question": "A small town with a peak demand of 800 kW of electric power at 220 V is situated 15 km away from an electric generation plant that transmits power at 4000 V. The resistance of the two-wire transmission line carrying the power is 0.5 Ω per km. The town receives its power from the transmission line through a 4000 V - 220 V step-down transformer situated at a local sub-station. Assuming all transformers are ideal, estimate the total power lost purely as heat in the transmission lines.",
+      "options": [
+        "600 kW",
+        "400 kW",
+        "200 kW",
+        "800 kW"
       ],
       "correct": 0,
-      "explanation": "This is a placeholder explanation for Alternating Current question 16.",
-      "difficulty": "Medium"
+      "explanation": "Total line length for two wires = 2 × 15 = 30 km. Total line resistance R_line = 30 × 0.5 = 15 Ω. The local transformer steps down from 4000 V, so transmission voltage is 4000 V. Total power P = 800 kW = 800,000 W. Transmission line current I = P / V = 800,000 / 4000 = 200 A. Heating loss P_loss = I² R_line = (200)² × 15 = 40,000 × 15 = 600,000 W = 600 kW.",
+      "difficulty": "Hard",
+      "imagePrompt": ""
+    },
+    {
+      "id": 19,
+      "subject": "Physics",
+      "topic": "Representation of AC current and voltage by rotating vectors – phasors",
+      "question": "An AC voltage V(t) = V₀ sin(ωt) is applied across a parallel combination of a pure resistor R and a pure capacitor C. Which of the following expressions correctly defines the total instantaneous current I(t) drawn from the AC source?",
+      "options": [
+        "V₀ √[1/R² + ω²C²] sin(ωt + φ) where tanφ = ωRC",
+        "V₀ √[1/R² + ω²C²] sin(ωt - φ) where tanφ = ωRC",
+        "V₀ / √[R² + 1/(ωC)²] sin(ωt + φ) where tanφ = 1/(ωRC)",
+        "V₀ / √[R² + 1/(ωC)²] sin(ωt - φ) where tanφ = 1/(ωRC)"
+      ],
+      "correct": 0,
+      "explanation": "In parallel, voltage is identical. Current through resistor is I_R = (V₀/R) sin(ωt). Current through capacitor leads by 90°: I_C = C(dV/dt) = V₀ωC cos(ωt). Total current I = I_R + I_C = V₀[(1/R) sin(ωt) + (ωC) cos(ωt)]. Let 1/R = A cosφ and ωC = A sinφ. Amplitude A = √[1/R² + (ωC)²]. Phase tanφ = (ωC)/(1/R) = ωRC. Thus, I(t) = V₀ √[1/R² + ω²C²] sin(ωt + φ).",
+      "difficulty": "Hard",
+      "imagePrompt": ""
+    },
+    {
+      "id": 20,
+      "subject": "Physics",
+      "topic": "Power in AC circuit: the power factor",
+      "question": "An industrial circuit draws a current of 10 A from a 200 V, 50 Hz AC mains supply. The average power dissipated by the circuit is 1200 W, and it is known that the current lags the voltage. What must be the exact value of the capacitance connected directly in series with the circuit to correct the power factor to unity (1.0)?",
+      "options": [
+        "1 / (1600π) F",
+        "1 / (800π) F",
+        "1 / (3200π) F",
+        "1 / (400π) F"
+      ],
+      "correct": 0,
+      "explanation": "Original impedance Z = V/I = 200/10 = 20 Ω. Active power P = I²R ⟹ 1200 = 100R ⟹ R = 12 Ω. Since current lags, it's inductive. Z² = R² + X_L² ⟹ 20² = 12² + X_L² ⟹ X_L = √256 = 16 Ω. To make the power factor unity in a series circuit, net reactance must be zero. We must add a series capacitor where X_C = X_L = 16 Ω. X_C = 1 / (2πfC) ⟹ 16 = 1 / (2π × 50 × C). C = 1 / (16 × 100π) = 1 / (1600π) F.",
+      "difficulty": "Hard",
+      "imagePrompt": ""
     }
   ]
 }

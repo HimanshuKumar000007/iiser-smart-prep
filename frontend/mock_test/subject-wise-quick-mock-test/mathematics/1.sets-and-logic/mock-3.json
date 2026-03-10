@@ -3,346 +3,346 @@
   "testName": "IISER IAT - Sets and Logic",
   "duration": 60,
   "totalMarks": 80,
-  "questions":[
-{
-    "id": 1,
-    "subject": "Mathematics",
-    "topic": "Sets",
-    "subtopic": "Subsets",
-    "question": "Let A = {x ∈ ℤ : -2 ≤ x ≤ 2}. How many proper subsets does set A have?",
-    "options":[
-      "32",
-      "31",
-      "16",
-      "15"
-    ],
-    "correct": 1,
-    "explanation": "Determine the elements of set A. Since x is an integer and -2 ≤ x ≤ 2, the set is A = {-2, -1, 0, 1, 2}. The number of elements in A is n = 5. The total number of subsets is 2^n = 2^5 = 32. A 'proper subset' excludes the set itself. Thus, the number of proper subsets is 2^n - 1 = 32 - 1 = 31.",
-    "difficulty": "Easy",
-    "imagePrompt": null
-  },
-{
-  "id": 2,
-  "subject": "Mathematics",
-  "topic": "Relations & functions",
-  "subtopic": "Type of relations",
-  "question": "Let A = {1, 2, 3}. Which of the following relations defined on set A is symmetric but NOT reflexive?",
-  "options":[
-    "{(1,2),(2,1)}",
-    "{(1,1),(2,2),(3,3),(1,2),(2,1)}",
-    "{(1,1),(2,2),(3,3)}",
-    "{(1,2),(2,3)}"
-  ],
-  "correct": 0,
-  "explanation": "A relation is symmetric if whenever (a,b) belongs to R then (b,a) also belongs to R. Option A contains (1,2) and (2,1) so it is symmetric. However it does not contain (1,1),(2,2),(3,3), so it is not reflexive.",
-  "difficulty": "Easy",
-  "imagePrompt": null
-},
-  {
-    "id": 3,
-    "subject": "Mathematics",
-    "topic": "Relations & functions",
-    "subtopic": "Types of functions",
-    "question": "Let f(x) = sgn(x² - 4x + 4) where sgn(y) represents the signum function. What is the range of f(x) for all x ∈ ℝ?",
-    "options":[
-      "{-1, 0, 1}",
-      "{0, 1}",
-      "{1}",
-      "[-1, 1]"
-    ],
-    "correct": 1,
-    "explanation": "Analyze the argument of the signum function: x² - 4x + 4 = (x - 2)². The square of any real number is always non-negative. So, (x - 2)² ≥ 0 for all x ∈ ℝ. The signum function outputs 0 when the input is 0, and outputs 1 when the input is strictly positive. Since (x-2)² can be 0 (at x=2) or positive (for x ≠ 2), the output of sgn((x-2)²) can only be 0 or 1. The range is {0, 1}.",
-    "difficulty": "Easy",
-    "imagePrompt": null
-  },
-  {
-    "id": 4,
-    "subject": "Mathematics",
-    "topic": "Sets",
-    "subtopic": "Various operations on sets",
-    "question": "For any two generic sets A and B, the set operation A ∩ (A ∪ B)' is equivalent to:",
-    "options": [
-      "A ∩ B",
-      "A",
-      "B'",
-      "∅"
-    ],
-    "correct": 3,
-    "explanation": "Use De Morgan's Law to expand (A ∪ B)'. This becomes (A' ∩ B'). Substitute this back into the original expression: A ∩ (A' ∩ B'). Since set intersection is associative, this is (A ∩ A') ∩ B'. The intersection of a set with its complement is the empty set: A ∩ A' = ∅. Finally, ∅ ∩ B' = ∅.",
-    "difficulty": "Easy",
-    "imagePrompt": null
-  },
-  {
-    "id": 5,
-    "subject": "Mathematics",
-    "topic": "Relations & functions",
-    "subtopic": "Real valued functions",
-    "question": "What is the maximal real domain of the function f(x) = 1 / log₁₀(1 - x)?",
-    "options":[
-      "(-∞, 1)",
-      "(-∞, 1) \\ {0}",
-      "(0, 1)",
-      "(-∞, 0)"
-    ],
-    "correct": 1,
-    "explanation": "For the logarithm to be defined, its argument must be strictly positive: 1 - x > 0 ⇒ x < 1. The function has a denominator, which cannot be zero. Thus, log₁₀(1 - x) ≠ 0. Solving log₁₀(1 - x) = 0 gives 1 - x = 10⁰ = 1 ⇒ x = 0. Combining both conditions, x must be less than 1, but x cannot be 0. The domain is (-∞, 1) \\ {0}.",
-    "difficulty": "Easy",
-    "imagePrompt": null
-  },
-  {
-    "id": 6,
-    "subject": "Mathematics",
-    "topic": "Sets",
-    "subtopic": "Cartesian products",
-    "question": "Let A and B be two finite sets such that n(A) = 3, n(B) = 4, and n(A ∩ B) = 2. What is the number of elements in the set (A × B) ∩ (B × A)?",
-    "options":[
-      "2",
-      "4",
-      "6",
-      "12"
-    ],
-    "correct": 1,
-    "explanation": "By a standard identity in set theory, the intersection of two Cartesian products (A × B) ∩ (C × D) is equal to (A ∩ C) × (B ∩ D). Applying this to our sets: (A × B) ∩ (B × A) = (A ∩ B) × (B ∩ A). Since A ∩ B = B ∩ A, the intersection simplifies to (A ∩ B) × (A ∩ B). The number of elements is n(A ∩ B) × n(A ∩ B) = 2 × 2 = 4.",
-    "difficulty": "Easy",
-    "imagePrompt": null
-  },
-  {
-    "id": 7,
-    "subject": "Mathematics",
-    "topic": "Relations & functions",
-    "subtopic": "Equivalence relation",
-    "question": "Let R be a relation on the set of integers ℤ defined by xRy ⇔ x² - y² is an even integer. This relation R is:",
-    "options":[
-      "Reflexive and symmetric but not transitive",
-      "Reflexive and transitive but not symmetric",
-      "An equivalence relation",
-      "Symmetric and transitive but not reflexive"
-    ],
-    "correct": 2,
-    "explanation": "Reflexive: For any integer x, x² - x² = 0. Since 0 is an even integer, xRx holds. Symmetric: If xRy, then x² - y² = 2k. Multiplying by -1 gives y² - x² = 2(-k), which is also an even integer. Thus yRx holds. Transitive: If xRy and yRz, then x² - y² = 2m and y² - z² = 2n. Adding gives x² - z² = 2(m+n), which is even. Thus xRz holds. Because it satisfies all three properties, it is an Equivalence relation.",
-    "difficulty": "Medium",
-    "imagePrompt": null
-  },
-  {
-    "id": 8,
-    "subject": "Mathematics",
-    "topic": "Relations & functions",
-    "subtopic": "Real valued functions",
-    "question": "What is the exact range of the real-valued function f(x) = x² / (1+x²) for x ∈ ℝ?",
-    "options": [
-      "[0, 1]",
-      "(0, 1)",
-      "[0, 1)",
-      "(-∞, 1)"
-    ],
-    "correct": 2,
-    "explanation": "Let y = x² / (1+x²). Rewrite the expression to isolate terms: y = (1+x²-1) / (1+x²) = 1 - 1/(1+x²). Since x² ≥ 0 for all real x, the denominator 1+x² is bounded by 1+x² ≥ 1. Therefore, the fraction 1/(1+x²) is bounded strictly between 0 (exclusive, as x → ∞) and 1 (inclusive, at x=0). Thus, 0 < 1/(1+x²) ≤ 1. Multiply by -1 and add 1: 1 - 1 ≤ 1 - 1/(1+x²) < 1 - 0 ⇒ 0 ≤ y < 1. The exact range is[0, 1).",
-    "difficulty": "Medium",
-    "imagePrompt": null
-  },
-  {
-    "id": 9,
-    "subject": "Mathematics",
-    "topic": "Sets",
-    "subtopic": "Venn diagram",
-    "question": "In a group of 60 students, 35 like to drink tea, 25 like to drink coffee, and 15 like to drink both tea and coffee. How many students in the group like neither tea nor coffee?",
-    "options":[
-      "5",
-      "10",
-      "15",
-      "20"
-    ],
-    "correct": 2,
-    "explanation": "Let the total number of students be n(U) = 60. Let T be the set of tea drinkers and C be the set of coffee drinkers. Given: n(T) = 35, n(C) = 25, and n(T ∩ C) = 15. The number of students who like at least one beverage is n(T ∪ C) = n(T) + n(C) - n(T ∩ C). n(T ∪ C) = 35 + 25 - 15 = 60 - 15 = 45. The number of students who like neither is n(U) - n(T ∪ C) = 60 - 45 = 15.",
-    "difficulty": "Medium",
-    "imagePrompt": null
-  },
-  {
-    "id": 10,
-    "subject": "Mathematics",
-    "topic": "Relations & functions",
-    "subtopic": "Types of functions",
-    "question": "Let f: ℝ → ℝ be defined as f(x) = (e^x - e^(-x))/2. The function f(x) is:",
-    "options":[
-      "One-one but not onto",
-      "Onto but not one-one",
-      "Neither one-one nor onto",
-      "Bijective (One-one and onto)"
-    ],
-    "correct": 3,
-    "explanation": "Check Injectivity (One-one): Find the derivative: f'(x) = (e^x + e^(-x))/2. Since exponentials are always positive, f'(x) > 0 for all x ∈ ℝ. A strictly increasing function is always one-one. Check Surjectivity (Onto): As x → ∞, f(x) → ∞. As x → -∞, f(x) → -∞. Because f(x) is a continuous function, it covers all intermediate real values. Thus, its range is ℝ, making it onto. Since it is both one-one and onto, it is Bijective.",
-    "difficulty": "Medium",
-    "imagePrompt": null
-  },
-  {
-    "id": 11,
-    "subject": "Mathematics",
-    "topic": "Relations & functions",
-    "subtopic": "Composition of functions",
-    "question": "Let f(x) = [x] denote the greatest integer function (floor function), and let g(x) = |x| denote the absolute value function. Evaluate the exact difference: f(g(-3.7)) - g(f(-3.7)).",
-    "options":[
-      "1",
-      "-1",
-      "0",
-      "7"
-    ],
-    "correct": 1,
-    "explanation": "Evaluate the first part: f(g(-3.7)). g(-3.7) = |-3.7| = 3.7. f(3.7) = [3.7] = 3 (the greatest integer ≤ 3.7). Evaluate the second part: g(f(-3.7)). f(-3.7) = [-3.7] = -4 (the greatest integer ≤ -3.7). g(-4) = |-4| = 4. Subtract the two results: 3 - 4 = -1.",
-    "difficulty": "Medium",
-    "imagePrompt": null
-  },
-  {
-    "id": 12,
-    "subject": "Mathematics",
-    "topic": "Relations & functions",
-    "subtopic": "inverse of a function",
-    "question": "Let f:[1, ∞) →[2, ∞) be defined by f(x) = x + 1/x. Which of the following correctly represents the inverse function f⁻¹(x)?",
-    "options":[
-      "(x + √(x² + 4))/2",
-      "(x - √(x² - 4))/2",
-      "(x + √(x² - 4))/2",
-      "x - 1/x"
-    ],
-    "correct": 2,
-    "explanation": "Let y = x + 1/x. We need to solve for x in terms of y. Multiply by x: xy = x² + 1 ⇒ x² - yx + 1 = 0. Use the quadratic formula: x = (y ± √(y² - 4))/2. Since the domain of f is[1, ∞), we know x ≥ 1. If we take the minus sign, x would be smaller than or equal to 1. To satisfy x ≥ 1, we must choose the positive root. Thus, substituting variables back, the inverse function is f⁻¹(x) = (x + √(x² - 4))/2.",
-    "difficulty": "Medium",
-    "imagePrompt": null
-  },
-  {
-    "id": 13,
-    "subject": "Mathematics",
-    "topic": "Relations & functions",
-    "subtopic": "Type of relations",
-    "question": "Let set A = {1, 2, 3, 4}. What is the total number of distinct reflexive relations that can be defined on set A?",
-    "options":[
-      "2^16",
-      "2^12",
-      "2^4",
-      "4096"
-    ],
-    "correct": 1,
-    "explanation": "A relation R on a set A of n elements is a subset of A × A, which contains n² ordered pairs. For R to be reflexive, it MUST contain all n diagonal pairs (x, x) for every x ∈ A. The remaining n² - n pairs in A × A can either be included or excluded from the relation independently. The number of reflexive relations is 2^(n² - n). For set A with n=4 elements, the number of reflexive relations is 2^(4² - 4) = 2^(16 - 4) = 2^12.",
-    "difficulty": "Medium",
-    "imagePrompt": null
-  },
-  {
-    "id": 14,
-    "subject": "Mathematics",
-    "topic": "Relations & functions",
-    "subtopic": "Real valued functions",
-    "question": "Determine the maximal real domain of the function f(x) = √(log_0.5(x² - 7x + 13)).",
-    "options": [
-      "(-∞, 3] ∪[4, ∞)",
-      "(3, 4)",
-      "[3, 4]",
-      "ℝ \\[3, 4]"
-    ],
-    "correct": 2,
-    "explanation": "The argument of the logarithm must be strictly positive: x² - 7x + 13 > 0. The discriminant of this quadratic is -3 < 0. Because the leading coefficient is positive, this quadratic is always positive for all real x. The expression under the square root must be non-negative: log_0.5(x² - 7x + 13) ≥ 0. Since the logarithmic base 0.5 is less than 1, exponentiating both sides reverses the inequality: x² - 7x + 13 ≤ (0.5)⁰ ⇒ x² - 7x + 13 ≤ 1. Solve the quadratic inequality: x² - 7x + 12 ≤ 0 ⇒ (x-3)(x-4) ≤ 0. Testing intervals shows this inequality holds true for x ∈ [3, 4].",
-    "difficulty": "Medium",
-    "imagePrompt": null
-  },
-  {
-    "id": 15,
-    "subject": "Mathematics",
-    "topic": "Sets",
-    "subtopic": "Properties of various operations on sets",
-    "question": "For any three arbitrary sets A, B, and C, the symmetric difference operation satisfies associativity. Which of the following expressions is strictly equivalent to A △ (B △ C)?",
-    "options":[
-      "(A ∪ B) △ C",
-      "(A ∩ B) △ C",
-      "(A △ B) △ C",
-      "(A △ B) ∩ C"
-    ],
-    "correct": 2,
-    "explanation": "The symmetric difference of sets, denoted by △, is defined as the set of elements in exactly one of the sets. A fundamental property of the symmetric difference operation in set theory is that it is strictly associative. Therefore, the grouping of operands does not matter: A △ (B △ C) = (A △ B) △ C.",
-    "difficulty": "Medium",
-    "imagePrompt": null
-  },
-  {
-    "id": 16,
-    "subject": "Mathematics",
-    "topic": "Relations & functions",
-    "subtopic": "Composition of functions",
-    "question": "If f(x) is an even function defined on ℝ, and g(x) is an odd function defined on ℝ, then the composite function h(x) = f(g(x)) must always be:",
-    "options":[
-      "An odd function",
-      "An even function",
-      "Neither even nor odd",
-      "A strictly increasing function"
-    ],
-    "correct": 1,
-    "explanation": "By definition, f(x) is even, so f(-x) = f(x). g(x) is odd, so g(-x) = -g(x). To test the composite function h(x) = f(g(x)), evaluate h(-x). h(-x) = f(g(-x)). Substitute the odd property of g: h(-x) = f(-g(x)). Substitute the even property of f: Because f absorbs a negative input, f(-y) = f(y). So, f(-g(x)) = f(g(x)). Therefore, h(-x) = h(x), which rigorously defines an even function.",
-    "difficulty": "Medium",
-    "imagePrompt": null
-  },
-  {
-  "id": 17,
-  "subject": "Mathematics",
-  "topic": "Relations & functions",
-  "subtopic": "Real valued functions",
-  "question": "Let f: ℝ → ℝ satisfy f(x+y) = f(x) + f(y) - xy for all real x,y and lim_{x→0} f(x)/x = 3. Find f(2).",
-  "options":[
-    "2",
-    "4",
-    "6",
-    "8"
-  ],
-  "correct": 1,
-  "explanation": "Put y = 0 in the functional equation. We obtain f(0)=0. Assume f(x)=ax+bx². Substitute into the equation:\n\nf(x+y)=a(x+y)+b(x+y)²\n\n= ax+ay+bx²+2bxy+by².\n\nBut f(x)+f(y)-xy = ax+bx² + ay+by² - xy.\n\nEquating coefficients gives 2b = -1 so b = -1/2.\n\nThus f(x)=ax - x²/2.\n\nNow evaluate limit:\n\nlim_{x→0} f(x)/x = lim_{x→0}(a - x/2)=a.\n\nGiven limit =3 ⇒ a=3.\n\nHence f(x)=3x - x²/2.\n\nTherefore f(2)=6 - 2 = 4.",
-  "difficulty": "Hard",
-  "imagePrompt": null
-},
-  {
-    "id": 18,
-    "subject": "Mathematics",
-    "topic": "Relations & functions",
-    "subtopic": "Equivalence relation",
-    "question": "Let R be a relation on the set of integers ℤ defined by xRy if and only if 5x + 6y is divisible by 11. This forms an equivalence relation. Which of the following sets represents the equivalence class of the element 3, denoted as [3]?",
-    "options":[
-      "{x ∈ ℤ : x = 11k + 5 for some k ∈ ℤ}",
-      "{x ∈ ℤ : x = 11k - 3 for some k ∈ ℤ}",
-      "{x ∈ ℤ : x = 11k + 3 for some k ∈ ℤ}",
-      "{x ∈ ℤ : x = 5k + 6 for some k ∈ ℤ}"
-    ],
-    "correct": 2,
-    "explanation": "The relation is xRy ⇔ 5x + 6y is a multiple of 11. This means 5x + 6y ≡ 0 (mod 11). Note that 6 ≡ -5 (mod 11). Substitute this into the congruence: 5x - 5y ≡ 0 (mod 11) ⇒ 5(x - y) ≡ 0 (mod 11). Since 5 and 11 are coprime (gcd(5, 11) = 1), we can divide out the 5. This yields x - y ≡ 0 (mod 11), which is equivalent to x ≡ y (mod 11). Therefore, two integers are related if and only if they leave the same remainder when divided by 11. The equivalence class of 3 is the set of all integers x such that x ≡ 3 (mod 11). This is {x ∈ ℤ : x = 11k + 3 for some k ∈ ℤ}.",
-    "difficulty": "Hard",
-    "imagePrompt": null
-  },
-  {
-    "id": 19,
-    "subject": "Mathematics",
-    "topic": "Relations & functions",
-    "subtopic": "Real valued functions",
-    "question": "Determine the exact range of the real-valued function f(x) = sin⁻¹(2x / (1+x²)) for x ∈ ℝ.",
-    "options": [
-      "[0, π]",
-      "[-π/2, π/2]",
-      "(-π/2, π/2)",
-      "[-π, π]"
-    ],
-    "correct": 1,
-    "explanation": "Let y = 2x / (1+x²). We need to find the range of this internal algebraic fraction. Rearrange into a quadratic in terms of x: yx² - 2x + y = 0. For x to be a real number, the discriminant must be non-negative (Δ ≥ 0). Δ = (-2)² - 4(y)(y) = 4 - 4y² ≥ 0 ⇒ 1 - y² ≥ 0 ⇒ y² ≤ 1 ⇒ -1 ≤ y ≤ 1. The internal fraction covers the entire interval [-1, 1] as x ranges over all real numbers. The outer function is f(x) = sin⁻¹(y). We must find the range of sin⁻¹(y) for y ∈ [-1, 1]. The principal range of the arcsine function over its entire valid domain is strictly [-π/2, π/2].",
-    "difficulty": "Hard",
-    "imagePrompt": null
-  },
-{
-  "id": 20,
-  "subject": "Mathematics",
-  "topic": "Relations & functions",
-  "subtopic": "Types of functions",
-  "question": "Let A = {1,2,3,4}. How many bijective functions f:A→A exist such that exactly one element x satisfies f(x)=x?",
-  "options":[
-    "4",
-    "8",
-    "12",
-    "24"
-  ],
-  "correct": 1,
-  "explanation": "We need permutations of 4 elements with exactly one fixed point.\n\nChoose the fixed element: C(4,1)=4 ways.\n\nThe remaining 3 elements must form a derangement (no fixed points).\n\nNumber of derangements of 3 elements:\n\nD3 = 2.\n\nThus total permutations with exactly one fixed point = 4 × 2 = 8.",
-  "difficulty": "Hard",
-  "imagePrompt": null
-}
-]
+  "questions": [
+    {
+      "id": 1,
+      "subject": "Mathematics",
+      "topic": "Sets",
+      "subtopic": "Subsets",
+      "question": "Let A = {x ∈ ℤ : -2 ≤ x ≤ 2}. How many proper subsets does set A have?",
+      "options": [
+        "32",
+        "31",
+        "16",
+        "15"
+      ],
+      "correct": 1,
+      "explanation": "Determine the elements of set A. Since x is an integer and -2 ≤ x ≤ 2, the set is A = {-2, -1, 0, 1, 2}. The number of elements in A is n = 5. The total number of subsets is 2^n = 2^5 = 32. A 'proper subset' excludes the set itself. Thus, the number of proper subsets is 2^n - 1 = 32 - 1 = 31.",
+      "difficulty": "Easy",
+      "imagePrompt": null
+    },
+    {
+      "id": 2,
+      "subject": "Mathematics",
+      "topic": "Relations & functions",
+      "subtopic": "Type of relations",
+      "question": "Let A = {1, 2, 3}. Which of the following relations defined on set A is symmetric but NOT reflexive?",
+      "options": [
+        "{(1,2),(2,1)}",
+        "{(1,1),(2,2),(3,3),(1,2),(2,1)}",
+        "{(1,1),(2,2),(3,3)}",
+        "{(1,2),(2,3)}"
+      ],
+      "correct": 0,
+      "explanation": "A relation is symmetric if whenever (a,b) belongs to R then (b,a) also belongs to R. Option A contains (1,2) and (2,1) so it is symmetric. However it does not contain (1,1),(2,2),(3,3), so it is not reflexive.",
+      "difficulty": "Easy",
+      "imagePrompt": null
+    },
+    {
+      "id": 3,
+      "subject": "Mathematics",
+      "topic": "Relations & functions",
+      "subtopic": "Types of functions",
+      "question": "Let f(x) = sgn(x² - 4x + 4) where sgn(y) represents the signum function. What is the range of f(x) for all x ∈ ℝ?",
+      "options": [
+        "{-1, 0, 1}",
+        "{0, 1}",
+        "{1}",
+        "[-1, 1]"
+      ],
+      "correct": 1,
+      "explanation": "Analyze the argument of the signum function: x² - 4x + 4 = (x - 2)². The square of any real number is always non-negative. So, (x - 2)² ≥ 0 for all x ∈ ℝ. The signum function outputs 0 when the input is 0, and outputs 1 when the input is strictly positive. Since (x-2)² can be 0 (at x=2) or positive (for x ≠ 2), the output of sgn((x-2)²) can only be 0 or 1. The range is {0, 1}.",
+      "difficulty": "Easy",
+      "imagePrompt": null
+    },
+    {
+      "id": 4,
+      "subject": "Mathematics",
+      "topic": "Sets",
+      "subtopic": "Various operations on sets",
+      "question": "For any two generic sets A and B, the set operation A ∩ (A ∪ B)' is equivalent to:",
+      "options": [
+        "A ∩ B",
+        "A",
+        "B'",
+        "∅"
+      ],
+      "correct": 3,
+      "explanation": "Use De Morgan's Law to expand (A ∪ B)'. This becomes (A' ∩ B'). Substitute this back into the original expression: A ∩ (A' ∩ B'). Since set intersection is associative, this is (A ∩ A') ∩ B'. The intersection of a set with its complement is the empty set: A ∩ A' = ∅. Finally, ∅ ∩ B' = ∅.",
+      "difficulty": "Easy",
+      "imagePrompt": null
+    },
+    {
+      "id": 5,
+      "subject": "Mathematics",
+      "topic": "Relations & functions",
+      "subtopic": "Real valued functions",
+      "question": "What is the maximal real domain of the function f(x) = 1 / log₁₀(1 - x)?",
+      "options": [
+        "(-∞, 1)",
+        "(-∞, 1) \\ {0}",
+        "(0, 1)",
+        "(-∞, 0)"
+      ],
+      "correct": 1,
+      "explanation": "For the logarithm to be defined, its argument must be strictly positive: 1 - x > 0 ⇒ x < 1. The function has a denominator, which cannot be zero. Thus, log₁₀(1 - x) ≠ 0. Solving log₁₀(1 - x) = 0 gives 1 - x = 10⁰ = 1 ⇒ x = 0. Combining both conditions, x must be less than 1, but x cannot be 0. The domain is (-∞, 1) \\ {0}.",
+      "difficulty": "Easy",
+      "imagePrompt": null
+    },
+    {
+      "id": 6,
+      "subject": "Mathematics",
+      "topic": "Sets",
+      "subtopic": "Cartesian products",
+      "question": "Let A and B be two finite sets such that n(A) = 3, n(B) = 4, and n(A ∩ B) = 2. What is the number of elements in the set (A × B) ∩ (B × A)?",
+      "options": [
+        "2",
+        "4",
+        "6",
+        "12"
+      ],
+      "correct": 1,
+      "explanation": "By a standard identity in set theory, the intersection of two Cartesian products (A × B) ∩ (C × D) is equal to (A ∩ C) × (B ∩ D). Applying this to our sets: (A × B) ∩ (B × A) = (A ∩ B) × (B ∩ A). Since A ∩ B = B ∩ A, the intersection simplifies to (A ∩ B) × (A ∩ B). The number of elements is n(A ∩ B) × n(A ∩ B) = 2 × 2 = 4.",
+      "difficulty": "Easy",
+      "imagePrompt": null
+    },
+    {
+      "id": 7,
+      "subject": "Mathematics",
+      "topic": "Relations & functions",
+      "subtopic": "Equivalence relation",
+      "question": "Let R be a relation on the set of integers ℤ defined by xRy ⇔ x² - y² is an even integer. This relation R is:",
+      "options": [
+        "Reflexive and symmetric but not transitive",
+        "Reflexive and transitive but not symmetric",
+        "An equivalence relation",
+        "Symmetric and transitive but not reflexive"
+      ],
+      "correct": 2,
+      "explanation": "Reflexive: For any integer x, x² - x² = 0. Since 0 is an even integer, xRx holds. Symmetric: If xRy, then x² - y² = 2k. Multiplying by -1 gives y² - x² = 2(-k), which is also an even integer. Thus yRx holds. Transitive: If xRy and yRz, then x² - y² = 2m and y² - z² = 2n. Adding gives x² - z² = 2(m+n), which is even. Thus xRz holds. Because it satisfies all three properties, it is an Equivalence relation.",
+      "difficulty": "Medium",
+      "imagePrompt": null
+    },
+    {
+      "id": 8,
+      "subject": "Mathematics",
+      "topic": "Relations & functions",
+      "subtopic": "Real valued functions",
+      "question": "What is the exact range of the real-valued function f(x) = x² / (1+x²) for x ∈ ℝ?",
+      "options": [
+        "[0, 1]",
+        "(0, 1)",
+        "[0, 1)",
+        "(-∞, 1)"
+      ],
+      "correct": 2,
+      "explanation": "Let y = x² / (1+x²). Rewrite the expression to isolate terms: y = (1+x²-1) / (1+x²) = 1 - 1/(1+x²). Since x² ≥ 0 for all real x, the denominator 1+x² is bounded by 1+x² ≥ 1. Therefore, the fraction 1/(1+x²) is bounded strictly between 0 (exclusive, as x → ∞) and 1 (inclusive, at x=0). Thus, 0 < 1/(1+x²) ≤ 1. Multiply by -1 and add 1: 1 - 1 ≤ 1 - 1/(1+x²) < 1 - 0 ⇒ 0 ≤ y < 1. The exact range is[0, 1).",
+      "difficulty": "Medium",
+      "imagePrompt": null
+    },
+    {
+      "id": 9,
+      "subject": "Mathematics",
+      "topic": "Sets",
+      "subtopic": "Venn diagram",
+      "question": "In a group of 60 students, 35 like to drink tea, 25 like to drink coffee, and 15 like to drink both tea and coffee. How many students in the group like neither tea nor coffee?",
+      "options": [
+        "5",
+        "10",
+        "15",
+        "20"
+      ],
+      "correct": 2,
+      "explanation": "Let the total number of students be n(U) = 60. Let T be the set of tea drinkers and C be the set of coffee drinkers. Given: n(T) = 35, n(C) = 25, and n(T ∩ C) = 15. The number of students who like at least one beverage is n(T ∪ C) = n(T) + n(C) - n(T ∩ C). n(T ∪ C) = 35 + 25 - 15 = 60 - 15 = 45. The number of students who like neither is n(U) - n(T ∪ C) = 60 - 45 = 15.",
+      "difficulty": "Medium",
+      "imagePrompt": null
+    },
+    {
+      "id": 10,
+      "subject": "Mathematics",
+      "topic": "Relations & functions",
+      "subtopic": "Types of functions",
+      "question": "Let f: ℝ → ℝ be defined as f(x) = (e^x - e^(-x))/2. The function f(x) is:",
+      "options": [
+        "One-one but not onto",
+        "Onto but not one-one",
+        "Neither one-one nor onto",
+        "Bijective (One-one and onto)"
+      ],
+      "correct": 3,
+      "explanation": "Check Injectivity (One-one): Find the derivative: f'(x) = (e^x + e^(-x))/2. Since exponentials are always positive, f'(x) > 0 for all x ∈ ℝ. A strictly increasing function is always one-one. Check Surjectivity (Onto): As x → ∞, f(x) → ∞. As x → -∞, f(x) → -∞. Because f(x) is a continuous function, it covers all intermediate real values. Thus, its range is ℝ, making it onto. Since it is both one-one and onto, it is Bijective.",
+      "difficulty": "Medium",
+      "imagePrompt": null
+    },
+    {
+      "id": 11,
+      "subject": "Mathematics",
+      "topic": "Relations & functions",
+      "subtopic": "Composition of functions",
+      "question": "Let f(x) = [x] denote the greatest integer function (floor function), and let g(x) = |x| denote the absolute value function. Evaluate the exact difference: f(g(-3.7)) - g(f(-3.7)).",
+      "options": [
+        "1",
+        "-1",
+        "0",
+        "7"
+      ],
+      "correct": 1,
+      "explanation": "Evaluate the first part: f(g(-3.7)). g(-3.7) = |-3.7| = 3.7. f(3.7) = [3.7] = 3 (the greatest integer ≤ 3.7). Evaluate the second part: g(f(-3.7)). f(-3.7) = [-3.7] = -4 (the greatest integer ≤ -3.7). g(-4) = |-4| = 4. Subtract the two results: 3 - 4 = -1.",
+      "difficulty": "Medium",
+      "imagePrompt": null
+    },
+    {
+      "id": 12,
+      "subject": "Mathematics",
+      "topic": "Relations & functions",
+      "subtopic": "inverse of a function",
+      "question": "Let f:[1, ∞) →[2, ∞) be defined by f(x) = x + 1/x. Which of the following correctly represents the inverse function f⁻¹(x)?",
+      "options": [
+        "(x + √(x² + 4))/2",
+        "(x - √(x² - 4))/2",
+        "(x + √(x² - 4))/2",
+        "x - 1/x"
+      ],
+      "correct": 2,
+      "explanation": "Let y = x + 1/x. We need to solve for x in terms of y. Multiply by x: xy = x² + 1 ⇒ x² - yx + 1 = 0. Use the quadratic formula: x = (y ± √(y² - 4))/2. Since the domain of f is[1, ∞), we know x ≥ 1. If we take the minus sign, x would be smaller than or equal to 1. To satisfy x ≥ 1, we must choose the positive root. Thus, substituting variables back, the inverse function is f⁻¹(x) = (x + √(x² - 4))/2.",
+      "difficulty": "Medium",
+      "imagePrompt": null
+    },
+    {
+      "id": 13,
+      "subject": "Mathematics",
+      "topic": "Relations & functions",
+      "subtopic": "Type of relations",
+      "question": "Let set A = {1, 2, 3, 4}. What is the total number of distinct reflexive relations that can be defined on set A?",
+      "options": [
+        "2^16",
+        "2^12",
+        "2^4",
+        "4096"
+      ],
+      "correct": 1,
+      "explanation": "A relation R on a set A of n elements is a subset of A × A, which contains n² ordered pairs. For R to be reflexive, it MUST contain all n diagonal pairs (x, x) for every x ∈ A. The remaining n² - n pairs in A × A can either be included or excluded from the relation independently. The number of reflexive relations is 2^(n² - n). For set A with n=4 elements, the number of reflexive relations is 2^(4² - 4) = 2^(16 - 4) = 2^12.",
+      "difficulty": "Medium",
+      "imagePrompt": null
+    },
+    {
+      "id": 14,
+      "subject": "Mathematics",
+      "topic": "Relations & functions",
+      "subtopic": "Real valued functions",
+      "question": "Determine the maximal real domain of the function f(x) = √(log_0.5(x² - 7x + 13)).",
+      "options": [
+        "(-∞, 3] ∪[4, ∞)",
+        "(3, 4)",
+        "[3, 4]",
+        "ℝ \\[3, 4]"
+      ],
+      "correct": 2,
+      "explanation": "The argument of the logarithm must be strictly positive: x² - 7x + 13 > 0. The discriminant of this quadratic is -3 < 0. Because the leading coefficient is positive, this quadratic is always positive for all real x. The expression under the square root must be non-negative: log_0.5(x² - 7x + 13) ≥ 0. Since the logarithmic base 0.5 is less than 1, exponentiating both sides reverses the inequality: x² - 7x + 13 ≤ (0.5)⁰ ⇒ x² - 7x + 13 ≤ 1. Solve the quadratic inequality: x² - 7x + 12 ≤ 0 ⇒ (x-3)(x-4) ≤ 0. Testing intervals shows this inequality holds true for x ∈ [3, 4].",
+      "difficulty": "Medium",
+      "imagePrompt": null
+    },
+    {
+      "id": 15,
+      "subject": "Mathematics",
+      "topic": "Sets",
+      "subtopic": "Properties of various operations on sets",
+      "question": "For any three arbitrary sets A, B, and C, the symmetric difference operation satisfies associativity. Which of the following expressions is strictly equivalent to A △ (B △ C)?",
+      "options": [
+        "(A ∪ B) △ C",
+        "(A ∩ B) △ C",
+        "(A △ B) △ C",
+        "(A △ B) ∩ C"
+      ],
+      "correct": 2,
+      "explanation": "The symmetric difference of sets, denoted by △, is defined as the set of elements in exactly one of the sets. A fundamental property of the symmetric difference operation in set theory is that it is strictly associative. Therefore, the grouping of operands does not matter: A △ (B △ C) = (A △ B) △ C.",
+      "difficulty": "Medium",
+      "imagePrompt": null
+    },
+    {
+      "id": 16,
+      "subject": "Mathematics",
+      "topic": "Relations & functions",
+      "subtopic": "Composition of functions",
+      "question": "If f(x) is an even function defined on ℝ, and g(x) is an odd function defined on ℝ, then the composite function h(x) = f(g(x)) must always be:",
+      "options": [
+        "An odd function",
+        "An even function",
+        "Neither even nor odd",
+        "A strictly increasing function"
+      ],
+      "correct": 1,
+      "explanation": "By definition, f(x) is even, so f(-x) = f(x). g(x) is odd, so g(-x) = -g(x). To test the composite function h(x) = f(g(x)), evaluate h(-x). h(-x) = f(g(-x)). Substitute the odd property of g: h(-x) = f(-g(x)). Substitute the even property of f: Because f absorbs a negative input, f(-y) = f(y). So, f(-g(x)) = f(g(x)). Therefore, h(-x) = h(x), which rigorously defines an even function.",
+      "difficulty": "Medium",
+      "imagePrompt": null
+    },
+    {
+      "id": 17,
+      "subject": "Mathematics",
+      "topic": "Relations & functions",
+      "subtopic": "Real valued functions",
+      "question": "Let f: ℝ → ℝ satisfy f(x+y) = f(x) + f(y) - xy for all real x,y and lim_{x→0} f(x)/x = 3. Find f(2).",
+      "options": [
+        "2",
+        "4",
+        "6",
+        "8"
+      ],
+      "correct": 1,
+      "explanation": "Put y = 0 in the functional equation. We obtain f(0)=0. Assume f(x)=ax+bx². Substitute into the equation:\n\nf(x+y)=a(x+y)+b(x+y)²\n\n= ax+ay+bx²+2bxy+by².\n\nBut f(x)+f(y)-xy = ax+bx² + ay+by² - xy.\n\nEquating coefficients gives 2b = -1 so b = -1/2.\n\nThus f(x)=ax - x²/2.\n\nNow evaluate limit:\n\nlim_{x→0} f(x)/x = lim_{x→0}(a - x/2)=a.\n\nGiven limit =3 ⇒ a=3.\n\nHence f(x)=3x - x²/2.\n\nTherefore f(2)=6 - 2 = 4.",
+      "difficulty": "Hard",
+      "imagePrompt": null
+    },
+    {
+      "id": 18,
+      "subject": "Mathematics",
+      "topic": "Relations & functions",
+      "subtopic": "Equivalence relation",
+      "question": "Let R be a relation on the set of integers ℤ defined by xRy if and only if 5x + 6y is divisible by 11. This forms an equivalence relation. Which of the following sets represents the equivalence class of the element 3, denoted as [3]?",
+      "options": [
+        "{x ∈ ℤ : x = 11k + 5 for some k ∈ ℤ}",
+        "{x ∈ ℤ : x = 11k - 3 for some k ∈ ℤ}",
+        "{x ∈ ℤ : x = 11k + 3 for some k ∈ ℤ}",
+        "{x ∈ ℤ : x = 5k + 6 for some k ∈ ℤ}"
+      ],
+      "correct": 2,
+      "explanation": "The relation is xRy ⇔ 5x + 6y is a multiple of 11. This means 5x + 6y ≡ 0 (mod 11). Note that 6 ≡ -5 (mod 11). Substitute this into the congruence: 5x - 5y ≡ 0 (mod 11) ⇒ 5(x - y) ≡ 0 (mod 11). Since 5 and 11 are coprime (gcd(5, 11) = 1), we can divide out the 5. This yields x - y ≡ 0 (mod 11), which is equivalent to x ≡ y (mod 11). Therefore, two integers are related if and only if they leave the same remainder when divided by 11. The equivalence class of 3 is the set of all integers x such that x ≡ 3 (mod 11). This is {x ∈ ℤ : x = 11k + 3 for some k ∈ ℤ}.",
+      "difficulty": "Hard",
+      "imagePrompt": null
+    },
+    {
+      "id": 19,
+      "subject": "Mathematics",
+      "topic": "Relations & functions",
+      "subtopic": "Real valued functions",
+      "question": "Determine the exact range of the real-valued function f(x) = sin⁻¹(2x / (1+x²)) for x ∈ ℝ.",
+      "options": [
+        "[0, π]",
+        "[-π/2, π/2]",
+        "(-π/2, π/2)",
+        "[-π, π]"
+      ],
+      "correct": 1,
+      "explanation": "Let y = 2x / (1+x²). We need to find the range of this internal algebraic fraction. Rearrange into a quadratic in terms of x: yx² - 2x + y = 0. For x to be a real number, the discriminant must be non-negative (Δ ≥ 0). Δ = (-2)² - 4(y)(y) = 4 - 4y² ≥ 0 ⇒ 1 - y² ≥ 0 ⇒ y² ≤ 1 ⇒ -1 ≤ y ≤ 1. The internal fraction covers the entire interval [-1, 1] as x ranges over all real numbers. The outer function is f(x) = sin⁻¹(y). We must find the range of sin⁻¹(y) for y ∈ [-1, 1]. The principal range of the arcsine function over its entire valid domain is strictly [-π/2, π/2].",
+      "difficulty": "Hard",
+      "imagePrompt": null
+    },
+    {
+      "id": 20,
+      "subject": "Mathematics",
+      "topic": "Relations & functions",
+      "subtopic": "Types of functions",
+      "question": "Let A = {1,2,3,4}. How many bijective functions f:A→A exist such that exactly one element x satisfies f(x)=x?",
+      "options": [
+        "4",
+        "8",
+        "12",
+        "24"
+      ],
+      "correct": 1,
+      "explanation": "We need permutations of 4 elements with exactly one fixed point.\n\nChoose the fixed element: C(4,1)=4 ways.\n\nThe remaining 3 elements must form a derangement (no fixed points).\n\nNumber of derangements of 3 elements:\n\nD3 = 2.\n\nThus total permutations with exactly one fixed point = 4 × 2 = 8.",
+      "difficulty": "Hard",
+      "imagePrompt": null
+    }
+  ]
 }

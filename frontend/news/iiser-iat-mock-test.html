@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IISER IAT Mock Test 2026: Free Full-Length Practice Tests | IISER Smart Prep</title>
+    <meta name="description"
+        content="Free IISER IAT 2026 mock tests with TCS iON interface, real exam simulation, instant score analysis, and rank prediction. Practice with topic-wise IAT mock tests online.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <script
+        type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://iiservault.in/"},{"@type":"ListItem","position":2,"name":"Guides","item":"https://iiservault.in/news/"},{"@type":"ListItem","position":3,"name":"IISER IAT Mock Test","item":"https://iiservault.in/news/iiser-iat-mock-test.html"}]}</script>
+    <script
+        type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Are there free IISER IAT mock tests available?","acceptedAnswer":{"@type":"Answer","text":"Yes. IISER Smart Prep offers free full-length IAT mock tests in the exact TCS iON interface used in the real exam. Topic-wise mocks for Physics, Chemistry, Mathematics, and Biology are also available free."}},{"@type":"Question","name":"How many mock tests should I attempt for IAT?","acceptedAnswer":{"@type":"Answer","text":"Ideally, attempt at least 10–15 full-length mock tests before IAT. Focus on quality analysis after each mock — identify weak areas, improve accuracy, and track your score improvement over time."}},{"@type":"Question","name":"How is the IISER IAT mock test different from JEE mock tests?","acceptedAnswer":{"@type":"Answer","text":"IAT mock tests have 60 questions (15 each in Physics, Chemistry, Mathematics, Biology) vs JEE's 90 questions in PCM only. IAT mocks use a +3/-1 marking scheme vs JEE's +4/-1. The question style in IAT is more conceptual and includes assertion-reason questions."}}]}</script>
+    <style>
+        :root {
+            --primary: #3b82f6;
+            --primary-dark: #1d4ed8;
+            --primary-soft: #eff6ff;
+            --secondary: #0f172a;
+            --secondary-light: #1e293b;
+            --text-muted: #475569;
+            --text-light: #94a3b8;
+            --bg-wash: #f8fafc;
+            --bg-white: #fff;
+            --border: #e2e8f0;
+            --teal: #14b8a6;
+            --radius-md: 16px;
+            --radius-lg: 24px;
+            --radius-pill: 100px;
+            --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, .05);
+            --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, .08)
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            color: var(--secondary);
+            background: var(--bg-wash);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+            transition: all .2s ease
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto
+        }
+
+        header {
+            position: fixed;
+            top: 20px;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            display: flex;
+            justify-content: center;
+            pointer-events: none
+        }
+
+        .nav-container {
+            pointer-events: auto;
+            background: rgba(255, 255, 255, .96);
+            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, .08);
+            padding: .75rem 1.5rem;
+            border-radius: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 90%;
+            max-width: 1200px
+        }
+
+        .logo {
+            font-size: 1.25rem;
+            font-weight: 800;
+            color: var(--secondary);
+            display: flex;
+            align-items: center;
+            gap: .5rem
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center
+        }
+
+        .nav-links a {
+            font-size: .9rem;
+            font-weight: 500;
+            color: var(--text-muted)
+        }
+
+        .nav-links a:hover {
+            color: var(--primary)
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: .75rem 1.75rem;
+            border-radius: var(--radius-pill);
+            font-weight: 600;
+            font-size: .95rem;
+            cursor: pointer;
+            transition: all .2s ease;
+            border: none
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: #fff
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px)
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--secondary);
+            border: 1px solid var(--border)
+        }
+
+        .btn-outline:hover {
+            border-color: var(--primary);
+            color: var(--primary)
+        }
+
+        .auth-buttons {
+            display: flex;
+            gap: .75rem;
+            align-items: center
+        }
+
+        @media(max-width:768px) {
+            .nav-links {
+                display: none
+            }
+        }
+
+        .reading-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary), var(--teal));
+            z-index: 9999;
+            transition: width .1s
+        }
+
+        .page-hero {
+            padding: 10rem 0 5rem;
+            background: linear-gradient(180deg, #eff6ff 0%, #fff 100%);
+            position: relative;
+            overflow: hidden
+        }
+
+        .page-hero::after {
+            content: '🧪';
+            position: absolute;
+            top: 20%;
+            right: 8%;
+            font-size: 180px;
+            opacity: .05;
+            pointer-events: none
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            padding: .375rem .875rem;
+            background: var(--primary-soft);
+            color: var(--primary-dark);
+            border-radius: var(--radius-pill);
+            font-size: .75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: .05em;
+            margin-bottom: 1.5rem
+        }
+
+        .page-hero h1 {
+            font-size: clamp(2rem, 5vw, 3.25rem);
+            font-weight: 800;
+            line-height: 1.1;
+            letter-spacing: -.03em;
+            margin-bottom: 1.25rem
+        }
+
+        .text-gradient {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--teal) 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent
+        }
+
+        .page-hero p {
+            font-size: 1.15rem;
+            color: var(--text-muted);
+            line-height: 1.7;
+            max-width: 650px;
+            margin-bottom: 2rem
+        }
+
+        .hero-cta {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap
+        }
+
+        .page-content {
+            padding: 4rem 0;
+            background: var(--bg-white)
+        }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1fr 300px;
+            gap: 3rem;
+            align-items: start
+        }
+
+        .article-main h2 {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--secondary);
+            margin: 3rem 0 1.25rem;
+            letter-spacing: -.02em;
+            display: flex;
+            align-items: center;
+            gap: .75rem
+        }
+
+        .article-main h2::before {
+            content: '';
+            width: 4px;
+            height: 30px;
+            background: var(--primary);
+            border-radius: 2px
+        }
+
+        .article-main p {
+            color: var(--text-muted);
+            font-size: 1.05rem;
+            line-height: 1.9;
+            margin-bottom: 1.25rem
+        }
+
+        .article-main strong {
+            color: var(--secondary);
+            font-weight: 600
+        }
+
+        .mock-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+            margin: 2rem 0
+        }
+
+        .mock-card {
+            background: #fff;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 1.75rem;
+            transition: all .3s ease;
+            text-align: center
+        }
+
+        .mock-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-md);
+            border-color: var(--primary)
+        }
+
+        .mock-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem
+        }
+
+        .mock-card h3 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--secondary);
+            margin-bottom: .5rem
+        }
+
+        .mock-card p {
+            font-size: .9rem;
+            color: var(--text-muted);
+            margin-bottom: 1.25rem
+        }
+
+        .mock-tag {
+            display: inline-block;
+            padding: .25rem .75rem;
+            border-radius: var(--radius-pill);
+            font-size: .7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: .05em;
+            margin-bottom: 1rem
+        }
+
+        .tag-free {
+            background: #dcfce7;
+            color: #166534
+        }
+
+        .tag-new {
+            background: #e0f2fe;
+            color: #075985
+        }
+
+        .feature-list {
+            list-style: none;
+            margin: 1rem 0
+        }
+
+        .feature-list li {
+            padding: .4rem 0;
+            padding-left: 1.5rem;
+            position: relative;
+            color: var(--text-muted);
+            font-size: .9rem;
+            border-bottom: 1px solid var(--border)
+        }
+
+        .feature-list li:last-child {
+            border-bottom: none
+        }
+
+        .feature-list li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--teal);
+            font-weight: 700
+        }
+
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            margin: 2rem 0;
+            text-align: center
+        }
+
+        .stat-box {
+            background: #fff;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 1.5rem
+        }
+
+        .stat-box .num {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--secondary)
+        }
+
+        .stat-box .label {
+            font-size: .85rem;
+            color: var(--text-muted)
+        }
+
+        .highlight-box {
+            background: var(--primary-soft);
+            border-left: 4px solid var(--primary);
+            padding: 1.5rem;
+            border-radius: 0 var(--radius-md) var(--radius-md) 0;
+            margin: 2rem 0
+        }
+
+        .faq-item {
+            border-bottom: 1px solid var(--border);
+            padding: 1.5rem 0
+        }
+
+        .faq-item:last-child {
+            border-bottom: none
+        }
+
+        .faq-question {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: var(--secondary);
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center
+        }
+
+        .faq-answer {
+            font-size: .95rem;
+            color: var(--text-muted);
+            line-height: 1.7;
+            display: none;
+            margin-top: .75rem
+        }
+
+        .faq-answer.active {
+            display: block
+        }
+
+        .article-sidebar {
+            position: sticky;
+            top: 100px
+        }
+
+        .sidebar-card {
+            background: #fff;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem
+        }
+
+        .sidebar-card h4 {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--secondary);
+            margin-bottom: 1rem;
+            padding-bottom: .75rem;
+            border-bottom: 1px solid var(--border)
+        }
+
+        .sidebar-link {
+            display: flex;
+            align-items: center;
+            gap: .75rem;
+            padding: .75rem 0;
+            color: var(--text-muted);
+            font-size: .9rem;
+            border-bottom: 1px solid var(--border);
+            transition: all .2s ease
+        }
+
+        .sidebar-link:last-child {
+            border-bottom: none
+        }
+
+        .sidebar-link:hover {
+            color: var(--primary);
+            padding-left: .5rem
+        }
+
+        .cta-section {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            border-radius: var(--radius-lg);
+            padding: 3rem;
+            margin: 4rem 0;
+            text-align: center;
+            color: #fff
+        }
+
+        .cta-section h3 {
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-bottom: 1rem
+        }
+
+        .cta-section p {
+            color: var(--text-light);
+            margin-bottom: 2rem
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap
+        }
+
+        @media(max-width:1024px) {
+            .content-grid {
+                grid-template-columns: 1fr
+            }
+
+            .article-sidebar {
+                position: relative;
+                top: 0
+            }
+
+            .mock-grid {
+                grid-template-columns: 1fr
+            }
+
+            .stats-row {
+                grid-template-columns: 1fr 1fr
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="reading-progress" id="reading-progress"></div>
+    <header>
+        <div class="nav-container">
+            <a href="/frontend/index.html" class="logo">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path
+                        d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z">
+                    </path>
+                </svg>
+                IISER Smart Prep
+            </a>
+            <nav class="nav-links">
+                <a href="/frontend/index.html">Home</a>
+                <a href="/frontend/index.html#features">Features</a>
+                <div class="auth-buttons" id="auth-buttons-container">
+                    <a href="/frontend/login.html" class="btn btn-outline"
+                        style="padding:.5rem 1.2rem;font-size:.85rem;">Log
+                        In</a>
+                    <a href="/frontend/login.html?mode=signup" class="btn btn-primary"
+                        style="padding:.5rem 1.2rem;font-size:.85rem;">Get Started</a>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <section class="page-hero">
+        <div class="container">
+            <div class="hero-badge">🧪 Free Mock Tests 2026</div>
+            <h1>IISER IAT <span class="text-gradient">Mock Test</span> 2026: Free Full-Length Practice</h1>
+            <p>Practice with free IISER IAT 2026 mock tests in the exact TCS iON interface. Full-length exams,
+                topic-wise tests, instant analysis, and rank prediction — all in one place.</p>
+            <div class="hero-cta">
+                <a href="/frontend/mock_test/full_mock_test_homepage.html" class="btn btn-primary">Start Free Mock Test
+                    →</a>
+                <a href="/frontend/pyqs/pyq.html" class="btn btn-outline">Solve Previous Year Papers</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="page-content">
+        <div class="container">
+            <div class="content-grid">
+                <div class="article-main">
+                    <h2>Why Mock Tests are Critical for IAT 2026</h2>
+                    <p>IISER IAT has a unique question style — conceptual, assertion-reason based, and
+                        Biology-inclusive. Students who only study topics but don't practice in exam conditions
+                        consistently underperform. <strong>Mock tests bridge the gap between knowledge and
+                            performance.</strong></p>
+
+                    <div class="stats-row">
+                        <div class="stat-box">
+                            <div class="num">15+</div>
+                            <div class="label">Full-Length Mocks Available</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="num">120+</div>
+                            <div class="label">Topic-Wise Practice Sets</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="num">5 Yrs</div>
+                            <div class="label">Data for Rank Prediction</div>
+                        </div>
+                    </div>
+
+                    <h2>Types of IAT Mock Tests Available</h2>
+                    <div class="mock-grid">
+                        <div class="mock-card">
+                            <span class="mock-tag tag-free">Free</span>
+                            <div class="mock-icon">📋</div>
+                            <h3>Full-Length Mock Test</h3>
+                            <p>Exact IAT pattern: 60 questions, 3 hours, +3/-1 marking. TCS iON interface simulation
+                                with timer, review panel, and instant score.</p>
+                            <a href="/frontend/mock_test/full_mock_test_homepage.html" class="btn btn-primary"
+                                style="width:100%;">Take Full Mock</a>
+                        </div>
+                        <div class="mock-card">
+                            <span class="mock-tag tag-new">Popular</span>
+                            <div class="mock-icon">🎯</div>
+                            <h3>Topic-Wise Mock Tests</h3>
+                            <p>Subject-specific practice sets: Physics, Chemistry, Mathematics, Biology. 15–30 questions
+                                each. Identify and strengthen your weak areas.</p>
+                            <a href="/frontend/mock_test/full_mock_test_homepage.html" class="btn btn-primary"
+                                style="width:100%;">Start Topic Mock</a>
+                        </div>
+                        <div class="mock-card">
+                            <span class="mock-tag tag-free">Free</span>
+                            <div class="mock-icon">🔓</div>
+                            <h3>Previous Year Papers (Mock Mode)</h3>
+                            <p>Solve IAT 2017–2025 papers in mock exam mode. Get full score analysis, difficult question
+                                explanations, and time-per-question data.</p>
+                            <a href="/frontend/pyqs/pyq.html" class="btn btn-primary" style="width:100%;">Solve PYQs</a>
+                        </div>
+                        <div class="mock-card">
+                            <span class="mock-tag tag-new">AI Model</span>
+                            <div class="mock-icon">📊</div>
+                            <h3>Rank Predictor Tool</h3>
+                            <p>Enter your mock test score and get an AI-predicted rank and probable IISER campus —
+                                trained on 5 years of actual IAT data.</p>
+                            <a href="/frontend/mock_test/full_mock_test.html" class="btn btn-primary"
+                                style="width:100%;">Predict
+                                My Rank</a>
+                        </div>
+                    </div>
+
+                    <h2>How to Use IAT Mock Tests Effectively</h2>
+                    <ul class="feature-list">
+                        <li>Take a full mock in <strong>exam conditions</strong> — no phone, no breaks, timed exactly 3
+                            hours</li>
+                        <li>After the test, spend <strong>at least 1 hour analyzing</strong> every wrong and skipped
+                            question</li>
+                        <li>Maintain a score tracker — aim for a steady improvement of 5–10 marks per mock</li>
+                        <li>Take topic-wise mocks for subjects where your accuracy is below 60%</li>
+                        <li>Practice <strong>time allocation</strong>: ~45 minutes per subject is the ideal target</li>
+                        <li>Aim for at least <strong>10–15 full mocks</strong> before the actual exam</li>
+                    </ul>
+
+                    <div class="highlight-box">
+                        <strong>🎯 Target Score Guide:</strong> For general category admission to top IISERs (Pune,
+                        Kolkata), aim for <strong>120+ out of 180</strong> in your mock tests. Scores of 100–120 are
+                        competitive for other campuses.
+                    </div>
+
+                    <h2>Frequently Asked Questions</h2>
+                    <div class="faq-item">
+                        <div class="faq-question" onclick="toggleFaq(this)">Are there free IISER IAT mock
+                            tests?<span>+</span></div>
+                        <div class="faq-answer">Yes. IISER Smart Prep offers free full-length IAT mock tests in the
+                            exact TCS iON interface. Topic-wise mocks for Physics, Chemistry, Mathematics, and Biology
+                            are also available free at iisersmartprep.com.</div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-question" onclick="toggleFaq(this)">How many mock tests should I take for
+                            IAT?<span>+</span></div>
+                        <div class="faq-answer">Ideally, attempt at least 10–15 full-length mock tests before IAT. Focus
+                            on quality analysis after each mock — identify weak areas, improve accuracy, and track your
+                            improvement. Supplement with topic-wise mocks for low-scoring subjects.</div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-question" onclick="toggleFaq(this)">How is IAT mock test different from JEE mock
+                            tests?<span>+</span></div>
+                        <div class="faq-answer">IAT mocks have 60 questions (15 each in PCMB) with +3/-1 marking vs
+                            JEE's 90 questions in PCM with +4/-1. IAT mock questions are more conceptual and include
+                            assertion-reason questions. IAT also has a Biology section which JEE does not.</div>
+                    </div>
+
+                    <div class="cta-section">
+                        <h3>Ready to Start Practicing?</h3>
+                        <p>Take your first IAT mock test now — free, no signup required for the first test.</p>
+                        <div class="cta-buttons">
+                            <a href="/frontend/mock_test/full_mock_test_homepage.html" class="btn btn-primary">Start
+                                Free Now
+                                →</a>
+                            <a href="/frontend/news/iiser-iat-preparation-strategy.html" class="btn btn-outline"
+                                style="background:#fff;color:#0f172a;">View Strategy Guide</a>
+                        </div>
+                    </div>
+                </div>
+
+                <aside class="article-sidebar">
+                    <div class="sidebar-card">
+                        <h4>Related Guides</h4>
+                        <a href="/frontend/news/iiser-iat-vs-jee-the-complete-guide.html" class="sidebar-link">⚡ IAT vs
+                            JEE Main
+                            2026</a>
+                        <a href="/frontend/news/iiser-iat-syllabus-2026.html" class="sidebar-link">📋 IAT Syllabus
+                            2026</a>
+                        <a href="/frontend/news/iiser-iat-preparation-strategy.html" class="sidebar-link">🎯 Preparation
+                            Strategy</a>
+                        <a href="/frontend/news/iiser-iat-pyq.html" class="sidebar-link">📚 Previous Year Papers</a>
+                    </div>
+                    <div class="sidebar-card"
+                        style="background:linear-gradient(135deg,#eff6ff,#f0f9ff);border-color:#dbeafe;">
+                        <h4>Quick Tool</h4>
+                        <div style="text-align:center;padding:.75rem 0;">
+                            <div style="font-size:2.5rem;margin-bottom:.5rem;">🎯</div>
+                            <h5 style="font-size:1rem;font-weight:700;margin-bottom:.5rem;">IAT Rank Predictor</h5>
+                            <p style="font-size:.85rem;color:var(--text-muted);margin-bottom:1rem;">Predict your IISER
+                                campus from mock score.</p>
+                            <a href="/frontend/mock_test/full_mock_test.html" class="btn btn-primary"
+                                style="width:100%;">Try
+                                Predictor</a>
+                        </div>
+                    </div>
+                </aside>
+            </div>
+        </div>
+    </section>
+
+    <footer style="background:white;border-top:1px solid var(--border);padding:5rem 0 2rem;">
+        <div class="container">
+            <div style="display:flex;flex-wrap:wrap;gap:3rem;justify-content:space-between;margin-bottom:3rem;">
+                <div style="max-width:320px;">
+                    <a href="/frontend/index.html"
+                        style="display:flex;align-items:center;gap:.5rem;font-size:1.25rem;font-weight:800;color:var(--secondary);text-decoration:none;margin-bottom:1rem;">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path
+                                d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z">
+                            </path>
+                        </svg>
+                        IISER Smart Prep
+                    </a>
+                    <p style="color:var(--text-muted);font-size:.9rem;margin-top:1rem;">Empowering scientific minds to
+                        reach India's premier research institutes through data and strategy.</p>
+                </div>
+                <div style="display:flex;gap:4rem;flex-wrap:wrap;">
+                    <div>
+                        <h4 style="margin-bottom:1rem;font-size:.9rem;font-weight:700;color:var(--secondary);">Platform
+                        </h4>
+                        <ul style="display:flex;flex-direction:column;gap:.75rem;list-style:none;">
+                            <li><a href="/frontend/ai_tutor.html" style="color:var(--text-muted);font-size:.9rem;">AI
+                                    Tutor</a></li>
+                            <li><a href="/frontend/mock_test/full_mock_test_homepage.html"
+                                    style="color:var(--text-muted);font-size:.9rem;">Mock Tests</a></li>
+                            <li><a href="/frontend/index.html#pricing"
+                                    style="color:var(--text-muted);font-size:.9rem;">Pricing</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 style="margin-bottom:1rem;font-size:.9rem;font-weight:700;color:var(--secondary);">Resources
+                        </h4>
+                        <ul style="display:flex;flex-direction:column;gap:.75rem;list-style:none;">
+                            <li><a href="/frontend/news/iiser-iat-syllabus-2026.html"
+                                    style="color:var(--text-muted);font-size:.9rem;">IAT Syllabus 2026</a></li>
+                            <li><a href="/frontend/pyqs/pyq.html"
+                                    style="color:var(--text-muted);font-size:.9rem;">Previous Year Papers</a></li>
+                            <li><a href="/frontend/news/iiser-iat-preparation-strategy.html"
+                                    style="color:var(--text-muted);font-size:.9rem;">Preparation Strategy</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 style="margin-bottom:1rem;font-size:.9rem;font-weight:700;color:var(--secondary);">Support
+                        </h4>
+                        <ul style="display:flex;flex-direction:column;gap:.75rem;list-style:none;">
+                            <li><a href="/frontend/index.html#faq"
+                                    style="color:var(--text-muted);font-size:.9rem;">FAQ</a></li>
+                            <li><a href="/frontend/contact-us.html"
+                                    style="color:var(--text-muted);font-size:.9rem;">Contact</a></li>
+                            <li><a href="/frontend/privacy.html"
+                                    style="color:var(--text-muted);font-size:.9rem;">Privacy Policy</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div
+                style="text-align:center;border-top:1px solid var(--border);padding-top:2rem;color:var(--text-light);font-size:.85rem;">
+                &copy; 2026 IISER Smart Prep. All rights reserved. Not affiliated with IISERs Joint Admissions
+                Committee.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        window.addEventListener('scroll', () => { const p = document.getElementById('reading-progress'); if (!p) return; const s = document.documentElement.scrollTop || document.body.scrollTop; const h = document.documentElement.scrollHeight - document.documentElement.clientHeight; p.style.width = (s / h * 100) + '%'; });
+        function toggleFaq(el) { const ans = el.nextElementSibling; if (!ans) return; const isActive = ans.classList.contains('active'); document.querySelectorAll('.faq-answer').forEach(f => f.classList.remove('active')); document.querySelectorAll('.faq-question span').forEach(s => s.textContent = '+'); if (!isActive) { ans.classList.add('active'); const sp = el.querySelector('span'); if (sp) sp.textContent = '−'; } }
+        try { const t = localStorage.getItem("IAT_TOKEN"); const c = document.getElementById("auth-buttons-container"); if (c && t) { c.innerHTML = '<a href="/frontend/mock_test/full_mock_test_homepage.html" class="btn btn-primary" style="padding:.5rem 1rem;">Dashboard</a>'; } } catch (e) { }
+    </script>
+</body>
+
+</html>

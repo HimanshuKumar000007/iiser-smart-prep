@@ -1,348 +1,348 @@
 {
-  "testId": "IISER_IAT_MATH_LIMITS_MOCK_1",
-  "testName": "IISER IAT Mock Test: Limit and Continuity (Mock 1)",
+  "test_id": "math-10-limit-continuity-mock-1",
+  "test_name": "Limit & Continuity Mock Test 1",
   "duration": 60,
   "totalMarks": 80,
   "questions": [
-{
-    "id": 1,
-    "subject": "Mathematics",
-    "topic": "Limit & continuity",
-    "subtopic": "Limits",
-    "question": "Evaluate the limit: \\(\\lim_{x \\to 2} \\frac{x^3 - 8}{x^2 - 4}\\)",
-    "options":[
-      "1",
-      "2",
-      "3",
-      "4"
-    ],
-    "correct": 2,
-    "explanation": "This is a 0/0 indeterminate form. We factor the numerator: x³ - 8 = (x - 2)(x² + 2x + 4). The denominator is x² - 4 = (x - 2)(x + 2). Canceling the common (x-2) term gives lim_{x→2} (x² + 2x + 4)/(x + 2). Substituting x = 2 gives (4 + 4 + 4)/(2 + 2) = 12/4 = 3.",
-    "difficulty": "Easy",
-    "imagePrompt": null
-  },
-  {
-    "id": 2,
-    "subject": "Mathematics",
-    "topic": "Limit & continuity",
-    "subtopic": "Limits of trigonometric functions",
-    "question": "Evaluate the trigonometric limit: \\(\\lim_{x \\to 0} \\frac{1 - \\cos 4x}{x^2}\\)",
-    "options":[
-      "2",
-      "4",
-      "8",
-      "16"
-    ],
-    "correct": 2,
-    "explanation": "Using the half-angle identity, 1 - cos 4x = 2sin²(2x). The limit becomes lim_{x→0} 2sin²(2x)/x². Multiply and divide by 4 to match the argument of sine: 2 × 4 × (sin(2x)/(2x))². Since lim_{θ→0} sin(θ)/θ = 1, the expression evaluates to 8 × 1² = 8.",
-    "difficulty": "Easy",
-    "imagePrompt": null
-  },
-  {
-    "id": 3,
-    "subject": "Mathematics",
-    "topic": "Limit & continuity",
-    "subtopic": "Limits of exponential functions",
-    "question": "Evaluate the limit: \\(\\lim_{x \\to 0} \\frac{e^{5x} - 1}{3x}\\)",
-    "options":[
-      "5/3",
-      "3/5",
-      "5",
-      "0"
-    ],
-    "correct": 0,
-    "explanation": "Using the standard exponential limit lim_{x→0} (e^{kx} - 1)/x = k. We rewrite the given limit as (1/3) * lim_{x→0} (e^{5x} - 1)/x. Applying the formula yields (1/3) * 5 = 5/3.",
-    "difficulty": "Easy",
-    "imagePrompt": null
-  },
-  {
-    "id": 4,
-    "subject": "Mathematics",
-    "topic": "Limit & continuity",
-    "subtopic": "Continuity of rational functions",
-    "question": "The function f(x) = (x² - 9)/(x - 3) is defined for all real numbers except x = 3. What value should be assigned to f(3) to make the function continuous at x = 3?",
-    "options": [
-      "3",
-      "-3",
-      "6",
-      "9"
-    ],
-    "correct": 2,
-    "explanation": "For continuity at x = 3, the limit as x approaches 3 must equal f(3). Evaluating the limit: lim_{x→3} (x² - 9)/(x - 3) = lim_{x→3} (x-3)(x+3)/(x-3) = lim_{x→3} (x + 3) = 6. Therefore, f(3) must be assigned the value 6.",
-    "difficulty": "Easy",
-    "imagePrompt": null
-  },
-  {
-    "id": 5,
-    "subject": "Mathematics",
-    "topic": "Limit & continuity",
-    "subtopic": "Algebraic properties of limits",
-    "question": "Let f(x) and g(x) be continuous real-valued functions such that lim_{x→a} f(x) = 4 and lim_{x→a} g(x) = -2. Evaluate lim_{x→a}[2f(x) - 3g(x) + f(x)g(x)].",
-    "options":[
-      "6",
-      "10",
-      "-6",
-      "14"
-    ],
-    "correct": 0,
-    "explanation": "By the algebraic properties of limits, the limit distributes over addition, subtraction, and multiplication. Limit = 2(lim f(x)) - 3(lim g(x)) + (lim f(x))(lim g(x)) = 2(4) - 3(-2) + (4)(-2) = 8 + 6 - 8 = 6.",
-    "difficulty": "Easy",
-    "imagePrompt": null
-  },
-  {
-    "id": 6,
-    "subject": "Mathematics",
-    "topic": "Limit & continuity",
-    "subtopic": "Limits",
-    "question": "Based on the visual representation of f(x) where the LHL approaches 4, the RHL approaches 4, but the function value at x=2 is 1, evaluate \\(\\lim_{x \\to 2} f(x)\\).",
-    "options":[
-      "1",
-      "2",
-      "4",
-      "The limit does not exist."
-    ],
-    "correct": 2,
-    "explanation": "The limit of a function as x → c depends purely on the behavior of the function *near* c, not its exact value *at* c. Since the LHL and RHL both approach the hollow circle at y=4, the limit exists and equals 4. The value f(2)=1 only creates a removable discontinuity but does not alter the limit.",
-    "difficulty": "Easy",
-    "imagePrompt": "A Cartesian graph of a piecewise function y = f(x). For x < 2, the graph is a solid line representing y = x + 2, ending with a hollow circle at the point (2, 4). For x > 2, the graph is a solid line representing y = 6 - x, starting with a hollow circle at (2, 4). There is a solid black dot located precisely at the coordinates (2, 1)."
-  },
-  {
-    "id": 7,
-    "subject": "Mathematics",
-    "topic": "Limit & continuity",
-    "subtopic": "Limits of trigonometric functions",
-    "question": "Evaluate the limit: \\(\\lim_{x \\to 0} (1 + 3\\tan x)^{\\cot x}\\)",
-    "options":[
-      "e",
-      "e³",
-      "e^{1/3}",
-      "1"
-    ],
-    "correct": 1,
-    "explanation": "This is a 1^∞ indeterminate form. We use the shortcut formula lim (1 + f(x))^g(x) = e^L, where L = lim [f(x)·g(x)]. Here, L = lim_{x→0} (3tan(x) · cot(x)) = lim_{x→0} 3(tan x)(1/tan x) = 3. Thus, the limit is e³.",
-    "difficulty": "Medium",
-    "imagePrompt": null
-  },
-  {
-    "id": 8,
-    "subject": "Mathematics",
-    "topic": "Limit & continuity",
-    "subtopic": "Limits",
-    "question": "Evaluate the limit at infinity: \\(\\lim_{n \\to \\infty} \\left(\\sqrt{n^2 + 4n} - n\\right)\\)",
-    "options":[
-      "0",
-      "2",
-      "4",
-      "∞"
-    ],
-    "correct": 1,
-    "explanation": "This is an ∞ - ∞ form. We resolve it by multiplying and dividing by the conjugate: (n² + 4n - n²) / (√(n² + 4n) + n) = 4n / (√(n² + 4n) + n). Divide numerator and denominator by n to get 4 / (√(1 + 4/n) + 1). As n → ∞, 4/n → 0. Result: 4 / (√1 + 1) = 4/2 = 2.",
-    "difficulty": "Medium",
-    "imagePrompt": null
-  },
-  {
-    "id": 9,
-    "subject": "Mathematics",
-    "topic": "Limit & continuity",
-    "subtopic": "Limits of real valued functions",
-    "question": "Let [x] denote the greatest integer function. Consider the function f(x) = [x] + [-x]. If a is an integer, what is the value of \\(\\lim_{x \\to a} f(x)\\)?",
-    "options":[
-      "0",
-      "1",
-      "-1",
-      "The limit does not exist."
-    ],
-    "correct": 2,
-    "explanation": "By properties of the greatest integer function, if x is an integer, [x] +[-x] = 0. If x is not an integer, [x] + [-x] = -1. When calculating the limit as x → a, we look at x very close to a, but x ≠ a. Thus, in the immediate neighborhood of integer a, the value is consistently -1. Therefore, the limit is -1.",
-    "difficulty": "Medium",
-    "imagePrompt": null
-  },
-  {
-    "id": 10,
-    "subject": "Mathematics",
-    "topic": "Limit & continuity",
-    "subtopic": "Limits of inverse functions",
-    "question": "Evaluate the limit: \\(\\lim_{x \\to 0} \\frac{\\sin^{-1} x - \\tan^{-1} x}{x^3}\\)",
-    "options":[
-      "1/6",
-      "1/3",
-      "1/2",
-      "1"
-    ],
-    "correct": 2,
-    "explanation": "Use Maclaurin series expansions: sin⁻¹ x = x + x³/6 + ... and tan⁻¹ x = x - x³/3 + ... Substitute into the limit:[(x + x³/6) - (x - x³/3)] / x³ = (x³/6 + x³/3) / x³ = 1/6 + 1/3 = 1/2.",
-    "difficulty": "Medium",
-    "imagePrompt": null
-  },
-  {
-    "id": 11,
-    "subject": "Mathematics",
-    "topic": "Limit & continuity",
-    "subtopic": "Continuity of real valued functions",
-    "question": "The function f(x) is defined as: f(x) = a sin(π/2 (x+1)) for x ≤ 0, and f(x) = (tan x - sin x)/x³ for x > 0. Find the value of the constant a such that f(x) is continuous at x = 0.",
-    "options":[
-      "1",
-      "1/2",
-      "1/4",
-      "2"
-    ],
-    "correct": 1,
-    "explanation": "For continuity, LHL = RHL. LHL = a sin(π/2(0+1)) = a. RHL = lim_{x→0+} (tan x - sin x)/x³. Factor out tan x: (tan x / x) * (1 - cos x)/x². The limit of tan x / x is 1. The limit of (1 - cos x)/x² is 1/2. Thus RHL = 1 * (1/2) = 1/2. Setting LHL = RHL yields a = 1/2.",
-    "difficulty": "Medium",
-    "imagePrompt": null
-  },
-  {
-    "id": 12,
-    "subject": "Mathematics",
-    "topic": "Limit & continuity",
-    "subtopic": "Continuity of real valued functions",
-    "question": "Let g(x) = lim_{h→0^+}[f(x+h) - f(x)]/h be the right-hand derivative of f(x). How many points of discontinuity does f(x)={x} have in the open interval (-2, 2), and what is the value of g(1.5)?",
-    "options":[
-      "3 points of discontinuity, g(1.5) = 1",
-      "4 points of discontinuity, g(1.5) = 0",
-      "3 points of discontinuity, g(1.5) = 0",
-      "5 points of discontinuity, g(1.5) = 1"
-    ],
-    "correct": 0,
-    "explanation": "The fractional part function f(x) = {x} is discontinuous at all integer values. In the open interval (-2, 2), the integers are -1, 0, and 1, making 3 points of discontinuity. The graph consists of line segments with a slope of 1. At the non-integer point x=1.5, the function is smooth and linear, so the derivative (slope) is g(1.5) = 1.",
-    "difficulty": "Medium",
-    "imagePrompt": "A Cartesian graph plotting the fractional part function f(x) = {x} over the domain [-2, 2]. The graph consists of parallel line segments sloping upwards from y=0 to y=1. Each segment starts with a solid dot on the x-axis and ends with a hollow circle at y=1 just before the next integer."
-  },
-  {
-    "id": 13,
-    "subject": "Mathematics",
-    "topic": "Limit & continuity",
-    "subtopic": "Limits",
-    "question": "Evaluate the limit: \\(\\lim_{x \\to 0} \\frac{x - \\ln(1+x)}{x^2}\\)",
-    "options":[
-      "1",
-      "1/2",
-      "0",
-      "-1/2"
-    ],
-    "correct": 1,
-    "explanation": "Using L'Hôpital's rule on the 0/0 form: derivative of numerator is 1 - 1/(1+x) = x/(1+x). Derivative of denominator is 2x. Limit is lim [x/(1+x)] / 2x = lim 1/[2(1+x)]. Setting x=0 gives 1/2. Alternatively, use Taylor expansion: ln(1+x) ≈ x - x²/2. The numerator is x - (x - x²/2) = x²/2. Limit is (x²/2)/x² = 1/2.",
-    "difficulty": "Medium",
-    "imagePrompt": null
-  },
-  {
-    "id": 14,
-    "subject": "Mathematics",
-    "topic": "Limit & continuity",
-    "subtopic": "Limits of polynomials",
-    "question": "If \\(\\lim_{x \\to 2} \\frac{x^2 + ax + b}{x - 2} = 5\\), what is the value of (a + b)?",
-    "options":[
-      "-5",
-      "5",
-      "-1",
-      "1"
-    ],
-    "correct": 0,
-    "explanation": "For the limit to exist finitely, the numerator must approach 0 at x=2. 2² + 2a + b = 0 ⟹ 4 + 2a + b = 0 ⟹ b = -2a - 4. Using L'Hôpital's rule, lim (2x + a) / 1 = 5. At x=2, 4 + a = 5 ⟹ a = 1. Substitute a to find b: b = -2(1) - 4 = -6. The sum is a+b = 1 - 6 = -5.",
-    "difficulty": "Medium",
-    "imagePrompt": null
-  },
-  {
-    "id": 15,
-    "subject": "Mathematics",
-    "topic": "Limit & continuity",
-    "subtopic": "Continuity of rational functions",
-    "question": "Consider g(x) = 1/(1-x). Let f₂(x) = g(g(x)). What is the domain of continuity for the function f₂(x)?",
-    "options":[
-      "ℝ \\ {1}",
-      "ℝ \\ {0, 1}",
-      "ℝ \\ {0}",
-      "ℝ"
-    ],
-    "correct": 1,
-    "explanation": "The inner function g(x) is undefined at x=1. The composition is f₂(x) = 1 / (1 - 1/(1-x)) = (1-x)/(-x) = 1 - 1/x. This expression is undefined at x=0. Because the composite function relies on the validity of its inner components, it is undefined (and thus discontinuous) at both x=0 and x=1. Domain is ℝ \\ {0, 1}.",
-    "difficulty": "Medium",
-    "imagePrompt": null
-  },
-  {
-    "id": 16,
-    "subject": "Mathematics",
-    "topic": "Limit & continuity",
-    "subtopic": "Limits of rational functions",
-    "question": "Building on the previous passage, let f₃(x) = g(g(g(x))). Evaluate the limit: \\(\\lim_{x \\to 1} f_3(x)\\).",
-    "options":[
-      "0",
-      "1",
-      "-1",
-      "Does not exist"
-    ],
-    "correct": 1,
-    "explanation": "First, evaluate the expression for f₃(x) = g(f₂(x)) = 1 / (1 - (1 - 1/x)) = 1 / (1/x) = x. The domain of f₃(x) excludes x=0 and x=1. However, the limit assesses the behavior approaching x=1, independent of the actual value at x=1. lim_{x→1} x = 1.",
-    "difficulty": "Medium",
-    "imagePrompt": null
-  },
-  {
-    "id": 17,
-    "subject": "Mathematics",
-    "topic": "Limit & continuity",
-    "subtopic": "Limits of trigonometric functions",
-    "question": "Let H(x) be a continuous function defined on all real numbers ℝ such that H(x) = f₃(x) for all x in the domain of f₃. Evaluate the limit: \\(\\lim_{x \\to 0} \\frac{H(x) - \\sin x}{x^3}\\).",
-    "options":[
-      "1/6",
-      "1/3",
-      "0",
-      "1"
-    ],
-    "correct": 0,
-    "explanation": "The continuous extension of f₃(x) = x across its removable discontinuities gives H(x) = x for all real numbers. The limit is lim_{x→0} (x - sin x)/x³. Using Maclaurin expansion, sin x = x - x³/3! + ... Substituting yields [x - (x - x³/6)] / x³ = (x³/6) / x³ = 1/6.",
-    "difficulty": "Hard",
-    "imagePrompt": null
-  },
-  {
-    "id": 18,
-    "subject": "Mathematics",
-    "topic": "Limit & continuity",
-    "subtopic": "Limits of exponential functions",
-    "question": "Evaluate the limit: \\(\\lim_{x \\to 0} \\frac{(1+x)^{1/x} - e + \\frac{ex}{2}}{x^2}\\)",
-    "options":[
-      "11e/24",
-      "e/24",
-      "e/2",
-      "11/24"
-    ],
-    "correct": 0,
-    "explanation": "Use the Taylor expansion for (1+x)^(1/x) = e^[ln(1+x)/x] = e^[1 - x/2 + x²/3 - ...]. Factoring out e yields e * e^(-x/2 + x²/3) ≈ e * [1 + (-x/2 + x²/3) + (1/2)(-x/2)²] = e * [1 - x/2 + 11x²/24]. Substituting this back into the limit numerator: e - ex/2 + 11ex²/24 - e + ex/2. This simplifies cleanly to 11ex²/24. The limit is (11ex²/24) / x² = 11e/24.",
-    "difficulty": "Hard",
-    "imagePrompt": null
-  },
-  {
-    "id": 19,
-    "subject": "Mathematics",
-    "topic": "Limit & continuity",
-    "subtopic": "Limits of trigonometric functions",
-    "question": "A ray originating from origin O at angle θ intersects a circle of radius R at point Q, and intersects the vertical tangent line (at x=R) at point T. A(θ) is the area of the right triangle PQT. B(θ) is the area of the circular segment bounded by chord PQ and the minor arc PQ. Evaluate the limit: \\(\\lim_{\\theta \\to 0^+} \\frac{A(\\theta)}{B(\\theta)}\\).",
-    "options":[
-      "2",
-      "3",
-      "1/3",
-      "1/2"
-    ],
-    "correct": 1,
-    "explanation": "Area of ΔOPT = 1/2 * R * Rtanθ. Area of ΔOPQ = 1/2 * R²sinθ. A(θ) = Area(ΔOPT) - Area(ΔOPQ) = (R²/2)(tanθ - sinθ). B(θ) = Area(Sector) - Area(ΔOPQ) = (R²/2)(θ - sinθ). The limit ratio is (tanθ - sinθ)/(θ - sinθ). Using Taylor series: Numerator ≈ (θ + θ³/3) - (θ - θ³/6) = θ³/2. Denominator ≈ θ - (θ - θ³/6) = θ³/6. Limit is (1/2)/(1/6) = 3.",
-    "difficulty": "Hard",
-    "imagePrompt": "A 2D geometry diagram. A circle of radius R is centered at the origin O(0,0). The point P(R,0) lies on the positive x-axis. A vertical tangent line is drawn to the circle at point P. A ray originates from O at an angle θ (where 0 < θ < π/2) above the x-axis. This ray intersects the circular arc at point Q and the tangent line at point T."
-  },
-  {
-    "id": 20,
-    "subject": "Mathematics",
-    "topic": "Limit & continuity",
-    "subtopic": "Limits of inverse functions",
-    "question": "Let f(x) = x³ + x for all real x, and let g(x) be the inverse function of f(x). Evaluate the limit: \\(\\lim_{x \\to 0} \\frac{g(x) - x}{x^3}\\).",
-    "options":[
-      "1",
-      "-1",
-      "0",
-      "-1/3"
-    ],
-    "correct": 1,
-    "explanation": "Since g(x) is the inverse of f(x), substituting g(x) into f gives (g(x))³ + g(x) = x. We want to find lim_{x→0}[g(x) - x]/x³. Substitute x = g(x)³ + g(x) into the numerator:[g(x) - (g(x)³ + g(x))] = -g(x)³. Limit becomes lim_{x→0} -g(x)³ / x³ = lim_{x→0} -(g(x)/x)³. To find lim g(x)/x, let y = g(x). As x→0, y→0. The limit is lim_{y→0} y / (y³+y) = lim_{y→0} 1/(y²+1) = 1. Therefore, the overall limit is -(1)³ = -1.",
-    "difficulty": "Hard",
-    "imagePrompt": null
-  }
-]
+    {
+      "id": 1,
+      "subject": "Mathematics",
+      "topic": "Limit & continuity",
+      "subtopic": "Limits",
+      "question": "Evaluate the limit: \\(\\lim_{x \\to 2} \\frac{x^3 - 8}{x^2 - 4}\\)",
+      "options": [
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "correct": 2,
+      "explanation": "This is a 0/0 indeterminate form. We factor the numerator: x³ - 8 = (x - 2)(x² + 2x + 4). The denominator is x² - 4 = (x - 2)(x + 2). Canceling the common (x-2) term gives lim_{x→2} (x² + 2x + 4)/(x + 2). Substituting x = 2 gives (4 + 4 + 4)/(2 + 2) = 12/4 = 3.",
+      "difficulty": "Easy",
+      "imagePrompt": null
+    },
+    {
+      "id": 2,
+      "subject": "Mathematics",
+      "topic": "Limit & continuity",
+      "subtopic": "Limits of trigonometric functions",
+      "question": "Evaluate the trigonometric limit: \\(\\lim_{x \\to 0} \\frac{1 - \\cos 4x}{x^2}\\)",
+      "options": [
+        "2",
+        "4",
+        "8",
+        "16"
+      ],
+      "correct": 2,
+      "explanation": "Using the half-angle identity, 1 - cos 4x = 2sin²(2x). The limit becomes lim_{x→0} 2sin²(2x)/x². Multiply and divide by 4 to match the argument of sine: 2 × 4 × (sin(2x)/(2x))². Since lim_{θ→0} sin(θ)/θ = 1, the expression evaluates to 8 × 1² = 8.",
+      "difficulty": "Easy",
+      "imagePrompt": null
+    },
+    {
+      "id": 3,
+      "subject": "Mathematics",
+      "topic": "Limit & continuity",
+      "subtopic": "Limits of exponential functions",
+      "question": "Evaluate the limit: \\(\\lim_{x \\to 0} \\frac{e^{5x} - 1}{3x}\\)",
+      "options": [
+        "5/3",
+        "3/5",
+        "5",
+        "0"
+      ],
+      "correct": 0,
+      "explanation": "Using the standard exponential limit lim_{x→0} (e^{kx} - 1)/x = k. We rewrite the given limit as (1/3) * lim_{x→0} (e^{5x} - 1)/x. Applying the formula yields (1/3) * 5 = 5/3.",
+      "difficulty": "Easy",
+      "imagePrompt": null
+    },
+    {
+      "id": 4,
+      "subject": "Mathematics",
+      "topic": "Limit & continuity",
+      "subtopic": "Continuity of rational functions",
+      "question": "The function f(x) = (x² - 9)/(x - 3) is defined for all real numbers except x = 3. What value should be assigned to f(3) to make the function continuous at x = 3?",
+      "options": [
+        "3",
+        "-3",
+        "6",
+        "9"
+      ],
+      "correct": 2,
+      "explanation": "For continuity at x = 3, the limit as x approaches 3 must equal f(3). Evaluating the limit: lim_{x→3} (x² - 9)/(x - 3) = lim_{x→3} (x-3)(x+3)/(x-3) = lim_{x→3} (x + 3) = 6. Therefore, f(3) must be assigned the value 6.",
+      "difficulty": "Easy",
+      "imagePrompt": null
+    },
+    {
+      "id": 5,
+      "subject": "Mathematics",
+      "topic": "Limit & continuity",
+      "subtopic": "Algebraic properties of limits",
+      "question": "Let f(x) and g(x) be continuous real-valued functions such that lim_{x→a} f(x) = 4 and lim_{x→a} g(x) = -2. Evaluate lim_{x→a}[2f(x) - 3g(x) + f(x)g(x)].",
+      "options": [
+        "6",
+        "10",
+        "-6",
+        "14"
+      ],
+      "correct": 0,
+      "explanation": "By the algebraic properties of limits, the limit distributes over addition, subtraction, and multiplication. Limit = 2(lim f(x)) - 3(lim g(x)) + (lim f(x))(lim g(x)) = 2(4) - 3(-2) + (4)(-2) = 8 + 6 - 8 = 6.",
+      "difficulty": "Easy",
+      "imagePrompt": null
+    },
+    {
+      "id": 6,
+      "subject": "Mathematics",
+      "topic": "Limit & continuity",
+      "subtopic": "Limits",
+      "question": "Based on the visual representation of f(x) where the LHL approaches 4, the RHL approaches 4, but the function value at x=2 is 1, evaluate \\(\\lim_{x \\to 2} f(x)\\).",
+      "options": [
+        "1",
+        "2",
+        "4",
+        "The limit does not exist."
+      ],
+      "correct": 2,
+      "explanation": "The limit of a function as x → c depends purely on the behavior of the function *near* c, not its exact value *at* c. Since the LHL and RHL both approach the hollow circle at y=4, the limit exists and equals 4. The value f(2)=1 only creates a removable discontinuity but does not alter the limit.",
+      "difficulty": "Easy",
+      "imagePrompt": "A Cartesian graph of a piecewise function y = f(x). For x < 2, the graph is a solid line representing y = x + 2, ending with a hollow circle at the point (2, 4). For x > 2, the graph is a solid line representing y = 6 - x, starting with a hollow circle at (2, 4). There is a solid black dot located precisely at the coordinates (2, 1)."
+    },
+    {
+      "id": 7,
+      "subject": "Mathematics",
+      "topic": "Limit & continuity",
+      "subtopic": "Limits of trigonometric functions",
+      "question": "Evaluate the limit: \\(\\lim_{x \\to 0} (1 + 3\\tan x)^{\\cot x}\\)",
+      "options": [
+        "e",
+        "e³",
+        "e^{1/3}",
+        "1"
+      ],
+      "correct": 1,
+      "explanation": "This is a 1^∞ indeterminate form. We use the shortcut formula lim (1 + f(x))^g(x) = e^L, where L = lim [f(x)·g(x)]. Here, L = lim_{x→0} (3tan(x) · cot(x)) = lim_{x→0} 3(tan x)(1/tan x) = 3. Thus, the limit is e³.",
+      "difficulty": "Medium",
+      "imagePrompt": null
+    },
+    {
+      "id": 8,
+      "subject": "Mathematics",
+      "topic": "Limit & continuity",
+      "subtopic": "Limits",
+      "question": "Evaluate the limit at infinity: \\(\\lim_{n \\to \\infty} \\left(\\sqrt{n^2 + 4n} - n\\right)\\)",
+      "options": [
+        "0",
+        "2",
+        "4",
+        "∞"
+      ],
+      "correct": 1,
+      "explanation": "This is an ∞ - ∞ form. We resolve it by multiplying and dividing by the conjugate: (n² + 4n - n²) / (√(n² + 4n) + n) = 4n / (√(n² + 4n) + n). Divide numerator and denominator by n to get 4 / (√(1 + 4/n) + 1). As n → ∞, 4/n → 0. Result: 4 / (√1 + 1) = 4/2 = 2.",
+      "difficulty": "Medium",
+      "imagePrompt": null
+    },
+    {
+      "id": 9,
+      "subject": "Mathematics",
+      "topic": "Limit & continuity",
+      "subtopic": "Limits of real valued functions",
+      "question": "Let [x] denote the greatest integer function. Consider the function f(x) = [x] + [-x]. If a is an integer, what is the value of \\(\\lim_{x \\to a} f(x)\\)?",
+      "options": [
+        "0",
+        "1",
+        "-1",
+        "The limit does not exist."
+      ],
+      "correct": 2,
+      "explanation": "By properties of the greatest integer function, if x is an integer, [x] +[-x] = 0. If x is not an integer, [x] + [-x] = -1. When calculating the limit as x → a, we look at x very close to a, but x ≠ a. Thus, in the immediate neighborhood of integer a, the value is consistently -1. Therefore, the limit is -1.",
+      "difficulty": "Medium",
+      "imagePrompt": null
+    },
+    {
+      "id": 10,
+      "subject": "Mathematics",
+      "topic": "Limit & continuity",
+      "subtopic": "Limits of inverse functions",
+      "question": "Evaluate the limit: \\(\\lim_{x \\to 0} \\frac{\\sin^{-1} x - \\tan^{-1} x}{x^3}\\)",
+      "options": [
+        "1/6",
+        "1/3",
+        "1/2",
+        "1"
+      ],
+      "correct": 2,
+      "explanation": "Use Maclaurin series expansions: sin⁻¹ x = x + x³/6 + ... and tan⁻¹ x = x - x³/3 + ... Substitute into the limit:[(x + x³/6) - (x - x³/3)] / x³ = (x³/6 + x³/3) / x³ = 1/6 + 1/3 = 1/2.",
+      "difficulty": "Medium",
+      "imagePrompt": null
+    },
+    {
+      "id": 11,
+      "subject": "Mathematics",
+      "topic": "Limit & continuity",
+      "subtopic": "Continuity of real valued functions",
+      "question": "The function f(x) is defined as: f(x) = a sin(π/2 (x+1)) for x ≤ 0, and f(x) = (tan x - sin x)/x³ for x > 0. Find the value of the constant a such that f(x) is continuous at x = 0.",
+      "options": [
+        "1",
+        "1/2",
+        "1/4",
+        "2"
+      ],
+      "correct": 1,
+      "explanation": "For continuity, LHL = RHL. LHL = a sin(π/2(0+1)) = a. RHL = lim_{x→0+} (tan x - sin x)/x³. Factor out tan x: (tan x / x) * (1 - cos x)/x². The limit of tan x / x is 1. The limit of (1 - cos x)/x² is 1/2. Thus RHL = 1 * (1/2) = 1/2. Setting LHL = RHL yields a = 1/2.",
+      "difficulty": "Medium",
+      "imagePrompt": null
+    },
+    {
+      "id": 12,
+      "subject": "Mathematics",
+      "topic": "Limit & continuity",
+      "subtopic": "Continuity of real valued functions",
+      "question": "Let g(x) = lim_{h→0^+}[f(x+h) - f(x)]/h be the right-hand derivative of f(x). How many points of discontinuity does f(x)={x} have in the open interval (-2, 2), and what is the value of g(1.5)?",
+      "options": [
+        "3 points of discontinuity, g(1.5) = 1",
+        "4 points of discontinuity, g(1.5) = 0",
+        "3 points of discontinuity, g(1.5) = 0",
+        "5 points of discontinuity, g(1.5) = 1"
+      ],
+      "correct": 0,
+      "explanation": "The fractional part function f(x) = {x} is discontinuous at all integer values. In the open interval (-2, 2), the integers are -1, 0, and 1, making 3 points of discontinuity. The graph consists of line segments with a slope of 1. At the non-integer point x=1.5, the function is smooth and linear, so the derivative (slope) is g(1.5) = 1.",
+      "difficulty": "Medium",
+      "imagePrompt": "A Cartesian graph plotting the fractional part function f(x) = {x} over the domain [-2, 2]. The graph consists of parallel line segments sloping upwards from y=0 to y=1. Each segment starts with a solid dot on the x-axis and ends with a hollow circle at y=1 just before the next integer."
+    },
+    {
+      "id": 13,
+      "subject": "Mathematics",
+      "topic": "Limit & continuity",
+      "subtopic": "Limits",
+      "question": "Evaluate the limit: \\(\\lim_{x \\to 0} \\frac{x - \\ln(1+x)}{x^2}\\)",
+      "options": [
+        "1",
+        "1/2",
+        "0",
+        "-1/2"
+      ],
+      "correct": 1,
+      "explanation": "Using L'Hôpital's rule on the 0/0 form: derivative of numerator is 1 - 1/(1+x) = x/(1+x). Derivative of denominator is 2x. Limit is lim [x/(1+x)] / 2x = lim 1/[2(1+x)]. Setting x=0 gives 1/2. Alternatively, use Taylor expansion: ln(1+x) ≈ x - x²/2. The numerator is x - (x - x²/2) = x²/2. Limit is (x²/2)/x² = 1/2.",
+      "difficulty": "Medium",
+      "imagePrompt": null
+    },
+    {
+      "id": 14,
+      "subject": "Mathematics",
+      "topic": "Limit & continuity",
+      "subtopic": "Limits of polynomials",
+      "question": "If \\(\\lim_{x \\to 2} \\frac{x^2 + ax + b}{x - 2} = 5\\), what is the value of (a + b)?",
+      "options": [
+        "-5",
+        "5",
+        "-1",
+        "1"
+      ],
+      "correct": 0,
+      "explanation": "For the limit to exist finitely, the numerator must approach 0 at x=2. 2² + 2a + b = 0 ⟹ 4 + 2a + b = 0 ⟹ b = -2a - 4. Using L'Hôpital's rule, lim (2x + a) / 1 = 5. At x=2, 4 + a = 5 ⟹ a = 1. Substitute a to find b: b = -2(1) - 4 = -6. The sum is a+b = 1 - 6 = -5.",
+      "difficulty": "Medium",
+      "imagePrompt": null
+    },
+    {
+      "id": 15,
+      "subject": "Mathematics",
+      "topic": "Limit & continuity",
+      "subtopic": "Continuity of rational functions",
+      "question": "Consider g(x) = 1/(1-x). Let f₂(x) = g(g(x)). What is the domain of continuity for the function f₂(x)?",
+      "options": [
+        "ℝ \\ {1}",
+        "ℝ \\ {0, 1}",
+        "ℝ \\ {0}",
+        "ℝ"
+      ],
+      "correct": 1,
+      "explanation": "The inner function g(x) is undefined at x=1. The composition is f₂(x) = 1 / (1 - 1/(1-x)) = (1-x)/(-x) = 1 - 1/x. This expression is undefined at x=0. Because the composite function relies on the validity of its inner components, it is undefined (and thus discontinuous) at both x=0 and x=1. Domain is ℝ \\ {0, 1}.",
+      "difficulty": "Medium",
+      "imagePrompt": null
+    },
+    {
+      "id": 16,
+      "subject": "Mathematics",
+      "topic": "Limit & continuity",
+      "subtopic": "Limits of rational functions",
+      "question": "Building on the previous passage, let f₃(x) = g(g(g(x))). Evaluate the limit: \\(\\lim_{x \\to 1} f_3(x)\\).",
+      "options": [
+        "0",
+        "1",
+        "-1",
+        "Does not exist"
+      ],
+      "correct": 1,
+      "explanation": "First, evaluate the expression for f₃(x) = g(f₂(x)) = 1 / (1 - (1 - 1/x)) = 1 / (1/x) = x. The domain of f₃(x) excludes x=0 and x=1. However, the limit assesses the behavior approaching x=1, independent of the actual value at x=1. lim_{x→1} x = 1.",
+      "difficulty": "Medium",
+      "imagePrompt": null
+    },
+    {
+      "id": 17,
+      "subject": "Mathematics",
+      "topic": "Limit & continuity",
+      "subtopic": "Limits of trigonometric functions",
+      "question": "Let H(x) be a continuous function defined on all real numbers ℝ such that H(x) = f₃(x) for all x in the domain of f₃. Evaluate the limit: \\(\\lim_{x \\to 0} \\frac{H(x) - \\sin x}{x^3}\\).",
+      "options": [
+        "1/6",
+        "1/3",
+        "0",
+        "1"
+      ],
+      "correct": 0,
+      "explanation": "The continuous extension of f₃(x) = x across its removable discontinuities gives H(x) = x for all real numbers. The limit is lim_{x→0} (x - sin x)/x³. Using Maclaurin expansion, sin x = x - x³/3! + ... Substituting yields [x - (x - x³/6)] / x³ = (x³/6) / x³ = 1/6.",
+      "difficulty": "Hard",
+      "imagePrompt": null
+    },
+    {
+      "id": 18,
+      "subject": "Mathematics",
+      "topic": "Limit & continuity",
+      "subtopic": "Limits of exponential functions",
+      "question": "Evaluate the limit: \\(\\lim_{x \\to 0} \\frac{(1+x)^{1/x} - e + \\frac{ex}{2}}{x^2}\\)",
+      "options": [
+        "11e/24",
+        "e/24",
+        "e/2",
+        "11/24"
+      ],
+      "correct": 0,
+      "explanation": "Use the Taylor expansion for (1+x)^(1/x) = e^[ln(1+x)/x] = e^[1 - x/2 + x²/3 - ...]. Factoring out e yields e * e^(-x/2 + x²/3) ≈ e * [1 + (-x/2 + x²/3) + (1/2)(-x/2)²] = e * [1 - x/2 + 11x²/24]. Substituting this back into the limit numerator: e - ex/2 + 11ex²/24 - e + ex/2. This simplifies cleanly to 11ex²/24. The limit is (11ex²/24) / x² = 11e/24.",
+      "difficulty": "Hard",
+      "imagePrompt": null
+    },
+    {
+      "id": 19,
+      "subject": "Mathematics",
+      "topic": "Limit & continuity",
+      "subtopic": "Limits of trigonometric functions",
+      "question": "A ray originating from origin O at angle θ intersects a circle of radius R at point Q, and intersects the vertical tangent line (at x=R) at point T. A(θ) is the area of the right triangle PQT. B(θ) is the area of the circular segment bounded by chord PQ and the minor arc PQ. Evaluate the limit: \\(\\lim_{\\theta \\to 0^+} \\frac{A(\\theta)}{B(\\theta)}\\).",
+      "options": [
+        "2",
+        "3",
+        "1/3",
+        "1/2"
+      ],
+      "correct": 1,
+      "explanation": "Area of ΔOPT = 1/2 * R * Rtanθ. Area of ΔOPQ = 1/2 * R²sinθ. A(θ) = Area(ΔOPT) - Area(ΔOPQ) = (R²/2)(tanθ - sinθ). B(θ) = Area(Sector) - Area(ΔOPQ) = (R²/2)(θ - sinθ). The limit ratio is (tanθ - sinθ)/(θ - sinθ). Using Taylor series: Numerator ≈ (θ + θ³/3) - (θ - θ³/6) = θ³/2. Denominator ≈ θ - (θ - θ³/6) = θ³/6. Limit is (1/2)/(1/6) = 3.",
+      "difficulty": "Hard",
+      "imagePrompt": "A 2D geometry diagram. A circle of radius R is centered at the origin O(0,0). The point P(R,0) lies on the positive x-axis. A vertical tangent line is drawn to the circle at point P. A ray originates from O at an angle θ (where 0 < θ < π/2) above the x-axis. This ray intersects the circular arc at point Q and the tangent line at point T."
+    },
+    {
+      "id": 20,
+      "subject": "Mathematics",
+      "topic": "Limit & continuity",
+      "subtopic": "Limits of inverse functions",
+      "question": "Let f(x) = x³ + x for all real x, and let g(x) be the inverse function of f(x). Evaluate the limit: \\(\\lim_{x \\to 0} \\frac{g(x) - x}{x^3}\\).",
+      "options": [
+        "1",
+        "-1",
+        "0",
+        "-1/3"
+      ],
+      "correct": 1,
+      "explanation": "Since g(x) is the inverse of f(x), substituting g(x) into f gives (g(x))³ + g(x) = x. We want to find lim_{x→0}[g(x) - x]/x³. Substitute x = g(x)³ + g(x) into the numerator:[g(x) - (g(x)³ + g(x))] = -g(x)³. Limit becomes lim_{x→0} -g(x)³ / x³ = lim_{x→0} -(g(x)/x)³. To find lim g(x)/x, let y = g(x). As x→0, y→0. The limit is lim_{y→0} y / (y³+y) = lim_{y→0} 1/(y²+1) = 1. Therefore, the overall limit is -(1)³ = -1.",
+      "difficulty": "Hard",
+      "imagePrompt": null
+    }
+  ]
 }

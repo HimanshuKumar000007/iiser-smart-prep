@@ -1,247 +1,331 @@
 {
-  "testId": "QUICK_TOPIC",
-  "duration": 30,
-  "totalMarks": 64,
+  "testId": "IAT_AC_MOCK_V2",
+  "testName": "IISER IAT - Alternating Current (Version 2)",
+  "duration": 60,
+  "totalMarks": 80,
   "questions": [
     {
       "id": 1,
       "subject": "Physics",
-      "section": "MCQ",
-      "question": "[Alternating Current] Practice Question 1: What is the primary concept behind this topic?",
+      "topic": "AC voltage applied to a resistor",
+      "question": "If an alternating voltage V(t) = V₀ sin(ωt) is applied to a pure resistor, the average power dissipated is P_AC. If a steady direct current (DC) voltage of magnitude V₀ is applied to the same resistor, the power dissipated is P_DC. What is the exact ratio of P_AC : P_DC?",
       "options": [
-        "Concept A",
-        "Concept B",
-        "Concept C",
-        "Concept D"
+        "1 : 1",
+        "1 : 2",
+        "2 : 1",
+        "1 : √2"
       ],
-      "correct": 0,
-      "explanation": "This is a placeholder explanation for Alternating Current question 1.",
-      "difficulty": "Medium"
+      "correct": 1,
+      "explanation": "For an AC voltage V(t) = V₀ sin(ωt), average power P_AC = (V_rms)² / R. Since V_rms = V₀ / √2, P_AC = (V₀ / √2)² / R = V₀² / (2R). For a DC voltage V₀, power P_DC = V₀² / R. The ratio P_AC : P_DC = (V₀² / 2R) : (V₀² / R) = 1/2 : 1 = 1 : 2.",
+      "difficulty": "Easy",
+      "imagePrompt": ""
     },
     {
       "id": 2,
       "subject": "Physics",
-      "section": "MCQ",
-      "question": "[Alternating Current] Practice Question 2: What is the primary concept behind this topic?",
+      "topic": "Representation of AC current and voltage by rotating vectors – phasors",
+      "question": "In the phasor representation of alternating currents and voltages, the physical length of the rotating vector (phasor) corresponds exactly to which property of the AC quantity?",
       "options": [
-        "Concept A",
-        "Concept B",
-        "Concept C",
-        "Concept D"
+        "The Root Mean Square (RMS) value",
+        "The peak amplitude (maximum value)",
+        "The instantaneous value",
+        "The average value over a half cycle"
       ],
-      "correct": 0,
-      "explanation": "This is a placeholder explanation for Alternating Current question 2.",
-      "difficulty": "Medium"
+      "correct": 1,
+      "explanation": "In a phasor diagram, an alternating quantity is represented by a rotating vector. The length (magnitude) of this vector strictly corresponds to the peak amplitude (V₀ or I₀) of the alternating quantity, while its projection on the vertical or horizontal axis represents the instantaneous value.",
+      "difficulty": "Easy",
+      "imagePrompt": ""
     },
     {
       "id": 3,
       "subject": "Physics",
-      "section": "MCQ",
-      "question": "[Alternating Current] Practice Question 3: What is the primary concept behind this topic?",
+      "topic": "Power in AC circuit: the power factor",
+      "question": "A purely inductive AC circuit is connected to an alternating voltage source of frequency f. What is the frequency at which the instantaneous power supplied to the inductor oscillates?",
       "options": [
-        "Concept A",
-        "Concept B",
-        "Concept C",
-        "Concept D"
+        "f/2",
+        "f",
+        "2f",
+        "0 (Power does not oscillate)"
       ],
-      "correct": 0,
-      "explanation": "This is a placeholder explanation for Alternating Current question 3.",
-      "difficulty": "Medium"
+      "correct": 2,
+      "explanation": "Instantaneous power P(t) = V(t) · I(t). For a pure inductor, V(t) = V_m sin(ωt) and I(t) = -I_m cos(ωt). P(t) = -V_m I_m sin(ωt) cos(ωt) = -(V_m I_m / 2) sin(2ωt). The power function is a sine wave with an angular frequency of 2ω. Therefore, its standard frequency is exactly 2f.",
+      "difficulty": "Easy",
+      "imagePrompt": ""
     },
     {
       "id": 4,
       "subject": "Physics",
-      "section": "MCQ",
-      "question": "[Alternating Current] Practice Question 4: What is the primary concept behind this topic?",
+      "topic": "Transformers",
+      "question": "A student accidentally connects the primary coil of a step-up transformer (having a turns ratio of 1 : 10) to a steady 12 V DC car battery. What will be the steady voltage measured across the secondary coil?",
       "options": [
-        "Concept A",
-        "Concept B",
-        "Concept C",
-        "Concept D"
+        "120 V",
+        "1.2 V",
+        "12 V",
+        "0 V"
       ],
-      "correct": 0,
-      "explanation": "This is a placeholder explanation for Alternating Current question 4.",
-      "difficulty": "Medium"
+      "correct": 3,
+      "explanation": "Transformers operate exclusively on the principle of electromagnetic induction, which strictly requires a changing magnetic flux (AC). A steady DC battery provides a constant current, creating a static, non-changing magnetic field. With dΦ/dt = 0, Faraday's law dictates that the induced EMF in the secondary coil is precisely 0 V.",
+      "difficulty": "Easy",
+      "imagePrompt": ""
     },
     {
       "id": 5,
       "subject": "Physics",
-      "section": "MCQ",
-      "question": "[Alternating Current] Practice Question 5: What is the primary concept behind this topic?",
+      "topic": "AC voltage applied to a series LCR circuit",
+      "question": "Dimensional analysis reveals that the quantity √(L/C) (where L is inductance and C is capacitance) shares its dimensional formula with which of the following physical quantities?",
       "options": [
-        "Concept A",
-        "Concept B",
-        "Concept C",
-        "Concept D"
+        "Frequency",
+        "Time",
+        "Electrical Resistance",
+        "Electric Current"
       ],
-      "correct": 0,
-      "explanation": "This is a placeholder explanation for Alternating Current question 5.",
-      "difficulty": "Medium"
+      "correct": 2,
+      "explanation": "The impedance of an inductor is X_L = ωL, so L has dimensions of Resistance · Time. The impedance of a capacitor is X_C = 1/(ωC), so C has dimensions of Time / Resistance. The ratio L/C has dimensions (Resistance · Time) / (Time / Resistance) = Resistance². Therefore, √(L/C) has the precise dimension of Electrical Resistance (Ω).",
+      "difficulty": "Easy",
+      "imagePrompt": ""
     },
     {
       "id": 6,
       "subject": "Physics",
-      "section": "MCQ",
-      "question": "[Alternating Current] Practice Question 6: What is the primary concept behind this topic?",
+      "topic": "AC voltage applied to a capacitor",
+      "question": "A sinusoidal waveform graph shows Voltage (V) and Current (I) plotted against time. The current wave I reaches its positive peak exactly when the voltage wave V crosses zero with a positive slope (i.e., the current is a quarter of a cycle ahead of the voltage). What kind of ideal circuit component is this AC source connected to?",
       "options": [
-        "Concept A",
-        "Concept B",
-        "Concept C",
-        "Concept D"
+        "A pure resistor",
+        "A pure inductor",
+        "A pure capacitor",
+        "A series combination of an inductor and resistor"
       ],
-      "correct": 0,
-      "explanation": "This is a placeholder explanation for Alternating Current question 6.",
-      "difficulty": "Medium"
+      "correct": 2,
+      "explanation": "The scenario describes a situation where Current (I) reaches its maximum positive value a quarter cycle (90° or π/2) before Voltage (V) reaches its maximum positive value. In standard AC theory, the phrase 'Current leads Voltage by 90°' is the defining mathematical relationship for a purely capacitive circuit.",
+      "difficulty": "Easy",
+      "image": "https://res.cloudinary.com/dhb8qmnxt/image/upload/v1772721722/11095757-f658-4cbb-92b7-7a4e467857d0_j6b47r.png",
+      "imagePrompt": "A sinusoidal waveform graph showing Voltage (V) and Current (I) plotted against time. The current wave I reaches its positive peak exactly when the voltage wave V crosses zero with a positive slope (i.e., I leads V by a quarter cycle)."
     },
     {
       "id": 7,
       "subject": "Physics",
-      "section": "MCQ",
-      "question": "[Alternating Current] Practice Question 7: What is the primary concept behind this topic?",
+      "topic": "AC voltage applied to an inductor",
+      "question": "An air-core inductor is connected in series with a glowing incandescent bulb across an AC voltage source. If a soft iron core is slowly inserted completely into the inductor, what will happen to the brightness of the bulb?",
       "options": [
-        "Concept A",
-        "Concept B",
-        "Concept C",
-        "Concept D"
+        "It will steadily increase.",
+        "It will steadily decrease.",
+        "It will remain completely unchanged.",
+        "It will instantly drop to zero."
       ],
-      "correct": 0,
-      "explanation": "This is a placeholder explanation for Alternating Current question 7.",
-      "difficulty": "Medium"
+      "correct": 1,
+      "explanation": "An inductor's reactance is X_L = ωL. The inductance L depends on the permeability of the core (μ). A soft iron core has a high relative permeability (μ_r ≫ 1), which drastically increases L. Increased L means increased total impedance Z. Since I_rms = V_rms / Z, the current drops. Consequently, the power dissipated by the bulb (I_rms² R) strictly decreases, causing it to dim.",
+      "difficulty": "Medium",
+      "imagePrompt": ""
     },
     {
       "id": 8,
       "subject": "Physics",
-      "section": "MCQ",
-      "question": "[Alternating Current] Practice Question 8: What is the primary concept behind this topic?",
+      "topic": "AC voltage applied to a series LCR circuit",
+      "question": "In a series LCR circuit connected to an AC source, the voltage drops across the resistor, inductor, and capacitor are measured using AC voltmeters. The readings are V_R = 40 V, V_L = 60 V, and V_C = 30 V respectively. What is the net RMS voltage of the AC source?",
       "options": [
-        "Concept A",
-        "Concept B",
-        "Concept C",
-        "Concept D"
+        "130 V",
+        "70 V",
+        "50 V",
+        "10 V"
       ],
-      "correct": 0,
-      "explanation": "This is a placeholder explanation for Alternating Current question 8.",
-      "difficulty": "Medium"
+      "correct": 2,
+      "explanation": "In a series LCR circuit, AC voltages must be added via phasor vector addition, not simple algebraic addition. V_net = √[V_R² + (V_L - V_C)²]. V_net = √[40² + (60 - 30)²] = √[40² + 30²] = √[1600 + 900] = √2500 = 50 V.",
+      "difficulty": "Medium",
+      "imagePrompt": ""
     },
     {
       "id": 9,
       "subject": "Physics",
-      "section": "MCQ",
-      "question": "[Alternating Current] Practice Question 9: What is the primary concept behind this topic?",
+      "topic": "Transformers",
+      "question": "A non-ideal transformer has an efficiency of 90%. It is connected to a 200 V AC mains supply. The secondary coil delivers a current of 8 A to a load at a voltage of 100 V. What is the current drawn from the primary mains supply?",
       "options": [
-        "Concept A",
-        "Concept B",
-        "Concept C",
-        "Concept D"
+        "4.00 A",
+        "4.44 A",
+        "3.60 A",
+        "8.00 A"
       ],
-      "correct": 0,
-      "explanation": "This is a placeholder explanation for Alternating Current question 9.",
-      "difficulty": "Medium"
+      "correct": 1,
+      "explanation": "Output power P_out = V_s · I_s = 100 × 8 = 800 W. Efficiency η = P_out / P_in ⟹ 0.90 = 800 / P_in ⟹ P_in = 800 / 0.9 = 8000/9 W. Input power P_in = V_p · I_p ⟹ I_p = P_in / V_p = (8000/9) / 200 = 40/9 ≈ 4.44 A.",
+      "difficulty": "Medium",
+      "imagePrompt": ""
     },
     {
       "id": 10,
       "subject": "Physics",
-      "section": "MCQ",
-      "question": "[Alternating Current] Practice Question 10: What is the primary concept behind this topic?",
+      "topic": "Transformers",
+      "question": "Two closely coupled coils have a mutual inductance of 0.005 H. The alternating current in the primary coil varies according to the equation I = 10 sin(100π t) Amperes. What is the absolute maximum (peak) induced EMF in the secondary coil?",
       "options": [
-        "Concept A",
-        "Concept B",
-        "Concept C",
-        "Concept D"
+        "5π V",
+        "10π V",
+        "50π V",
+        "0.5 V"
       ],
       "correct": 0,
-      "explanation": "This is a placeholder explanation for Alternating Current question 10.",
-      "difficulty": "Medium"
+      "explanation": "The induced EMF in the secondary is given by Faraday's law of mutual induction: E₂ = -M (dI₁/dt). Given I₁(t) = 10 sin(100π t). dI₁/dt = 10 × 100π cos(100π t) = 1000π cos(100π t). |E₂| = 0.005 × 1000π cos(100π t) = 5π cos(100π t). The peak (maximum) amplitude of this induced EMF is simply the coefficient, 5π V.",
+      "difficulty": "Medium",
+      "imagePrompt": ""
     },
     {
       "id": 11,
       "subject": "Physics",
-      "section": "MCQ",
-      "question": "[Alternating Current] Practice Question 11: What is the primary concept behind this topic?",
+      "topic": "AC voltage applied to a series LCR circuit",
+      "question": "A plot shows the Impedance (Z) on the y-axis versus the angular frequency (ω) on the x-axis for a specific AC circuit. The curve is U-shaped, starting very high at low frequencies, smoothly dipping to a minimum value exactly equal to the resistance R at a specific frequency ω₀, and then rising linearly at high frequencies. Which of the following statements about the circuit at ω = ω₀ is FALSE?",
       "options": [
-        "Concept A",
-        "Concept B",
-        "Concept C",
-        "Concept D"
+        "The power factor of the circuit is unity (1).",
+        "The current and voltage are exactly in phase.",
+        "The voltages across the inductor and capacitor are zero.",
+        "The circuit acts purely resistively."
       ],
-      "correct": 0,
-      "explanation": "This is a placeholder explanation for Alternating Current question 11.",
-      "difficulty": "Medium"
+      "correct": 2,
+      "explanation": "The graph represents an LCR series circuit passing through electrical resonance. At ω₀, Z = R, which is the minimum impedance. At resonance, X_L = X_C, so the reactive components completely cancel each other out (V_L - V_C = 0). However, the *individual* voltages V_L and V_C are NOT zero. Due to the high Q-factor, V_L and V_C can be significantly higher than the source voltage. Thus, statement (C) is FALSE.",
+      "difficulty": "Medium",
+      "image": "https://res.cloudinary.com/dhb8qmnxt/image/upload/v1772721818/9274bfa7-eff5-433c-bf36-67b663ae584f_nwiebl.png",
+      "imagePrompt": "A plot showing Impedance Z on the y-axis versus angular frequency ω on the x-axis for an AC circuit. The curve is U-shaped, starting high, dipping to a minimum value denoted as R at a specific frequency ω₀, and then rising again."
     },
     {
       "id": 12,
       "subject": "Physics",
-      "section": "MCQ",
-      "question": "[Alternating Current] Practice Question 12: What is the primary concept behind this topic?",
+      "topic": "AC voltage applied to a series LCR circuit",
+      "question": "PASSAGE: A series LCR circuit is constructed with a resistance R = 15 Ω, an inductance L = 0.44 H, and a capacitance C = 10 μF. It is connected to an AC voltage source described by V(t) = 100 sin(500 t) Volts, where time t is in seconds.\n\nWhat is the peak amplitude of the current (I₀) flowing through this circuit?",
       "options": [
-        "Concept A",
-        "Concept B",
-        "Concept C",
-        "Concept D"
+        "10 A",
+        "4 A",
+        "2.5 A",
+        "5 A"
       ],
-      "correct": 0,
-      "explanation": "This is a placeholder explanation for Alternating Current question 12.",
-      "difficulty": "Medium"
+      "correct": 1,
+      "explanation": "From the passage: V_m = 100 V, ω = 500 rad/s. Inductive Reactance X_L = ωL = 500 × 0.44 = 220 Ω. Capacitive Reactance X_C = 1/(ωC) = 1/(500 × 10 × 10⁻⁶) = 1/(5 × 10⁻³) = 1000/5 = 200 Ω. Impedance Z = √[R² + (X_L - X_C)²] = √[15² + (220 - 200)²] = √[225 + 400] = √625 = 25 Ω. Peak current I₀ = V_m / Z = 100 / 25 = 4 A.",
+      "difficulty": "Medium",
+      "imagePrompt": ""
     },
     {
       "id": 13,
       "subject": "Physics",
-      "section": "MCQ",
-      "question": "[Alternating Current] Practice Question 13: What is the primary concept behind this topic?",
+      "topic": "Power in AC circuit: the power factor",
+      "question": "PASSAGE CONTINUED: What is the average electrical power dissipated by the circuit over one complete cycle?",
       "options": [
-        "Concept A",
-        "Concept B",
-        "Concept C",
-        "Concept D"
+        "400 W",
+        "240 W",
+        "120 W",
+        "60 W"
       ],
-      "correct": 0,
-      "explanation": "This is a placeholder explanation for Alternating Current question 13.",
-      "difficulty": "Medium"
+      "correct": 2,
+      "explanation": "Average power P = I_rms² R = (I₀ / √2)² R = (I₀² / 2) R. Using values from previous question: I₀ = 4 A, R = 15 Ω. P = (16 / 2) × 15 = 8 × 15 = 120 W.",
+      "difficulty": "Medium",
+      "imagePrompt": ""
     },
     {
       "id": 14,
       "subject": "Physics",
-      "section": "MCQ",
-      "question": "[Alternating Current] Practice Question 14: What is the primary concept behind this topic?",
+      "topic": "Representation of AC current and voltage by rotating vectors – phasors",
+      "question": "PASSAGE CONTINUED: What is the phase difference between the source voltage and the circuit current, and which quantity leads?",
       "options": [
-        "Concept A",
-        "Concept B",
-        "Concept C",
-        "Concept D"
+        "Current leads voltage by tan⁻¹(4/3)",
+        "Voltage leads current by tan⁻¹(4/3)",
+        "Current leads voltage by tan⁻¹(3/4)",
+        "Voltage leads current by tan⁻¹(3/4)"
       ],
-      "correct": 0,
-      "explanation": "This is a placeholder explanation for Alternating Current question 14.",
-      "difficulty": "Medium"
+      "correct": 1,
+      "explanation": "Phase angle φ is given by tan(φ) = (X_L - X_C) / R = (220 - 200) / 15 = 20 / 15 = 4/3. Since X_L > X_C, the circuit is predominantly inductive. In an inductive circuit, the Voltage leads the Current. Thus, Voltage leads current by tan⁻¹(4/3).",
+      "difficulty": "Medium",
+      "imagePrompt": ""
     },
     {
       "id": 15,
       "subject": "Physics",
-      "section": "MCQ",
-      "question": "[Alternating Current] Practice Question 15: What is the primary concept behind this topic?",
+      "topic": "Alternating Current",
+      "question": "A highly irregular alternating current flowing through a wire is mathematically modeled by the equation i(t) = 3 + 4sin(ωt) Amperes. What will a standard AC ammeter (which strictly measures the RMS value) read when connected in series with this wire?",
       "options": [
-        "Concept A",
-        "Concept B",
-        "Concept C",
-        "Concept D"
+        "5 A",
+        "√17 A",
+        "3.5 A",
+        "7 A"
       ],
-      "correct": 0,
-      "explanation": "This is a placeholder explanation for Alternating Current question 15.",
-      "difficulty": "Medium"
+      "correct": 1,
+      "explanation": "The current contains a DC component (I_dc = 3 A) and an AC component (I_ac = 4sin(ωt)). The general RMS formula is I_rms = √[(1/T) ∫ i(t)² dt]. Expanding: i(t)² = (3 + 4sin(ωt))² = 9 + 24sin(ωt) + 16sin²(ωt). Taking the average over one cycle: ⟨9⟩ = 9. ⟨24sin(ωt)⟩ = 0. ⟨16sin²(ωt)⟩ = 16 × (1/2) = 8. I_rms = √(9 + 0 + 8) = √17 A.",
+      "difficulty": "Medium",
+      "imagePrompt": ""
     },
     {
       "id": 16,
       "subject": "Physics",
-      "section": "MCQ",
-      "question": "[Alternating Current] Practice Question 16: What is the primary concept behind this topic?",
+      "topic": "Power in AC circuit: the power factor",
+      "question": "A certain electrical coil draws a steady current of 4 A when connected to a 100 V DC source. When the exact same coil is connected to a 100 V, 50 Hz AC source, it only draws 2.4 A. What is the power factor of the coil in the AC circuit?",
       "options": [
-        "Concept A",
-        "Concept B",
-        "Concept C",
-        "Concept D"
+        "0.6",
+        "0.8",
+        "0.5",
+        "1.0"
       ],
       "correct": 0,
-      "explanation": "This is a placeholder explanation for Alternating Current question 16.",
-      "difficulty": "Medium"
+      "explanation": "DC circuit isolates resistance: R = V_dc / I_dc = 100 / 4 = 25 Ω. AC circuit gives total impedance: Z = V_ac / I_ac = 100 / 2.4 = 1000 / 24 = 125/3 Ω. Power factor cos(φ) = R / Z = 25 / (125/3) = 75 / 125 = 3/5 = 0.6.",
+      "difficulty": "Medium",
+      "imagePrompt": ""
+    },
+    {
+      "id": 17,
+      "subject": "Physics",
+      "topic": "AC voltage applied to a series LCR circuit",
+      "question": "A schematic AC circuit displays a resistor R connected in series with a parallel tank combination. The tank consists of an ideal inductor L and an ideal capacitor C in parallel with each other. An AC voltage source V(t) is connected across the entire global arrangement. At what specific angular frequency ω will the total current drawn from the AC source be mathematically minimized (approaching zero for ideal components)?",
+      "options": [
+        "ω = R/L",
+        "ω = 1/√(LC)",
+        "ω = √[1/LC - (R/L)²]",
+        "The current can never be minimized to zero in this configuration."
+      ],
+      "correct": 1,
+      "explanation": "The image describes an anti-resonance circuit (Parallel LC tank). The admittance of the parallel LC tank is Y_tank = 1/(jωL) + jωC = (1 - ω²LC) / (jωL). The impedance of the tank is Z_tank = 1 / Y_tank = (jωL) / (1 - ω²LC). When ω = 1/√(LC), the denominator becomes exactly zero, making Z_tank → ∞. With infinite impedance in series with R, the total current drawn from the source drops to its absolute mathematical minimum (zero for ideal components).",
+      "difficulty": "Hard",
+      "image": "https://res.cloudinary.com/dhb8qmnxt/image/upload/v1772721921/b53ee1e9-9e8c-45ce-adb0-79e82de82943_ejxfgd.png",
+      "imagePrompt": "An electrical circuit schematic showing an AC voltage source connected to a resistor R in series. This is then followed by a parallel combination of an ideal inductor L and an ideal capacitor C."
+    },
+    {
+      "id": 18,
+      "subject": "Physics",
+      "topic": "AC voltage applied to a series LCR circuit",
+      "question": "A series LCR circuit used as a bandpass filter has R = 10 Ω, L = 0.1 H, and C = 10 μF. What are the approximate values of the two half-power frequencies (lower and upper cutoff frequencies) in rad/s for this circuit?",
+      "options": [
+        "900 rad/s and 1100 rad/s",
+        "950 rad/s and 1050 rad/s",
+        "990 rad/s and 1010 rad/s",
+        "995 rad/s and 1005 rad/s"
+      ],
+      "correct": 1,
+      "explanation": "Resonant frequency ω₀ = 1/√(LC) = 1/√(0.1 × 10 × 10⁻⁶) = 1/√(10⁻⁶) = 1000 rad/s. The bandwidth is Δω = R/L = 10 / 0.1 = 100 rad/s. For a high-Q circuit, the resonance curve is symmetric, so the half-power frequencies are given by ω = ω₀ ± (Δω/2). ω = 1000 ± 50. This gives 950 rad/s and 1050 rad/s.",
+      "difficulty": "Hard",
+      "imagePrompt": ""
+    },
+    {
+      "id": 19,
+      "subject": "Physics",
+      "topic": "AC voltage applied to a series LCR circuit",
+      "question": "An incandescent lamp is rated to operate optimally at 100 V and 100 W. It is required to run this lamp safely on a 200 V, 50 Hz AC mains supply. To avoid wasting energy as heat in a series resistor, a pure capacitor is connected in series with the lamp instead. What is the required capacitance? (Take π = 3.14 and √3 = 1.732)",
+      "options": [
+        "36.8 μF",
+        "18.4 μF",
+        "9.2 μF",
+        "55.2 μF"
+      ],
+      "correct": 1,
+      "explanation": "Lamp resistance R = V_rated² / P_rated = 100² / 100 = 100 Ω. Safe current I = P_rated / V_rated = 100 / 100 = 1 A. When run on 200 V mains, the required total impedance Z to limit current to 1 A is Z = 200 / 1 = 200 Ω. In a series RC circuit, Z = √(R² + X_C²) ⟹ 200² = 100² + X_C² ⟹ X_C = √(40000 - 10000) = √(30000) = 100√3 ≈ 173.2 Ω. X_C = 1 / (2πfC) ⟹ 173.2 = 1 / (2 × 3.14 × 50 × C) ⟹ C = 1 / (314 × 173.2) = 1 / 54384 ≈ 1.838 × 10⁻⁵ F = 18.4 μF.",
+      "difficulty": "Hard",
+      "imagePrompt": ""
+    },
+    {
+      "id": 20,
+      "subject": "Physics",
+      "topic": "Power in AC circuit: the power factor",
+      "question": "A large industrial AC electric motor can be modeled as a resistor of 30 Ω in series with an inductive reactance of 40 Ω. It operates on a 250 V, 50 Hz AC power line. To avoid fines from the power company, the factory must install a capacitor in parallel with the motor to achieve a perfect power factor of unity (1.0) for the combined circuit. What must be the exact capacitance of this parallel capacitor?",
+      "options": [
+        "(160 / π) μF",
+        "(100 / π) μF",
+        "(80 / π) μF",
+        "(320 / π) μF"
+      ],
+      "correct": 0,
+      "explanation": "The motor's admittance Y_m = 1/Z_m = 1 / (R + jX_L) = 1 / (30 + j40). Multiply by conjugate: Y_m = (30 - j40) / (30² + 40²) = (30 - j40) / 2500 = 0.012 - j0.016 S. To achieve unity power factor, the reactive (imaginary) part of the total circuit admittance must be completely cancelled out. A capacitor added in parallel provides an admittance Y_c = +jωC. Total Admittance Y_tot = (0.012 - j0.016) + jωC. For unity power factor, the imaginary term must be zero: ωC = 0.016. Given f = 50 Hz, ω = 100π. 100πC = 0.016 ⟹ C = 0.016 / 100π = (160 × 10⁻⁶) / π F = 160/π μF.",
+      "difficulty": "Hard",
+      "imagePrompt": ""
     }
   ]
 }
