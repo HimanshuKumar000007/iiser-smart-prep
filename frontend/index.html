@@ -1999,6 +1999,57 @@
                 display: none;
             }
         }
+
+        /* VALUE PROPOSITION GRID */
+        .hero-value-grid {
+            display: flex;
+            justify-content: center;
+            gap: 0.8rem;
+            flex-wrap: wrap;
+            margin-top: 3rem;
+            max-width: 950px;
+            margin-inline: auto;
+        }
+
+        .hero-value-item {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            padding: 0.6rem 1.2rem;
+            border-radius: 100px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: var(--secondary);
+            border: 1px solid rgba(255, 255, 255, 0.9);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .hero-value-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
+        }
+
+        @media(max-width:768px) {
+            .hero-value-grid {
+                gap: 0.5rem;
+                margin-top: 2rem;
+            }
+
+            .hero-value-item {
+                padding: 0.5rem 0.8rem;
+                font-size: 0.75rem;
+                border-radius: 12px;
+                gap: 0.4rem;
+            }
+
+            .hero-value-item span {
+                font-size: 1rem;
+            }
+        }
     </style>
     <!-- Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-WHHM4FTNHG"></script>
@@ -2076,46 +2127,29 @@
             </div>
 
             <!-- Value Proposition Grid -->
-            <div
-                style="display:flex; justify-content:center; gap:0.8rem; flex-wrap:wrap; margin-top:3rem; max-width:950px; margin-inline:auto;">
-                <div style="background:rgba(255,255,255,0.7); backdrop-filter:blur(10px); padding:0.6rem 1.2rem; border-radius:100px; font-weight:600; font-size:0.9rem; color:var(--secondary); border:1px solid rgba(255,255,255,0.9); box-shadow: 0 4px 15px rgba(0,0,0,0.03); display:flex; align-items:center; gap:0.5rem; transition:transform 0.2s ease;"
-                    onmouseover="this.style.transform='translateY(-2px)'"
-                    onmouseout="this.style.transform='translateY(0)'">
+            <div class="hero-value-grid">
+                <div class="hero-value-item">
                     <span>🎯</span> Know Your Expected IISER Rank Before the Real Exam
                 </div>
-                <div style="background:rgba(255,255,255,0.7); backdrop-filter:blur(10px); padding:0.6rem 1.2rem; border-radius:100px; font-weight:600; font-size:0.9rem; color:var(--secondary); border:1px solid rgba(255,255,255,0.9); box-shadow: 0 4px 15px rgba(0,0,0,0.03); display:flex; align-items:center; gap:0.5rem; transition:transform 0.2s ease;"
-                    onmouseover="this.style.transform='translateY(-2px)'"
-                    onmouseout="this.style.transform='translateY(0)'">
+                <div class="hero-value-item">
                     <span>🏫</span> See Which IISER You Can Actually Get
                 </div>
-                <div style="background:rgba(255,255,255,0.7); backdrop-filter:blur(10px); padding:0.6rem 1.2rem; border-radius:100px; font-weight:600; font-size:0.9rem; color:var(--secondary); border:1px solid rgba(255,255,255,0.9); box-shadow: 0 4px 15px rgba(0,0,0,0.03); display:flex; align-items:center; gap:0.5rem; transition:transform 0.2s ease;"
-                    onmouseover="this.style.transform='translateY(-2px)'"
-                    onmouseout="this.style.transform='translateY(0)'">
+                <div class="hero-value-item">
                     <span>🖥</span> Practice in the Same Interface Used in the Real IAT
                 </div>
-                <div style="background:rgba(255,255,255,0.7); backdrop-filter:blur(10px); padding:0.6rem 1.2rem; border-radius:100px; font-weight:600; font-size:0.9rem; color:var(--secondary); border:1px solid rgba(255,255,255,0.9); box-shadow: 0 4px 15px rgba(0,0,0,0.03); display:flex; align-items:center; gap:0.5rem; transition:transform 0.2s ease;"
-                    onmouseover="this.style.transform='translateY(-2px)'"
-                    onmouseout="this.style.transform='translateY(0)'">
+                <div class="hero-value-item">
                     <span>📊</span> AI Shows Exactly Where You Are Losing Marks
                 </div>
-                <div style="background:rgba(255,255,255,0.7); backdrop-filter:blur(10px); padding:0.6rem 1.2rem; border-radius:100px; font-weight:600; font-size:0.9rem; color:var(--secondary); border:1px solid rgba(255,255,255,0.9); box-shadow: 0 4px 15px rgba(0,0,0,0.03); display:flex; align-items:center; gap:0.5rem; transition:transform 0.2s ease;"
-                    onmouseover="this.style.transform='translateY(-2px)'"
-                    onmouseout="this.style.transform='translateY(0)'">
+                <div class="hero-value-item">
                     <span>⚡</span> Strengthen Weak Chapters with Targeted Practice
                 </div>
-                <div style="background:rgba(255,255,255,0.7); backdrop-filter:blur(10px); padding:0.6rem 1.2rem; border-radius:100px; font-weight:600; font-size:0.9rem; color:var(--secondary); border:1px solid rgba(255,255,255,0.9); box-shadow: 0 4px 15px rgba(0,0,0,0.03); display:flex; align-items:center; gap:0.5rem; transition:transform 0.2s ease;"
-                    onmouseover="this.style.transform='translateY(-2px)'"
-                    onmouseout="this.style.transform='translateY(0)'">
+                <div class="hero-value-item">
                     <span>🧠</span> Ask Doubts Anytime with AI IISER Guide
                 </div>
-                <div style="background:rgba(255,255,255,0.7); backdrop-filter:blur(10px); padding:0.6rem 1.2rem; border-radius:100px; font-weight:600; font-size:0.9rem; color:var(--secondary); border:1px solid rgba(255,255,255,0.9); box-shadow: 0 4px 15px rgba(0,0,0,0.03); display:flex; align-items:center; gap:0.5rem; transition:transform 0.2s ease;"
-                    onmouseover="this.style.transform='translateY(-2px)'"
-                    onmouseout="this.style.transform='translateY(0)'">
+                <div class="hero-value-item">
                     <span>📈</span> Adaptive Mock Tests That Improve Your Accuracy
                 </div>
-                <div style="background:rgba(255,255,255,0.7); backdrop-filter:blur(10px); padding:0.6rem 1.2rem; border-radius:100px; font-weight:600; font-size:0.9rem; color:var(--secondary); border:1px solid rgba(255,255,255,0.9); box-shadow: 0 4px 15px rgba(0,0,0,0.03); display:flex; align-items:center; gap:0.5rem; transition:transform 0.2s ease;"
-                    onmouseover="this.style.transform='translateY(-2px)'"
-                    onmouseout="this.style.transform='translateY(0)'">
+                <div class="hero-value-item">
                     <span>📝</span> Smart Revision Notes to Boost Your Score
                 </div>
             </div>
