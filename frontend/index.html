@@ -250,18 +250,19 @@
 
             0%,
             100% {
-                box-shadow: 0 0 0 0 rgba(6, 182, 212, 0.4);
+                opacity: 0.85;
             }
 
             50% {
-                box-shadow: 0 0 20px 10px rgba(6, 182, 212, 0.1);
+                opacity: 1;
             }
         }
 
         .fade-in-up {
             opacity: 0;
             transform: translateY(30px);
-            transition: all 0.8s var(--ease-out-expo);
+            transition: opacity 0.6s var(--ease-out-expo), transform 0.6s var(--ease-out-expo);
+            will-change: opacity, transform;
         }
 
         .fade-in-up.visible {
@@ -542,7 +543,7 @@
             position: relative;
             overflow: hidden;
             background: var(--bg-white);
-            contain: content;
+            contain: layout style;
             /* Performance optimization */
         }
 
@@ -559,13 +560,14 @@
                 radial-gradient(circle at 20% 80%, rgba(139, 92, 246, 0.08) 0%, transparent 40%);
             z-index: 0;
             pointer-events: none;
-            /* animation: gradient-shift 15s ease infinite; DISABLED for performance */
             transform: translateZ(0);
+            will-change: transform;
         }
 
         .hero-content {
             position: relative;
             z-index: 1;
+            transform: translateZ(0);
         }
 
         .ai-badge {
@@ -581,7 +583,9 @@
             margin-bottom: 2rem;
             border: 1px solid rgba(6, 182, 212, 0.2);
             box-shadow: 0 0 20px rgba(6, 182, 212, 0.1);
-            animation: ai-pulse 3s infinite;
+            animation: ai-pulse 2.5s ease-in-out infinite;
+            will-change: opacity;
+            transform: translateZ(0);
         }
 
         .ai-badge svg {
@@ -605,6 +609,8 @@
             -webkit-text-fill-color: transparent;
             background-size: 200% auto;
             animation: gradient-shift 5s ease infinite;
+            will-change: background-position;
+            transform: translateZ(0);
         }
 
         .hero p {
@@ -3720,8 +3726,24 @@
         const header = document.querySelector('header');
         let isScrolled = false;
         let ticking = false;
+        let scrollTimer = null;
+
+        // Pause hero animations during scroll for 120Hz smoothness
+        const heroContent = document.querySelector('.hero-content');
+        const animatedEls = document.querySelectorAll('.ai-badge, .gradient-text');
 
         window.addEventListener('scroll', () => {
+            // Pause animations while scrolling
+            if (animatedEls.length) {
+                animatedEls.forEach(el => el.style.animationPlayState = 'paused');
+            }
+            clearTimeout(scrollTimer);
+            scrollTimer = setTimeout(() => {
+                if (animatedEls.length) {
+                    animatedEls.forEach(el => el.style.animationPlayState = 'running');
+                }
+            }, 150);
+
             if (!ticking) {
                 window.requestAnimationFrame(() => {
                     const shouldBeScrolled = window.scrollY > 20;
@@ -3735,16 +3757,8 @@
             }
         }, { passive: true });
 
-        // --- Mock AI Preview Animation ---
-        setInterval(() => {
-            const preview = document.querySelector('.ai-preview');
-            if (preview && Math.random() > 0.7) {
-                preview.style.animation = 'none';
-                setTimeout(() => {
-                    preview.style.animation = 'float 6s ease-in-out infinite';
-                }, 10);
-            }
-        }, 5000);
+        // --- Mock AI Preview Animation (removed jank-causing setInterval) ---
+        // AI preview animation is now pure CSS and doesn't need JS intervention.
     </script>
     <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
     <script>
