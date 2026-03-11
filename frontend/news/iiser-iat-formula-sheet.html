@@ -4,9 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PCMB Master Formula Sheet | IISER Smart Prep</title>
+    <title>IAT 2026 PCMB Master Formula Sheet | Physics Chemistry Math Biology Formulas</title>
     <meta name="description"
-        content="Complete PCMB formula reference for IAT 2026 — Physics, Chemistry, Mathematics, and Biology formulas organized by topic with quick-access navigation.">
+        content="650+ essential formulas for IISER IAT 2026 covering Physics, Chemistry, Mathematics, and Biology. Designed for rapid revision before the exam.">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -16,7 +16,7 @@
 
     <style>
         :root {
-            /* Subject Colors */
+            /* Premium Subject Colors */
             --physics: #3b82f6;
             --physics-dark: #1d4ed8;
             --physics-soft: #eff6ff;
@@ -31,7 +31,7 @@
             --biology-soft: #fffbeb;
 
             --secondary: #0f172a;
-            --text-main: #1e293b;
+            --text-main: #334155;
             --text-muted: #64748b;
             --bg-white: #ffffff;
             --bg-wash: #f8fafc;
@@ -39,10 +39,11 @@
 
             --radius-sm: 8px;
             --radius-md: 12px;
-            --radius-lg: 16px;
-            --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
-            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --radius-lg: 20px;
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.08), 0 2px 4px -1px rgba(0, 0, 0, 0.04);
+            --shadow-lg: 0 10px 25px -5px rgba(0, 0, 0, 0.08), 0 8px 10px -6px rgba(0, 0, 0, 0.04);
+            --shadow-premium: 0 20px 40px -10px rgba(0,0,0,0.1);
         }
 
         * {
@@ -122,11 +123,13 @@
             position: sticky;
             top: 73px;
             z-index: 90;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(8px);
-            border-bottom: 1px solid var(--border);
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid rgba(226, 232, 240, 0.6);
             padding: 1rem 0;
-            margin-bottom: 2rem;
+            margin-bottom: 2.5rem;
+            box-shadow: var(--shadow-sm);
         }
 
         .tools-wrapper {
@@ -229,24 +232,45 @@
 
         /* Hero */
         .hero {
-            background: linear-gradient(135deg, var(--bg-white) 0%, var(--bg-wash) 100%);
-            padding: 3rem 0 1.5rem;
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            padding: 4rem 0 2rem;
             text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 100%;
+            background: radial-gradient(circle at top right, rgba(59, 130, 246, 0.08), transparent 40%),
+                        radial-gradient(circle at bottom left, rgba(139, 92, 246, 0.08), transparent 40%);
+            pointer-events: none;
         }
 
         .hero h1 {
-            font-size: 2.5rem;
+            font-size: 3rem;
             font-weight: 800;
-            color: var(--secondary);
-            margin-bottom: 1rem;
-            letter-spacing: -0.02em;
+            background: linear-gradient(to right, #0f172a, #3b82f6);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1.25rem;
+            letter-spacing: -0.03em;
+            line-height: 1.2;
+            position: relative;
         }
 
         .hero p {
             color: var(--text-muted);
-            font-size: 1.1rem;
-            max-width: 600px;
+            font-size: 1.15rem;
+            max-width: 650px;
             margin: 0 auto;
+            position: relative;
+            line-height: 1.6;
         }
 
         /* Formula Cards */
@@ -260,18 +284,20 @@
         .formula-card {
             background: white;
             border-radius: var(--radius-lg);
-            padding: 1.5rem;
+            padding: 1.75rem;
             border: 1px solid var(--border);
-            box-shadow: var(--shadow-sm);
-            transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+            box-shadow: var(--shadow-md);
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
             position: relative;
             overflow: hidden;
+            display: flex;
+            flex-direction: column;
         }
 
         .formula-card:hover {
-            transform: translateY(-4px);
-            box-shadow: var(--shadow-lg);
-            border-color: transparent;
+            transform: translateY(-6px);
+            box-shadow: var(--shadow-premium);
+            border-color: rgba(226, 232, 240, 0.5);
         }
 
         .formula-card.physics {
@@ -475,8 +501,44 @@
 
     <section class="hero">
         <div class="container">
-            <h1>PCMB Master Formula Sheet</h1>
-            <p>650+ essential formulas for IAT 2026. Organized for rapid revision.</p>
+            <h1>IAT 2026 Master Formula Sheet (Physics • Chemistry • Math • Biology)</h1>
+            <p style="margin-bottom: 2rem;">650+ essential formulas for IISER IAT 2026 covering Physics, Chemistry, Mathematics, and Biology. Designed for rapid revision before the exam.</p>
+            
+            <!-- Quick Jump Menu -->
+            <div style="background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(8px); border: 1px solid rgba(226, 232, 240, 0.8); border-radius: var(--radius-lg); padding: 1.5rem; max-width: 850px; margin: 0 auto; box-shadow: var(--shadow-md); text-align: left; position: relative;">
+                <p style="font-weight: 700; color: var(--secondary); margin-bottom: 0.85rem; font-size: 1rem; display: flex; align-items: center; gap: 0.5rem;"><span style="font-size: 1.2rem;">⚡</span> Quick Jump To:</p>
+                <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; justify-content: flex-start;">
+                    <a href="#mechanics" class="jump-link">Mechanics</a>
+                    <a href="#electrostatics" class="jump-link">Electrostatics</a>
+                    <a href="#optics" class="jump-link">Optics</a>
+                    <a href="#organic" class="jump-link">Organic Chemistry</a>
+                    <a href="#calculus" class="jump-link">Calculus</a>
+                    <a href="#probability" class="jump-link">Probability</a>
+                    <a href="#genetics" class="jump-link">Genetics</a>
+                    <a href="#physiology" class="jump-link">Human Physiology</a>
+                </div>
+            </div>
+            <style>
+                .jump-link {
+                    background: white;
+                    color: var(--text-main);
+                    padding: 0.5rem 1rem;
+                    border-radius: 100px;
+                    font-size: 0.875rem;
+                    font-weight: 600;
+                    text-decoration: none;
+                    transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+                    border: 1px solid var(--border);
+                    box-shadow: var(--shadow-sm);
+                }
+                .jump-link:hover {
+                    background: var(--physics-soft);
+                    color: var(--physics-dark);
+                    border-color: rgba(59, 130, 246, 0.3);
+                    transform: translateY(-2px);
+                    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.15);
+                }
+            </style>
         </div>
     </section>
 
@@ -498,13 +560,25 @@
                 </button>
             </div>
             <div class="search-container">
-                <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                    stroke-width="2">
-                    <circle cx="11" cy="11" r="8"></circle>
-                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-                </svg>
-                <input type="text" class="search-input" placeholder="Search formulas (e.g., 'integration', 'lens')..."
-                    oninput="searchFormulas(this.value)">
+                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.5rem;">
+                    <span style="font-size: 0.85rem; font-weight: 700; color: var(--physics); display: flex; align-items: center; gap: 0.25rem;">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 2v20"></path><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                        </svg> Formula Search AI
+                    </span>
+                </div>
+                <div style="position: relative;">
+                    <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                    </svg>
+                    <input type="text" class="search-input" placeholder="Ask AI: 'lens formula' or 'integration by parts'..."
+                        oninput="searchFormulas(this.value)">
+                </div>
+                <div id="ai-search-result" style="display: none; margin-top: 0.5rem; background: var(--physics-soft); padding: 0.75rem; border-radius: var(--radius-sm); border: 1px solid var(--physics); font-size: 0.9rem;">
+                    <strong>AI Result:</strong> <span id="ai-answer-text" style="font-family: 'JetBrains Mono', monospace; color: var(--secondary); margin-left: 0.5rem;"></span>
+                </div>
             </div>
         </div>
     </div>
@@ -513,7 +587,7 @@
         <div class="formulas-grid" id="formulas-container">
 
             <!-- PHYSICS SECTION - EXPANDED -->
-            <div class="formula-card physics" data-subject="physics">
+            <div id="mechanics" class="formula-card physics" data-subject="physics">
                 <div class="card-header">
                     <div class="card-icon">⚡</div>
                     <div>
@@ -588,7 +662,7 @@
                 </div>
             </div>
 
-            <div class="formula-card physics" data-subject="physics">
+            <div id="mechanics" class="formula-card physics" data-subject="physics">
                 <div class="card-header">
                     <div class="card-icon">⚡</div>
                     <div>
@@ -656,7 +730,7 @@
                     </div>
                 </div>
 
-                <div class="formula-card physics" data-subject="physics">
+                <div id="mechanics" class="formula-card physics" data-subject="physics">
                     <div class="card-header">
                         <div class="card-icon">⚡</div>
                         <div>
@@ -796,7 +870,7 @@
                     </div>
                 </div>
 
-                <div class="formula-card physics" data-subject="physics">
+                <div id="mechanics" class="formula-card physics" data-subject="physics">
                     <div class="card-header">
                         <div class="card-icon">🔥</div>
                         <div>
@@ -874,7 +948,7 @@
                         </div>
                     </div>
 
-                    <div class="formula-card physics" data-subject="physics">
+                    <div id="electrostatics" class="formula-card physics" data-subject="physics">
                         <div class="card-header">
                             <div class="card-icon">⚡</div>
                             <div>
@@ -1124,7 +1198,7 @@
                         </div>
                     </div>
 
-                    <div class="formula-card physics" data-subject="physics">
+                    <div id="optics" class="formula-card physics" data-subject="physics">
                         <div class="card-header">
                             <div class="card-icon">🌊</div>
                             <div>
@@ -1203,7 +1277,7 @@
                         </div>
                     </div>
 
-                    <div class="formula-card physics" data-subject="physics">
+                    <div id="optics" class="formula-card physics" data-subject="physics">
                         <div class="card-header">
                             <div class="card-icon">🌊</div>
                             <div>
@@ -1525,7 +1599,7 @@
                         </div>
                     </div>
 
-                    <div class="formula-card chemistry" data-subject="chemistry">
+                    <div id="organic" class="formula-card chemistry" data-subject="chemistry">
                         <div class="card-header">
                             <div class="card-icon">🧪</div>
                             <div>
@@ -1618,7 +1692,7 @@
                         </div>
                     </div>
 
-                    <div class="formula-card chemistry" data-subject="chemistry">
+                    <div id="organic" class="formula-card chemistry" data-subject="chemistry">
                         <div class="card-header">
                             <div class="card-icon">🧪</div>
                             <div>
@@ -1692,7 +1766,7 @@
                         </div>
                     </div>
 
-                    <div class="formula-card chemistry" data-subject="chemistry">
+                    <div id="organic" class="formula-card chemistry" data-subject="chemistry">
                         <div class="card-header">
                             <div class="card-icon">🧬</div>
                             <div>
@@ -1774,7 +1848,7 @@
                         </div>
                     </div>
 
-                    <div class="formula-card chemistry" data-subject="chemistry">
+                    <div id="organic" class="formula-card chemistry" data-subject="chemistry">
                         <div class="card-header">
                             <div class="card-icon">🧬</div>
                             <div>
@@ -2012,7 +2086,7 @@
                                     </div>
                                 </div>
 
-                                <div class="formula-card math" data-subject="math">
+                                <div id="probability" class="formula-card math" data-subject="math">
                                     <div class="card-header">
                                         <div class="card-icon">📐</div>
                                         <div>
@@ -2156,7 +2230,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="formula-card math" data-subject="math">
+                                    <div id="calculus" class="formula-card math" data-subject="math">
                                         <div class="card-header">
                                             <div class="card-icon">∫</div>
                                             <div>
@@ -2218,7 +2292,7 @@
                                             </div>
                                         </div>
 
-                                        <div class="formula-card math" data-subject="math">
+                                        <div id="calculus" class="formula-card math" data-subject="math">
                                             <div class="card-header">
                                                 <div class="card-icon">∫</div>
                                                 <div>
@@ -2310,7 +2384,7 @@
                                                 </div>
                                             </div>
 
-                                            <div class="formula-card math" data-subject="math">
+                                            <div id="calculus" class="formula-card math" data-subject="math">
                                                 <div class="card-header">
                                                     <div class="card-icon">∫</div>
                                                     <div>
@@ -2397,7 +2471,7 @@
                                                 </div>
                                             </div>
 
-                                            <div class="formula-card math" data-subject="math">
+                                            <div id="calculus" class="formula-card math" data-subject="math">
                                                 <div class="card-header">
                                                     <div class="card-icon">∫</div>
                                                     <div>
@@ -2752,7 +2826,7 @@
                                                 </div>
                                             </div>
 
-                                            <div class="formula-card math" data-subject="math">
+                                            <div id="probability" class="formula-card math" data-subject="math">
                                                 <div class="card-header">
                                                     <div class="card-icon">📈</div>
                                                     <div>
@@ -2895,7 +2969,7 @@
                                                 </div>
                                             </div>
 
-                                            <div class="formula-card biology" data-subject="biology">
+                                            <div id="genetics" class="formula-card biology" data-subject="biology">
                                                 <div class="card-header">
                                                     <div class="card-icon">🧬</div>
                                                     <div>
@@ -3072,7 +3146,7 @@
                                                             </div>
                                                         </div>
 
-                                                        <div class="formula-card biology" data-subject="biology">
+                                                        <div id="physiology" class="formula-card biology" data-subject="biology">
                                                             <div class="card-header">
                                                                 <div class="card-icon">🌿</div>
                                                                 <div>
@@ -3166,7 +3240,7 @@
                                                             </div>
                                                         </div>
 
-                                                        <div class="formula-card biology" data-subject="biology">
+                                                        <div id="physiology" class="formula-card biology" data-subject="biology">
                                                             <div class="card-header">
                                                                 <div class="card-icon">🫀</div>
                                                                 <div>
@@ -3459,7 +3533,52 @@
                                                                                 formation | Morphogen gradients</div>
                                                                         </div>
                                                                     </div>
+                                                                         </div>
+                                                                    </div>
                                                                 </div>
+
+            <!-- Share Feature -->
+            <div style="background: white; border: 1px solid var(--border); border-radius: var(--radius-md); padding: 2rem; margin-top: 4rem; text-align: center; box-shadow: var(--shadow-sm);">
+                <h3 style="margin-bottom: 1rem; color: var(--secondary);">Share this formula sheet with friends</h3>
+                <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                    <button onclick="window.open('https://api.whatsapp.com/send?text=Check out this IAT 2026 Master Formula Sheet! ' + window.location.href, '_blank')" class="btn" style="background: #25D366; color: white; border: none; padding: 0.75rem 1.5rem; display: flex; align-items: center; gap: 0.5rem; border-radius: 8px; cursor: pointer;">
+                        WhatsApp
+                    </button>
+                    <button onclick="window.open('https://t.me/share/url?url=' + window.location.href + '&text=Check out this IAT 2026 Master Formula Sheet!', '_blank')" class="btn" style="background: #0088cc; color: white; border: none; padding: 0.75rem 1.5rem; display: flex; align-items: center; gap: 0.5rem; border-radius: 8px; cursor: pointer;">
+                        Telegram
+                    </button>
+                    <button onclick="navigator.clipboard.writeText(window.location.href); alert('Link copied to clipboard!');" class="btn btn-outline" style="padding: 0.75rem 1.5rem; display: flex; align-items: center; gap: 0.5rem; border-radius: 8px; cursor: pointer; border: 1px solid var(--border); background: white;">
+                        Copy Link
+                    </button>
+                </div>
+            </div>
+
+            <!-- SEO Content & Internal Links -->
+            <div class="seo-content" style="margin-top: 4rem; margin-bottom: 2rem;">
+                <h2 style="font-size: 1.5rem; color: var(--secondary); margin-bottom: 1rem;">Related Resources for IAT 2026</h2>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem; margin-top: 1.5rem;">
+                    <a href="/frontend/mock_test/full_mock_test_homepage.html" style="padding: 1rem; border: 1px solid var(--border); border-radius: var(--radius-sm); color: var(--secondary); text-decoration: none; font-weight: 600; display: block; background: white; transition: transform 0.2s; box-shadow: var(--shadow-sm);" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='none'">Practice with IAT Mock Tests ➔</a>
+                    <a href="/frontend/iiser-iat-college-predictor.html" style="padding: 1rem; border: 1px solid var(--border); border-radius: var(--radius-sm); color: var(--secondary); text-decoration: none; font-weight: 600; display: block; background: white; transition: transform 0.2s; box-shadow: var(--shadow-sm);" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='none'">Use IISER Rank Predictor ➔</a>
+                    <a href="/frontend/news/iiser-iat-pyq.html" style="padding: 1rem; border: 1px solid var(--border); border-radius: var(--radius-sm); color: var(--secondary); text-decoration: none; font-weight: 600; display: block; background: white; transition: transform 0.2s; box-shadow: var(--shadow-sm);" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='none'">Solve IAT PYQ ➔</a>
+                    <a href="/frontend/ai_tutor.html" style="padding: 1rem; border: 1px solid var(--border); border-radius: var(--radius-sm); color: var(--secondary); text-decoration: none; font-weight: 600; display: block; background: white; transition: transform 0.2s; box-shadow: var(--shadow-sm);" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='none'">AI Doubt Solver ➔</a>
+                </div>
+
+                <h2 style="margin-top: 3rem; margin-bottom: 1.5rem; font-size: 1.5rem; color: var(--secondary);">Frequently Asked Questions (FAQ)</h2>
+                <div class="faq-section" style="background: white; border: 1px solid var(--border); border-radius: var(--radius-md); padding: 2rem; box-shadow: var(--shadow-sm);">
+                    <div class="faq-item" style="margin-bottom: 1.5rem; border-bottom: 1px solid var(--bg-wash); padding-bottom: 1rem;">
+                        <h3 style="font-size: 1.1rem; margin-bottom: 0.5rem; color: var(--physics-dark);">Is this formula sheet enough for IAT 2026?</h3>
+                        <p style="color: var(--text-muted); line-height: 1.6;">This formula sheet is designed for rapid revision and contains over 650 essential formulas for Physics, Chemistry, Mathematics, and Biology. However, it should be used alongside thorough conceptual understanding and practice from standard textbooks.</p>
+                    </div>
+                    <div class="faq-item" style="margin-bottom: 1.5rem; border-bottom: 1px solid var(--bg-wash); padding-bottom: 1rem;">
+                        <h3 style="font-size: 1.1rem; margin-bottom: 0.5rem; color: var(--physics-dark);">Can I download this formula sheet as a PDF?</h3>
+                        <p style="color: var(--text-muted); line-height: 1.6;">Yes, you can use the "Print PDF" button at the top right of the page to save this entire formula sheet as a PDF for offline viewing and printing.</p>
+                    </div>
+                    <div class="faq-item">
+                        <h3 style="font-size: 1.1rem; margin-bottom: 0.5rem; color: var(--physics-dark);">Are formulas for all PCMB subjects included?</h3>
+                        <p style="color: var(--text-muted); line-height: 1.6;">Yes, the master formula sheet comprehensively covers key formulas, equations, and important concepts across Physics, Chemistry, Mathematics, and Biology relevant to the IISER Aptitude Test syllabus.</p>
+                    </div>
+                </div>
+            </div>
 
                                                             </div>
     </main>
@@ -3625,6 +3744,34 @@
             window.location.href = '/index.html';
         }
     </script>
+    <!-- FAQ Schema -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [{
+        "@type": "Question",
+        "name": "Is this formula sheet enough for IAT 2026?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "This formula sheet is designed for rapid revision and contains over 650 essential formulas for Physics, Chemistry, Mathematics, and Biology. However, it should be used alongside thorough conceptual understanding and practice from standard textbooks."
+        }
+      }, {
+        "@type": "Question",
+        "name": "Can I download this formula sheet as a PDF?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes, you can use the \"Print PDF\" button at the top right of the page to save this entire formula sheet as a PDF for offline viewing and printing."
+        }
+      }, {
+        "@type": "Question",
+        "name": "Are formulas for all PCMB subjects included?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes, the master formula sheet comprehensively covers key formulas, equations, and important concepts across Physics, Chemistry, Mathematics, and Biology relevant to the IISER Aptitude Test syllabus."
+        }
+      }]
+    }
+    </script>
 </body>
-
 </html>
