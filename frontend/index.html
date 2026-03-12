@@ -3271,6 +3271,159 @@
 
 
 
+    <!-- KNOWLEDGE HUB SECTION -->
+    <section class="knowledge-hub" id="knowledge-hub" style="padding: 5rem 0; background: #0f172a;">
+        <style>
+            .knowledge-hub .hub-container {
+                width: 90%;
+                max-width: 1200px;
+                margin: 0 auto;
+            }
+            .knowledge-hub .hub-header {
+                text-align: center;
+                margin-bottom: 3rem;
+            }
+            .knowledge-hub .hub-header h2 {
+                font-size: clamp(1.75rem, 4vw, 2.5rem);
+                font-weight: 800;
+                color: #fff;
+                letter-spacing: -0.03em;
+                margin-bottom: 0.75rem;
+            }
+            .knowledge-hub .hub-header p {
+                color: #94a3b8;
+                font-size: 1.05rem;
+                max-width: 520px;
+                margin: 0 auto;
+                line-height: 1.7;
+            }
+            .knowledge-hub .hub-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                gap: 1.5rem;
+            }
+            .knowledge-hub .hub-card {
+                background: rgba(255,255,255,0.04);
+                border: 1px solid rgba(255,255,255,0.08);
+                border-radius: 20px;
+                padding: 2rem;
+                text-decoration: none;
+                transition: all 0.3s ease;
+                display: flex;
+                flex-direction: column;
+                gap: 0.75rem;
+                position: relative;
+                overflow: hidden;
+            }
+            .knowledge-hub .hub-card:hover {
+                background: rgba(255,255,255,0.08);
+                border-color: rgba(59,130,246,0.5);
+                transform: translateY(-4px);
+                box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            }
+            .knowledge-hub .hub-badge {
+                display: inline-flex;
+                padding: 0.2rem 0.65rem;
+                border-radius: 100px;
+                font-size: 0.7rem;
+                font-weight: 700;
+                text-transform: uppercase;
+                letter-spacing: 0.05em;
+                width: fit-content;
+            }
+            .knowledge-hub .badge-free {
+                background: rgba(20,184,166,0.15);
+                color: #5eead4;
+            }
+            .knowledge-hub .badge-new {
+                background: rgba(59,130,246,0.15);
+                color: #93c5fd;
+            }
+            .knowledge-hub .hub-icon {
+                font-size: 2.25rem;
+            }
+            .knowledge-hub .hub-card h3 {
+                font-size: 1.15rem;
+                font-weight: 700;
+                color: #f1f5f9;
+                margin: 0;
+            }
+            .knowledge-hub .hub-card p {
+                font-size: 0.9rem;
+                color: #94a3b8;
+                line-height: 1.7;
+                flex: 1;
+                margin: 0;
+            }
+            .knowledge-hub .hub-card-link {
+                display: flex;
+                align-items: center;
+                gap: 0.4rem;
+                color: #60a5fa;
+                font-size: 0.9rem;
+                font-weight: 600;
+                margin-top: 0.5rem;
+            }
+        </style>
+        <div class="hub-container">
+            <div class="hub-header">
+                <h2>Knowledge Hub</h2>
+                <p>Everything you need to master the IAT 2026, curated by experts and powered by data.</p>
+            </div>
+
+            <div class="hub-grid">
+                <!-- Syllabus Checklist -->
+                <a href="/frontend/news/iat-syllabus-2026-checklist.html" class="hub-card">
+                    <span class="hub-badge badge-free">Free PDF</span>
+                    <div class="hub-icon">📋</div>
+                    <h3>Syllabus Checklist</h3>
+                    <p>Track your progress across 200+ topics with our interactive PCMB checklist and weightage analysis.</p>
+                    <div class="hub-card-link">
+                        Get Checklist
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                    </div>
+                </a>
+
+                <!-- Rank Predictor -->
+                <a href="/frontend/iiser-iat-college-predictor.html" class="hub-card">
+                    <span class="hub-badge badge-new">Interactive</span>
+                    <div class="hub-icon">🎯</div>
+                    <h3>Rank Predictor</h3>
+                    <p>Predict your potential IISER campus based on your mock test scores using our AI-driven model.</p>
+                    <div class="hub-card-link">
+                        Predict Rank
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                    </div>
+                </a>
+
+                <!-- PYQ Vault -->
+                <a href="/frontend/pyqs/pyq.html" class="hub-card">
+                    <span class="hub-badge badge-free">Mock Mode</span>
+                    <div class="hub-icon">🔓</div>
+                    <h3>PYQ Vault</h3>
+                    <p>Access all previous year papers from 2017–2025 in a real TCS iON replica interface.</p>
+                    <div class="hub-card-link">
+                        Solve Papers
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                    </div>
+                </a>
+
+                <!-- Expert Blog -->
+                <a href="#blog" class="hub-card">
+                    <span class="hub-badge badge-new">Latest</span>
+                    <div class="hub-icon">🧠</div>
+                    <h3>Expert Insights</h3>
+                    <p>Read our latest strategy guides, book recommendations, and scientific career updates.</p>
+                    <div class="hub-card-link">
+                        Browse Blog
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </section>
+    <!-- END KNOWLEDGE HUB -->
+
     <!-- 10. FAQ -->
     <div class="container">
         <div class="section-header fade-in-up">
