@@ -2121,12 +2121,12 @@
                 AI-Powered Learning Platform
             </div>
 
-            <h1>Get Into IISER.<br><span class="gradient-text">AI-Powered IAT Prep</span></h1>
+            <h1>Crack IISER IAT 2026 with <br><span class="gradient-text">AI-Powered Preparation</span></h1>
             <p>Join 15,000+ students using India's only platform with AI Rank Predictor & IISER College Predictor. Exact
                 TCS iON interface.</p>
 
             <div class="hero-btn-group">
-                <a href="#pricing" class="btn btn-ai pro-hidden">Get Full Access — ₹199</a>
+                <a href="javascript:void(0)" onclick="handleStartPracticing()" class="btn btn-ai pro-hidden">Start Practicing Now</a>
                 <span class="pro-hidden" style="color:var(--text-muted); font-size:0.9rem; align-self: center;">One-time
                     • Valid until IAT
                     2026</span>
@@ -3826,6 +3826,16 @@
     </div>
 
     <script>
+        // --- Hero CTA Logic ---
+        function handleStartPracticing() {
+            const token = localStorage.getItem("IAT_TOKEN");
+            if (token) {
+                window.location.href = 'dashboard.html';
+            } else {
+                window.location.href = 'login.html';
+            }
+        }
+
         // --- Modal Logic ---
         function openModal(modalId) {
             const overlay = document.getElementById('modal-overlay');
