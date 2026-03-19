@@ -49,6 +49,10 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
+        * {
+            min-width: 0;
+        }
+
         :root {
             --primary: 99 102 241;
             --primary-light: 224 231 255;
@@ -263,12 +267,19 @@
             }
 
             h1 {
-                font-size: 2rem;
+                font-size: clamp(1.8rem, 5vw, 3rem);
                 line-height: 1.2;
-                word-break: break-word;
+                word-break: normal;
+                overflow-wrap: normal;
+                white-space: normal;
                 margin-bottom: 1.5rem;
                 position: relative;
                 z-index: 1;
+            }
+
+            p {
+                word-break: normal;
+                overflow-wrap: break-word;
             }
 
             h2, h3, h4, section {
@@ -292,7 +303,6 @@
                 margin-top: 2rem;
             }
 
-            p,
             li {
                 font-size: 0.95rem;
                 line-height: 1.6;
@@ -300,10 +310,18 @@
             }
 
             .hero {
+                max-width: 100%;
+                overflow: hidden;
                 margin-bottom: 1.5rem;
                 padding-bottom: 1rem;
                 position: relative;
                 z-index: 1;
+            }
+
+            .hero p {
+                font-size: 1rem;
+                line-height: 1.5;
+                max-width: 100%;
             }
 
             .page-container {
@@ -311,6 +329,7 @@
                 padding-right: 1rem;
                 padding-top: calc(var(--nav-height) + 1rem);
                 display: block;
+                width: 100%;
             }
 
             .meta-info {
@@ -364,13 +383,13 @@
     <div class="page-container">
         <main class="content-wrapper">
             <article>
-                <header class="hero">
+                <div class="hero">
                     <div class="badge">
                         <i class="fas fa-atom"></i> Biology Unit 3
                     </div>
                     <h1>Cell: Structure and Functions</h1>
                     <p style="font-size: 1.25rem; max-width: 600px;">The fundamental unit of life, biomolecules, and the mechanics of cellular division for IAT.</p>
-                </header>
+                </div>
 
                 <section id="cell-theory" class="animate-in">
                     <h2>1. Cell Theory & Basics</h2>
