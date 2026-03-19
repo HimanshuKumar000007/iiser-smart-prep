@@ -1,0 +1,1514 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thermodynamics (Processes, Cycles & Carnot) | IISER Smart Prep</title>
+
+    <!-- SEO Meta Tags -->
+    <meta name="description"
+        content="Master Thermodynamics for the IISER Aptitude Test (IAT). Short notes on laws of thermodynamics, P-V processes, Carnot engines, and polytropic processes.">
+    <meta name="keywords"
+        content="IAT Physics, Thermodynamics, First Law, Carnot Engine, Thermodynamic Processes, Molar Heat Capacity, Adiabatic vs Isothermal, IISER Aptitude Test, Physics Short Notes, IISER Smart Prep">
+    <meta name="author" content="IISER Smart Prep">
+    <link rel="canonical"
+        href="https://iisersmartprep.space/smart_notes/subjects/short-notes/physics/iat-thermodynamics-short-notes.html">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="article">
+    <meta property="og:url"
+        content="https://iisersmartprep.space/smart_notes/subjects/short-notes/physics/iat-thermodynamics-short-notes.html">
+    <meta property="og:title" content="Thermodynamics (Processes, Cycles & Carnot) | IAT Physics Short Notes">
+    <meta property="og:description"
+        content="Quick revision notes for Thermodynamics. Perfect for last-minute IAT preparation.">
+    <meta property="og:image" content="https://iisersmartprep.space/assets/images/og-physics-unit9.jpg">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url"
+        content="https://iisersmartprep.space/smart_notes/subjects/short-notes/physics/iat-thermodynamics-short-notes.html">
+    <meta property="twitter:title" content="Thermodynamics (Processes, Cycles & Carnot) | IAT Physics Short Notes">
+    <meta property="twitter:description" content="Master Thermodynamics for IAT with our expert-curated short notes.">
+    <meta property="twitter:image" content="https://iisersmartprep.space/assets/images/og-physics-unit9.jpg">
+
+    <!-- Structured Data (JSON-LD) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Article",
+      "headline": "Thermodynamics (Processes, Cycles & Carnot) Short Notes for IAT",
+      "description": "Comprehensive revision notes on Thermodynamics, including thermodynamic processes, cycles, and Carnot efficiency for the IAT exam.",
+      "image": "https://iisersmartprep.space/assets/images/og-physics-unit9.jpg",
+      "author": {
+        "@type": "Organization",
+        "name": "IISER Smart Prep"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "IISER Smart Prep",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://iisersmartprep.space/assets/logo.png"
+        }
+      },
+      "datePublished": "2024-03-16",
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://iisersmartprep.space/smart_notes/subjects/short-notes/physics/iat-thermodynamics-short-notes.html"
+      }
+    }
+    </script>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap"
+        rel="stylesheet">
+
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            /* Premium Color System */
+            --primary: 99 102 241;
+            --primary-light: 224 231 255;
+            --accent: 244 63 94;
+            --warning: 245 158 11;
+            --success: 16 185 129;
+
+            /* Neutral Scale */
+            --gray-50: 248 250 252;
+            --gray-100: 241 245 249;
+            --gray-200: 226 232 240;
+            --gray-300: 203 213 225;
+            --gray-400: 148 163 184;
+            --gray-500: 100 116 139;
+            --gray-600: 71 85 105;
+            --gray-700: 51 65 85;
+            --gray-800: 30 41 59;
+            --gray-900: 15 23 42;
+
+            /* semantic tokens */
+            --bg-primary: rgb(var(--gray-50));
+            --bg-secondary: white;
+            --bg-tertiary: rgb(var(--gray-100));
+            --text-primary: rgb(var(--gray-900));
+            --text-secondary: rgb(var(--gray-600));
+            --text-tertiary: rgb(var(--gray-500));
+            --border-primary: rgb(var(--gray-200));
+            --border-secondary: rgb(var(--gray-300));
+
+            /* Effects */
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+            --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+            --shadow-glow: 0 0 20px -5px rgb(var(--primary) / 0.4);
+
+            --glass-bg: rgba(255, 255, 255, 0.8);
+            --glass-border: rgba(255, 255, 255, 0.3);
+
+            --radius-sm: 0.5rem;
+            --radius-md: 0.75rem;
+            --radius-lg: 1rem;
+            --radius-xl: 1.5rem;
+
+            --nav-height: 80px;
+            --container-width: 880px;
+            --toc-width: 280px;
+        }
+
+        /* Dark Mode */
+        [data-theme="dark"] {
+            --bg-primary: rgb(var(--gray-900));
+            --bg-secondary: rgb(var(--gray-800));
+            --bg-tertiary: rgb(var(--gray-700));
+            --text-primary: rgb(var(--gray-50));
+            --text-secondary: rgb(var(--gray-300));
+            --text-tertiary: rgb(var(--gray-400));
+            --border-primary: rgb(var(--gray-700));
+            --border-secondary: rgb(var(--gray-600));
+
+            --glass-bg: rgba(15, 23, 42, 0.8);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --shadow-glow: 0 0 20px -5px rgb(var(--primary) / 0.6);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        body {
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.7;
+            font-size: 16px;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            overflow-x: hidden;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+            height: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--border-secondary);
+            border-radius: 100px;
+            border: 3px solid var(--bg-primary);
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgb(var(--gray-400));
+        }
+
+        /* Progress Bar */
+        .progress-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            z-index: 9999;
+            background: var(--border-primary);
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, rgb(var(--primary)), rgb(var(--accent)));
+            width: 0%;
+            transition: width 0.1s linear;
+            box-shadow: 0 0 10px rgb(var(--primary) / 0.5);
+        }
+
+        /* Header - Floating Pill Design */
+        header {
+            position: fixed;
+            top: 20px;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            display: flex;
+            justify-content: center;
+            pointer-events: none;
+            transition: top 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            height: auto;
+            background: transparent;
+            backdrop-filter: none;
+            -webkit-backdrop-filter: none;
+            border-bottom: none;
+        }
+
+        header.scrolled {
+            top: 0;
+        }
+
+        .nav-container {
+            pointer-events: auto;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            border: 1px solid var(--glass-border);
+            box-shadow: var(--shadow-lg);
+            padding: 0.75rem 1.5rem;
+            border-radius: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 90%;
+            max-width: var(--container-width);
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            height: var(--nav-height);
+        }
+
+        header.scrolled .nav-container {
+            width: 100%;
+            max-width: 100%;
+            border-radius: 0;
+            border-top: 0;
+            border-left: 0;
+            border-right: 0;
+            background: var(--bg-secondary);
+            padding: 0 2rem;
+            box-shadow: var(--shadow-md);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-weight: 800;
+            color: var(--text-primary);
+            text-decoration: none;
+            font-size: 1.125rem;
+            transition: transform 0.2s;
+        }
+
+        .logo:hover {
+            transform: scale(1.02);
+        }
+
+        .nav-actions {
+            display: flex;
+            gap: 0.75rem;
+            align-items: center;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.625rem 1.25rem;
+            border-radius: 100px;
+            font-weight: 600;
+            font-size: 0.875rem;
+            transition: all 0.2s ease;
+            border: none;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .btn-secondary {
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+            border: 1px solid var(--border-primary);
+        }
+
+        .btn-secondary:hover {
+            background: var(--bg-secondary);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn-icon {
+            width: 40px;
+            height: 40px;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+        }
+
+        /* Theme Toggle Animation */
+        .theme-toggle {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .theme-toggle i {
+            transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        [data-theme="dark"] .theme-toggle i {
+            transform: rotate(360deg);
+        }
+
+        /* Main Layout */
+        .page-container {
+            display: flex;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding-top: calc(var(--nav-height) + 2rem);
+            padding-bottom: 4rem;
+            padding-left: 2rem;
+            padding-right: 2rem;
+            gap: 3rem;
+            position: relative;
+        }
+
+        /* Content Area */
+        .content-wrapper {
+            flex: 1;
+            max-width: var(--container-width);
+            margin: 0 auto;
+            position: relative;
+        }
+
+        /* Hero Section */
+        .hero {
+            margin-bottom: 3rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid var(--border-primary);
+            animation: fadeInUp 0.8s ease;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.375rem;
+            padding: 0.25rem 0.75rem;
+            background: rgb(var(--primary) / 0.1);
+            color: rgb(var(--primary));
+            border-radius: 100px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 1rem;
+            border: 1px solid rgb(var(--primary) / 0.2);
+        }
+
+        h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            line-height: 1.1;
+            color: var(--text-primary);
+            margin-bottom: 1.5rem;
+            letter-spacing: -0.02em;
+        }
+
+        .meta-info {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .meta-item i {
+            color: rgb(var(--primary));
+        }
+
+        /* Typography */
+        h2 {
+            font-size: 1.875rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin: 3rem 0 1.25rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 2px solid var(--border-primary);
+            scroll-margin-top: calc(var(--nav-height) + 20px);
+            position: relative;
+        }
+
+        h2::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 60px;
+            height: 2px;
+            background: linear-gradient(90deg, rgb(var(--primary)), rgb(var(--accent)));
+            border-radius: 2px;
+        }
+
+        h3 {
+            font-size: 1.375rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin: 2rem 0 1rem;
+            letter-spacing: -0.01em;
+        }
+
+        h4 {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin: 1.5rem 0 0.75rem;
+        }
+
+        p {
+            margin-bottom: 1.25rem;
+            color: var(--text-secondary);
+            line-height: 1.8;
+        }
+
+        /* Enhanced Lists */
+        ul,
+        ol {
+            margin-bottom: 1.5rem;
+            padding-left: 1.25rem;
+        }
+
+        li {
+            margin-bottom: 0.5rem;
+            color: var(--text-secondary);
+            position: relative;
+        }
+
+        ul li::marker {
+            color: rgb(var(--primary));
+            font-size: 1.1em;
+        }
+
+        /* Premium Cards */
+        .card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-primary);
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card:hover {
+            box-shadow: var(--shadow-xl);
+            border-color: var(--border-secondary);
+            transform: translateY(-2px);
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, rgb(var(--primary)), rgb(var(--accent)));
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .card:hover::before {
+            opacity: 1;
+        }
+
+        /* Specific Card Types */
+        .exam-tip {
+            border-left: 0;
+            background: linear-gradient(135deg, rgb(var(--warning) / 0.1), rgb(var(--warning) / 0.05));
+            border: 1px solid rgb(var(--warning) / 0.2);
+        }
+
+        .exam-tip::before {
+            background: rgb(var(--warning));
+        }
+
+        .exam-tip-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+            background: rgb(var(--warning));
+            color: white;
+            border-radius: 50%;
+            margin-bottom: 0.75rem;
+            font-size: 1rem;
+        }
+
+        .formula-box {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-secondary);
+            box-shadow: var(--shadow-md);
+            font-family: 'JetBrains Mono', monospace;
+            position: relative;
+        }
+
+        .formula-box::after {
+            content: '</>';
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            color: var(--text-tertiary);
+            font-size: 0.75rem;
+            opacity: 0.5;
+        }
+
+        .formula-content {
+            font-size: 1.125rem;
+            font-weight: 500;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .formula-desc {
+            font-size: 0.875rem;
+            color: var(--text-tertiary);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        .professor-note {
+            background: linear-gradient(135deg, rgb(var(--success) / 0.1), rgb(var(--success) / 0.05));
+            border: 1px solid rgb(var(--success) / 0.2);
+        }
+
+        .professor-note::before {
+            background: rgb(var(--success));
+        }
+
+        .professor-note h4 {
+            color: rgb(var(--success));
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 0;
+        }
+
+        /* Table Container for Mobile */
+        .table-container {
+            overflow-x: auto;
+            margin: 2rem 0;
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--border-primary);
+            box-shadow: var(--shadow-sm);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            background: var(--bg-secondary);
+            min-width: 600px;
+        }
+
+        th {
+            background: var(--bg-tertiary);
+            font-weight: 600;
+            color: var(--text-primary);
+            text-align: left;
+            padding: 1rem;
+            border-bottom: 2px solid var(--border-primary);
+            white-space: nowrap;
+        }
+
+        td {
+            padding: 1rem;
+            border-bottom: 1px solid var(--border-primary);
+            color: var(--text-secondary);
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:hover td {
+            background: var(--bg-tertiary);
+        }
+
+        /* Desktop TOC */
+        .toc-container {
+            position: sticky;
+            top: calc(var(--nav-height) + 2rem);
+            width: var(--toc-width);
+            height: calc(100vh - var(--nav-height) - 4rem);
+            overflow-y: auto;
+            display: none;
+            padding-right: 1rem;
+        }
+
+        @media (min-width: 1280px) {
+            .toc-container {
+                display: block;
+            }
+        }
+
+        .toc-header {
+            font-size: 0.875rem;
+            font-weight: 700;
+            color: var(--text-tertiary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 1rem;
+            padding-left: 0.75rem;
+        }
+
+        .toc-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            position: relative;
+        }
+
+        .toc-list::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: var(--border-primary);
+        }
+
+        .toc-link {
+            display: block;
+            padding: 0.5rem 0.75rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.875rem;
+            font-weight: 500;
+            border-left: 2px solid transparent;
+            margin-left: 0;
+            transition: all 0.2s;
+            position: relative;
+        }
+
+        .toc-link:hover {
+            color: rgb(var(--primary));
+            background: rgb(var(--primary) / 0.05);
+        }
+
+        .toc-link.active {
+            color: rgb(var(--primary));
+            font-weight: 600;
+            border-left-color: rgb(var(--primary));
+            background: rgb(var(--primary) / 0.08);
+        }
+
+        /* Mobile TOC Drawer */
+        .mobile-drawer-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+            z-index: 2000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s;
+        }
+
+        .mobile-drawer-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .mobile-drawer {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: var(--bg-secondary);
+            border-radius: 2rem 2rem 0 0;
+            padding: 2rem;
+            max-height: 70vh;
+            overflow-y: auto;
+            transform: translateY(100%);
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .mobile-drawer-overlay.active .mobile-drawer {
+            transform: translateY(0);
+        }
+
+        .drawer-handle {
+            width: 40px;
+            height: 4px;
+            background: var(--border-secondary);
+            border-radius: 100px;
+            margin: 0 auto 1.5rem;
+        }
+
+        .toc-btn-mobile {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            width: 56px;
+            height: 56px;
+            background: linear-gradient(135deg, rgb(var(--primary)), rgb(var(--accent)));
+            color: white;
+            border: none;
+            border-radius: 50%;
+            box-shadow: var(--shadow-glow), var(--shadow-xl);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            z-index: 1000;
+            transition: all 0.3s;
+        }
+
+        .toc-btn-mobile:hover {
+            transform: scale(1.1) rotate(90deg);
+        }
+
+        .toc-btn-mobile:active {
+            transform: scale(0.95);
+        }
+
+        @media (min-width: 1280px) {
+            .toc-btn-mobile {
+                display: none;
+            }
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-in {
+            animation: fadeInUp 0.6s ease forwards;
+            opacity: 0;
+        }
+
+        /* Section offset for anchor links */
+        section {
+            scroll-margin-top: calc(var(--nav-height) + 40px);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            :root {
+                --nav-height: 140px;
+            }
+
+            html {
+                font-size: 25px;
+            }
+
+            body {
+                font-size: 1.4rem;
+            }
+
+            header {
+                top: 0;
+                height: var(--nav-height);
+                background: white;
+                border-bottom: 1px solid var(--border-primary);
+            }
+
+            .nav-container {
+                width: 100%;
+                max-width: 100%;
+                padding: 0 1.5rem;
+                background: transparent;
+                box-shadow: none;
+                border: none;
+                border-radius: 0;
+            }
+
+            .nav-actions a.btn {
+                display: none;
+            }
+
+            .logo {
+                font-size: 1.8rem;
+            }
+
+            .btn {
+                padding: 1rem 2rem;
+                font-size: 1.2rem;
+            }
+
+            .btn-icon {
+                width: 64px;
+                height: 64px;
+                font-size: 1.6rem;
+            }
+
+            h1 {
+                font-size: 3rem;
+                line-height: 1.1;
+                margin-bottom: 2rem;
+            }
+
+            h2 {
+                font-size: 2.4rem;
+                margin-top: 4rem;
+                padding-bottom: 1rem;
+            }
+
+            h3 {
+                font-size: 2rem;
+                margin-top: 3rem;
+            }
+
+            h4 {
+                font-size: 1.6rem;
+                margin-top: 2.5rem;
+            }
+
+            p,
+            li {
+                font-size: 1.5rem;
+                line-height: 1.6;
+                margin-bottom: 1.75rem;
+            }
+
+            .page-container {
+                padding-left: 1.5rem;
+                padding-right: 1.5rem;
+                padding-top: calc(var(--nav-height) + 1rem);
+            }
+
+            table {
+                font-size: 1.2rem;
+            }
+
+            .meta-info {
+                font-size: 1.2rem;
+                gap: 1rem;
+            }
+
+            .card {
+                padding: 1.5rem;
+            }
+
+            .formula-content {
+                font-size: 1.6rem;
+            }
+
+            .formula-desc {
+                font-size: 1.2rem;
+            }
+
+            .badge {
+                font-size: 1rem;
+                padding: 0.5rem 1.2rem;
+            }
+        }
+
+        /* Print Styles */
+        @media print {
+
+            header,
+            .toc-container,
+            .toc-btn-mobile {
+                display: none;
+            }
+
+            .page-container {
+                padding-top: 2rem;
+            }
+
+            body {
+                background: white;
+                color: black;
+            }
+        }
+    </style>
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-WHHM4FTNHG"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'G-WHHM4FTNHG');
+    </script>
+</head>
+
+<body>
+
+    <!-- Progress Bar -->
+    <div class="progress-container">
+        <div class="progress-bar" id="progressBar"></div>
+    </div>
+
+    <!-- Header -->
+    <header id="mainHeader">
+        <div class="nav-container">
+            <a href="/index.html" class="logo">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path
+                        d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z">
+                    </path>
+                </svg>
+                IISER Smart Prep
+            </a>
+
+            <div class="nav-actions">
+                <a href="/smart_notes/subjects/physics/unit-9-homepage-physics.html" class="btn btn-secondary">
+                    <i class="fas fa-arrow-left"></i>
+                    <span class="hide-mobile">Back to Unit</span>
+                </a>
+                <button class="btn btn-secondary btn-icon" onclick="window.print()" aria-label="Download PDF">
+                    <i class="fas fa-file-pdf"></i>
+                </button>
+                <button class="btn btn-secondary btn-icon theme-toggle" onclick="toggleTheme()"
+                    aria-label="Toggle theme">
+                    <i class="fas fa-sun"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <div class="page-container">
+        <!-- Main Content -->
+        <main class="content-wrapper">
+
+            <!-- Hero -->
+            <div class="hero">
+                <span class="badge">
+                    <i class="fas fa-star"></i>
+                    High Yield Topic
+                </span>
+                <h1>Thermodynamics (Processes, Cycles & Carnot)</h1>
+                <div class="meta-info">
+                    <div class="meta-item">
+                        <i class="fas fa-book"></i>
+                        <span>Physics Unit 9</span>
+                    </div>
+                    <div class="meta-item">
+                        <i class="fas fa-clock"></i>
+                        <span>25 min read</span>
+                    </div>
+                    <div class="meta-item">
+                        <i class="fas fa-graduation-cap"></i>
+                        <span>IAT Advanced</span>
+                    </div>
+                    <div class="meta-item">
+                        <i class="fas fa-fire"></i>
+                        <span>Hot Topic</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Content -->
+            <article>
+                <section id="core-concept" class="animate-in">
+                    <h2><i class="fas fa-cube"></i> 1. Core Concept</h2>
+
+                    <div class="card">
+                        <h4>Zeroth Law</h4>
+                        <p>Establishes Temperature (T) as a state variable for thermal equilibrium.</p>
+                    </div>
+
+                    <div class="card formula-box">
+                        <div class="formula-content">&Delta;Q = &Delta;U + &Delta;W</div>
+                        <div class="formula-desc">First Law of Thermodynamics: The ultimate energy balance.</div>
+                    </div>
+
+                    <div class="card professor-note">
+                        <h4><i class="fas fa-thermometer-half"></i> State Variables</h4>
+                        <p><strong>State Variables:</strong> Properties that depend only on the current state (P, V, T,
+                            U, S). Note: Work and Heat are NOT state variables—they are path-dependent.</p>
+                        <p><strong>Note:</strong> For ideal gases, <code>&Delta;U = &mu;C<sub>v</sub>&Delta;T</code>
+                            always, regardless of the process.</p>
+                    </div>
+
+                    <div class="card">
+                        <h4>Molar Heat Capacities (C<sub>p</sub> & C<sub>v</sub>)</h4>
+                        <p>For an ideal gas, specific heat depends on the process:</p>
+                        <ul>
+                            <li><strong>C<sub>v</sub>:</strong> Molar heat at constant volume. <code>C<sub>v</sub> = (f/2)R</code>.</li>
+                            <li><strong>C<sub>p</sub>:</strong> Molar heat at constant pressure. <code>C<sub>p</sub> = C<sub>v</sub> + R = (1 + f/2)R</code>.</li>
+                            <li><strong>Mayer's Relation:</strong> <code>C<sub>p</sub> - C<sub>v</sub> = R</code>.</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <section id="sign-convention" class="animate-in">
+                    <h2><i class="fas fa-plus-minus"></i> 2. Sign Convention (The "IAT Rule")</h2>
+                    <div class="card highlight-card" style="border-left: 4px solid rgb(var(--warning)); background: rgb(var(--warning) / 0.05);">
+                        <h4><i class="fas fa-balance-scale"></i> Master Your Signs</h4>
+                        <p>In <code>&Delta;Q = &Delta;U + &Delta;W</code>, the standard physics convention (used in IAT) is:</p>
+                        <ul>
+                            <li><strong>&Delta;Q:</strong> (+) when Heat <u>enters</u> | (-) when Heat <u>leaves</u>.</li>
+                            <li><strong>&Delta;W:</strong> (+) when Gas <u>expands</u> (Work by gas) | (-) when Gas <u>compresses</u> (Work on gas).</li>
+                            <li><strong>&Delta;U:</strong> (+) when Temp <u>rises</u> | (-) when Temp <u>falls</u>.</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <section id="processes" class="animate-in">
+                    <div class="flash-grid">
+                        <div class="flashcard" onclick="this.classList.toggle('flipped')">
+                            <div class="flashcard-face flash-front">
+                                <div class="flash-icon">🌡️</div>
+                                <h3>Isothermal</h3>
+                                <p>PV = Constant</p>
+                                <span class="flash-hint">Tap to reveal</span>
+                            </div>
+                            <div class="flashcard-face flash-back">
+                                <p><strong>&Delta;U = 0</strong> (for ideal gas).<br>
+                                    Slow process. Heat exchanged to keep temp constant.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="flashcard" onclick="this.classList.toggle('flipped')">
+                            <div class="flashcard-face flash-front">
+                                <div class="flash-icon">🛡️</div>
+                                <h3>Adiabatic</h3>
+                                <p>PV<sup>&gamma;</sup> = Constant</p>
+                                <span class="flash-hint">Tap to reveal</span>
+                            </div>
+                            <div class="flashcard-face flash-back">
+                                <p><strong>&Delta;Q = 0</strong>.<br>
+                                    Fast process. Piston moves so quickly that heat hasn't time to flow.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="flashcard" onclick="this.classList.toggle('flipped')">
+                            <div class="flashcard-face flash-front">
+                                <div class="flash-icon">🏗️</div>
+                                <h3>Isobaric</h3>
+                                <p>P = Constant</p>
+                                <span class="flash-hint">Tap to reveal</span>
+                            </div>
+                            <div class="flashcard-face flash-back">
+                                <p><strong>&Delta;W = P&Delta;V</strong>.<br>
+                                    V &prop; T (Charles's Law). Heat added changes both U and W.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="table-container" style="margin-top: 2rem;">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Process</th>
+                                    <th>Equation</th>
+                                    <th>Work Done (&Delta;W)</th>
+                                    <th>Molar Heat (C)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Isothermal</td>
+                                    <td>PV = K</td>
+                                    <td>&mu;RT ln(V<sub>f</sub>/V<sub>i</sub>)</td>
+                                    <td>&infin;</td>
+                                </tr>
+                                <tr>
+                                    <td>Adiabatic</td>
+                                    <td>PV<sup>&gamma;</sup> = K</td>
+                                    <td>(P<sub>i</sub>V<sub>i</sub> - P<sub>f</sub>V<sub>f</sub>)/(&gamma;-1)</td>
+                                    <td>0</td>
+                                </tr>
+                                <tr>
+                                    <td>Isochoric</td>
+                                    <td>V = K</td>
+                                    <td>0</td>
+                                    <td>C<sub>v</sub></td>
+                                </tr>
+                                <tr>
+                                    <td>Isobaric</td>
+                                    <td>P = K</td>
+                                    <td>P&Delta;V = &mu;R&Delta;T</td>
+                                    <td>C<sub>p</sub></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <section id="shortcuts" class="animate-in">
+                    <h2><i class="fas fa-rocket"></i> 4. Elite Shortcuts & Tricks (Time Savers)</h2>
+
+                    <div class="card formula-box">
+                        <div class="formula-content">C = C<sub>v</sub> + R / (1 - x)</div>
+                        <div class="formula-desc">Polytropic Process (PV<sup>x</sup> = constant) Molar Heat Capacity.
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <h4>Adiabatic vs. Isothermal Slope:</h4>
+                        <p>For the same point (P,V) on a graph:
+                            <code>(Slope)<sub>Adiabatic</sub> = &gamma; &times; (Slope)<sub>Isothermal</sub></code>.
+                            Adiabatic is always steeper.</p>
+                    </div>
+                    <div class="card">
+                        <h4>Carnot Engine vs. Refrigerator</h4>
+                        <div class="table-container">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Feature</th>
+                                        <th>Carnot Engine</th>
+                                        <th>Refrigerator (Fridge/AC)</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><strong>Goal</strong></td>
+                                        <td>Convert Heat to Work</td>
+                                        <td>Transfer Heat from Cold to Hot</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Metric</strong></td>
+                                        <td>Efficiency (&eta;)</td>
+                                        <td>Coeff. of Performance (&beta; or COP)</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Formula</strong></td>
+                                        <td>&eta; = 1 - T<sub>L</sub>/T<sub>H</sub></td>
+                                        <td>&beta; = T<sub>L</sub> / (T<sub>H</sub> - T<sub>L</sub>)</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Relation</strong></td>
+                                        <td colspan="2" style="text-align: center;"><strong>&beta; = (1 - &eta;) / &eta;</strong></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <h4>Cyclic Efficiency:</h4>
+                        <p>Work done = Area of loop. Clockwise = Positive Work (Engine). Counter-clockwise = Negative
+                            Work (Refrigerator).</p>
+                    </div>
+
+                    <div class="card formula-box">
+                        <div class="formula-content">&eta; = 1 - (T<sub>L</sub> / T<sub>H</sub>)</div>
+                        <div class="formula-desc">Carnot Limit: Maximum efficiency (Temperatures in Kelvin).</div>
+                    </div>
+                </section>
+
+                <section id="conceptual-insights" class="animate-in">
+                    <h2><i class="fas fa-lightbulb"></i> 5. Conceptual Insights</h2>
+
+                    <div class="card">
+                        <h4>Degrees of Freedom (f) & &gamma;:</h4>
+                        <ul>
+                            <li>Monoatomic (He): f=3, &gamma;=1.67</li>
+                            <li>Diatomic (O<sub>2</sub>): f=5, &gamma;=1.4</li>
+                            <li>Polyatomic (CO<sub>2</sub>): f=6, &gamma;=1.33</li>
+                            <li><code>&gamma; = 1 + 2/f</code></li>
+                        </ul>
+                    </div>
+
+                    <div class="card">
+                        <h4>Internal Energy Pitfall:</h4>
+                        <p>For an ideal gas, &Delta;U depends ONLY on &Delta;T. In an isothermal process for an ideal
+                            gas, &Delta;U = 0, even if the gas expands significantly.</p>
+                    </div>
+
+                    <div class="card">
+                        <h4>Second Law (Entropy & Direction)</h4>
+                        <p>Total entropy of an isolated system never decreases. Heat only flows spontaneously from hot to cold (Clausius statement). No engine can be 100% efficient (Kelvin-Planck statement).</p>
+                    </div>
+
+                    <div class="card">
+                        <h4>Reversible vs. Irreversible Processes</h4>
+                        <div class="table-container">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Feature</th>
+                                        <th>Reversible</th>
+                                        <th>Irreversible</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><strong>Description</strong></td>
+                                        <td>Can be retraced completely.</td>
+                                        <td>Cannot be retraced.</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Execution</strong></td>
+                                        <td>Extremely slow (Quasi-static).</td>
+                                        <td>Rapid and spontaneous.</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Dissipation</strong></td>
+                                        <td>No friction or viscosity.</td>
+                                        <td>Involves friction, turbulence, etc.</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="common-traps" class="animate-in">
+                    <h2><i class="fas fa-exclamation-triangle"></i> 6. Common Traps & Mistakes</h2>
+
+                    <div class="card exam-tip">
+                        <div class="exam-tip-icon">⚠️</div>
+                        <div>
+                            <h4>Sign Convention Inconsistency:</h4>
+                            <p>Always use: <code>&Delta;Q = &Delta;U + &Delta;W</code>. If work is done ON the gas,
+                                <code>&Delta;W</code> is negative. If heat is removed, <code>&Delta;Q</code> is
+                                negative.</p>
+                        </div>
+                    </div>
+
+                    <div class="card exam-tip">
+                        <div class="exam-tip-icon">⚠️</div>
+                        <div>
+                            <h4>Kelvin Conversion:</h4>
+                            <p>Forgetting to add 273.15 to Celsius temperatures in Carnot or Isothermal problems is a
+                                common error.</p>
+                        </div>
+                    </div>
+
+                    <div class="card exam-tip">
+                        <div class="exam-tip-icon">⚠️</div>
+                        <div>
+                            <h4>The "Slope" Confusion:</h4>
+                            <p>In a P-V diagram, be careful! The steepness relationship changes during compression vs
+                                expansion. Always rely on the &gamma; factor.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="example-applications" class="animate-in">
+                    <h2><i class="fas fa-flask"></i> 7. Example Applications</h2>
+
+                    <div class="card">
+                        <h4>Calculating C<sub>v</sub> for a Mixture:</h4>
+                        <p>1 mole of He (Mono) + 1 mole of H<sub>2</sub> (Dia). Find mixture
+                            <code>C<sub>v,mix</sub></code>.</p>
+                        <p><strong>Insight:</strong> Use mole-weighted average:
+                            <code>C<sub>v,mix</sub> = (&mu;<sub>1</sub>C<sub>v1</sub> + &mu;<sub>2</sub>C<sub>v2</sub>) / (&mu;<sub>1</sub> + &mu;<sub>2</sub>)</code>.
+                        </p>
+                    </div>
+
+                    <div class="card">
+                        <h4>Reversible Engine Limits:</h4>
+                        <p>Engine between 300K and 600K. Max efficiency = 1 - (300/600) = 0.5. Any answer > 0.5 is
+                            physically impossible.</p>
+                    </div>
+                </section>
+
+                <section id="exam-focus" class="animate-in">
+                    <h2><i class="fas fa-bullseye"></i> 8. IAT Exam Focus Points</h2>
+
+                    <div class="card">
+                        <h4>Graph Identification (P-V diagrams):</h4>
+                        <ul>
+                            <li>Vertical (V=const) = Isochoric</li>
+                            <li>Horizontal (P=const) = Isobaric</li>
+                            <li>Rectangular Hyperbola (PV=const) = Isothermal</li>
+                            <li>Steeper than hyperbola = Adiabatic</li>
+                        </ul>
+                    </div>
+
+                    <div class="card professor-note">
+                        <h4><i class="fas fa-shapes"></i> Work in Cyclic Graphs</h4>
+                        <p>If IAT provides a triangle or circle in a P-V diagram, DO NOT integrate! Use
+                            <code>Area = (1/2)bh</code> (triangle) or <code>Area = &pi;r<sup>2</sup></code> (circle).
+                        </p>
+                    </div>
+
+                    <div class="card">
+                        <h4>Equipartition of Energy:</h4>
+                        <p><code>&Delta;U = (f/2)&mu;R&Delta;T</code>. If unspecified, assume "Ideal Gas" (Monoatomic
+                            unless stated otherwise).</p>
+                    </div>
+                </section>
+            </article>
+
+            <!-- Completion Indicator -->
+            <div
+                style="margin-top: 4rem; padding-top: 2rem; border-top: 2px solid var(--border-primary); text-align: center; color: var(--text-tertiary);">
+                <i class="fas fa-check-circle"
+                    style="font-size: 2rem; color: rgb(var(--success)); margin-bottom: 0.5rem;"></i>
+                <p style="font-weight: 600; color: var(--text-primary);">End of Chapter</p>
+                <p style="font-size: 0.875rem;">Thermodynamics (Processes, Cycles & Carnot)</p>
+            </div>
+        </main>
+
+        <!-- Desktop TOC -->
+        <aside class="toc-container">
+            <div class="toc-header">On this page</div>
+            <nav>
+                <ul class="toc-list" id="tocList">
+                    <li><a href="#core-concept" class="toc-link">Core Concept</a></li>
+                    <li><a href="#sign-convention" class="toc-link">Sign Convention</a></li>
+                    <li><a href="#processes" class="toc-link">Thermodynamic Processes</a></li>
+                    <li><a href="#shortcuts" class="toc-link">Shortcuts</a></li>
+                    <li><a href="#conceptual-insights" class="toc-link">Conceptual Insights</a></li>
+                    <li><a href="#common-traps" class="toc-link">Common Traps</a></li>
+                    <li><a href="#example-applications" class="toc-link">Example Applications</a></li>
+                    <li><a href="#exam-focus" class="toc-link">IAT Exam Focus Points</a></li>
+                </ul>
+            </nav>
+
+            <div
+                style="margin-top: 2rem; padding: 1rem; background: var(--bg-tertiary); border-radius: var(--radius-md); border: 1px solid var(--border-primary);">
+                <div
+                    style="font-size: 0.75rem; font-weight: 700; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.5rem;">
+                    Study Progress</div>
+                <div style="height: 4px; background: var(--border-primary); border-radius: 100px; overflow: hidden;">
+                    <div id="tocProgress"
+                        style="height: 100%; width: 0%; background: linear-gradient(90deg, rgb(var(--primary)), rgb(var(--accent))); transition: width 0.3s;">
+                    </div>
+                </div>
+                <div style="margin-top: 0.5rem; font-size: 0.75rem; color: var(--text-secondary);" id="progressText">0%
+                    completed</div>
+            </div>
+        </aside>
+    </div>
+
+    <!-- Mobile Drawer -->
+    <button class="toc-btn-mobile" onclick="toggleDrawer()">
+        <i class="fas fa-list"></i>
+    </button>
+
+    <div class="mobile-drawer-overlay" id="drawerOverlay" onclick="toggleDrawer()">
+        <div class="mobile-drawer" onclick="event.stopPropagation()">
+            <div class="drawer-handle"></div>
+            <div class="toc-header" style="font-size: 1.125rem; margin-bottom: 1.5rem;">Contents</div>
+            <ul class="toc-list" style="position: relative;" id="mobileTocList">
+                <!-- Populated by JS -->
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        // Theme Toggle
+        function toggleTheme() {
+            const html = document.documentElement;
+            const currentTheme = html.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            html.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+
+            // Icon toggle
+            const icon = document.querySelector('.theme-toggle i');
+            icon.className = newTheme === 'dark' ? 'fas fa-moon' : 'fas fa-sun';
+        }
+
+        // Initialize Theme
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        document.documentElement.setAttribute('data-theme', savedTheme);
+        document.querySelector('.theme-toggle i').className = savedTheme === 'dark' ? 'fas fa-moon' : 'fas fa-sun';
+
+        // Progress Bar & Scroll Spy
+        const progressBar = document.getElementById('progressBar');
+        const tocProgress = document.getElementById('tocProgress');
+        const progressText = document.getElementById('progressText');
+        const sections = document.querySelectorAll('section[id]');
+        const tocLinks = document.querySelectorAll('.toc-link');
+
+        window.addEventListener('scroll', () => {
+            // Main Progress Bar
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            progressBar.style.width = scrolled + '%';
+
+            // TOC Progress
+            if (tocProgress) {
+                tocProgress.style.width = scrolled + '%';
+                progressText.textContent = Math.round(scrolled) + '% completed';
+            }
+
+            // Header Scroll Effect
+            const header = document.getElementById('mainHeader');
+            if (winScroll > 20) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+
+        // Intersection Observer for Scroll Spy
+        const observerOptions = {
+            root: null,
+            rootMargin: '-20% 0px -60% 0px',
+            threshold: 0
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const id = entry.target.getAttribute('id');
+                    tocLinks.forEach(link => {
+                        link.classList.remove('active');
+                        if (link.getAttribute('href') === `#${id}`) {
+                            link.classList.add('active');
+                        }
+                    });
+                }
+            });
+        }, observerOptions);
+
+        sections.forEach(section => observer.observe(section));
+
+        // Mobile Drawer
+        function toggleDrawer() {
+            const overlay = document.getElementById('drawerOverlay');
+            overlay.classList.toggle('active');
+            document.body.style.overflow = overlay.classList.contains('active') ? 'hidden' : '';
+        }
+
+        // Populate Mobile TOC
+        const mobileTocList = document.getElementById('mobileTocList');
+        tocLinks.forEach(link => {
+            const li = document.createElement('li');
+            const a = document.createElement('a');
+            a.href = link.getAttribute('href');
+            a.className = 'toc-link';
+            a.textContent = link.textContent;
+            a.onclick = () => toggleDrawer();
+            li.appendChild(a);
+            mobileTocList.appendChild(li);
+        });
+
+        // Stagger Animation on Scroll
+        const animateElements = document.querySelectorAll('.animate-in');
+        const animateObserver = new IntersectionObserver((entries) => {
+            entries.forEach((entry, index) => {
+                if (entry.isIntersecting) {
+                    setTimeout(() => {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }, index * 100);
+                    animateObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1 });
+
+        animateElements.forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(20px)';
+            el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            animateObserver.observe(el);
+        });
+
+        // Smooth Scroll for Anchor Links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Keyboard Shortcuts
+        document.addEventListener('keydown', (e) => {
+            // Press 'T' to toggle theme
+            if (e.key === 't' && !e.ctrlKey && !e.metaKey && !e.altKey) {
+                if (document.activeElement.tagName !== 'INPUT') {
+                    toggleTheme();
+                }
+            }
+            // Press 'Escape' to close drawer
+            if (e.key === 'Escape') {
+                const drawer = document.getElementById('drawerOverlay');
+                if (drawer.classList.contains('active')) {
+                    toggleDrawer();
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>

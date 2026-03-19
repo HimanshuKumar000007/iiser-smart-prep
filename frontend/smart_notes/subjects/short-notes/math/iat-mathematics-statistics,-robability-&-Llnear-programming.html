@@ -1,0 +1,1455 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Statistics, Probability & Linear Programming | IISER Smart Prep</title>
+
+    <!-- SEO Meta Tags -->
+    <meta name="description"
+        content="Master Statistics, Probability, and Linear Programming for the IAT. Comprehensive notes on Variance, Bayes' Theorem, and LP Optimization.">
+    <meta name="keywords"
+        content="IAT Mathematics, Statistics, Probability, Linear Programming, Bayes Theorem, Variance, Standard Deviation, Feasible Region, IISER Aptitude Test, Math Short Notes">
+    <meta name="author" content="IISER Smart Prep">
+    <link rel="canonical"
+        href="https://iisersmartprep.space/smart_notes/subjects/math/iat-stats-prob-lp-short-notes.html">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="article">
+    <meta property="og:url"
+        content="https://iisersmartprep.space/smart_notes/subjects/math/iat-stats-prob-lp-short-notes.html">
+    <meta property="og:title" content="Statistics, Prob & LP | IAT Math Short Notes">
+    <meta property="og:description"
+        content="Quick revision notes for Statistics, Probability & LP. Perfect for last-minute IAT mathematics preparation.">
+    <meta property="og:image" content="https://iisersmartprep.space/assets/images/og-math-applied.jpg">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url"
+        content="https://iisersmartprep.space/smart_notes/subjects/math/iat-stats-prob-lp-short-notes.html">
+    <meta property="twitter:title" content="Statistics, Prob & LP | IAT Math Short Notes">
+    <meta property="twitter:description"
+        content="Master Statistics, Probability & LP for IAT with our expert-curated short notes.">
+    <meta property="twitter:image" content="https://iisersmartprep.space/assets/images/og-math-applied.jpg">
+
+    <!-- Structured Data (JSON-LD) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Article",
+      "headline": "Statistics, Probability & Linear Programming Short Notes for IAT",
+      "description": "Comprehensive revision notes on Statistics, Probability, and LP for students preparing for the IISER Aptitude Test (IAT).",
+      "image": "https://iisersmartprep.space/assets/images/og-math-applied.jpg",
+      "author": {
+        "@type": "Organization",
+        "name": "IISER Smart Prep"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "IISER Smart Prep",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://iisersmartprep.space/assets/logo.png"
+        }
+      },
+      "datePublished": "2024-03-24",
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://iisersmartprep.space/smart_notes/subjects/math/iat-stats-prob-lp-short-notes.html"
+      }
+    }
+    </script>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap"
+        rel="stylesheet">
+
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            /* Premium Color System */
+            --primary: 99 102 241;
+            --primary-light: 224 231 255;
+            --accent: 244 63 94;
+            --warning: 245 158 11;
+            --success: 16 185 129;
+
+            /* Neutral Scale */
+            --gray-50: 248 250 252;
+            --gray-100: 241 245 249;
+            --gray-200: 226 232 240;
+            --gray-300: 203 213 225;
+            --gray-400: 148 163 184;
+            --gray-500: 100 116 139;
+            --gray-600: 71 85 105;
+            --gray-700: 51 65 85;
+            --gray-800: 30 41 59;
+            --gray-900: 15 23 42;
+
+            /* semantic tokens */
+            --bg-primary: rgb(var(--gray-50));
+            --bg-secondary: white;
+            --bg-tertiary: rgb(var(--gray-100));
+            --text-primary: rgb(var(--gray-900));
+            --text-secondary: rgb(var(--gray-600));
+            --text-tertiary: rgb(var(--gray-500));
+            --border-primary: rgb(var(--gray-200));
+            --border-secondary: rgb(var(--gray-300));
+
+            /* Effects */
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+            --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+            --shadow-glow: 0 0 20px -5px rgb(var(--primary) / 0.4);
+
+            --glass-bg: rgba(255, 255, 255, 0.8);
+            --glass-border: rgba(255, 255, 255, 0.3);
+
+            --radius-sm: 0.5rem;
+            --radius-md: 0.75rem;
+            --radius-lg: 1rem;
+            --radius-xl: 1.5rem;
+
+            --nav-height: 80px;
+            --container-width: 880px;
+            --toc-width: 280px;
+        }
+
+        /* Dark Mode */
+        [data-theme="dark"] {
+            --bg-primary: rgb(var(--gray-900));
+            --bg-secondary: rgb(var(--gray-800));
+            --bg-tertiary: rgb(var(--gray-700));
+            --text-primary: rgb(var(--gray-50));
+            --text-secondary: rgb(var(--gray-300));
+            --text-tertiary: rgb(var(--gray-400));
+            --border-primary: rgb(var(--gray-700));
+            --border-secondary: rgb(var(--gray-600));
+
+            --glass-bg: rgba(15, 23, 42, 0.8);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --shadow-glow: 0 0 20px -5px rgb(var(--primary) / 0.6);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        body {
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.7;
+            font-size: 16px;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            overflow-x: hidden;
+        }
+
+        /* Inline Math Fraction CSS */
+        .math-frac {
+            display: inline-block;
+            vertical-align: middle;
+            text-align: center;
+            margin: 0 0.3em;
+            font-size: 0.9em;
+        }
+
+        .math-num {
+            display: block;
+            padding: 0 0.2em;
+            border-bottom: 1.5px solid currentColor;
+            line-height: 1.3;
+        }
+
+        .math-den {
+            display: block;
+            padding: 0 0.2em;
+            line-height: 1.3;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+            height: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--border-secondary);
+            border-radius: 100px;
+            border: 3px solid var(--bg-primary);
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgb(var(--gray-400));
+        }
+
+        /* Progress Bar */
+        .progress-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            z-index: 9999;
+            background: var(--border-primary);
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, rgb(var(--primary)), rgb(var(--accent)));
+            width: 0%;
+            transition: width 0.1s linear;
+            box-shadow: 0 0 10px rgb(var(--primary) / 0.5);
+        }
+
+        /* Header */
+        header {
+            position: fixed;
+            top: 20px;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            display: flex;
+            justify-content: center;
+            pointer-events: none;
+            transition: top 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            height: auto;
+            background: transparent;
+            backdrop-filter: none;
+            -webkit-backdrop-filter: none;
+            border-bottom: none;
+        }
+
+        header.scrolled {
+            top: 0;
+        }
+
+        .nav-container {
+            pointer-events: auto;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            border: 1px solid var(--glass-border);
+            box-shadow: var(--shadow-lg);
+            padding: 0.75rem 1.5rem;
+            border-radius: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 90%;
+            max-width: var(--container-width);
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            height: var(--nav-height);
+        }
+
+        header.scrolled .nav-container {
+            width: 100%;
+            max-width: 100%;
+            border-radius: 0;
+            border-top: 0;
+            border-left: 0;
+            border-right: 0;
+            background: var(--bg-secondary);
+            padding: 0 2rem;
+            box-shadow: var(--shadow-md);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-weight: 800;
+            color: var(--text-primary);
+            text-decoration: none;
+            font-size: 1.125rem;
+            transition: transform 0.2s;
+        }
+
+        .logo:hover {
+            transform: scale(1.02);
+        }
+
+        .nav-actions {
+            display: flex;
+            gap: 0.75rem;
+            align-items: center;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.625rem 1.25rem;
+            border-radius: 100px;
+            font-weight: 600;
+            font-size: 0.875rem;
+            transition: all 0.2s ease;
+            border: none;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .btn-secondary {
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+            border: 1px solid var(--border-primary);
+        }
+
+        .btn-secondary:hover {
+            background: var(--bg-secondary);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn-icon {
+            width: 40px;
+            height: 40px;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+        }
+
+        /* Theme Toggle */
+        .theme-toggle {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .theme-toggle i {
+            transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        [data-theme="dark"] .theme-toggle i {
+            transform: rotate(360deg);
+        }
+
+        /* Layout */
+        .page-container {
+            display: flex;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding-top: calc(var(--nav-height) + 2rem);
+            padding-bottom: 4rem;
+            padding-left: 2rem;
+            padding-right: 2rem;
+            gap: 3rem;
+            position: relative;
+        }
+
+        .content-wrapper {
+            flex: 1;
+            max-width: var(--container-width);
+            margin: 0 auto;
+            position: relative;
+        }
+
+        /* Hero */
+        .hero {
+            margin-bottom: 3rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid var(--border-primary);
+            animation: fadeInUp 0.8s ease;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.375rem;
+            padding: 0.25rem 0.75rem;
+            background: rgb(var(--primary) / 0.1);
+            color: rgb(var(--primary));
+            border-radius: 100px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 1rem;
+            border: 1px solid rgb(var(--primary) / 0.2);
+        }
+
+        h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            line-height: 1.1;
+            color: var(--text-primary);
+            margin-bottom: 1.5rem;
+            letter-spacing: -0.02em;
+        }
+
+        .meta-info {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .meta-item i {
+            color: rgb(var(--primary));
+        }
+
+        /* Typography */
+        h2 {
+            font-size: 1.875rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin: 3rem 0 1.25rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 2px solid var(--border-primary);
+            scroll-margin-top: calc(var(--nav-height) + 20px);
+            position: relative;
+        }
+
+        h2::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 60px;
+            height: 2px;
+            background: linear-gradient(90deg, rgb(var(--primary)), rgb(var(--accent)));
+            border-radius: 2px;
+        }
+
+        h3 {
+            font-size: 1.375rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin: 2rem 0 1rem;
+            letter-spacing: -0.01em;
+        }
+
+        h4 {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin: 1.5rem 0 0.75rem;
+        }
+
+        p {
+            margin-bottom: 1.25rem;
+            color: var(--text-secondary);
+            line-height: 1.8;
+        }
+
+        ul,
+        ol {
+            margin-bottom: 1.5rem;
+            padding-left: 1.25rem;
+        }
+
+        li {
+            margin-bottom: 0.5rem;
+            color: var(--text-secondary);
+            position: relative;
+        }
+
+        ul li::marker {
+            color: rgb(var(--primary));
+            font-size: 1.1em;
+        }
+
+        /* Cards */
+        .card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-primary);
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card:hover {
+            box-shadow: var(--shadow-xl);
+            border-color: var(--border-secondary);
+            transform: translateY(-2px);
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, rgb(var(--primary)), rgb(var(--accent)));
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .card:hover::before {
+            opacity: 1;
+        }
+
+        /* Formula Box */
+        .formula-box {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-secondary);
+            box-shadow: var(--shadow-md);
+            font-family: 'JetBrains Mono', monospace;
+            position: relative;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .formula-box::after {
+            content: 'P(A|B)';
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            color: var(--text-tertiary);
+            font-size: 0.85rem;
+            font-weight: 700;
+            opacity: 0.5;
+        }
+
+        .formula-content {
+            font-size: 1.125rem;
+            font-weight: 500;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+            overflow-x: auto;
+            line-height: 1.6;
+        }
+
+        .formula-desc {
+            font-size: 0.875rem;
+            color: var(--text-tertiary);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            margin-top: 0.5rem;
+        }
+
+        .professor-note {
+            background: linear-gradient(135deg, rgb(var(--success) / 0.1), rgb(var(--success) / 0.05));
+            border: 1px solid rgb(var(--success) / 0.2);
+        }
+
+        .professor-note::before {
+            background: rgb(var(--success));
+        }
+
+        .professor-note h4 {
+            color: rgb(var(--success));
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 0;
+        }
+
+        .exam-tip {
+            background: linear-gradient(135deg, rgb(var(--warning) / 0.1), rgb(var(--warning) / 0.05));
+            border: 1px solid rgb(var(--warning) / 0.2);
+        }
+
+        .exam-tip::before {
+            background: rgb(var(--warning));
+        }
+
+        /* Desktop TOC */
+        .toc-container {
+            position: sticky;
+            top: calc(var(--nav-height) + 2rem);
+            width: var(--toc-width);
+            height: calc(100vh - var(--nav-height) - 4rem);
+            overflow-y: auto;
+            display: none;
+            padding-right: 1rem;
+        }
+
+        @media (min-width: 1280px) {
+            .toc-container {
+                display: block;
+            }
+        }
+
+        .toc-header {
+            font-size: 0.875rem;
+            font-weight: 700;
+            color: var(--text-tertiary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 1rem;
+            padding-left: 0.75rem;
+        }
+
+        .toc-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            position: relative;
+        }
+
+        .toc-list::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: var(--border-primary);
+        }
+
+        .toc-link {
+            display: block;
+            padding: 0.5rem 0.75rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.875rem;
+            font-weight: 500;
+            border-left: 2px solid transparent;
+            margin-left: 0;
+            transition: all 0.2s;
+            position: relative;
+        }
+
+        .toc-link:hover {
+            color: rgb(var(--primary));
+            background: rgb(var(--primary) / 0.05);
+        }
+
+        .toc-link.active {
+            color: rgb(var(--primary));
+            font-weight: 600;
+            border-left-color: rgb(var(--primary));
+            background: rgb(var(--primary) / 0.08);
+        }
+
+        /* Mobile TOC Drawer */
+        .mobile-drawer-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+            z-index: 2000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s;
+        }
+
+        .mobile-drawer-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .mobile-drawer {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: var(--bg-secondary);
+            border-radius: 2rem 2rem 0 0;
+            padding: 2rem;
+            max-height: 70vh;
+            overflow-y: auto;
+            transform: translateY(100%);
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .mobile-drawer-overlay.active .mobile-drawer {
+            transform: translateY(0);
+        }
+
+        .drawer-handle {
+            width: 40px;
+            height: 4px;
+            background: var(--border-secondary);
+            border-radius: 100px;
+            margin: 0 auto 1.5rem;
+        }
+
+        .toc-btn-mobile {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            width: 56px;
+            height: 56px;
+            background: linear-gradient(135deg, rgb(var(--primary)), rgb(var(--accent)));
+            color: white;
+            border: none;
+            border-radius: 50%;
+            box-shadow: var(--shadow-glow), var(--shadow-xl);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            z-index: 1000;
+            transition: all 0.3s;
+        }
+
+        .toc-btn-mobile:hover {
+            transform: scale(1.1) rotate(90deg);
+        }
+
+        .toc-btn-mobile:active {
+            transform: scale(0.95);
+        }
+
+        @media (min-width: 1280px) {
+            .toc-btn-mobile {
+                display: none;
+            }
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-in {
+            animation: fadeInUp 0.6s ease forwards;
+            opacity: 0;
+        }
+
+        /* Section offset */
+        section {
+            scroll-margin-top: calc(var(--nav-height) + 40px);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            :root {
+                --nav-height: 140px;
+            }
+
+            html {
+                font-size: 25px;
+            }
+
+            body {
+                font-size: 1.4rem;
+            }
+
+            header {
+                top: 0;
+                height: var(--nav-height);
+                background: white;
+                border-bottom: 1px solid var(--border-primary);
+            }
+
+            .nav-container {
+                width: 100%;
+                max-width: 100%;
+                padding: 0 1.5rem;
+                background: transparent;
+                box-shadow: none;
+                border: none;
+                border-radius: 0;
+            }
+
+            .nav-actions a.btn {
+                display: none;
+            }
+
+            .logo {
+                font-size: 1.8rem;
+            }
+
+            .btn {
+                padding: 1rem 2rem;
+                font-size: 1.2rem;
+            }
+
+            .btn-icon {
+                width: 64px;
+                height: 64px;
+                font-size: 1.6rem;
+            }
+
+            h1 {
+                font-size: 3rem;
+                line-height: 1.1;
+                margin-bottom: 2rem;
+            }
+
+            h2 {
+                font-size: 2.4rem;
+                margin-top: 4rem;
+                padding-bottom: 1rem;
+            }
+
+            h3 {
+                font-size: 2rem;
+                margin-top: 3rem;
+            }
+
+            h4 {
+                font-size: 1.6rem;
+                margin-top: 2.5rem;
+            }
+
+            p,
+            li {
+                font-size: 1.5rem;
+                line-height: 1.6;
+                margin-bottom: 1.75rem;
+            }
+
+            .page-container {
+                padding-left: 1.5rem;
+                padding-right: 1.5rem;
+                padding-top: calc(var(--nav-height) + 1rem);
+            }
+
+            .meta-info {
+                font-size: 1.2rem;
+            }
+
+            .card {
+                padding: 1.5rem;
+            }
+
+            .formula-content {
+                font-size: 1.4rem;
+            }
+
+            .formula-desc {
+                font-size: 1.2rem;
+            }
+
+            .badge {
+                font-size: 1rem;
+                padding: 0.5rem 1.2rem;
+            }
+        }
+
+        /* Print Styles */
+        @media print {
+
+            header,
+            .toc-container,
+            .toc-btn-mobile {
+                display: none;
+            }
+
+            .page-container {
+                padding-top: 2rem;
+            }
+
+            body {
+                background: white;
+                color: black;
+            }
+        }
+    </style>
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-WHHM4FTNHG"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'G-WHHM4FTNHG');
+    </script>
+</head>
+
+<body>
+
+    <!-- Progress Bar -->
+    <div class="progress-container">
+        <div class="progress-bar" id="progressBar"></div>
+    </div>
+
+    <!-- Header -->
+    <header id="mainHeader">
+        <div class="nav-container">
+            <a href="/index.html" class="logo">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path
+                        d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z">
+                    </path>
+                </svg>
+                IISER Smart Prep
+            </a>
+
+            <div class="nav-actions">
+                <a href="/smart_notes/subjects/math/applied-math-homepage.html" class="btn btn-secondary">
+                    <i class="fas fa-arrow-left"></i>
+                    <span class="hide-mobile">Back to Unit</span>
+                </a>
+                <button class="btn btn-secondary btn-icon" onclick="window.print()" aria-label="Download PDF">
+                    <i class="fas fa-file-pdf"></i>
+                </button>
+                <button class="btn btn-secondary btn-icon theme-toggle" onclick="toggleTheme()"
+                    aria-label="Toggle theme">
+                    <i class="fas fa-sun"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <div class="page-container">
+        <!-- Main Content -->
+        <main class="content-wrapper">
+
+            <!-- Hero -->
+            <div class="hero">
+                <span class="badge">
+                    <i class="fas fa-chart-pie"></i>
+                    Applied Mathematics
+                </span>
+                <h1>Statistics, Probability & LP</h1>
+                <div class="meta-info">
+                    <div class="meta-item">
+                        <i class="fas fa-book"></i>
+                        <span>Mathematics Core</span>
+                    </div>
+                    <div class="meta-item">
+                        <i class="fas fa-clock"></i>
+                        <span>20 min read</span>
+                    </div>
+                    <div class="meta-item">
+                        <i class="fas fa-graduation-cap"></i>
+                        <span>IAT Core Framework</span>
+                    </div>
+                    <div class="meta-item">
+                        <i class="fas fa-calculator"></i>
+                        <span>High Yield</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Content -->
+            <article>
+                <section id="core-concept" class="animate-in">
+                    <h2>1. Core Concept</h2>
+
+                    <div class="card">
+                        <p><strong>Statistics</strong> quantifies the spread (dispersion) of data around a central
+                            value. <strong>Probability</strong> mathematically measures the likelihood of uncertain
+                            events using set theory and conditioning. <strong>Linear Programming (LP)</strong>
+                            optimizes a linear objective function subject to linear constraints, typically solved using
+                            the graphical "Feasible Region" method.</p>
+                    </div>
+                </section>
+
+                <section id="formulas" class="animate-in">
+                    <h2>2. Key Formulas</h2>
+
+                    <div class="card">
+                        <h4>1. Statistics (Dispersion)</h4>
+                        <ul>
+                            <li><strong>Mean Deviation (MD):</strong> MD(x&#772;) = <div class="math-frac"><span
+                                        class="math-num">&sum;|x<sub>i</sub> - x&#772;|</span><span
+                                        class="math-den">n</span></div> <br><span
+                                    style="font-size:0.85em; opacity:0.8;">(Average of absolute distances from
+                                    mean).</span></li>
+                            <li style="margin-top: 1rem;"><strong>Variance (&sigma;<sup>2</sup>):</strong>
+                                &sigma;<sup>2</sup> = <div class="math-frac"><span
+                                        class="math-num">&sum;x<sub>i</sub><sup>2</sup></span><span
+                                        class="math-den">n</span></div> - (x&#772;)<sup>2</sup> <br><span
+                                    style="font-size:0.85em; opacity:0.8;">(Mean of squares minus square of mean).</span>
+                            </li>
+                            <li style="margin-top: 1rem;"><strong>Shortcut Formula:</strong> &sigma;<sup>2</sup> = E(X<sup>2</sup>) - [E(X)]<sup>2</sup></li>
+                            <li style="margin-top: 1rem;"><strong>Grouped Data (Step Deviation):</strong><br>
+                                &sigma;<sup>2</sup> = h<sup>2</sup> &times; [<div class="math-frac"><span class="math-num">&sum;f<sub>i</sub>d<sub>i</sub><sup>2</sup></span><span class="math-den">N</span></div> - (<div class="math-frac"><span class="math-num">&sum;f<sub>i</sub>d<sub>i</sub></span><span class="math-den">N</span></div>)<sup>2</sup>]
+                                <br><span style="font-size:0.85em; opacity:0.8;">Where d<sub>i</sub> = (x<sub>i</sub> - A)/h</span>
+                            </li>
+                            <li style="margin-top: 1rem;"><strong>Standard Deviation (&sigma;):</strong> &sigma; =
+                                &radic;(Variance)</li>
+                            <li style="margin-top: 1rem;"><strong>Coefficient of Variation (CV):</strong> CV = <div
+                                    class="math-frac"><span class="math-num">&sigma;</span><span
+                                        class="math-den">x&#772;</span></div> &times; 100 <br><span
+                                    style="font-size:0.85em; opacity:0.8;">(Lower CV = More Stable).</span></li>
+                        </ul>
+                    </div>
+
+                    <div class="card formula-box">
+                        <div class="formula-content" style="display: flex; flex-direction: column; gap: 1rem;">
+                            <div><strong>Addition Rule:</strong> P(A &cup; B) = P(A) + P(B) - P(A &cap; B)</div>
+                            <div><strong>Complement Rule:</strong> P(A&prime;) = 1 - P(A) <span style="font-size:0.8em; opacity:0.7;">(Used for "at least one")</span></div>
+                            <div><strong>Conditional:</strong> P(A|B) = <div class="math-frac"><span
+                                        class="math-num">P(A &cap; B)</span><span class="math-den">P(B)</span></div>
+                            </div>
+                            <div><strong>Multiplication:</strong> P(A &cap; B) = P(A) &middot; P(B|A)</div>
+                            <div><strong>Total Probability:</strong> P(A) = &sum; P(E<sub>i</sub>) &middot; P(A|E<sub>i</sub>)
+                            </div>
+                            <div><strong>Bayes&rsquo; Theorem:</strong><br>
+                                P(E<sub>i</sub>|A) = <div class="math-frac"><span class="math-num">P(E<sub>i</sub>)
+                                        &middot; P(A|E<sub>i</sub>)</span><span class="math-den">&sum; P(E<sub>j</sub>)
+                                        &middot; P(A|E<sub>j</sub>)</span></div>
+                            </div>
+                            <hr style="border: 0; border-top: 1px solid var(--border-secondary);">
+                            <div><strong>Random Variable & Expectation:</strong><br>
+                                E(X) = &sum; x<sub>i</sub> P(x<sub>i</sub>) &nbsp; <span style="font-size:0.85em; opacity:0.7;">(Mean)</span><br>
+                                Var(X) = E(X<sup>2</sup>) - [E(X)]<sup>2</sup>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="important-results" class="animate-in">
+                    <h2>3. Important Results</h2>
+
+                    <div class="card">
+                        <h4>Change of Origin & Scale (Statistics)</h4>
+                        <p>Variance is <strong>independent</strong> of a change of origin (adding/subtracting a constant
+                            like x + a) but <strong>dependent</strong> on a change of scale (multiplying/dividing like
+                            ax).</p>
+                        <p>If y<sub>i</sub> = ax<sub>i</sub> + b, then:<br>
+                            <strong>&sigma;<sub>y</sub><sup>2</sup> = a<sup>2</sup>&sigma;<sub>x</sub><sup>2</sup></strong>
+                            &nbsp; and &nbsp; <strong>&sigma;<sub>y</sub> = |a|&sigma;<sub>x</sub></strong>
+                        </p>
+                    </div>
+
+                    <div class="card">
+                        <h4>Event Types (Probability)</h4>
+                        <ul>
+                            <li><strong>Independent Events:</strong> The occurrence of one doesn't affect the other.<br>
+                                P(A &cap; B) = P(A) &middot; P(B) &nbsp; and &nbsp; P(A|B) = P(A).
+                            </li>
+                            <li style="margin-top: 0.5rem;"><strong>Mutually Exclusive (ME):</strong> Cannot happen at
+                                the same time.<br>
+                                A &cap; B = &empty; &implies; P(A &cap; B) = 0.
+                            </li>
+                            <li style="margin-top: 0.5rem;"><strong>Exhaustive Events:</strong> Cover all possible
+                                outcomes in sample space S.<br>
+                                E<sub>1</sub> &cup; E<sub>2</sub> &cup; &hellip; &cup; E<sub>n</sub> = S &implies; &sum;
+                                P(E<sub>i</sub>) = 1.
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="card">
+                        <h4>LP Feasible Region</h4>
+                        <p>The intersection of all constraint half-planes forms the Feasible Region. The optimal
+                            solution (Maximum or Minimum of Z) <strong>always occurs at a corner point (vertex)</strong>
+                            of this feasible region.</p>
+                    </div>
+
+                    <div class="card professor-note">
+                        <h4>Solving LP Graphically (Step-by-Step)</h4>
+                        <ol>
+                            <li><strong>State the Objective:</strong> Identify Z = ax + by.</li>
+                            <li><strong>Plot Constraints:</strong> Treat inequalities as equations (lines).</li>
+                            <li><strong>Identify Feasible Region:</strong> Shade the common intersection area.</li>
+                            <li><strong>Identify Corner Points:</strong> Find coordinates of all vertices.</li>
+                            <li><strong>Evaluation:</strong> Calculate Z value at each corner point.</li>
+                            <li><strong>Optimization:</strong> Pick the vertex giving Max/Min Z value.</li>
+                        </ol>
+                    </div>
+                </section>
+
+                <section id="insights" class="animate-in">
+                    <h2>4. Conceptual Insights</h2>
+
+                    <div class="card">
+                        <ul>
+                            <li><strong>Variance Intuition:</strong> Variance is the "average squared distance" from the
+                                mean. Squaring serves two purposes: it removes negative signs and it penalizes extreme
+                                outliers much more heavily than small deviations.</li>
+                            <li><strong>Bayes&rsquo; Theorem Logic:</strong> Think of it as "Reverse Probability." You
+                                already know the final result (A has occurred) and you want to trace backward to find
+                                the most likely original cause (E<sub>i</sub>).</li>
+                            <li><strong>LP Corner Point Theorem:</strong> If the feasible region is bounded, both Max
+                                and Min absolutely exist. If unbounded, Max/Min <em>may or may not exist</em> (you must
+                                check the half-plane ax + by > Z<sub>max</sub>).</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <section id="mistakes" class="animate-in">
+                    <h2>5. Common Mistakes</h2>
+
+                    <div class="card exam-tip">
+                        <ul>
+                            <li><strong>Variance vs SD:</strong> Students constantly forget to square the Standard
+                                Deviation when the formula or question specifically asks for Variance (or forget to
+                                square-root when asked for SD).</li>
+                            <li><strong>Independent vs ME:</strong> They are completely different concepts! Independence
+                                is about probability formulas (P(A&cap;B) = P(A)P(B)); Mutually Exclusive is about set
+                                intersection (P(A&cap;B) = 0).</li>
+                            <li><strong>Bayes&rsquo; Denominator:</strong> Ensure the denominator sum completely
+                                accounts for ALL mutually exclusive and exhaustive paths to event A.</li>
+                            <li><strong>Inequality Signs in LP:</strong> Shading the wrong side of a line graph. Always
+                                test with the origin (0,0)—if it genuinely satisfies ax + by &le; c, shade towards the
+                                origin.</li>
+                            <li><strong>Unbounded Region Trap:</strong> In an unbounded region, a maximum might not mathematically exist. You must verify if the half-plane <em>ax + by > Z<sub>max</sub></em> has any common points with the feasible region.</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <section id="applications" class="animate-in">
+                    <h2>6. Example Applications</h2>
+
+                    <div class="card">
+                        <h4>Statistics: Variance of Natural Numbers</h4>
+                        <p>Finding the variance of the first <em>n</em> natural numbers.</p>
+                        <p><strong>Insight:</strong> &sigma;<sup>2</sup> = <div class="math-frac"><span
+                                    class="math-num">n<sup>2</sup> - 1</span><span class="math-den">12</span></div>. <br>
+                            <em>(This is a standard direct formula that saves massive time on the IAT).</em>
+                        </p>
+                    </div>
+
+                    <div class="card">
+                        <h4>Probability: Bayes' Theorem</h4>
+                        <p>Drawing balls from two bags. Bag 1 (3R, 2W), Bag 2 (2R, 4W). One ball is drawn and is Red.
+                            Find the probability it came from Bag 1.</p>
+                        <p><strong>Insight:</strong> Use Bayes&rsquo; Theorem. Let E<sub>1</sub> = Bag 1, E<sub>2</sub> =
+                            Bag 2, A = Red. Calculate P(E<sub>1</sub>|A) directly using the formula.</p>
+                    </div>
+
+                    <div class="card">
+                        <h4>LP Optimization</h4>
+                        <p>Maximize Z = 3x + 4y subject to x + y &le; 4, x, y &ge; 0.</p>
+                        <p><strong>Insight:</strong> Corner points of the polygon formed are (0,0), (4,0), (0,4).
+                            Evaluate Z at each: Z(0,0)=0, Z(4,0)=12, Z(0,4)=16. Max is <strong>16</strong> at (0,4).</p>
+                    </div>
+                </section>
+
+                <section id="exam-focus" class="animate-in">
+                    <h2>7. IAT Exam Focus Points</h2>
+
+                    <div class="card professor-note" style="background: linear-gradient(135deg, #fff9e6, #fffde7); border: 1px solid #ffd54f;">
+                        <h4 style="color: #f57c00;"><i class="fas fa-crown"></i> The Gold Strategy: Which Probability Formula?</h4>
+                        <ul>
+                            <li><strong>"Probability of A given B":</strong> Conditional Probability.</li>
+                            <li><strong>"At least/At most/Neither":</strong> Use Complement Rule P(A&prime;) = 1 - P(A).</li>
+                            <li><strong>"A occurs but results from different causes":</strong> Total Probability Theorem.</li>
+                            <li><strong>"Tracing back to the cause" (e.g., Bag 1 given Red):</strong> Bayes' Theorem.</li>
+                            <li><strong>"Sequence of independent trials":</strong> Multiplication Rule / Binomial.</li>
+                        </ul>
+                    </div>
+
+                    <div class="card professor-note">
+                        <ul>
+                            <li><strong>Bayes' Theorem:</strong> A massive staple for IISER IAT. Practice classical
+                                "Disease Testing" accuracy problems or "Urn/Ball" probability paths.</li>
+                            <li><strong>Variance/SD Properties:</strong> Tricky properties questions like "If every
+                                observation is multiplied by 2 and increased by 5, what is the new SD?" (Answer: New SD
+                                = <strong>2 &times; Old SD</strong>. The +5 shift does nothing).</li>
+                            <li><strong>Independent Events:</strong> Using the shortcut <strong>P(A &cup; B) = 1 -
+                                    P(A&prime;)P(B&prime;)</strong> for solving "at least one" problems rapidly.</li>
+                            <li><strong>LP Corner Points:</strong> Finding the optimal value for a bounded region. Be
+                                careful interpreting "Unbounded" regions where the maximum infinity might not
+                                mathematically exist within the domain.</li>
+                            <li><strong>Conditional Probability Interpretation:</strong> Word problems often try to
+                                trick you into swapping P(A|B) and P(B|A). Carefully identify which event is the actual
+                                "given" condition.</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <section id="practice-mock" class="animate-in">
+                    <h2>8. Practice Mock Test</h2>
+                    <div class="card"
+                        style="background: linear-gradient(135deg, rgb(var(--primary) / 0.1), rgb(var(--accent) / 0.1)); border: 1px solid rgb(var(--primary) / 0.2); text-align: center; padding: 3rem 2rem;">
+                        <div
+                            style="width: 80px; height: 80px; background: linear-gradient(135deg, rgb(var(--primary)), rgb(var(--accent))); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem; font-size: 2rem; box-shadow: var(--shadow-glow);">
+                            <i class="fas fa-vial"></i>
+                        </div>
+                        <h3 style="margin-top: 0;">Ready to test your knowledge?</h3>
+                        <p style="max-width: 500px; margin-left: auto; margin-right: auto; margin-bottom: 2.5rem;">Take a
+                            quick 15-question assessment specifically designed for <b>Statistics, Probability & LP</b>.
+                            Challenge
+                            yourself with IAT-level questions.</p>
+                        <a href="/mock_test/quick_mock_homepage.html" class="btn"
+                            style="background: linear-gradient(90deg, rgb(var(--primary)), rgb(var(--accent))); color: white; padding: 1rem 2.5rem; font-size: 1.125rem; box-shadow: var(--shadow-lg); text-decoration: none; display: inline-flex; align-items: center; gap: 0.75rem;">
+                            <i class="fas fa-play"></i> Start Practice Mock
+                        </a>
+                    </div>
+                </section>
+
+                <!-- Completion Indicator -->
+                <div
+                    style="margin-top: 4rem; padding-top: 2rem; border-top: 2px solid var(--border-primary); text-align: center; color: var(--text-tertiary);">
+                    <i class="fas fa-check-circle"
+                        style="font-size: 2rem; color: rgb(var(--success)); margin-bottom: 0.5rem;"></i>
+                    <p style="font-weight: 600; color: var(--text-primary);">End of Chapter</p>
+                    <p style="font-size: 0.875rem;">Statistics, Probability & LP</p>
+                </div>
+            </article>
+        </main>
+
+        <!-- Desktop TOC -->
+        <aside class="toc-container">
+            <div class="toc-header">On this page</div>
+            <nav>
+                <ul class="toc-list" id="tocList">
+                    <li><a href="#core-concept" class="toc-link">Core Concept</a></li>
+                    <li><a href="#formulas" class="toc-link">Key Formulas</a></li>
+                    <li><a href="#important-results" class="toc-link">Important Results</a></li>
+                    <li><a href="#insights" class="toc-link">Conceptual Insights</a></li>
+                    <li><a href="#mistakes" class="toc-link">Common Mistakes</a></li>
+                    <li><a href="#applications" class="toc-link">Example Applications</a></li>
+                    <li><a href="#exam-focus" class="toc-link">IAT Exam Focus</a></li>
+                    <li><a href="#practice-mock" class="toc-link">Practice Mock</a></li>
+                </ul>
+            </nav>
+
+            <div
+                style="margin-top: 2rem; padding: 1rem; background: var(--bg-tertiary); border-radius: var(--radius-md); border: 1px solid var(--border-primary);">
+                <div
+                    style="font-size: 0.75rem; font-weight: 700; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.5rem;">
+                    Study Progress</div>
+                <div style="height: 4px; background: var(--border-primary); border-radius: 100px; overflow: hidden;">
+                    <div id="tocProgress"
+                        style="height: 100%; width: 0%; background: linear-gradient(90deg, rgb(var(--primary)), rgb(var(--accent))); transition: width 0.3s;">
+                    </div>
+                </div>
+                <div style="margin-top: 0.5rem; font-size: 0.75rem; color: var(--text-secondary);" id="progressText">0%
+                    completed</div>
+            </div>
+        </aside>
+    </div>
+
+    <!-- Footer -->
+    <footer
+        style="background: var(--bg-secondary); border-top: 1px solid var(--border-primary); padding: 5rem 0 2rem; margin-top: 5rem;">
+        <div style="max-width: 1200px; margin: 0 auto; padding: 0 2rem;">
+            <div
+                style="display: flex; flex-wrap: wrap; gap: 3rem; justify-content: space-between; margin-bottom: 3rem;">
+                <div style="max-width: 320px;">
+                    <a href="/index.html" class="logo" style="margin-bottom: 1rem; pointer-events: auto;">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path
+                                d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z">
+                            </path>
+                        </svg>
+                        IISER Smart Prep
+                    </a>
+                    <p style="color: var(--text-secondary); font-size: 0.9rem; margin-top: 1rem;">Empowering scientific
+                        minds to reach India's premier research institutes through data and strategy.</p>
+                </div>
+
+                <div style="display: flex; gap: 4rem; flex-wrap: wrap;">
+                    <div>
+                        <h4
+                            style="margin-bottom: 1rem; font-size: 0.9rem; font-weight: 700; color: var(--text-primary);">
+                            Platform</h4>
+                        <ul style="display: flex; flex-direction: column; gap: 0.75rem; list-style: none;">
+                            <li><a href="/ai_tutor.html"
+                                    style="color: var(--text-secondary); font-size: 0.9rem; text-decoration: none;">AI
+                                    Tutor</a></li>
+                            <li><a href="/mock_test/full_mock_test_homepage.html"
+                                    style="color: var(--text-secondary); font-size: 0.9rem; text-decoration: none;">Mock
+                                    Tests</a></li>
+                            <li><a href="/index.html#pricing"
+                                    style="color: var(--text-secondary); font-size: 0.9rem; text-decoration: none;">Pricing</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4
+                            style="margin-bottom: 1rem; font-size: 0.9rem; font-weight: 700; color: var(--text-primary);">
+                            Support</h4>
+                        <ul style="display: flex; flex-direction: column; gap: 0.75rem; list-style: none;">
+                            <li><a href="/index.html#faq"
+                                    style="color: var(--text-secondary); font-size: 0.9rem; text-decoration: none;">FAQ</a>
+                            </li>
+                            <li><a href="/contact-us.html"
+                                    style="color: var(--text-secondary); font-size: 0.9rem; text-decoration: none;">Contact</a>
+                            </li>
+                            <li><a href="/privacy.html"
+                                    style="color: var(--text-secondary); font-size: 0.9rem; text-decoration: none;">Privacy
+                                    Policy</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div
+                style="text-align: center; border-top: 1px solid var(--border-primary); padding-top: 2rem; color: var(--text-tertiary); font-size: 0.85rem;">
+                &copy; 2026 IISER Smart Prep. All rights reserved. Not affiliated with IISERs Joint Admissions
+                Committee.
+            </div>
+        </div>
+    </footer>
+
+    <!-- Mobile Drawer -->
+    <button class="toc-btn-mobile" onclick="toggleDrawer()">
+        <i class="fas fa-list"></i>
+    </button>
+
+    <div class="mobile-drawer-overlay" id="drawerOverlay" onclick="toggleDrawer()">
+        <div class="mobile-drawer" onclick="event.stopPropagation()">
+            <div class="drawer-handle"></div>
+            <div class="toc-header" style="font-size: 1.125rem; margin-bottom: 1.5rem;">Contents</div>
+            <ul class="toc-list" style="position: relative;" id="mobileTocList">
+                <!-- Populated by JS -->
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        // Theme Toggle
+        function toggleTheme() {
+            const html = document.documentElement;
+            const currentTheme = html.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            html.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+
+            // Icon toggle
+            const icon = document.querySelector('.theme-toggle i');
+            icon.className = newTheme === 'dark' ? 'fas fa-moon' : 'fas fa-sun';
+        }
+
+        // Initialize Theme
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        document.documentElement.setAttribute('data-theme', savedTheme);
+        document.querySelector('.theme-toggle i').className = savedTheme === 'dark' ? 'fas fa-moon' : 'fas fa-sun';
+
+        // Progress Bar & Scroll Spy
+        const progressBar = document.getElementById('progressBar');
+        const tocProgress = document.getElementById('tocProgress');
+        const progressText = document.getElementById('progressText');
+        const sections = document.querySelectorAll('section[id]');
+        const tocLinks = document.querySelectorAll('.toc-link');
+
+        window.addEventListener('scroll', () => {
+            // Main Progress Bar
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            progressBar.style.width = scrolled + '%';
+
+            // TOC Progress
+            if (tocProgress) {
+                tocProgress.style.width = scrolled + '%';
+                progressText.textContent = Math.round(scrolled) + '% completed';
+            }
+
+            // Header Scroll Effect
+            const header = document.getElementById('mainHeader');
+            if (winScroll > 20) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+
+        // Intersection Observer for Scroll Spy
+        const observerOptions = {
+            root: null,
+            rootMargin: '-20% 0px -60% 0px',
+            threshold: 0
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const id = entry.target.getAttribute('id');
+                    tocLinks.forEach(link => {
+                        link.classList.remove('active');
+                        if (link.getAttribute('href') === `#${id}`) {
+                            link.classList.add('active');
+                        }
+                    });
+                }
+            });
+        }, observerOptions);
+
+        sections.forEach(section => observer.observe(section));
+
+        // Mobile Drawer
+        function toggleDrawer() {
+            const overlay = document.getElementById('drawerOverlay');
+            overlay.classList.toggle('active');
+            document.body.style.overflow = overlay.classList.contains('active') ? 'hidden' : '';
+        }
+
+        // Populate Mobile TOC
+        const mobileTocList = document.getElementById('mobileTocList');
+        tocLinks.forEach(link => {
+            const li = document.createElement('li');
+            const a = document.createElement('a');
+            a.href = link.getAttribute('href');
+            a.className = 'toc-link';
+            a.textContent = link.textContent;
+            a.onclick = () => toggleDrawer();
+            li.appendChild(a);
+            mobileTocList.appendChild(li);
+        });
+
+        // Stagger Animation on Scroll
+        const animateElements = document.querySelectorAll('.animate-in');
+        const animateObserver = new IntersectionObserver((entries) => {
+            entries.forEach((entry, index) => {
+                if (entry.isIntersecting) {
+                    setTimeout(() => {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }, index * 100);
+                    animateObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1 });
+
+        animateElements.forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(20px)';
+            el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            animateObserver.observe(el);
+        });
+
+        // Smooth Scroll for Anchor Links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Keyboard Shortcuts
+        document.addEventListener('keydown', (e) => {
+            // Press 'T' to toggle theme
+            if (e.key === 't' && !e.ctrlKey && !e.metaKey && !e.altKey) {
+                if (document.activeElement.tagName !== 'INPUT') {
+                    toggleTheme();
+                }
+            }
+            // Press 'Escape' to close drawer
+            if (e.key === 'Escape') {
+                const drawer = document.getElementById('drawerOverlay');
+                if (drawer.classList.contains('active')) {
+                    toggleDrawer();
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>

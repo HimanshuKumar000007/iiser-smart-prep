@@ -1,0 +1,1639 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Electrochemistry | IISER Smart Prep</title>
+
+    <!-- SEO Meta Tags -->
+    <meta name="description"
+        content="Master Electrochemistry for the IISER Aptitude Test (IAT). Comprehensive short notes covering galvanic cells, Nernst equation, molar conductivity, and Faraday's laws.">
+    <meta name="keywords"
+        content="IAT Chemistry, Electrochemistry, Nernst Equation, Galvanic Cell, Molar Conductivity, Faraday's Laws, Kohlrausch's Law, IISER Aptitude Test, Chemistry Unit 9, Chemistry Short Notes, IISER Smart Prep">
+    <meta name="author" content="IISER Smart Prep">
+    <link rel="canonical"
+        href="https://iisersmartprep.space/smart_notes/subjects/short-notes/chemistry/iat-electrochemistry-short-notes.html">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="article">
+    <meta property="og:url"
+        content="https://iisersmartprep.space/smart_notes/subjects/short-notes/chemistry/iat-electrochemistry-short-notes.html">
+    <meta property="og:title" content="Electrochemistry | IAT Chemistry Short Notes">
+    <meta property="og:description"
+        content="Quick revision notes for Electrochemistry. Perfect for last-minute IAT preparation.">
+    <meta property="og:image" content="https://iisersmartprep.space/assets/images/og-chemistry-unit9.jpg">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url"
+        content="https://iisersmartprep.space/smart_notes/subjects/short-notes/chemistry/iat-electrochemistry-short-notes.html">
+    <meta property="twitter:title" content="Electrochemistry | IAT Chemistry Short Notes">
+    <meta property="twitter:description" content="Master Electrochemistry for IAT with our expert-curated short notes.">
+    <meta property="twitter:image" content="https://iisersmartprep.space/assets/images/og-chemistry-unit9.jpg">
+
+    <!-- Structured Data (JSON-LD) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Article",
+      "headline": "Electrochemistry Short Notes for IAT",
+      "description": "Comprehensive revision notes on Electrochemistry for students preparing for the IISER Aptitude Test (IAT).",
+      "image": "https://iisersmartprep.space/assets/images/og-chemistry-unit9.jpg",
+      "author": {
+        "@type": "Organization",
+        "name": "IISER Smart Prep"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "IISER Smart Prep",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://iisersmartprep.space/assets/logo.png"
+        }
+      },
+      "datePublished": "2024-03-18",
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://iisersmartprep.space/smart_notes/subjects/short-notes/chemistry/iat-electrochemistry-short-notes.html"
+      }
+    }
+    </script>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap"
+        rel="stylesheet">
+
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            /* Premium Color System */
+            --primary: 99 102 241;
+            --primary-light: 224 231 255;
+            --accent: 244 63 94;
+            --warning: 245 158 11;
+            --success: 16 185 129;
+
+            /* Neutral Scale */
+            --gray-50: 248 250 252;
+            --gray-100: 241 245 249;
+            --gray-200: 226 232 240;
+            --gray-300: 203 213 225;
+            --gray-400: 148 163 184;
+            --gray-500: 100 116 139;
+            --gray-600: 71 85 105;
+            --gray-700: 51 65 85;
+            --gray-800: 30 41 59;
+            --gray-900: 15 23 42;
+
+            /* semantic tokens */
+            --bg-primary: rgb(var(--gray-50));
+            --bg-secondary: white;
+            --bg-tertiary: rgb(var(--gray-100));
+            --text-primary: rgb(var(--gray-900));
+            --text-secondary: rgb(var(--gray-600));
+            --text-tertiary: rgb(var(--gray-500));
+            --border-primary: rgb(var(--gray-200));
+            --border-secondary: rgb(var(--gray-300));
+
+            /* Effects */
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+            --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+            --shadow-glow: 0 0 20px -5px rgb(var(--primary) / 0.4);
+
+            --glass-bg: rgba(255, 255, 255, 0.8);
+            --glass-border: rgba(255, 255, 255, 0.3);
+
+            --radius-sm: 0.5rem;
+            --radius-md: 0.75rem;
+            --radius-lg: 1rem;
+            --radius-xl: 1.5rem;
+
+            --nav-height: 80px;
+            --container-width: 880px;
+            --toc-width: 280px;
+        }
+
+        /* Dark Mode */
+        [data-theme="dark"] {
+            --bg-primary: rgb(var(--gray-900));
+            --bg-secondary: rgb(var(--gray-800));
+            --bg-tertiary: rgb(var(--gray-700));
+            --text-primary: rgb(var(--gray-50));
+            --text-secondary: rgb(var(--gray-300));
+            --text-tertiary: rgb(var(--gray-400));
+            --border-primary: rgb(var(--gray-700));
+            --border-secondary: rgb(var(--gray-600));
+
+            --glass-bg: rgba(15, 23, 42, 0.8);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --shadow-glow: 0 0 20px -5px rgb(var(--primary) / 0.6);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        body {
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.7;
+            font-size: 16px;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            overflow-x: hidden;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+            height: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--border-secondary);
+            border-radius: 100px;
+            border: 3px solid var(--bg-primary);
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgb(var(--gray-400));
+        }
+
+        /* Progress Bar */
+        .progress-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            z-index: 9999;
+            background: var(--border-primary);
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, rgb(var(--primary)), rgb(var(--accent)));
+            width: 0%;
+            transition: width 0.1s linear;
+            box-shadow: 0 0 10px rgb(var(--primary) / 0.5);
+        }
+
+        /* Header - Floating Pill Design */
+        header {
+            position: fixed;
+            top: 20px;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            display: flex;
+            justify-content: center;
+            pointer-events: none;
+            transition: top 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            height: auto;
+            background: transparent;
+            backdrop-filter: none;
+            -webkit-backdrop-filter: none;
+            border-bottom: none;
+        }
+
+        header.scrolled {
+            top: 0;
+        }
+
+        .nav-container {
+            pointer-events: auto;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            border: 1px solid var(--glass-border);
+            box-shadow: var(--shadow-lg);
+            padding: 0.75rem 1.5rem;
+            border-radius: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 90%;
+            max-width: var(--container-width);
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            height: var(--nav-height);
+        }
+
+        header.scrolled .nav-container {
+            width: 100%;
+            max-width: 100%;
+            border-radius: 0;
+            border-top: 0;
+            border-left: 0;
+            border-right: 0;
+            background: var(--bg-secondary);
+            padding: 0 2rem;
+            box-shadow: var(--shadow-md);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-weight: 800;
+            color: var(--text-primary);
+            text-decoration: none;
+            font-size: 1.125rem;
+            transition: transform 0.2s;
+        }
+
+        .logo:hover {
+            transform: scale(1.02);
+        }
+
+        .nav-actions {
+            display: flex;
+            gap: 0.75rem;
+            align-items: center;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.625rem 1.25rem;
+            border-radius: 100px;
+            font-weight: 600;
+            font-size: 0.875rem;
+            transition: all 0.2s ease;
+            border: none;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .btn-secondary {
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+            border: 1px solid var(--border-primary);
+        }
+
+        .btn-secondary:hover {
+            background: var(--bg-secondary);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn-icon {
+            width: 40px;
+            height: 40px;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+        }
+
+        /* Theme Toggle Animation */
+        .theme-toggle {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .theme-toggle i {
+            transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        [data-theme="dark"] .theme-toggle i {
+            transform: rotate(360deg);
+        }
+
+        /* Main Layout */
+        .page-container {
+            display: flex;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding-top: calc(var(--nav-height) + 2rem);
+            padding-bottom: 4rem;
+            padding-left: 2rem;
+            padding-right: 2rem;
+            gap: 3rem;
+            position: relative;
+        }
+
+        /* Content Area */
+        .content-wrapper {
+            flex: 1;
+            max-width: var(--container-width);
+            margin: 0 auto;
+            position: relative;
+        }
+
+        /* Hero Section */
+        .hero {
+            margin-bottom: 3rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid var(--border-primary);
+            animation: fadeInUp 0.8s ease;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.375rem;
+            padding: 0.25rem 0.75rem;
+            background: rgb(var(--primary) / 0.1);
+            color: rgb(var(--primary));
+            border-radius: 100px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 1rem;
+            border: 1px solid rgb(var(--primary) / 0.2);
+        }
+
+        h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            line-height: 1.1;
+            color: var(--text-primary);
+            margin-bottom: 1.5rem;
+            letter-spacing: -0.02em;
+        }
+
+        .meta-info {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .meta-item i {
+            color: rgb(var(--primary));
+        }
+
+        /* Typography */
+        h2 {
+            font-size: 1.875rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin: 3rem 0 1.25rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 2px solid var(--border-primary);
+            scroll-margin-top: calc(var(--nav-height) + 20px);
+            position: relative;
+        }
+
+        h2::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 60px;
+            height: 2px;
+            background: linear-gradient(90deg, rgb(var(--primary)), rgb(var(--accent)));
+            border-radius: 2px;
+        }
+
+        h3 {
+            font-size: 1.375rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin: 2rem 0 1rem;
+            letter-spacing: -0.01em;
+        }
+
+        h4 {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin: 1.5rem 0 0.75rem;
+        }
+
+        p {
+            margin-bottom: 1.25rem;
+            color: var(--text-secondary);
+            line-height: 1.8;
+        }
+
+        /* Enhanced Lists */
+        ul,
+        ol {
+            margin-bottom: 1.5rem;
+            padding-left: 1.25rem;
+        }
+
+        li {
+            margin-bottom: 0.5rem;
+            color: var(--text-secondary);
+            position: relative;
+        }
+
+        ul li::marker {
+            color: rgb(var(--primary));
+            font-size: 1.1em;
+        }
+
+        /* Premium Cards */
+        .card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-primary);
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card:hover {
+            box-shadow: var(--shadow-xl);
+            border-color: var(--border-secondary);
+            transform: translateY(-2px);
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, rgb(var(--primary)), rgb(var(--accent)));
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .card:hover::before {
+            opacity: 1;
+        }
+
+        /* Interactive Tabs */
+        .tabs-container {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-primary);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            margin: 1.5rem 0;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .tab-buttons {
+            display: flex;
+            border-bottom: 1px solid var(--border-primary);
+            background: var(--bg-tertiary);
+            overflow-x: auto;
+            scrollbar-width: none;
+        }
+        
+        .tab-buttons::-webkit-scrollbar {
+            display: none;
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 1rem 1.5rem;
+            background: transparent;
+            border: none;
+            border-bottom: 2px solid transparent;
+            color: var(--text-secondary);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+
+        .tab-btn:hover {
+            color: rgb(var(--primary));
+            background: rgb(var(--primary) / 0.05);
+        }
+
+        .tab-btn.active {
+            color: rgb(var(--primary));
+            border-bottom-color: rgb(var(--primary));
+            background: var(--bg-secondary);
+        }
+
+        .tab-content {
+            display: none;
+            padding: 1.5rem;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Comparison Table */
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            background: var(--bg-secondary);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border-primary);
+        }
+
+        .comparison-table th, .comparison-table td {
+            padding: 1rem 1.5rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border-primary);
+        }
+
+        .comparison-table th {
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        .comparison-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .comparison-table tr:hover td {
+            background: rgb(var(--primary) / 0.02);
+        }
+
+        /* Specific Card Types */
+        .exam-tip {
+            border-left: 0;
+            background: linear-gradient(135deg, rgb(var(--warning) / 0.1), rgb(var(--warning) / 0.05));
+            border: 1px solid rgb(var(--warning) / 0.2);
+        }
+
+        .exam-tip::before {
+            background: rgb(var(--warning));
+        }
+
+        .formula-box {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-secondary);
+            box-shadow: var(--shadow-md);
+            font-family: 'JetBrains Mono', monospace;
+            position: relative;
+        }
+
+        .formula-box::after {
+            content: '</>';
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            color: var(--text-tertiary);
+            font-size: 0.75rem;
+            opacity: 0.5;
+        }
+
+        .formula-content {
+            font-size: 1.125rem;
+            font-weight: 500;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .formula-desc {
+            font-size: 0.875rem;
+            color: var(--text-tertiary);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        .professor-note {
+            background: linear-gradient(135deg, rgb(var(--success) / 0.1), rgb(var(--success) / 0.05));
+            border: 1px solid rgb(var(--success) / 0.2);
+        }
+
+        .professor-note::before {
+            background: rgb(var(--success));
+        }
+
+        .professor-note h4 {
+            color: rgb(var(--success));
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 0;
+        }
+
+        /* Desktop TOC */
+        .toc-container {
+            position: sticky;
+            top: calc(var(--nav-height) + 2rem);
+            width: var(--toc-width);
+            height: calc(100vh - var(--nav-height) - 4rem);
+            overflow-y: auto;
+            display: none;
+            padding-right: 1rem;
+        }
+
+        @media (min-width: 1280px) {
+            .toc-container {
+                display: block;
+            }
+        }
+
+        .toc-header {
+            font-size: 0.875rem;
+            font-weight: 700;
+            color: var(--text-tertiary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 1rem;
+            padding-left: 0.75rem;
+        }
+
+        .toc-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            position: relative;
+        }
+
+        .toc-list::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: var(--border-primary);
+        }
+
+        .toc-link {
+            display: block;
+            padding: 0.5rem 0.75rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.875rem;
+            font-weight: 500;
+            border-left: 2px solid transparent;
+            margin-left: 0;
+            transition: all 0.2s;
+            position: relative;
+        }
+
+        .toc-link:hover {
+            color: rgb(var(--primary));
+            background: rgb(var(--primary) / 0.05);
+        }
+
+        .toc-link.active {
+            color: rgb(var(--primary));
+            font-weight: 600;
+            border-left-color: rgb(var(--primary));
+            background: rgb(var(--primary) / 0.08);
+        }
+
+        /* Mobile TOC Drawer */
+        .mobile-drawer-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+            z-index: 2000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s;
+        }
+
+        .mobile-drawer-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .mobile-drawer {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: var(--bg-secondary);
+            border-radius: 2rem 2rem 0 0;
+            padding: 2rem;
+            max-height: 70vh;
+            overflow-y: auto;
+            transform: translateY(100%);
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .mobile-drawer-overlay.active .mobile-drawer {
+            transform: translateY(0);
+        }
+
+        .drawer-handle {
+            width: 40px;
+            height: 4px;
+            background: var(--border-secondary);
+            border-radius: 100px;
+            margin: 0 auto 1.5rem;
+        }
+
+        .toc-btn-mobile {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            width: 56px;
+            height: 56px;
+            background: linear-gradient(135deg, rgb(var(--primary)), rgb(var(--accent)));
+            color: white;
+            border: none;
+            border-radius: 50%;
+            box-shadow: var(--shadow-glow), var(--shadow-xl);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            z-index: 1000;
+            transition: all 0.3s;
+        }
+
+        .toc-btn-mobile:hover {
+            transform: scale(1.1) rotate(90deg);
+        }
+
+        .toc-btn-mobile:active {
+            transform: scale(0.95);
+        }
+
+        @media (min-width: 1280px) {
+            .toc-btn-mobile {
+                display: none;
+            }
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-in {
+            animation: fadeInUp 0.6s ease forwards;
+            opacity: 0;
+        }
+
+        /* Section offset for anchor links */
+        section {
+            scroll-margin-top: calc(var(--nav-height) + 40px);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            :root {
+                --nav-height: 140px;
+            }
+
+            html {
+                font-size: 25px;
+            }
+
+            body {
+                font-size: 1.4rem;
+            }
+
+            header {
+                top: 0;
+                height: var(--nav-height);
+                background: white;
+                border-bottom: 1px solid var(--border-primary);
+            }
+
+            .nav-container {
+                width: 100%;
+                max-width: 100%;
+                padding: 0 1.5rem;
+                background: transparent;
+                box-shadow: none;
+                border: none;
+                border-radius: 0;
+            }
+
+            .nav-actions a.btn {
+                display: none;
+            }
+
+            .logo {
+                font-size: 1.8rem;
+            }
+
+            .btn {
+                padding: 1rem 2rem;
+                font-size: 1.2rem;
+            }
+
+            .btn-icon {
+                width: 64px;
+                height: 64px;
+                font-size: 1.6rem;
+            }
+
+            h1 {
+                font-size: 3rem;
+                line-height: 1.1;
+                margin-bottom: 2rem;
+            }
+
+            h2 {
+                font-size: 2.4rem;
+                margin-top: 4rem;
+                padding-bottom: 1rem;
+            }
+
+            h3 {
+                font-size: 2rem;
+                margin-top: 3rem;
+            }
+
+            h4 {
+                font-size: 1.6rem;
+                margin-top: 2.5rem;
+            }
+
+            p,
+            li {
+                font-size: 1.5rem;
+                line-height: 1.6;
+                margin-bottom: 1.75rem;
+            }
+
+            .page-container {
+                padding-left: 1.5rem;
+                padding-right: 1.5rem;
+                padding-top: calc(var(--nav-height) + 1rem);
+            }
+
+            .meta-info {
+                font-size: 1.2rem;
+            }
+
+            .card {
+                padding: 1.5rem;
+            }
+
+            .formula-content {
+                font-size: 1.6rem;
+            }
+
+            .formula-desc {
+                font-size: 1.2rem;
+            }
+
+            .badge {
+                font-size: 1rem;
+                padding: 0.5rem 1.2rem;
+            }
+        }
+
+        /* Print Styles */
+        @media print {
+
+            header,
+            .toc-container,
+            .toc-btn-mobile {
+                display: none;
+            }
+
+            .page-container {
+                padding-top: 2rem;
+            }
+
+            body {
+                background: white;
+                color: black;
+            }
+        }
+    </style>
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-WHHM4FTNHG"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'G-WHHM4FTNHG');
+    </script>
+</head>
+
+<body>
+
+    <!-- Progress Bar -->
+    <div class="progress-container">
+        <div class="progress-bar" id="progressBar"></div>
+    </div>
+
+    <!-- Header -->
+    <header id="mainHeader">
+        <div class="nav-container">
+            <a href="/index.html" class="logo">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path
+                        d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z">
+                    </path>
+                </svg>
+                IISER Smart Prep
+            </a>
+
+            <div class="nav-actions">
+                <a href="/smart_notes/subjects/chemistry/unit-9-homepage-chemistry.html" class="btn btn-secondary">
+                    <i class="fas fa-arrow-left"></i>
+                    <span class="hide-mobile">Back to Unit</span>
+                </a>
+                <button class="btn btn-secondary btn-icon" onclick="window.print()" aria-label="Download PDF">
+                    <i class="fas fa-file-pdf"></i>
+                </button>
+                <button class="btn btn-secondary btn-icon theme-toggle" onclick="toggleTheme()"
+                    aria-label="Toggle theme">
+                    <i class="fas fa-sun"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <div class="page-container">
+        <!-- Main Content -->
+        <main class="content-wrapper">
+
+            <!-- Hero -->
+            <div class="hero">
+                <span class="badge">
+                    <i class="fas fa-star"></i>
+                    High Yield Topic
+                </span>
+                <h1>Electrochemistry</h1>
+                <div class="meta-info">
+                    <div class="meta-item">
+                        <i class="fas fa-book"></i>
+                        <span>Chemistry Unit 9</span>
+                    </div>
+                    <div class="meta-item">
+                        <i class="fas fa-clock"></i>
+                        <span>25 min read</span>
+                    </div>
+                    <div class="meta-item">
+                        <i class="fas fa-graduation-cap"></i>
+                        <span>IAT Advanced</span>
+                    </div>
+                    <div class="meta-item">
+                        <i class="fas fa-fire"></i>
+                        <span>Hot Topic</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Content -->
+            <article>
+                <section id="core-concept" class="animate-in">
+                    <h2><i class="fas fa-lightbulb" style="color: rgb(var(--primary)); margin-right: 0.5rem;"></i>1. Core Concept</h2>
+
+                    <div class="card">
+                        <p>Electrochemistry involves the interconversion of chemical energy and electrical energy. It is
+                            governed by electron transfer (<strong>Redox</strong>) and the migration of ions in
+                            solutions.</p>
+                    </div>
+                </section>
+
+                <section id="cells" class="animate-in">
+                    <h2><i class="fas fa-battery-half" style="color: rgb(var(--primary)); margin-right: 0.5rem;"></i>2. Electrochemical Cells</h2>
+
+                    <div class="card">
+                        <h4>Galvanic (Voltaic) Cell:</h4>
+                        <p>Converts chemical energy (spontaneous) to electrical.</p>
+                        <ul>
+                            <li><strong>Anode (-):</strong> Oxidation.</li>
+                            <li><strong>Cathode (+):</strong> Reduction.</li>
+                        </ul>
+                        <p><strong>Cell Notation:</strong> <code>Anode | Anode Ion || Cathode Ion | Cathode</code></p>
+                        <div class="formula-box" style="margin-top: 1rem;">
+                            <div class="formula-content">E&deg;<sub>cell</sub> = E&deg;<sub>cathode</sub> -
+                                E&deg;<sub>anode</sub></div>
+                            <div class="formula-desc">Always use Standard Reduction Potentials.</div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <h4>Electrolytic Cell:</h4>
+                        <p>Converts electrical energy (non-spontaneous) to chemical using an external power source.</p>
+                    </div>
+
+                    <div class="card">
+                        <h4>Galvanic vs Electrolytic Cells</h4>
+                        <table class="comparison-table">
+                            <thead>
+                                <tr>
+                                    <th>Feature</th>
+                                    <th>Galvanic Cell</th>
+                                    <th>Electrolytic Cell</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>Energy Change</strong></td>
+                                    <td>Chemical &rarr; Electrical</td>
+                                    <td>Electrical &rarr; Chemical</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Spontaneity</strong></td>
+                                    <td>Spontaneous (&Delta;G &lt; 0)</td>
+                                    <td>Non-spontaneous (&Delta;G &gt; 0)</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Anode Polarity</strong></td>
+                                    <td>Negative (-)</td>
+                                    <td>Positive (+)</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Cathode Polarity</strong></td>
+                                    <td>Positive (+)</td>
+                                    <td>Negative (-)</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <section id="nernst" class="animate-in">
+                    <h2><i class="fas fa-calculator" style="color: rgb(var(--primary)); margin-right: 0.5rem;"></i>3. Nernst Equation</h2>
+
+                    <div class="card formula-box">
+                        <div class="formula-content">E<sub>cell</sub> = E&deg;<sub>cell</sub> - (0.0591 / n) log Q</div>
+                        <div class="formula-desc"><strong>Nernst Equation</strong> (at 25&deg;C). n = moles of
+                            e<sup>-</sup> transferred; Q = [Products]/[Reactants].</div>
+                    </div>
+
+                    <div class="card">
+                        <p>At equilibrium, E<sub>cell</sub> = 0, so
+                            <code>E&deg;<sub>cell</sub> = (0.0591 / n) log K<sub>eq</sub></code>.</p>
+                    </div>
+                </section>
+
+                <section id="conductance" class="animate-in">
+                    <h2><i class="fas fa-water" style="color: rgb(var(--primary)); margin-right: 0.5rem;"></i>4. Conductance of Electrolytic Solutions</h2>
+
+                    <div class="card formula-box">
+                        <div class="formula-content">&kappa; = (1/R) &times; (l/A)</div>
+                        <div class="formula-desc"><strong>Conductivity (&kappa;).</strong> (l/A is the Cell Constant,
+                            G*).</div>
+                    </div>
+
+                    <div class="card formula-box">
+                        <div class="formula-content">&Lambda;<sub>m</sub> = (&kappa; &times; 1000) / M</div>
+                        <div class="formula-desc"><strong>Molar Conductivity.</strong> (Units:
+                            S&middot;cm<sup>2</sup>/mol).</div>
+                    </div>
+
+                    <div class="card">
+                        <p><strong>Kohlrausch’s Law:</strong> At infinite dilution,
+                            <code>&Lambda;<sub>m</sub>&deg; = &nu;<sub>+</sub>&lambda;<sub>+</sub>&deg; + &nu;<sub>-</sub>&lambda;<sub>-</sub>&deg;</code>
+                            (Independent migration of ions).</p>
+                    </div>
+                </section>
+
+                <section id="faraday" class="animate-in">
+                    <h2><i class="fas fa-bolt" style="color: rgb(var(--primary)); margin-right: 0.5rem;"></i>5. Electrolysis (Faraday’s Laws)</h2>
+
+                    <div class="card formula-box">
+                        <div class="formula-content">m = ZIt = (M / nF)It</div>
+                        <div class="formula-desc"><strong>Faraday's 1st Law.</strong> (F &approx; 96500 C/mol
+                            e<sup>-</sup>).</div>
+                    </div>
+
+                    <div class="card">
+                        <p><strong>2nd Law:</strong> When the same current passes through different cells, masses
+                            deposited are proportional to their equivalent weights:
+                            <code>m<sub>1</sub>/m<sub>2</sub> = E<sub>1</sub>/E<sub>2</sub></code>.</p>
+                    </div>
+                </section>
+
+                <section id="batteries" class="animate-in">
+                    <h2><i class="fas fa-car-battery" style="color: rgb(var(--primary)); margin-right: 0.5rem;"></i>6. Batteries (Commercial Cells)</h2>
+                    
+                    <div class="tabs-container">
+                        <div class="tab-buttons">
+                            <button class="tab-btn active" onclick="switchTab(event, 'primary-batteries')">Primary Batteries</button>
+                            <button class="tab-btn" onclick="switchTab(event, 'secondary-batteries')">Secondary Batteries</button>
+                        </div>
+                        
+                        <div id="primary-batteries" class="tab-content active">
+                            <h4>Primary Batteries (Non-rechargeable)</h4>
+                            <p>Cannot be recharged as the cell reaction becomes dead after a certain period of use.</p>
+                            
+                            <table class="comparison-table">
+                                <thead>
+                                    <tr>
+                                        <th>Cell Type</th>
+                                        <th>Anode</th>
+                                        <th>Cathode</th>
+                                        <th>Electrolyte</th>
+                                        <th>Key Feature</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><strong>Dry Cell (Leclanche)</strong></td>
+                                        <td>Zinc container</td>
+                                        <td>Graphite rod surrounded by MnO<sub>2</sub> + Carbon</td>
+                                        <td>Paste of NH<sub>4</sub>Cl + ZnCl<sub>2</sub></td>
+                                        <td>Voltage drops during use (~1.5V)</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Mercury Cell</strong></td>
+                                        <td>Zn-Hg Amalgam</td>
+                                        <td>Paste of HgO and Carbon</td>
+                                        <td>Paste of KOH and ZnO</td>
+                                        <td>Constant voltage (~1.35V) throughout life</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        
+                        <div id="secondary-batteries" class="tab-content">
+                            <h4>Secondary Batteries (Rechargeable)</h4>
+                            <p>Can be recharged by passing current in the opposite direction.</p>
+                            
+                            <table class="comparison-table">
+                                <thead>
+                                    <tr>
+                                        <th>Cell Type</th>
+                                        <th>Anode (Discharge)</th>
+                                        <th>Cathode (Discharge)</th>
+                                        <th>Electrolyte</th>
+                                        <th>Key Use</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><strong>Lead Storage</strong></td>
+                                        <td>Lead (Pb)</td>
+                                        <td>Lead grid packed with PbO<sub>2</sub></td>
+                                        <td>38% H<sub>2</sub>SO<sub>4</sub> solution</td>
+                                        <td>Automobiles and inverters</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Nickel-Cadmium (Ni-Cd)</strong></td>
+                                        <td>Cadmium (Cd)</td>
+                                        <td>Metal grid containing NiO(OH)</td>
+                                        <td>Aqueous KOH</td>
+                                        <td>Longer life but expensive</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div class="card exam-tip" style="margin-top: 1rem;">
+                                <strong>Important Reaction:</strong> During recharging of a Lead Storage Battery, the reaction is reversed: PbSO<sub>4</sub>(s) on anode and cathode is converted back to Pb and PbO<sub>2</sub> respectively.
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="fuel-cells" class="animate-in">
+                    <h2><i class="fas fa-satellite" style="color: rgb(var(--primary)); margin-right: 0.5rem;"></i>7. Fuel Cells</h2>
+
+                    <div class="card">
+                        <p>Galvanic cells that convert the energy of combustion of fuels (like H<sub>2</sub>, CH<sub>4</sub>, CH<sub>3</sub>OH) directly into electrical energy.</p>
+                        <h4>Hydrogen-Oxygen Fuel Cell:</h4>
+                        <ul>
+                            <li><strong>Reaction:</strong> <code>2H<sub>2</sub>(g) + O<sub>2</sub>(g) &rarr; 2H<sub>2</sub>O(l)</code></li>
+                            <li><strong>Advantages:</strong> High efficiency (approx. 70%) and pollution-free (product is water). Used in the Apollo space program.</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <section id="corrosion" class="animate-in">
+                    <h2><i class="fas fa-shield-alt" style="color: rgb(var(--primary)); margin-right: 0.5rem;"></i>8. Corrosion</h2>
+
+                    <div class="card">
+                        <p>Destruction of metal by chemical/electrochemical reaction with its environment. Rusting of iron is an electrochemical phenomenon.</p>
+                        <ul>
+                            <li><strong>Anode Spot:</strong> Oxidation of Fe: <code>2Fe(s) &rarr; 2Fe<sup>2+</sup> + 4e<sup>-</sup></code></li>
+                            <li><strong>Cathode Spot:</strong> Reduction of O<sub>2</sub>: <code>O<sub>2</sub>(g) + 4H<sup>+</sup>(aq) + 4e<sup>-</sup> &rarr; 2H<sub>2</sub>O(l)</code></li>
+                            <li><strong>Overall:</strong> Fe<sup>2+</sup> is further oxidized by atmospheric oxygen to form rust (<code>Fe<sub>2</sub>O<sub>3</sub>&middot;xH<sub>2</sub>O</code>).</li>
+                        </ul>
+                        
+                        <h4>Prevention:</h4>
+                        <ul>
+                            <li><strong>Barrier Protection:</strong> Paints, oils, or coating with non-corroding metals.</li>
+                            <li><strong>Sacrificial Protection:</strong> Coating with a more active metal (e.g., <strong>Galvanization</strong> uses Zinc).</li>
+                            <li><strong>Cathodic Protection:</strong> Connecting iron to a more reactive metal (like Mg or Zn) which acts as the anode.</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <section id="conceptual-insights" class="animate-in">
+                    <h2><i class="fas fa-brain" style="color: rgb(var(--primary)); margin-right: 0.5rem;"></i>9. Conceptual Insights</h2>
+
+                    <div class="card">
+                        <h4>Concentration Cell:</h4>
+                        <p>A cell where <code>E&deg;<sub>cell</sub> = 0</code>. The EMF is generated solely by the
+                            concentration difference of the same electrolyte in two half-cells.</p>
+                    </div>
+
+                    <div class="card">
+                        <h4>Conductivity Trends:</h4>
+                        <p>Conductivity (&kappa;) <em>decreases</em> with dilution because fewer ions occupy the same
+                            unit volume. However, Molar Conductivity (&Lambda;<sub>m</sub>) <em>increases</em> with
+                            dilution as ions interact less.</p>
+                    </div>
+                </section>
+
+                <section id="common-mistakes" class="animate-in">
+                    <h2><i class="fas fa-exclamation-triangle" style="color: rgb(var(--warning)); margin-right: 0.5rem;"></i>10. Common Mistakes</h2>
+
+                    <div class="card exam-tip">
+                        <ul>
+                            <li><strong>Nernst Q:</strong> Forgetting the stoichiometry in Q. For
+                                <code>2Fe<sup>3+</sup> + Sn<sup>2+</sup> &rarr; 2Fe<sup>2+</sup> + Sn<sup>4+</sup></code>,
+                                Q =
+                                <code>[Fe<sup>2+</sup>]<sup>2</sup>[Sn<sup>4+</sup>] / [Fe<sup>3+</sup>]<sup>2</sup>[Sn<sup>2+</sup>]</code>.
+                            </li>
+                            <li><strong>Equivalent Weight:</strong> For Al<sup>3+</sup>, n=3 &rarr; E=M/3. For
+                                Mg<sup>2+</sup>, n=2 &rarr; E=M/2.</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <section id="exam-focus" class="animate-in">
+                    <h2><i class="fas fa-crosshairs" style="color: rgb(var(--accent)); margin-right: 0.5rem;"></i>11. IAT Exam Focus Points</h2>
+
+                    <div class="card">
+                        <h4>Calculations:</h4>
+                        <ul>
+                            <li><strong>Nernst Numericals:</strong> Be ready to calculate E<sub>cell</sub> given
+                                molarities (e.g., 0.1M, 0.01M).</li>
+                            <li><strong>&Delta;G&deg; & K<sub>eq</sub>:</strong> Standard relation
+                                <code>&Delta;G&deg; = -nFE&deg;</code> and
+                                <code>log K<sub>eq</sub> = (nE&deg;) / 0.0591</code>.</li>
+                            <li><strong>Faraday's Law:</strong> Calculate metal deposited using
+                                <code>n<sub>metal</sub> = (I &times; t) / (n &times; 96500)</code>.</li>
+                            <li><strong>Kohlrausch Law:</strong> Finding &Lambda;<sub>m</sub>&deg; for weak electrolytes
+                                using the sum/subtraction of strong ones.</li>
+                        </ul>
+                    </div>
+
+                    <section id="practice-mock" class="animate-in">
+                        <h2>12. Practice Mock Test</h2>
+                        <div class="card"
+                            style="background: linear-gradient(135deg, rgb(var(--primary) / 0.1), rgb(var(--accent) / 0.1)); border: 1px solid rgb(var(--primary) / 0.2); text-align: center; padding: 3rem 2rem;">
+                            <div
+                                style="width: 80px; height: 80px; background: linear-gradient(135deg, rgb(var(--primary)), rgb(var(--accent))); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem; font-size: 2rem; box-shadow: var(--shadow-glow);">
+                                <i class="fas fa-vial"></i>
+                            </div>
+                            <h3 style="margin-top: 0;">Ready to test your knowledge?</h3>
+                            <p style="max-width: 500px; margin-left: auto; margin-right: auto; margin-bottom: 2.5rem;">
+                                Take a
+                                quick 15-question assessment specifically designed for <b>Electrochemistry</b>.
+                                Challenge
+                                yourself with IAT-level questions.</p>
+                            <a href="/mock_test/quick_mock_homepage.html" class="btn"
+                                style="background: linear-gradient(90deg, rgb(var(--primary)), rgb(var(--accent))); color: white; padding: 1rem 2.5rem; font-size: 1.125rem; box-shadow: var(--shadow-lg); text-decoration: none; display: inline-flex; align-items: center; gap: 0.75rem;">
+                                <i class="fas fa-play"></i> Start Practice Mock
+                            </a>
+                        </div>
+                    </section>
+
+                    <!-- Completion Indicator -->
+                    <div
+                        style="margin-top: 4rem; padding-top: 2rem; border-top: 2px solid var(--border-primary); text-align: center; color: var(--text-tertiary);">
+                        <i class="fas fa-check-circle"
+                            style="font-size: 2rem; color: rgb(var(--success)); margin-bottom: 0.5rem;"></i>
+                        <p style="font-weight: 600; color: var(--text-primary);">End of Chapter</p>
+                        <p style="font-size: 0.875rem;">Electrochemistry</p>
+                    </div>
+            </article>
+        </main>
+
+        <!-- Desktop TOC -->
+        <aside class="toc-container">
+            <div class="toc-header">On this page</div>
+            <nav>
+                <ul class="toc-list" id="tocList">
+                    <li><a href="#core-concept" class="toc-link">Core Concept</a></li>
+                    <li><a href="#cells" class="toc-link">Electrochemical Cells</a></li>
+                    <li><a href="#nernst" class="toc-link">Nernst Equation</a></li>
+                    <li><a href="#conductance" class="toc-link">Conductance</a></li>
+                    <li><a href="#faraday" class="toc-link">Faraday's Laws</a></li>
+                    <li><a href="#batteries" class="toc-link">Batteries</a></li>
+                    <li><a href="#fuel-cells" class="toc-link">Fuel Cells</a></li>
+                    <li><a href="#corrosion" class="toc-link">Corrosion</a></li>
+                    <li><a href="#conceptual-insights" class="toc-link">Insights</a></li>
+                    <li><a href="#common-mistakes" class="toc-link">Common Mistakes</a></li>
+                    <li><a href="#exam-focus" class="toc-link">IAT Exam Focus</a></li>
+                    <li><a href="#practice-mock" class="toc-link">Practice Mock</a></li>
+                </ul>
+            </nav>
+
+            <div
+                style="margin-top: 2rem; padding: 1rem; background: var(--bg-tertiary); border-radius: var(--radius-md); border: 1px solid var(--border-primary);">
+                <div
+                    style="font-size: 0.75rem; font-weight: 700; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.5rem;">
+                    Study Progress</div>
+                <div style="height: 4px; background: var(--border-primary); border-radius: 100px; overflow: hidden;">
+                    <div id="tocProgress"
+                        style="height: 100%; width: 0%; background: linear-gradient(90deg, rgb(var(--primary)), rgb(var(--accent))); transition: width 0.3s;">
+                    </div>
+                </div>
+                <div style="margin-top: 0.5rem; font-size: 0.75rem; color: var(--text-secondary);" id="progressText">0%
+                    completed</div>
+            </div>
+        </aside>
+    </div>
+
+    <!-- Footer -->
+    <footer
+        style="background: var(--bg-secondary); border-top: 1px solid var(--border-primary); padding: 5rem 0 2rem; margin-top: 5rem;">
+        <div style="max-width: 1200px; margin: 0 auto; padding: 0 2rem;">
+            <div
+                style="display: flex; flex-wrap: wrap; gap: 3rem; justify-content: space-between; margin-bottom: 3rem;">
+                <div style="max-width: 320px;">
+                    <a href="/index.html" class="logo" style="margin-bottom: 1rem; pointer-events: auto;">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path
+                                d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z">
+                            </path>
+                        </svg>
+                        IISER Smart Prep
+                    </a>
+                    <p style="color: var(--text-secondary); font-size: 0.9rem; margin-top: 1rem;">Empowering scientific
+                        minds to reach India's premier research institutes through data and strategy.</p>
+                </div>
+
+                <div style="display: flex; gap: 4rem; flex-wrap: wrap;">
+                    <div>
+                        <h4
+                            style="margin-bottom: 1rem; font-size: 0.9rem; font-weight: 700; color: var(--text-primary);">
+                            Platform</h4>
+                        <ul style="display: flex; flex-direction: column; gap: 0.75rem; list-style: none;">
+                            <li><a href="/ai_tutor.html"
+                                    style="color: var(--text-secondary); font-size: 0.9rem; text-decoration: none;">AI
+                                    Tutor</a></li>
+                            <li><a href="/mock_test/full_mock_test_homepage.html"
+                                    style="color: var(--text-secondary); font-size: 0.9rem; text-decoration: none;">Mock
+                                    Tests</a></li>
+                            <li><a href="/index.html#pricing"
+                                    style="color: var(--text-secondary); font-size: 0.9rem; text-decoration: none;">Pricing</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4
+                            style="margin-bottom: 1rem; font-size: 0.9rem; font-weight: 700; color: var(--text-primary);">
+                            Support</h4>
+                        <ul style="display: flex; flex-direction: column; gap: 0.75rem; list-style: none;">
+                            <li><a href="/index.html#faq"
+                                    style="color: var(--text-secondary); font-size: 0.9rem; text-decoration: none;">FAQ</a>
+                            </li>
+                            <li><a href="/contact-us.html"
+                                    style="color: var(--text-secondary); font-size: 0.9rem; text-decoration: none;">Contact</a>
+                            </li>
+                            <li><a href="/privacy.html"
+                                    style="color: var(--text-secondary); font-size: 0.9rem; text-decoration: none;">Privacy
+                                    Policy</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div
+                style="text-align: center; border-top: 1px solid var(--border-primary); padding-top: 2rem; color: var(--text-tertiary); font-size: 0.85rem;">
+                &copy; 2026 IISER Smart Prep. All rights reserved. Not affiliated with IISERs Joint Admissions
+                Committee.
+            </div>
+        </div>
+    </footer>
+
+    <!-- Mobile Drawer -->
+    <button class="toc-btn-mobile" onclick="toggleDrawer()">
+        <i class="fas fa-list"></i>
+    </button>
+
+    <div class="mobile-drawer-overlay" id="drawerOverlay" onclick="toggleDrawer()">
+        <div class="mobile-drawer" onclick="event.stopPropagation()">
+            <div class="drawer-handle"></div>
+            <div class="toc-header" style="font-size: 1.125rem; margin-bottom: 1.5rem;">Contents</div>
+            <ul class="toc-list" style="position: relative;" id="mobileTocList">
+                <!-- Populated by JS -->
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        // Theme Toggle
+        function toggleTheme() {
+            const html = document.documentElement;
+            const currentTheme = html.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            html.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+
+            // Icon toggle
+            const icon = document.querySelector('.theme-toggle i');
+            icon.className = newTheme === 'dark' ? 'fas fa-moon' : 'fas fa-sun';
+        }
+
+        // Initialize Theme
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        document.documentElement.setAttribute('data-theme', savedTheme);
+        document.querySelector('.theme-toggle i').className = savedTheme === 'dark' ? 'fas fa-moon' : 'fas fa-sun';
+
+        // Progress Bar & Scroll Spy
+        const progressBar = document.getElementById('progressBar');
+        const tocProgress = document.getElementById('tocProgress');
+        const progressText = document.getElementById('progressText');
+        const sections = document.querySelectorAll('section[id]');
+        const tocLinks = document.querySelectorAll('.toc-link');
+
+        window.addEventListener('scroll', () => {
+            // Main Progress Bar
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            progressBar.style.width = scrolled + '%';
+
+            // TOC Progress
+            if (tocProgress) {
+                tocProgress.style.width = scrolled + '%';
+                progressText.textContent = Math.round(scrolled) + '% completed';
+            }
+
+            // Header Scroll Effect
+            const header = document.getElementById('mainHeader');
+            if (winScroll > 20) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+
+        // Intersection Observer for Scroll Spy
+        const observerOptions = {
+            root: null,
+            rootMargin: '-20% 0px -60% 0px',
+            threshold: 0
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const id = entry.target.getAttribute('id');
+                    tocLinks.forEach(link => {
+                        link.classList.remove('active');
+                        if (link.getAttribute('href') === `#${id}`) {
+                            link.classList.add('active');
+                        }
+                    });
+                }
+            });
+        }, observerOptions);
+
+        sections.forEach(section => observer.observe(section));
+
+        // Quiz Logic
+        function checkAnswer(btn, index) {
+            const card = btn.closest('.question-card');
+            const correctIndex = parseInt(card.dataset.correct);
+            const options = card.querySelectorAll('.option-btn');
+            const explanation = card.querySelector('.explanation');
+
+            if (card.classList.contains('answered')) return;
+            card.classList.add('answered');
+
+            options.forEach((opt, i) => {
+                opt.disabled = true;
+                if (i === correctIndex) {
+                    opt.classList.add('correct');
+                } else if (i === index) {
+                    opt.classList.add('wrong');
+                }
+            });
+
+            explanation.style.display = 'block';
+            explanation.style.animation = 'fadeInUp 0.4s ease';
+        }
+
+        // Mobile Drawer
+        function toggleDrawer() {
+            const overlay = document.getElementById('drawerOverlay');
+            overlay.classList.toggle('active');
+            document.body.style.overflow = overlay.classList.contains('active') ? 'hidden' : '';
+        }
+
+        // Populate Mobile TOC
+        const mobileTocList = document.getElementById('mobileTocList');
+        tocLinks.forEach(link => {
+            const li = document.createElement('li');
+            const a = document.createElement('a');
+            a.href = link.getAttribute('href');
+            a.className = 'toc-link';
+            a.textContent = link.textContent;
+            a.onclick = () => toggleDrawer();
+            li.appendChild(a);
+            mobileTocList.appendChild(li);
+        });
+
+        // Stagger Animation on Scroll
+        const animateElements = document.querySelectorAll('.animate-in');
+        const animateObserver = new IntersectionObserver((entries) => {
+            entries.forEach((entry, index) => {
+                if (entry.isIntersecting) {
+                    setTimeout(() => {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }, index * 100);
+                    animateObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1 });
+
+        animateElements.forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(20px)';
+            el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            animateObserver.observe(el);
+        });
+
+        // Smooth Scroll for Anchor Links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Keyboard Shortcuts
+        document.addEventListener('keydown', (e) => {
+            // Press 'T' to toggle theme
+            if (e.key === 't' && !e.ctrlKey && !e.metaKey && !e.altKey) {
+                if (document.activeElement.tagName !== 'INPUT') {
+                    toggleTheme();
+                }
+            }
+            // Press 'Escape' to close drawer
+            if (e.key === 'Escape') {
+                const drawer = document.getElementById('drawerOverlay');
+                if (drawer.classList.contains('active')) {
+                    toggleDrawer();
+                }
+            }
+        });
+
+        // Tab Switching Logic
+        function switchTab(evt, tabId) {
+            // Get the container
+            const container = evt.currentTarget.closest('.tabs-container');
+            
+            // Get all tab content elements and hide them
+            const tabContents = container.querySelectorAll('.tab-content');
+            tabContents.forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Get all tab buttons and remove active class
+            const tabButtons = container.querySelectorAll('.tab-btn');
+            tabButtons.forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // Show the current tab and add active class to button
+            document.getElementById(tabId).classList.add('active');
+            evt.currentTarget.classList.add('active');
+        }
+    </script>
+</body>
+
+</html>

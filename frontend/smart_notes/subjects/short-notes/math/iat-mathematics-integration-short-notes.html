@@ -1,0 +1,1546 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Integration & Applications of Integration | IISER Smart Prep</title>
+
+    <!-- SEO Meta Tags -->
+    <meta name="description"
+        content="Master Integration and AoI for the IAT. Comprehensive notes on standard integrals, integration by parts, definite integral properties (King's Rule), and area under curves.">
+    <meta name="keywords"
+        content="IAT Mathematics, Calculus, Integration, Definite Integrals, Area Under Curve, King's Property, Leibniz Rule, IISER Aptitude Test, Math Short Notes, IISER Smart Prep">
+    <meta name="author" content="IISER Smart Prep">
+    <link rel="canonical"
+        href="https://iisersmartprep.space/smart_notes/subjects/math/iat-integration-short-notes.html">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="article">
+    <meta property="og:url"
+        content="https://iisersmartprep.space/smart_notes/subjects/math/iat-integration-short-notes.html">
+    <meta property="og:title" content="Integration & Applications | IAT Math Short Notes">
+    <meta property="og:description"
+        content="Quick revision notes for Integration and Area under curves. Perfect for last-minute IAT calculus preparation.">
+    <meta property="og:image" content="https://iisersmartprep.space/assets/images/og-math-calculus.jpg">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url"
+        content="https://iisersmartprep.space/smart_notes/subjects/math/iat-integration-short-notes.html">
+    <meta property="twitter:title" content="Integration & Applications | IAT Math Short Notes">
+    <meta property="twitter:description"
+        content="Master Integration and Applications for IAT with our expert-curated short notes.">
+    <meta property="twitter:image" content="https://iisersmartprep.space/assets/images/og-math-calculus.jpg">
+
+    <!-- Structured Data (JSON-LD) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Article",
+      "headline": "Integration & Applications of Integration Short Notes for IAT",
+      "description": "Comprehensive revision notes on Integration and its applications for students preparing for the IISER Aptitude Test (IAT).",
+      "image": "https://iisersmartprep.space/assets/images/og-math-calculus.jpg",
+      "author": {
+        "@type": "Organization",
+        "name": "IISER Smart Prep"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "IISER Smart Prep",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://iisersmartprep.space/assets/logo.png"
+        }
+      },
+      "datePublished": "2024-03-22",
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://iisersmartprep.space/smart_notes/subjects/math/iat-integration-short-notes.html"
+      }
+    }
+    </script>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap"
+        rel="stylesheet">
+
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            /* Premium Color System */
+            --primary: 99 102 241;
+            --primary-light: 224 231 255;
+            --accent: 244 63 94;
+            --warning: 245 158 11;
+            --success: 16 185 129;
+
+            /* Neutral Scale */
+            --gray-50: 248 250 252;
+            --gray-100: 241 245 249;
+            --gray-200: 226 232 240;
+            --gray-300: 203 213 225;
+            --gray-400: 148 163 184;
+            --gray-500: 100 116 139;
+            --gray-600: 71 85 105;
+            --gray-700: 51 65 85;
+            --gray-800: 30 41 59;
+            --gray-900: 15 23 42;
+
+            /* semantic tokens */
+            --bg-primary: rgb(var(--gray-50));
+            --bg-secondary: white;
+            --bg-tertiary: rgb(var(--gray-100));
+            --text-primary: rgb(var(--gray-900));
+            --text-secondary: rgb(var(--gray-600));
+            --text-tertiary: rgb(var(--gray-500));
+            --border-primary: rgb(var(--gray-200));
+            --border-secondary: rgb(var(--gray-300));
+
+            /* Effects */
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+            --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+            --shadow-glow: 0 0 20px -5px rgb(var(--primary) / 0.4);
+
+            --glass-bg: rgba(255, 255, 255, 0.8);
+            --glass-border: rgba(255, 255, 255, 0.3);
+
+            --radius-sm: 0.5rem;
+            --radius-md: 0.75rem;
+            --radius-lg: 1rem;
+            --radius-xl: 1.5rem;
+
+            --nav-height: 80px;
+            --container-width: 880px;
+            --toc-width: 280px;
+        }
+
+        /* Dark Mode */
+        [data-theme="dark"] {
+            --bg-primary: rgb(var(--gray-900));
+            --bg-secondary: rgb(var(--gray-800));
+            --bg-tertiary: rgb(var(--gray-700));
+            --text-primary: rgb(var(--gray-50));
+            --text-secondary: rgb(var(--gray-300));
+            --text-tertiary: rgb(var(--gray-400));
+            --border-primary: rgb(var(--gray-700));
+            --border-secondary: rgb(var(--gray-600));
+
+            --glass-bg: rgba(15, 23, 42, 0.8);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --shadow-glow: 0 0 20px -5px rgb(var(--primary) / 0.6);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        body {
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.7;
+            font-size: 16px;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            overflow-x: hidden;
+        }
+
+        /* Inline Math Fraction CSS */
+        .math-frac {
+            display: inline-block;
+            vertical-align: middle;
+            text-align: center;
+            margin: 0 0.3em;
+            font-size: 0.9em;
+        }
+
+        .math-num {
+            display: block;
+            padding: 0 0.2em;
+            border-bottom: 1.5px solid currentColor;
+            line-height: 1.3;
+        }
+
+        .math-den {
+            display: block;
+            padding: 0 0.2em;
+            line-height: 1.3;
+        }
+
+        .integral {
+            font-size: 1.4em;
+            vertical-align: middle;
+            margin-right: 0.1em;
+            font-family: 'Times New Roman', serif;
+        }
+
+        .limits {
+            display: inline-flex;
+            flex-direction: column;
+            justify-content: center;
+            vertical-align: middle;
+            font-size: 0.6em;
+            line-height: 1;
+            margin-right: 0.2em;
+            text-align: left;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+            height: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--border-secondary);
+            border-radius: 100px;
+            border: 3px solid var(--bg-primary);
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgb(var(--gray-400));
+        }
+
+        /* Progress Bar */
+        .progress-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            z-index: 9999;
+            background: var(--border-primary);
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, rgb(var(--primary)), rgb(var(--accent)));
+            width: 0%;
+            transition: width 0.1s linear;
+            box-shadow: 0 0 10px rgb(var(--primary) / 0.5);
+        }
+
+        /* Header */
+        header {
+            position: fixed;
+            top: 20px;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            display: flex;
+            justify-content: center;
+            pointer-events: none;
+            transition: top 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            height: auto;
+            background: transparent;
+            backdrop-filter: none;
+            -webkit-backdrop-filter: none;
+            border-bottom: none;
+        }
+
+        header.scrolled {
+            top: 0;
+        }
+
+        .nav-container {
+            pointer-events: auto;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            border: 1px solid var(--glass-border);
+            box-shadow: var(--shadow-lg);
+            padding: 0.75rem 1.5rem;
+            border-radius: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 90%;
+            max-width: var(--container-width);
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            height: var(--nav-height);
+        }
+
+        header.scrolled .nav-container {
+            width: 100%;
+            max-width: 100%;
+            border-radius: 0;
+            border-top: 0;
+            border-left: 0;
+            border-right: 0;
+            background: var(--bg-secondary);
+            padding: 0 2rem;
+            box-shadow: var(--shadow-md);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-weight: 800;
+            color: var(--text-primary);
+            text-decoration: none;
+            font-size: 1.125rem;
+            transition: transform 0.2s;
+        }
+
+        .logo:hover {
+            transform: scale(1.02);
+        }
+
+        .nav-actions {
+            display: flex;
+            gap: 0.75rem;
+            align-items: center;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.625rem 1.25rem;
+            border-radius: 100px;
+            font-weight: 600;
+            font-size: 0.875rem;
+            transition: all 0.2s ease;
+            border: none;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .btn-secondary {
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+            border: 1px solid var(--border-primary);
+        }
+
+        .btn-secondary:hover {
+            background: var(--bg-secondary);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn-icon {
+            width: 40px;
+            height: 40px;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+        }
+
+        /* Theme Toggle */
+        .theme-toggle {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .theme-toggle i {
+            transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        [data-theme="dark"] .theme-toggle i {
+            transform: rotate(360deg);
+        }
+
+        /* Layout */
+        .page-container {
+            display: flex;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding-top: calc(var(--nav-height) + 2rem);
+            padding-bottom: 4rem;
+            padding-left: 2rem;
+            padding-right: 2rem;
+            gap: 3rem;
+            position: relative;
+        }
+
+        .content-wrapper {
+            flex: 1;
+            max-width: var(--container-width);
+            margin: 0 auto;
+            position: relative;
+        }
+
+        /* Hero */
+        .hero {
+            margin-bottom: 3rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid var(--border-primary);
+            animation: fadeInUp 0.8s ease;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.375rem;
+            padding: 0.25rem 0.75rem;
+            background: rgb(var(--primary) / 0.1);
+            color: rgb(var(--primary));
+            border-radius: 100px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 1rem;
+            border: 1px solid rgb(var(--primary) / 0.2);
+        }
+
+        h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            line-height: 1.1;
+            color: var(--text-primary);
+            margin-bottom: 1.5rem;
+            letter-spacing: -0.02em;
+        }
+
+        .meta-info {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .meta-item i {
+            color: rgb(var(--primary));
+        }
+
+        /* Typography */
+        h2 {
+            font-size: 1.875rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin: 3rem 0 1.25rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 2px solid var(--border-primary);
+            scroll-margin-top: calc(var(--nav-height) + 20px);
+            position: relative;
+        }
+
+        h2::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 60px;
+            height: 2px;
+            background: linear-gradient(90deg, rgb(var(--primary)), rgb(var(--accent)));
+            border-radius: 2px;
+        }
+
+        h3 {
+            font-size: 1.375rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin: 2rem 0 1rem;
+            letter-spacing: -0.01em;
+        }
+
+        h4 {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin: 1.5rem 0 0.75rem;
+        }
+
+        p {
+            margin-bottom: 1.25rem;
+            color: var(--text-secondary);
+            line-height: 1.8;
+        }
+
+        ul,
+        ol {
+            margin-bottom: 1.5rem;
+            padding-left: 1.25rem;
+        }
+
+        li {
+            margin-bottom: 0.5rem;
+            color: var(--text-secondary);
+            position: relative;
+        }
+
+        ul li::marker {
+            color: rgb(var(--primary));
+            font-size: 1.1em;
+        }
+
+        /* Cards */
+        .card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-primary);
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card:hover {
+            box-shadow: var(--shadow-xl);
+            border-color: var(--border-secondary);
+            transform: translateY(-2px);
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, rgb(var(--primary)), rgb(var(--accent)));
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .card:hover::before {
+            opacity: 1;
+        }
+
+        /* Formula Box */
+        .formula-box {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-secondary);
+            box-shadow: var(--shadow-md);
+            font-family: 'JetBrains Mono', monospace;
+            position: relative;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .formula-box::after {
+            content: '\222B dx';
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            color: var(--text-tertiary);
+            font-size: 0.85rem;
+            font-weight: 700;
+            opacity: 0.5;
+        }
+
+        .formula-content {
+            font-size: 1.125rem;
+            font-weight: 500;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+            overflow-x: auto;
+            line-height: 1.6;
+        }
+
+        .formula-desc {
+            font-size: 0.875rem;
+            color: var(--text-tertiary);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            margin-top: 0.5rem;
+        }
+
+        .professor-note {
+            background: linear-gradient(135deg, rgb(var(--success) / 0.1), rgb(var(--success) / 0.05));
+            border: 1px solid rgb(var(--success) / 0.2);
+        }
+
+        .professor-note::before {
+            background: rgb(var(--success));
+        }
+
+        .professor-note h4 {
+            color: rgb(var(--success));
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 0;
+        }
+
+        .exam-tip {
+            background: linear-gradient(135deg, rgb(var(--warning) / 0.1), rgb(var(--warning) / 0.05));
+            border: 1px solid rgb(var(--warning) / 0.2);
+        }
+
+        .exam-tip::before {
+            background: rgb(var(--warning));
+        }
+
+        /* Desktop TOC */
+        .toc-container {
+            position: sticky;
+            top: calc(var(--nav-height) + 2rem);
+            width: var(--toc-width);
+            height: calc(100vh - var(--nav-height) - 4rem);
+            overflow-y: auto;
+            display: none;
+            padding-right: 1rem;
+        }
+
+        @media (min-width: 1280px) {
+            .toc-container {
+                display: block;
+            }
+        }
+
+        .toc-header {
+            font-size: 0.875rem;
+            font-weight: 700;
+            color: var(--text-tertiary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 1rem;
+            padding-left: 0.75rem;
+        }
+
+        .toc-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            position: relative;
+        }
+
+        .toc-list::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: var(--border-primary);
+        }
+
+        .toc-link {
+            display: block;
+            padding: 0.5rem 0.75rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.875rem;
+            font-weight: 500;
+            border-left: 2px solid transparent;
+            margin-left: 0;
+            transition: all 0.2s;
+            position: relative;
+        }
+
+        .toc-link:hover {
+            color: rgb(var(--primary));
+            background: rgb(var(--primary) / 0.05);
+        }
+
+        .toc-link.active {
+            color: rgb(var(--primary));
+            font-weight: 600;
+            border-left-color: rgb(var(--primary));
+            background: rgb(var(--primary) / 0.08);
+        }
+
+        /* Mobile TOC Drawer */
+        .mobile-drawer-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+            z-index: 2000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s;
+        }
+
+        .mobile-drawer-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .mobile-drawer {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: var(--bg-secondary);
+            border-radius: 2rem 2rem 0 0;
+            padding: 2rem;
+            max-height: 70vh;
+            overflow-y: auto;
+            transform: translateY(100%);
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .mobile-drawer-overlay.active .mobile-drawer {
+            transform: translateY(0);
+        }
+
+        .drawer-handle {
+            width: 40px;
+            height: 4px;
+            background: var(--border-secondary);
+            border-radius: 100px;
+            margin: 0 auto 1.5rem;
+        }
+
+        .toc-btn-mobile {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            width: 56px;
+            height: 56px;
+            background: linear-gradient(135deg, rgb(var(--primary)), rgb(var(--accent)));
+            color: white;
+            border: none;
+            border-radius: 50%;
+            box-shadow: var(--shadow-glow), var(--shadow-xl);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            z-index: 1000;
+            transition: all 0.3s;
+        }
+
+        .toc-btn-mobile:hover {
+            transform: scale(1.1) rotate(90deg);
+        }
+
+        .toc-btn-mobile:active {
+            transform: scale(0.95);
+        }
+
+        @media (min-width: 1280px) {
+            .toc-btn-mobile {
+                display: none;
+            }
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-in {
+            animation: fadeInUp 0.6s ease forwards;
+            opacity: 0;
+        }
+
+        /* Section offset */
+        section {
+            scroll-margin-top: calc(var(--nav-height) + 40px);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            :root {
+                --nav-height: 140px;
+            }
+
+            html {
+                font-size: 25px;
+            }
+
+            body {
+                font-size: 1.4rem;
+            }
+
+            header {
+                top: 0;
+                height: var(--nav-height);
+                background: white;
+                border-bottom: 1px solid var(--border-primary);
+            }
+
+            .nav-container {
+                width: 100%;
+                max-width: 100%;
+                padding: 0 1.5rem;
+                background: transparent;
+                box-shadow: none;
+                border: none;
+                border-radius: 0;
+            }
+
+            .nav-actions a.btn {
+                display: none;
+            }
+
+            .logo {
+                font-size: 1.8rem;
+            }
+
+            .btn {
+                padding: 1rem 2rem;
+                font-size: 1.2rem;
+            }
+
+            .btn-icon {
+                width: 64px;
+                height: 64px;
+                font-size: 1.6rem;
+            }
+
+            h1 {
+                font-size: 3rem;
+                line-height: 1.1;
+                margin-bottom: 2rem;
+            }
+
+            h2 {
+                font-size: 2.4rem;
+                margin-top: 4rem;
+                padding-bottom: 1rem;
+            }
+
+            h3 {
+                font-size: 2rem;
+                margin-top: 3rem;
+            }
+
+            h4 {
+                font-size: 1.6rem;
+                margin-top: 2.5rem;
+            }
+
+            p,
+            li {
+                font-size: 1.5rem;
+                line-height: 1.6;
+                margin-bottom: 1.75rem;
+            }
+
+            .page-container {
+                padding-left: 1.5rem;
+                padding-right: 1.5rem;
+                padding-top: calc(var(--nav-height) + 1rem);
+            }
+
+            .meta-info {
+                font-size: 1.2rem;
+            }
+
+            .card {
+                padding: 1.5rem;
+            }
+
+            .formula-content {
+                font-size: 1.4rem;
+            }
+
+            .formula-desc {
+                font-size: 1.2rem;
+            }
+
+            .badge {
+                font-size: 1rem;
+                padding: 0.5rem 1.2rem;
+            }
+        }
+
+        /* Print Styles */
+        @media print {
+
+            header,
+            .toc-container,
+            .toc-btn-mobile {
+                display: none;
+            }
+
+            .page-container {
+                padding-top: 2rem;
+            }
+
+            body {
+                background: white;
+                color: black;
+            }
+        }
+    </style>
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-WHHM4FTNHG"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'G-WHHM4FTNHG');
+    </script>
+</head>
+
+<body>
+
+    <!-- Progress Bar -->
+    <div class="progress-container">
+        <div class="progress-bar" id="progressBar"></div>
+    </div>
+
+    <!-- Header -->
+    <header id="mainHeader">
+        <div class="nav-container">
+            <a href="/index.html" class="logo">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path
+                        d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z">
+                    </path>
+                </svg>
+                IISER Smart Prep
+            </a>
+
+            <div class="nav-actions">
+                <a href="/smart_notes/subjects/math/calculus-homepage.html" class="btn btn-secondary">
+                    <i class="fas fa-arrow-left"></i>
+                    <span class="hide-mobile">Back to Unit</span>
+                </a>
+                <button class="btn btn-secondary btn-icon" onclick="window.print()" aria-label="Download PDF">
+                    <i class="fas fa-file-pdf"></i>
+                </button>
+                <button class="btn btn-secondary btn-icon theme-toggle" onclick="toggleTheme()"
+                    aria-label="Toggle theme">
+                    <i class="fas fa-sun"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <div class="page-container">
+        <!-- Main Content -->
+        <main class="content-wrapper">
+
+            <!-- Hero -->
+            <div class="hero">
+                <span class="badge">
+                    <i class="fas fa-star"></i>
+                    Calculus
+                </span>
+                <h1>Integration & Applications</h1>
+                <div class="meta-info">
+                    <div class="meta-item">
+                        <i class="fas fa-book"></i>
+                        <span>Mathematics Core</span>
+                    </div>
+                    <div class="meta-item">
+                        <i class="fas fa-clock"></i>
+                        <span>25 min read</span>
+                    </div>
+                    <div class="meta-item">
+                        <i class="fas fa-graduation-cap"></i>
+                        <span>IAT Core Framework</span>
+                    </div>
+                    <div class="meta-item">
+                        <i class="fas fa-calculator"></i>
+                        <span>High Yield</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Content -->
+            <article>
+                <section id="core-concept" class="animate-in">
+                    <h2>1. Core Concept</h2>
+
+                    <div class="card">
+                        <p>Integration is the inverse process of differentiation (Antiderivative) and represents the
+                            continuous summation of infinitesimal areas. While <strong>indefinite integration</strong>
+                            finds a family of functions, <strong>definite integration</strong> calculates a specific
+                            numerical value (such as the exact area under a curve).</p>
+                    </div>
+
+                    <div class="formula-box">
+                        <div class="formula-content">
+                            <span class="integral">&int;</span><span class="limits"><span>x</span><span>a</span></span> f(t) dt = F(x) - F(a)
+                        </div>
+                        <div class="formula-desc"><strong>Fundamental Theorem of Calculus:</strong> Connects differentiation and integration.</div>
+                    </div>
+
+                    <div class="formula-box" style="margin-top: -1rem;">
+                        <div class="formula-content">
+                            <div class="math-frac"><span class="math-num">d</span><span class="math-den">dx</span></div>
+                            <span class="integral">&int;</span><span class="limits"><span>x</span><span>a</span></span> f(t) dt = f(x)
+                        </div>
+                    </div>
+                </section>
+
+                <section id="standard-integrals" class="animate-in">
+                    <h2>2. Key Formulas: Standard Integrals</h2>
+
+                    <div class="card">
+                        <h4>Algebraic & Exponential</h4>
+                        <div style="display: flex; flex-wrap: wrap; gap: 2.5rem; margin-top: 1rem;">
+                            <div><span class="integral">&int;</span> x<sup>n</sup> dx = <div class="math-frac"><span
+                                        class="math-num">x<sup>n+1</sup></span><span class="math-den">n+1</span></div> +
+                                C &nbsp; <span style="font-size:0.85em; opacity:0.8;">(n &ne; -1)</span></div>
+                            <div><span class="integral">&int;</span>
+                                <div class="math-frac"><span class="math-num">1</span><span class="math-den">x</span>
+                                </div> dx = ln|x| + C
+                            </div>
+                            <div><span class="integral">&int;</span> e<sup>x</sup> dx = e<sup>x</sup> + C</div>
+                            <div><span class="integral">&int;</span> a<sup>x</sup> dx = <div class="math-frac"><span
+                                        class="math-num">a<sup>x</sup></span><span class="math-den">ln(a)</span></div> +
+                                C</div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <h4>Trigonometric Functions</h4>
+                        <div
+                            style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem;">
+                            <div><span class="integral">&int;</span> sin(x) dx = -cos(x) + C</div>
+                            <div><span class="integral">&int;</span> cos(x) dx = sin(x) + C</div>
+                            <div><span class="integral">&int;</span> sec<sup>2</sup>(x) dx = tan(x) + C</div>
+                            <div><span class="integral">&int;</span> sec(x)tan(x) dx = sec(x) + C</div>
+                            <div><span class="integral">&int;</span> tan(x) dx = ln|sec(x)| + C</div>
+                            <div><span class="integral">&int;</span> cot(x) dx = ln|sin(x)| + C</div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <h4>Special Forms</h4>
+                        <div style="display: flex; flex-direction: column; gap: 1.5rem; margin-top: 1rem;">
+                            <div><span class="integral">&int;</span>
+                                <div class="math-frac"><span class="math-num">dx</span><span
+                                        class="math-den">x<sup>2</sup> + a<sup>2</sup></span></div> = <div
+                                    class="math-frac"><span class="math-num">1</span><span class="math-den">a</span>
+                                </div> tan<sup>-1</sup>&left( <div class="math-frac"><span
+                                        class="math-num">x</span><span class="math-den">a</span></div> &right) + C
+                            </div>
+                            <div><span class="integral">&int;</span>
+                                <div class="math-frac"><span class="math-num">dx</span><span
+                                        class="math-den">&radic;(a<sup>2</sup> - x<sup>2</sup>)</span></div> =
+                                sin<sup>-1</sup>&left( <div class="math-frac"><span class="math-num">x</span><span
+                                        class="math-den">a</span></div> &right) + C
+                            </div>
+                            <div><span class="integral">&int;</span>
+                                <div class="math-frac"><span class="math-num">dx</span><span
+                                        class="math-den">x<sup>2</sup> - a<sup>2</sup></span></div> = <div
+                                    class="math-frac"><span class="math-num">1</span><span class="math-den">2a</span>
+                                </div> ln&left| <div class="math-frac"><span class="math-num">x - a</span><span
+                                        class="math-den">x + a</span></div> &right| + C
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="methods-integration" class="animate-in">
+                    <h2>3. Methods of Integration</h2>
+
+                    <div class="card">
+                        <ul>
+                            <li><strong>Substitution (u-sub):</strong> Look for the pattern <span
+                                    class="integral">&int;</span> f(g(x)) &middot; g&prime;(x) dx. Let u = g(x), then du
+                                = g&prime;(x)dx.</li>
+                            <li style="margin-top: 1rem;"><strong>Integration By Parts:</strong> Used for multiplying
+                                functions.<br><br>
+                                <span class="integral">&int;</span> u &middot; v dx = u <span
+                                    class="integral">&int;</span> v dx - <span class="integral">&int;</span> [ u&prime;
+                                <span class="integral">&int;</span> v dx ] dx
+                                <br><br><em>Priority Rule:</em> <strong>ILATE</strong> (Inverse trig, Logarithmic,
+                                Algebraic, Trigonometric, Exponential).
+                            </li>
+                            <li style="margin-top: 1rem;"><strong>Partial Fractions:</strong> Used for rational
+                                functions <div class="math-frac"><span class="math-num">P(x)</span><span
+                                        class="math-den">Q(x)</span></div>.<br>
+                                <em>Example:</em>
+                                <div class="math-frac"><span class="math-num">1</span><span class="math-den">(x - a)(x -
+                                        b)</span></div> = <div class="math-frac"><span class="math-num">A</span><span
+                                        class="math-den">x - a</span></div> + <div class="math-frac"><span
+                                        class="math-num">B</span><span class="math-den">x - b</span></div>
+                            </li>
+                        </ul>
+                    </div>
+                </section>
+
+                <section id="definite-properties" class="animate-in">
+                    <h2>4. Definite Integration Properties <span class="badge"
+                            style="margin-left:0.5rem; font-size: 0.6em;">High Yield</span></h2>
+
+                    <div class="card formula-box">
+                        <div class="formula-content">
+                            <span class="integral">&int;</span><span class="limits"><span>b</span><span>a</span></span>
+                            f(x) dx = <span class="integral">&int;</span><span
+                                class="limits"><span>b</span><span>a</span></span> f(a + b - x) dx
+                        </div>
+                        <div class="formula-desc"><strong>King's Property:</strong> The most frequently used property in
+                            competitive exams.</div>
+                    </div>
+
+                    <div class="card">
+                        <h4>King's Property Shortcut</h4>
+                        <p>If you see <span class="integral">&int;</span><span class="limits"><span>b</span><span>a</span></span> f(x) dx, you can often instantly simplify it as:</p>
+                        <p style="text-align: center; font-family: 'JetBrains Mono'; margin: 1rem 0;">
+                            <span class="integral">&int;</span><span class="limits"><span>b</span><span>a</span></span> <div class="math-frac"><span class="math-num">f(x) + f(a+b-x)</span><span class="math-den">2</span></div> dx
+                        </p>
+                        <p>This trick is a massive time-saver for symmetric functions.</p>
+                    </div>
+
+                    <div class="card">
+                        <ul>
+                            <li><strong>Even / Odd Function Rule:</strong><br>
+                                <span class="integral">&int;</span><span
+                                    class="limits"><span>a</span><span>-a</span></span> f(x) dx = <strong>2 <span
+                                        class="integral">&int;</span><span
+                                        class="limits"><span>a</span><span>0</span></span> f(x) dx</strong> (if f(x) is
+                                EVEN).<br>
+                                <span class="integral">&int;</span><span
+                                    class="limits"><span>a</span><span>-a</span></span> f(x) dx = <strong>0</strong> (if
+                                f(x) is ODD).
+                            </li>
+                            <li style="margin-top: 1rem;"><strong>Periodic Functions:</strong><br>
+                                <span class="integral">&int;</span><span
+                                    class="limits"><span>nT</span><span>0</span></span> f(x) dx = n <span
+                                    class="integral">&int;</span><span
+                                    class="limits"><span>T</span><span>0</span></span> f(x) dx &nbsp; <em>(where T is
+                                    the period)</em>.
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="card formula-box">
+                        <div class="formula-content">
+                            <div class="math-frac"><span class="math-num">d</span><span class="math-den">dx</span></div>
+                            <span class="integral">&int;</span><span
+                                class="limits"><span>&phi;(x)</span><span>&psi;(x)</span></span> f(t) dt =
+                            f(&phi;(x))&phi;&prime;(x) - f(&psi;(x))&psi;&prime;(x)
+                        </div>
+                        <div class="formula-desc"><strong>Leibniz Rule:</strong> Used to differentiate an integral with
+                            variable limits.</div>
+                    </div>
+                </section>
+
+                <section id="applications-area" class="animate-in">
+                    <h2>5. Applications: Area Under Curves</h2>
+
+                    <div class="card">
+                        <ul>
+                            <li><strong>Area with X-axis:</strong> A = <span class="integral">&int;</span><span
+                                    class="limits"><span>b</span><span>a</span></span> |y| dx</li>
+                            <li><strong>Area with Y-axis:</strong> A = <span class="integral">&int;</span><span
+                                    class="limits"><span>d</span><span>c</span></span> |x| dy</li>
+                        <li><strong>Area Between Two Curves:</strong> A = <span class="integral">&int;</span><span class="limits"><span>b</span><span>a</span></span> (y<sub>upper</sub> - y<sub>lower</sub>) dx</li>
+                        </ul>
+                        <div class="card professor-note" style="margin-top: 1.5rem;">
+                            <h4>Golden Rule for Area Problems</h4>
+                            <p><strong>Always sketch before integrating.</strong> 80% of mistakes happen due to wrong upper/lower curve selection or missing a crossing point.</p>
+                        </div>
+                        <p style="margin-top: 1rem;"><strong>Strategy:</strong> Find points of intersection and visually identify which curve is on top in each interval.</p>
+                    </div>
+                </section>
+
+                <section id="insights" class="animate-in">
+                    <h2>6. Conceptual Insights</h2>
+
+                    <div class="card">
+                        <ul>
+                            <li><strong>Area is always Positive:</strong> When calculating area, use absolute values for parts of the curve below the x-axis. A definite integral <em>value</em> can be negative, but geometric "Area" cannot.</li>
+                            <li><strong>Symmetry is a Shortcut:</strong> If the bounded region is fully symmetric (like a standard circle or parabola), calculate the area in just the first quadrant (one-half or one-fourth) and multiply accordingly to save time.</li>
+                        </ul>
+                    </div>
+
+                    <div class="card exam-tip">
+                        <h4>Definite Integral vs Area</h4>
+                        <ul>
+                            <li><strong>Definite integral can be negative</strong> (area below x-axis is counted negative).</li>
+                            <li><strong>Area is always positive</strong> → take modulus $|\int f(x) dx|$.</li>
+                        </ul>
+                    </div>
+
+                    <div class="card">
+                        <h4>Improper Integrals Awareness</h4>
+                        <ul>
+                            <li>If limits involve &infin; or a point of discontinuity → use limits to evaluate.</li>
+                            <li><em>Example:</em> <span class="integral">&int;</span><span class="limits"><span>&infin;</span><span>1</span></span> <div class="math-frac"><span class="math-num">1</span><span class="math-den">x<sup>2</sup></span></div> dx = lim<sub>k&rarr;&infin;</sub> <span class="integral">&int;</span><span class="limits"><span>k</span><span>1</span></span> x<sup>-2</sup> dx.</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <section id="mistakes" class="animate-in">
+                    <h2>7. Common Mistakes</h2>
+
+                    <div class="card exam-tip">
+                        <ul>
+                            <li><strong>+ C Neglect:</strong> Forgetting the constant of integration in indefinite
+                                integrals. Always add it!</li>
+                            <li><strong>By Parts Order:</strong> Picking <em>u</em> and <em>v</em> incorrectly. For
+                                example, trying to integrate ln(x) directly instead of writing it as 1 &middot; ln(x)
+                                and applying ILATE.</li>
+                            <li><strong>Limit Change:</strong> In u-substitution for definite integrals, students
+                                routinely forget to convert the original upper and lower limits from <em>x-values</em>
+                                to <em>u-values</em>.</li>
+                            <li><strong>sin<sup>-1</sup> vs tan<sup>-1</sup> Forms:</strong> Confusing the 1/a
+                                coefficient. tan<sup>-1</sup> has the <div class="math-frac"><span
+                                        class="math-num">1</span><span class="math-den">a</span></div> in front;
+                                sin<sup>-1</sup> does NOT.</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <section id="example-applications" class="animate-in">
+                    <h2>8. Example Application Insights</h2>
+
+                    <div class="card">
+                        <h4>Area of Conics</h4>
+                        <ul>
+                            <li>Area of a circle x<sup>2</sup> + y<sup>2</sup> = r<sup>2</sup> is
+                                <strong>&pi;r<sup>2</sup></strong>.
+                            </li>
+                            <li>Area of an ellipse <div class="math-frac"><span
+                                        class="math-num">x<sup>2</sup></span><span class="math-den">a<sup>2</sup></span>
+                                </div> + <div class="math-frac"><span class="math-num">y<sup>2</sup></span><span
+                                        class="math-den">b<sup>2</sup></span></div> = 1 is <strong>&pi;ab</strong>.</li>
+                        </ul>
+                    </div>
+
+                    <div class="card professor-note">
+                        <h4>Parabola & Line Shortcut</h4>
+                        <p>The total area bounded between the parabolas y<sup>2</sup> = 4ax and x<sup>2</sup> = 4by is
+                            given directly by:
+                            <strong>
+                                <div class="math-frac"><span class="math-num">16ab</span><span class="math-den">3</span>
+                                </div>
+                            </strong>.
+                        </p>
+                        <p style="font-size: 0.85em; opacity: 0.9; margin-top: 0.5rem;">Memorizing this specific result
+                            saves massive calculation time during the IAT.</p>
+                    </div>
+                </section>
+
+                <section id="exam-focus" class="animate-in">
+                    <h2>9. IAT Exam Focus Points</h2>
+
+                    <div class="card">
+                        <ul>
+                            <li><strong>King's Property Problems:</strong> Usually involves sin/cos or ln where
+                                evaluating f(x) + f(a + b - x) simplifies beautifully into a constant.</li>
+                            <li><strong>Greatest Integer Function [x]:</strong> Practice integrals involving [x] or {x};
+                                they require splitting the definite limits precisely at integer break points.</li>
+                            <li><strong>Leibniz Rule:</strong> IAT frequently asks for the derivative of a function
+                                defined entirely by an integral (e.g., finding local extrema of F(x) = &int; f(t)dt).
+                            </li>
+                            <li><strong>Area of Bounded Regions:</strong> Exam questions typically involve finding the
+                                area trapped between an upward parabola and a straight line, or slicing a circle.</li>
+                            <li><strong>Average Value:</strong> Remember the theorem: f<sub>avg</sub> = <div
+                                    class="math-frac"><span class="math-num">1</span><span class="math-den">b - a</span>
+                                </div> <span class="integral">&int;</span><span
+                                    class="limits"><span>b</span><span>a</span></span> f(x) dx.</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <section id="practice-mock" class="animate-in">
+                    <h2>10. Practice Mock Test</h2>
+                    <div class="card"
+                        style="background: linear-gradient(135deg, rgb(var(--primary) / 0.1), rgb(var(--accent) / 0.1)); border: 1px solid rgb(var(--primary) / 0.2); text-align: center; padding: 3rem 2rem;">
+                        <div
+                            style="width: 80px; height: 80px; background: linear-gradient(135deg, rgb(var(--primary)), rgb(var(--accent))); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem; font-size: 2rem; box-shadow: var(--shadow-glow);">
+                            <i class="fas fa-vial"></i>
+                        </div>
+                        <h3 style="margin-top: 0;">Ready to test your knowledge?</h3>
+                        <p style="max-width: 500px; margin-left: auto; margin-right: auto; margin-bottom: 2.5rem;">Take
+                            a
+                            quick 15-question assessment specifically designed for <b>Integration & AoI</b>. Challenge
+                            yourself with IAT-level questions.</p>
+                        <a href="/mock_test/quick_mock_homepage.html" class="btn"
+                            style="background: linear-gradient(90deg, rgb(var(--primary)), rgb(var(--accent))); color: white; padding: 1rem 2.5rem; font-size: 1.125rem; box-shadow: var(--shadow-lg); text-decoration: none; display: inline-flex; align-items: center; gap: 0.75rem;">
+                            <i class="fas fa-play"></i> Start Practice Mock
+                        </a>
+                    </div>
+                </section>
+
+                <!-- Completion Indicator -->
+                <div
+                    style="margin-top: 4rem; padding-top: 2rem; border-top: 2px solid var(--border-primary); text-align: center; color: var(--text-tertiary);">
+                    <i class="fas fa-check-circle"
+                        style="font-size: 2rem; color: rgb(var(--success)); margin-bottom: 0.5rem;"></i>
+                    <p style="font-weight: 600; color: var(--text-primary);">End of Chapter</p>
+                    <p style="font-size: 0.875rem;">Integration & Applications</p>
+                </div>
+            </article>
+        </main>
+
+        <!-- Desktop TOC -->
+        <aside class="toc-container">
+            <div class="toc-header">On this page</div>
+            <nav>
+                <ul class="toc-list" id="tocList">
+                    <li><a href="#core-concept" class="toc-link">Core Concept</a></li>
+                    <li><a href="#standard-integrals" class="toc-link">Standard Integrals</a></li>
+                    <li><a href="#methods-integration" class="toc-link">Methods of Integration</a></li>
+                    <li><a href="#definite-properties" class="toc-link">Definite Properties</a></li>
+                    <li><a href="#applications-area" class="toc-link">Applications: Area</a></li>
+                    <li><a href="#insights" class="toc-link">Conceptual Insights</a></li>
+                    <li><a href="#mistakes" class="toc-link">Common Mistakes</a></li>
+                    <li><a href="#example-applications" class="toc-link">Example Applications</a></li>
+                    <li><a href="#exam-focus" class="toc-link">IAT Exam Focus</a></li>
+                    <li><a href="#practice-mock" class="toc-link">Practice Mock</a></li>
+                </ul>
+            </nav>
+
+            <div
+                style="margin-top: 2rem; padding: 1rem; background: var(--bg-tertiary); border-radius: var(--radius-md); border: 1px solid var(--border-primary);">
+                <div
+                    style="font-size: 0.75rem; font-weight: 700; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.5rem;">
+                    Study Progress</div>
+                <div style="height: 4px; background: var(--border-primary); border-radius: 100px; overflow: hidden;">
+                    <div id="tocProgress"
+                        style="height: 100%; width: 0%; background: linear-gradient(90deg, rgb(var(--primary)), rgb(var(--accent))); transition: width 0.3s;">
+                    </div>
+                </div>
+                <div style="margin-top: 0.5rem; font-size: 0.75rem; color: var(--text-secondary);" id="progressText">0%
+                    completed</div>
+            </div>
+        </aside>
+    </div>
+
+    <!-- Footer -->
+    <footer
+        style="background: var(--bg-secondary); border-top: 1px solid var(--border-primary); padding: 5rem 0 2rem; margin-top: 5rem;">
+        <div style="max-width: 1200px; margin: 0 auto; padding: 0 2rem;">
+            <div
+                style="display: flex; flex-wrap: wrap; gap: 3rem; justify-content: space-between; margin-bottom: 3rem;">
+                <div style="max-width: 320px;">
+                    <a href="/index.html" class="logo" style="margin-bottom: 1rem; pointer-events: auto;">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path
+                                d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z">
+                            </path>
+                        </svg>
+                        IISER Smart Prep
+                    </a>
+                    <p style="color: var(--text-secondary); font-size: 0.9rem; margin-top: 1rem;">Empowering scientific
+                        minds to reach India's premier research institutes through data and strategy.</p>
+                </div>
+
+                <div style="display: flex; gap: 4rem; flex-wrap: wrap;">
+                    <div>
+                        <h4
+                            style="margin-bottom: 1rem; font-size: 0.9rem; font-weight: 700; color: var(--text-primary);">
+                            Platform</h4>
+                        <ul style="display: flex; flex-direction: column; gap: 0.75rem; list-style: none;">
+                            <li><a href="/ai_tutor.html"
+                                    style="color: var(--text-secondary); font-size: 0.9rem; text-decoration: none;">AI
+                                    Tutor</a></li>
+                            <li><a href="/mock_test/full_mock_test_homepage.html"
+                                    style="color: var(--text-secondary); font-size: 0.9rem; text-decoration: none;">Mock
+                                    Tests</a></li>
+                            <li><a href="/index.html#pricing"
+                                    style="color: var(--text-secondary); font-size: 0.9rem; text-decoration: none;">Pricing</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4
+                            style="margin-bottom: 1rem; font-size: 0.9rem; font-weight: 700; color: var(--text-primary);">
+                            Support</h4>
+                        <ul style="display: flex; flex-direction: column; gap: 0.75rem; list-style: none;">
+                            <li><a href="/index.html#faq"
+                                    style="color: var(--text-secondary); font-size: 0.9rem; text-decoration: none;">FAQ</a>
+                            </li>
+                            <li><a href="/contact-us.html"
+                                    style="color: var(--text-secondary); font-size: 0.9rem; text-decoration: none;">Contact</a>
+                            </li>
+                            <li><a href="/privacy.html"
+                                    style="color: var(--text-secondary); font-size: 0.9rem; text-decoration: none;">Privacy
+                                    Policy</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div
+                style="text-align: center; border-top: 1px solid var(--border-primary); padding-top: 2rem; color: var(--text-tertiary); font-size: 0.85rem;">
+                &copy; 2026 IISER Smart Prep. All rights reserved. Not affiliated with IISERs Joint Admissions
+                Committee.
+            </div>
+        </div>
+    </footer>
+
+    <!-- Mobile Drawer -->
+    <button class="toc-btn-mobile" onclick="toggleDrawer()">
+        <i class="fas fa-list"></i>
+    </button>
+
+    <div class="mobile-drawer-overlay" id="drawerOverlay" onclick="toggleDrawer()">
+        <div class="mobile-drawer" onclick="event.stopPropagation()">
+            <div class="drawer-handle"></div>
+            <div class="toc-header" style="font-size: 1.125rem; margin-bottom: 1.5rem;">Contents</div>
+            <ul class="toc-list" style="position: relative;" id="mobileTocList">
+                <!-- Populated by JS -->
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        // Theme Toggle
+        function toggleTheme() {
+            const html = document.documentElement;
+            const currentTheme = html.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            html.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+
+            // Icon toggle
+            const icon = document.querySelector('.theme-toggle i');
+            icon.className = newTheme === 'dark' ? 'fas fa-moon' : 'fas fa-sun';
+        }
+
+        // Initialize Theme
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        document.documentElement.setAttribute('data-theme', savedTheme);
+        document.querySelector('.theme-toggle i').className = savedTheme === 'dark' ? 'fas fa-moon' : 'fas fa-sun';
+
+        // Progress Bar & Scroll Spy
+        const progressBar = document.getElementById('progressBar');
+        const tocProgress = document.getElementById('tocProgress');
+        const progressText = document.getElementById('progressText');
+        const sections = document.querySelectorAll('section[id]');
+        const tocLinks = document.querySelectorAll('.toc-link');
+
+        window.addEventListener('scroll', () => {
+            // Main Progress Bar
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            progressBar.style.width = scrolled + '%';
+
+            // TOC Progress
+            if (tocProgress) {
+                tocProgress.style.width = scrolled + '%';
+                progressText.textContent = Math.round(scrolled) + '% completed';
+            }
+
+            // Header Scroll Effect
+            const header = document.getElementById('mainHeader');
+            if (winScroll > 20) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+
+        // Intersection Observer for Scroll Spy
+        const observerOptions = {
+            root: null,
+            rootMargin: '-20% 0px -60% 0px',
+            threshold: 0
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const id = entry.target.getAttribute('id');
+                    tocLinks.forEach(link => {
+                        link.classList.remove('active');
+                        if (link.getAttribute('href') === `#${id}`) {
+                            link.classList.add('active');
+                        }
+                    });
+                }
+            });
+        }, observerOptions);
+
+        sections.forEach(section => observer.observe(section));
+
+        // Mobile Drawer
+        function toggleDrawer() {
+            const overlay = document.getElementById('drawerOverlay');
+            overlay.classList.toggle('active');
+            document.body.style.overflow = overlay.classList.contains('active') ? 'hidden' : '';
+        }
+
+        // Populate Mobile TOC
+        const mobileTocList = document.getElementById('mobileTocList');
+        tocLinks.forEach(link => {
+            const li = document.createElement('li');
+            const a = document.createElement('a');
+            a.href = link.getAttribute('href');
+            a.className = 'toc-link';
+            a.textContent = link.textContent;
+            a.onclick = () => toggleDrawer();
+            li.appendChild(a);
+            mobileTocList.appendChild(li);
+        });
+
+        // Stagger Animation on Scroll
+        const animateElements = document.querySelectorAll('.animate-in');
+        const animateObserver = new IntersectionObserver((entries) => {
+            entries.forEach((entry, index) => {
+                if (entry.isIntersecting) {
+                    setTimeout(() => {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }, index * 100);
+                    animateObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1 });
+
+        animateElements.forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(20px)';
+            el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            animateObserver.observe(el);
+        });
+
+        // Smooth Scroll for Anchor Links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Keyboard Shortcuts
+        document.addEventListener('keydown', (e) => {
+            // Press 'T' to toggle theme
+            if (e.key === 't' && !e.ctrlKey && !e.metaKey && !e.altKey) {
+                if (document.activeElement.tagName !== 'INPUT') {
+                    toggleTheme();
+                }
+            }
+            // Press 'Escape' to close drawer
+            if (e.key === 'Escape') {
+                const drawer = document.getElementById('drawerOverlay');
+                if (drawer.classList.contains('active')) {
+                    toggleDrawer();
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>

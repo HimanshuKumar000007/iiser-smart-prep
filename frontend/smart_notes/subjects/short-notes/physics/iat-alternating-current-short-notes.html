@@ -1,0 +1,906 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alternating Current (AC) | IISER Smart Prep</title>
+
+    <!-- SEO Meta Tags -->
+    <meta name="description"
+        content="Master Alternating Current (AC) for the IISER Aptitude Test (IAT). Short notes on LCR circuits, phasors, resonance, power factor, and transformers.">
+    <meta name="keywords"
+        content="IAT Physics, Alternating Current, AC, LCR Circuit, Phasors, Resonance, Power Factor, Transformers, RMS Value, Physics Unit 7, IISER Smart Prep">
+    <meta name="author" content="IISER Smart Prep">
+    <link rel="canonical"
+        href="https://iisersmartprep.space/smart_notes/subjects/short-notes/physics/iat-alternating-current-short-notes.html">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="article">
+    <meta property="og:url"
+        content="https://iisersmartprep.space/smart_notes/subjects/short-notes/physics/iat-alternating-current-short-notes.html">
+    <meta property="og:title" content="Alternating Current | IAT Physics Short Notes">
+    <meta property="og:description"
+        content="Quick revision notes for Alternating Current (AC). Perfect for last-minute IAT preparation.">
+    <meta property="og:image" content="https://iisersmartprep.space/assets/images/og-physics-unit7.jpg">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url"
+        content="https://iisersmartprep.space/smart_notes/subjects/short-notes/physics/iat-alternating-current-short-notes.html">
+    <meta property="twitter:title" content="Alternating Current | IAT Physics Short Notes">
+    <meta property="twitter:description"
+        content="Master Alternating Current for IAT with our expert-curated short notes.">
+    <meta property="twitter:image" content="https://iisersmartprep.space/assets/images/og-physics-unit7.jpg">
+
+    <!-- Structured Data (JSON-LD) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Article",
+      "headline": "Alternating Current Short Notes for IAT",
+      "description": "Comprehensive revision notes on Alternating Current (AC) for students preparing for the IISER Aptitude Test (IAT).",
+      "image": "https://iisersmartprep.space/assets/images/og-physics-unit7.jpg",
+      "author": {
+        "@type": "Organization",
+        "name": "IISER Smart Prep"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "IISER Smart Prep",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://iisersmartprep.space/assets/logo.png"
+        }
+      },
+      "datePublished": "2024-03-17",
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://iisersmartprep.space/smart_notes/subjects/short-notes/physics/iat-alternating-current-short-notes.html"
+      }
+    }
+    </script>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap"
+        rel="stylesheet">
+
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            /* Premium Color System */
+            --primary: 99 102 241;
+            --primary-light: 224 231 255;
+            --accent: 244 63 94;
+            --warning: 245 158 11;
+            --success: 16 185 129;
+
+            /* Neutral Scale */
+            --gray-50: 248 250 252;
+            --gray-100: 241 245 249;
+            --gray-200: 226 232 240;
+            --gray-300: 203 213 225;
+            --gray-400: 148 163 184;
+            --gray-500: 100 116 139;
+            --gray-600: 71 85 105;
+            --gray-700: 51 65 85;
+            --gray-800: 30 41 59;
+            --gray-900: 15 23 42;
+
+            /* semantic tokens */
+            --bg-primary: rgb(var(--gray-50));
+            --bg-secondary: white;
+            --bg-tertiary: rgb(var(--gray-100));
+            --text-primary: rgb(var(--gray-900));
+            --text-secondary: rgb(var(--gray-600));
+            --text-tertiary: rgb(var(--gray-500));
+            --border-primary: rgb(var(--gray-200));
+            --border-secondary: rgb(var(--gray-300));
+
+            /* Effects */
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+            --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+            --shadow-glow: 0 0 20px -5px rgb(var(--primary) / 0.4);
+
+            --glass-bg: rgba(255, 255, 255, 0.8);
+            --glass-border: rgba(255, 255, 255, 0.3);
+
+            --radius-sm: 0.5rem;
+            --radius-md: 0.75rem;
+            --radius-lg: 1rem;
+            --radius-xl: 1.5rem;
+
+            --nav-height: 80px;
+            --container-width: 880px;
+            --toc-width: 280px;
+        }
+
+        /* Dark Mode */
+        [data-theme="dark"] {
+            --bg-primary: rgb(var(--gray-900));
+            --bg-secondary: rgb(var(--gray-800));
+            --bg-tertiary: rgb(var(--gray-700));
+            --text-primary: rgb(var(--gray-50));
+            --text-secondary: rgb(var(--gray-300));
+            --text-tertiary: rgb(var(--gray-400));
+            --border-primary: rgb(var(--gray-700));
+            --border-secondary: rgb(var(--gray-600));
+
+            --glass-bg: rgba(15, 23, 42, 0.8);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --shadow-glow: 0 0 20px -5px rgb(var(--primary) / 0.6);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        body {
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.7;
+            font-size: 16px;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            overflow-x: hidden;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+            height: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--border-secondary);
+            border-radius: 100px;
+            border: 3px solid var(--bg-primary);
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgb(var(--gray-400));
+        }
+
+        /* Progress Bar */
+        .progress-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            z-index: 9999;
+            background: var(--border-primary);
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, rgb(var(--primary)), rgb(var(--accent)));
+            width: 0%;
+            transition: width 0.1s linear;
+            box-shadow: 0 0 10px rgb(var(--primary) / 0.5);
+        }
+
+        /* Header */
+        header {
+            position: fixed;
+            top: 20px;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            display: flex;
+            justify-content: center;
+            pointer-events: none;
+            transition: top 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        header.scrolled {
+            top: 0;
+        }
+
+        .nav-container {
+            pointer-events: auto;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            border: 1px solid var(--glass-border);
+            box-shadow: var(--shadow-lg);
+            padding: 0.75rem 1.5rem;
+            border-radius: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 90%;
+            max-width: var(--container-width);
+            height: var(--nav-height);
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        header.scrolled .nav-container {
+            width: 100%;
+            max-width: 100%;
+            border-radius: 0;
+            background: var(--bg-secondary);
+            padding: 0 2rem;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-weight: 800;
+            color: var(--text-primary);
+            text-decoration: none;
+            font-size: 1.125rem;
+        }
+
+        .nav-actions {
+            display: flex;
+            gap: 0.75rem;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.625rem 1.25rem;
+            border-radius: 100px;
+            font-weight: 600;
+            font-size: 0.875rem;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            text-decoration: none;
+            border: none;
+        }
+
+        .btn-secondary {
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+            border: 1px solid var(--border-primary);
+        }
+
+        .btn-secondary:hover {
+            background: var(--bg-secondary);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn-icon {
+            width: 40px;
+            height: 40px;
+            padding: 0;
+            justify-content: center;
+        }
+
+        /* Main Layout */
+        .page-container {
+            display: flex;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: calc(var(--nav-height) + 2rem) 2rem 4rem;
+            gap: 3rem;
+            position: relative;
+        }
+
+        .content-wrapper {
+            flex: 1;
+            max-width: var(--container-width);
+            margin: 0 auto;
+        }
+
+        /* Hero */
+        .hero {
+            margin-bottom: 3rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid var(--border-primary);
+            animation: fadeInUp 0.8s ease;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.375rem;
+            padding: 0.25rem 0.75rem;
+            background: rgb(var(--primary) / 0.1);
+            color: rgb(var(--primary));
+            border-radius: 100px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-bottom: 1rem;
+            border: 1px solid rgb(var(--primary) / 0.2);
+        }
+
+        h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            letter-spacing: -0.02em;
+        }
+
+        .meta-info {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .meta-item i {
+            color: rgb(var(--primary));
+        }
+
+        /* Typography */
+        h2 {
+            font-size: 1.875rem;
+            font-weight: 700;
+            margin: 3rem 0 1.25rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 2px solid var(--border-primary);
+            position: relative;
+            scroll-margin-top: calc(var(--nav-height) + 20px);
+        }
+
+        h2::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 60px;
+            height: 2px;
+            background: linear-gradient(90deg, rgb(var(--primary)), rgb(var(--accent)));
+        }
+
+        h3 {
+            font-size: 1.375rem;
+            font-weight: 600;
+            margin: 2rem 0 1rem;
+        }
+
+        h4 {
+            font-size: 1.125rem;
+            font-weight: 600;
+            margin: 1.5rem 0 0.75rem;
+        }
+
+        p {
+            margin-bottom: 1.25rem;
+            color: var(--text-secondary);
+        }
+
+        /* Cards */
+        .card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-primary);
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card:hover {
+            box-shadow: var(--shadow-xl);
+            transform: translateY(-2px);
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, rgb(var(--primary)), rgb(var(--accent)));
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .card:hover::before {
+            opacity: 1;
+        }
+
+        .formula-box {
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .formula-content {
+            font-size: 1.125rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .formula-desc {
+            font-size: 0.875rem;
+            color: var(--text-tertiary);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        .exam-tip {
+            background: linear-gradient(135deg, rgb(var(--warning) / 0.1), rgb(var(--warning) / 0.05));
+            border: 1px solid rgb(var(--warning) / 0.2);
+        }
+
+        .professor-note {
+            background: linear-gradient(135deg, rgb(var(--success) / 0.1), rgb(var(--success) / 0.05));
+            border: 1px solid rgb(var(--success) / 0.2);
+        }
+
+        /* TOC */
+        .toc-container {
+            position: sticky;
+            top: calc(var(--nav-height) + 2rem);
+            width: var(--toc-width);
+            height: calc(100vh - var(--nav-height) - 4rem);
+            overflow-y: auto;
+            display: none;
+        }
+
+        @media (min-width: 1280px) {
+            .toc-container {
+                display: block;
+            }
+        }
+
+        .toc-header {
+            font-size: 0.875rem;
+            font-weight: 700;
+            color: var(--text-tertiary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 1rem;
+            padding-left: 0.75rem;
+        }
+
+        .toc-list {
+            list-style: none;
+            border-left: 2px solid var(--border-primary);
+        }
+
+        .toc-link {
+            display: block;
+            padding: 0.5rem 0.75rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.875rem;
+            transition: all 0.2s;
+            border-left: 2px solid transparent;
+            margin-left: -2px;
+        }
+
+        .toc-link:hover {
+            color: rgb(var(--primary));
+            background: rgb(var(--primary) / 0.05);
+        }
+
+        .toc-link.active {
+            color: rgb(var(--primary));
+            font-weight: 600;
+            border-left-color: rgb(var(--primary));
+            background: rgb(var(--primary) / 0.08);
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        /* Mobile TOC */
+        .toc-btn-mobile {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            width: 56px;
+            height: 56px;
+            background: linear-gradient(135deg, rgb(var(--primary)), rgb(var(--accent)));
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            box-shadow: var(--shadow-glow), var(--shadow-xl);
+            z-index: 1000;
+            cursor: pointer;
+            border: none;
+        }
+
+        @media (min-width: 1280px) {
+            .toc-btn-mobile {
+                display: none;
+            }
+        }
+
+        /* Mobile Drawer */
+        .mobile-drawer-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+            z-index: 2000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s;
+        }
+
+        .mobile-drawer-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .mobile-drawer {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: var(--bg-secondary);
+            border-radius: 2rem 2rem 0 0;
+            padding: 2rem;
+            max-height: 70vh;
+            overflow-y: auto;
+            transform: translateY(100%);
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .mobile-drawer-overlay.active .mobile-drawer {
+            transform: translateY(0);
+        }
+
+        @media (max-width: 768px) {
+            :root {
+                --nav-height: 140px;
+            }
+            html { font-size: 25px; }
+            body { font-size: 1.4rem; }
+            header { background: white; border-bottom: 1px solid var(--border-primary); top: 0; }
+            .nav-container { border: none; box-shadow: none; width: 100%; border-radius: 0; background: transparent; }
+            .nav-actions a.btn { display: none; }
+            h1 { font-size: 2.5rem; }
+            h2 { font-size: 2rem; }
+            h3 { font-size: 1.8rem; }
+            p, li { font-size: 1.4rem; line-height: 1.6; }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="progress-container">
+        <div class="progress-bar" id="progressBar"></div>
+    </div>
+
+    <header id="mainHeader">
+        <div class="nav-container">
+            <a href="/index.html" class="logo">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+                </svg>
+                IISER Smart Prep
+            </a>
+            <div class="nav-actions">
+                <a href="/smart_notes/subjects/physics/unit-7-homepage-physics.html" class="btn btn-secondary">
+                    <i class="fas fa-arrow-left"></i>
+                    <span class="hide-mobile">Back to Unit</span>
+                </a>
+                <button class="btn btn-secondary btn-icon theme-toggle" onclick="toggleTheme()">
+                    <i class="fas fa-sun"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <div class="page-container">
+        <main class="content-wrapper">
+            <div class="hero">
+                <span class="badge">
+                    <i class="fas fa-star"></i>
+                    High Yield Topic
+                </span>
+                <h1>Alternating Current (AC)</h1>
+                <div class="meta-info">
+                    <div class="meta-item"><i class="fas fa-book"></i><span>Unit 7</span></div>
+                    <div class="meta-item"><i class="fas fa-clock"></i><span>25 min read</span></div>
+                    <div class="meta-item"><i class="fas fa-graduation-cap"></i><span>IAT Advanced</span></div>
+                    <div class="meta-item"><i class="fas fa-fire"></i><span>Must Do</span></div>
+                </div>
+            </div>
+
+            <article>
+                <section id="basics" class="animate-in">
+                    <h2>1. AC Basics & RMS Values</h2>
+                    <div class="card">
+                        <p>Alternating Current (AC) changes its magnitude and direction periodically. In India, the
+                            standard frequency is <strong>50 Hz</strong>.</p>
+                    </div>
+                    <div class="card formula-box">
+                        <div class="formula-content">v = v₀ sin(ωt) &nbsp;|&nbsp; i = i₀ sin(ωt)</div>
+                        <div class="formula-desc">Instantaneous voltage and current. (ω = 2πf)</div>
+                    </div>
+                    <div class="card formula-box">
+                        <div class="formula-content">I_rms = i₀ / √2 ≈ 0.707 i₀</div>
+                        <div class="formula-desc">Root Mean Square Value. (The value shown by AC ammeters/voltmeters).</div>
+                    </div>
+                    <div class="card formula-box">
+                        <div class="formula-content">I_avg = 2i₀ / π ≈ 0.637 i₀</div>
+                        <div class="formula-desc">Average value over a <strong>half cycle</strong>. (Avg over a full cycle is zero).</div>
+                    </div>
+                </section>
+
+                <section id="phasors" class="animate-in">
+                    <h2>2. Phasors (Rotating Vectors)</h2>
+                    <div class="card">
+                        <p>A <strong>Phasor</strong> is a vector that rotates around the origin with angular speed ω.
+                            The vertical projection represents the instantaneous value.</p>
+                        <ul>
+                            <li><strong>Phasor Diagram:</strong> Used to visualize the phase relationship between voltage and current.</li>
+                            <li><strong>In Phase:</strong> Vectors point in the same direction.</li>
+                            <li><strong>Out of Phase:</strong> Vectors separated by an angle φ.</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <section id="pure-circuits" class="animate-in">
+                    <h2>3. Pure AC Circuits</h2>
+                    
+                    <h3>A. Purely Resistor (R)</h3>
+                    <div class="card">
+                        <p>Voltage and Current are <strong>in phase</strong> (φ = 0°).</p>
+                        <div class="formula-box">
+                            <div class="formula-content">i = (v₀ / R) sin(ωt)</div>
+                            <div class="formula-desc">Ohm's law applies directly.</div>
+                        </div>
+                    </div>
+
+                    <h3>B. Purely Inductor (L)</h3>
+                    <div class="card">
+                        <p>Voltage <strong>leads</strong> Current by 90° (π/2 radians).</p>
+                        <div class="formula-box">
+                            <div class="formula-content">X_L = ωL = 2πfL</div>
+                            <div class="formula-desc">Inductive Reactance (Measured in Ohms). Increases with frequency.</div>
+                        </div>
+                    </div>
+
+                    <h3>C. Purely Capacitor (C)</h3>
+                    <div class="card">
+                        <p>Current <strong>leads</strong> Voltage by 90° (π/2 radians).</p>
+                        <div class="formula-box">
+                            <div class="formula-content">X_C = 1 / (ωC) = 1 / (2πfC)</div>
+                            <div class="formula-desc">Capacitive Reactance (Measured in Ohms). Decreases with frequency.</div>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="lcr-circuits" class="animate-in">
+                    <h2>4. Series LCR Circuit & Resonance</h2>
+                    <div class="card">
+                        <p>In a series LCR circuit, we combine the impedances using vector addition (Phasors).</p>
+                    </div>
+                    <div class="card formula-box">
+                        <div class="formula-content">Z = √[R² + (X_L - X_C)²]</div>
+                        <div class="formula-desc"><strong>Impedance (Z):</strong> Total opposition to current.</div>
+                    </div>
+                    <div class="card formula-box">
+                        <div class="formula-content">tan φ = (X_L - X_C) / R</div>
+                        <div class="formula-desc">Phase constant between voltage and current.</div>
+                    </div>
+
+                    <div class="card professor-note">
+                        <h4>Electrical Resonance:</h4>
+                        <p>Occurs when <strong>X_L = X_C</strong>. At this point, the circuit becomes purely resistive.</p>
+                        <ul>
+                            <li><strong>Resonant Frequency:</strong> f₀ = 1 / [2π √(LC)]</li>
+                            <li><strong>Impedance is Minimum:</strong> Z = R</li>
+                            <li><strong>Current is Maximum:</strong> i = v / R</li>
+                        </ul>
+                    </div>
+
+                    <div class="card formula-box">
+                        <div class="formula-content">Q = (1/R) √(L/C) = ω₀L / R</div>
+                        <div class="formula-desc"><strong>Quality Factor (Q):</strong> Sharpness of resonance. Higher Q means better selectivity.</div>
+                    </div>
+                </section>
+
+                <section id="power" class="animate-in">
+                    <h2>5. Power in AC Circuit</h2>
+                    <div class="card">
+                        <p>Pure inductors and capacitors consume <strong>zero</strong> average power because current and voltage are 90° apart.</p>
+                    </div>
+                    <div class="card formula-box">
+                        <div class="formula-content">P_avg = V_rms I_rms cos φ</div>
+                        <div class="formula-desc">Average Power. (cos φ is the <strong>Power Factor</strong>).</div>
+                    </div>
+                    <div class="card formula-box">
+                        <div class="formula-content">cos φ = R / Z</div>
+                        <div class="formula-desc">Power Factor. Pure R: cos φ = 1. Pure L/C: cos φ = 0.</div>
+                    </div>
+                    <div class="exam-tip">
+                        <h4>Wattless Current</h4>
+                        <p>The component of current (I sin φ) that does not consume any power is called Wattless Current.</p>
+                    </div>
+                </section>
+
+                <section id="transformers" class="animate-in">
+                    <h2>6. Transformers</h2>
+                    <div class="card">
+                        <p>Used to increase or decrease AC voltage based on <strong>Mutual Induction</strong>.</p>
+                    </div>
+                    <div class="card formula-box">
+                        <div class="formula-content">V_s / V_p = N_s / N_p = I_p / I_s = k</div>
+                        <div class="formula-desc">k = Transformation Ratio. (k > 1 for Step-up).</div>
+                    </div>
+                    <div class="card formula-box">
+                        <div class="formula-content">η = (Output Power / Input Power) × 100%</div>
+                        <div class="formula-desc">Efficiency. (Ideal transformer is 100%).</div>
+                    </div>
+                    <div class="card exam-tip">
+                        <h4>Energy Losses in Transformers:</h4>
+                        <ul>
+                            <li><strong>Flux Leakage:</strong> Not all primary flux reaches secondary.</li>
+                            <li><strong>Resistance Loss (Copper Loss):</strong> Heat in windings (I²R).</li>
+                            <li><strong>Eddy Current Loss (Iron Loss):</strong> Minimized by laminating the core.</li>
+                            <li><strong>Hysteresis Loss:</strong> Energy lost in reversing magnetization.</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <section id="practice-mock" class="animate-in">
+                    <h2>7. Practice Mock Test</h2>
+                    <div class="card" style="background: linear-gradient(135deg, rgb(var(--primary) / 0.1), rgb(var(--accent) / 0.1)); text-align: center; padding: 3rem 2rem;">
+                        <div style="width: 80px; height: 80px; background: linear-gradient(135deg, rgb(var(--primary)), rgb(var(--accent))); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem; font-size: 2rem;">
+                            <i class="fas fa-bolt"></i>
+                        </div>
+                        <h3>Test Your AC Mastery</h3>
+                        <p>Interactive 15-question quiz covering all AC concepts.</p>
+                        <a href="/mock_test/quick_mock_homepage.html" class="btn" style="background: linear-gradient(90deg, rgb(var(--primary)), rgb(var(--accent))); color: white; padding: 1rem 2.5rem; margin-top: 1rem;">
+                            <i class="fas fa-play"></i> Start Quiz
+                        </a>
+                    </div>
+                </section>
+
+                <div style="margin-top: 4rem; padding-top: 2rem; border-top: 2px solid var(--border-primary); text-align: center; color: var(--text-tertiary);">
+                    <i class="fas fa-check-circle" style="font-size: 2rem; color: rgb(var(--success)); margin-bottom: 0.5rem;"></i>
+                    <p style="font-weight: 600; color: var(--text-primary);">Chapter Complete</p>
+                    <p style="font-size: 0.875rem;">Alternating Current</p>
+                </div>
+            </article>
+        </main>
+
+        <aside class="toc-container">
+            <div class="toc-header">Syllabus Guide</div>
+            <nav>
+                <ul class="toc-list" id="tocList">
+                    <li><a href="#basics" class="toc-link">AC Basics</a></li>
+                    <li><a href="#phasors" class="toc-link">Phasors</a></li>
+                    <li><a href="#pure-circuits" class="toc-link">Pure Circuits</a></li>
+                    <li><a href="#lcr-circuits" class="toc-link">LCR & Resonance</a></li>
+                    <li><a href="#power" class="toc-link">Power Factor</a></li>
+                    <li><a href="#transformers" class="toc-link">Transformers</a></li>
+                    <li><a href="#practice-mock" class="toc-link">Practice Mock</a></li>
+                </ul>
+            </nav>
+            <div style="margin-top: 2rem; padding: 1rem; background: var(--bg-tertiary); border-radius: var(--radius-md);">
+                <div style="font-size: 0.75rem; font-weight: 700; text-transform: uppercase; margin-bottom: 0.5rem;">Reading Depth</div>
+                <div style="height: 4px; background: var(--border-primary); border-radius: 100px; overflow: hidden;">
+                    <div id="tocProgress" style="height: 100%; width: 0%; background: linear-gradient(90deg, rgb(var(--primary)), rgb(var(--accent))); transition: width 0.3s;"></div>
+                </div>
+                <div style="margin-top: 0.5rem; font-size: 0.75rem; color: var(--text-secondary);" id="progressText">0% completed</div>
+            </div>
+        </aside>
+    </div>
+
+    <button class="toc-btn-mobile" onclick="toggleDrawer()"><i class="fas fa-list"></i></button>
+
+    <div class="mobile-drawer-overlay" id="drawerOverlay" onclick="toggleDrawer()">
+        <div class="mobile-drawer" onclick="event.stopPropagation()">
+            <div style="width: 40px; height: 4px; background: var(--border-secondary); border-radius: 100px; margin: 0 auto 1.5rem;"></div>
+            <div class="toc-header">Contents</div>
+            <ul class="toc-list" id="mobileTocList"></ul>
+        </div>
+    </div>
+
+    <script>
+        function toggleTheme() {
+            const html = document.documentElement;
+            const newTheme = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+            html.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            const icon = document.querySelector('.theme-toggle i');
+            icon.className = newTheme === 'dark' ? 'fas fa-moon' : 'fas fa-sun';
+        }
+
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        document.documentElement.setAttribute('data-theme', savedTheme);
+        document.querySelector('.theme-toggle i').className = savedTheme === 'dark' ? 'fas fa-moon' : 'fas fa-sun';
+
+        window.addEventListener('scroll', () => {
+            const winScroll = document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            document.getElementById('progressBar').style.width = scrolled + '%';
+            if(document.getElementById('tocProgress')) {
+                document.getElementById('tocProgress').style.width = scrolled + '%';
+                document.getElementById('progressText').textContent = Math.round(scrolled) + '% completed';
+            }
+            const header = document.getElementById('mainHeader');
+            if (winScroll > 20) header.classList.add('scrolled');
+            else header.classList.remove('scrolled');
+        });
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const id = entry.target.getAttribute('id');
+                    document.querySelectorAll('.toc-link').forEach(link => {
+                        link.classList.toggle('active', link.getAttribute('href') === `#${id}`);
+                    });
+                }
+            });
+        }, { rootMargin: '-20% 0px -60% 0px' });
+
+        document.querySelectorAll('section[id]').forEach(s => observer.observe(s));
+
+        function toggleDrawer() {
+            const overlay = document.getElementById('drawerOverlay');
+            overlay.classList.toggle('active');
+            document.body.style.overflow = overlay.classList.contains('active') ? 'hidden' : '';
+        }
+
+        const mobileToc = document.getElementById('mobileTocList');
+        document.querySelectorAll('.toc-container .toc-link').forEach(link => {
+            const li = document.createElement('li');
+            const a = link.cloneNode(true);
+            a.onclick = toggleDrawer;
+            li.appendChild(a);
+            mobileToc.appendChild(li);
+        });
+
+        const animateObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, { threshold: 0.1 });
+        document.querySelectorAll('.animate-in').forEach(el => animateObserver.observe(el));
+    </script>
+</body>
+</html>
