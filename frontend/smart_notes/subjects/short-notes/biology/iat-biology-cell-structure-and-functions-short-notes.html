@@ -190,6 +190,150 @@
         /* Mobile Controls */
         .toc-btn-mobile { position: fixed; bottom: 24px; right: 24px; width: 56px; height: 56px; background: linear-gradient(135deg, rgb(var(--success)), rgb(var(--primary))); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; z-index: 1000; box-shadow: var(--shadow-xl); border: none; font-size: 1.25rem; cursor: pointer; }
         @media (min-width: 1280px) { .toc-btn-mobile { display: none; } }
+
+        /* Responsive Optimization */
+        @media (max-width: 768px) {
+            :root {
+                --nav-height: 70px;
+            }
+
+            html {
+                font-size: 16px;
+            }
+
+            body {
+                font-size: 1rem;
+                overflow-x: hidden;
+            }
+
+            * {
+                max-width: 100%;
+            }
+
+            /* Hide Sidebars/Panels on Mobile */
+            .toc-container,
+            .left-sidebar,
+            .side-panel,
+            .unit-sidebar {
+                display: none !important;
+            }
+
+            .content-wrapper {
+                margin-left: 0 !important;
+                width: 100% !important;
+                padding: 1rem !important;
+                flex: none !important;
+            }
+
+            header {
+                top: 0;
+                height: var(--nav-height);
+                background: white;
+                border-bottom: 1px solid var(--border-primary);
+                padding: 0;
+            }
+
+            .nav-container {
+                width: 100%;
+                max-width: 100%;
+                padding: 0 1.5rem;
+                background: transparent;
+                box-shadow: none;
+                border: none;
+                border-radius: 0;
+            }
+
+            .nav-actions a.btn {
+                display: none;
+            }
+
+            .logo {
+                font-size: 1.1rem;
+            }
+
+            .btn {
+                padding: 0.6rem 1rem;
+                font-size: 0.85rem;
+            }
+
+            .btn-icon {
+                width: 40px;
+                height: 40px;
+                font-size: 1.1rem;
+            }
+
+            h1 {
+                font-size: 2rem;
+                line-height: 1.2;
+                word-break: break-word;
+                margin-bottom: 1.5rem;
+                position: relative;
+                z-index: 1;
+            }
+
+            h2, h3, h4, section {
+                position: relative;
+                z-index: 1;
+            }
+
+            h2 {
+                font-size: 1.8rem;
+                margin-top: 3rem;
+                padding-bottom: 0.75rem;
+            }
+
+            h3 {
+                font-size: 1.5rem;
+                margin-top: 2.5rem;
+            }
+
+            h4 {
+                font-size: 1.2rem;
+                margin-top: 2rem;
+            }
+
+            p,
+            li {
+                font-size: 0.95rem;
+                line-height: 1.6;
+                margin-bottom: 1.25rem;
+            }
+
+            .hero {
+                margin-bottom: 1.5rem;
+                padding-bottom: 1rem;
+                position: relative;
+                z-index: 1;
+            }
+
+            .page-container {
+                padding-left: 1rem;
+                padding-right: 1rem;
+                padding-top: calc(var(--nav-height) + 1rem);
+                display: block;
+            }
+
+            .meta-info {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 0.8rem;
+                font-size: 0.9rem;
+            }
+
+            .card {
+                padding: 1.25rem;
+            }
+
+            .premium-table th,
+            .premium-table td {
+                padding: 0.75rem;
+            }
+
+            .badge {
+                font-size: 0.85rem;
+                padding: 0.4rem 1rem;
+            }
+        }
     </style>
 </head>
 
@@ -422,12 +566,49 @@
         </aside>
     </div>
 
+    <!-- Mobile TOC Drawer -->
+    <div class="mobile-drawer-overlay" id="drawerOverlay" onclick="toggleDrawer()">
+        <div class="mobile-drawer" onclick="event.stopPropagation()">
+            <div class="drawer-handle"></div>
+            <h4 style="margin-top: 0; margin-bottom: 1.5rem; font-size: 1rem; font-weight: 700; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 0.05em;">Table of Contents</h4>
+            <nav>
+                <ul class="toc-list" id="mobileTocList" style="border-left: none; padding-left: 0;">
+                    <!-- Dynamic Content -->
+                </ul>
+            </nav>
+        </div>
+    </div>
+
     <!-- Mobile Drawer Wrapper -->
     <button class="toc-btn-mobile" onclick="toggleDrawer()">
         <i class="fas fa-list"></i>
     </button>
 
     <script>
+        function toggleDrawer() {
+            const overlay = document.getElementById('drawerOverlay');
+            overlay.classList.toggle('active');
+            document.body.style.overflow = overlay.classList.contains('active') ? 'hidden' : '';
+        }
+
+        // Populate Mobile TOC
+        document.addEventListener('DOMContentLoaded', () => {
+            const tocLinks = document.querySelectorAll('.toc-link');
+            const mobileTocList = document.getElementById('mobileTocList');
+            if (mobileTocList) {
+                tocLinks.forEach(link => {
+                    const li = document.createElement('li');
+                    const a = document.createElement('a');
+                    a.href = link.getAttribute('href');
+                    a.className = 'toc-link';
+                    a.textContent = link.textContent;
+                    a.onclick = () => toggleDrawer();
+                    li.appendChild(a);
+                    mobileTocList.appendChild(li);
+                });
+            }
+        });
+
         function toggleTheme() {
             const html = document.documentElement;
             const current = html.getAttribute('data-theme');
