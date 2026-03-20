@@ -1,0 +1,919 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IISER Biology Mind Map | Diversity in the Living World</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap');
+
+    :root {
+      --bg-dark: #0f172a;
+      --card-bg: #1e293b;
+      --accent-mono: #3b82f6;
+      /* Blue for Monera */
+      --accent-prot: #8b5cf6;
+      /* Purple for Protista */
+      --accent-fungi: #f59e0b;
+      /* Amber for Fungi */
+      --accent-plant: #10b981;
+      /* Emerald for Plantae */
+      --accent-animal: #ef4444;
+      /* Red for Animalia */
+      --accent-virus: #ec4899;
+      /* Pink for Viruses */
+      --text-main: #f1f5f9;
+      --text-muted: #94a3b8;
+      --line-color: #334155;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      overflow-x: hidden;
+    }
+
+    /* Tree Connector Lines */
+    .tree-node {
+      position: relative;
+      padding-left: 2rem;
+      border-left: 2px solid var(--line-color);
+      margin-left: 1rem;
+    }
+
+    .tree-node:last-child {
+      border-left: 2px solid transparent;
+    }
+
+    .tree-node::before {
+      content: "";
+      position: absolute;
+      left: -2px;
+      top: 0;
+      width: 2rem;
+      height: 2rem;
+      border-bottom: 2px solid var(--line-color);
+      border-left: 2px solid var(--line-color);
+      border-bottom-left-radius: 8px;
+    }
+
+    .tree-node:first-child::before {
+      top: 1.5rem;
+      height: calc(100% - 1.5rem);
+    }
+
+    /* Root node adjustments */
+    .root-node {
+      border-left: none;
+      padding-left: 0;
+      margin-left: 0;
+    }
+
+    .root-node::before {
+      display: none;
+    }
+
+    /* Node Cards */
+    .node-card {
+      background: rgba(30, 41, 59, 0.8);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .node-card:hover {
+      transform: translateX(5px);
+      border-color: rgba(255, 255, 255, 0.3);
+      box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+    }
+
+    .node-card.active {
+      border-color: var(--accent-mono);
+      box-shadow: 0 0 20px rgba(59, 130, 246, 0.2);
+    }
+
+    .node-card::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      height: 100%;
+      width: 4px;
+      background: var(--accent-mono);
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .node-card:hover::after {
+      opacity: 1;
+    }
+
+    /* Kingdom Specific Colors */
+    .kingdom-monera .node-card::after {
+      background: var(--accent-mono);
+    }
+
+    .kingdom-protista .node-card::after {
+      background: var(--accent-prot);
+    }
+
+    .kingdom-fungi .node-card::after {
+      background: var(--accent-fungi);
+    }
+
+    .kingdom-plantae .node-card::after {
+      background: var(--accent-plant);
+    }
+
+    .kingdom-animalia .node-card::after {
+      background: var(--accent-animal);
+    }
+
+    .kingdom-virus .node-card::after {
+      background: var(--accent-virus);
+    }
+
+    .kingdom-monera .node-card.active {
+      border-color: var(--accent-mono);
+    }
+
+    .kingdom-protista .node-card.active {
+      border-color: var(--accent-prot);
+    }
+
+    .kingdom-fungi .node-card.active {
+      border-color: var(--accent-fungi);
+    }
+
+    .kingdom-plantae .node-card.active {
+      border-color: var(--accent-plant);
+    }
+
+    .kingdom-animalia .node-card.active {
+      border-color: var(--accent-animal);
+    }
+
+    .kingdom-virus .node-card.active {
+      border-color: var(--accent-virus);
+    }
+
+    /* Toggle Button */
+    .toggle-btn {
+      transition: transform 0.3s;
+    }
+
+    .toggle-btn.collapsed {
+      transform: rotate(-90deg);
+    }
+
+    /* Search Highlight */
+    .highlight {
+      background: rgba(234, 179, 8, 0.3);
+      border-radius: 2px;
+      padding: 0 2px;
+    }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: var(--bg-dark);
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: var(--line-color);
+      border-radius: 4px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--text-muted);
+    }
+
+    /* Content Formatting */
+    .content-text {
+      font-size: 0.9rem;
+      line-height: 1.6;
+      color: var(--text-muted);
+    }
+
+    .content-text strong {
+      color: var(--text-main);
+      font-weight: 600;
+    }
+
+    .content-text ul {
+      margin-top: 0.5rem;
+      padding-left: 1.2rem;
+    }
+
+    .content-text li {
+      margin-bottom: 0.3rem;
+      position: relative;
+    }
+
+    .content-text li::marker {
+      color: var(--accent-mono);
+    }
+
+    /* Animations */
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .animate-fade-in {
+      animation: fadeIn 0.5s ease-out forwards;
+    }
+
+    /* Badge */
+    .badge {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      padding: 2px 6px;
+      border-radius: 4px;
+      background: rgba(255, 255, 255, 0.1);
+      color: var(--text-muted);
+    }
+  </style>
+  <base target="_blank">
+</head>
+
+<body class="min-h-screen">
+
+  <!-- Header -->
+  <header class="sticky top-0 z-50 bg-slate-900/80 backdrop-blur-md border-b border-slate-800">
+    <div class="max-w-7xl mx-auto px-4 py-4">
+      <div class="flex flex-col md:flex-row items-center justify-between gap-4">
+        <div class="flex items-center gap-3">
+          <div
+            class="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
+            <i class="fas fa-dna text-white text-lg"></i>
+          </div>
+          <div>
+            <h1 class="text-xl font-bold text-white">IISER Biology</h1>
+            <p class="text-xs text-slate-400">Diversity in the Living World</p>
+          </div>
+        </div>
+
+        <div class="relative w-full md:w-96">
+          <i class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"></i>
+          <input type="text" id="searchInput"
+            class="w-full bg-slate-800 border border-slate-700 rounded-lg pl-10 pr-4 py-2 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all"
+            placeholder="Search concepts (e.g., 'Diatoms', 'Metamerism')...">
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="max-w-7xl mx-auto px-4 py-8">
+    <div id="mindmap-container" class="space-y-6">
+      <!-- Content will be injected here -->
+    </div>
+  </main>
+
+  <!-- Legend -->
+  <div
+    class="fixed bottom-4 right-4 bg-slate-800/90 backdrop-blur p-4 rounded-lg border border-slate-700 shadow-xl hidden lg:block">
+    <h3 class="text-xs font-bold text-slate-400 uppercase mb-2">Kingdom Colors</h3>
+    <div class="space-y-1 text-xs">
+      <div class="flex items-center gap-2">
+        <div class="w-3 h-3 rounded-full bg-blue-500"></div><span>Monera</span>
+      </div>
+      <div class="flex items-center gap-2">
+        <div class="w-3 h-3 rounded-full bg-purple-500"></div><span>Protista</span>
+      </div>
+      <div class="flex items-center gap-2">
+        <div class="w-3 h-3 rounded-full bg-amber-500"></div><span>Fungi</span>
+      </div>
+      <div class="flex items-center gap-2">
+        <div class="w-3 h-3 rounded-full bg-emerald-500"></div><span>Plantae</span>
+      </div>
+      <div class="flex items-center gap-2">
+        <div class="w-3 h-3 rounded-full bg-red-500"></div><span>Animalia</span>
+      </div>
+      <div class="flex items-center gap-2">
+        <div class="w-3 h-3 rounded-full bg-pink-500"></div><span>Viruses</span>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Comprehensive Data Structure
+    const mindMapData = {
+      id: "root",
+      title: "Diversity in the Living World",
+      icon: "🧬",
+      type: "root",
+      content: "Comprehensive study of biological classification, kingdoms, and diversity for IISER Aptitude Test.",
+      children: [
+        {
+          id: "living-world",
+          title: "The Living World",
+          icon: "🌍",
+          type: "branch",
+          content: "Characteristics that distinguish living from non-living; basis of classification.",
+          children: [
+            {
+              id: "characteristics",
+              title: "Characteristics of Life",
+              icon: "✨",
+              content: `
+                                <strong>1. Growth:</strong> Irreversible increase in mass/size. <em>Exception:</strong> Arteries/Capillaries (dead cells increase in size).<br>
+                                <strong>2. Reproduction:</strong> Production of progeny (sexual/asexual). <em>Exception:</strong> Sterile worker bees, mules.<br>
+                                <strong>3. Metabolism:</strong> Sum of all chemical reactions (anabolism + catabolism). No exception.<br>
+                                <strong>4. Consciousness:</strong> Response to stimuli (physical/chemical). No exception.<br>
+                                <strong>5. Cellular Organization:</strong> Basic unit of life.<br>
+                                <strong>6. Homeostasis:</strong> Maintenance of internal environment.
+                            `,
+              children: [
+                { title: "Metabolism", icon: "⚡", content: "Anabolism (building up) vs Catabolism (breaking down). Metabolic diversity is the basis of classification." },
+                { title: "Reproduction Types", icon: "🔄", content: "<strong>Asexual:</strong> Fission, fragmentation, budding, spores. <strong>Sexual:</strong> Gamete formation & fusion." }
+              ]
+            },
+            {
+              id: "taxonomy",
+              title: "Taxonomic Categories",
+              icon: "📐",
+              content: "Hierarchy of classification groups (Taxa).",
+              children: [
+                {
+                  title: "Hierarchy (Highest to Lowest)",
+                  icon: "⬇️",
+                  content: `
+                                        <strong>Kingdom → Phylum/Division → Class → Order → Family → Genus → Species</strong><br>
+                                        <em>Mnemonic:</em> <strong>K</strong>ing <strong>P</strong>hillip <strong>C</strong>ame <strong>O</strong>ver <strong>F</strong>or <strong>G</strong>ood <strong>S</strong>oup.
+                                    `
+                },
+                { title: "Species Concept", icon: "🔬", content: "Basic unit of classification. Group of individuals capable of interbreeding to produce fertile offspring (Biological Species Concept)." },
+                { title: "Binomial Nomenclature", icon: "🏷️", content: "Carolus Linnaeus (1753). Genus (Capitalized) + species (lowercase), italicized/underlined. <em>Ex: Homo sapiens, Mangifera indica.</em>" }
+              ]
+            }
+          ]
+        },
+        {
+          id: "classification",
+          title: "Biological Classification",
+          icon: "🧪",
+          type: "branch",
+          content: "Systematic arrangement of organisms into groups/taxa based on characteristics.",
+          children: [
+            {
+              id: "monera",
+              title: "Kingdom Monera",
+              icon: "🦠",
+              type: "kingdom-monera",
+              content: "Prokaryotic, unicellular, microscopic. Most ancient, abundant, ubiquitous.",
+              children: [
+                {
+                  title: "Key Characteristics",
+                  icon: "📋",
+                  content: `
+                                        • <strong>Cell Wall:</strong> Peptidoglycan/Murein (Polysaccharide + Amino acids)<br>
+                                        • <strong>Nutrition:</strong> Auto (Photosynthetic/Chemosynthetic) or Hetero<br>
+                                        • <strong>Reproduction:</strong> Asexual (binary fission, spores)<br>
+                                        • <strong>Respiration:</strong> Aerobic/Anaerobic/Facultative<br>
+                                        • <strong>Flagella:</strong> If present, made of single fibril (9+2 absent)
+                                    `
+                },
+                {
+                  title: "Archaebacteria",
+                  icon: "🔥",
+                  content: `
+                                        <strong>Extremophiles.</strong> Live in harsh habitats.<br>
+                                        • <strong>Methanogens:</strong> Marsh gas (CH₄), gut of ruminants, sewage treatment.<br>
+                                        • <strong>Halophiles:</strong> Salty areas (Dead Sea).<br>
+                                        • <strong>Thermoacidophiles:</strong> Hot sulphur springs (high temp + acid).
+                                    `
+                },
+                {
+                  title: "Eubacteria (True Bacteria)",
+                  icon: "🧫",
+                  content: `
+                                        <strong>Cyanobacteria (Blue-green algae):</strong> Photosynthetic, N₂ fixers. <em>Ex: Nostoc, Anabaena, Oscillatoria.</em><br>
+                                        <strong>Heterotrophic:</strong> <em>E. coli, Salmonella, Rhizobium.</em><br>
+                                        <strong>Chemosynthetic:</strong> Oxidize inorganic substances for energy. <em>Nitrifying bacteria, Sulphur bacteria.</em>
+                                    `
+                },
+                {
+                  title: "Mycoplasma",
+                  icon: "🩹",
+                  content: "Smallest living cells. Lack cell wall. Pleuropneumonia-like organisms (PPLO). Can survive without oxygen. Pathogenic in animals & plants."
+                }
+              ]
+            },
+            {
+              id: "protista",
+              title: "Kingdom Protista",
+              icon: "🧪",
+              type: "kingdom-protista",
+              content: "Eukaryotic, unicellular (mostly). 'Junk drawer' kingdom (organisms not fitting elsewhere).",
+              children: [
+                {
+                  title: "Chrysophytes (Golden Algae)",
+                  icon: "✨",
+                  content: `
+                                        <strong>Diatoms:</strong> Siliceous cell walls (frustules) with intricate designs. Box-like/Discoid. Photosynthetic. Main producers in oceans.<br>
+                                        <strong>Dinoflagellates:</strong> Cellulose plates. Two flagella (transverse + longitudinal). Red tides (Gonyaulax). Bioluminescence.
+                                    `
+                },
+                {
+                  title: "Euglenoids",
+                  icon: "👁️",
+                  content: `
+                                        <em>Euglena.</em> Protein-rich pellicle (no cell wall). Two flagella. Photosynthetic in light, heterotrophic in dark (Mixotrophic). <strong>Euglenoid granules (Paramylon)</strong> stored.
+                                    `
+                },
+                {
+                  title: "Slime Moulds",
+                  icon: "🍄",
+                  content: `
+                                        Saprophytic protists. Amoeboid (plasmodium stage). Under unfavorable conditions → fruiting bodies with spores (true walls of cellulose/kingdom Fungi-like).
+                                    `
+                },
+                {
+                  title: "Protozoans",
+                  icon: "🐛",
+                  content: `
+                                        Heterotrophic, animal-like.<br>
+                                        • <strong>Amoeboid:</strong> Pseudopodia. <em>Entamoeba histolytica</em> (Amoebiasis).<br>
+                                        • <strong>Flagellated:</strong> Trypanosoma (Sleeping sickness), Giardia.<br>
+                                        • <strong>Ciliated:</strong> Paramecium, Plasmodium (Malaria).<br>
+                                        • <strong>Sporozoans:</strong> Plasmodium (via mosquito).
+                                    `
+                }
+              ]
+            },
+            {
+              id: "fungi",
+              title: "Kingdom Fungi",
+              icon: "🍄",
+              type: "kingdom-fungi",
+              content: "Eukaryotic, heterotrophic (absorptive), non-motile, cell wall of chitin.",
+              children: [
+                {
+                  title: "General Characteristics",
+                  icon: "📋",
+                  content: `
+                                        • <strong>Nutrition:</strong> Saprophytes (dead/decay) or Parasites (living). Absorptive nutrition (secrete enzymes, absorb nutrients).<br>
+                                        • <strong>Cell Wall:</strong> Chitin (polysaccharide).<br>
+                                        • <strong>Storage:</strong> Glycogen (starch absent).<br>
+                                        • <strong>Reproduction:</strong> Vegetative (fragmentation, budding, fission), Asexual (spores), Sexual (by fusion).
+                                    `
+                },
+                {
+                  title: "Phycomycetes (Algal Fungi)",
+                  icon: "🌊",
+                  content: `
+                                        Lower fungi. Aseptate, coenocytic mycelium. Asexual by zoospores (motile) or aplanospores (non-motile). Sexual by gametangial contact/fusion.<br>
+                                        <em>Ex: Rhizopus (Bread mould), Mucor, Albugo (Candida).</em>
+                                    `
+                },
+                {
+                  title: "Ascomycetes (Sac Fungi)",
+                  icon: "⛪",
+                  content: `
+                                        Septate mycelium. Conidia (asexual). Sexual spores (Ascospores) in <strong>Ascus</strong> (sac), inside <strong>Ascocarp</strong> (fruiting body).<br>
+                                        <em>Ex: Saccharomyces (Yeast/Brewer's), Penicillium, Aspergillus, Neurospora (genetics), Morels, Truffles.</em>
+                                    `
+                },
+                {
+                  title: "Basidiomycetes (Club Fungi)",
+                  icon: "🏏",
+                  content: `
+                                        Septate mycelium with clamp connections. Bracket fungi, mushrooms, puffballs. Sexual spores (Basidiospores) on <strong>Basidium</strong> (club-shaped), inside <strong>Basidiocarp</strong>.<br>
+                                        <em>Ex: Agaricus (mushroom), Ustilago (Smut), Puccinia (Rust).</em>
+                                    `
+                },
+                {
+                  title: "Deuteromycetes (Fungi Imperfecti)",
+                  icon: "❓",
+                  content: `
+                                        Imperfect fungi. Only asexual/vegetative reproduction known. Sexual stage missing or undiscovered.<br>
+                                        <em>Ex: Alternaria, Colletotrichum, Trichoderma.</em><br>
+                                        <strong>Note:</strong> When sexual stage discovered, moved to appropriate class (e.g., Penicillium was here).
+                                    `
+                },
+                {
+                  title: "Fungal Associations",
+                  icon: "🤝",
+                  content: `
+                                        <strong>Mycorrhiza:</strong> Fungi + Roots (symbiotic). <em>Pinus (Ectomycorrhiza).</em><br>
+                                        <strong>Lichens:</strong> Fungi + Algae/Cyanobacteria.
+                                    `
+                }
+              ]
+            },
+            {
+              id: "plantae",
+              title: "Kingdom Plantae",
+              icon: "🌿",
+              type: "kingdom-plantae",
+              content: "Eukaryotic, multicellular, autotrophic (photosynthetic), cell wall of cellulose.",
+              children: [
+                {
+                  title: "Algae (Thallophyta)",
+                  icon: "🌊",
+                  content: `
+                                        Simplest plants. Thallus body. No vascular tissue. Aquatic/moist habitats. Reproduction: Vegetative (fragmentation), Asexual (zoospores), Sexual (isogamy, anisogamy, oogamy).<br>
+                                        <strong>Chlorophyceae (Green):</strong> Chl a & b. Starch storage. <em>Chlamydomonas, Volvox, Ulothrix, Spirogyra.</em><br>
+                                        <strong>Phaeophyceae (Brown):</strong> Fucoxanthin. Laminarin/mannitol. <em>Fucus, Laminaria, Sargassum.</em><br>
+                                        <strong>Rhodophyceae (Red):</strong> Phycoerythrin. R-phycocyanin. Deep water. <em>Polysiphonia, Porphyra, Gracilaria.</em>
+                                    `
+                },
+                {
+                  title: "Bryophytes (Amphibians)",
+                  icon: "🐸",
+                  content: `
+                                        First land plants. Dependent on water for fertilization. No true roots (rhizoids), stems, leaves. Gametophyte dominant.<br>
+                                        <strong>Liverworts:</strong> Thalloid dorsiventral. Gemmae cups (asexual). <em>Marchantia.</em><br>
+                                        <strong>Hornworts:</strong> Elongated horn-like sporophyte. <em>Anthoceros.</em><br>
+                                        <strong>Mosses:</strong> Leafy gametophyte. Peat moss (<em>Sphagnum</em>) - water holding.
+                                    `
+                },
+                {
+                  title: "Pteridophytes (Vascular Cryptogams)",
+                  icon: "🦴",
+                  content: `
+                                        First vascular plants (xylem + phloem). No seeds. Sporophyte dominant. Homosporous (one spore type) or Heterosporous (micro/megaspores).<br>
+                                        <strong>Psilopsida:</strong> Most primitive. <em>Psilotum.</em><br>
+                                        <strong>Lycopsida (Club moss):</strong> <em>Selaginella, Lycopodium.</em><br>
+                                        <strong>Sphenopsida (Horsetails):</strong> <em>Equisetum.</em><br>
+                                        <strong>Pteropsida (True ferns):</strong> <em>Dryopteris, Pteris, Adiantum.</em>
+                                    `
+                },
+                {
+                  title: "Gymnosperms (Naked Seeds)",
+                  icon: "🌲",
+                  content: `
+                                        Naked seeds (no ovary wall). Perennial, evergreen, woody. Heterosporous. Reduced gametophytes. No fruit formation. Xylem tracheids (no vessels except <em>Gnetum</em>).<br>
+                                        <strong>Cycadales:</strong> Palm-like. <em>Cycas.</em><br>
+                                        <strong>Coniferales:</strong> Cones. <em>Pinus, Cedrus (Deodar).</em><br>
+                                        <strong>Ginkgoales:</strong> Living fossil. <em>Ginkgo biloba.</em>
+                                    `
+                },
+                {
+                  title: "Angiosperms (Flowering Plants)",
+                  icon: "🌸",
+                  content: `
+                                        Covered seeds (ovary wall = fruit). Vessels in xylem. Double fertilization (triploid endosperm).<br>
+                                        <strong>Dicots:</strong> Two cotyledons. Reticulate venation. Tap root. Tetramerous/pentamerous. Vascular bundles in ring.<br>
+                                        <strong>Monocots:</strong> One cotyledon. Parallel venation. Fibrous root. Trimerous. Scattered vascular bundles.
+                                    `
+                }
+              ]
+            },
+            {
+              id: "animalia",
+              title: "Kingdom Animalia",
+              icon: "🦁",
+              type: "kingdom-animalia",
+              content: "Eukaryotic, multicellular, heterotrophic (holozoic), no cell wall.",
+              children: [
+                {
+                  title: "Basis of Classification",
+                  icon: "📊",
+                  content: `
+                                        1. <strong>Level of Organization:</strong> Cellular → Tissue → Organ → Organ system.<br>
+                                        2. <strong>Symmetry:</strong> Asymmetrical, Radial, Bilateral.<br>
+                                        3. <strong>Germ Layers:</strong> Diploblastic (2 layers), Triploblastic (3 layers).<br>
+                                        4. <strong>Coelom:</strong> Acoelomate, Pseudocoelomate, Coelomate (Schizocoely vs Enterocoely).<br>
+                                        5. <strong>Segmentation:</strong> False vs True (Metamerism).<br>
+                                        6. <strong>Notochord:</strong> Non-chordates vs Chordates.
+                                    `
+                },
+                {
+                  title: "Non-Chordates (Invertebrates)",
+                  icon: "🐛",
+                  content: `
+                                        <strong>Porifera (Sponges):</strong> Pore-bearing. Canal system. Choanocytes. <em>Sycon, Spongilla.</em><br>
+                                        <strong>Cnidaria (Coelenterata):</strong> Radial symmetry. Nematocysts (stinging cells). Diploblastic. <em>Hydra, Aurelia, Adamsia.</em><br>
+                                        <strong>Ctenophora (Comb jellies):</strong> Biradial. 8 comb plates. Bioluminescence. <em>Pleurobrachia.</em><br>
+                                        <strong>Platyhelminthes (Flatworms):</strong> Acoelomate. Bilateral. Triploblastic. <em>Taenia (Tapeworm), Fasciola (Liver fluke).</em><br>
+                                        <strong>Aschelminthes (Roundworms):</strong> Pseudocoelomate. <em>Ascaris, Wuchereria (Filaria).</em><br>
+                                        <strong>Annelida (Segmented):</strong> True coelom. Metamerism. Closed circulation. <em>Earthworm, Leech, Nereis.</em><br>
+                                        <strong>Arthropoda (Largest phylum):</strong> Jointed appendages. Chitinous exoskeleton. Open circulation. <em>Apis (Honey bee), Bombyx (Silkworm), Anopheles.</em><br>
+                                        <strong>Mollusca (Soft-bodied):</strong> Muscular foot. Mantle/calcareous shell. <em>Pila (Apple snail), Octopus (highly developed).</em><br>
+                                        <strong>Echinodermata (Spiny skin):</strong> Triploblastic coelomate. Adult radial symmetry. Water vascular system. <em>Asterias (Starfish), Echinus (Sea urchin).</em>
+                                    `
+                },
+                {
+                  title: "Chordates",
+                  icon: "🎸",
+                  content: `
+                                        Notochord present at some stage. Dorsal hollow nerve cord. Pharyngeal gill slits. Post-anal tail.<br>
+                                        <strong>Cephalochordata:</strong> Notochord persists. <em>Amphioxus (Lancelet).</em><br>
+                                        <strong>Urochordata:</strong> Notochord in tail only (larva). <em>Ascidia, Salpa.</em><br>
+                                        <strong>Vertebrata:</strong> Notochord replaced by vertebral column.<br>
+                                        • <strong>Cyclostomata:</strong> Jawless fish. Ectoparasites. <em>Petromyzon (Lamprey).</em><br>
+                                        • <strong>Chondrichthyes:</strong> Cartilaginous fish. Placoid scales. 5-7 pairs gills. <em>Scoliodon, Trygon.</em><br>
+                                        • <strong>Osteichthyes:</strong> Bony fish. Operculum. Air bladder. <em>Exocoetus (Flying fish), Hippocampus (Sea horse).</em><br>
+                                        • <strong>Amphibia:</strong> Cold-blooded. 3-chambered heart. Cutaneous respiration. <em>Frog, Salamander.</em><br>
+                                        • <strong>Reptilia:</strong> Cold-blooded. 3-chambered (4 in croc). Scales. <em>Naja (Cobra), Crocodile.</em><br>
+                                        • <strong>Aves:</strong> Warm-blooded. 4-chambered heart. Feathers. Forelimbs wings. <em>Struthio (Ostrich - flightless), Pavo (Peacock).</em><br>
+                                        • <strong>Mammalia:</strong> Warm-blooded. 4-chambered heart. Hair. Mammary glands. <em>Kangaroo (Marsupial), Platypus (Oviparous), Bat (Flying).</em>
+                                    `
+                }
+              ]
+            }
+          ]
+        },
+        {
+          id: "atypical",
+          title: "Atypical Biological Entities",
+          icon: "⚠️",
+          type: "branch",
+          content: "Organisms/systems on the borderline of living/non-living or symbiotic associations.",
+          children: [
+            {
+              id: "viruses",
+              title: "Viruses",
+              icon: "👾",
+              type: "kingdom-virus",
+              content: "Non-cellular, obligate parasites. Crystallizable (non-living outside host).",
+              children: [
+                {
+                  title: "Structure",
+                  icon: "🔬",
+                  content: `
+                                        <strong>Capsid:</strong> Protein coat (capsomeres).<br>
+                                        <strong>Nucleoid:</strong> Genetic material (DNA or RNA, never both).<br>
+                                        <strong>Envelope:</strong> Lipid + Protein (derived from host cell membrane, in some viruses like HIV, Influenza).<br>
+                                        <strong>Enzyme:</strong> Reverse transcriptase (Retroviruses).
+                                    `
+                },
+                {
+                  title: "Replication",
+                  icon: "🔄",
+                  content: `
+                                        <strong>Lytic Cycle:</strong> Virulent. Immediate replication → host lysis.<br>
+                                        <strong>Lysogenic Cycle:</strong> Temperate. DNA integrates into host genome (prophage) → dormant → later lytic.
+                                    `
+                },
+                {
+                  title: "Types",
+                  icon: "🦠",
+                  content: `
+                                        <strong>Plant Viruses:</strong> TMV (Tobacco Mosaic), generally RNA viruses.<br>
+                                        <strong>Animal Viruses:</strong> Polio, HIV (Retrovirus), Influenza, Herpes, generally DNA viruses (except Retro).<br>
+                                        <strong>Bacteriophages:</strong> T2, T4, Lambda (λ). Infect bacteria. Polyhedral head + helical tail.
+                                    `
+                }
+              ]
+            },
+            {
+              id: "viroids",
+              title: "Viroids",
+              icon: "🧬",
+              type: "kingdom-virus",
+              content: "Discovered by T.O. Diener (1971). Smaller than viruses. Only <strong>RNA</strong> (no protein coat). Infectious. Cause potato spindle tuber disease."
+            },
+            {
+              id: "prions",
+              title: "Prions",
+              icon: "🧪",
+              type: "kingdom-virus",
+              content: "Proteinaceous infectious particles. <strong>Only protein</strong> (no nucleic acid). Discovered by Stanley Prusiner. Cause BSE (Bovine Spongiform Encephalopathy/Mad Cow Disease), CJD (Creutzfeldt-Jakob Disease) in humans."
+            },
+            {
+              id: "lichens",
+              title: "Lichens",
+              icon: "🤝",
+              type: "kingdom-fungi",
+              content: "Symbiotic association (Mutualism).",
+              children: [
+                {
+                  title: "Components",
+                  icon: "⚙️",
+                  content: `
+                                        • <strong>Fungal Partner (Mycobiont):</strong> Ascomycetes (mostly) or Basidiomycetes. Provides shelter, absorbs water/minerals.<br>
+                                        • <strong>Photosynthetic Partner (Phycobiont):</strong> Green algae (<em>Trebouxia</em>) or Cyanobacteria (<em>Nostoc</em>). Provides food (carbohydrates).
+                                    `
+                },
+                {
+                  title: "Types & Significance",
+                  icon: "🌟",
+                  content: `
+                                        <strong>Crustose:</strong> Crust-like, tightly attached.<br>
+                                        <strong>Foliose:</strong> Leaf-like, lobed.<br>
+                                        <strong>Fruticose:</strong> Branched/shrubby, pendulous.<br><br>
+                                        <strong>Ecological:</strong> Pioneer species (colonize bare rocks). Sensitive to SO₂ (Air pollution indicators).<br>
+                                        <strong>Economic:</strong> Source of dyes (<em>Orchil</em>), perfumes, drugs.
+                                    `
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    };
+
+    // Render Functions
+    function createNodeElement(node, level = 0) {
+      const div = document.createElement('div');
+      div.className = `tree-node ${level === 0 ? 'root-node' : ''} ${node.type || ''}`;
+      div.id = `node-${node.id}`;
+
+      // Card Container
+      const card = document.createElement('div');
+      card.className = 'node-card rounded-xl p-4 mb-4 animate-fade-in';
+      card.style.animationDelay = `${level * 0.1}s`;
+
+      // Header
+      const header = document.createElement('div');
+      header.className = 'flex items-center justify-between mb-2';
+
+      const titleSection = document.createElement('div');
+      titleSection.className = 'flex items-center gap-3';
+
+      // Icon
+      const icon = document.createElement('span');
+      icon.className = 'text-2xl';
+      icon.textContent = node.icon || '📄';
+
+      // Title
+      const title = document.createElement('h3');
+      title.className = 'font-bold text-lg text-white';
+      title.textContent = node.title;
+
+      titleSection.appendChild(icon);
+      titleSection.appendChild(title);
+
+      // Controls
+      const controls = document.createElement('div');
+      controls.className = 'flex items-center gap-2';
+
+      if (node.children && node.children.length > 0) {
+        const badge = document.createElement('span');
+        badge.className = 'badge';
+        badge.textContent = `${node.children.length} topics`;
+        controls.appendChild(badge);
+
+        const toggleBtn = document.createElement('button');
+        toggleBtn.className = 'toggle-btn w-8 h-8 rounded-full bg-slate-700 hover:bg-slate-600 flex items-center justify-center transition-colors';
+        toggleBtn.innerHTML = '<i class="fas fa-chevron-down text-slate-300"></i>';
+        toggleBtn.onclick = (e) => {
+          e.stopPropagation();
+          toggleChildren(node.id);
+        };
+        controls.appendChild(toggleBtn);
+      }
+
+      header.appendChild(titleSection);
+      header.appendChild(controls);
+      card.appendChild(header);
+
+      // Content
+      if (node.content) {
+        const content = document.createElement('div');
+        content.className = 'content-text mt-2';
+        content.innerHTML = node.content;
+        card.appendChild(content);
+      }
+
+      // Click to focus
+      card.onclick = () => {
+        document.querySelectorAll('.node-card').forEach(c => c.classList.remove('active'));
+        card.classList.add('active');
+      };
+
+      div.appendChild(card);
+
+      // Children Container
+      if (node.children && node.children.length > 0) {
+        const childrenContainer = document.createElement('div');
+        childrenContainer.id = `children-${node.id}`;
+        childrenContainer.className = 'children-container';
+
+        node.children.forEach(child => {
+          childrenContainer.appendChild(createNodeElement(child, level + 1));
+        });
+
+        div.appendChild(childrenContainer);
+      }
+
+      return div;
+    }
+
+    function toggleChildren(nodeId) {
+      const container = document.getElementById(`children-${nodeId}`);
+      const btn = document.querySelector(`#node-${nodeId} .toggle-btn`);
+
+      if (container) {
+        const isHidden = container.style.display === 'none';
+        container.style.display = isHidden ? 'block' : 'none';
+
+        if (btn) {
+          if (isHidden) {
+            btn.classList.remove('collapsed');
+            btn.innerHTML = '<i class="fas fa-chevron-down text-slate-300"></i>';
+          } else {
+            btn.classList.add('collapsed');
+            btn.innerHTML = '<i class="fas fa-chevron-right text-slate-300"></i>';
+          }
+        }
+      }
+    }
+
+    // Search Functionality
+    function searchNodes(query) {
+      const normalizedQuery = query.toLowerCase().trim();
+      const allCards = document.querySelectorAll('.node-card');
+
+      // Clear previous highlights
+      document.querySelectorAll('.highlight').forEach(el => {
+        const parent = el.parentNode;
+        parent.replaceChild(document.createTextNode(el.textContent), el);
+        parent.normalize();
+      });
+
+      if (!normalizedQuery) {
+        allCards.forEach(card => {
+          card.style.display = 'block';
+          card.style.opacity = '1';
+        });
+        return;
+      }
+
+      allCards.forEach(card => {
+        const text = card.innerText.toLowerCase();
+        const match = text.includes(normalizedQuery);
+
+        if (match) {
+          card.style.display = 'block';
+          card.style.opacity = '1';
+
+          // Highlight text
+          const walker = document.createTreeWalker(card, NodeFilter.SHOW_TEXT, null, false);
+          const textNodes = [];
+          while (walker.nextNode()) {
+            if (walker.currentNode.textContent.toLowerCase().includes(normalizedQuery)) {
+              textNodes.push(walker.currentNode);
+            }
+          }
+
+          textNodes.forEach(node => {
+            const span = document.createElement('span');
+            const regex = new RegExp(`(${normalizedQuery})`, 'gi');
+            span.innerHTML = node.textContent.replace(regex, '<span class="highlight">$1</span>');
+            node.parentNode.replaceChild(span, node);
+          });
+
+          // Expand parents
+          let parent = card.parentElement;
+          while (parent) {
+            if (parent.classList.contains('tree-node')) {
+              const id = parent.id.replace('node-', '');
+              const childrenContainer = document.getElementById(`children-${id}`);
+              if (childrenContainer) {
+                childrenContainer.style.display = 'block';
+                const btn = parent.querySelector('.toggle-btn');
+                if (btn) {
+                  btn.classList.remove('collapsed');
+                  btn.innerHTML = '<i class="fas fa-chevron-down text-slate-300"></i>';
+                }
+              }
+            }
+            parent = parent.parentElement;
+          }
+
+          card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        } else {
+          card.style.opacity = '0.3';
+        }
+      });
+    }
+
+    // Initialize
+    document.addEventListener('DOMContentLoaded', () => {
+      const container = document.getElementById('mindmap-container');
+      container.appendChild(createNodeElement(mindMapData));
+
+      // Search listener
+      const searchInput = document.getElementById('searchInput');
+      let debounceTimer;
+      searchInput.addEventListener('input', (e) => {
+        clearTimeout(debounceTimer);
+        debounceTimer = setTimeout(() => searchNodes(e.target.value), 300);
+      });
+    });
+  </script>
+</body>
+
+</html>
