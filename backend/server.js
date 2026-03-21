@@ -120,8 +120,9 @@ app.post("/api/check-mock-access", authMiddleware, async (req, res) => {
       return res.status(400).json({ error: "mockId required" });
     }
 
-    // FREE MOCK
-    if (mockId === 1) {
+    // FREE MOCKS — Quick Mocks 1-10, and Physics Topic 1 & 2 (IDs 41-48)
+    const FREE_MOCK_IDS = [1,2,3,4,5,6,7,8,9,10, 41,42,43,44,45,46,47,48];
+    if (FREE_MOCK_IDS.includes(Number(mockId))) {
       return res.json({ access: true });
     }
 
