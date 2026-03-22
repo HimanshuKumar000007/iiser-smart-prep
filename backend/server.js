@@ -218,7 +218,7 @@ app.post("/api/signup", async (req, res) => {
 app.post("/api/create-order", authMiddleware, async (req, res) => {
   try {
     const options = {
-      amount: 19900, // ₹199 = 19900 paise
+      amount: 49900, // ₹499 = 49900 paise
       currency: "INR",
       receipt: "receipt_" + Date.now(),
       notes: {
