@@ -110,32 +110,32 @@ window.QUICK_MOCKS_CONFIG = (function () {
         { name: 'Redox Reactions', folder: '9. redox-reactions' },
         { name: 'Solutions', folder: '10. solutions' },
         { name: 'Electrochemistry', folder: '11. electrochemistry' },
-        { name: 'Chemical Kinetics', folder: 'chemical-kinetics' },
-        { name: 'Organic Chemistry - Basic Principles', folder: 'organic-chemistry-some-basic-principles-and-techniques' },
-        { name: 'Hydrocarbons', folder: 'hydrocarbons' },
-        { name: 'Haloalkanes and haloarenes', folder: 'haloalkanes-and-haloarenes' },
-        { name: 'Alcohols, phenols, and ethers', folder: 'alcohols-phenols-and-ethers' },
-        { name: 'Aldehydes, ketones, and carboxylic acids', folder: 'aldehydes-ketones-and-carboxylic-acids' },
-        { name: 'Organic compounds containing nitrogen', folder: 'organic-compounds-containing-nitrogen' },
-        { name: 'Biomolecules', folder: 'biomolecules' }
+        { name: 'Chemical Kinetics', folder: '12. chemical-kinetics' },
+        { name: 'Organic Chemistry - Basic Principles', folder: '13. organic-chemistry-some-basic-principles-and-techniques' },
+        { name: 'Hydrocarbons', folder: '14. hydrocarbons' },
+        { name: 'Haloalkanes and haloarenes', folder: '15.haloalkanes-and-haloarenes' },
+        { name: 'Alcohols, phenols, and ethers', folder: '16. alcohols-phenols-and-ethers' },
+        { name: 'Aldehydes, ketones, and carboxylic acids', folder: '17. aldehydes-ketones-and-carboxylic-acids' },
+        { name: 'Organic compounds containing nitrogen', folder: '18. organic-compounds-containing-nitrogen' },
+        { name: 'Biomolecules', folder: '19. biomolecules' }
     ];
 
     const mathTopics = [
         { name: 'Sets and Logic', folder: '1.sets-and-logic' },
         { name: 'Relations & functions', folder: 'relations-and-functions' },
-        { name: 'Basic counting techniques', folder: 'basic-counting-techniques' },
-        { name: 'Complex numbers and equations', folder: 'complex-numbers-linear-and-quadratic-equations' },
-        { name: 'Trigonometric functions', folder: 'trigonometric-functions' },
-        { name: 'Vectors', folder: 'vectors' },
-        { name: 'Matrices & determinants', folder: 'matrices-and-determinants' },
-        { name: 'Coordinate geometry', folder: 'coordinate-geometry' },
-        { name: 'Three-dimensional geometry', folder: 'three-dimensional-geometry' },
-        { name: 'Sequences & series', folder: 'sequences-and-series' },
-        { name: 'Limit & continuity', folder: 'limit-and-continuity' },
-        { name: 'Differentiation', folder: 'differentiation' },
-        { name: 'Integration', folder: 'integration' },
-        { name: 'Differential equations', folder: 'differential-equations' },
-        { name: 'Statistics & Probability', folder: 'statistics-probability-and-linear-programming' }
+        { name: 'Basic counting techniques', folder: '2.basic-counting-techniques' },
+        { name: 'Complex numbers and equations', folder: '3.complex-numbers-linear-and-quadratic-equations' },
+        { name: 'Trigonometric functions', folder: '4.trigonometric-functions' },
+        { name: 'Vectors', folder: '5.vectors' },
+        { name: 'Matrices & determinants', folder: '6.matrices-and-determinants' },
+        { name: 'Coordinate geometry', folder: '7.coordinate-geometry' },
+        { name: 'Three-dimensional geometry', folder: '8.three-dimensional-geometry' },
+        { name: 'Sequences & series', folder: '9.sequences-and-series' },
+        { name: 'Limit & continuity', folder: '10.limit-and-continuity' },
+        { name: 'Differentiation', folder: '11.differentiation' },
+        { name: 'Integration', folder: '12.integration' },
+        { name: 'Differential equations', folder: '13.differential-equations' },
+        { name: 'Statistics & Probability', folder: '14.statistics-probability-and-linear-programming' }
     ];
 
     const biologyTopics = [
