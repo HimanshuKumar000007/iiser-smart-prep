@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Mock Loader Diagnostics</title>
+    <style>
+        body { font-family: sans-serif; padding: 2rem; line-height: 1.5; }
+        .log { background: #f4f4f4; padding: 1rem; border-radius: 4px; border: 1px solid #ddd; white-space: pre-wrap; font-family: monospace; margin-top: 1rem; }
+        .error { color: #d32f2f; font-weight: bold; }
+        .success { color: #388e3c; font-weight: bold; }
+        button { padding: 8px 16px; cursor: pointer; }
+        input { padding: 8px; width: 100px; }
+    </style>
+</head>
+<body>
+    <h1>Mock Loader Diagnostics</h1>
+    <p>Enter a Mock ID from <code>quick_mocks_config.js</code> to test loading its data.</p>
+    
+    <div>
+        <input type="number" id="mockId" placeholder="ID (e.g. 201)" value="201">
+        <button onclick="testLoad()">Test Load</button>
+    </div>
+
+    <div id="output" class="log">Waiting for input...</div>
+
+    <script src="../quick_mocks_config.js"></script>
+    <script>
+        const output = document.getElementById('output');
+
+        async function testLoad() {
+            const id = document.getElementById('mockId').value;
+            output.innerHTML = `Testing ID ${id}...\n`;
+
+            try {
+                // 1. Find config
+                const config = window.QUICK_MOCKS_CONFIG.find(m => m.id == id);
+                if (!config) {
+                    output.innerHTML += `<span class="error">Error: ID ${id} not found in QUICK_MOCKS_CONFIG.</span>\n`;
+                    return;
+                }
+                output.innerHTML += `Config Found: ${config.label}\nPath: ${config.path}\n`;
+
+                // 2. Resolve URL (same logic as start_test.html)
+                const url = `../${config.path}`;
+                output.innerHTML += `Fetching URL: ${url}\n`;
+
+                // 3. Fetch
+                const start = performance.now();
+                const response = await fetch(url);
+                const end = performance.now();
+                
+                output.innerHTML += `Fetch Status: ${response.status} ${response.statusText} (${(end-start).toFixed(2)}ms)\n`;
+
+                if (!response.ok) {
+                    throw new Error(`HTTP Error ${response.status}`);
+                }
+
+                // 4. Parse JSON
+                const data = await response.json();
+                output.innerHTML += `<span class="success">JSON Parsed Successfully!</span>\n`;
+                output.innerHTML += `Questions Count: ${data.questions ? data.questions.length : 'MISSING'}\n`;
+                
+                if (data.questions && data.questions.length > 0) {
+                    output.innerHTML += `First Question ID: ${data.questions[0].id}\n`;
+                    output.innerHTML += `First Question Text: ${data.questions[0].question || data.questions[0].text}\n`;
+                }
+
+            } catch (err) {
+                output.innerHTML += `<span class="error">Error: ${err.message}</span>\n`;
+                console.error(err);
+            }
+        }
+
+        // Auto-run if URL has param
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.has('mockId')) {
+            document.getElementById('mockId').value = urlParams.get('mockId');
+            testLoad();
+        }
+    </script>
+</body>
+</html>

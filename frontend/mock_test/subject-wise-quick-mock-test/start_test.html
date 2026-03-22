@@ -860,80 +860,37 @@
         let timerInterval;
 
         window.onload = async () => {
-            const qText = document.getElementById('qText');
             try {
                 const currentMockId = localStorage.getItem("CURRENT_MOCK");
-                console.log("Starting load for Mock ID:", currentMockId);
-                
-                if (!currentMockId) {
-                    throw new Error("No Mock ID found in session. Please return to the homepage.");
-                }
-
                 // Find path from config
-                if (!window.QUICK_MOCKS_CONFIG) {
-                    throw new Error("Configuration system failed to load. Please refresh the page.");
-                }
-
                 const mockConfig = window.QUICK_MOCKS_CONFIG.find(m => m.id == currentMockId);
-                if (!mockConfig) {
-                    console.error("Available IDs:", window.QUICK_MOCKS_CONFIG.map(m => m.id).join(','));
-                    throw new Error(`Mock configuration not found for ID: ${currentMockId}`);
-                }
+                if (!mockConfig) throw new Error("Mock configuration not found");
 
-                console.log("Fetching from path:", mockConfig.path);
-                
                 // Correct path: mockConfig.path is relative to frontend/mock_test/
                 // Current file is in frontend/mock_test/subject-wise-quick-mock-test/
                 // So the JSON file is at ../ + mockConfig.path
-                const fetchPath = `../${mockConfig.path}`;
-                const response = await fetch(fetchPath);
-                
-                if (!response.ok) {
-                    throw new Error(`Failed to load question data (HTTP ${response.status}). Path: ${fetchPath}`);
-                }
+                const response = await fetch(`../${mockConfig.path}`);
+                if (!response.ok) throw new Error("Failed to load question data");
 
                 const data = await response.json();
-                
-                if (!data || !data.questions) {
-                    throw new Error("Mock data is malformed: 'questions' array missing.");
-                }
-
                 totalQs = data.questions.length;
-                console.log("Loaded questions count:", totalQs);
-
                 if (data.duration) TEST_DURATION_SECS = data.duration * 60;
 
-                questions = data.questions.map((q, i) => ({
+                questions = data.questions.map(q => ({
                     ...q,
-                    text: q.question || q.text || "Question text missing",
+                    text: q.question,
                     selection: null,
                     status: 'not-visited'
                 }));
 
                 restoreState(currentMockId);
-                
-                // Safety check for currentIdx
-                if (currentIdx < 0 || currentIdx >= totalQs) {
-                    console.warn("Restored index out of bounds, resetting to 0");
-                    currentIdx = 0;
-                }
-
                 renderPalette();
                 loadQ(currentIdx);
                 startTimer();
 
             } catch (e) {
-                console.error("Init Error:", e);
-                qText.innerHTML = `
-                    <div style="background: rgba(239, 68, 68, 0.05); border: 1px solid var(--danger); border-radius: 12px; padding: 2rem; color: var(--text-main); text-align: center;">
-                        <i class="ri-error-warning-line" style="font-size: 3rem; color: var(--danger); margin-bottom: 1rem; display: block;"></i>
-                        <h3 style="margin-bottom: 0.5rem; color: var(--danger);">Load Failure</h3>
-                        <p style="margin-bottom: 1.5rem; color: var(--text-secondary);">${e.message}</p>
-                        <button onclick="location.reload()" class="btn-action" style="background: var(--primary); color: white; display: inline-flex; margin: 0 auto;">
-                            Retry Loading
-                        </button>
-                    </div>
-                `;
+                console.error("Init Error", e);
+                document.getElementById('qText').innerHTML = `<div style="color:var(--danger); text-align:center; padding: 2rem;"><h3>Error loading mock</h3><p>${e.message}</p></div>`;
             }
         };
 
