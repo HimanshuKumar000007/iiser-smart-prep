@@ -1,312 +1,590 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Subject Analysis | IISER Prep</title>
+    <title>Advanced Subject Analysis | IISER Prep</title>
 
-    <link
-        href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&family=Plus+Jakarta+Sans:wght@400;600;700&display=swap"
-        rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Remix Icons -->
     <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+    <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-    <!-- MathJax for rendering LaTeX math formulas -->
+    <!-- MathJax -->
     <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-
+    <!-- Canvas Confetti -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
     <style>
         :root {
-            --primary: #6366f1;
+            --primary: #4f46e5;
+            --primary-light: #6366f1;
+            --primary-glow: rgba(79, 70, 229, 0.4);
             --success: #10b981;
+            --success-light: #d1fae5;
             --danger: #ef4444;
+            --danger-light: #fee2e2;
             --warning: #f59e0b;
-            --bg-body: #f3f4f6;
-            --bg-card: #ffffff;
-            --text-main: #1e293b;
+            --warning-light: #fef3c7;
+            --neutral-bg: #f8fafc;
+            --card-bg: rgba(255, 255, 255, 0.85);
+            --card-border: rgba(255, 255, 255, 0.5);
+            --text-dark: #0f172a;
             --text-muted: #64748b;
-            --border: #e2e8f0;
-            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-            --radius: 16px;
+            --shadow-subtle: 0 10px 30px -10px rgba(0, 0, 0, 0.05);
+            --shadow-float: 0 20px 40px -15px rgba(0, 0, 0, 0.1);
+            --radius-lg: 24px;
+            --radius-md: 16px;
+            --radius-sm: 8px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
-            background: var(--bg-body);
-            color: var(--text-main);
+            background: var(--neutral-bg);
+            background-image: 
+                radial-gradient(at 0% 0%, hsla(253,16%,7%,0.03) 0, transparent 50%), 
+                radial-gradient(at 50% 0%, hsla(225,39%,30%,0.03) 0, transparent 50%), 
+                radial-gradient(at 100% 0%, hsla(339,49%,30%,0.03) 0, transparent 50%);
+            color: var(--text-dark);
             margin: 0;
-            padding: 2rem 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+        }
+
+        .ambient-blob {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.5;
+            z-index: -1;
+            animation: float 20s infinite alternate ease-in-out;
+        }
+        .blob-1 { top: -10%; left: -10%; width: 50vw; height: 50vw; background: #c7d2fe; }
+        .blob-2 { bottom: -10%; right: -10%; width: 60vw; height: 60vw; background: #e0e7ff; animation-delay: -10s; }
+        .blob-3 { top: 40%; left: 40%; width: 40vw; height: 40vw; background: #fce7f3; animation-duration: 25s; }
+
+        @keyframes float {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(5%, 5%) scale(1.1); }
         }
 
         .container {
-            width: 90%;
+            width: 100%;
             max-width: 1000px;
-            margin: 0 auto;
+            padding: 2rem;
+            animation: slideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            position: relative;
+            z-index: 10;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .glass-card {
-            background: var(--bg-card);
-            border-radius: var(--radius);
-            padding: 2rem;
-            box-shadow: var(--shadow);
-            border: 1px solid var(--border);
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--card-border);
+            border-radius: var(--radius-lg);
+            padding: 2.5rem;
+            box-shadow: var(--shadow-subtle);
             margin-bottom: 2rem;
+            transition: var(--transition);
+        }
+        
+        .glass-card:hover {
+            box-shadow: var(--shadow-float);
+            transform: translateY(-2px);
         }
 
         .header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 2rem;
+            margin-bottom: 2.5rem;
         }
 
         .brand {
-            font-family: 'Outfit';
+            font-family: 'Outfit', sans-serif;
             font-weight: 800;
-            font-size: 1.5rem;
-            color: var(--primary);
+            font-size: 1.8rem;
+            color: var(--text-dark);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .brand i { color: var(--primary); font-size: 2rem; }
+
+        .actions { display: flex; gap: 1rem; }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 0.8rem 1.5rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 700;
+            font-family: 'Outfit', sans-serif;
+            transition: var(--transition);
+            border: none;
+            cursor: pointer;
+            font-size: 0.95rem;
         }
 
-        .score-hero {
+        .btn-primary { background: var(--primary); color: white; box-shadow: 0 4px 15px var(--primary-glow); }
+        .btn-primary:hover { background: var(--primary-light); transform: translateY(-2px); box-shadow: 0 8px 25px var(--primary-glow); }
+        
+        .btn-secondary { background: white; color: var(--text-dark); border: 1px solid #e2e8f0; }
+        .btn-secondary:hover { background: #f8fafc; border-color: #cbd5e1; transform: translateY(-2px); }
+
+        .hero-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: center;
+        }
+
+        @media (max-width: 768px) { .hero-section { grid-template-columns: 1fr; gap: 2rem; } }
+
+        .score-display { text-align: center; position: relative; }
+        .score-circle { width: 220px; height: 220px; margin: 0 auto; position: relative; }
+        
+        .score-text-overlay {
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
             text-align: center;
-            padding: 2rem 0;
+            pointer-events: none;
         }
 
         .main-score {
+            font-family: 'Outfit', sans-serif;
             font-size: 4rem;
             font-weight: 800;
-            color: var(--primary);
+            color: var(--text-dark);
+            line-height: 1;
+            background: linear-gradient(135deg, var(--primary), #818cf8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
-        .score-label {
-            color: var(--text-muted);
-            font-weight: 600;
-        }
-
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 1rem;
-            margin-top: 2rem;
-        }
+        .stats-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; }
 
         .stat-card {
-            background: var(--bg-body);
+            background: rgba(255,255,255,0.6);
+            backdrop-filter: blur(10px);
             padding: 1.5rem;
+            border-radius: var(--radius-md);
+            border: 1px solid rgba(255,255,255,0.8);
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02);
+            transition: var(--transition);
+        }
+        .stat-card:hover { transform: translateY(-3px); box-shadow: 0 10px 15px -3px rgba(0,0,0,0.05); }
+
+        .stat-icon {
+            width: 40px; height: 40px;
             border-radius: 12px;
-            text-align: center;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.2rem; margin-bottom: 1rem;
         }
 
-        .stat-val {
-            font-size: 1.5rem;
-            font-weight: 800;
-        }
+        .icon-correct { background: var(--success-light); color: var(--success); }
+        .icon-wrong { background: var(--danger-light); color: var(--danger); }
+        .icon-skipped { background: #cbd5e1; color: #475569; }
+        .icon-accuracy { background: var(--warning-light); color: var(--warning); }
 
-        .stat-label {
-            font-size: 0.8rem;
-            color: var(--text-muted);
-            text-transform: uppercase;
+        .stat-val { font-family: 'Outfit', sans-serif; font-size: 2rem; font-weight: 800; color: var(--text-dark); line-height: 1; }
+        .stat-label { font-size: 0.85rem; color: var(--text-muted); font-weight: 600; margin-top: 0.5rem; }
+        .performance-msg { margin-top: 1.5rem; font-size: 1.25rem; font-weight: 700; color: var(--text-dark); font-family: 'Outfit', sans-serif; }
+
+        .tabs-container {
+            display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem;
         }
 
         .tabs {
-            display: flex;
-            gap: 1rem;
-            margin-bottom: 2rem;
-            border-bottom: 1px solid var(--border);
-            padding-bottom: 0.5rem;
+            display: inline-flex;
+            background: rgba(255, 255, 255, 0.5);
+            backdrop-filter: blur(10px);
+            padding: 0.4rem;
+            border-radius: 50px;
+            border: 1px solid var(--card-border);
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
         }
 
         .tab {
             cursor: pointer;
             font-weight: 600;
             color: var(--text-muted);
-            padding: 0.5rem 1rem;
-        }
-
-        .tab.active {
-            color: var(--primary);
-            border-bottom: 2px solid var(--primary);
-        }
-
-        .sol-list {
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-        }
-
-        .sol-card {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            padding: 1.5rem;
-            border-radius: 12px;
-        }
-
-        .sol-header {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 10px;
-            align-items: center;
-        }
-
-        .badge {
-            font-size: 0.7rem;
-            font-weight: 700;
-            padding: 2px 8px;
-            border-radius: 4px;
-            text-transform: uppercase;
-        }
-
-        .badge-correct {
-            background: #dcfce7;
-            color: #166534;
-        }
-
-        .badge-wrong {
-            background: #fee2e2;
-            color: #991b1b;
-        }
-
-        .badge-skipped {
-            background: #f1f5f9;
-            color: #475569;
-        }
-
-        .btn-home {
-            display: inline-block;
-            background: var(--primary);
-            color: white;
-            padding: 0.8rem 1.5rem;
+            padding: 0.7rem 1.5rem;
             border-radius: 50px;
-            text-decoration: none;
-            font-weight: 700;
-            margin-top: 1rem;
+            transition: var(--transition);
+            font-size: 0.95rem;
         }
+
+        .tab:hover { color: var(--text-dark); }
+        .tab.active { background: white; color: var(--primary); box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+
+        .filters { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+        .filter-btn {
+            background: rgba(255,255,255,0.7); border: 1px solid #e2e8f0; padding: 0.5rem 1rem; border-radius: 50px;
+            font-size: 0.85rem; font-weight: 600; cursor: pointer; color: var(--text-muted); transition: var(--transition); backdrop-filter: blur(5px);
+        }
+        .filter-btn:hover { background: white; border-color: #cbd5e1; color: var(--text-dark); }
+        .filter-btn.active { background: var(--primary); color: white; border-color: var(--primary); box-shadow: 0 4px 10px var(--primary-glow); }
+
+        .solutions-grid { display: flex; flex-direction: column; gap: 1.5rem; margin-top: 1rem; }
+        .sol-card {
+            background: white; border: 1px solid #e2e8f0; padding: 2rem; border-radius: var(--radius-lg);
+            transition: var(--transition); opacity: 0; transform: translateY(20px); animation: slideUpFade 0.5s forwards; box-shadow: var(--shadow-subtle);
+        }
+        @keyframes slideUpFade { to { opacity: 1; transform: translateY(0); } }
+        .sol-card:hover { box-shadow: var(--shadow-float); border-color: #cbd5e1; transform: translateY(-3px); }
+
+        .sol-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1.5rem; }
+        .q-number {
+            font-family: 'Outfit', sans-serif; font-size: 1.25rem; font-weight: 800; color: var(--text-dark);
+            background: #f8fafc; padding: 0.5rem 1rem; border-radius: 12px; border: 1px solid #e2e8f0;
+            display: inline-flex; align-items: center; gap: 8px;
+        }
+
+        .badge { font-size: 0.75rem; font-weight: 700; padding: 6px 12px; border-radius: 50px; text-transform: uppercase; letter-spacing: 0.5px; display: inline-flex; align-items: center; gap: 4px; }
+        .badge-correct { background: var(--success-light); color: #047857; }
+        .badge-wrong { background: var(--danger-light); color: #b91c1c; }
+        .badge-skipped { background: #f1f5f9; color: #475569; }
+
+        .question-text { font-size: 1.1rem; line-height: 1.6; font-weight: 600; color: var(--text-dark); margin-bottom: 1.5rem; }
+        .options-list { display: flex; flex-direction: column; gap: 0.75rem; margin-bottom: 1.5rem; }
+        
+        .option-item {
+            display: flex; align-items: stretch; border-radius: 12px; border: 2px solid #e2e8f0; overflow: hidden; background: #f8fafc; transition: var(--transition);
+        }
+        .option-item:hover { transform: translateX(5px); border-color: #cbd5e1; }
+        .option-indicator { width: 44px; display: flex; align-items: center; justify-content: center; font-weight: 700; background: #e2e8f0; color: var(--text-muted); font-size: 1rem; }
+        .option-content { padding: 1rem; flex-grow: 1; font-size: 1rem; color: var(--text-dark); }
+        
+        .opt-correct { background: var(--success-light); border-color: var(--success); }
+        .opt-correct .option-indicator { background: var(--success); color: white; }
+        .opt-wrong { background: var(--danger-light); border-color: var(--danger); }
+        .opt-wrong .option-indicator { background: var(--danger); color: white; }
+        .opt-selected-correct { box-shadow: 0 0 0 2px var(--success-light); }
+
+        .explanation { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: var(--radius-md); margin-top: 1.5rem; overflow: hidden; transition: var(--transition); }
+        .explanation:hover { border-color: #cbd5e1; }
+        .exp-summary {
+            padding: 1rem 1.5rem; font-weight: 700; color: var(--primary); cursor: pointer; display: flex; justify-content: space-between; align-items: center; user-select: none; background: #f1f5f9;
+        }
+        .exp-summary::after { content: '\EA4E'; font-family: 'remixicon'; transition: transform 0.3s ease; }
+        details[open] .exp-summary::after { transform: rotate(180deg); }
+        .exp-content { padding: 1.5rem; font-size: 0.95rem; line-height: 1.6; color: var(--text-dark); border-top: 1px solid #e2e8f0; animation: fadeIn 0.4s ease; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+
+        .empty-state { text-align: center; padding: 4rem 2rem; color: var(--text-muted); }
+        .empty-state i { font-size: 4rem; color: #cbd5e1; margin-bottom: 1rem; display: block; }
+        
+        .loader-container { display: flex; justify-content: center; padding: 3rem; }
+        .spinner { width: 40px; height: 40px; border: 4px solid #e2e8f0; border-top-color: var(--primary); border-radius: 50%; animation: spin 1s linear infinite; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
     </style>
 </head>
 
 <body>
+    <div class="ambient-blob blob-1"></div>
+    <div class="ambient-blob blob-2"></div>
+    <div class="ambient-blob blob-3"></div>
+
     <div class="container">
+        <!-- Header -->
         <div class="header">
-            <div class="brand">Subject Analytics</div>
-            <a href="../quick_mock_homepage.html" class="btn-home">Home</a>
+            <div class="brand"><i class="ri-pulse-line"></i> Analytics Engine</div>
+            <div class="actions">
+                <button class="btn btn-secondary" onclick="shareResult()"><i class="ri-share-forward-line"></i> Share</button>
+                <a href="../quick_mock_homepage.html" class="btn btn-primary"><i class="ri-dashboard-2-line"></i> Back to Home</a>
+            </div>
         </div>
 
-        <div class="glass-card score-hero">
-            <div class="score-label">Your Final Score</div>
-            <div class="main-score" id="totalScore">0</div>
-            <div class="stats-grid">
-                <div class="stat-card">
-                    <div class="stat-val" id="correctVal" style="color:var(--success)">0</div>
-                    <div class="stat-label">Correct</div>
+        <!-- Summary View -->
+        <div id="view-summary">
+            <div class="glass-card hero-section">
+                <div class="score-display">
+                    <div class="score-circle">
+                        <canvas id="scoreChart"></canvas>
+                        <div class="score-text-overlay">
+                            <div class="main-score" id="totalScore">0</div>
+                            <div class="score-label">Points Earned</div>
+                        </div>
+                    </div>
+                    <div class="performance-msg" id="perfMsg">Evaluating...</div>
                 </div>
-                <div class="stat-card">
-                    <div class="stat-val" id="wrongVal" style="color:var(--danger)">0</div>
-                    <div class="stat-label">Wrong</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-val" id="skippedVal">0</div>
-                    <div class="stat-label">Skipped</div>
+
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon icon-correct"><i class="ri-check-double-line"></i></div>
+                        <div class="stat-val" id="correctVal">0</div>
+                        <div class="stat-label">Correct Answers</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon icon-wrong"><i class="ri-close-large-line"></i></div>
+                        <div class="stat-val" id="wrongVal">0</div>
+                        <div class="stat-label">Wrong Answers</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon icon-skipped"><i class="ri-share-forward-2-line"></i></div>
+                        <div class="stat-val" id="skippedVal">0</div>
+                        <div class="stat-label">Skipped Questions</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon icon-accuracy"><i class="ri-crosshair-2-line"></i></div>
+                        <div class="stat-val" id="accuracyVal">0%</div>
+                        <div class="stat-label">Total Accuracy</div>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <div class="tabs">
-            <div class="tab active" id="tabSummary" onclick="switchView('summary')">Summary</div>
-            <div class="tab" id="tabSolutions" onclick="switchView('solutions')">Solutions</div>
-        </div>
-
-        <div id="view-summary" class="glass-card">
-            <canvas id="scoreChart" style="max-height: 300px;"></canvas>
+        <!-- Solutions View Nav -->
+        <div class="tabs-container">
+            <div class="tabs">
+                <div class="tab active" id="tabSummary" onclick="switchView('summary')"><i class="ri-pie-chart-2-line" style="margin-right:8px;"></i> Performance Overview</div>
+                <div class="tab" id="tabSolutions" onclick="switchView('solutions')"><i class="ri-file-search-line" style="margin-right:8px;"></i> Question Review</div>
+            </div>
+            
+            <div class="filters" id="solutionFilters" style="display: none;">
+                <button class="filter-btn active" onclick="filterSolutions('all')"><i class="ri-function-line"></i> All</button>
+                <button class="filter-btn" onclick="filterSolutions('correct')"><i class="ri-check-line"></i> Correct</button>
+                <button class="filter-btn" onclick="filterSolutions('wrong')"><i class="ri-close-line"></i> Wrong</button>
+                <button class="filter-btn" onclick="filterSolutions('skipped')"><i class="ri-share-forward-2-line"></i> Skipped</button>
+            </div>
         </div>
 
         <div id="view-solutions" style="display:none;">
-            <div class="sol-list" id="solutionsList"></div>
+            <div class="loader-container" id="loader"><div class="spinner"></div></div>
+            <div class="solutions-grid" id="solutionsList"></div>
+            <div class="glass-card empty-state" id="emptyState" style="display: none;">
+                <i class="ri-ghost-line"></i>
+                <h3>No questions in this category</h3>
+                <p>Try switching to a different filter.</p>
+            </div>
         </div>
     </div>
 
+    <!-- Logic -->
     <script src="../quick_mocks_config.js"></script>
     <script>
         const resultData = JSON.parse(localStorage.getItem('mockTestResult'));
         let originalQuestions = null;
+        let chartInstance = null;
+        let currentFilter = 'all';
 
         window.onload = async () => {
             if (!resultData) {
-                alert("No results found");
+                alert("No results found. Please take a mock test first.");
                 window.location.href = '../quick_mock_homepage.html';
                 return;
             }
+
+            const totalAttempted = resultData.correct + resultData.wrong;
+            const totalQs = resultData.correct + resultData.wrong + resultData.skipped;
+            const accuracy = totalAttempted > 0 ? Math.round((resultData.correct / totalAttempted) * 100) : 0;
 
             document.getElementById('totalScore').innerText = resultData.score;
             document.getElementById('correctVal').innerText = resultData.correct;
             document.getElementById('wrongVal').innerText = resultData.wrong;
             document.getElementById('skippedVal').innerText = resultData.skipped;
+            document.getElementById('accuracyVal').innerText = accuracy + '%';
+
+            let msg = "Good Effort!";
+            if (accuracy >= 90) msg = "Masterclass Performance! 🏆";
+            else if (accuracy >= 75) msg = "Excellent Work! 🌟";
+            else if (accuracy >= 50) msg = "Solid Effort! Keep practicing. 👍";
+            else if (accuracy > 0) msg = "Needs Review. Back to the lab! 📚";
+            else msg = "Zero accuracy. Did you guess them all? 🤔";
+            document.getElementById('perfMsg').innerText = msg;
+
+            // Trigger intense UI wow factor with confetti if high accuracy
+            if (accuracy >= 75) {
+                setTimeout(() => {
+                    const duration = 3000;
+                    const end = Date.now() + duration;
+
+                    (function frame() {
+                        confetti({
+                            particleCount: 5,
+                            angle: 60,
+                            spread: 55,
+                            origin: { x: 0 },
+                            colors: ['#4f46e5', '#10b981', '#f59e0b']
+                        });
+                        confetti({
+                            particleCount: 5,
+                            angle: 120,
+                            spread: 55,
+                            origin: { x: 1 },
+                            colors: ['#4f46e5', '#10b981', '#f59e0b']
+                        });
+
+                        if (Date.now() < end) requestAnimationFrame(frame);
+                    }());
+                }, 800);
+            }
 
             renderChart();
-            loadQuestions();
+            await loadQuestions();
         };
 
         async function loadQuestions() {
             try {
+                // Ensure config is loaded
+                if (typeof window.QUICK_MOCKS_CONFIG === 'undefined') {
+                    throw new Error("QUIZ Config not loaded");
+                }
                 const mockConfig = window.QUICK_MOCKS_CONFIG.find(m => m.id == resultData.mockId);
                 if (mockConfig) {
                     const res = await fetch(`../${mockConfig.path}`);
                     const data = await res.json();
                     originalQuestions = data.questions;
+                    document.getElementById('loader').style.display = 'none';
                     renderSolutions();
+                } else {
+                    document.getElementById('loader').innerHTML = "<p>Error: Mock configuration mapping not found.</p>";
                 }
-            } catch (e) { console.error("Error loading questions", e); }
+            } catch (e) {
+                console.error("Error loading questions", e);
+                document.getElementById('loader').innerHTML = `<p>Runtime Error: ${e.message}</p>`;
+            }
         }
 
         function renderChart() {
             const ctx = document.getElementById('scoreChart').getContext('2d');
-            new Chart(ctx, {
+            
+            let gradCorrect = ctx.createLinearGradient(0, 0, 0, 400);
+            gradCorrect.addColorStop(0, '#10b981');
+            gradCorrect.addColorStop(1, '#059669');
+            
+            let gradWrong = ctx.createLinearGradient(0, 0, 0, 400);
+            gradWrong.addColorStop(0, '#f87171');
+            gradWrong.addColorStop(1, '#ef4444');
+
+            chartInstance = new Chart(ctx, {
                 type: 'doughnut',
                 data: {
                     labels: ['Correct', 'Wrong', 'Skipped'],
                     datasets: [{
                         data: [resultData.correct, resultData.wrong, resultData.skipped],
-                        backgroundColor: ['#10b981', '#ef4444', '#cbd5e1']
+                        backgroundColor: [gradCorrect, gradWrong, '#e2e8f0'],
+                        borderWidth: 0,
+                        hoverOffset: 6
                     }]
                 },
-                options: { maintainAspectRatio: false }
+                options: {
+                    cutout: '82%',
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            backgroundColor: 'rgba(15, 23, 42, 0.95)',
+                            padding: 16,
+                            titleFont: { family: 'Outfit', size: 15, weight: 'bold' },
+                            bodyFont: { family: 'Plus Jakarta Sans', size: 14 },
+                            cornerRadius: 12,
+                            displayColors: true,
+                            boxPadding: 6,
+                            usePointStyle: true
+                        }
+                    },
+                    animation: {
+                        animateScale: true,
+                        animateRotate: true,
+                        duration: 2000,
+                        easing: 'easeOutBounce'
+                    }
+                }
             });
         }
 
+        function getOptionLetter(idx) { return String.fromCharCode(65 + idx); }
+
         function renderSolutions() {
             const list = document.getElementById('solutionsList');
+            const emptyState = document.getElementById('emptyState');
             if (!originalQuestions) return;
 
-            list.innerHTML = originalQuestions.map(q => {
+            let html = '';
+            let count = 0;
+
+            originalQuestions.forEach((q, idx) => {
                 const res = resultData.userResponses.find(r => r.id === q.id);
                 const userSel = res ? res.selection : null;
                 const isCorrect = userSel === q.correct;
                 const isSkipped = userSel === null;
 
-                let badge = isCorrect ? '<span class="badge badge-correct">Correct</span>' : (isSkipped ? '<span class="badge badge-skipped">Skipped</span>' : '<span class="badge badge-wrong">Wrong</span>');
+                let status = isCorrect ? 'correct' : (isSkipped ? 'skipped' : 'wrong');
+                if (currentFilter !== 'all' && status !== currentFilter) return;
+                
+                count++;
 
-                let options = q.options.map((opt, i) => {
-                    let color = i === q.correct ? 'var(--success)' : (i === userSel ? 'var(--danger)' : 'inherit');
-                    let weight = (i === q.correct || i === userSel) ? 'bold' : 'normal';
-                    return `<div style="color:${color}; font-weight:${weight}; margin-bottom:4px;">${i === q.correct ? '✓' : (i === userSel ? '✗' : '○')} ${opt}</div>`;
+                let badge = isCorrect 
+                    ? '<div class="badge badge-correct"><i class="ri-checkbox-circle-fill"></i> Correct</div>' 
+                    : (isSkipped 
+                        ? '<div class="badge badge-skipped"><i class="ri-share-forward-2-fill"></i> Skipped</div>' 
+                        : '<div class="badge badge-wrong"><i class="ri-close-circle-fill"></i> Wrong</div>');
+
+                let optionsHtml = q.options.map((opt, i) => {
+                    let isOptCorrect = i === q.correct;
+                    let isOptSelected = i === userSel;
+                    let optClass = 'option-item ';
+                    let optIcon = getOptionLetter(i);
+                    
+                    if (isOptCorrect) {
+                        optClass += 'opt-correct ';
+                        if (isOptSelected) optClass += 'opt-selected-correct ';
+                        optIcon = '<i class="ri-check-line"></i>';
+                    } else if (isOptSelected) {
+                        optClass += 'opt-wrong ';
+                        optIcon = '<i class="ri-close-line"></i>';
+                    }
+
+                    return `
+                        <div class="${optClass}">
+                            <div class="option-indicator">${optIcon}</div>
+                            <div class="option-content">${opt}</div>
+                        </div>
+                    `;
                 }).join('');
 
-                return `
-                    <div class="sol-card">
+                html += `
+                    <div class="sol-card" style="animation-delay: ${count * 0.08}s">
                         <div class="sol-header">
-                            <span style="font-weight:800;">Q${q.id}</span> ${badge}
+                            <div class="q-number">Question ${idx + 1}</div>
+                            ${badge}
                         </div>
-                        <div style="margin-bottom:1rem; font-weight:600;">${q.question}</div>
-                        <div style="background:var(--bg-body); padding:1rem; border-radius:8px; margin-bottom:1rem;">${options}</div>
-                        <details><summary style="cursor:pointer; font-size:0.8rem; color:var(--text-muted);">Explanation</summary><p style="font-size:0.9rem; padding:10px 0;">${q.explanation || 'No explanation.'}</p></details>
+                        <div class="question-text">${q.question}</div>
+                        <div class="options-list">${optionsHtml}</div>
+                        <details class="explanation">
+                            <summary class="exp-summary">View Expert Explanation</summary>
+                            <div class="exp-content">${q.explanation || 'Detailed explanation will be updated shortly.'}</div>
+                        </details>
                     </div>
                 `;
-            }).join('');
+            });
 
-            // MathJax re-render
-            if (window.MathJax) {
-                MathJax.typesetPromise([list]).catch((err) => console.log(err.message));
+            if (count === 0) {
+                list.style.display = 'none';
+                emptyState.style.display = 'block';
+            } else {
+                list.style.display = 'flex';
+                emptyState.style.display = 'none';
+                list.innerHTML = html;
+                if (window.MathJax) MathJax.typesetPromise([list]).catch(err => console.log(err));
             }
         }
 
@@ -315,8 +593,43 @@
             document.getElementById('view-solutions').style.display = view === 'solutions' ? 'block' : 'none';
             document.getElementById('tabSummary').classList.toggle('active', view === 'summary');
             document.getElementById('tabSolutions').classList.toggle('active', view === 'solutions');
+            document.getElementById('solutionFilters').style.display = view === 'solutions' ? 'flex' : 'none';
+
+            if (view === 'summary' && chartInstance) chartInstance.update();
+        }
+
+        function filterSolutions(filter) {
+            currentFilter = filter;
+            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+            // use event to find clicked target
+            if(event && event.currentTarget) {
+                event.currentTarget.classList.add('active');
+            } else {
+                // fallback
+                document.querySelector(`.filter-btn[onclick="filterSolutions('${filter}')"]`).classList.add('active');
+            }
+            renderSolutions();
+        }
+
+        function shareResult() {
+            let acc = document.getElementById('accuracyVal').innerText;
+            const text = `I just scored ${resultData.score} with ${acc} accuracy in my IISER Prep Mock Test! 🎯🔥\nCan you beat my score?`;
+            
+            if (navigator.share) {
+                navigator.share({
+                    title: 'My Mock Test Result',
+                    text: text,
+                    url: window.location.href
+                }).catch(console.error);
+            } else {
+                navigator.clipboard.writeText(text).then(() => {
+                    const btn = document.querySelector('.btn-secondary');
+                    const oHTML = btn.innerHTML;
+                    btn.innerHTML = '<i class="ri-check-double-line"></i> Copied!';
+                    setTimeout(() => btn.innerHTML = oHTML, 2000);
+                });
+            }
         }
     </script>
 </body>
-
 </html>
