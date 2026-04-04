@@ -2065,8 +2065,12 @@
                 </ul>
             </div>
 
+            <div style="text-align: center; margin-bottom: 1rem;">
+                <span id="countdown-line" style="color: #ef4444; font-weight: 700; font-size: 0.9rem;">Ends in 5 days ⏳</span>
+                <div style="font-size: 0.9rem; color: var(--text-muted); text-decoration: line-through; margin-top: 0.25rem;">₹499</div>
+            </div>
             <button class="btn btn-primary" style="width: 100%; margin-bottom: 0.75rem;" onclick="redirectToPricing()">
-                Upgrade to PRO - ₹499
+                Upgrade to PRO - ₹249
             </button>
             <button class="btn btn-outline" style="width: 100%; border: none;" onclick="closeModal()">
                 Maybe Later
@@ -2142,6 +2146,38 @@
      }
      ]
     }
+    </script>
+    <script>
+        (function() {
+            const countdownElement = document.getElementById('countdown-line');
+            let expiry = localStorage.getItem('IAT_SALE_EXPIRY');
+            if (!expiry) {
+                expiry = Date.now() + (5 * 24 * 60 * 60 * 1000);
+                localStorage.setItem('IAT_SALE_EXPIRY', expiry);
+            } else {
+                expiry = parseInt(expiry);
+            }
+            function updateCountdown() {
+                const now = Date.now();
+                const diff = expiry - now;
+                if (diff <= 0) {
+                    if (countdownElement) {
+                        countdownElement.innerHTML = "Extended for limited time 🔥";
+                    }
+                    return;
+                }
+                const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+                if (countdownElement) {
+                    const timeStr = days > 0 ? `${days}d ${hours}h` : `${hours}h ${minutes}m ${seconds}s`;
+                    countdownElement.innerHTML = `Ends in ${timeStr} ⏳`;
+                }
+            }
+            setInterval(updateCountdown, 1000);
+            updateCountdown();
+        })();
     </script>
 </body>
 

@@ -546,7 +546,7 @@
                 <p>Get access to 30+ Premium Mocks, AI Analytics & Smart Notes.</p>
             </div>
             <div class="upsell-action">
-                <button onclick="openUpgradeModal()" class="btn btn-white">Upgrade Plan - ₹499</button>
+                <button onclick="openUpgradeModal()" class="btn btn-white">Unlock Pro for ₹249</button>
             </div>
         </div>
 
@@ -1166,8 +1166,9 @@
             <h2>Unlock Pro Series</h2>
             <p style="color: var(--text-muted);">Gain the edge over 50,000+ aspirants.</p>
 
-            <div style="font-size: 1rem; color: var(--text-muted); text-decoration: line-through; margin-bottom: 0.25rem;">₹999</div>
-            <span class="price-tag">₹499</span>
+            <div style="font-size: 1rem; color: var(--text-muted); text-decoration: line-through; margin-bottom: 0.25rem;">₹499</div>
+            <span class="price-tag">₹249</span>
+            <div id="countdown-line" style="color: #ef4444; font-weight: 700; font-size: 0.9rem; margin-bottom: 1rem;">Offer ends in 5 days ⏳</div>
 
             <div class="feature-check">
                 <li><span style="color: var(--success);">✔</span> 30+ Full Length Mocks</li>
@@ -1410,7 +1411,37 @@
         }, { passive: true });
     </script>
     <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
-
+    <script>
+        (function() {
+            const countdownElement = document.getElementById('countdown-line');
+            let expiry = localStorage.getItem('IAT_SALE_EXPIRY');
+            if (!expiry) {
+                expiry = Date.now() + (5 * 24 * 60 * 60 * 1000);
+                localStorage.setItem('IAT_SALE_EXPIRY', expiry);
+            } else {
+                expiry = parseInt(expiry);
+            }
+            function updateCountdown() {
+                const now = Date.now();
+                const diff = expiry - now;
+                if (diff <= 0) {
+                    if (countdownElement) {
+                        countdownElement.innerHTML = "Extended for limited time 🔥";
+                    }
+                    return;
+                }
+                const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+                if (countdownElement) {
+                    countdownElement.innerHTML = `Offer ends in ${days}d ${hours}h ${minutes}m ${seconds}s ⏳`;
+                }
+            }
+            setInterval(updateCountdown, 1000);
+            updateCountdown();
+        })();
+    </script>
 </body>
 
 </html>

@@ -1288,8 +1288,9 @@
                     <!-- Pricing Card -->
                     <div class="sidebar-card pro-hidden sidebar-highlight">
                         <h4>IAT 2026 Pass</h4>
-                        <div style="font-size: 0.9rem; color: var(--text-muted); text-decoration: line-through;">₹999</div>
-                        <div class="price">₹499 <span>one-time</span></div>
+                        <div style="font-size: 0.9rem; color: var(--text-muted); text-decoration: line-through;">₹499</div>
+                        <div class="price" style="margin-bottom: 0.25rem;">₹249 <span>one-time</span></div>
+                        <div id="countdown-line" style="font-size: 0.85rem; color: #ef4444; font-weight: 700; margin-bottom: 1rem;">Ends in 5 days ⏳</div>
                         <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;">Valid until exam
                             day • Full access</p>
                         <a href="/#pricing" class="btn btn-primary" style="width: 100%;">Get Access Now</a>
@@ -1473,6 +1474,38 @@
             localStorage.clear();
             window.location.href = '/index.html';
         }
+    </script>
+    <script>
+        (function() {
+            const countdownElement = document.getElementById('countdown-line');
+            let expiry = localStorage.getItem('IAT_SALE_EXPIRY');
+            if (!expiry) {
+                expiry = Date.now() + (5 * 24 * 60 * 60 * 1000);
+                localStorage.setItem('IAT_SALE_EXPIRY', expiry);
+            } else {
+                expiry = parseInt(expiry);
+            }
+            function updateCountdown() {
+                const now = Date.now();
+                const diff = expiry - now;
+                if (diff <= 0) {
+                    if (countdownElement) {
+                        countdownElement.innerHTML = "Extended for limited time 🔥";
+                    }
+                    return;
+                }
+                const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+                if (countdownElement) {
+                    const timeStr = days > 0 ? `${days}d ${hours}h` : `${hours}h ${minutes}m ${seconds}s`;
+                    countdownElement.innerHTML = `Ends in ${timeStr} ⏳`;
+                }
+            }
+            setInterval(updateCountdown, 1000);
+            updateCountdown();
+        })();
     </script>
 </body>
 

@@ -1419,7 +1419,7 @@
                         <button class="action-btn"
                             style="grid-column: 1 / -1; background: linear-gradient(90deg, #8b5cf6, #a78bfa); color: white;"
                             onclick="handlePaperClick('bundle')">
-                            <i class="fas fa-download"></i> Get Bundle (₹499)
+                            <i class="fas fa-download"></i> Get Bundle (₹249)
                         </button>
                     </div>
                 </article>
@@ -1695,11 +1695,12 @@
 
             <div
                 style="background: var(--bg-wash); padding: 1.5rem; border-radius: var(--radius-md); margin-bottom: 1.5rem; border: 2px solid var(--primary-soft);">
-                <div style="font-size: 2.5rem; font-weight: 800; color: var(--primary);">₹499</div>
+                <div style="font-size: 2.5rem; font-weight: 800; color: var(--primary);">₹249</div>
                 <div
                     style="color: var(--text-muted); font-size: 0.875rem; text-decoration: line-through; margin-bottom: 0.5rem;">
-                    ₹999</div>
-                <div style="font-size: 0.875rem; color: var(--success); font-weight: 600;">60% off • Limited time</div>
+                    ₹499</div>
+                <div id="countdown-line" style="font-size: 0.875rem; color: #ef4444; font-weight: 700; margin-bottom: 0.5rem;">Offer ends in 5 days ⏳</div>
+                <div style="font-size: 0.875rem; color: var(--success); font-weight: 600;">50% off • Limited time</div>
             </div>
 
             <button class="btn btn-primary btn-upgrade-now" style="width: 100%; margin-bottom: 0.75rem;"
@@ -2213,6 +2214,36 @@
             item.classList.toggle('open', !isOpen);
             btn.setAttribute('aria-expanded', String(!isOpen));
         }
+    <script>
+        (function() {
+            const countdownElement = document.getElementById('countdown-line');
+            let expiry = localStorage.getItem('IAT_SALE_EXPIRY');
+            if (!expiry) {
+                expiry = Date.now() + (5 * 24 * 60 * 60 * 1000);
+                localStorage.setItem('IAT_SALE_EXPIRY', expiry);
+            } else {
+                expiry = parseInt(expiry);
+            }
+            function updateCountdown() {
+                const now = Date.now();
+                const diff = expiry - now;
+                if (diff <= 0) {
+                    if (countdownElement) {
+                        countdownElement.innerHTML = "Extended for limited time 🔥";
+                    }
+                    return;
+                }
+                const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+                if (countdownElement) {
+                    countdownElement.innerHTML = `Offer ends in ${days}d ${hours}h ${minutes}m ${seconds}s ⏳`;
+                }
+            }
+            setInterval(updateCountdown, 1000);
+            updateCountdown();
+        })();
     </script>
 </body>
 
