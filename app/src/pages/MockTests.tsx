@@ -57,8 +57,8 @@ export default function MockTests() {
       setShowProModal(true);
       return;
     }
-    // Redirect to the actual test interface
-    window.location.assign(`/mock_test/take_test.html?test=${test.id}&type=${activeTab}`);
+    // Redirect to the actual test HTML page
+    window.location.assign(`/mock_test/full_mock_test_homepage.html?test=${test.id}`);
   };
 
   return (

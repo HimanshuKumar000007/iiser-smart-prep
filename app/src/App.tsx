@@ -1,54 +1,24 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Sidebar from './components/Sidebar';
 import Topbar from './components/Topbar';
 import Dashboard from './pages/Dashboard';
-import StudyGroups from './pages/StudyGroups';
-import Battles from './pages/Battles';
 import MockTests from './pages/MockTests';
-import AiDoubts from './pages/AiDoubts';
 import type { Page } from './types';
-import { supabase } from './lib/supabaseClient';
 import './App.css';
-
-// Test Supabase Connection
-async function testConnection() {
-  const { data, error } = await supabase.from('profiles').select('*');
-  console.log('Supabase Connection Test:', { data, error });
-}
-
-testConnection();
 
 function App() {
   const [currentPage, setCurrentPage] = useState<Page>('dashboard');
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 
-  // Expose navigation globally so child components (e.g. Dashboard quick actions) can navigate without prop drilling
-  useEffect(() => {
-    (window as Window & { __setPage?: (p: string) => void }).__setPage = (p: string) => {
-      setCurrentPage(p as Page);
-    };
-    return () => {
-      delete (window as Window & { __setPage?: (p: string) => void }).__setPage;
-    };
-  }, [setCurrentPage]);
-
   const renderPage = () => {
     switch (currentPage) {
       case 'dashboard':
-        return <Dashboard />;
-      case 'study-groups':
-        return <StudyGroups />;
-      case 'battles':
-        return <Battles />;
+        return <Dashboard onNavigate={setCurrentPage} />;
       case 'mock-tests':
         return <MockTests />;
-      case 'ai-doubts':
-        return <AiDoubts />;
-      case 'analytics':
-        return <Dashboard />; // Placeholder
       default:
-        return <Dashboard />;
+        return <Dashboard onNavigate={setCurrentPage} />;
     }
   };
 
@@ -62,7 +32,7 @@ function App() {
       </div>
 
       {/* Grid pattern overlay */}
-      <div 
+      <div
         className="fixed inset-0 pointer-events-none opacity-[0.02]"
         style={{
           backgroundImage: `linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px),
@@ -73,8 +43,8 @@ function App() {
 
       <div className="relative flex h-screen">
         {/* Sidebar */}
-        <Sidebar 
-          currentPage={currentPage} 
+        <Sidebar
+          currentPage={currentPage}
           onPageChange={setCurrentPage}
           isOpen={isSidebarOpen}
           onToggle={() => setIsSidebarOpen(!isSidebarOpen)}
@@ -82,11 +52,11 @@ function App() {
 
         {/* Main Content */}
         <div className="flex-1 flex flex-col min-w-0">
-          <Topbar 
+          <Topbar
             onMenuToggle={() => setIsSidebarOpen(!isSidebarOpen)}
             isSidebarOpen={isSidebarOpen}
           />
-          
+
           <main className="flex-1 overflow-auto p-6">
             <AnimatePresence mode="wait">
               <motion.div

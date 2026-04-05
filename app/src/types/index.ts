@@ -99,4 +99,4 @@ export interface PerformanceData {
   xp: number;
 }
 
-export type Page = 'dashboard' | 'mock-tests' | 'ai-doubts' | 'study-groups' | 'battles' | 'analytics';
+export type Page = 'dashboard' | 'mock-tests';
