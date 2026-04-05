@@ -42,20 +42,24 @@ export default function Topbar({ onMenuToggle, isSidebarOpen }: TopbarProps) {
 
   useEffect(() => {
     async function loadProfile() {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) return;
-      const { data } = await supabase
-        .from('profiles')
-        .select('full_name, rank, streak, avatar_url, subscription')
-        .eq('id', user.id)
-        .single();
-      if (data) {
-        setProfile(data);
-        const sub = data.subscription?.toUpperCase();
-        if (sub === 'PRO' || sub === 'PREMIUM') {
-          setIsPro(true);
-          localStorage.setItem('IAT_PLAN', 'PRO');
+      try {
+        const { data: { user } } = await supabase.auth.getUser();
+        if (!user) return;
+        const { data } = await supabase
+          .from('profiles')
+          .select('full_name, rank, streak, avatar_url, subscription')
+          .eq('id', user.id)
+          .single();
+        if (data) {
+          setProfile(data);
+          const sub = String(data.subscription || '').toUpperCase();
+          if (sub === 'PRO' || sub === 'PREMIUM') {
+            setIsPro(true);
+            localStorage.setItem('IAT_PLAN', 'PRO');
+          }
         }
+      } catch (error) {
+        console.error('Error loading profile in topbar:', error);
       }
     }
     loadProfile();

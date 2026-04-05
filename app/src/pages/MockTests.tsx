@@ -54,27 +54,31 @@ export default function MockTests() {
 
   useEffect(() => {
     async function loadPlan() {
-      // 1. First check local storage for instant feedback
-      const localPlan = localStorage.getItem('IAT_PLAN');
-      if (localPlan === 'PRO' || localPlan === 'Premium') {
-        setIsPro(true);
-      }
-
-      // 2. Fetch fresh from Supabase to be 100% sure
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) return;
-      const { data } = await supabase
-        .from('profiles')
-        .select('subscription')
-        .eq('id', user.id)
-        .single();
-        
-      if (data) {
-        const sub = data.subscription?.toUpperCase();
-        if (sub === 'PRO' || sub === 'PREMIUM') {
+      try {
+        // 1. First check local storage for instant feedback
+        const localPlan = localStorage.getItem('IAT_PLAN');
+        if (localPlan === 'PRO' || localPlan === 'Premium') {
           setIsPro(true);
-          localStorage.setItem('IAT_PLAN', 'PRO');
         }
+
+        // 2. Fetch fresh from Supabase to be 100% sure
+        const { data: { user } } = await supabase.auth.getUser();
+        if (!user) return;
+        const { data } = await supabase
+          .from('profiles')
+          .select('subscription')
+          .eq('id', user.id)
+          .single();
+          
+        if (data) {
+          const sub = String(data.subscription || '').toUpperCase();
+          if (sub === 'PRO' || sub === 'PREMIUM') {
+            setIsPro(true);
+            localStorage.setItem('IAT_PLAN', 'PRO');
+          }
+        }
+      } catch (error) {
+        console.error('Error loading plan in mock tests:', error);
       }
     }
     loadPlan();

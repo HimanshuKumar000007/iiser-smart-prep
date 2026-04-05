@@ -37,6 +37,7 @@ interface Profile {
   accuracy?: number;
   questions_solved?: number;
   streak?: number;
+  subscription?: string;
 }
 
 interface DashboardProps {
@@ -92,13 +93,13 @@ export default function Dashboard({ onNavigate }: DashboardProps) {
         if (user) {
           const { data } = await supabase
             .from('profiles')
-            .select('full_name, rank, xp, accuracy, questions_solved, streak')
+            .select('full_name, rank, xp, accuracy, questions_solved, streak, subscription')
             .eq('id', user.id)
             .single();
           if (data) setProfile(data);
         }
-      } catch {
-        // Fail silently
+      } catch (error) {
+        console.error('Error fetching dashboard data:', error);
       } finally {
         setLoading(false);
       }

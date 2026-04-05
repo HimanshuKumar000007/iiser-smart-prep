@@ -5,7 +5,7 @@ import { inspectAttr } from 'kimi-plugin-inspect-react'
 
 // https://vite.dev/config/
 export default defineConfig({
-  base: '/dashboard/',
+  base: './',
   publicDir: false,
   build: {
     outDir: path.resolve(__dirname, '../frontend/dashboard'),
