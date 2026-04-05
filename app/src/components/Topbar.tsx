@@ -65,16 +65,14 @@ export default function Topbar({ onMenuToggle, isSidebarOpen }: TopbarProps) {
     <header className="h-16 px-6 flex items-center justify-between border-b border-white/5 bg-[#0B0F14]/80 backdrop-blur-xl">
       {/* Left side */}
       <div className="flex items-center gap-4">
-        {!isSidebarOpen && (
-          <motion.button
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            onClick={onMenuToggle}
-            className="p-2 rounded-lg hover:bg-white/5 transition-colors"
-          >
-            <Menu className="w-5 h-5 text-gray-400" />
-          </motion.button>
-        )}
+        <motion.button
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          onClick={onMenuToggle}
+          className={`p-2 rounded-lg hover:bg-white/5 transition-colors ${!isSidebarOpen ? 'block' : 'lg:hidden'}`}
+        >
+          <Menu className="w-5 h-5 text-gray-400" />
+        </motion.button>
 
         {/* Search */}
         <AnimatePresence>

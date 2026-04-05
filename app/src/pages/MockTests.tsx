@@ -65,12 +65,12 @@ export default function MockTests() {
       <motion.div variants={itemVariants} className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <div className="flex items-center gap-3 mb-1">
-            <h1 className="text-3xl font-bold flex items-center gap-2">
-              <Target className="w-8 h-8 text-indigo-400" />
-              Mock Tests Library
+            <h1 className="text-2xl md:text-3xl font-bold flex items-center gap-2">
+              <Target className="w-6 h-6 md:w-8 md:h-8 text-indigo-400" />
+              Mock Tests
             </h1>
           </div>
-          <p className="text-gray-400">Master the 2026 Exam Pattern with full-length and topic-wise mocks</p>
+          <p className="text-gray-400 text-sm md:text-base">Master the 2026 Exam Pattern with full-length mocks</p>
         </div>
       </motion.div>
 

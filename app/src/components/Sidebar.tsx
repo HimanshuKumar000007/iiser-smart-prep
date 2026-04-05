@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import {
   LayoutDashboard,
   FileQuestion,
@@ -70,18 +70,29 @@ export default function Sidebar({ currentPage, onPageChange, isOpen, onToggle }:
   return (
     <>
       {/* Mobile overlay */}
-      {!isOpen && (
-        <div
-          className="fixed inset-0 bg-black/50 z-40 lg:hidden"
-          onClick={onToggle}
-        />
-      )}
+      <AnimatePresence>
+        {isOpen && window.innerWidth < 1024 && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={onToggle}
+            className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[60] lg:hidden"
+          />
+        )}
+      </AnimatePresence>
 
       <motion.aside
         initial={false}
-        animate={{ width: isOpen ? 240 : 72 }}
+        animate={{ 
+          width: window.innerWidth >= 1024 ? (isOpen ? 240 : 72) : (isOpen ? 240 : 0),
+          x: window.innerWidth < 1024 && !isOpen ? -240 : 0
+        }}
         transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-        className="relative z-50 h-screen bg-[#0B0F14]/95 backdrop-blur-xl border-r border-white/5 flex flex-col flex-shrink-0 overflow-hidden"
+        className={`
+          fixed lg:relative z-[70] h-screen bg-[#0B0F14]/95 backdrop-blur-xl border-r border-white/5 flex flex-col flex-shrink-0 overflow-hidden
+          ${window.innerWidth < 1024 && !isOpen ? 'pointer-events-none' : 'pointer-events-auto'}
+        `}
       >
         {/* Logo */}
         <div className="p-5 flex items-center justify-between min-h-[72px]">

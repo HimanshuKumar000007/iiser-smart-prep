@@ -134,14 +134,14 @@ export default function Dashboard({ onNavigate }: DashboardProps) {
       {/* Welcome */}
       <motion.div variants={itemVariants} className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <h1 className="text-4xl font-bold mb-2 tracking-tight">
+          <h1 className="text-2xl md:text-4xl font-bold mb-2 tracking-tight line-clamp-2">
             Welcome back,{' '}
             <span className="bg-clip-text text-transparent bg-gradient-to-r from-indigo-400 to-purple-400">
               {firstName}
             </span>
             !
           </h1>
-          <p className="text-gray-400 text-lg">
+          <p className="text-gray-400 text-base md:text-lg">
             Ready to crack IISER? Let's get started.
           </p>
         </div>
