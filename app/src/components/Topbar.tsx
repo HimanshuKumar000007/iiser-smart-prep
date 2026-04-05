@@ -31,14 +31,12 @@ interface Profile {
   rank?: number;
   streak?: number;
   avatar_url?: string;
-  subscription?: string;
 }
 
 export default function Topbar({ onMenuToggle, isSidebarOpen }: TopbarProps) {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [profile, setProfile] = useState<Profile | null>(null);
   const [unreadCount, setUnreadCount] = useState(0);
-  const [isPro, setIsPro] = useState(false);
 
   useEffect(() => {
     async function loadProfile() {
@@ -47,17 +45,10 @@ export default function Topbar({ onMenuToggle, isSidebarOpen }: TopbarProps) {
         if (!user) return;
         const { data } = await supabase
           .from('profiles')
-          .select('full_name, rank, streak, avatar_url, subscription')
+          .select('full_name, rank, streak, avatar_url')
           .eq('id', user.id)
           .single();
-        if (data) {
-          setProfile(data);
-          const sub = String(data.subscription || '').toUpperCase();
-          if (sub === 'PRO' || sub === 'PREMIUM') {
-            setIsPro(true);
-            localStorage.setItem('IAT_PLAN', 'PRO');
-          }
-        }
+        if (data) setProfile(data);
       } catch (error) {
         console.error('Error loading profile in topbar:', error);
       }
@@ -184,12 +175,8 @@ export default function Topbar({ onMenuToggle, isSidebarOpen }: TopbarProps) {
             <button className="flex items-center gap-3 pl-3 border-l border-white/10">
               <div className="text-right hidden sm:block">
                 <p className="text-sm font-medium">{profile?.full_name ?? '—'}</p>
-                <p className="text-xs font-medium">
-                  {isPro ? (
-                    <span className="text-indigo-400 font-bold">PRO Member</span>
-                  ) : (
-                    <span className="text-gray-400 capitalize">{profile?.subscription ?? 'Free'}</span>
-                  )}
+                <p className="text-xs text-gray-400 capitalize">
+                  Free Student
                 </p>
               </div>
               {profile?.avatar_url ? (

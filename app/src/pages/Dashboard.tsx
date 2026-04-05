@@ -37,7 +37,6 @@ interface Profile {
   accuracy?: number;
   questions_solved?: number;
   streak?: number;
-  subscription?: string;
 }
 
 interface DashboardProps {
@@ -93,7 +92,7 @@ export default function Dashboard({ onNavigate }: DashboardProps) {
         if (user) {
           const { data } = await supabase
             .from('profiles')
-            .select('full_name, rank, xp, accuracy, questions_solved, streak, subscription')
+            .select('full_name, rank, xp, accuracy, questions_solved, streak')
             .eq('id', user.id)
             .single();
           if (data) setProfile(data);
