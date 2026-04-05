@@ -5,6 +5,8 @@ import Topbar from './components/Topbar';
 import Dashboard from './pages/Dashboard';
 import StudyGroups from './pages/StudyGroups';
 import Battles from './pages/Battles';
+import MockTests from './pages/MockTests';
+import AiDoubts from './pages/AiDoubts';
 import type { Page } from './types';
 import { supabase } from './lib/supabaseClient';
 import './App.css';
@@ -30,9 +32,9 @@ function App() {
       case 'battles':
         return <Battles />;
       case 'mock-tests':
-        return <Dashboard />; // Placeholder
+        return <MockTests />;
       case 'ai-doubts':
-        return <Dashboard />; // Placeholder
+        return <AiDoubts />;
       case 'analytics':
         return <Dashboard />; // Placeholder
       default:
