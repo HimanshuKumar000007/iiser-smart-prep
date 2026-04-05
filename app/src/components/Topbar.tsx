@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   Search,
@@ -8,6 +8,7 @@ import {
   Flame,
   Trophy,
   X,
+  User,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -18,45 +19,43 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { supabase } from '../lib/supabaseClient';
 
 interface TopbarProps {
   onMenuToggle: () => void;
   isSidebarOpen: boolean;
 }
 
-const notifications = [
-  {
-    id: 1,
-    title: 'New Battle Challenge',
-    message: 'Rahul challenged you to a Quick Battle!',
-    time: '2 min ago',
-    type: 'battle',
-    unread: true,
-  },
-  {
-    id: 2,
-    title: 'Streak Milestone',
-    message: 'Congratulations! 7-day streak achieved!',
-    time: '1 hour ago',
-    type: 'achievement',
-    unread: true,
-  },
-  {
-    id: 3,
-    title: 'Group Activity',
-    message: 'Physics Masters completed weekly goal',
-    time: '3 hours ago',
-    type: 'group',
-    unread: false,
-  },
-];
+interface Profile {
+  full_name?: string;
+  rank?: number;
+  streak?: number;
+  avatar_url?: string;
+  subscription?: string;
+}
 
 export default function Topbar({ onMenuToggle, isSidebarOpen }: TopbarProps) {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
-  const [unreadCount, setUnreadCount] = useState(2);
+  const [profile, setProfile] = useState<Profile | null>(null);
+  const [unreadCount, setUnreadCount] = useState(0);
 
-  const handleNotificationClick = () => {
-    setUnreadCount(0);
+  useEffect(() => {
+    async function loadProfile() {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) return;
+      const { data } = await supabase
+        .from('profiles')
+        .select('full_name, rank, streak, avatar_url, subscription')
+        .eq('id', user.id)
+        .single();
+      if (data) setProfile(data);
+    }
+    loadProfile();
+  }, []);
+
+  const handleSignOut = async () => {
+    await supabase.auth.signOut();
+    window.location.href = '/';
   };
 
   return (
@@ -87,7 +86,7 @@ export default function Topbar({ onMenuToggle, isSidebarOpen }: TopbarProps) {
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
               <Input
                 autoFocus
-                placeholder="Search tests, groups, topics..."
+                placeholder="Search tests, topics..."
                 className="pl-10 pr-10 bg-white/5 border-white/10 text-white placeholder:text-gray-500 focus:border-indigo-500/50 focus:ring-indigo-500/20"
               />
               <button
@@ -116,72 +115,47 @@ export default function Topbar({ onMenuToggle, isSidebarOpen }: TopbarProps) {
 
       {/* Right side */}
       <div className="flex items-center gap-3">
-        {/* Stats pills */}
+        {/* Real stats pills from profile */}
         <div className="hidden md:flex items-center gap-2">
-          <motion.div
-            whileHover={{ scale: 1.05 }}
-            className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-orange-500/10 border border-orange-500/20"
-          >
-            <Flame className="w-4 h-4 text-orange-400" />
-            <span className="text-sm font-medium text-orange-400">7 Days</span>
-          </motion.div>
-          
-          <motion.div
-            whileHover={{ scale: 1.05 }}
-            className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-yellow-500/10 border border-yellow-500/20"
-          >
-            <Trophy className="w-4 h-4 text-yellow-400" />
-            <span className="text-sm font-medium text-yellow-400">#42</span>
-          </motion.div>
+          {(profile?.streak ?? 0) > 0 && (
+            <motion.div
+              whileHover={{ scale: 1.05 }}
+              className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-orange-500/10 border border-orange-500/20"
+            >
+              <Flame className="w-4 h-4 text-orange-400" />
+              <span className="text-sm font-medium text-orange-400">{profile?.streak} Days</span>
+            </motion.div>
+          )}
+
+          {profile?.rank && (
+            <motion.div
+              whileHover={{ scale: 1.05 }}
+              className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-yellow-500/10 border border-yellow-500/20"
+            >
+              <Trophy className="w-4 h-4 text-yellow-400" />
+              <span className="text-sm font-medium text-yellow-400">#{profile.rank}</span>
+            </motion.div>
+          )}
         </div>
 
-        {/* Notifications */}
-        <DropdownMenu onOpenChange={handleNotificationClick}>
-          <DropdownMenuTrigger asChild>
-            <Button
-              variant="ghost"
-              size="icon"
-              className="relative hover:bg-white/5"
+        {/* Notifications (empty until real DB integration) */}
+        <Button
+          variant="ghost"
+          size="icon"
+          className="relative hover:bg-white/5"
+          onClick={() => setUnreadCount(0)}
+        >
+          <Bell className="w-5 h-5 text-gray-400" />
+          {unreadCount > 0 && (
+            <motion.span
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              className="absolute -top-0.5 -right-0.5 w-5 h-5 bg-indigo-500 rounded-full text-xs flex items-center justify-center font-medium"
             >
-              <Bell className="w-5 h-5 text-gray-400" />
-              {unreadCount > 0 && (
-                <motion.span
-                  initial={{ scale: 0 }}
-                  animate={{ scale: 1 }}
-                  className="absolute -top-0.5 -right-0.5 w-5 h-5 bg-indigo-500 rounded-full text-xs flex items-center justify-center font-medium"
-                >
-                  {unreadCount}
-                </motion.span>
-              )}
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent 
-            align="end" 
-            className="w-80 bg-[#111827] border-white/10"
-          >
-            <div className="flex items-center justify-between px-3 py-2 border-b border-white/5">
-              <span className="font-medium">Notifications</span>
-              <button className="text-xs text-indigo-400 hover:text-indigo-300">
-                Mark all read
-              </button>
-            </div>
-            <div className="max-h-80 overflow-auto">
-              {notifications.map((notif) => (
-                <DropdownMenuItem
-                  key={notif.id}
-                  className="flex flex-col items-start gap-1 p-3 cursor-pointer hover:bg-white/5"
-                >
-                  <div className="flex items-center gap-2 w-full">
-                    <span className={`w-2 h-2 rounded-full ${notif.unread ? 'bg-indigo-500' : 'bg-transparent'}`} />
-                    <span className="font-medium text-sm flex-1">{notif.title}</span>
-                    <span className="text-xs text-gray-500">{notif.time}</span>
-                  </div>
-                  <p className="text-sm text-gray-400 pl-4">{notif.message}</p>
-                </DropdownMenuItem>
-              ))}
-            </div>
-          </DropdownMenuContent>
-        </DropdownMenu>
+              {unreadCount}
+            </motion.span>
+          )}
+        </Button>
 
         {/* Settings */}
         <Button
@@ -197,17 +171,25 @@ export default function Topbar({ onMenuToggle, isSidebarOpen }: TopbarProps) {
           <DropdownMenuTrigger asChild>
             <button className="flex items-center gap-3 pl-3 border-l border-white/10">
               <div className="text-right hidden sm:block">
-                <p className="text-sm font-medium">Arjun Sharma</p>
-                <p className="text-xs text-gray-400">Premium</p>
+                <p className="text-sm font-medium">{profile?.full_name ?? '—'}</p>
+                <p className="text-xs text-gray-400 capitalize">
+                  {profile?.subscription ?? 'Free'}
+                </p>
               </div>
-              <img
-                src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100&h=100&fit=crop&crop=face"
-                alt="Profile"
-                className="w-9 h-9 rounded-full object-cover border-2 border-indigo-500/30"
-              />
+              {profile?.avatar_url ? (
+                <img
+                  src={profile.avatar_url}
+                  alt="Profile"
+                  className="w-9 h-9 rounded-full object-cover border-2 border-indigo-500/30"
+                />
+              ) : (
+                <div className="w-9 h-9 rounded-full bg-gradient-to-br from-indigo-500/40 to-purple-500/40 border-2 border-indigo-500/30 flex items-center justify-center">
+                  <User className="w-4 h-4 text-indigo-300" />
+                </div>
+              )}
             </button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent 
+          <DropdownMenuContent
             align="end"
             className="w-48 bg-[#111827] border-white/10"
           >
@@ -217,11 +199,11 @@ export default function Topbar({ onMenuToggle, isSidebarOpen }: TopbarProps) {
             <DropdownMenuItem className="cursor-pointer hover:bg-white/5">
               Settings
             </DropdownMenuItem>
-            <DropdownMenuItem className="cursor-pointer hover:bg-white/5">
-              Billing
-            </DropdownMenuItem>
             <DropdownMenuSeparator className="bg-white/10" />
-            <DropdownMenuItem className="cursor-pointer text-red-400 hover:bg-white/5">
+            <DropdownMenuItem
+              className="cursor-pointer text-red-400 hover:bg-white/5"
+              onClick={handleSignOut}
+            >
               Sign out
             </DropdownMenuItem>
           </DropdownMenuContent>

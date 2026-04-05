@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import {
   LayoutDashboard,
@@ -8,8 +9,10 @@ import {
   BarChart3,
   ChevronLeft,
   Sparkles,
+  User,
 } from 'lucide-react';
 import type { Page } from '../types';
+import { supabase } from '../lib/supabaseClient';
 
 interface SidebarProps {
   currentPage: Page;
@@ -27,12 +30,35 @@ const menuItems: { id: Page; label: string; icon: React.ElementType }[] = [
   { id: 'analytics', label: 'Analytics', icon: BarChart3 },
 ];
 
+interface Profile {
+  full_name?: string;
+  rank?: number;
+  xp?: number;
+  avatar_url?: string;
+}
+
 export default function Sidebar({ currentPage, onPageChange, isOpen, onToggle }: SidebarProps) {
+  const [profile, setProfile] = useState<Profile | null>(null);
+
+  useEffect(() => {
+    async function loadProfile() {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) return;
+      const { data } = await supabase
+        .from('profiles')
+        .select('full_name, rank, xp, avatar_url')
+        .eq('id', user.id)
+        .single();
+      if (data) setProfile(data);
+    }
+    loadProfile();
+  }, []);
+
   return (
     <>
       {/* Mobile overlay */}
       {!isOpen && (
-        <div 
+        <div
           className="fixed inset-0 bg-black/50 z-40 lg:hidden"
           onClick={onToggle}
         />
@@ -40,7 +66,7 @@ export default function Sidebar({ currentPage, onPageChange, isOpen, onToggle }:
 
       <motion.aside
         initial={false}
-        animate={{ 
+        animate={{
           width: isOpen ? 260 : 80,
           x: isOpen ? 0 : 0
         }}
@@ -49,7 +75,7 @@ export default function Sidebar({ currentPage, onPageChange, isOpen, onToggle }:
       >
         {/* Logo section */}
         <div className="p-6 flex items-center justify-between">
-          <motion.div 
+          <motion.div
             className="flex items-center gap-3 overflow-hidden"
             animate={{ opacity: isOpen ? 1 : 0 }}
             transition={{ duration: 0.2 }}
@@ -101,8 +127,8 @@ export default function Sidebar({ currentPage, onPageChange, isOpen, onToggle }:
                 className={`
                   relative w-full flex items-center gap-3 px-4 py-3 rounded-xl
                   transition-all duration-300 group
-                  ${isActive 
-                    ? 'bg-indigo-500/10 text-indigo-400' 
+                  ${isActive
+                    ? 'bg-indigo-500/10 text-indigo-400'
                     : 'text-gray-400 hover:bg-white/5 hover:text-white'
                   }
                 `}
@@ -123,8 +149,8 @@ export default function Sidebar({ currentPage, onPageChange, isOpen, onToggle }:
 
                 <div className={`
                   relative p-2 rounded-lg transition-all duration-300
-                  ${isActive 
-                    ? 'bg-indigo-500/20 shadow-glow' 
+                  ${isActive
+                    ? 'bg-indigo-500/20 shadow-glow'
                     : 'group-hover:bg-white/5'
                   }
                 `}>
@@ -153,35 +179,46 @@ export default function Sidebar({ currentPage, onPageChange, isOpen, onToggle }:
           })}
         </nav>
 
-        {/* Bottom section - User profile preview */}
+        {/* Bottom section - Real user profile */}
         <div className="p-4 border-t border-white/5">
-          <motion.button
+          <motion.div
             className={`
               w-full flex items-center gap-3 p-3 rounded-xl
-              hover:bg-white/5 transition-all duration-300 group
+              bg-white/[0.03] border border-white/5
               ${!isOpen && 'justify-center'}
             `}
           >
             <div className="relative flex-shrink-0">
-              <img
-                src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100&h=100&fit=crop&crop=face"
-                alt="User"
-                className="w-10 h-10 rounded-full object-cover border-2 border-indigo-500/30"
-              />
+              {profile?.avatar_url ? (
+                <img
+                  src={profile.avatar_url}
+                  alt="User"
+                  className="w-10 h-10 rounded-full object-cover border-2 border-indigo-500/30"
+                />
+              ) : (
+                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-indigo-500/40 to-purple-500/40 border-2 border-indigo-500/30 flex items-center justify-center">
+                  <User className="w-5 h-5 text-indigo-300" />
+                </div>
+              )}
               <div className="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-green-400 rounded-full border-2 border-[#0B0F14]" />
             </div>
-            
+
             {isOpen && (
               <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 className="text-left overflow-hidden"
               >
-                <p className="font-medium text-sm truncate">Arjun Sharma</p>
-                <p className="text-xs text-gray-400 truncate">Rank #42 • 12.5K XP</p>
+                <p className="font-medium text-sm truncate">
+                  {profile?.full_name ?? 'Loading...'}
+                </p>
+                <p className="text-xs text-gray-400 truncate">
+                  {profile?.rank ? `Rank #${profile.rank}` : 'No rank yet'}
+                  {profile?.xp ? ` • ${(profile.xp / 1000).toFixed(1)}K XP` : ''}
+                </p>
               </motion.div>
             )}
-          </motion.button>
+          </motion.div>
         </div>
       </motion.aside>
     </>

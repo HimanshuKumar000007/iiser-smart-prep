@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Sidebar from './components/Sidebar';
 import Topbar from './components/Topbar';
@@ -22,6 +22,16 @@ testConnection();
 function App() {
   const [currentPage, setCurrentPage] = useState<Page>('dashboard');
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+
+  // Expose navigation globally so child components (e.g. Dashboard quick actions) can navigate without prop drilling
+  useEffect(() => {
+    (window as Window & { __setPage?: (p: string) => void }).__setPage = (p: string) => {
+      setCurrentPage(p as Page);
+    };
+    return () => {
+      delete (window as Window & { __setPage?: (p: string) => void }).__setPage;
+    };
+  }, [setCurrentPage]);
 
   const renderPage = () => {
     switch (currentPage) {
