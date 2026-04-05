@@ -40,12 +40,7 @@ app.use(cors({
   origin: true, // 👈 Reflects the request origin
   credentials: true
 }));
-app.use("/api/razorpay-webhook", express.json({
-  verify: (req, res, buf) => {
-    req.rawBody = buf.toString();
-  }
-}));
-
+app.use("/api/razorpay-webhook", express.raw({ type: "*/*" }));
 app.use(express.json());
 
 // Debug
@@ -295,14 +290,16 @@ app.post("/api/verify-payment", authMiddleware, async (req, res) => {
 // 🚨 RAZORPAY WEBHOOK
 // =======================
 app.post("/api/razorpay-webhook", async (req, res) => {
+  console.log("🔥 Webhook hit");
+
   try {
     const webhookSecret = process.env.RAZORPAY_WEBHOOK_SECRET;
-
     const signature = req.headers["x-razorpay-signature"];
 
+    // req.body is a raw Buffer from express.raw()
     const expectedSignature = crypto
       .createHmac("sha256", webhookSecret)
-      .update(req.rawBody)
+      .update(req.body) // Buffer — correct for HMAC
       .digest("hex");
 
     // ❌ Signature invalid
@@ -311,19 +308,21 @@ app.post("/api/razorpay-webhook", async (req, res) => {
       return res.status(400).json({ success: false });
     }
 
-    const event = req.body.event;
+    // Parse the raw body into JSON for event handling
+    const event = JSON.parse(req.body.toString());
+    console.log("Event:", event.event);
 
     // 🎯 Payment success event
-    if (event === "payment.captured" || event === "order.paid") {
+    if (event.event === "payment.captured" || event.event === "order.paid") {
 
-      const payment = req.body.payload.payment.entity;
+      const payment = event.payload.payment.entity;
 
       const paymentId = payment.id;
       const userId = payment.notes.user_id;
 
       if (!userId) {
         console.log("No user_id found in notes");
-        return res.json({ success: true });
+        return res.status(200).send("OK");
       }
 
       // 🔥 UPDATE USER TO PRO
@@ -344,11 +343,11 @@ app.post("/api/razorpay-webhook", async (req, res) => {
       }
     }
 
-    res.json({ status: "ok" });
+    res.status(200).send("OK");
 
   } catch (err) {
     console.error("Webhook error:", err);
-    res.status(500).json({ success: false });
+    res.status(500).send("Error");
   }
 });
 
