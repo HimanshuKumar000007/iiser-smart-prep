@@ -13,6 +13,10 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
         rel="stylesheet">
+    <!-- Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+    <!-- Marked.js -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 
     <style>
         /* =========================================
@@ -748,6 +752,44 @@
         </div>
     </section>
 
+    <!-- NEW: AI STUDY TOOLS SECTION -->
+    <section id="ai-tools" class="practice-tools" style="background: var(--bg-off-white); border-top: 1px solid var(--border-light);">
+        <div class="container">
+            <div class="section-header">
+                <span class="badge" style="background: rgba(139, 92, 246, 0.1); color: #8b5cf6; border-color: rgba(139, 92, 246, 0.2);">AI BETA</span>
+                <h2>Magic AI Notes Generator</h2>
+                <p>Can't find notes for a specific topic? Let our AI generate a high-yield summary, formulas, and key points for you instantly.</p>
+            </div>
+
+            <div style="max-width: 800px; margin: 0 auto; background: white; padding: 2rem; border-radius: var(--radius-lg); border: 1px solid var(--border-light); box-shadow: var(--shadow-xl);">
+                <div style="display: flex; gap: 1rem; margin-bottom: 1.5rem; flex-wrap: wrap;">
+                    <input type="text" id="aiTopicInput" placeholder="Enter topic (e.g., Quantum Numbers, Genetics...)" 
+                        style="flex: 1; padding: 1rem; border-radius: var(--radius-sm); border: 2px solid var(--border-light); outline: none; font-size: 1rem;">
+                    <button onclick="generateAINotes()" class="btn btn-primary" id="aiGenBtn" style="background: #8b5cf6; border-color: #8b5cf6;">
+                        <i class="ri-magic-line"></i> Generate Notes
+                    </button>
+                </div>
+
+                <div id="aiNotesResult" style="display: none; border: 1px solid #e2e8f0; border-radius: 12px; padding: 1.5rem; background: #fdfaff; position: relative;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; border-bottom: 1px solid #ddd; padding-bottom: 0.5rem;">
+                        <span style="font-weight: 700; color: #6d28d9; font-size: 0.9rem;"><i class="ri-robot-2-line"></i> AI GENERATED SUMMARY</span>
+                        <button onclick="copyAINotes()" class="btn" style="padding: 0.4rem 0.8rem; font-size: 0.8rem; border: 1px solid #ddd; background: white;">
+                            <i class="ri-file-copy-line"></i> Copy
+                        </button>
+                    </div>
+                    <div id="aiNotesBody" class="ai-content" style="font-size: 0.95rem; line-height: 1.7; color: var(--text-main);">
+                        <!-- AI Content will go here -->
+                    </div>
+                </div>
+
+                <div id="aiLoading" style="display: none; text-align: center; padding: 2rem;">
+                    <i class="ri-loader-4-line ri-spin" style="font-size: 2rem; color: #8b5cf6;"></i>
+                    <p style="margin-top: 1rem; color: var(--text-muted);">Generating your high-yield notes... This usually takes 5-10 seconds.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- 5. FAQ SECTION (Original Style) -->
     <section class="faq-section" style="background: var(--bg-off-white); padding: 5rem 0;">
         <div class="container">
@@ -892,6 +934,71 @@
         document.addEventListener('keydown', function (event) {
             if (event.key === "Escape") closeModal();
         });
+
+        // =========================================
+        // AI TOOLS LOGIC
+        // =========================================
+        async function generateAINotes() {
+            const topic = document.getElementById('aiTopicInput').value.trim();
+            if (!topic) return alert("Please enter a topic first!");
+
+            const btn = document.getElementById('aiGenBtn');
+            const resultArea = document.getElementById('aiNotesResult');
+            const loading = document.getElementById('aiLoading');
+            const body = document.getElementById('aiNotesBody');
+
+            // UI State
+            btn.disabled = true;
+            loading.style.display = 'block';
+            resultArea.style.display = 'none';
+
+            try {
+                const prompt = `
+Create high-yield revision notes for the IISER Aptitude Test (IAT).
+Topic: ${topic}
+
+Include:
+1. Core Concepts (brief)
+2. Key Formulas (if applicable)
+3. 3-5 Crucial Points to remember for exams.
+4. One common trick or mistake to avoid.
+
+Use Markdown formatting. Keep it concise enough for quick revision.
+`;
+
+                const res = await fetch(AI_API_URL, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ prompt })
+                });
+
+                if (!res.ok) throw new Error("Backend unavailable");
+
+                const data = await res.json();
+                const aiText = data.candidates[0].content.parts[0].text;
+
+                body.innerHTML = marked.parse(aiText);
+                loading.style.display = 'none';
+                resultArea.style.display = 'block';
+                
+                // Scroll to result
+                resultArea.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+            } catch (err) {
+                console.error(err);
+                alert("Generation failed. Make sure the AI backend is running on port 5000.");
+                loading.style.display = 'none';
+            } finally {
+                btn.disabled = false;
+            }
+        }
+
+        function copyAINotes() {
+            const text = document.getElementById('aiNotesBody').innerText;
+            navigator.clipboard.writeText(text).then(() => {
+                alert("Notes copied to clipboard!");
+            });
+        }
     </script>
 </body>
 

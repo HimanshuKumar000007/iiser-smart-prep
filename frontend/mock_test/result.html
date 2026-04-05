@@ -14,10 +14,12 @@
     <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
     <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 
     <!-- MathJax for rendering LaTeX math formulas -->
     <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../config.js"></script>
 
 
     <style>
@@ -1342,6 +1344,64 @@
             }
 
             el.innerHTML = html;
+
+            // 4. CALL GEMINI AI FOR DEEPER ANALYSIS
+            getAIAnalysis(resultData);
+        }
+
+        async function getAIAnalysis(testData) {
+            const el = document.getElementById('aiInsights');
+            const originalContent = el.innerHTML;
+            
+            // Show loading state
+            el.innerHTML = originalContent + '<div style="margin-top:1rem; color:var(--primary); font-weight:600;"><i class="ri-loader-4-line ri-spin"></i> Fetching AI Mentor Analysis...</div>';
+
+            try {
+                const prompt = `
+You are an IISER IAT Mentor. 
+
+Analyze this student's test performance data:
+Score: ${testData.score}/240
+Correct: ${testData.correct}
+Wrong: ${testData.wrong}
+Skipped: ${testData.skipped}
+Section Scores: ${JSON.stringify(testData.sectionScore)}
+
+Based on this, provide:
+1. A brief technical critique of their performance.
+2. 3-5 specific weak areas to focus on.
+3. A 2-week improvement plan tailored to their gaps.
+
+Use Markdown formatting. Be encouraging but direct.
+`;
+
+                const res = await fetch(AI_API_URL, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ prompt })
+                });
+
+                if (!res.ok) throw new Error("AI Backend Error");
+
+                const data = await res.json();
+                const aiText = data.candidates[0].content.parts[0].text;
+
+                // Render with marked
+                el.innerHTML = `
+                    <div style="background:var(--primary-glow); padding:1rem; border-radius:12px; margin-bottom:1rem; border:1px solid var(--primary);">
+                        <div style="font-weight:800; color:var(--primary); margin-bottom:0.5rem;"><i class="ri-robot-2-line"></i> AI MENTOR ANALYSIS</div>
+                        <div class="ai-rendered-content" style="font-size:0.9rem; color:var(--text-main);">
+                            ${marked.parse(aiText)}
+                        </div>
+                    </div>
+                    <hr style="margin:1.5rem 0; border:0; border-top:1px solid var(--border);">
+                    ${originalContent}
+                `;
+
+            } catch (err) {
+                console.error("AI Analysis failed:", err);
+                el.innerHTML = originalContent + '<div style="margin-top:1rem; color:var(--danger); font-size:0.8rem;">Note: AI Mentor analysis unavailable. Check if server is running on port 5000.</div>';
+            }
         }
 
         // =========================================

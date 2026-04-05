@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -11,6 +11,8 @@
         href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;600;700&display=swap"
         rel="stylesheet">
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="config.js"></script>
     <style>
         :root {
             --bg-primary: #050507;
@@ -684,44 +686,99 @@
     </header>
 
     <main class="container">
-        <div class="date-strip-container">
-            <div class="date-strip-card" id="dateStripContainer"></div>
-        </div>
-
-        <div class="phase-indicator" id="phaseIndicator">
-            <div class="phase-dot phase-foundation"></div>
-            <span id="phaseText">Foundation Phase (Days 1-30)</span>
-        </div>
-
-        <div class="stats-overview" style="margin-bottom: 2rem;">
-            <div class="stat-card primary">
-                <div class="stat-label"><i class="ph ph-clock"></i> Today's Focus</div>
-                <div class="stat-value-large" id="totalFocusTime">0<span>h</span> 00<span>m</span></div>
-                <div class="stat-sub" id="focusSub">Ready to track</div>
+        <!-- VIEW: HOME (TODAY) -->
+        <div id="view-home" class="tab-view">
+            <div class="date-strip-container">
+                <div class="date-strip-card" id="dateStripContainer"></div>
             </div>
-            <div class="stat-card">
-                <div class="stat-label"><i class="ph ph-target"></i> Tasks Completed</div>
-                <div class="stat-value-large" id="tasksCompletedCount">0/4</div>
-                <div class="progress-track" style="margin-top: 0.5rem;">
-                    <div class="progress-fill-sub" id="tasksProgressBar" style="width: 0%;"></div>
+
+            <div class="phase-indicator" id="phaseIndicator">
+                <div class="phase-dot phase-foundation"></div>
+                <span id="phaseText">Foundation Phase (Days 1-30)</span>
+            </div>
+
+            <div class="stats-overview" style="margin-bottom: 2rem;">
+                <div class="stat-card primary">
+                    <div class="stat-label"><i class="ph ph-clock"></i> Today's Focus</div>
+                    <div class="stat-value-large" id="totalFocusTime">0<span>h</span> 00<span>m</span></div>
+                    <div class="stat-sub" id="focusSub">Ready to track</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label"><i class="ph ph-target"></i> Tasks Completed</div>
+                    <div class="stat-value-large" id="tasksCompletedCount">0/4</div>
+                    <div class="progress-track" style="margin-top: 0.5rem;">
+                        <div class="progress-fill-sub" id="tasksProgressBar" style="width: 0%;"></div>
+                    </div>
                 </div>
             </div>
+
+            <div class="section-header">
+                <div class="section-title" id="planTitle">Today's Plan</div>
+                <div class="xp-display" id="xpDisplay">+0 XP Today</div>
+            </div>
+
+            <div class="filter-pills">
+                <div class="pill active" onclick="filterTasks('all', this)">All</div>
+                <div class="pill" onclick="filterTasks('physics', this)">Physics</div>
+                <div class="pill" onclick="filterTasks('chemistry', this)">Chemistry</div>
+                <div class="pill" onclick="filterTasks('mathematics', this)">Math</div>
+                <div class="pill" onclick="filterTasks('biology', this)">Biology</div>
+            </div>
+
+            <div class="task-list" id="taskList"></div>
         </div>
 
-        <div class="section-header">
-            <div class="section-title" id="planTitle">Today's Plan</div>
-            <div class="xp-display" id="xpDisplay">+0 XP Today</div>
+        <!-- VIEW: AI PLANNER -->
+        <div id="view-plan" class="tab-view" style="display: none;">
+            <div class="stat-card primary" style="margin-bottom: 2rem; border:1px solid var(--accent-purple);">
+                <div class="stat-label" style="color:var(--accent-purple);">
+                    <i class="ph ph-sparkle"></i> AI Study Architect
+                </div>
+                <h2 style="margin: 0.5rem 0; font-size: 1.5rem; font-family: 'Space Grotesk';">Custom 30-Day Plan</h2>
+                <p style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 1.5rem;">
+                    Struggling with specific topics? Enter them below for a personalized AI-generated sprint.
+                </p>
+
+                <div style="display: flex; flex-direction: column; gap: 1rem;">
+                    <textarea id="weakTopicsInput" 
+                        placeholder="List your weak topics (e.g., Rotational Motion, Organic mechanisms, Integration...)"
+                        style="width: 100%; height: 100px; padding: 1rem; border-radius: 12px; background: rgba(0,0,0,0.2); border: 1px solid var(--glass-border); color: white; font-family: inherit; resize: none;"></textarea>
+                    
+                    <button onclick="generateAIPlan()" id="aiPlanBtn" class="focus-btn start" style="width: 100%; justify-content: center; padding: 0.8rem;">
+                        <i class="ph ph-magic-wand"></i> Architect My Plan
+                    </button>
+                </div>
+            </div>
+
+            <div id="aiPlanResult" style="display: none; background: var(--bg-card); border-radius: 16px; border: 1px solid var(--glass-border); padding: 1.5rem;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; border-bottom: 1px solid var(--glass-border); padding-bottom: 1rem;">
+                    <span style="font-weight: 700; color: var(--accent-purple);"><i class="ph ph-calendar-check"></i> YOUR PERSONALIZED SPRINT</span>
+                    <button onclick="copyAIPlan()" class="icon-btn" title="Copy Text"><i class="ph ph-copy"></i></button>
+                </div>
+                <div id="aiPlanBody" style="font-size: 0.95rem; line-height: 1.7; color: var(--text-secondary);">
+                    <!-- AI Content -->
+                </div>
+            </div>
+
+            <div id="aiPlanLoading" style="display: none; text-align: center; padding: 3rem;">
+                <i class="ph ph-circle-notch ph-spin" style="font-size: 3rem; color: var(--accent-purple);"></i>
+                <p style="margin-top: 1rem; color: var(--text-muted);">Analyzing gaps and scheduling topics...</p>
+            </div>
         </div>
 
-        <div class="filter-pills">
-            <div class="pill active" onclick="filterTasks('all', this)">All</div>
-            <div class="pill" onclick="filterTasks('physics', this)">Physics</div>
-            <div class="pill" onclick="filterTasks('chemistry', this)">Chemistry</div>
-            <div class="pill" onclick="filterTasks('mathematics', this)">Math</div>
-            <div class="pill" onclick="filterTasks('biology', this)">Biology</div>
+        <!-- VIEW: MOCK (Placeholder) -->
+        <div id="view-mock" class="tab-view" style="display: none; text-align: center; padding: 4rem 1rem;">
+            <i class="ph ph-exam" style="font-size: 4rem; color: var(--text-muted); margin-bottom: 1rem;"></i>
+            <h3>Mock Test Analysis</h3>
+            <p style="color: var(--text-muted); margin-top: 1rem;">Take a mock test to see your performance trends here.</p>
         </div>
 
-        <div class="task-list" id="taskList"></div>
+        <!-- VIEW: PROFILE (Placeholder) -->
+        <div id="view-profile" class="tab-view" style="display: none; text-align: center; padding: 4rem 1rem;">
+            <i class="ph ph-user-circle" style="font-size: 4rem; color: var(--text-muted); margin-bottom: 1rem;"></i>
+            <h3>Student Profile</h3>
+            <p style="color: var(--text-muted); margin-top: 1rem;">Your learning stats and achievements will appear here.</p>
+        </div>
     </main>
 
     <nav class="bottom-nav">
@@ -1717,9 +1774,76 @@
         }
 
         function switchTab(tab) {
-            // Simple tab switching - can be expanded
+            // UI State
             document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+            document.querySelectorAll('.tab-view').forEach(view => view.style.display = 'none');
+            
+            // Show Target
             event.currentTarget.classList.add('active');
+            document.getElementById(`view-${tab}`).style.display = 'block';
+
+            if (tab === 'home') renderAll();
+        }
+
+        // =========================================
+        // AI PLANNER LOGIC
+        // =========================================
+        async function generateAIPlan() {
+            const topics = document.getElementById('weakTopicsInput').value.trim();
+            if (!topics) return alert("Please list some topics first!");
+
+            const btn = document.getElementById('aiPlanBtn');
+            const resultArea = document.getElementById('aiPlanResult');
+            const loading = document.getElementById('aiPlanLoading');
+            const body = document.getElementById('aiPlanBody');
+
+            btn.disabled = true;
+            loading.style.display = 'block';
+            resultArea.style.display = 'none';
+
+            try {
+                const prompt = `
+You are an expert IISER IAT Prep Coach. 
+The student is struggling with these topics: ${topics}.
+
+Create a rigorous 30-day "Gap Closer" Study Plan for the IISER Aptitude Test. 
+Focus on:
+1. Prioritizing these weak topics in the first 15 days.
+2. Integrating mock tests and revision in the last 15 days.
+3. Daily time allocation (approx 6-8 hours/day).
+
+Format the output in clean Markdown with bold headers for each week.
+`;
+
+                const res = await fetch(AI_API_URL, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ prompt })
+                });
+
+                if (!res.ok) throw new Error("AI Backend Error");
+
+                const data = await res.json();
+                const aiText = data.candidates[0].content.parts[0].text;
+
+                body.innerHTML = marked.parse(aiText);
+                loading.style.display = 'none';
+                resultArea.style.display = 'block';
+                
+            } catch (err) {
+                console.error(err);
+                alert("Could not generate plan. Check if AI backend is running on port 5000.");
+                loading.style.display = 'none';
+            } finally {
+                btn.disabled = false;
+            }
+        }
+
+        function copyAIPlan() {
+            const text = document.getElementById('aiPlanBody').innerText;
+            navigator.clipboard.writeText(text).then(() => {
+                showToast('Plan Copied!', 'Save it to your notes');
+            });
         }
 
         // Boot
