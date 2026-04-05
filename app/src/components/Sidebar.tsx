@@ -25,6 +25,7 @@ interface Profile {
   rank?: number;
   xp?: number;
   avatar_url?: string;
+  subscription?: string;
 }
 
 type NavItem =
@@ -47,7 +48,7 @@ export default function Sidebar({ currentPage, onPageChange, isOpen, onToggle }:
       if (!user) return;
       const { data } = await supabase
         .from('profiles')
-        .select('full_name, rank, xp, avatar_url')
+        .select('full_name, rank, xp, avatar_url, subscription')
         .eq('id', user.id)
         .single();
       if (data) setProfile(data);
@@ -189,7 +190,12 @@ export default function Sidebar({ currentPage, onPageChange, isOpen, onToggle }:
 
             {isOpen && (
               <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="overflow-hidden min-w-0">
-                <p className="font-medium text-sm truncate">{profile?.full_name ?? 'Loading...'}</p>
+                <p className="font-medium text-sm truncate">
+                  {profile?.full_name ?? 'Loading...'}
+                  {profile && (profile.subscription?.toUpperCase() === 'PRO' || profile.subscription?.toUpperCase() === 'PREMIUM') && (
+                    <span className="ml-2 px-1.5 py-0.5 rounded text-[8px] font-black bg-gradient-to-r from-indigo-500 to-purple-500 text-white uppercase tracking-tighter">PRO</span>
+                  )}
+                </p>
                 <p className="text-xs text-gray-400 truncate">
                   {profile?.rank ? `Rank #${profile.rank}` : 'Start studying'}
                   {profile?.xp ? ` · ${(profile.xp / 1000).toFixed(1)}K XP` : ''}

@@ -69,9 +69,12 @@ export default function MockTests() {
         .eq('id', user.id)
         .single();
         
-      if (data && (data.subscription === 'PRO' || data.subscription === 'Premium')) {
-        setIsPro(true);
-        localStorage.setItem('IAT_PLAN', 'PRO');
+      if (data) {
+        const sub = data.subscription?.toUpperCase();
+        if (sub === 'PRO' || sub === 'PREMIUM') {
+          setIsPro(true);
+          localStorage.setItem('IAT_PLAN', 'PRO');
+        }
       }
     }
     loadPlan();
@@ -98,15 +101,22 @@ export default function MockTests() {
       {/* Header */}
       <motion.div variants={itemVariants} className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold mb-1 flex items-center gap-2">
-            <Target className="w-8 h-8 text-indigo-400" />
-            Mock Tests Library
-          </h1>
+          <div className="flex items-center gap-3 mb-1">
+            <h1 className="text-3xl font-bold flex items-center gap-2">
+              <Target className="w-8 h-8 text-indigo-400" />
+              Mock Tests Library
+            </h1>
+            {isPro && (
+              <span className="px-3 py-1 rounded-full text-[10px] font-black bg-gradient-to-r from-indigo-500 to-purple-500 text-white shadow-[0_0_15px_rgba(99,102,241,0.4)] tracking-wider uppercase">
+                PRO Member
+              </span>
+            )}
+          </div>
           <p className="text-gray-400">Master the 2026 Exam Pattern with full-length and topic-wise mocks</p>
         </div>
       </motion.div>
 
-      {/* Upsell Banner (Always visible to tease premium content unless logic added to hide for pro users) */}
+      {/* Upsell Banner (Only visible to Free users) */}
       {!isPro && (
         <motion.div
           variants={itemVariants}
@@ -164,17 +174,21 @@ export default function MockTests() {
               onClick={() => handleStartTest(test)}
               className={`
                 relative p-5 rounded-2xl border transition-all duration-300 flex flex-col h-full cursor-pointer group
-                ${test.isFree
+                ${(test.isFree || isPro)
                   ? 'bg-gradient-to-br from-indigo-500/10 to-transparent border-indigo-500/30 hover:border-indigo-500 hover:shadow-[0_4px_20px_rgba(79,70,229,0.15)]'
                   : 'bg-white/5 border-white/10 hover:border-white/20 hover:bg-white/[0.07]'
                 }
               `}
             >
               <div className="flex justify-between items-start mb-4">
-                <div className={`p-2 rounded-xl flex items-center justify-center ${test.isFree ? 'bg-indigo-500/20 text-indigo-400' : 'bg-white/10 text-gray-400'}`}>
+                <div className={`p-2 rounded-xl flex items-center justify-center ${(test.isFree || isPro) ? 'bg-indigo-500/20 text-indigo-400' : 'bg-white/10 text-gray-400'}`}>
                   {activeTab === 'full' ? <Target className="w-5 h-5" /> : <Activity className="w-5 h-5" />}
                 </div>
-                {test.isFree ? (
+                {isPro ? (
+                  <span className="px-3 py-1 rounded-full text-[10px] font-bold bg-indigo-500/20 text-indigo-400 border border-indigo-500/30 flex items-center gap-1">
+                    <CheckCircle2 className="w-3 h-3" /> UNLOCKED
+                  </span>
+                ) : test.isFree ? (
                   <span className="px-3 py-1 rounded-full text-xs font-bold bg-green-500/20 text-green-400 border border-green-500/30">
                     FREE
                   </span>
@@ -185,8 +199,8 @@ export default function MockTests() {
                 )}
               </div>
 
-              <h3 className="text-lg font-bold text-white mb-1 group-hover:text-indigo-300 transition-colors">{test.title}</h3>
-              <p className="text-xs text-gray-400 mb-4">{test.difficulty}</p>
+              <h3 className="text-lg font-bold text-white mb-1 group-hover:text-indigo-300 transition-colors uppercase tracking-tight">{test.title}</h3>
+              <p className="text-xs text-gray-400 mb-4 font-medium">{test.difficulty}</p>
 
               <div className="mt-auto space-y-3">
                 <div className="flex items-center justify-between text-sm text-gray-400 bg-black/20 p-3 rounded-xl border border-white/5">
@@ -197,17 +211,17 @@ export default function MockTests() {
                   <div className="w-px h-4 bg-white/10" />
                   <div className="flex items-center gap-1.5 font-medium">
                     <Trophy className="w-4 h-4 text-purple-400" />
-                    {test.marks}M
+                    {test.marks}Marks
                   </div>
                 </div>
 
                 <Button
-                  className={`w-full font-medium ${test.isFree 
-                    ? 'bg-indigo-500 hover:bg-indigo-600 text-white shadow-glow' 
+                  className={`w-full font-bold h-11 rounded-xl transition-all ${ (test.isFree || isPro) 
+                    ? 'bg-indigo-500 hover:bg-indigo-600 text-white shadow-[0_0_15px_rgba(79,70,229,0.3)]' 
                     : 'bg-white/10 hover:bg-white/20 text-white'}`}
                 >
-                  {test.isFree ? 'Start Test' : 'Unlock to Proceed'}
-                  <ChevronRight className="w-4 h-4 ml-1" />
+                  {(test.isFree || isPro) ? 'Start Test' : 'Unlock Now'}
+                  <ChevronRight className="w-4 h-4 ml-1 group-hover:translate-x-0.5 transition-transform" />
                 </Button>
               </div>
             </motion.div>

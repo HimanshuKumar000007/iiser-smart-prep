@@ -38,6 +38,7 @@ export default function Topbar({ onMenuToggle, isSidebarOpen }: TopbarProps) {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [profile, setProfile] = useState<Profile | null>(null);
   const [unreadCount, setUnreadCount] = useState(0);
+  const [isPro, setIsPro] = useState(false);
 
   useEffect(() => {
     async function loadProfile() {
@@ -48,7 +49,14 @@ export default function Topbar({ onMenuToggle, isSidebarOpen }: TopbarProps) {
         .select('full_name, rank, streak, avatar_url, subscription')
         .eq('id', user.id)
         .single();
-      if (data) setProfile(data);
+      if (data) {
+        setProfile(data);
+        const sub = data.subscription?.toUpperCase();
+        if (sub === 'PRO' || sub === 'PREMIUM') {
+          setIsPro(true);
+          localStorage.setItem('IAT_PLAN', 'PRO');
+        }
+      }
     }
     loadProfile();
   }, []);
@@ -172,8 +180,12 @@ export default function Topbar({ onMenuToggle, isSidebarOpen }: TopbarProps) {
             <button className="flex items-center gap-3 pl-3 border-l border-white/10">
               <div className="text-right hidden sm:block">
                 <p className="text-sm font-medium">{profile?.full_name ?? '—'}</p>
-                <p className="text-xs text-gray-400 capitalize">
-                  {profile?.subscription ?? 'Free'}
+                <p className="text-xs font-medium">
+                  {isPro ? (
+                    <span className="text-indigo-400 font-bold">PRO Member</span>
+                  ) : (
+                    <span className="text-gray-400 capitalize">{profile?.subscription ?? 'Free'}</span>
+                  )}
                 </p>
               </div>
               {profile?.avatar_url ? (
