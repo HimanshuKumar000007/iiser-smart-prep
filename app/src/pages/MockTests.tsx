@@ -1,8 +1,9 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence, type Variants } from 'framer-motion';
 import { Target, Lock, Clock, Trophy, Sparkles, X, ChevronRight, Activity, CheckCircle2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { supabase } from '../lib/supabaseClient';
 
 // Generate 32 mock tests
 const fullMocks = Array.from({ length: 32 }, (_, i) => ({
@@ -49,11 +50,37 @@ type TestItem = {
 export default function MockTests() {
   const [activeTab, setActiveTab] = useState('full');
   const [showProModal, setShowProModal] = useState(false);
+  const [isPro, setIsPro] = useState(false);
+
+  useEffect(() => {
+    async function loadPlan() {
+      // 1. First check local storage for instant feedback
+      const localPlan = localStorage.getItem('IAT_PLAN');
+      if (localPlan === 'PRO' || localPlan === 'Premium') {
+        setIsPro(true);
+      }
+
+      // 2. Fetch fresh from Supabase to be 100% sure
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) return;
+      const { data } = await supabase
+        .from('profiles')
+        .select('subscription')
+        .eq('id', user.id)
+        .single();
+        
+      if (data && (data.subscription === 'PRO' || data.subscription === 'Premium')) {
+        setIsPro(true);
+        localStorage.setItem('IAT_PLAN', 'PRO');
+      }
+    }
+    loadPlan();
+  }, []);
 
   const testsToDisplay = activeTab === 'full' ? fullMocks : quickMocks;
 
   const handleStartTest = (test: TestItem) => {
-    if (!test.isFree) {
+    if (!test.isFree && !isPro) {
       setShowProModal(true);
       return;
     }
@@ -80,29 +107,31 @@ export default function MockTests() {
       </motion.div>
 
       {/* Upsell Banner (Always visible to tease premium content unless logic added to hide for pro users) */}
-      <motion.div
-        variants={itemVariants}
-        className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-indigo-900/40 to-purple-900/40 border border-indigo-500/20 p-6 flex flex-col md:flex-row items-center justify-between gap-4"
-      >
-        <div className="absolute top-0 right-0 -mt-4 -mr-4 w-32 h-32 bg-purple-500/30 rounded-full blur-3xl pointer-events-none" />
-        <div className="relative z-10 flex-1">
-          <h3 className="text-xl font-bold flex items-center gap-2 mb-2">
-            <Sparkles className="w-5 h-5 text-yellow-400" />
-            Unlock Full Access
-          </h3>
-          <p className="text-gray-300 max-w-xl">
-            Get unrestricted access to 30+ Premium Mocks, AI Analytics, and dedicated performance tracking to secure your IISER seat.
-          </p>
-        </div>
-        <div className="relative z-10">
-          <Button
-            onClick={() => setShowProModal(true)}
-            className="bg-white text-indigo-900 hover:bg-indigo-50 font-semibold px-6 py-5 rounded-xl shadow-[0_0_20px_rgba(255,255,255,0.2)] hover:shadow-[0_0_25px_rgba(255,255,255,0.4)] transition-all"
-          >
-            Upgrade to Pro — Just ₹249
-          </Button>
-        </div>
-      </motion.div>
+      {!isPro && (
+        <motion.div
+          variants={itemVariants}
+          className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-indigo-900/40 to-purple-900/40 border border-indigo-500/20 p-6 flex flex-col md:flex-row items-center justify-between gap-4"
+        >
+          <div className="absolute top-0 right-0 -mt-4 -mr-4 w-32 h-32 bg-purple-500/30 rounded-full blur-3xl pointer-events-none" />
+          <div className="relative z-10 flex-1">
+            <h3 className="text-xl font-bold flex items-center gap-2 mb-2">
+              <Sparkles className="w-5 h-5 text-yellow-400" />
+              Unlock Full Access
+            </h3>
+            <p className="text-gray-300 max-w-xl">
+              Get unrestricted access to 30+ Premium Mocks, AI Analytics, and dedicated performance tracking to secure your IISER seat.
+            </p>
+          </div>
+          <div className="relative z-10">
+            <Button
+              onClick={() => setShowProModal(true)}
+              className="bg-white text-indigo-900 hover:bg-indigo-50 font-semibold px-6 py-5 rounded-xl shadow-[0_0_20px_rgba(255,255,255,0.2)] hover:shadow-[0_0_25px_rgba(255,255,255,0.4)] transition-all"
+            >
+              Upgrade to Pro — Just ₹249
+            </Button>
+          </div>
+        </motion.div>
+      )}
 
       {/* Tabs */}
       <motion.div variants={itemVariants} className="flex gap-4">
