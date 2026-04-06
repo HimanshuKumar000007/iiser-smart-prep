@@ -977,9 +977,99 @@
         /* =========================================
            RESPONSIVE DESIGN
            ========================================= */
+        .mobile-overlay {
+            display: none;
+        }
+
         @media (max-width: 768px) {
-            .nav-links {
-                display: none;
+            .nav-links, .nav-container .btn-secondary {
+                display: none !important;
+            }
+
+            .mobile-menu-btn {
+                display: flex !important;
+                align-items: center;
+                justify-content: center;
+                width: 40px;
+                height: 40px;
+                background: var(--bg-wash);
+                border-radius: var(--radius-md);
+                border: 1px solid var(--border);
+                color: var(--secondary);
+                cursor: pointer;
+                transition: all var(--transition-fast);
+            }
+
+            .mobile-menu-btn:hover {
+                background: var(--border-light);
+            }
+
+            .mobile-overlay {
+                display: flex;
+                position: fixed;
+                inset: 0;
+                background: rgba(255, 255, 255, 0.95);
+                backdrop-filter: blur(10px);
+                z-index: 2000;
+                flex-direction: column;
+                transform: translateX(100%);
+                transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+                opacity: 0;
+            }
+
+            .mobile-overlay.active {
+                transform: translateX(0);
+                opacity: 1;
+            }
+
+            .mobile-menu-header {
+                padding: 1.5rem 2rem;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                border-bottom: 1px solid var(--border-light);
+            }
+
+            .mobile-menu-title {
+                font-weight: 800;
+                font-size: 1.25rem;
+                color: var(--secondary);
+            }
+
+            .mobile-menu-close {
+                background: var(--bg-wash);
+                border: 1px solid var(--border);
+                width: 36px;
+                height: 36px;
+                border-radius: 50%;
+                font-size: 1.5rem;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                cursor: pointer;
+                color: var(--text-muted);
+            }
+
+            .mobile-menu-links {
+                padding: 1.5rem 0;
+                display: flex;
+                flex-direction: column;
+            }
+
+            .mobile-nav-link {
+                padding: 1.25rem 2rem;
+                font-size: 1.1rem;
+                font-weight: 600;
+                color: var(--text-main);
+                text-decoration: none;
+                border-left: 4px solid transparent;
+                transition: all var(--transition-fast);
+            }
+
+            .mobile-nav-link:hover, .mobile-nav-link.active {
+                background: var(--bg-wash);
+                color: var(--primary);
+                border-left-color: var(--primary);
             }
 
             .hero-stats {
@@ -1003,6 +1093,10 @@
             .main-content {
                 padding: 2rem 1rem;
             }
+        }
+
+        .mobile-menu-btn {
+            display: none;
         }
 
         /* Toast Notification */
@@ -1078,9 +1172,29 @@
                 <a href="/rank-predictor/" class="nav-link">Rank Predictor</a>
                 <a href="/syllabus/" class="nav-link">Syllabus</a>
             </nav>
-            <a href="/index.html" class="btn btn-secondary">Back Home</a>
+            <button class="mobile-menu-btn" onclick="toggleMobileMenu()" aria-label="Open menu">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <line x1="3" y1="12" x2="21" y2="12"></line>
+                    <line x1="3" y1="6" x2="21" y2="6"></line>
+                    <line x1="3" y1="18" x2="21" y2="18"></line>
+                </svg>
+            </button>
         </div>
     </header>
+
+    <!-- Mobile Menu Overlay -->
+    <div id="mobileMenu" class="mobile-overlay">
+        <div class="mobile-menu-header">
+            <span class="mobile-menu-title">Menu</span>
+            <button class="mobile-menu-close" onclick="toggleMobileMenu()" aria-label="Close menu">×</button>
+        </div>
+        <div class="mobile-menu-links">
+            <a href="/smart_notes/" class="mobile-nav-link active" onclick="toggleMobileMenu()">Smart Notes</a>
+            <a href="/mock_test/" class="mobile-nav-link" onclick="toggleMobileMenu()">Mock Tests</a>
+            <a href="/rank-predictor/" class="mobile-nav-link" onclick="toggleMobileMenu()">Rank Predictor</a>
+            <a href="/syllabus/" class="mobile-nav-link" onclick="toggleMobileMenu()">Syllabus</a>
+        </div>
+    </div>
 
     <!-- 2. HERO SECTION -->
     <section class="hero">
@@ -5551,6 +5665,12 @@
         }
 
         // --- UI Utilities ---
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobileMenu');
+            const isActive = menu.classList.toggle('active');
+            document.body.style.overflow = isActive ? 'hidden' : 'auto';
+        }
+
         function setupScrollHeader() {
             const header = document.getElementById('mainHeader');
             let lastScroll = 0;
