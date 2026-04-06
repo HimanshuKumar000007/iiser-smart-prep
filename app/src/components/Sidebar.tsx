@@ -9,6 +9,7 @@ import {
   Sparkles,
   User,
   ExternalLink,
+  Scroll,
 } from 'lucide-react';
 import type { Page } from '../types';
 import { supabase } from '../lib/supabaseClient';
@@ -34,6 +35,7 @@ type NavItem =
 const menuItems: NavItem[] = [
   { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
   { id: 'mock-tests', label: 'Mock Tests', icon: FileQuestion },
+  { id: 'master-formula', label: 'Master Formula', icon: Scroll },
   { external: '/ai_tutor.html', label: 'AI Doubts', icon: Bot },
   { external: '/smart_notes/smart_notes_home.html', label: 'Smart Notes', icon: BookOpen },
 ];

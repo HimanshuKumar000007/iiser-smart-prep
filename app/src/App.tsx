@@ -4,6 +4,7 @@ import Sidebar from './components/Sidebar';
 import Topbar from './components/Topbar';
 import Dashboard from './pages/Dashboard';
 import MockTests from './pages/MockTests';
+import MasterFormula from './pages/MasterFormula';
 import type { Page } from './types';
 import './App.css';
 
@@ -30,6 +31,8 @@ function App() {
         return <Dashboard onNavigate={setCurrentPage} />;
       case 'mock-tests':
         return <MockTests />;
+      case 'master-formula':
+        return <MasterFormula />;
       default:
         return <Dashboard onNavigate={setCurrentPage} />;
     }

@@ -8,6 +8,7 @@ import {
   Trophy,
   Zap,
   Loader2,
+  Scroll,
 } from 'lucide-react';
 import { supabase } from '../lib/supabaseClient';
 import { useEffect, useState } from 'react';
@@ -78,6 +79,17 @@ const quickActions = [
     glow: 'hover:shadow-[0_0_30px_rgba(16,185,129,0.2)]',
     external: '/smart_notes/smart_notes_home.html',
     internal: false,
+  },
+  {
+    key: 'master-formula' as const,
+    title: 'Master Formula',
+    desc: 'Complete PCMB formula repository for IAT 2026',
+    icon: Scroll,
+    gradient: 'from-orange-600 to-yellow-600',
+    bg: 'from-orange-500/10 to-yellow-500/10',
+    border: 'border-orange-500/30',
+    glow: 'hover:shadow-[0_0_30px_rgba(249,115,22,0.2)]',
+    internal: true,
   },
 ];
 
