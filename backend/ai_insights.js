@@ -28,11 +28,20 @@ module.exports = function(app, authMiddleware) {
                     messages: [
                         { 
                             role: "system", 
-                            content: "You are an expert IISER IAT Mentor. Provide a detailed, encouraging, and highly technical critique of the student's test performance with a clear 2-week focus plan." 
+                            content: `You are an expert IISER IAT Mentor. 
+                            Analyze test data and return ONLY a valid JSON object. 
+                            Do NOT include any Markdown formatting in the response.
+                            Format:
+                            {
+                              "mistake": "Biggest performance-killing mistake in 1-2 sentences.",
+                              "fix": "Specific, actionable technical fix for the next study session.",
+                              "strategy": "High-level test-taking strategy based on their speed/accuracy.",
+                              "boost": "One specific projection (e.g. +40 marks) and what to change to get it."
+                            }`
                         },
                         { role: "user", content: prompt }
                     ],
-                    max_tokens: 1200
+                    response_format: { type: "json_object" }
                 })
             });
 
@@ -45,10 +54,18 @@ module.exports = function(app, authMiddleware) {
             }
 
             const data = await response.json();
-            const aiContent = data.choices[0].message.content;
+            
+            // Expected JSON structure from the AI
+            let aiData;
+            try {
+                aiData = JSON.parse(data.choices[0].message.content);
+            } catch (pErr) {
+                console.error("[AI PARSE ERROR] AI did not return valid JSON", data.choices[0].message.content);
+                return res.status(500).json({ error: "AI response was not in the correct format. Try again." });
+            }
 
-            console.log("[AI] Analysis successful");
-            res.json({ content: aiContent });
+            console.log("[AI] Analysis successful (JSON)");
+            res.json(aiData);
 
         } catch (err) {
             console.error("[AI SERVER ERROR]", err);

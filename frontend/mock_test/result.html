@@ -615,6 +615,90 @@
             color: var(--text-main);
         }
 
+        /* =========================================
+           7. SMART AI CARDS UI (PRO)
+           ========================================= */
+        .ai-cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1.25rem;
+            margin-bottom: 2rem;
+            margin-top: 1.5rem;
+        }
+
+        .ai-smart-card {
+            background: var(--bg-card);
+            border-radius: 20px;
+            padding: 1.5rem;
+            border: 1px solid var(--border);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            animation: cardAppear 0.5s ease-out backwards;
+            text-align: left;
+        }
+
+        .ai-smart-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+        }
+
+        .ai-card-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 800;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+        }
+
+        .ai-card-icon {
+            font-size: 1.2rem;
+            background: var(--bg-hover);
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 10px;
+        }
+
+        .ai-card-content {
+            font-size: 0.9rem;
+            line-height: 1.6;
+            color: var(--text-main);
+            font-weight: 500;
+        }
+
+        /* Thematic Variants */
+        .card-mistake { border-top: 5px solid #ef4444; }
+        .card-mistake .ai-card-title { color: #ef4444; }
+        .card-mistake .ai-card-icon { background: rgba(239, 68, 68, 0.1); color: #ef4444; }
+
+        .card-fix { border-top: 5px solid #3b82f6; }
+        .card-fix .ai-card-title { color: #3b82f6; }
+        .card-fix .ai-card-icon { background: rgba(59, 130, 246, 0.1); color: #3b82f6; }
+
+        .card-strategy { border-top: 5px solid #8b5cf6; }
+        .card-strategy .ai-card-title { color: #8b5cf6; }
+        .card-strategy .ai-card-icon { background: rgba(139, 92, 246, 0.1); color: #8b5cf6; }
+
+        .card-boost { 
+            border-top: 5px solid #10b981; 
+            background: linear-gradient(145deg, var(--bg-card), rgba(16, 185, 129, 0.05)); 
+        }
+        .card-boost .ai-card-title { color: #10b981; }
+        .card-boost .ai-card-icon { background: rgba(16, 185, 129, 0.1); color: #10b981; }
+
+        @keyframes cardAppear {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
         .probability-bar {
             height: 6px;
             background: var(--bg-hover);
@@ -1355,26 +1439,23 @@
             const originalContent = el.innerHTML;
             const token = localStorage.getItem('IAT_TOKEN');
             
-            // Show loading state
-            el.innerHTML = originalContent + '<div style="margin-top:1rem; color:var(--primary); font-weight:600;"><i class="ri-loader-4-line ri-spin"></i> Fetching AI Mentor Analysis...</div>';
+            // Show loading state with a more premium spinner
+            el.innerHTML = originalContent + `
+                <div style="margin-top:2rem; text-align:center; padding:2rem; background:var(--bg-card); border-radius:15px; border:1px solid var(--border);">
+                    <div class="ri-loader-4-line ri-spin" style="font-size:2rem; color:var(--primary); margin-bottom:1rem;"></div>
+                    <div style="font-weight:700; color:var(--text-main);">AI Mentor is analyzing your gaps...</div>
+                    <div style="font-size:0.8rem; opacity:0.6; margin-top:0.5rem;">Synthesizing performance-killing mistakes and strategy fixes</div>
+                </div>
+            `;
 
             try {
                 const prompt = `
-You are an IISER IAT Mentor. 
-
 Analyze this student's test performance data:
 Score: ${testData.score}/240
 Correct: ${testData.correct}
 Wrong: ${testData.wrong}
 Skipped: ${testData.skipped}
 Section Scores: ${JSON.stringify(testData.sectionScore)}
-
-Based on this, provide:
-1. A brief technical critique of their performance.
-2. 3-5 specific weak areas to focus on.
-3. A 2-week improvement plan tailored to their gaps.
-
-Use Markdown formatting. Be encouraging but direct.
 `;
 
                 const res = await fetch(AI_API_URL, {
@@ -1391,20 +1472,52 @@ Use Markdown formatting. Be encouraging but direct.
                     throw new Error(errorResponse.error || `AI Backend Error (${res.status})`);
                 }
 
-                const data = await res.json();
-                const aiText = data.content;
+                const aiData = await res.json();
 
-                // Render with marked
-                el.innerHTML = `
-                    <div style="background:var(--primary-glow); padding:1rem; border-radius:12px; margin-bottom:1rem; border:1px solid var(--primary);">
-                        <div style="font-weight:800; color:var(--primary); margin-bottom:0.5rem;"><i class="ri-robot-2-line"></i> AI MENTOR ANALYSIS</div>
-                        <div class="ai-rendered-content" style="font-size:0.9rem; color:var(--text-main);">
-                            ${marked.parse(aiText)}
+                // Create the Smart Cards UI
+                const cardsHtml = `
+                    <div class="ai-cards-grid">
+                        <!-- Card 1: Biggest Mistake -->
+                        <div class="ai-smart-card card-mistake" style="animation-delay: 0.1s;">
+                            <div class="ai-card-title">
+                                <div class="ai-card-icon"><i class="ri-error-warning-line"></i></div>
+                                Biggest Mistake
+                            </div>
+                            <div class="ai-card-content">${aiData.mistake}</div>
+                        </div>
+
+                        <!-- Card 2: What to Fix -->
+                        <div class="ai-smart-card card-fix" style="animation-delay: 0.2s;">
+                            <div class="ai-card-title">
+                                <div class="ai-card-icon"><i class="ri-tools-line"></i></div>
+                                What to Fix
+                            </div>
+                            <div class="ai-card-content">${aiData.fix}</div>
+                        </div>
+
+                        <!-- Card 3: Strategy -->
+                        <div class="ai-smart-card card-strategy" style="animation-delay: 0.3s;">
+                            <div class="ai-card-title">
+                                <div class="ai-card-icon"><i class="ri-flashlight-line"></i></div>
+                                Strategy
+                            </div>
+                            <div class="ai-card-content">${aiData.strategy}</div>
+                        </div>
+
+                        <!-- Card 4: Score Boost -->
+                        <div class="ai-smart-card card-boost" style="animation-delay: 0.4s;">
+                            <div class="ai-card-title">
+                                <div class="ai-card-icon"><i class="ri-rocket-line"></i></div>
+                                Score Boost
+                            </div>
+                            <div class="ai-card-content">${aiData.boost}</div>
                         </div>
                     </div>
-                    <hr style="margin:1.5rem 0; border:0; border-top:1px solid var(--border);">
+                    <hr style="margin:2rem 0; border:0; border-top:1px solid var(--border);">
                     ${originalContent}
                 `;
+
+                el.innerHTML = cardsHtml;
 
             } catch (err) {
                 console.error("AI Analysis failed:", err);
