@@ -4,6 +4,7 @@ const API_BASE_URL = window.location.hostname === "localhost" || window.location
     ? "http://localhost:5000/api" 
     : "https://api.iisersmartprep.space/api";
 const AI_API_URL = API_BASE_URL + "/ai-insights";
+const AI_HEALTH_URL = API_BASE_URL + "/ai-health";
 
 // Razorpay Key (LIVE)
 const RAZORPAY_KEY_ID = "rzp_live_SC3R47SGOoJHvE";

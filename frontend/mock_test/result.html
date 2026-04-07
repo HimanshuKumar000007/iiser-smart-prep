@@ -1350,6 +1350,7 @@
         }
 
         async function getAIAnalysis(testData) {
+            window.lastTestData = testData; // Store for retry
             const el = document.getElementById('aiInsights');
             const originalContent = el.innerHTML;
             const token = localStorage.getItem('IAT_TOKEN');
@@ -1387,7 +1388,7 @@ Use Markdown formatting. Be encouraging but direct.
 
                 if (!res.ok) {
                     const errorResponse = await res.json().catch(() => ({}));
-                    throw new Error(errorResponse.error || "AI Backend Error");
+                    throw new Error(errorResponse.error || `AI Backend Error (${res.status})`);
                 }
 
                 const data = await res.json();
@@ -1407,13 +1408,27 @@ Use Markdown formatting. Be encouraging but direct.
 
             } catch (err) {
                 console.error("AI Analysis failed:", err);
-                let errorMsg = "Note: AI Mentor analysis unavailable. Check if your backend server is running and DEEPSEEK_API_KEY is set in .env";
-                if (err.message === "Failed to fetch") {
-                    errorMsg = "Note: Cannot connect to the AI server. Please ensure your backend is running on http://localhost:5000";
-                } else if (err.message) {
-                    errorMsg = `Note: ${err.message}`;
+                let errorMsg = `Cannot reach AI server at <b>${AI_API_URL}</b>.`;
+                let hint = `1. Ensure backend is running (<b>npm start</b>)<br>2. Check <b>DEEPSEEK_API_KEY</b> in .env`;
+                
+                if (err.message !== "Failed to fetch") {
+                    errorMsg = err.message;
                 }
-                el.innerHTML = originalContent + `<div style="margin-top:1rem; color:var(--danger); font-size:0.8rem;">${errorMsg}</div>`;
+
+                el.innerHTML = originalContent + `
+                    <div style="margin-top:1rem; color:var(--danger); border:1px solid rgba(239, 68, 68, 0.2); padding:1rem; border-radius:12px; background:rgba(239, 68, 68, 0.03);">
+                        <div style="font-weight:700; font-size:0.85rem; margin-bottom:0.5rem;"><i class="ri-error-warning-line"></i> AI Analysis Unavailable</div>
+                        <div style="font-size:0.75rem; opacity:0.8; line-height:1.4;">
+                            Error: ${errorMsg}<br><br>
+                            <b>Steps to fix:</b><br>
+                            ${hint}<br>
+                            3. Verify connectivity via <a href="${AI_HEALTH_URL}" target="_blank" style="color:var(--primary); text-decoration:underline;">AI Health Check</a>
+                        </div>
+                        <button onclick="getAIAnalysis(window.lastTestData)" style="margin-top:1rem; background:var(--danger); color:white; border:none; padding:6px 16px; border-radius:6px; font-size:0.75rem; font-weight:600; cursor:pointer; display:flex; align-items:center; gap:6px;">
+                            <i class="ri-refresh-line"></i> Try Again
+                        </button>
+                    </div>
+                `;
             }
         }
 

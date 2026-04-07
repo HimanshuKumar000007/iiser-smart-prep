@@ -601,41 +601,8 @@ Rules:
 - Be encouraging and supportive.
 - If asked something unrelated to studies, politely redirect to IAT topics.`;
 
-app.post("/api/ai-insights", authMiddleware, async (req, res) => {
-  try {
-    const { prompt } = req.body;
-    if (!prompt) return res.status(400).json({ error: "Prompt required" });
-
-    const response = await fetch("https://api.deepseek.com/v1/chat/completions", {
-      method: "POST",
-      headers: {
-        "Authorization": `Bearer ${process.env.DEEPSEEK_API_KEY}`,
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        model: "deepseek-chat",
-        messages: [
-          { role: "system", content: "You are an expert IISER IAT Mentor providing detailed, high-impact performance feedback and study plans." },
-          { role: "user", content: prompt }
-        ],
-        max_tokens: 1200
-      })
-    });
-
-    if (!response.ok) {
-      const errorData = await response.json().catch(() => ({}));
-      console.error("DeepSeek API Error:", errorData);
-      return res.status(response.status).json({ error: "Failed to fetch AI insights from DeepSeek" });
-    }
-
-    const data = await response.json();
-    // Return content directly to simplify frontend
-    res.json({ content: data.choices[0].message.content });
-  } catch (err) {
-    console.error("AI Insights Error:", err);
-    res.status(500).json({ error: "Server error during AI analysis" });
-  }
-});
+// ── Smart AI Insights (Isolated Module) ───────────────────
+require("./ai_insights")(app, authMiddleware);
 
 app.post("/api/ai-chat", async (req, res) => {
   try {
