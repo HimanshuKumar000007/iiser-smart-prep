@@ -1408,7 +1408,12 @@ Use Markdown formatting. Be encouraging but direct.
 
             } catch (err) {
                 console.error("AI Analysis failed:", err);
-                let errorMsg = `Cannot reach AI server at <b>${AI_API_URL}</b>.`;
+                
+                // Final safety fallback for URLs
+                const safeApiUrl = typeof AI_API_URL !== 'undefined' ? AI_API_URL : 'http://localhost:5000/api/ai-insights';
+                const safeHealthUrl = typeof AI_HEALTH_URL !== 'undefined' ? AI_HEALTH_URL : 'http://localhost:5000/api/ai-health';
+
+                let errorMsg = `Cannot reach the AI server at <b>${safeApiUrl}</b>.`;
                 let hint = `1. Ensure backend is running (<b>npm start</b>)<br>2. Check <b>DEEPSEEK_API_KEY</b> in .env`;
                 
                 if (err.message !== "Failed to fetch") {
@@ -1422,7 +1427,7 @@ Use Markdown formatting. Be encouraging but direct.
                             Error: ${errorMsg}<br><br>
                             <b>Steps to fix:</b><br>
                             ${hint}<br>
-                            3. Verify connectivity via <a href="${AI_HEALTH_URL}" target="_blank" style="color:var(--primary); text-decoration:underline;">AI Health Check</a>
+                            3. Verify connectivity via <a href="${safeHealthUrl}" target="_blank" style="color:var(--primary); text-decoration:underline;">AI Health Check</a>
                         </div>
                         <button onclick="getAIAnalysis(window.lastTestData)" style="margin-top:1rem; background:var(--danger); color:white; border:none; padding:6px 16px; border-radius:6px; font-size:0.75rem; font-weight:600; cursor:pointer; display:flex; align-items:center; gap:6px;">
                             <i class="ri-refresh-line"></i> Try Again

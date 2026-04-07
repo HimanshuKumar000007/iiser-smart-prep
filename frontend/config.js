@@ -1,10 +1,10 @@
 // Configuration for Backend API URL
 // Replace the URL below with your actual deployed backend URL
-const API_BASE_URL = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1" 
+var API_BASE_URL = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1" 
     ? "http://localhost:5000/api" 
     : "https://api.iisersmartprep.space/api";
-const AI_API_URL = API_BASE_URL + "/ai-insights";
-const AI_HEALTH_URL = API_BASE_URL + "/ai-health";
+var AI_API_URL = API_BASE_URL + "/ai-insights";
+var AI_HEALTH_URL = API_BASE_URL + "/ai-health";
 
 // Razorpay Key (LIVE)
 const RAZORPAY_KEY_ID = "rzp_live_SC3R47SGOoJHvE";
