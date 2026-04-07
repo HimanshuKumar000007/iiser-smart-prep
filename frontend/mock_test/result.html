@@ -1407,8 +1407,12 @@ Use Markdown formatting. Be encouraging but direct.
 
             } catch (err) {
                 console.error("AI Analysis failed:", err);
-                let errorMsg = "Note: AI Mentor analysis unavailable. Check if server is running and DEEPSEEK_API_KEY is set.";
-                if (err.message) errorMsg = `Note: ${err.message}`;
+                let errorMsg = "Note: AI Mentor analysis unavailable. Check if your backend server is running and DEEPSEEK_API_KEY is set in .env";
+                if (err.message === "Failed to fetch") {
+                    errorMsg = "Note: Cannot connect to the AI server. Please ensure your backend is running on http://localhost:5000";
+                } else if (err.message) {
+                    errorMsg = `Note: ${err.message}`;
+                }
                 el.innerHTML = originalContent + `<div style="margin-top:1rem; color:var(--danger); font-size:0.8rem;">${errorMsg}</div>`;
             }
         }
