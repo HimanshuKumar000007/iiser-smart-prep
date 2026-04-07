@@ -1352,6 +1352,7 @@
         async function getAIAnalysis(testData) {
             const el = document.getElementById('aiInsights');
             const originalContent = el.innerHTML;
+            const token = localStorage.getItem('IAT_TOKEN');
             
             // Show loading state
             el.innerHTML = originalContent + '<div style="margin-top:1rem; color:var(--primary); font-weight:600;"><i class="ri-loader-4-line ri-spin"></i> Fetching AI Mentor Analysis...</div>';
@@ -1377,14 +1378,20 @@ Use Markdown formatting. Be encouraging but direct.
 
                 const res = await fetch(AI_API_URL, {
                     method: "POST",
-                    headers: { "Content-Type": "application/json" },
+                    headers: { 
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${token}`
+                    },
                     body: JSON.stringify({ prompt })
                 });
 
-                if (!res.ok) throw new Error("AI Backend Error");
+                if (!res.ok) {
+                    const errorResponse = await res.json().catch(() => ({}));
+                    throw new Error(errorResponse.error || "AI Backend Error");
+                }
 
                 const data = await res.json();
-                const aiText = data.candidates[0].content.parts[0].text;
+                const aiText = data.content;
 
                 // Render with marked
                 el.innerHTML = `
@@ -1400,7 +1407,9 @@ Use Markdown formatting. Be encouraging but direct.
 
             } catch (err) {
                 console.error("AI Analysis failed:", err);
-                el.innerHTML = originalContent + '<div style="margin-top:1rem; color:var(--danger); font-size:0.8rem;">Note: AI Mentor analysis unavailable. Check if server is running on port 5000.</div>';
+                let errorMsg = "Note: AI Mentor analysis unavailable. Check if server is running and DEEPSEEK_API_KEY is set.";
+                if (err.message) errorMsg = `Note: ${err.message}`;
+                el.innerHTML = originalContent + `<div style="margin-top:1rem; color:var(--danger); font-size:0.8rem;">${errorMsg}</div>`;
             }
         }
 
