@@ -1410,8 +1410,8 @@ Use Markdown formatting. Be encouraging but direct.
                 console.error("AI Analysis failed:", err);
                 
                 // Final safety fallback for URLs
-                const safeApiUrl = typeof AI_API_URL !== 'undefined' ? AI_API_URL : 'http://localhost:5000/api/ai-insights';
-                const safeHealthUrl = typeof AI_HEALTH_URL !== 'undefined' ? AI_HEALTH_URL : 'http://localhost:5000/api/ai-health';
+                const safeApiUrl = typeof AI_API_URL !== 'undefined' ? AI_API_URL : (window.location.hostname === "localhost" ? 'http://localhost:5000/ai' : 'https://api.iisersmartprep.space/ai');
+                const safeHealthUrl = typeof AI_HEALTH_URL !== 'undefined' ? AI_HEALTH_URL : (window.location.hostname === "localhost" ? 'http://localhost:5000/ai-health' : 'https://api.iisersmartprep.space/ai-health');
 
                 let errorMsg = `Cannot reach the AI server at <b>${safeApiUrl}</b>.`;
                 let hint = `1. Ensure backend is running (<b>npm start</b>)<br>2. Check <b>DEEPSEEK_API_KEY</b> in .env`;

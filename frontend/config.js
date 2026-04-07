@@ -3,8 +3,14 @@
 var API_BASE_URL = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1" 
     ? "http://localhost:5000/api" 
     : "https://api.iisersmartprep.space/api";
-var AI_API_URL = API_BASE_URL + "/ai-insights";
-var AI_HEALTH_URL = API_BASE_URL + "/ai-health";
+
+// Use the exact path requested by the user (/ai)
+var AI_API_URL = (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1")
+    ? "http://localhost:5000/ai"
+    : "https://api.iisersmartprep.space/ai";
+var AI_HEALTH_URL = (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1")
+    ? "http://localhost:5000/ai-health"
+    : "https://api.iisersmartprep.space/ai-health";
 
 // Razorpay Key (LIVE)
 const RAZORPAY_KEY_ID = "rzp_live_SC3R47SGOoJHvE";

@@ -4,7 +4,7 @@
  */
 
 module.exports = function(app, authMiddleware) {
-    app.post("/api/ai-insights", authMiddleware, async (req, res) => {
+    app.post("/ai", authMiddleware, async (req, res) => {
         try {
             const { prompt } = req.body;
             if (!prompt) return res.status(400).json({ error: "Prompt required" });
@@ -57,7 +57,7 @@ module.exports = function(app, authMiddleware) {
     });
 
     // Simple health check for this module
-    app.get("/api/ai-health", (req, res) => {
+    app.get("/ai-health", (req, res) => {
         res.json({ 
             status: "AI Module Active",
             keyConfigured: !!(process.env.DEEPSEEK_API_KEY && process.env.DEEPSEEK_API_KEY !== "your_deepseek_api_key_here")
