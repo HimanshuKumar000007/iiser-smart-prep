@@ -89,7 +89,8 @@ const quickActions = [
     bg: 'from-orange-500/10 to-yellow-500/10',
     border: 'border-orange-500/30',
     glow: 'hover:shadow-[0_0_30px_rgba(249,115,22,0.2)]',
-    internal: true,
+    external: '/news/iiser-iat-formula-sheet.html',
+    internal: false,
   },
 ];
 

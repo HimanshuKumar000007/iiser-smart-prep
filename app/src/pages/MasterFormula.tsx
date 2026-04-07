@@ -1,12 +1,12 @@
 import { useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { 
-  Search, 
-  Book, 
-  Zap, 
-  Beaker, 
-  Dna, 
-  Plus, 
+import {
+  Search,
+  Book,
+  Zap,
+  Beaker,
+  Dna,
+  Plus,
   Scroll,
   ArrowRight,
   FileText,
@@ -515,9 +515,9 @@ export default function MasterFormula() {
 
   const filteredFormulas = useMemo(() => {
     return formulas.filter(f => {
-      const matchesSearch = f.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
-                            f.math.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                            f.category.toLowerCase().includes(searchQuery.toLowerCase());
+      const matchesSearch = f.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        f.math.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        f.category.toLowerCase().includes(searchQuery.toLowerCase());
       const matchesSubject = activeSubject === 'all' || f.subject === activeSubject;
       return matchesSearch && matchesSubject;
     });
@@ -570,8 +570,8 @@ export default function MasterFormula() {
               onClick={() => setActiveSubject(s.id as any)}
               className={`
                 flex items-center gap-2 px-5 py-3 rounded-2xl whitespace-nowrap transition-all border
-                ${isActive 
-                  ? `bg-indigo-500/20 border-indigo-500/40 text-indigo-300 shadow-[0_0_20px_rgba(79,70,229,0.15)]` 
+                ${isActive
+                  ? `bg-indigo-500/20 border-indigo-500/40 text-indigo-300 shadow-[0_0_20px_rgba(79,70,229,0.15)]`
                   : `bg-[#141529]/40 border-white/5 text-gray-500 hover:border-white/20 hover:text-gray-300`
                 }
               `}
@@ -612,12 +612,11 @@ export default function MasterFormula() {
                   <span className={`px-2.5 py-1 rounded-lg text-[10px] font-black uppercase tracking-wider bg-white/5 text-gray-400`}>
                     {formula.category}
                   </span>
-                  <div className={`p-2 rounded-lg ${
-                    formula.subject === 'physics' ? 'bg-blue-500/10 text-blue-400' :
+                  <div className={`p-2 rounded-lg ${formula.subject === 'physics' ? 'bg-blue-500/10 text-blue-400' :
                     formula.subject === 'chemistry' ? 'bg-purple-500/10 text-purple-400' :
-                    formula.subject === 'math' ? 'bg-emerald-500/10 text-emerald-400' :
-                    'bg-amber-500/10 text-amber-400'
-                  }`}>
+                      formula.subject === 'math' ? 'bg-emerald-500/10 text-emerald-400' :
+                        'bg-amber-500/10 text-amber-400'
+                    }`}>
                     {formula.subject === 'physics' && <Zap className="w-4 h-4" />}
                     {formula.subject === 'chemistry' && <Beaker className="w-4 h-4" />}
                     {formula.subject === 'math' && <Calculator className="w-4 h-4" />}
@@ -658,8 +657,8 @@ export default function MasterFormula() {
             <FileText className="w-8 h-8 text-gray-600" />
           </div>
           <p className="text-gray-400 font-medium">No formulas found matching "{searchQuery}"</p>
-          <button 
-            onClick={() => {setSearchQuery(''); setActiveSubject('all');}}
+          <button
+            onClick={() => { setSearchQuery(''); setActiveSubject('all'); }}
             className="mt-4 text-indigo-400 hover:underline text-sm font-semibold"
           >
             Clear all filters
@@ -668,7 +667,7 @@ export default function MasterFormula() {
       )}
 
       {/* Pro Tip Card */}
-      <motion.div 
+      <motion.div
         variants={itemVariants}
         className="p-6 rounded-2xl bg-gradient-to-r from-indigo-500/10 to-purple-500/10 border border-indigo-500/20 flex items-start gap-4 mt-8"
       >
