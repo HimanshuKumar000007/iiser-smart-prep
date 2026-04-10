@@ -24,7 +24,9 @@
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
 
     <!-- Icons -->
     <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
@@ -39,11 +41,11 @@
             --primary-dark: #4f46e5;
             --primary-light: #818cf8;
             --primary-glow: rgba(99, 102, 241, 0.4);
-            
+
             --accent: #06b6d4;
             --accent-light: #22d3ee;
             --accent-glow: rgba(6, 182, 212, 0.3);
-            
+
             --success: #10b981;
             --success-light: #34d399;
             --danger: #ef4444;
@@ -56,15 +58,15 @@
             --bg-elevated: #ffffff;
             --bg-hover: #f3f4f6;
             --bg-pressed: #e5e7eb;
-            
+
             --text: #0f172a;
             --text-secondary: #475569;
             --text-tertiary: #94a3b8;
             --text-inverse: #ffffff;
-            
+
             --border: rgba(0, 0, 0, 0.06);
             --border-strong: rgba(0, 0, 0, 0.1);
-            
+
             /* Shadows - Layered for depth */
             --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
             --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05), 0 2px 4px -2px rgb(0 0 0 / 0.05);
@@ -72,14 +74,14 @@
             --shadow-lg: 0 20px 25px -5px rgb(0 0 0 / 0.06), 0 8px 10px -6px rgb(0 0 0 / 0.06);
             --shadow-xl: 0 25px 50px -12px rgb(0 0 0 / 0.15);
             --shadow-glow: 0 0 40px -10px var(--primary-glow);
-            
+
             /* Premium Radius */
             --radius-sm: 8px;
             --radius-md: 12px;
             --radius-lg: 16px;
             --radius-xl: 24px;
             --radius-2xl: 32px;
-            
+
             /* Spacing Scale */
             --space-1: 4px;
             --space-2: 8px;
@@ -90,12 +92,12 @@
             --space-8: 32px;
             --space-10: 40px;
             --space-12: 48px;
-            
+
             /* Animation Curves */
             --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
             --ease-out-back: cubic-bezier(0.34, 1.56, 0.64, 1);
             --ease-spring: cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            
+
             /* Transitions */
             --transition-fast: 150ms var(--ease-out-expo);
             --transition-base: 250ms var(--ease-out-expo);
@@ -107,14 +109,14 @@
             --bg-elevated: #0f172a;
             --bg-hover: #1e293b;
             --bg-pressed: #334155;
-            
+
             --text: #f8fafc;
             --text-secondary: #cbd5e1;
             --text-tertiary: #64748b;
-            
+
             --border: rgba(255, 255, 255, 0.06);
             --border-strong: rgba(255, 255, 255, 0.1);
-            
+
             --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.3);
             --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.3), 0 2px 4px -2px rgb(0 0 0 / 0.3);
             --shadow-md: 0 10px 15px -3px rgb(0 0 0 / 0.4), 0 4px 6px -4px rgb(0 0 0 / 0.4);
@@ -122,7 +124,9 @@
         }
 
         /* Reset & Base */
-        *, *::before, *::after {
+        *,
+        *::before,
+        *::after {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
@@ -145,7 +149,13 @@
             transition: background-color var(--transition-slow), color var(--transition-slow);
         }
 
-        h1, h2, h3, h4, h5, h6, .stat-num {
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6,
+        .stat-num {
             font-family: 'Outfit', sans-serif;
             font-weight: 700;
             letter-spacing: -0.02em;
@@ -199,9 +209,19 @@
         }
 
         @keyframes float {
-            0%, 100% { transform: translate(0, 0) scale(1); }
-            33% { transform: translate(30px, -30px) scale(1.1); }
-            66% { transform: translate(-20px, 20px) scale(0.9); }
+
+            0%,
+            100% {
+                transform: translate(0, 0) scale(1);
+            }
+
+            33% {
+                transform: translate(30px, -30px) scale(1.1);
+            }
+
+            66% {
+                transform: translate(-20px, 20px) scale(0.9);
+            }
         }
 
         /* Noise Texture Overlay */
@@ -293,7 +313,7 @@
             content: '';
             position: absolute;
             inset: 0;
-            background: linear-gradient(135deg, transparent 0%, rgba(255,255,255,0.2) 100%);
+            background: linear-gradient(135deg, transparent 0%, rgba(255, 255, 255, 0.2) 100%);
         }
 
         .nav-section-label {
@@ -471,7 +491,7 @@
             content: '';
             position: absolute;
             inset: 0;
-            background: linear-gradient(135deg, rgba(255,255,255,0.2) 0%, transparent 100%);
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.2) 0%, transparent 100%);
             opacity: 0;
             transition: opacity var(--transition-fast);
         }
@@ -629,7 +649,7 @@
             right: -50%;
             width: 200%;
             height: 200%;
-            background: radial-gradient(circle, var(--card-glow, rgba(99,102,241,0.1)) 0%, transparent 70%);
+            background: radial-gradient(circle, var(--card-glow, rgba(99, 102, 241, 0.1)) 0%, transparent 70%);
             opacity: 0;
             transition: opacity var(--transition-slow);
             pointer-events: none;
@@ -654,7 +674,7 @@
             justify-content: center;
             font-size: 1.5rem;
             margin-bottom: var(--space-4);
-            background: var(--icon-bg, rgba(99,102,241,0.1));
+            background: var(--icon-bg, rgba(99, 102, 241, 0.1));
             color: var(--icon-color, var(--primary));
             position: relative;
             z-index: 1;
@@ -690,9 +710,17 @@
             z-index: 1;
         }
 
-        .trend-up { color: var(--success); }
-        .trend-down { color: var(--danger); }
-        .trend-stable { color: var(--warning); }
+        .trend-up {
+            color: var(--success);
+        }
+
+        .trend-down {
+            color: var(--danger);
+        }
+
+        .trend-stable {
+            color: var(--warning);
+        }
 
         /* Charts Grid */
         .charts-grid {
@@ -719,7 +747,7 @@
             inset: 0;
             border-radius: inherit;
             padding: 1px;
-            background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, transparent 50%);
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, transparent 50%);
             pointer-events: none;
             mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
             -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
@@ -813,20 +841,25 @@
             transition: width 1.2s var(--ease-out-expo);
             position: relative;
             background: linear-gradient(90deg, var(--subject-color, var(--primary)) 0%, var(--subject-color-light, var(--primary-light)) 100%);
-            box-shadow: 0 0 12px rgba(var(--subject-color-rgb, 99,102,241), 0.4);
+            box-shadow: 0 0 12px rgba(var(--subject-color-rgb, 99, 102, 241), 0.4);
         }
 
         .subject-bar-fill::after {
             content: '';
             position: absolute;
             inset: 0;
-            background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.3) 50%, transparent 100%);
+            background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.3) 50%, transparent 100%);
             animation: shimmer 2s infinite;
         }
 
         @keyframes shimmer {
-            0% { transform: translateX(-100%); }
-            100% { transform: translateX(100%); }
+            0% {
+                transform: translateX(-100%);
+            }
+
+            100% {
+                transform: translateX(100%);
+            }
         }
 
         /* Insights Grid */
@@ -875,9 +908,9 @@
             align-items: center;
             justify-content: center;
             font-size: 1.5rem;
-            background: var(--icon-bg, rgba(99,102,241,0.1));
+            background: var(--icon-bg, rgba(99, 102, 241, 0.1));
             color: var(--icon-color, var(--primary));
-            box-shadow: 0 4px 12px -4px var(--icon-shadow, rgba(99,102,241,0.2));
+            box-shadow: 0 4px 12px -4px var(--icon-shadow, rgba(99, 102, 241, 0.2));
         }
 
         .insight-content {
@@ -998,8 +1031,13 @@
         }
 
         @keyframes skeleton-shimmer {
-            0% { background-position: 200% 0; }
-            100% { background-position: -200% 0; }
+            0% {
+                background-position: 200% 0;
+            }
+
+            100% {
+                background-position: -200% 0;
+            }
         }
 
         /* Empty State */
@@ -1088,6 +1126,7 @@
                 opacity: 0;
                 transform: translateY(30px) scale(0.95);
             }
+
             to {
                 opacity: 1;
                 transform: translateY(0) scale(1);
@@ -1098,10 +1137,21 @@
             animation: fadeUp 0.6s var(--ease-out-expo) backwards;
         }
 
-        .fade-up:nth-child(1) { animation-delay: 0.05s; }
-        .fade-up:nth-child(2) { animation-delay: 0.1s; }
-        .fade-up:nth-child(3) { animation-delay: 0.15s; }
-        .fade-up:nth-child(4) { animation-delay: 0.2s; }
+        .fade-up:nth-child(1) {
+            animation-delay: 0.05s;
+        }
+
+        .fade-up:nth-child(2) {
+            animation-delay: 0.1s;
+        }
+
+        .fade-up:nth-child(3) {
+            animation-delay: 0.15s;
+        }
+
+        .fade-up:nth-child(4) {
+            animation-delay: 0.2s;
+        }
 
         /* Mobile Bottom Navigation - Premium Pill */
         .mobile-bottom-nav {
@@ -1199,7 +1249,7 @@
             transform: translateY(120%) translateZ(0);
             will-change: transform;
             transition: transform 0.5s var(--ease-out-expo);
-            box-shadow: 0 -20px 60px -20px rgba(0,0,0,0.3);
+            box-shadow: 0 -20px 60px -20px rgba(0, 0, 0, 0.3);
         }
 
         .mobile-drawer.open {
@@ -1279,19 +1329,21 @@
         }
 
         .mobile-drawer-overlay {
-            display: none;
+            display: block;
             position: fixed;
             inset: 0;
             z-index: 300;
             opacity: 0;
-            transition: opacity 0.3s;
-            backdrop-filter: blur(8px);
+            visibility: hidden;
+            transition: opacity 0.4s var(--ease-out-expo), visibility 0.4s var(--ease-out-expo);
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
             background: rgba(0, 0, 0, 0.4);
         }
 
         .mobile-drawer-overlay.open {
-            display: block;
             opacity: 1;
+            visibility: visible;
         }
 
         /* FAB */
@@ -1318,10 +1370,10 @@
             align-items: center;
             justify-content: center;
             font-size: 1.75rem;
-            box-shadow: 0 8px 32px -4px var(--primary-glow), 0 4px 12px rgba(0,0,0,0.2);
+            box-shadow: 0 8px 32px -4px var(--primary-glow), 0 4px 12px rgba(0, 0, 0, 0.2);
             transition: all var(--transition-base);
             -webkit-tap-highlight-color: transparent;
-            border: 2px solid rgba(255,255,255,0.1);
+            border: 2px solid rgba(255, 255, 255, 0.1);
         }
 
         .fab-main:active {
@@ -1387,6 +1439,7 @@
             .stats-grid {
                 grid-template-columns: repeat(2, 1fr);
             }
+
             .insights-grid {
                 grid-template-columns: repeat(2, 1fr);
             }
@@ -1396,6 +1449,7 @@
             .app-layout {
                 grid-template-columns: 240px 1fr;
             }
+
             .sidebar {
                 padding: var(--space-4);
             }
@@ -1405,7 +1459,7 @@
             .app-layout {
                 grid-template-columns: 1fr;
             }
-            
+
             .sidebar {
                 display: none;
                 position: fixed;
@@ -1418,21 +1472,21 @@
                 transform: translateX(-100%);
                 transition: transform 0.4s var(--ease-out-expo);
             }
-            
+
             .sidebar.mobile-open {
                 display: flex;
                 transform: translateX(0);
             }
-            
+
             .sidebar-overlay {
                 display: none;
                 position: fixed;
                 inset: 0;
-                background: rgba(0,0,0,0.5);
+                background: rgba(0, 0, 0, 0.5);
                 backdrop-filter: blur(8px);
                 z-index: 400;
             }
-            
+
             .sidebar-overlay.active {
                 display: block;
             }
@@ -1476,7 +1530,7 @@
                 right: -20%;
                 width: 300px;
                 height: 300px;
-                background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, transparent 70%);
+                background: radial-gradient(circle, rgba(255, 255, 255, 0.2) 0%, transparent 70%);
                 border-radius: 50%;
             }
 
@@ -1507,7 +1561,7 @@
                 font-size: 3rem;
                 position: relative;
                 z-index: 1;
-                filter: drop-shadow(0 4px 12px rgba(0,0,0,0.2));
+                filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.2));
                 animation: float 3s ease-in-out infinite;
             }
 
@@ -1625,15 +1679,15 @@
                 grid-template-columns: 1fr 1fr;
                 gap: var(--space-3);
             }
-            
+
             .stat-card {
                 padding: var(--space-4);
             }
-            
+
             .stat-num {
                 font-size: 1.75rem;
             }
-            
+
             .stat-icon {
                 width: 40px;
                 height: 40px;
@@ -1645,15 +1699,15 @@
             .stats-grid {
                 grid-template-columns: 1fr;
             }
-            
+
             .mobile-bottom-nav {
                 padding: var(--space-3);
             }
-            
+
             .nav-pill {
                 max-width: 100%;
             }
-            
+
             .mnav-item {
                 min-width: 50px;
                 padding: var(--space-2);
@@ -1666,7 +1720,7 @@
             .mobile-bottom-nav {
                 display: none;
             }
-            
+
             .page-content {
                 padding-bottom: var(--space-6);
             }
@@ -1674,14 +1728,18 @@
 
         /* Print Styles */
         @media print {
-            .sidebar, .topnav, .mobile-bottom-nav, .fab-container {
+
+            .sidebar,
+            .topnav,
+            .mobile-bottom-nav,
+            .fab-container {
                 display: none !important;
             }
-            
+
             .app-layout {
                 grid-template-columns: 1fr;
             }
-            
+
             .card {
                 break-inside: avoid;
                 box-shadow: none;
@@ -1689,7 +1747,7 @@
             }
         }
     </style>
-<base target="_blank">
+    <base target="_blank">
 </head>
 
 <body>
@@ -1762,7 +1820,8 @@
                         <i class="ri-menu-4-line"></i>
                     </button>
                     <div class="mobile-only" style="display:none;">
-                        <a href="/" style="display:flex;align-items:center;gap:0.5rem;font-weight:800;color:var(--text);text-decoration:none;font-family:'Outfit',sans-serif;">
+                        <a href="/"
+                            style="display:flex;align-items:center;gap:0.5rem;font-weight:800;color:var(--text);text-decoration:none;font-family:'Outfit',sans-serif;">
                             <div class="logo-icon" style="width:32px;height:32px;border-radius:8px;font-size:0.9rem;">
                                 <i class="ri-graduation-cap-line"></i>
                             </div>
@@ -1877,11 +1936,12 @@
                             <i class="ri-history-line" style="color:var(--warning);"></i>
                             Recent Attempts
                         </div>
-                        <a href="/mock_test/full_mock_test_homepage.html" class="btn-primary" style="padding:0.5rem 1rem; font-size:0.8rem;">
+                        <a href="/mock_test/full_mock_test_homepage.html" class="btn-primary"
+                            style="padding:0.5rem 1rem; font-size:0.8rem;">
                             <i class="ri-add-line"></i> New Mock
                         </a>
                     </div>
-                    
+
                     <!-- Desktop Table -->
                     <div class="attempts-table-wrap">
                         <table>
@@ -1940,7 +2000,8 @@
                 <i class="ri-robot-2-line"></i>
                 <span>AI Tutor</span>
             </a>
-            <button class="mnav-item" id="more-btn" onclick="toggleDrawer()" style="background:none;border:none;cursor:pointer;">
+            <button class="mnav-item" id="more-btn" onclick="toggleDrawer()"
+                style="background:none;border:none;cursor:pointer;">
                 <i class="ri-apps-line"></i>
                 <span>More</span>
             </button>
@@ -1987,7 +2048,8 @@
 
         <div class="drawer-section-label">Account</div>
         <div class="drawer-grid">
-            <button class="drawer-nav-item" id="mobile-logout-btn" style="background:rgba(239,68,68,0.1); color:var(--danger); border-color:rgba(239,68,68,0.2); width:100%; cursor:pointer; text-align:left;">
+            <button class="drawer-nav-item" id="mobile-logout-btn"
+                style="background:rgba(239,68,68,0.1); color:var(--danger); border-color:rgba(239,68,68,0.2); width:100%; cursor:pointer; text-align:left;">
                 <i class="ri-logout-box-r-line" style="background:rgba(239,68,68,0.15); color:var(--danger);"></i>
                 Logout
             </button>
@@ -2047,7 +2109,7 @@
                 const isMobile = window.innerWidth <= 900;
                 const banner = document.getElementById('mobile-welcome-banner');
                 const desktopHeader = document.getElementById('desktop-page-header');
-                
+
                 if (banner) {
                     banner.style.display = isMobile ? 'flex' : 'none';
                 }
@@ -2055,7 +2117,7 @@
                     desktopHeader.style.display = isMobile ? 'none' : 'block';
                 }
             }
-            
+
             updateMobileBanner();
             window.addEventListener('resize', updateMobileBanner);
 
@@ -2094,17 +2156,17 @@
             try {
                 const data = await apiFetch('/api/me');
                 const name = data.name || data.email?.split('@')[0] || 'Student';
-                
+
                 const userNameEl = document.getElementById('user-name');
                 const mobileUserNameEl = document.getElementById('mobile-user-name');
-                
+
                 if (userNameEl) userNameEl.textContent = name;
                 if (mobileUserNameEl) mobileUserNameEl.textContent = name;
             } catch {
                 const name = 'Student';
                 const userNameEl = document.getElementById('user-name');
                 const mobileUserNameEl = document.getElementById('mobile-user-name');
-                
+
                 if (userNameEl) userNameEl.textContent = name;
                 if (mobileUserNameEl) mobileUserNameEl.textContent = name;
             }
@@ -2132,30 +2194,30 @@
 
                 const now = new Date();
                 const updatedStr = `Last updated: ${now.toLocaleString('en-IN', { dateStyle: 'medium', timeStyle: 'short' })}`;
-                
+
                 const lastUpdatedEl = document.getElementById('last-updated');
                 const mobileLastUpdatedEl = document.getElementById('mobile-last-updated');
-                
+
                 if (lastUpdatedEl) lastUpdatedEl.textContent = updatedStr;
                 if (mobileLastUpdatedEl) mobileLastUpdatedEl.textContent = updatedStr;
 
             } catch (err) {
                 console.error('Dashboard load error:', err);
-                renderStatCards({ 
-                    total_attempts: 0, 
-                    best_score: 0, 
-                    avg_score: '0.00', 
-                    accuracy: '0.00', 
-                    improvement: 0, 
-                    recent_trend: 'insufficient_data' 
+                renderStatCards({
+                    total_attempts: 0,
+                    best_score: 0,
+                    avg_score: '0.00',
+                    accuracy: '0.00',
+                    improvement: 0,
+                    recent_trend: 'insufficient_data'
                 });
                 renderAttempts([]);
                 renderInsights({ total_attempts: 0 }, []);
-                
+
                 const msg = 'Complete a mock test to see your progress here!';
                 const lastUpdatedEl = document.getElementById('last-updated');
                 const mobileLastUpdatedEl = document.getElementById('mobile-last-updated');
-                
+
                 if (lastUpdatedEl) lastUpdatedEl.textContent = msg;
                 if (mobileLastUpdatedEl) mobileLastUpdatedEl.textContent = msg;
             }
@@ -2229,9 +2291,9 @@
         function renderScoreChart(attempts) {
             const canvas = document.getElementById('scoreChart');
             if (!canvas) return;
-            
+
             const container = canvas.parentElement;
-            
+
             if (!attempts || attempts.length === 0) {
                 container.innerHTML = `
                     <div class="empty-state" style="padding:3rem;">
@@ -2635,19 +2697,19 @@
             const t = document.getElementById('toast');
             const msgEl = document.getElementById('toast-msg');
             const iconEl = t.querySelector('.toast-icon i');
-            
+
             if (!t || !msgEl) return;
-            
+
             const icons = {
                 info: 'ri-information-line',
                 success: 'ri-check-line',
                 error: 'ri-error-warning-line',
                 refresh: 'ri-refresh-line'
             };
-            
+
             if (iconEl) iconEl.className = icons[type] || icons.info;
             msgEl.textContent = msg;
-            
+
             t.classList.add('show');
             setTimeout(() => t.classList.remove('show'), 3500);
         }
@@ -2657,11 +2719,11 @@
             const drawer = document.getElementById('mobile-drawer');
             const overlay = document.getElementById('drawer-overlay');
             const moreBtn = document.getElementById('more-btn');
-            
+
             if (!drawer || !overlay) return;
-            
+
             const isOpen = drawer.classList.contains('open');
-            
+
             if (isOpen) {
                 closeDrawer();
             } else {
@@ -2679,15 +2741,15 @@
             const drawer = document.getElementById('mobile-drawer');
             const overlay = document.getElementById('drawer-overlay');
             const moreBtn = document.getElementById('more-btn');
-            
+
             if (drawer) drawer.classList.remove('open');
             if (overlay) overlay.classList.remove('open');
-            
+
             if (moreBtn) {
                 const icon = moreBtn.querySelector('i');
                 if (icon) icon.className = 'ri-apps-line';
             }
-            
+
             document.body.style.overflow = '';
         }
 
@@ -2695,9 +2757,9 @@
         function toggleSidebar() {
             const sidebar = document.getElementById('sidebar');
             const overlay = document.getElementById('sidebar-overlay');
-            
+
             if (!sidebar || !overlay) return;
-            
+
             sidebar.classList.toggle('mobile-open');
             overlay.classList.toggle('active');
             document.body.style.overflow = sidebar.classList.contains('mobile-open') ? 'hidden' : '';
@@ -2706,7 +2768,7 @@
         function closeSidebar() {
             const sidebar = document.getElementById('sidebar');
             const overlay = document.getElementById('sidebar-overlay');
-            
+
             if (sidebar) sidebar.classList.remove('mobile-open');
             if (overlay) overlay.classList.remove('active');
             document.body.style.overflow = '';
@@ -2716,9 +2778,9 @@
         function toggleFab() {
             const container = document.getElementById('fab-container');
             const icon = document.getElementById('fab-icon');
-            
+
             if (!container || !icon) return;
-            
+
             container.classList.toggle('active');
             icon.className = container.classList.contains('active') ? 'ri-close-line' : 'ri-add-line';
         }
@@ -2745,7 +2807,7 @@
             if (window.scrollY === 0 && !isRefreshing) {
                 touchEndY = e.touches[0].clientY;
                 const pullDistance = touchEndY - touchStartY;
-                
+
                 if (pullDistance > 0 && pullDistance < refreshThreshold) {
                     document.body.style.transform = `translateY(${pullDistance * 0.3}px)`;
                 }
@@ -2754,15 +2816,15 @@
 
         document.addEventListener('touchend', async () => {
             const pullDistance = touchEndY - touchStartY;
-            
+
             if (pullDistance > refreshThreshold && window.scrollY === 0 && !isRefreshing) {
                 isRefreshing = true;
                 document.body.style.transform = `translateY(50px)`;
                 document.body.style.transition = 'transform 0.3s ease';
-                
+
                 showToast('Refreshing...', 'refresh');
                 await loadDashboardData();
-                
+
                 setTimeout(() => {
                     document.body.style.transform = 'translateY(0)';
                     isRefreshing = false;
@@ -2772,7 +2834,7 @@
                 document.body.style.transform = 'translateY(0)';
                 document.body.style.transition = 'transform 0.3s ease';
             }
-            
+
             touchStartY = 0;
             touchEndY = 0;
         });
@@ -2799,4 +2861,5 @@
         }, { passive: true });
     </script>
 </body>
+
 </html>
