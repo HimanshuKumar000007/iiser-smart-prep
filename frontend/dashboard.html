@@ -2279,35 +2279,11 @@
                 <i class="ri-robot-2-line"></i>
                 <span>AI Tutor</span>
             </a>
-            <button class="mnav-item" id="more-btn" onclick="toggleDrawer()"
-                style="background:none;border:none;cursor:pointer;">
-                <i class="ri-apps-line"></i>
-                <span>More</span>
-            </button>
+
         </div>
     </nav>
 
-    <!-- ── MOBILE SLIDE-UP DRAWER ───────────────── -->
-    <div class="mobile-drawer-overlay" id="drawer-overlay" onclick="closeDrawer()"></div>
-    <div class="mobile-drawer" id="mobile-drawer">
-        <div class="drawer-handle"></div>
-        <div class="drawer-section-label">Tools & Account</div>
-        <div class="drawer-grid">
-            <a class="drawer-nav-item" href="/iiser-iat-college-predictor.html">
-                <i class="ri-map-pin-2-line" style="color:#ef4444; background:rgba(239,68,68,0.12);"></i>
-                Predictor
-            </a>
-            <a class="drawer-nav-item" href="/iat-planner-pro.html">
-                <i class="ri-calendar-check-line" style="color:#8b5cf6; background:rgba(139,92,246,0.12);"></i>
-                Study Plan
-            </a>
-            <button class="drawer-nav-item full-width" id="mobile-logout-btn"
-                style="background:rgba(239,68,68,0.06); border-color:rgba(239,68,68,0.2); width:100%; cursor:pointer; text-align:left; color:var(--danger);">
-                <i class="ri-logout-box-r-line" style="color:#ef4444; background:rgba(239,68,68,0.12);"></i>
-                Logout
-            </button>
-        </div>
-    </div>
+
 
     <script>
         // ═══════════════════════════════════════════════════════
@@ -2356,12 +2332,7 @@
                 window.location.href = '/';
             });
 
-            // Logout (mobile drawer)
-            document.getElementById('mobile-logout-btn').addEventListener('click', () => {
-                localStorage.removeItem('IAT_TOKEN');
-                localStorage.removeItem('IAT_PLAN');
-                window.location.href = '/';
-            });
+
 
             // Load data
             await Promise.all([
@@ -2858,33 +2829,7 @@
             setTimeout(() => t.classList.remove('show'), 3500);
         }
 
-        // ═══════════════════════════════════════════════════════
-        //  MOBILE DRAWER
-        // ═══════════════════════════════════════════════════════
-        function toggleDrawer() {
-            const drawer = document.getElementById('mobile-drawer');
-            const overlay = document.getElementById('drawer-overlay');
-            const moreBtn = document.getElementById('more-btn');
-            const isOpen = drawer.classList.contains('open');
-            if (isOpen) {
-                closeDrawer();
-            } else {
-                drawer.classList.add('open');
-                overlay.classList.add('open');
-                moreBtn.querySelector('i').className = 'ri-close-line';
-                document.body.style.overflow = 'hidden';
-            }
-        }
 
-        function closeDrawer() {
-            const drawer = document.getElementById('mobile-drawer');
-            const overlay = document.getElementById('drawer-overlay');
-            const moreBtn = document.getElementById('more-btn');
-            drawer.classList.remove('open');
-            overlay.classList.remove('open');
-            if (moreBtn) moreBtn.querySelector('i').className = 'ri-menu-line';
-            document.body.style.overflow = '';
-        }
 
         function toggleSidebar() {
             const sidebar = document.querySelector('.sidebar');
