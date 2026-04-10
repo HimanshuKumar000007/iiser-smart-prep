@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en" data-theme="light">
 
@@ -128,23 +129,25 @@
             display: flex;
             align-items: center;
             gap: 0.75rem;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(20px);
+            /* iOS Glossy Glass */
+            background: rgba(255, 255, 255, 0.45);
+            backdrop-filter: blur(25px) saturate(200%);
+            -webkit-backdrop-filter: blur(25px) saturate(200%);
             padding: 1rem 1.3rem;
             border-radius: 100px;
-            box-shadow: 0 12px 45px rgba(0, 0, 0, 0.18),
-                0 4px 15px rgba(0, 0, 0, 0.12);
-            border: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 
+                0 12px 45px rgba(0, 0, 0, 0.12),
+                inset 0 1px 1px rgba(255, 255, 255, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.4);
             max-width: 500px;
             width: 94%;
             justify-content: space-around;
         }
 
         [data-theme="dark"] .nav-pill {
-            background: rgba(15, 22, 41, 0.95);
+            background: rgba(15, 22, 41, 0.5);
             border-color: rgba(255, 255, 255, 0.1);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4),
-                inset 0 1px 0 rgba(255, 255, 255, 0.05);
+            box-shadow: 0 12px 45px rgba(0, 0, 0, 0.3);
         }
 
         .mnav-item {
@@ -356,18 +359,39 @@
             .stat-card {
                 padding: 1rem 0.9rem;
                 min-height: 135px;
+                /* iOS Glossy Glass */
+                background: rgba(255, 255, 255, 0.45) !important;
+                backdrop-filter: blur(20px) saturate(180%);
+                -webkit-backdrop-filter: blur(20px) saturate(180%);
+                border: 1px solid rgba(255, 255, 255, 0.5) !important;
+                box-shadow: 
+                    0 10px 30px rgba(0,0,0,0.04),
+                    inset 0 1px 1px rgba(255, 255, 255, 0.4);
+            }
+
+            [data-theme="dark"] .stat-card {
+                background: rgba(15, 23, 42, 0.4) !important;
+                border: 1px solid rgba(255, 255, 255, 0.08) !important;
+                box-shadow: 0 10px 30px rgba(0,0,0,0.2) !important;
+            }
+
+            .stat-card::before {
+                height: 4px; /* More prominent accent bar */
             }
 
             .stat-num {
                 font-size: 1.85rem;
+                letter-spacing: -0.04em;
             }
 
             .stat-label {
                 font-size: 0.68rem;
+                opacity: 0.8;
             }
 
             .stat-sub {
                 font-size: 0.72rem;
+                opacity: 0.7;
             }
 
             .mnav-item {
@@ -381,8 +405,27 @@
             }
 
             .filter-btn {
-                padding: 0.5rem 1rem;
-                font-size: 0.78rem;
+                padding: 0.6rem 1.1rem;
+                font-size: 0.82rem;
+                /* Glass Pill */
+                background: rgba(255, 255, 255, 0.4) !important;
+                backdrop-filter: blur(10px);
+                -webkit-backdrop-filter: blur(10px);
+                border: 1px solid rgba(255, 255, 255, 0.4) !important;
+                color: var(--text-muted);
+            }
+
+            .filter-btn.active {
+                background: var(--primary) !important;
+                color: white !important;
+                border-color: var(--primary) !important;
+                backdrop-filter: none;
+                box-shadow: 0 8px 20px var(--primary-glow);
+            }
+
+            [data-theme="dark"] .filter-btn:not(.active) {
+                background: rgba(15, 23, 42, 0.5) !important;
+                border: 1px solid rgba(255, 255, 255, 0.05) !important;
             }
         }
 
@@ -1275,16 +1318,20 @@
             .topnav {
                 padding: 1.3rem 1.6rem;
                 min-height: 100px;
-                background: rgba(255, 255, 255, 0.85);
-                backdrop-filter: blur(30px);
-                -webkit-backdrop-filter: blur(30px);
+                /* iOS Glossy Glass */
+                background: rgba(255, 255, 255, 0.45);
+                backdrop-filter: blur(25px) saturate(210%);
+                -webkit-backdrop-filter: blur(25px) saturate(210%);
                 border-bottom: 1px solid rgba(255, 255, 255, 0.4);
-                box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+                box-shadow: 
+                    0 10px 40px rgba(0, 0, 0, 0.06),
+                    inset 0 1px 1px rgba(255, 255, 255, 0.5);
             }
 
             [data-theme="dark"] .topnav {
-                background: rgba(15, 22, 41, 0.85);
+                background: rgba(15, 22, 41, 0.6);
                 border-bottom-color: rgba(255, 255, 255, 0.08);
+                box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
             }
 
             .logo-text-mobile {
@@ -1697,16 +1744,25 @@
             }
 
             .insight-card {
-                padding: 1.4rem 1.3rem;
-                border-radius: 22px;
+                padding: 1.7rem 1.6rem;
+                border-radius: 26px;
                 display: flex;
                 align-items: flex-start;
-                gap: 1.15rem;
-                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+                gap: 1.4rem;
+                /* iOS Glossy Glass */
+                background: rgba(255, 255, 255, 0.45) !important;
+                backdrop-filter: blur(20px) saturate(180%);
+                -webkit-backdrop-filter: blur(20px) saturate(180%);
+                border: 1px solid rgba(255, 255, 255, 0.5) !important;
+                box-shadow: 
+                    0 10px 30px rgba(0,0,0,0.04),
+                    inset 0 1px 1px rgba(255, 255, 255, 0.4);
             }
 
             [data-theme="dark"] .insight-card {
-                background: #111827;
+                background: rgba(15, 23, 42, 0.4) !important;
+                border: 1px solid rgba(255, 255, 255, 0.08) !important;
+                box-shadow: 0 10px 30px rgba(0,0,0,0.2) !important;
             }
 
             .insight-card::after {
@@ -1714,11 +1770,11 @@
             }
 
             .insight-icon {
-                width: 48px;
-                height: 48px;
-                min-width: 48px;
-                border-radius: 16px;
-                font-size: 1.35rem;
+                width: 58px;
+                height: 58px;
+                min-width: 58px;
+                border-radius: 19px;
+                font-size: 1.6rem;
                 margin-bottom: 0;
                 display: flex;
                 align-items: center;
@@ -1732,15 +1788,15 @@
             }
 
             .insight-title {
-                font-size: 1.2rem;
+                font-size: 1.45rem;
                 font-weight: 900;
-                margin-bottom: 0.4rem;
+                margin-bottom: 0.5rem;
                 letter-spacing: -0.02em;
             }
 
             .insight-text {
-                font-size: 0.98rem;
-                line-height: 1.5;
+                font-size: 1.18rem;
+                line-height: 1.6;
                 color: var(--text-muted);
                 font-weight: 500;
             }
@@ -2982,6 +3038,6 @@
         </div>
     </div>
 
-</body>
+<!-- Cloudflare Pages Analytics --><script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "129fb9c40bed4fdc8e2901d8124be41b"}'></script><!-- Cloudflare Pages Analytics --></body>
 
 </html>
