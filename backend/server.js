@@ -686,6 +686,234 @@ app.post("/api/ai-chat", async (req, res) => {
 });
 
 
+// ========================================================
+// 📊 PHASE 2: MOCK RESULT & PROGRESS TRACKING APIs
+// ========================================================
+
+// 1️⃣ SAVE MOCK RESULT (PROTECTED)
+app.post("/api/save-result", authMiddleware, async (req, res) => {
+  try {
+    const {
+      mock_id,
+      mock_title,
+      score,
+      total_questions,
+      correct,
+      wrong,
+      skipped,
+      time_taken,
+      subject,
+      difficulty
+    } = req.body;
+
+    // user_id from JWT — never trust the frontend body
+    const user_id = req.user.id || req.user.userId;
+
+    if (!user_id || !mock_id || score === undefined) {
+      return res.status(400).json({ error: "Missing required fields" });
+    }
+
+    const { data, error } = await supabase
+      .from("mock_results")
+      .insert([{
+        user_id,
+        mock_id,
+        mock_title,
+        score,
+        total_questions,
+        correct,
+        wrong,
+        skipped,
+        time_taken,
+        subject,
+        difficulty
+      }])
+      .select();
+
+    if (error) throw error;
+
+    // Update aggregated user_stats table
+    await updateUserStats(user_id);
+
+    res.json({ success: true, data: data[0] });
+
+  } catch (error) {
+    console.error("Save result error:", error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// 2️⃣ GET USER PROGRESS — all attempts (PROTECTED)
+app.get("/api/user-progress/:user_id", authMiddleware, async (req, res) => {
+  try {
+    const user_id = req.user.id || req.user.userId; // Always from JWT
+    const { limit = 50 } = req.query;
+
+    const { data, error } = await supabase
+      .from("mock_results")
+      .select("*")
+      .eq("user_id", user_id)
+      .order("created_at", { ascending: false })
+      .limit(parseInt(limit));
+
+    if (error) throw error;
+
+    res.json({ success: true, data });
+
+  } catch (error) {
+    console.error("Progress fetch error:", error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// 3️⃣ GET USER STATISTICS (PROTECTED)
+app.get("/api/user-stats/:user_id", authMiddleware, async (req, res) => {
+  try {
+    const user_id = req.user.id || req.user.userId;
+
+    const { data: results, error } = await supabase
+      .from("mock_results")
+      .select("*")
+      .eq("user_id", user_id)
+      .order("created_at", { ascending: true });
+
+    if (error) throw error;
+
+    if (!results || results.length === 0) {
+      return res.json({
+        success: true,
+        stats: {
+          total_attempts: 0,
+          best_score: 0,
+          avg_score: "0.00",
+          total_correct: 0,
+          total_wrong: 0,
+          accuracy: "0.00",
+          improvement: 0,
+          recent_trend: "insufficient_data"
+        }
+      });
+    }
+
+    const totalQuestionsAll = results.reduce((sum, r) => sum + (r.total_questions || 0), 0);
+    const totalCorrectAll = results.reduce((sum, r) => sum + (r.correct || 0), 0);
+
+    const stats = {
+      total_attempts: results.length,
+      best_score: Math.max(...results.map(r => r.score)),
+      worst_score: Math.min(...results.map(r => r.score)),
+      avg_score: (results.reduce((sum, r) => sum + r.score, 0) / results.length).toFixed(2),
+      total_correct: totalCorrectAll,
+      total_wrong: results.reduce((sum, r) => sum + (r.wrong || 0), 0),
+      accuracy: totalQuestionsAll > 0
+        ? ((totalCorrectAll / totalQuestionsAll) * 100).toFixed(2)
+        : "0.00",
+      improvement: calculateImprovement(results),
+      recent_trend: getRecentTrend(results)
+    };
+
+    res.json({ success: true, stats });
+
+  } catch (error) {
+    console.error("Stats fetch error:", error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// 4️⃣ GET SUBJECT-WISE PERFORMANCE (PROTECTED)
+app.get("/api/subject-performance/:user_id", authMiddleware, async (req, res) => {
+  try {
+    const user_id = req.user.id || req.user.userId;
+
+    const { data, error } = await supabase
+      .from("mock_results")
+      .select("subject, score, correct, total_questions")
+      .eq("user_id", user_id);
+
+    if (error) throw error;
+
+    const subjectStats = {};
+    data.forEach(result => {
+      const subject = result.subject || "General";
+      if (!subjectStats[subject]) {
+        subjectStats[subject] = { attempts: 0, total_score: 0, total_correct: 0, total_questions: 0 };
+      }
+      subjectStats[subject].attempts++;
+      subjectStats[subject].total_score += result.score || 0;
+      subjectStats[subject].total_correct += result.correct || 0;
+      subjectStats[subject].total_questions += result.total_questions || 0;
+    });
+
+    const performance = Object.entries(subjectStats).map(([subject, stats]) => ({
+      subject,
+      attempts: stats.attempts,
+      avg_score: stats.attempts > 0 ? (stats.total_score / stats.attempts).toFixed(2) : "0.00",
+      accuracy: stats.total_questions > 0
+        ? ((stats.total_correct / stats.total_questions) * 100).toFixed(2)
+        : "0.00"
+    }));
+
+    res.json({ success: true, performance });
+
+  } catch (error) {
+    console.error("Subject performance error:", error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// ── Helper: Upsert aggregated user_stats ────────────────
+async function updateUserStats(user_id) {
+  try {
+    const { data } = await supabase
+      .from("mock_results")
+      .select("score, correct, total_questions")
+      .eq("user_id", user_id);
+
+    if (!data || data.length === 0) return;
+
+    const stats = {
+      user_id,
+      total_mocks: data.length,
+      best_score: Math.max(...data.map(r => r.score)),
+      avg_score: parseFloat((data.reduce((sum, r) => sum + r.score, 0) / data.length).toFixed(2)),
+      total_correct: data.reduce((sum, r) => sum + (r.correct || 0), 0),
+      total_questions: data.reduce((sum, r) => sum + (r.total_questions || 0), 0)
+    };
+
+    await supabase.from("user_stats").upsert([stats], { onConflict: "user_id" });
+  } catch (err) {
+    console.error("updateUserStats error:", err);
+  }
+}
+
+// ── Helper: Improvement % ────────────────────────────────
+function calculateImprovement(results) {
+  if (results.length < 2) return 0;
+  const sorted = [...results].sort((a, b) => new Date(a.created_at) - new Date(b.created_at));
+  const first = sorted[0].score;
+  const last = sorted[sorted.length - 1].score;
+  if (first === 0) return 0; // ✅ Fix division-by-zero
+  return parseFloat(((last - first) / first * 100).toFixed(2));
+}
+
+// ── Helper: Recent trend (last 5 vs prior 5) ─────────────
+function getRecentTrend(results) {
+  if (results.length < 2) return "insufficient_data";
+  const sorted = [...results].sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+  const recent = sorted.slice(0, 5);
+  const older = sorted.slice(5, 10);
+  if (older.length === 0) return "insufficient_data";
+
+  const avgRecent = recent.reduce((sum, r) => sum + r.score, 0) / recent.length;
+  const avgOlder = older.reduce((sum, r) => sum + r.score, 0) / older.length;
+
+  if (avgRecent > avgOlder + 5) return "improving";
+  if (avgRecent < avgOlder - 5) return "declining";
+  return "stable";
+}
+
+// ========================================================
+
 app.listen(PORT, () => {
   console.log("Server running on port", PORT);
 });

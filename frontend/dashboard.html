@@ -1,0 +1,1207 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Progress Dashboard | IISER Smart Prep</title>
+    <meta name="description" content="Track your IISER IAT mock test performance, scores, accuracy and improvement trends.">
+
+    <!-- Favicon -->
+    <link rel="icon" href="/favicon.ico">
+    <link rel="icon" href="/favicon-96x96.png" type="image/png">
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+    <link rel="manifest" href="/site.webmanifest">
+
+    <!-- Open Graph -->
+    <meta property="og:image" content="https://iisersmartprep.space/web-app-manifest-512x512.png">
+    <meta property="og:title" content="Dashboard | IISER Smart Prep">
+    <meta property="og:description" content="AI Powered IISER IAT Preparation Platform">
+    <meta name="theme-color" content="#6366f1">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        :root {
+            --primary: #6366f1;
+            --primary-light: #818cf8;
+            --primary-glow: rgba(99, 102, 241, 0.25);
+            --accent: #06b6d4;
+            --accent-glow: rgba(6, 182, 212, 0.25);
+            --success: #10b981;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+
+            --bg: #f0f2f8;
+            --bg-card: #ffffff;
+            --bg-hover: #f8fafc;
+            --text: #0f172a;
+            --text-muted: #64748b;
+            --text-light: #94a3b8;
+            --border: #e2e8f0;
+            --radius: 20px;
+            --shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        [data-theme="dark"] {
+            --bg: #080c18;
+            --bg-card: #0f1629;
+            --bg-hover: #1a2340;
+            --text: #f1f5f9;
+            --text-muted: #94a3b8;
+            --text-light: #64748b;
+            --border: #1e2d4a;
+            --shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+            --shadow-lg: 0 10px 40px rgba(0, 0, 0, 0.5);
+        }
+
+        *, *::before, *::after {
+            margin: 0; padding: 0; box-sizing: border-box;
+        }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            overflow-x: hidden;
+            transition: background 0.3s, color 0.3s;
+        }
+
+        h1, h2, h3, h4, .stat-num { font-family: 'Outfit', sans-serif; }
+
+        /* ── SCROLLBAR ─────────────────────────────── */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 10px; }
+
+        /* ── LAYOUT ─────────────────────────────────── */
+        .app-layout {
+            display: grid;
+            grid-template-columns: 260px 1fr;
+            min-height: 100vh;
+        }
+
+        @media (max-width: 900px) {
+            .app-layout { grid-template-columns: 1fr; }
+            .sidebar { display: none; }
+        }
+
+        /* ── SIDEBAR ─────────────────────────────────── */
+        .sidebar {
+            background: var(--bg-card);
+            border-right: 1px solid var(--border);
+            padding: 2rem 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            overflow-y: auto;
+        }
+
+        .sidebar-logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.5rem;
+            margin-bottom: 2rem;
+            font-family: 'Outfit', sans-serif;
+            font-weight: 800;
+            font-size: 1.1rem;
+            color: var(--text);
+            text-decoration: none;
+        }
+
+        .logo-icon {
+            width: 36px; height: 36px;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            border-radius: 10px;
+            display: flex; align-items: center; justify-content: center;
+            color: white; font-size: 1rem;
+        }
+
+        .nav-section-label {
+            font-size: 0.65rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-light);
+            padding: 0.5rem 0.75rem 0.25rem;
+            margin-top: 1rem;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 1rem;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .nav-item:hover { background: var(--bg-hover); color: var(--text); }
+        .nav-item.active { background: var(--primary-glow); color: var(--primary); }
+        .nav-item i { font-size: 1.1rem; width: 20px; text-align: center; }
+
+        .sidebar-bottom {
+            margin-top: auto;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border);
+        }
+
+        /* ── MAIN CONTENT ───────────────────────────── */
+        .main {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* ── TOP NAV ───────────────────────────────── */
+        .topnav {
+            background: var(--bg-card);
+            border-bottom: 1px solid var(--border);
+            padding: 1rem 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .topnav-left { display: flex; align-items: center; gap: 1rem; }
+        .topnav-greeting { font-size: 0.9rem; color: var(--text-muted); }
+        .topnav-name { font-weight: 700; color: var(--text); font-size: 1rem; }
+
+        .topnav-actions { display: flex; gap: 0.75rem; align-items: center; }
+
+        .btn-icon {
+            width: 38px; height: 38px;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            background: var(--bg-hover);
+            color: var(--text-muted);
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 1rem;
+        }
+        .btn-icon:hover { background: var(--bg-card); color: var(--primary); border-color: var(--primary); }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            color: white;
+            border: none;
+            border-radius: 10px;
+            padding: 0.5rem 1.25rem;
+            font-weight: 600;
+            font-size: 0.85rem;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.2s;
+            box-shadow: 0 4px 15px var(--primary-glow);
+        }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 25px var(--primary-glow); }
+
+        /* ── PAGE CONTENT ──────────────────────────── */
+        .page-content {
+            padding: 2rem;
+            flex: 1;
+        }
+
+        .page-header {
+            margin-bottom: 2rem;
+        }
+
+        .page-title {
+            font-size: 1.6rem;
+            font-weight: 800;
+            color: var(--text);
+            letter-spacing: -0.03em;
+        }
+
+        .page-subtitle {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-top: 0.25rem;
+        }
+
+        /* ── TIME FILTER ───────────────────────────── */
+        .filter-bar {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 0.4rem 1rem;
+            border-radius: 100px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            border: 1px solid var(--border);
+            background: var(--bg-card);
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .filter-btn:hover, .filter-btn.active {
+            background: var(--primary);
+            border-color: var(--primary);
+            color: white;
+        }
+
+        /* ── STAT CARDS ─────────────────────────────── */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.25rem;
+            margin-bottom: 2rem;
+        }
+
+        @media (max-width: 1200px) { .stats-grid { grid-template-columns: repeat(2, 1fr); } }
+        @media (max-width: 600px) { .stats-grid { grid-template-columns: 1fr 1fr; } }
+
+        .stat-card {
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow);
+            position: relative;
+            overflow: hidden;
+            cursor: default;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .stat-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-lg); }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 3px;
+            background: var(--card-accent, linear-gradient(90deg, var(--primary), var(--accent)));
+        }
+
+        .stat-icon {
+            width: 42px; height: 42px;
+            border-radius: 12px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+        }
+
+        .stat-label {
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.07em;
+            color: var(--text-light);
+            margin-bottom: 0.4rem;
+        }
+
+        .stat-num {
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: var(--text);
+            letter-spacing: -0.03em;
+            line-height: 1;
+        }
+
+        .stat-sub {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-top: 0.4rem;
+        }
+
+        .trend-up { color: var(--success); }
+        .trend-down { color: var(--danger); }
+        .trend-stable { color: var(--warning); }
+
+        /* ── CHARTS GRID ─────────────────────────────── */
+        .charts-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 1.25rem;
+            margin-bottom: 2rem;
+        }
+
+        @media (max-width: 1100px) { .charts-grid { grid-template-columns: 1fr; } }
+
+        .card {
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow);
+            padding: 1.5rem;
+            transition: transform 0.2s;
+        }
+
+        .card:hover { transform: translateY(-2px); }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1.5rem;
+        }
+
+        .card-title {
+            font-weight: 700;
+            font-size: 1rem;
+            color: var(--text);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .card-badge {
+            background: var(--primary-glow);
+            color: var(--primary);
+            padding: 2px 8px;
+            border-radius: 100px;
+            font-size: 0.7rem;
+            font-weight: 700;
+        }
+
+        .chart-container { position: relative; }
+
+        /* ── SUBJECT BARS ─────────────────────────────── */
+        .subject-bar-item {
+            margin-bottom: 1.1rem;
+        }
+
+        .subject-bar-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.3rem;
+        }
+
+        .subject-bar-name { font-weight: 600; font-size: 0.85rem; color: var(--text); }
+        .subject-bar-pct { font-size: 0.8rem; color: var(--text-muted); }
+
+        .subject-bar-bg {
+            height: 8px;
+            background: var(--bg-hover);
+            border-radius: 100px;
+            overflow: hidden;
+        }
+
+        .subject-bar-fill {
+            height: 100%;
+            border-radius: 100px;
+            transition: width 1s ease;
+        }
+
+        /* ── RECENT ATTEMPTS TABLE ──────────────────── */
+        .attempts-table-wrap { overflow-x: auto; }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.875rem;
+        }
+
+        thead th {
+            text-align: left;
+            padding: 0.75rem 1rem;
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.07em;
+            color: var(--text-light);
+            border-bottom: 1px solid var(--border);
+        }
+
+        tbody td {
+            padding: 1rem;
+            border-bottom: 1px solid var(--border);
+            vertical-align: middle;
+            color: var(--text);
+        }
+
+        tbody tr:last-child td { border-bottom: none; }
+
+        tbody tr {
+            transition: background 0.15s;
+        }
+
+        tbody tr:hover td { background: var(--bg-hover); }
+
+        .score-pill {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 100px;
+            font-weight: 700;
+            font-size: 0.8rem;
+        }
+
+        .score-high { background: rgba(16, 185, 129, 0.12); color: #059669; }
+        .score-mid { background: rgba(245, 158, 11, 0.12); color: #d97706; }
+        .score-low { background: rgba(239, 68, 68, 0.12); color: #dc2626; }
+
+        /* ── AI INSIGHTS ─────────────────────────────── */
+        .insights-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        @media (max-width: 900px) { .insights-grid { grid-template-columns: 1fr; } }
+
+        .insight-card {
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .insight-card::after {
+            content: '';
+            position: absolute;
+            bottom: 0; right: 0;
+            width: 80px; height: 80px;
+            border-radius: 50%;
+            background: var(--card-blob, rgba(99, 102, 241, 0.06));
+            transform: translate(30px, 30px);
+        }
+
+        .insight-icon {
+            width: 44px; height: 44px;
+            border-radius: 12px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.2rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .insight-title {
+            font-weight: 700;
+            font-size: 0.9rem;
+            color: var(--text);
+            margin-bottom: 0.4rem;
+        }
+
+        .insight-text {
+            font-size: 0.82rem;
+            line-height: 1.6;
+            color: var(--text-muted);
+        }
+
+        /* ── SKELETON ───────────────────────────────── */
+        .skeleton {
+            background: linear-gradient(90deg, var(--bg-hover) 25%, var(--border) 50%, var(--bg-hover) 75%);
+            background-size: 200% 100%;
+            animation: shimmer 1.5s infinite;
+            border-radius: 8px;
+        }
+
+        @keyframes shimmer { to { background-position: -200% 0; } }
+
+        /* ── EMPTY STATE ─────────────────────────────── */
+        .empty-state {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: var(--text-muted);
+        }
+
+        .empty-state-icon { font-size: 3rem; margin-bottom: 1rem; opacity: 0.5; }
+        .empty-state h3 { font-size: 1.1rem; font-weight: 700; color: var(--text); margin-bottom: 0.5rem; }
+        .empty-state p { font-size: 0.875rem; max-width: 340px; margin: 0 auto 1.5rem; }
+
+        /* ── TOAST ──────────────────────────────────── */
+        .toast {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 0.85rem 1.25rem;
+            box-shadow: var(--shadow-lg);
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text);
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            z-index: 9999;
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .toast.show { transform: translateY(0); opacity: 1; }
+
+        /* Animations */
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .fade-up { animation: fadeUp 0.5s ease backwards; }
+        .fade-up:nth-child(1) { animation-delay: 0.05s; }
+        .fade-up:nth-child(2) { animation-delay: 0.1s; }
+        .fade-up:nth-child(3) { animation-delay: 0.15s; }
+        .fade-up:nth-child(4) { animation-delay: 0.2s; }
+
+        /* Mobile topnav */
+        @media (max-width: 900px) {
+            .topnav { padding: 1rem; }
+            .page-content { padding: 1rem; }
+            .stats-grid { grid-template-columns: 1fr 1fr; gap: 0.75rem; }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="app-layout">
+
+        <!-- ── SIDEBAR ───────────────────────── -->
+        <aside class="sidebar">
+            <a href="/" class="sidebar-logo">
+                <div class="logo-icon"><i class="ri-graduation-cap-line"></i></div>
+                IISER Smart Prep
+            </a>
+
+            <div class="nav-section-label">Main</div>
+            <a class="nav-item active" href="/dashboard.html">
+                <i class="ri-dashboard-3-line"></i> Dashboard
+            </a>
+            <a class="nav-item" href="/mock_test/full_mock_test_homepage.html">
+                <i class="ri-file-list-3-line"></i> Full Mocks
+            </a>
+            <a class="nav-item" href="/mock_test/quick_mock_homepage.html">
+                <i class="ri-timer-flash-line"></i> Quick Mocks
+            </a>
+            <a class="nav-item" href="/pyqs/pyq.html">
+                <i class="ri-history-line"></i> PYQs
+            </a>
+            <a class="nav-item" href="/ai_tutor.html">
+                <i class="ri-robot-2-line"></i> AI Tutor
+            </a>
+            <a class="nav-item" href="/smart_notes.html">
+                <i class="ri-book-2-line"></i> Smart Notes
+            </a>
+
+            <div class="nav-section-label">Tools</div>
+            <a class="nav-item" href="/iiser-iat-college-predictor.html">
+                <i class="ri-map-pin-2-line"></i> College Predictor
+            </a>
+            <a class="nav-item" href="/iat-planner-pro.html">
+                <i class="ri-calendar-check-line"></i> Study Planner
+            </a>
+
+            <div class="sidebar-bottom">
+                <a class="nav-item" href="/" id="logout-btn">
+                    <i class="ri-logout-box-r-line"></i> Logout
+                </a>
+            </div>
+        </aside>
+
+        <!-- ── MAIN ──────────────────────────── -->
+        <div class="main">
+
+            <!-- Top Nav -->
+            <nav class="topnav">
+                <div class="topnav-left">
+                    <!-- Mobile logo -->
+                    <a href="/" style="display:flex;align-items:center;gap:0.5rem;font-weight:800;color:var(--text);text-decoration:none;font-family:'Outfit',sans-serif;">
+                        <div class="logo-icon" style="width:30px;height:30px;border-radius:8px;font-size:0.85rem;"><i class="ri-graduation-cap-line"></i></div>
+                        <span class="d-none-desktop" style="display:none;">IISER Smart Prep</span>
+                    </a>
+                    <div>
+                        <div class="topnav-greeting">Welcome back 👋</div>
+                        <div class="topnav-name" id="user-name">Loading...</div>
+                    </div>
+                </div>
+                <div class="topnav-actions">
+                    <button class="btn-icon" onclick="toggleTheme()" title="Toggle theme" id="theme-btn">
+                        <i class="ri-moon-line" id="theme-icon"></i>
+                    </button>
+                    <a href="/mock_test/full_mock_test_homepage.html" class="btn-primary">
+                        <i class="ri-play-circle-line"></i> Start New Mock
+                    </a>
+                </div>
+            </nav>
+
+            <!-- Page Content -->
+            <div class="page-content">
+
+                <div class="page-header">
+                    <h1 class="page-title">My Progress Dashboard</h1>
+                    <p class="page-subtitle" id="last-updated">Loading your performance data...</p>
+                </div>
+
+                <!-- Filter Bar -->
+                <div class="filter-bar">
+                    <button class="filter-btn active" onclick="setFilter('all', this)">All Time</button>
+                    <button class="filter-btn" onclick="setFilter(7, this)">Last 7 Days</button>
+                    <button class="filter-btn" onclick="setFilter(30, this)">Last 30 Days</button>
+                    <button class="filter-btn" onclick="setFilter(90, this)">Last 3 Months</button>
+                </div>
+
+                <!-- Stat Cards -->
+                <div class="stats-grid" id="stats-grid">
+                    <!-- Populated by JS -->
+                    <div class="stat-card fade-up"><div class="skeleton" style="height:120px;border-radius:12px;"></div></div>
+                    <div class="stat-card fade-up"><div class="skeleton" style="height:120px;border-radius:12px;"></div></div>
+                    <div class="stat-card fade-up"><div class="skeleton" style="height:120px;border-radius:12px;"></div></div>
+                    <div class="stat-card fade-up"><div class="skeleton" style="height:120px;border-radius:12px;"></div></div>
+                </div>
+
+                <!-- Charts Row -->
+                <div class="charts-grid">
+                    <div class="card fade-up">
+                        <div class="card-header">
+                            <div class="card-title">
+                                <i class="ri-line-chart-line" style="color:var(--primary);"></i>
+                                Score Progress
+                            </div>
+                            <span class="card-badge" id="trend-badge">Loading...</span>
+                        </div>
+                        <div class="chart-container" style="height:250px;">
+                            <canvas id="scoreChart"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="card fade-up">
+                        <div class="card-header">
+                            <div class="card-title">
+                                <i class="ri-pie-chart-2-line" style="color:var(--accent);"></i>
+                                Subject Performance
+                            </div>
+                        </div>
+                        <div id="subject-bars">
+                            <div class="skeleton" style="height:20px;margin-bottom:12px;"></div>
+                            <div class="skeleton" style="height:20px;margin-bottom:12px;"></div>
+                            <div class="skeleton" style="height:20px;margin-bottom:12px;"></div>
+                            <div class="skeleton" style="height:20px;"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- AI Insights -->
+                <div class="insights-grid" id="insights-grid">
+                    <!-- Populated by JS -->
+                </div>
+
+                <!-- Recent Attempts -->
+                <div class="card fade-up">
+                    <div class="card-header">
+                        <div class="card-title">
+                            <i class="ri-history-line" style="color:var(--warning);"></i>
+                            Recent Attempts
+                        </div>
+                        <a href="/mock_test/full_mock_test_homepage.html" class="btn-primary" style="padding:0.4rem 1rem; font-size:0.75rem;">
+                            <i class="ri-add-line"></i> New Mock
+                        </a>
+                    </div>
+                    <div class="attempts-table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Mock Test</th>
+                                    <th>Score</th>
+                                    <th>Correct</th>
+                                    <th>Wrong</th>
+                                    <th>Accuracy</th>
+                                    <th>Date</th>
+                                </tr>
+                            </thead>
+                            <tbody id="attempts-tbody">
+                                <tr>
+                                    <td colspan="6">
+                                        <div class="skeleton" style="height:36px;"></div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div><!-- /page-content -->
+        </div><!-- /main -->
+    </div><!-- /app-layout -->
+
+    <!-- Toast -->
+    <div class="toast" id="toast">
+        <i class="ri-information-line"></i>
+        <span id="toast-msg">Info</span>
+    </div>
+
+    <script>
+        // ═══════════════════════════════════════════════════════
+        //  CONFIG
+        // ═══════════════════════════════════════════════════════
+        const API_BASE = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
+            ? 'http://localhost:8080'
+            : 'https://api.iisersmartprep.space';
+
+        let token = null;
+        let allAttempts = [];
+        let currentFilter = 'all';
+        let scoreChart = null;
+
+        // ═══════════════════════════════════════════════════════
+        //  INIT
+        // ═══════════════════════════════════════════════════════
+        document.addEventListener('DOMContentLoaded', async () => {
+            // Auth guard
+            token = localStorage.getItem('IAT_TOKEN');
+            if (!token) {
+                window.location.href = '/login.html';
+                return;
+            }
+
+            // Theme
+            const savedTheme = localStorage.getItem('iat_theme') || 'light';
+            setTheme(savedTheme);
+
+            // Logout
+            document.getElementById('logout-btn').addEventListener('click', (e) => {
+                e.preventDefault();
+                localStorage.removeItem('IAT_TOKEN');
+                localStorage.removeItem('IAT_PLAN');
+                window.location.href = '/';
+            });
+
+            // Load data
+            await Promise.all([
+                loadUserInfo(),
+                loadDashboardData()
+            ]);
+        });
+
+        // ═══════════════════════════════════════════════════════
+        //  API HELPERS
+        // ═══════════════════════════════════════════════════════
+        async function apiFetch(endpoint) {
+            const res = await fetch(`${API_BASE}${endpoint}`, {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+            if (!res.ok) throw new Error(`API ${res.status}`);
+            return res.json();
+        }
+
+        // ═══════════════════════════════════════════════════════
+        //  LOAD USER INFO
+        // ═══════════════════════════════════════════════════════
+        async function loadUserInfo() {
+            try {
+                const data = await apiFetch('/api/me');
+                const name = data.name || data.email?.split('@')[0] || 'Student';
+                document.getElementById('user-name').textContent = name;
+            } catch {
+                document.getElementById('user-name').textContent = 'Student';
+            }
+        }
+
+        // ═══════════════════════════════════════════════════════
+        //  MAIN DATA LOAD
+        // ═══════════════════════════════════════════════════════
+        async function loadDashboardData() {
+            try {
+                // Decode user_id from JWT payload
+                const payload = JSON.parse(atob(token.split('.')[1]));
+                const userId = payload.id || payload.userId || payload.sub;
+
+                const [statsRes, progressRes, subjectRes] = await Promise.all([
+                    apiFetch(`/api/user-stats/${userId}`),
+                    apiFetch(`/api/user-progress/${userId}`),
+                    apiFetch(`/api/subject-performance/${userId}`)
+                ]);
+
+                allAttempts = progressRes.data || [];
+
+                renderStatCards(statsRes.stats);
+                renderScoreChart(allAttempts);
+                renderSubjectBars(subjectRes.performance || []);
+                renderAttempts(allAttempts.slice(0, 10));
+                renderInsights(statsRes.stats, subjectRes.performance || []);
+
+                const now = new Date();
+                document.getElementById('last-updated').textContent =
+                    `Last updated: ${now.toLocaleString('en-IN', { dateStyle: 'medium', timeStyle: 'short' })}`;
+
+            } catch (err) {
+                console.error('Dashboard load error:', err);
+                // Show empty state
+                renderStatCards({ total_attempts: 0, best_score: 0, avg_score: '0.00', accuracy: '0.00', improvement: 0, recent_trend: 'insufficient_data' });
+                renderAttempts([]);
+                renderInsights({ total_attempts: 0 }, []);
+                document.getElementById('last-updated').textContent = 'Complete a mock test to see your progress here!';
+            }
+        }
+
+        // ═══════════════════════════════════════════════════════
+        //  STAT CARDS
+        // ═══════════════════════════════════════════════════════
+        function renderStatCards(stats) {
+            const trend = stats.recent_trend;
+            const trendIcon = trend === 'improving' ? '📈' : trend === 'declining' ? '📉' : '➡️';
+            const trendClass = trend === 'improving' ? 'trend-up' : trend === 'declining' ? 'trend-down' : 'trend-stable';
+            const improvSign = stats.improvement >= 0 ? '+' : '';
+
+            const cards = [
+                {
+                    icon: '🏆', iconBg: 'rgba(99,102,241,0.1)',
+                    label: 'Best Score', num: stats.best_score,
+                    sub: `Out of 240 marks`,
+                    accent: 'linear-gradient(90deg, #6366f1, #818cf8)'
+                },
+                {
+                    icon: '📊', iconBg: 'rgba(6,182,212,0.1)',
+                    label: 'Average Score', num: stats.avg_score,
+                    sub: `Across ${stats.total_attempts} attempt${stats.total_attempts !== 1 ? 's' : ''}`,
+                    accent: 'linear-gradient(90deg, #06b6d4, #22d3ee)'
+                },
+                {
+                    icon: '🎯', iconBg: 'rgba(16,185,129,0.1)',
+                    label: 'Accuracy', num: `${stats.accuracy}%`,
+                    sub: `${stats.total_correct || 0} correct answers`,
+                    accent: 'linear-gradient(90deg, #10b981, #34d399)'
+                },
+                {
+                    icon: trendIcon, iconBg: 'rgba(245,158,11,0.1)',
+                    label: 'Improvement', num: `${improvSign}${stats.improvement}%`,
+                    numClass: trendClass,
+                    sub: `Trend: <span class="${trendClass}" style="font-weight:700;">${trend.replace('_', ' ')}</span>`,
+                    accent: 'linear-gradient(90deg, #f59e0b, #fbbf24)'
+                }
+            ];
+
+            document.getElementById('stats-grid').innerHTML = cards.map((c, i) => `
+                <div class="stat-card fade-up" style="--card-accent:${c.accent}; animation-delay:${i * 0.08}s">
+                    <div class="stat-icon" style="background:${c.iconBg}; font-size:1.2rem;">${c.icon}</div>
+                    <div class="stat-label">${c.label}</div>
+                    <div class="stat-num ${c.numClass || ''}">${c.num}</div>
+                    <div class="stat-sub">${c.sub}</div>
+                </div>
+            `).join('');
+        }
+
+        // ═══════════════════════════════════════════════════════
+        //  SCORE PROGRESS CHART
+        // ═══════════════════════════════════════════════════════
+        function renderScoreChart(attempts) {
+            if (!attempts || attempts.length === 0) {
+                document.querySelector('.chart-container').innerHTML =
+                    `<div class="empty-state" style="padding:2rem;"><div class="empty-state-icon">📉</div><p>No attempts yet. Complete a mock to see your chart!</p></div>`;
+                document.getElementById('trend-badge').textContent = 'No data';
+                return;
+            }
+
+            const sorted = [...attempts].sort((a, b) => new Date(a.created_at) - new Date(b.created_at));
+            const labels = sorted.map(a => new Date(a.created_at).toLocaleDateString('en-IN', { day: 'numeric', month: 'short' }));
+            const scores = sorted.map(a => a.score);
+
+            const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+            const gridColor = isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.04)';
+            const textColor = isDark ? '#94a3b8' : '#64748b';
+
+            if (scoreChart) scoreChart.destroy();
+
+            const ctx = document.getElementById('scoreChart').getContext('2d');
+            const gradient = ctx.createLinearGradient(0, 0, 0, 250);
+            gradient.addColorStop(0, 'rgba(99, 102, 241, 0.35)');
+            gradient.addColorStop(1, 'rgba(99, 102, 241, 0.0)');
+
+            scoreChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels,
+                    datasets: [{
+                        label: 'Score',
+                        data: scores,
+                        borderColor: '#6366f1',
+                        backgroundColor: gradient,
+                        tension: 0.4,
+                        fill: true,
+                        pointBackgroundColor: '#6366f1',
+                        pointRadius: 5,
+                        pointHoverRadius: 8,
+                        borderWidth: 2.5
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            backgroundColor: isDark ? '#0f1629' : '#fff',
+                            titleColor: textColor,
+                            bodyColor: '#6366f1',
+                            borderColor: '#6366f1',
+                            borderWidth: 1,
+                            padding: 12,
+                            callbacks: {
+                                label: ctx => `Score: ${ctx.parsed.y}/240`
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            grid: { color: gridColor },
+                            ticks: { color: textColor, font: { size: 11 } }
+                        },
+                        y: {
+                            min: 0, max: 240,
+                            grid: { color: gridColor },
+                            ticks: { color: textColor, font: { size: 11 }, stepSize: 40 }
+                        }
+                    }
+                }
+            });
+
+            // Trend badge
+            const trendEl = document.getElementById('trend-badge');
+            if (scores.length > 1) {
+                const delta = scores[scores.length - 1] - scores[scores.length - 2];
+                trendEl.textContent = delta >= 0 ? `+${delta} from last` : `${delta} from last`;
+                trendEl.style.background = delta >= 0 ? 'rgba(16,185,129,0.12)' : 'rgba(239,68,68,0.12)';
+                trendEl.style.color = delta >= 0 ? '#059669' : '#dc2626';
+            } else {
+                trendEl.textContent = 'First attempt';
+            }
+        }
+
+        // ═══════════════════════════════════════════════════════
+        //  SUBJECT BARS
+        // ═══════════════════════════════════════════════════════
+        const SUBJECT_COLORS = {
+            Physics: '#ef4444', Chemistry: '#3b82f6', Mathematics: '#f59e0b',
+            Biology: '#10b981', Mixed: '#8b5cf6', General: '#6366f1'
+        };
+
+        function renderSubjectBars(performance) {
+            const el = document.getElementById('subject-bars');
+
+            if (!performance || performance.length === 0) {
+                el.innerHTML = `<div class="empty-state" style="padding:1.5rem;"><div class="empty-state-icon" style="font-size:2rem;">📚</div><p style="font-size:0.8rem;">Complete a mock test to see subject data.</p></div>`;
+                return;
+            }
+
+            el.innerHTML = performance.map(p => {
+                const color = SUBJECT_COLORS[p.subject] || '#6366f1';
+                const acc = parseFloat(p.accuracy);
+                return `
+                    <div class="subject-bar-item">
+                        <div class="subject-bar-header">
+                            <div class="subject-bar-name">${p.subject}</div>
+                            <div class="subject-bar-pct">${acc.toFixed(1)}% accuracy · ${p.attempts} attempt${p.attempts !== 1 ? 's' : ''}</div>
+                        </div>
+                        <div class="subject-bar-bg">
+                            <div class="subject-bar-fill" style="width:0%; background:${color};" data-target="${acc}"></div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            // Animate bars
+            requestAnimationFrame(() => {
+                document.querySelectorAll('.subject-bar-fill').forEach(bar => {
+                    bar.style.width = bar.dataset.target + '%';
+                });
+            });
+        }
+
+        // ═══════════════════════════════════════════════════════
+        //  RECENT ATTEMPTS TABLE
+        // ═══════════════════════════════════════════════════════
+        function renderAttempts(attempts) {
+            const tbody = document.getElementById('attempts-tbody');
+
+            if (!attempts || attempts.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="6">
+                            <div class="empty-state">
+                                <div class="empty-state-icon">🚀</div>
+                                <h3>No attempts yet</h3>
+                                <p>Complete your first IISER IAT mock test to start tracking your progress!</p>
+                                <a href="/mock_test/full_mock_test_homepage.html" class="btn-primary">Start First Mock</a>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+
+            tbody.innerHTML = attempts.map(a => {
+                const total = (a.correct || 0) + (a.wrong || 0) + (a.skipped || 0);
+                const acc = total > 0 ? ((a.correct / total) * 100).toFixed(1) : '0.0';
+                const scoreClass = a.score >= 160 ? 'score-high' : a.score >= 100 ? 'score-mid' : 'score-low';
+                const date = new Date(a.created_at).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: '2-digit' });
+
+                return `
+                    <tr>
+                        <td>
+                            <div style="font-weight:600;">${a.mock_title || 'Mock Test'}</div>
+                            <div style="font-size:0.75rem;color:var(--text-muted);">${a.subject || 'Mixed'} · ${a.difficulty || 'Mixed'}</div>
+                        </td>
+                        <td><span class="score-pill ${scoreClass}">${a.score}/240</span></td>
+                        <td style="color:var(--success);font-weight:600;">+${a.correct || 0}</td>
+                        <td style="color:var(--danger);font-weight:600;">-${a.wrong || 0}</td>
+                        <td style="font-weight:600;">${acc}%</td>
+                        <td style="color:var(--text-muted);font-size:0.8rem;">${date}</td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        // ═══════════════════════════════════════════════════════
+        //  AI INSIGHTS SECTION
+        // ═══════════════════════════════════════════════════════
+        function renderInsights(stats, performance) {
+            const el = document.getElementById('insights-grid');
+
+            if (!stats || stats.total_attempts === 0) {
+                el.innerHTML = `
+                    <div class="insight-card" style="grid-column:1/-1; text-align:center; padding:2.5rem; --card-blob:rgba(99,102,241,0.06);">
+                        <div style="font-size:2.5rem; margin-bottom:1rem;">🎯</div>
+                        <div style="font-weight:700; font-size:1rem; margin-bottom:0.5rem; color:var(--text);">Ready to Start?</div>
+                        <div style="font-size:0.85rem; color:var(--text-muted); max-width:360px; margin:0 auto 1.5rem;">Take your first mock test and this dashboard will show personalized AI insights based on your performance.</div>
+                        <a href="/mock_test/full_mock_test_homepage.html" class="btn-primary">Take First Mock →</a>
+                    </div>
+                `;
+                return;
+            }
+
+            // Generate smart insights from stats
+            const accuracy = parseFloat(stats.accuracy || 0);
+            const improvement = parseFloat(stats.improvement || 0);
+            const trend = stats.recent_trend;
+
+            const weakSubject = performance && performance.length > 0
+                ? performance.sort((a, b) => parseFloat(a.accuracy) - parseFloat(b.accuracy))[0]
+                : null;
+
+            const strongSubject = performance && performance.length > 0
+                ? performance.sort((a, b) => parseFloat(b.accuracy) - parseFloat(a.accuracy))[0]
+                : null;
+
+            const insights = [
+                {
+                    icon: '🔥',
+                    iconBg: 'rgba(239,68,68,0.1)',
+                    title: 'Focus Area',
+                    text: weakSubject
+                        ? `Your ${weakSubject.subject} accuracy is ${weakSubject.accuracy}%. Spend 30 mins daily practicing ${weakSubject.subject} questions to improve significantly.`
+                        : 'Keep practicing consistently across all subjects!',
+                    blob: 'rgba(239,68,68,0.06)'
+                },
+                {
+                    icon: '⚡',
+                    iconBg: 'rgba(245,158,11,0.1)',
+                    title: 'Quick Win',
+                    text: accuracy < 70
+                        ? `Your ${accuracy}% accuracy has room to grow. Focus on easy/medium questions first — avoid risky guesses on hard ones.`
+                        : `Excellent ${accuracy}% accuracy! Now focus on attempting more questions to maximize your score.`,
+                    blob: 'rgba(245,158,11,0.06)'
+                },
+                {
+                    icon: trend === 'improving' ? '📈' : trend === 'declining' ? '⚠️' : '💡',
+                    iconBg: trend === 'improving' ? 'rgba(16,185,129,0.1)' : trend === 'declining' ? 'rgba(239,68,68,0.1)' : 'rgba(99,102,241,0.1)',
+                    title: 'Performance Trend',
+                    text: trend === 'improving'
+                        ? `Great job! You are improving (+${improvement}%). Keep the momentum and aim for mock scores above ${Math.min(240, Math.round(stats.best_score * 1.1))}.`
+                        : trend === 'declining'
+                        ? `Your recent scores are dipping. Review your analytics carefully and schedule daily revision sessions.`
+                        : `Your scores are stable. To break your best of ${stats.best_score}, focus on reducing wrong answers.`,
+                    blob: 'rgba(99,102,241,0.06)'
+                }
+            ];
+
+            el.innerHTML = insights.map((ins, i) => `
+                <div class="insight-card fade-up" style="--card-blob:${ins.blob}; animation-delay:${i * 0.1}s;">
+                    <div class="insight-icon" style="background:${ins.iconBg};">${ins.icon}</div>
+                    <div class="insight-title">${ins.title}</div>
+                    <div class="insight-text">${ins.text}</div>
+                </div>
+            `).join('');
+        }
+
+        // ═══════════════════════════════════════════════════════
+        //  TIME FILTER
+        // ═══════════════════════════════════════════════════════
+        function setFilter(days, btn) {
+            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            currentFilter = days;
+
+            let filtered = allAttempts;
+            if (days !== 'all') {
+                const cutoff = new Date();
+                cutoff.setDate(cutoff.getDate() - days);
+                filtered = allAttempts.filter(a => new Date(a.created_at) >= cutoff);
+            }
+
+            renderScoreChart(filtered);
+            renderAttempts(filtered.slice(0, 10));
+        }
+
+        // ═══════════════════════════════════════════════════════
+        //  THEME TOGGLE
+        // ═══════════════════════════════════════════════════════
+        function setTheme(theme) {
+            document.documentElement.setAttribute('data-theme', theme);
+            localStorage.setItem('iat_theme', theme);
+            document.getElementById('theme-icon').className =
+                theme === 'dark' ? 'ri-sun-line' : 'ri-moon-line';
+        }
+
+        function toggleTheme() {
+            const current = document.documentElement.getAttribute('data-theme') || 'light';
+            const next = current === 'dark' ? 'light' : 'dark';
+            setTheme(next);
+            if (scoreChart) {
+                setTimeout(() => {
+                    const sorted = [...allAttempts].sort((a, b) => new Date(a.created_at) - new Date(b.created_at));
+                    renderScoreChart(sorted);
+                }, 50);
+            }
+        }
+
+        // ═══════════════════════════════════════════════════════
+        //  TOAST
+        // ═══════════════════════════════════════════════════════
+        function showToast(msg, icon = 'ri-information-line') {
+            const t = document.getElementById('toast');
+            t.querySelector('i').className = icon;
+            document.getElementById('toast-msg').textContent = msg;
+            t.classList.add('show');
+            setTimeout(() => t.classList.remove('show'), 3500);
+        }
+    </script>
+
+</body>
+</html>

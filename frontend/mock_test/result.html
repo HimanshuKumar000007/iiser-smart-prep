@@ -1286,6 +1286,10 @@
                 // 4. Run Analytics
                 initDashboard();
 
+                // 5. Auto-save result to backend (silent — no UI disruption)
+                autoSaveMockResult();
+
+
             } catch (e) {
                 console.error("Critical Error", e);
                 alert("Error loading analytics. Check console.");
@@ -2136,6 +2140,54 @@ Section Scores: ${JSON.stringify(testData.sectionScore)}
                     difficulty: difficulty
                 };
             });
+        }
+
+        // =========================================
+        // AUTO-SAVE RESULT TO BACKEND
+        // =========================================
+        async function autoSaveMockResult() {
+            try {
+                const token = localStorage.getItem("IAT_TOKEN");
+                if (!token || !resultData) return; // Only save if logged in
+
+                const payload = {
+                    mock_id: resultData.mockId || "UNKNOWN",
+                    mock_title: resultData.mockTitle || document.title || "Mock Test",
+                    score: resultData.score,
+                    total_questions: resultData.correct + resultData.wrong + resultData.skipped,
+                    correct: resultData.correct,
+                    wrong: resultData.wrong,
+                    skipped: resultData.skipped,
+                    time_taken: resultData.timeTaken || null,
+                    // Determine dominant subject from sectionScore
+                    subject: resultData.sectionScore
+                        ? Object.entries(resultData.sectionScore).sort((a, b) => b[1] - a[1])[0]?.[0] || "Mixed"
+                        : "Mixed",
+                    difficulty: "Mixed"
+                };
+
+                const apiBase = (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1")
+                    ? "http://localhost:8080"
+                    : "https://api.iisersmartprep.space";
+
+                const res = await fetch(`${apiBase}/api/save-result`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${token}`
+                    },
+                    body: JSON.stringify(payload)
+                });
+
+                if (res.ok) {
+                    console.log("✅ Mock result saved to your progress dashboard.");
+                } else {
+                    console.warn("⚠️ Could not save result:", res.status);
+                }
+            } catch (err) {
+                // Silent failure — don't disrupt the analytics page
+                console.warn("Auto-save failed (non-critical):", err.message);
+            }
         }
 
     </script>
