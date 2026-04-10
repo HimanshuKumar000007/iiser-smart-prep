@@ -121,26 +121,7 @@
 
 
         /* ── MOBILE BOTTOM NAV - FLOATING PILL ───────────────── */
-        .mobile-bottom-nav {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            z-index: 200;
-            display: none;
-            padding: 0.5rem 1rem calc(0.5rem + env(safe-area-inset-bottom));
-            background: transparent;
-            /* Transparent to show floating pill */
-            border-top: none;
-            box-shadow: none;
-        }
 
-        @media (max-width: 900px) {
-            .mobile-bottom-nav {
-                display: flex;
-                justify-content: center;
-            }
-        }
 
         /* Floating pill container */
         .nav-pill {
@@ -1896,7 +1877,7 @@
                TOAST
                ────────────────────────────────────────────────────── */
             .toast {
-                bottom: calc(94px + env(safe-area-inset-bottom, 0px));
+                bottom: calc(20px + env(safe-area-inset-bottom, 0px));
                 left: 1rem;
                 right: 1rem;
                 font-size: 0.9rem;
@@ -2021,25 +2002,18 @@
            ================================================================ */
         @supports (padding-bottom: env(safe-area-inset-bottom)) {
             @media (max-width: 900px) {
-                body {
-                    padding-bottom: calc(88px + env(safe-area-inset-bottom));
-                }
 
-                .mobile-bottom-nav {
-                    padding-bottom: env(safe-area-inset-bottom);
-                    height: calc(72px + env(safe-area-inset-bottom));
-                }
 
                 .mobile-drawer {
                     bottom: calc(72px + env(safe-area-inset-bottom));
                 }
 
                 .fab-container {
-                    bottom: calc(96px + env(safe-area-inset-bottom));
+                    bottom: calc(20px + env(safe-area-inset-bottom));
                 }
 
                 .toast {
-                    bottom: calc(98px + env(safe-area-inset-bottom));
+                    bottom: calc(20px + env(safe-area-inset-bottom));
                 }
             }
         }
@@ -2255,24 +2229,7 @@
     </div>
 
     <!-- ── MOBILE BOTTOM NAV ─────────────────────── -->
-    <nav class="mobile-bottom-nav" id="mobile-bottom-nav">
-        <div class="nav-pill">
-            <a class="mnav-item active" href="/dashboard.html">
-                <i class="ri-dashboard-3-line"></i>
-                <span>Home</span>
-            </a>
-            <a class="mnav-item" href="/mock_test/full_mock_test_homepage.html">
-                <i class="ri-file-list-3-line"></i>
-                <span>Mocks</span>
-            </a>
 
-            <a class="mnav-item" href="/ai_tutor.html">
-                <i class="ri-robot-2-line"></i>
-                <span>AI Tutor</span>
-            </a>
-
-        </div>
-    </nav>
 
 
 
