@@ -657,6 +657,105 @@
             color: white;
         }
 
+        /* ── FAB (Floating Action Button) ─────────────────── */
+        .fab-container {
+            position: fixed;
+            bottom: 2rem;
+            right: 1.5rem;
+            z-index: 300;
+            display: none;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 0.75rem;
+        }
+
+        @media (max-width: 900px) {
+            .fab-container {
+                display: flex;
+                bottom: calc(90px + env(safe-area-inset-bottom, 0px));
+            }
+        }
+
+        .fab-main {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            color: white;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            box-shadow: 0 8px 24px var(--primary-glow), 0 4px 12px rgba(0,0,0,0.15);
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .fab-main:hover, .fab-main:active {
+            transform: scale(1.1) rotate(45deg);
+            box-shadow: 0 12px 32px var(--primary-glow);
+        }
+
+        .fab-container.active .fab-main {
+            transform: rotate(45deg);
+            background: linear-gradient(135deg, #ef4444, #f97316);
+        }
+
+        .fab-actions {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 0.5rem;
+            opacity: 0;
+            pointer-events: none;
+            transform: translateY(10px);
+            transition: all 0.25s ease;
+        }
+
+        .fab-container.active .fab-actions {
+            opacity: 1;
+            pointer-events: all;
+            transform: translateY(0);
+        }
+
+        .fab-action {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 100px;
+            padding: 0.6rem 1rem;
+            font-size: 0.82rem;
+            font-weight: 600;
+            color: var(--text);
+            text-decoration: none;
+            box-shadow: var(--shadow);
+            transition: all 0.2s;
+            white-space: nowrap;
+            opacity: 0;
+            transform: translateX(10px);
+            animation-delay: var(--delay, 0s);
+        }
+
+        .fab-container.active .fab-action {
+            opacity: 1;
+            transform: translateX(0);
+            transition: all 0.25s ease var(--delay, 0s);
+        }
+
+        .fab-action:hover {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .fab-action i {
+            font-size: 1rem;
+        }
+
         /* ── STAT CARDS ─────────────────────────────── */
         .stats-grid {
             display: grid;
@@ -1069,6 +1168,11 @@
             display: none;
         }
 
+        /* Desktop: hide the mobile card list, show table */
+        .attempt-cards-list {
+            display: none;
+        }
+
         /* ── MOBILE RESPONSIVE ──────────────────────── */
 
         @media (max-width: 420px) {
@@ -1149,19 +1253,103 @@
                 overflow-x: hidden;
             }
 
+            /* ── MOBILE WELCOME BANNER ─────────────────────────── */
+            .mobile-welcome-banner {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+                border-radius: 20px;
+                padding: 1.25rem 1.25rem;
+                margin-bottom: 1.5rem;
+                position: relative;
+                overflow: hidden;
+                box-shadow: 0 8px 24px var(--primary-glow);
+            }
+
+            .mobile-welcome-banner::before {
+                content: '';
+                position: absolute;
+                top: -30px;
+                right: -30px;
+                width: 120px;
+                height: 120px;
+                background: rgba(255,255,255,0.1);
+                border-radius: 50%;
+            }
+
+            .mobile-welcome-banner::after {
+                content: '';
+                position: absolute;
+                bottom: -20px;
+                left: 40px;
+                width: 80px;
+                height: 80px;
+                background: rgba(255,255,255,0.07);
+                border-radius: 50%;
+            }
+
+            .mobile-welcome-text {
+                position: relative;
+                z-index: 1;
+            }
+
+            .mobile-welcome-text .greeting {
+                font-size: 0.8rem;
+                color: rgba(255,255,255,0.75);
+                font-weight: 500;
+                margin-bottom: 0.2rem;
+            }
+
+            .mobile-welcome-text .name {
+                font-size: 1.2rem;
+                font-weight: 800;
+                color: white;
+                font-family: 'Outfit', sans-serif;
+            }
+
+            .mobile-welcome-text .subtitle {
+                font-size: 0.75rem;
+                color: rgba(255,255,255,0.7);
+                margin-top: 0.15rem;
+            }
+
+            .mobile-welcome-emoji {
+                font-size: 2.5rem;
+                position: relative;
+                z-index: 1;
+                animation: float 3s ease-in-out infinite;
+            }
+
+            @keyframes float {
+                0%, 100% { transform: translateY(0); }
+                50% { transform: translateY(-6px); }
+            }
+
+            /* Hide desktop page header on mobile, welcome banner replaces it */
+            #desktop-page-header {
+                display: none !important;
+            }
+
+            /* Hide topnav name on mobile — banner shows it */
+            .topnav-name,
+            .topnav-left > div {
+                display: none !important;
+            }
+
             /* ── TOP NAV MOBILE ────────────────────────────────── */
             .topnav {
-                padding: 0.85rem 1rem;
+                padding: 0.75rem 1rem;
                 position: sticky;
                 top: 0;
                 z-index: 150;
+                min-height: 56px;
             }
 
             .topnav-left {
-                gap: 0.75rem;
+                gap: 0.6rem;
                 flex: 1;
                 min-width: 0;
-                /* Allow flex shrink */
             }
 
             .topnav-greeting {
@@ -1398,31 +1586,45 @@
             /* ── INSIGHTS GRID ─────────────────────────────────── */
             .insights-grid {
                 grid-template-columns: 1fr !important;
-                gap: 0.85rem;
+                gap: 0.75rem;
                 margin-bottom: 1.5rem;
                 display: grid !important;
             }
 
             .insight-card {
-                padding: 1.15rem;
+                padding: 1rem 1.15rem;
                 border-radius: 16px;
+                display: flex;
+                align-items: flex-start;
+                gap: 0.9rem;
+            }
+
+            .insight-card::after {
+                display: none; /* hide blob on mobile for cleaner look */
             }
 
             .insight-icon {
-                width: 40px;
-                height: 40px;
-                font-size: 1.1rem;
-                margin-bottom: 0.65rem;
+                width: 44px;
+                height: 44px;
+                min-width: 44px;
+                font-size: 1.2rem;
+                margin-bottom: 0;
+                border-radius: 14px;
+            }
+
+            .insight-body {
+                flex: 1;
+                min-width: 0;
             }
 
             .insight-title {
                 font-size: 0.88rem;
-                margin-bottom: 0.45rem;
+                margin-bottom: 0.3rem;
             }
 
             .insight-text {
-                font-size: 0.8rem;
-                line-height: 1.55;
+                font-size: 0.79rem;
+                line-height: 1.5;
             }
 
             /* ── TABLE HIDE, CARDS SHOW ────────────────────────── */
@@ -1433,7 +1635,7 @@
             .attempt-cards-list {
                 display: flex !important;
                 flex-direction: column;
-                gap: 0.85rem;
+                gap: 0.75rem;
             }
 
             /* ── ATTEMPT CARDS - SWIPE ACTIONS ────────────────── */
@@ -1751,7 +1953,17 @@
             <!-- Page Content -->
             <div class="page-content">
 
-                <div class="page-header">
+                <!-- Mobile Welcome Banner (shown only on mobile via CSS) -->
+                <div class="mobile-welcome-banner" id="mobile-welcome-banner" style="display:none;">
+                    <div class="mobile-welcome-text">
+                        <div class="greeting">Welcome back 👋</div>
+                        <div class="name" id="mobile-user-name">Loading...</div>
+                        <div class="subtitle" id="mobile-last-updated">Track your IAT progress</div>
+                    </div>
+                    <div class="mobile-welcome-emoji">🏆</div>
+                </div>
+
+                <div class="page-header" id="desktop-page-header">
                     <h1 class="page-title">My Progress Dashboard</h1>
                     <p class="page-subtitle" id="last-updated">Loading your performance data...</p>
                 </div>
@@ -1885,14 +2097,15 @@
                   width: 56px; 
                   height: 56px; 
                   border-radius: 50%; 
-                  box-shadow: 0 4px 15px var(--primary-glow);">
+                  box-shadow: 0 4px 15px var(--primary-glow);
+                  min-width: 56px;">
                 <i class="ri-flashlight-fill" style="font-size: 1.5rem;"></i>
             </a>
             <a class="mnav-item" href="/ai_tutor.html">
                 <i class="ri-robot-2-line"></i>
                 <span>AI Tutor</span>
             </a>
-            <button class="mnav-item" onclick="toggleDrawer()" style="background:none;border:none;cursor:pointer;">
+            <button class="mnav-item" id="more-btn" onclick="toggleDrawer()" style="background:none;border:none;cursor:pointer;">
                 <i class="ri-apps-line"></i>
                 <span>More</span>
             </button>
@@ -1952,6 +2165,17 @@
             const savedTheme = localStorage.getItem('iat_theme') || 'light';
             setTheme(savedTheme);
 
+            // Mobile welcome banner visibility
+            function updateMobileBanner() {
+                const isMobile = window.innerWidth <= 900;
+                const banner = document.getElementById('mobile-welcome-banner');
+                const desktopHeader = document.getElementById('desktop-page-header');
+                if (banner) banner.style.display = isMobile ? 'flex' : 'none';
+                if (desktopHeader) desktopHeader.style.display = isMobile ? 'none' : 'block';
+            }
+            updateMobileBanner();
+            window.addEventListener('resize', updateMobileBanner);
+
             // Logout (desktop sidebar)
             document.getElementById('logout-btn').addEventListener('click', (e) => {
                 e.preventDefault();
@@ -1993,8 +2217,12 @@
                 const data = await apiFetch('/api/me');
                 const name = data.name || data.email?.split('@')[0] || 'Student';
                 document.getElementById('user-name').textContent = name;
+                const mobileNameEl = document.getElementById('mobile-user-name');
+                if (mobileNameEl) mobileNameEl.textContent = name;
             } catch {
                 document.getElementById('user-name').textContent = 'Student';
+                const mobileNameEl = document.getElementById('mobile-user-name');
+                if (mobileNameEl) mobileNameEl.textContent = 'Student';
             }
         }
 
@@ -2022,8 +2250,10 @@
                 renderInsights(statsRes.stats, subjectRes.performance || []);
 
                 const now = new Date();
-                document.getElementById('last-updated').textContent =
-                    `Last updated: ${now.toLocaleString('en-IN', { dateStyle: 'medium', timeStyle: 'short' })}`;
+                const updatedStr = `Last updated: ${now.toLocaleString('en-IN', { dateStyle: 'medium', timeStyle: 'short' })}`;
+                document.getElementById('last-updated').textContent = updatedStr;
+                const mobileUpdated = document.getElementById('mobile-last-updated');
+                if (mobileUpdated) mobileUpdated.textContent = updatedStr;
 
             } catch (err) {
                 console.error('Dashboard load error:', err);
@@ -2032,6 +2262,8 @@
                 renderAttempts([]);
                 renderInsights({ total_attempts: 0 }, []);
                 document.getElementById('last-updated').textContent = 'Complete a mock test to see your progress here!';
+                const mobileUpdated = document.getElementById('mobile-last-updated');
+                if (mobileUpdated) mobileUpdated.textContent = 'Complete a mock to see progress!';
             }
         }
 
@@ -2394,8 +2626,10 @@
             el.innerHTML = insights.map((ins, i) => `
                 <div class="insight-card fade-up" style="--card-blob:${ins.blob}; animation-delay:${i * 0.1}s;">
                     <div class="insight-icon" style="background:${ins.iconBg};">${ins.icon}</div>
-                    <div class="insight-title">${ins.title}</div>
-                    <div class="insight-text">${ins.text}</div>
+                    <div class="insight-body">
+                        <div class="insight-title">${ins.title}</div>
+                        <div class="insight-text">${ins.text}</div>
+                    </div>
                 </div>
             `).join('');
         }
