@@ -98,6 +98,100 @@
         @media (max-width: 900px) {
             .app-layout { grid-template-columns: 1fr; }
             .sidebar { display: none; }
+            body { padding-bottom: 70px; } /* Space for bottom nav */
+        }
+
+        /* ── MOBILE BOTTOM NAV ──────────────────────── */
+        .mobile-bottom-nav {
+            display: none;
+            position: fixed;
+            bottom: 0; left: 0; right: 0;
+            height: 64px;
+            background: var(--bg-card);
+            border-top: 1px solid var(--border);
+            z-index: 200;
+            padding: 0 0.5rem;
+            align-items: center;
+            justify-content: space-around;
+            box-shadow: 0 -4px 20px rgba(0,0,0,0.08);
+        }
+        @media (max-width: 900px) { .mobile-bottom-nav { display: flex; } }
+
+        .mnav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 2px;
+            padding: 0.4rem 0.75rem;
+            border-radius: 12px;
+            text-decoration: none;
+            color: var(--text-muted);
+            font-size: 0.65rem;
+            font-weight: 600;
+            transition: all 0.2s;
+            min-width: 52px;
+        }
+        .mnav-item i { font-size: 1.3rem; }
+        .mnav-item:hover, .mnav-item.active { color: var(--primary); background: var(--primary-glow); }
+
+        /* ── MOBILE MENU DRAWER ─────────────────────── */
+        .mobile-drawer-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 300;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        .mobile-drawer-overlay.open { opacity: 1; }
+        @media (max-width: 900px) { .mobile-drawer-overlay { display: block; pointer-events: none; } }
+        .mobile-drawer-overlay.open { pointer-events: all; }
+
+        .mobile-drawer {
+            position: fixed;
+            bottom: 64px; left: 0; right: 0;
+            background: var(--bg-card);
+            border-radius: 24px 24px 0 0;
+            border-top: 1px solid var(--border);
+            z-index: 400;
+            padding: 1rem;
+            transform: translateY(100%);
+            transition: transform 0.35s cubic-bezier(0.16,1,0.3,1);
+            max-height: 75vh;
+            overflow-y: auto;
+        }
+        .mobile-drawer.open { transform: translateY(0); }
+
+        .drawer-handle {
+            width: 40px; height: 4px;
+            background: var(--border);
+            border-radius: 100px;
+            margin: 0 auto 1.25rem;
+        }
+
+        .drawer-nav-item {
+            display: flex;
+            align-items: center;
+            gap: 0.85rem;
+            padding: 0.85rem 1rem;
+            border-radius: 12px;
+            text-decoration: none;
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            transition: all 0.15s;
+        }
+        .drawer-nav-item:hover, .drawer-nav-item.active {
+            background: var(--primary-glow);
+            color: var(--primary);
+        }
+        .drawer-nav-item i { font-size: 1.1rem; width: 22px; text-align: center; }
+        .drawer-section-label {
+            font-size: 0.65rem; font-weight: 700;
+            text-transform: uppercase; letter-spacing: 0.1em;
+            color: var(--text-light); padding: 0.75rem 1rem 0.25rem;
         }
 
         /* ── SIDEBAR ─────────────────────────────────── */
@@ -254,8 +348,12 @@
             display: flex;
             gap: 0.5rem;
             margin-bottom: 2rem;
-            flex-wrap: wrap;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+            padding-bottom: 2px;
         }
+        .filter-bar::-webkit-scrollbar { display: none; }
 
         .filter-btn {
             padding: 0.4rem 1rem;
@@ -267,6 +365,8 @@
             color: var(--text-muted);
             cursor: pointer;
             transition: all 0.2s;
+            white-space: nowrap;
+            flex-shrink: 0;
         }
         .filter-btn:hover, .filter-btn.active {
             background: var(--primary);
@@ -571,11 +671,47 @@
         .fade-up:nth-child(3) { animation-delay: 0.15s; }
         .fade-up:nth-child(4) { animation-delay: 0.2s; }
 
-        /* Mobile topnav */
+        /* ── MOBILE RESPONSIVE ──────────────────────── */
         @media (max-width: 900px) {
-            .topnav { padding: 1rem; }
-            .page-content { padding: 1rem; }
-            .stats-grid { grid-template-columns: 1fr 1fr; gap: 0.75rem; }
+            .topnav { padding: 0.75rem 1rem; }
+            .topnav-greeting { display: none; } /* Save space — only show name */
+            .topnav-name { font-size: 0.9rem; }
+            .btn-primary span { display: none; } /* Show icon only on mobile */
+            .btn-primary { padding: 0.5rem 0.75rem; min-width: 38px; justify-content: center; }
+
+            .page-content { padding: 1rem 0.85rem; }
+            .page-header { margin-bottom: 1.25rem; }
+            .page-title { font-size: 1.25rem; }
+            .page-subtitle { font-size: 0.8rem; }
+
+            .stats-grid { grid-template-columns: 1fr 1fr; gap: 0.65rem; margin-bottom: 1.25rem; }
+            .stat-card { padding: 1rem; }
+            .stat-icon { width: 34px; height: 34px; font-size: 0.9rem; margin-bottom: 0.65rem; }
+            .stat-num { font-size: 1.7rem; }
+            .stat-label { font-size: 0.65rem; }
+            .stat-sub { font-size: 0.72rem; }
+
+            .charts-grid { gap: 0.75rem; margin-bottom: 1.25rem; }
+            .card { padding: 1rem; }
+            .card-header { margin-bottom: 1rem; }
+            .chart-container { height: 200px !important; }
+
+            .insights-grid { gap: 0.75rem; margin-bottom: 1.25rem; }
+            .insight-card { padding: 1rem; }
+
+            .attempts-table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+            table { min-width: 480px; }
+            thead th, tbody td { padding: 0.65rem 0.75rem; font-size: 0.8rem; }
+
+            .toast { bottom: 80px; right: 1rem; left: 1rem; } /* Above bottom nav */
+
+            .filter-bar { margin-bottom: 1.25rem; }
+        }
+
+        @media (max-width: 420px) {
+            .stats-grid { grid-template-columns: 1fr 1fr; gap: 0.5rem; }
+            .stat-num { font-size: 1.45rem; }
+            .page-content { padding: 0.85rem 0.65rem; }
         }
     </style>
 </head>
@@ -647,7 +783,8 @@
                         <i class="ri-moon-line" id="theme-icon"></i>
                     </button>
                     <a href="/mock_test/full_mock_test_homepage.html" class="btn-primary">
-                        <i class="ri-play-circle-line"></i> Start New Mock
+                        <i class="ri-play-circle-line"></i>
+                        <span>Start New Mock</span>
                     </a>
                 </div>
             </nav>
@@ -757,6 +894,54 @@
         <span id="toast-msg">Info</span>
     </div>
 
+    <!-- ── MOBILE BOTTOM NAV ─────────────────────── -->
+    <nav class="mobile-bottom-nav" id="mobile-bottom-nav">
+        <a class="mnav-item active" href="/dashboard.html">
+            <i class="ri-dashboard-3-line"></i>
+            <span>Dashboard</span>
+        </a>
+        <a class="mnav-item" href="/mock_test/full_mock_test_homepage.html">
+            <i class="ri-file-list-3-line"></i>
+            <span>Mocks</span>
+        </a>
+        <a class="mnav-item" href="/pyqs/pyq.html">
+            <i class="ri-history-line"></i>
+            <span>PYQs</span>
+        </a>
+        <a class="mnav-item" href="/ai_tutor.html">
+            <i class="ri-robot-2-line"></i>
+            <span>AI Tutor</span>
+        </a>
+        <button class="mnav-item" onclick="toggleDrawer()" id="more-btn" style="background:none;border:none;cursor:pointer;">
+            <i class="ri-menu-line"></i>
+            <span>More</span>
+        </button>
+    </nav>
+
+    <!-- ── MOBILE SLIDE-UP DRAWER ───────────────── -->
+    <div class="mobile-drawer-overlay" id="drawer-overlay" onclick="closeDrawer()"></div>
+    <div class="mobile-drawer" id="mobile-drawer">
+        <div class="drawer-handle"></div>
+        <div class="drawer-section-label">Study</div>
+        <a class="drawer-nav-item" href="/smart_notes.html">
+            <i class="ri-book-2-line"></i> Smart Notes
+        </a>
+        <a class="drawer-nav-item" href="/mock_test/quick_mock_homepage.html">
+            <i class="ri-timer-flash-line"></i> Quick Mocks
+        </a>
+        <div class="drawer-section-label">Tools</div>
+        <a class="drawer-nav-item" href="/iiser-iat-college-predictor.html">
+            <i class="ri-map-pin-2-line"></i> College Predictor
+        </a>
+        <a class="drawer-nav-item" href="/iat-planner-pro.html">
+            <i class="ri-calendar-check-line"></i> Study Planner
+        </a>
+        <div class="drawer-section-label">Account</div>
+        <button class="drawer-nav-item" id="mobile-logout-btn" style="width:100%;background:none;border:none;cursor:pointer;text-align:left;color:var(--danger);">
+            <i class="ri-logout-box-r-line"></i> Logout
+        </button>
+    </div>
+
     <script>
         // ═══════════════════════════════════════════════════════
         //  CONFIG
@@ -785,9 +970,16 @@
             const savedTheme = localStorage.getItem('iat_theme') || 'light';
             setTheme(savedTheme);
 
-            // Logout
+            // Logout (desktop sidebar)
             document.getElementById('logout-btn').addEventListener('click', (e) => {
                 e.preventDefault();
+                localStorage.removeItem('IAT_TOKEN');
+                localStorage.removeItem('IAT_PLAN');
+                window.location.href = '/';
+            });
+
+            // Logout (mobile drawer)
+            document.getElementById('mobile-logout-btn').addEventListener('click', () => {
                 localStorage.removeItem('IAT_TOKEN');
                 localStorage.removeItem('IAT_PLAN');
                 window.location.href = '/';
@@ -1200,6 +1392,34 @@
             document.getElementById('toast-msg').textContent = msg;
             t.classList.add('show');
             setTimeout(() => t.classList.remove('show'), 3500);
+        }
+
+        // ═══════════════════════════════════════════════════════
+        //  MOBILE DRAWER
+        // ═══════════════════════════════════════════════════════
+        function toggleDrawer() {
+            const drawer = document.getElementById('mobile-drawer');
+            const overlay = document.getElementById('drawer-overlay');
+            const moreBtn = document.getElementById('more-btn');
+            const isOpen = drawer.classList.contains('open');
+            if (isOpen) {
+                closeDrawer();
+            } else {
+                drawer.classList.add('open');
+                overlay.classList.add('open');
+                moreBtn.querySelector('i').className = 'ri-close-line';
+                document.body.style.overflow = 'hidden';
+            }
+        }
+
+        function closeDrawer() {
+            const drawer = document.getElementById('mobile-drawer');
+            const overlay = document.getElementById('drawer-overlay');
+            const moreBtn = document.getElementById('more-btn');
+            drawer.classList.remove('open');
+            overlay.classList.remove('open');
+            if (moreBtn) moreBtn.querySelector('i').className = 'ri-menu-line';
+            document.body.style.overflow = '';
         }
     </script>
 
