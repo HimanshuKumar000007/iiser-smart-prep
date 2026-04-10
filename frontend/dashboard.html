@@ -173,20 +173,21 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding: 0.6rem 0.8rem;
-            min-width: 56px;
+            padding: 0.65rem 0.85rem;
+            min-width: 58px;
             border-radius: 16px;
             color: var(--text-muted);
             text-decoration: none;
-            font-size: 0.65rem;
-            font-weight: 600;
+            font-size: 0.72rem;
+            font-weight: 700;
+            letter-spacing: 0.01em;
             transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
             -webkit-tap-highlight-color: transparent;
         }
 
         .mnav-item i {
-            font-size: 1.35rem;
-            margin-bottom: 2px;
+            font-size: 1.45rem;
+            margin-bottom: 3px;
             transition: all 0.3s ease;
         }
 
@@ -198,17 +199,17 @@
         }
 
         .mnav-item.active i {
-            transform: scale(1.1);
-            filter: drop-shadow(0 2px 4px var(--primary-glow));
+            transform: scale(1.15);
+            filter: drop-shadow(0 2px 6px var(--primary-glow));
         }
 
         /* Animated indicator dot */
         .mnav-item.active::after {
             content: '';
             position: absolute;
-            bottom: 4px;
-            width: 4px;
-            height: 4px;
+            bottom: 5px;
+            width: 5px;
+            height: 5px;
             background: var(--primary);
             border-radius: 50%;
             animation: bounceIn 0.4s ease;
@@ -228,31 +229,30 @@
             }
         }
 
-        /* ── MOBILE DRAWER - OPTIMIZED ─────────────────────────── */
+        /* ── MOBILE DRAWER - PREMIUM REDESIGN ─────────────────── */
         .mobile-drawer {
             position: fixed;
             left: 0;
             right: 0;
             bottom: 70px;
-            /* Match new nav height */
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            padding: 1rem 0.85rem 1.5rem;
-            border-radius: 22px 22px 0 0;
+            background: var(--bg-card);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            padding: 0.5rem 1rem 2rem;
+            border-radius: 28px 28px 0 0;
             border-top: 1px solid var(--border);
             z-index: 400;
-            max-height: 70vh;
+            max-height: 75vh;
             overflow-y: auto;
-            box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.15);
-            /* Hardware acceleration */
+            box-shadow: 0 -12px 48px rgba(0, 0, 0, 0.18);
             transform: translateY(100%) translateZ(0);
             will-change: transform;
-            transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+            transition: transform 0.38s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         [data-theme="dark"] .mobile-drawer {
-            background: rgba(15, 22, 41, 0.95);
+            background: #0d1525;
+            border-top-color: rgba(255,255,255,0.08);
         }
 
         .mobile-drawer.open {
@@ -260,45 +260,90 @@
         }
 
         .drawer-handle {
-            width: 48px;
-            height: 5px;
+            width: 40px;
+            height: 4px;
             background: var(--border);
             border-radius: 100px;
-            margin: 0.25rem auto 1rem;
+            margin: 0.75rem auto 0.5rem;
+        }
+
+        .drawer-title {
+            font-size: 1.1rem;
+            font-weight: 800;
+            color: var(--text);
+            font-family: 'Outfit', sans-serif;
+            padding: 0.5rem 0.5rem 1rem;
+            letter-spacing: -0.02em;
+        }
+
+        .drawer-section-label {
+            font-size: 0.7rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            color: var(--text-light);
+            padding: 1rem 0.5rem 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .drawer-section-label::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--border);
+            border-radius: 1px;
+        }
+
+        /* Premium drawer grid layout – 2 columns */
+        .drawer-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.65rem;
+            margin-bottom: 0.5rem;
         }
 
         .drawer-nav-item {
             display: flex;
             align-items: center;
-            padding: 0.9rem 1rem;
-            border-radius: 14px;
-            font-size: 0.92rem;
-            gap: 0.9rem;
-            color: var(--text-muted);
+            padding: 0.85rem 1rem;
+            border-radius: 16px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            gap: 0.75rem;
+            color: var(--text);
             text-decoration: none;
-            transition: all 0.15s;
+            background: var(--bg-hover);
+            border: 1px solid var(--border);
+            transition: all 0.18s ease;
             -webkit-tap-highlight-color: transparent;
         }
 
         .drawer-nav-item i {
-            font-size: 1.15rem;
-            width: 24px;
-            text-align: center;
-        }
-
-        .drawer-nav-item:hover,
-        .drawer-nav-item.active {
+            width: 38px;
+            height: 38px;
+            min-width: 38px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
             background: var(--primary-glow);
             color: var(--primary);
         }
 
-        .drawer-section-label {
-            font-size: 0.68rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            color: var(--text-light);
-            padding: 0.85rem 1rem 0.35rem;
+        /* Full-width variant for account section */
+        .drawer-nav-item.full-width {
+            grid-column: 1 / -1;
+        }
+
+        .drawer-nav-item:hover,
+        .drawer-nav-item:active {
+            background: var(--primary-glow);
+            color: var(--primary);
+            border-color: transparent;
+            transform: scale(0.97);
         }
 
         .mobile-drawer-overlay {
@@ -321,47 +366,43 @@
         /* ── EXTRA SMALL PHONES (< 380px) ───────────────────────── */
         @media (max-width: 380px) {
             .page-content {
-                padding: 1rem 0.75rem;
-            }
-
-            .page-title {
-                font-size: 1.25rem;
+                padding: 1rem 0.8rem;
             }
 
             .stats-grid {
-                gap: 0.65rem;
+                gap: 0.6rem;
             }
 
             .stat-card {
-                padding: 0.95rem;
-                min-height: 130px;
+                padding: 1rem 0.9rem;
+                min-height: 135px;
             }
 
             .stat-num {
-                font-size: 1.7rem;
+                font-size: 1.85rem;
             }
 
             .stat-label {
-                font-size: 0.65rem;
+                font-size: 0.68rem;
             }
 
             .stat-sub {
-                font-size: 0.7rem;
+                font-size: 0.72rem;
             }
 
             .mnav-item {
-                min-width: 52px;
-                padding: 0.5rem 0.65rem;
-                font-size: 0.65rem;
+                min-width: 54px;
+                padding: 0.55rem 0.6rem;
+                font-size: 0.68rem;
             }
 
             .mnav-item i {
-                font-size: 1.3rem;
+                font-size: 1.4rem;
             }
 
             .filter-btn {
-                padding: 0.45rem 1rem;
-                font-size: 0.75rem;
+                padding: 0.5rem 1rem;
+                font-size: 0.78rem;
             }
         }
 
@@ -1421,8 +1462,8 @@
             }
 
             .filter-btn {
-                padding: 0.5rem 1.1rem;
-                font-size: 0.8rem;
+                padding: 0.55rem 1.25rem;
+                font-size: 0.88rem;
                 border-width: 1.5px;
                 white-space: nowrap;
             }
@@ -1491,7 +1532,7 @@
             }
 
             .stat-num {
-                font-size: 2rem;
+                font-size: 2.2rem;
                 font-weight: 800;
                 background: linear-gradient(135deg, var(--text) 0%, var(--primary) 100%);
                 -webkit-background-clip: text;
@@ -1504,7 +1545,7 @@
             }
 
             .stat-label {
-                font-size: 0.7rem;
+                font-size: 0.74rem;
                 font-weight: 700;
                 text-transform: uppercase;
                 letter-spacing: 0.08em;
@@ -1515,7 +1556,7 @@
             }
 
             .stat-sub {
-                font-size: 0.75rem;
+                font-size: 0.82rem;
                 color: var(--text-muted);
                 margin-top: 0.25rem;
                 position: relative;
@@ -1541,7 +1582,7 @@
             }
 
             .card-title {
-                font-size: 0.95rem;
+                font-size: 1.05rem;
             }
 
             .card-badge {
@@ -1571,11 +1612,11 @@
             }
 
             .subject-bar-name {
-                font-size: 0.82rem;
+                font-size: 0.9rem;
             }
 
             .subject-bar-pct {
-                font-size: 0.74rem;
+                font-size: 0.8rem;
             }
 
             .subject-bar-bg {
@@ -1618,13 +1659,14 @@
             }
 
             .insight-title {
-                font-size: 0.88rem;
+                font-size: 0.95rem;
+                font-weight: 700;
                 margin-bottom: 0.3rem;
             }
 
             .insight-text {
-                font-size: 0.79rem;
-                line-height: 1.5;
+                font-size: 0.84rem;
+                line-height: 1.55;
             }
 
             /* ── TABLE HIDE, CARDS SHOW ────────────────────────── */
@@ -1693,12 +1735,12 @@
 
             .ac-title {
                 font-weight: 700;
-                font-size: 0.95rem;
+                font-size: 1rem;
                 color: var(--text);
             }
 
             .ac-meta {
-                font-size: 0.75rem;
+                font-size: 0.8rem;
                 color: var(--text-muted);
                 margin-top: 0.2rem;
             }
@@ -1712,26 +1754,26 @@
             .ac-stat-item {
                 text-align: center;
                 background: var(--bg-hover);
-                padding: 0.5rem;
-                border-radius: 10px;
+                padding: 0.6rem 0.5rem;
+                border-radius: 12px;
             }
 
             .ac-stat-label {
-                font-size: 0.65rem;
-                font-weight: 600;
+                font-size: 0.72rem;
+                font-weight: 700;
                 color: var(--text-light);
                 text-transform: uppercase;
                 margin-bottom: 0.2rem;
             }
 
             .ac-stat-val {
-                font-weight: 700;
-                font-size: 0.9rem;
+                font-weight: 800;
+                font-size: 1rem;
             }
 
             .score-pill {
-                font-size: 0.8rem;
-                padding: 4px 11px;
+                font-size: 0.85rem;
+                padding: 4px 12px;
                 white-space: nowrap;
             }
 
@@ -2116,25 +2158,48 @@
     <div class="mobile-drawer-overlay" id="drawer-overlay" onclick="closeDrawer()"></div>
     <div class="mobile-drawer" id="mobile-drawer">
         <div class="drawer-handle"></div>
+        <div class="drawer-title">Quick Navigate ✨</div>
+
         <div class="drawer-section-label">Study</div>
-        <a class="drawer-nav-item" href="/smart_notes.html">
-            <i class="ri-book-2-line"></i> Smart Notes
-        </a>
-        <a class="drawer-nav-item" href="/mock_test/quick_mock_homepage.html">
-            <i class="ri-timer-flash-line"></i> Quick Mocks
-        </a>
+        <div class="drawer-grid">
+            <a class="drawer-nav-item" href="/smart_notes.html">
+                <i class="ri-book-2-line" style="color:#6366f1; background:rgba(99,102,241,0.12);"></i>
+                Smart Notes
+            </a>
+            <a class="drawer-nav-item" href="/mock_test/quick_mock_homepage.html">
+                <i class="ri-timer-flash-line" style="color:#f59e0b; background:rgba(245,158,11,0.12);"></i>
+                Quick Mocks
+            </a>
+            <a class="drawer-nav-item" href="/pyqs/pyq.html">
+                <i class="ri-history-line" style="color:#10b981; background:rgba(16,185,129,0.12);"></i>
+                PYQs
+            </a>
+            <a class="drawer-nav-item" href="/ai_tutor.html">
+                <i class="ri-robot-2-line" style="color:#06b6d4; background:rgba(6,182,212,0.12);"></i>
+                AI Tutor
+            </a>
+        </div>
+
         <div class="drawer-section-label">Tools</div>
-        <a class="drawer-nav-item" href="/iiser-iat-college-predictor.html">
-            <i class="ri-map-pin-2-line"></i> College Predictor
-        </a>
-        <a class="drawer-nav-item" href="/iat-planner-pro.html">
-            <i class="ri-calendar-check-line"></i> Study Planner
-        </a>
+        <div class="drawer-grid">
+            <a class="drawer-nav-item" href="/iiser-iat-college-predictor.html">
+                <i class="ri-map-pin-2-line" style="color:#ef4444; background:rgba(239,68,68,0.12);"></i>
+                Predictor
+            </a>
+            <a class="drawer-nav-item" href="/iat-planner-pro.html">
+                <i class="ri-calendar-check-line" style="color:#8b5cf6; background:rgba(139,92,246,0.12);"></i>
+                Study Plan
+            </a>
+        </div>
+
         <div class="drawer-section-label">Account</div>
-        <button class="drawer-nav-item" id="mobile-logout-btn"
-            style="width:100%;background:none;border:none;cursor:pointer;text-align:left;color:var(--danger);">
-            <i class="ri-logout-box-r-line"></i> Logout
-        </button>
+        <div class="drawer-grid">
+            <button class="drawer-nav-item full-width" id="mobile-logout-btn"
+                style="background:rgba(239,68,68,0.06); border-color:rgba(239,68,68,0.2); width:100%; cursor:pointer; text-align:left; color:var(--danger);">
+                <i class="ri-logout-box-r-line" style="color:#ef4444; background:rgba(239,68,68,0.12);"></i>
+                Logout
+            </button>
+        </div>
     </div>
 
     <script>
