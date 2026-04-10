@@ -1504,136 +1504,131 @@
 
             el.innerHTML = html;
 
-            // 4. CALL GEMINI AI FOR DEEPER ANALYSIS
-            getAIAnalysis(resultData);
+            // 4. GENERATE SMART PERFORMANCE MENTOR CARDS (Pure Intelligence — No API)
+            generateMentorCards(resultData, stats, strongest, weakest, hardCorrect, timeWastedOnWrong);
         }
 
-        async function getAIAnalysis(testData) {
-            window.lastTestData = testData; // Store for retry
+        // =========================================
+        // 🧠 SMART PERFORMANCE MENTOR (Pure Logic)
+        // =========================================
+        function generateMentorCards(testData, stats, strongest, weakest, hardCorrect, timeWastedOnWrong) {
             const el = document.getElementById('aiInsights');
             const originalContent = el.innerHTML;
-            const token = localStorage.getItem('IAT_TOKEN');
-            
-            // Show Premium Skeleton Dashboard
-            el.innerHTML = originalContent + `
-                <div class="ai-mentor-dash" id="aiDash">
+
+            const score           = testData.score;
+            const correct         = testData.correct;
+            const wrong           = testData.wrong;
+            const skipped         = testData.skipped;
+            const sillyMistakes   = testData.sillyMistakes || 0;
+            const easySkipped     = testData.easySkipped   || 0;
+            const total           = correct + wrong + skipped;
+            const attempted       = correct + wrong;
+            const accuracy        = attempted > 0 ? Math.round((correct / attempted) * 100) : 0;
+            const wastedMins      = Math.round(timeWastedOnWrong / 60);
+
+            // ── CARD 1: BIGGEST MISTAKE ─────────────────────────────
+            let mistake = '';
+            if (sillyMistakes >= 5) {
+                mistake = `You made <strong>${sillyMistakes} silly mistakes</strong> on <em>Easy</em> questions — this alone cost you <strong>${sillyMistakes * 5} marks</strong>. These are the easiest points to recover next time.`;
+            } else if (wastedMins >= 10) {
+                mistake = `You spent <strong>${wastedMins} minutes</strong> on questions you got wrong. Time leakage is your #1 issue — setting a strict 2-minute per-question limit will directly improve your score.`;
+            } else if (wrong > 15) {
+                mistake = `High wrong count (<strong>${wrong} incorrect</strong>). You're attempting uncertain questions instead of skipping — each wrong answer costs 1 mark and kills your accuracy.`;
+            } else if (skipped > 20) {
+                mistake = `You skipped <strong>${skipped} questions</strong>. Over-caution is hurting you — many skipped questions were likely solvable with a structured approach.`;
+            } else if (accuracy < 50) {
+                mistake = `Overall accuracy of <strong>${accuracy}%</strong> is below the competitive threshold. Focus on conceptual clarity before attempting more mocks.`;
+            } else {
+                mistake = `Good control overall! Your biggest room for improvement is <strong>increasing attempt count</strong> — you left ${skipped} questions unattempted.`;
+            }
+
+            // ── CARD 2: WHAT TO FIX ────────────────────────────────
+            let fix = '';
+            if (weakest.subj !== 'None' && weakest.acc < 40) {
+                const subjWrong = stats[weakest.subj] ? stats[weakest.subj].wrong : 0;
+                fix = `<strong>${weakest.subj}</strong> is your critical weak point — only <strong>${Math.round(weakest.acc)}%</strong> accuracy with ${subjWrong} wrong answers. Dedicate 45 mins/day to ${weakest.subj} fundamentals for the next 2 weeks.`;
+            } else if (sillyMistakes >= 3) {
+                fix = `Focus on <strong>Easy question accuracy</strong> in ${weakest.subj !== 'None' ? weakest.subj : 'all subjects'}. Re-read questions twice before answering — eliminate the ${sillyMistakes} silly mistakes that cost cheap marks.`;
+            } else if (easySkipped >= 5) {
+                fix = `You left <strong>${easySkipped} Easy questions blank</strong>. Prioritize all Easy-difficulty questions in your first pass of each section — these are guaranteed marks.`;
+            } else if (hardCorrect >= 5) {
+                fix = `You nail Hard questions (${hardCorrect} solved!) but leave too many Medium ones. <strong>Medium questions</strong> offer the best risk/reward — fix those next.`;
+            } else {
+                fix = `Work on <strong>consistency per section</strong>. Aim for a minimum of 70% accuracy in ${weakest.subj !== 'None' ? weakest.subj : 'your weakest subject'} before moving to harder topics.`;
+            }
+
+            // ── CARD 3: TACTICS & SPEED ────────────────────────────
+            let strategy = '';
+            const avgTimePerQuestion = total > 0 && testData.timeTaken ? Math.round(testData.timeTaken / total) : null;
+            if (timeWastedOnWrong > 600) {
+                strategy = `Use the <strong>"2-Minute Rule"</strong>: Mark any question that takes >2 minutes and move on. Return at the end. This could free up <strong>${wastedMins} extra minutes</strong> for easier wins.`;
+            } else if (easySkipped >= 5) {
+                strategy = `Adopt a <strong>3-Pass Strategy</strong>: Pass 1 — solve all Easy questions. Pass 2 — attempt Medium. Pass 3 — tackle Hard only if time allows. Never skip easy ones in Pass 1.`;
+            } else if (skipped > 15 && wrong < 5) {
+                strategy = `You have excellent accuracy but low attempt count. Be <strong>slightly more aggressive</strong> on Medium questions — your accuracy (${accuracy}%) shows you can handle them.`;
+            } else if (strongest.subj !== 'None') {
+                strategy = `Start each section with your strongest subject (<strong>${strongest.subj}</strong> at ${Math.round(strongest.acc)}% accuracy) to build confidence and bank early marks before tackling hard sections.`;
+            } else {
+                strategy = `Follow a <strong>section-order strategy</strong>: Biology → Chemistry → Physics → Mathematics. Attempt in order of your personal accuracy, not the paper's order.`;
+            }
+
+            // ── CARD 4: POTENTIAL BOOST ────────────────────────────
+            const sillyBoost   = sillyMistakes * 5;   // +4 correct + 1 saved negative
+            const easyBoost    = easySkipped   * 4;   // +4 per easy question
+            const timeBoost    = wastedMins >= 5 ? 8  : 0; // ~2 more correct from saved time
+            const totalBoost   = sillyBoost + easyBoost + timeBoost;
+            const projectedScore = Math.min(240, score + totalBoost);
+
+            let boost = '';
+            if (totalBoost > 0) {
+                boost = `Fixing your <strong>${sillyMistakes} silly mistakes</strong> (+${sillyBoost}) and <strong>${easySkipped} easy skips</strong> (+${easyBoost}) alone could bring your score from <strong style="color:var(--danger)">${score}</strong> → <strong style="color:var(--success)">${projectedScore}</strong> in your next attempt.`;
+            } else if (score >= 180) {
+                boost = `Exceptional score of ${score}/240 🏆 — You're already in top-tier territory. Focus on <strong>consistency</strong> and reducing the ${wrong} wrong answers to push toward 200+.`;
+            } else {
+                boost = `With improved time management and accuracy, a realistic next-mock target is <strong>${Math.min(240, score + 15)}–${Math.min(240, score + 25)}</strong>. Focus on reducing wrong answers first.`;
+            }
+
+            // ── RENDER THE PREMIUM DASHBOARD ──────────────────────
+            const tier = score >= 180 ? { label: 'Exceptional', color: '#10b981' }
+                       : score >= 140 ? { label: 'Good',        color: 'var(--primary)' }
+                       : score >= 100 ? { label: 'Developing',  color: 'var(--warning)' }
+                       :                { label: 'Needs Work',  color: 'var(--danger)' };
+
+            const dashHtml = `
+                <div class="ai-mentor-dash">
                     <div class="dash-header">
                         <div class="mentor-label">
-                            <i class="ri-robot-2-line" style="font-size:1.5rem; color:var(--primary);"></i>
-                            <span class="mentor-title">AI Performance Mentor</span>
+                            <i class="ri-brain-line" style="font-size:1.5rem; color:var(--primary);"></i>
+                            <span class="mentor-title">Performance Mentor <span style="opacity:0.5; font-weight:400; font-size:0.8rem;">Smart Analysis</span></span>
                         </div>
-                        <div class="ai-live-badge">
-                            <div class="ai-live-dot"></div> Analyzing...
+                        <div class="ai-live-badge" style="background:rgba(79,70,229,0.1); color:${tier.color};">
+                            <i class="ri-bar-chart-grouped-line"></i> ${tier.label} · ${score}/240
                         </div>
                     </div>
                     <div class="ai-cards-grid">
-                        <div class="skeleton-card"></div>
-                        <div class="skeleton-card"></div>
-                        <div class="skeleton-card"></div>
-                        <div class="skeleton-card"></div>
+                        <div class="ai-smart-card card-mistake" style="animation-delay:0.05s;">
+                            <div class="ai-card-title"><i class="ri-error-warning-line"></i> Biggest Mistake</div>
+                            <div class="ai-card-content">${mistake}</div>
+                        </div>
+                        <div class="ai-smart-card card-fix" style="animation-delay:0.1s;">
+                            <div class="ai-card-title"><i class="ri-tools-line"></i> What to Fix</div>
+                            <div class="ai-card-content">${fix}</div>
+                        </div>
+                        <div class="ai-smart-card card-strategy" style="animation-delay:0.15s;">
+                            <div class="ai-card-title"><i class="ri-flashlight-line"></i> Tactics & Speed</div>
+                            <div class="ai-card-content">${strategy}</div>
+                        </div>
+                        <div class="ai-smart-card card-boost" style="animation-delay:0.2s;">
+                            <div class="ai-card-title" style="color:#10b981;"><i class="ri-rocket-line"></i> Potential Boost</div>
+                            <div class="ai-card-content">${boost}</div>
+                        </div>
                     </div>
                 </div>
+                <hr style="margin:2rem 0; border:0; border-top:1px solid var(--border);">
+                ${originalContent}
             `;
 
-            try {
-                const prompt = `
-Analyze this student's test performance data:
-Score: ${testData.score}/240
-Correct: ${testData.correct}
-Wrong: ${testData.wrong}
-Skipped: ${testData.skipped}
-Section Scores: ${JSON.stringify(testData.sectionScore)}
-`;
-
-                const res = await fetch(AI_API_URL, {
-                    method: "POST",
-                    headers: { 
-                        "Content-Type": "application/json",
-                        "Authorization": `Bearer ${token}`
-                    },
-                    body: JSON.stringify({ prompt })
-                });
-
-                if (!res.ok) {
-                    const errorResponse = await res.json().catch(() => ({}));
-                    throw new Error(errorResponse.error || `AI Backend Error (${res.status})`);
-                }
-
-                const aiData = await res.json();
-
-                // Inject the final Premium AI Dashboard
-                const dashHtml = `
-                    <div class="ai-mentor-dash">
-                        <div class="dash-header">
-                            <div class="mentor-label">
-                                <i class="ri-robot-2-line" style="font-size:1.5rem; color:var(--primary);"></i>
-                                <span class="mentor-title">AI Performance Mentor <span style="opacity:0.5; font-weight:400; font-size:0.8rem;">v2.0 Pulse</span></span>
-                            </div>
-                            <div class="ai-live-badge" style="background:rgba(79, 70, 229, 0.1); color:var(--primary);">
-                                <i class="ri-check-line"></i> Analysis Ready
-                            </div>
-                        </div>
-                        <div class="ai-cards-grid">
-                            <!-- Card 1: Biggest Mistake -->
-                            <div class="ai-smart-card card-mistake" style="animation-delay: 0.1s;">
-                                <div class="ai-card-title"><i class="ri-error-warning-line"></i> Biggest Mistake</div>
-                                <div class="ai-card-content">${aiData.mistake}</div>
-                            </div>
-
-                            <!-- Card 2: What to Fix -->
-                            <div class="ai-smart-card card-fix" style="animation-delay: 0.2s;">
-                                <div class="ai-card-title"><i class="ri-tools-line"></i> What to Fix</div>
-                                <div class="ai-card-content">${aiData.fix}</div>
-                            </div>
-
-                            <!-- Card 3: Strategy -->
-                            <div class="ai-smart-card card-strategy" style="animation-delay: 0.3s;">
-                                <div class="ai-card-title"><i class="ri-flashlight-line"></i> Tactics & Speed</div>
-                                <div class="ai-card-content">${aiData.strategy}</div>
-                            </div>
-
-                            <!-- Card 4: Score Boost -->
-                            <div class="ai-smart-card card-boost" style="animation-delay: 0.4s;">
-                                <div class="ai-card-title" style="color:#10b981;"><i class="ri-rocket-line"></i> Potential Boost</div>
-                                <div class="ai-card-content">${aiData.boost}</div>
-                            </div>
-                        </div>
-                    </div>
-                    <hr style="margin:2rem 0; border:0; border-top:1px solid var(--border);">
-                    ${originalContent}
-                `;
-
-                document.getElementById('aiInsights').innerHTML = dashHtml;
-
-            } catch (err) {
-                console.error("AI Analysis failed:", err);
-                
-                // Final safety fallback for URLs
-                const safeApiUrl = typeof AI_API_URL !== 'undefined' ? AI_API_URL : (window.location.hostname === "localhost" ? 'http://localhost:5000/ai' : 'https://api.iisersmartprep.space/ai');
-                const safeHealthUrl = typeof AI_HEALTH_URL !== 'undefined' ? AI_HEALTH_URL : (window.location.hostname === "localhost" ? 'http://localhost:5000/ai-health' : 'https://api.iisersmartprep.space/ai-health');
-
-                let errorMsg = `Cannot reach the AI server at <b>${safeApiUrl}</b>.`;
-                let hint = `1. Ensure backend is running (<b>npm start</b>)<br>2. Check <b>DEEPSEEK_API_KEY</b> in .env`;
-                
-                if (err.message !== "Failed to fetch") {
-                    errorMsg = err.message;
-                }
-
-                el.innerHTML = originalContent + `
-                    <div style="margin-top:1rem; color:var(--danger); border:1px solid rgba(239, 68, 68, 0.2); padding:1rem; border-radius:12px; background:rgba(239, 68, 68, 0.03);">
-                        <div style="font-weight:700; font-size:0.85rem; margin-bottom:0.5rem;"><i class="ri-error-warning-line"></i> AI Analysis Unavailable</div>
-                        <div style="font-size:0.75rem; opacity:0.8; line-height:1.4;">
-                            Error: ${errorMsg}<br><br>
-                            <b>Steps to fix:</b><br>
-                            ${hint}<br>
-                            3. Verify connectivity via <a href="${safeHealthUrl}" target="_blank" style="color:var(--primary); text-decoration:underline;">AI Health Check</a>
-                        </div>
-                        <button onclick="getAIAnalysis(window.lastTestData)" style="margin-top:1rem; background:var(--danger); color:white; border:none; padding:6px 16px; border-radius:6px; font-size:0.75rem; font-weight:600; cursor:pointer; display:flex; align-items:center; gap:6px;">
-                            <i class="ri-refresh-line"></i> Try Again
-                        </button>
-                    </div>
-                `;
-            }
+            el.innerHTML = dashHtml;
         }
 
         // =========================================
