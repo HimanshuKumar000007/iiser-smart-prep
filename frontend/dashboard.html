@@ -1232,119 +1232,6 @@
             margin: 0;
         }
 
-        /* Mobile Drawer */
-        .mobile-drawer {
-            position: fixed;
-            left: 0;
-            right: 0;
-            bottom: 90px;
-            background: rgba(var(--bg-elevated), 0.98);
-            backdrop-filter: blur(30px);
-            padding: var(--space-6);
-            border-radius: var(--radius-2xl) var(--radius-2xl) 0 0;
-            border-top: 1px solid var(--border);
-            z-index: 400;
-            max-height: 80vh;
-            overflow-y: auto;
-            transform: translateY(120%) translateZ(0);
-            will-change: transform;
-            transition: transform 0.5s var(--ease-out-expo);
-            box-shadow: 0 -20px 60px -20px rgba(0, 0, 0, 0.3);
-        }
-
-        .mobile-drawer.open {
-            transform: translateY(0) translateZ(0);
-        }
-
-        .drawer-handle {
-            width: 40px;
-            height: 4px;
-            background: var(--text-tertiary);
-            border-radius: 100px;
-            margin: 0 auto var(--space-6);
-            opacity: 0.3;
-        }
-
-        .drawer-title {
-            font-size: 1.5rem;
-            font-weight: 800;
-            color: var(--text);
-            font-family: 'Outfit', sans-serif;
-            margin-bottom: var(--space-6);
-            background: linear-gradient(135deg, var(--text) 0%, var(--primary) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .drawer-section-label {
-            font-size: 0.75rem;
-            font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: 0.15em;
-            color: var(--text-tertiary);
-            margin-bottom: var(--space-4);
-            display: flex;
-            align-items: center;
-            gap: var(--space-2);
-        }
-
-        .drawer-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: var(--space-3);
-            margin-bottom: var(--space-6);
-        }
-
-        .drawer-nav-item {
-            display: flex;
-            align-items: center;
-            padding: var(--space-4);
-            border-radius: var(--radius-lg);
-            font-size: 1rem;
-            font-weight: 600;
-            gap: var(--space-3);
-            color: var(--text);
-            text-decoration: none;
-            background: var(--bg-hover);
-            border: 1px solid var(--border);
-            transition: all var(--transition-fast);
-        }
-
-        .drawer-nav-item i {
-            width: 40px;
-            height: 40px;
-            min-width: 40px;
-            border-radius: var(--radius-md);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.25rem;
-            background: rgba(99, 102, 241, 0.1);
-            color: var(--primary);
-        }
-
-        .drawer-nav-item:active {
-            transform: scale(0.96);
-            background: var(--bg-pressed);
-        }
-
-        .mobile-drawer-overlay {
-            display: block;
-            position: fixed;
-            inset: 0;
-            z-index: 300;
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.4s var(--ease-out-expo), visibility 0.4s var(--ease-out-expo);
-            backdrop-filter: blur(4px);
-            -webkit-backdrop-filter: blur(4px);
-            background: rgba(0, 0, 0, 0.4);
-        }
-
-        .mobile-drawer-overlay.open {
-            opacity: 1;
-            visibility: visible;
-        }
 
         /* FAB */
         .fab-container {
@@ -2000,61 +1887,10 @@
                 <i class="ri-robot-2-line"></i>
                 <span>AI Tutor</span>
             </a>
-            <button class="mnav-item" id="more-btn" onclick="toggleDrawer()"
-                style="background:none;border:none;cursor:pointer;">
-                <i class="ri-apps-line"></i>
-                <span>More</span>
-            </button>
+
         </div>
     </nav>
 
-    <!-- Mobile Drawer -->
-    <div class="mobile-drawer-overlay" id="drawer-overlay" onclick="closeDrawer()"></div>
-    <div class="mobile-drawer" id="mobile-drawer">
-        <div class="drawer-handle"></div>
-        <div class="drawer-title">Quick Navigate <span style="color:var(--primary);">✨</span></div>
-
-        <div class="drawer-section-label">Study</div>
-        <div class="drawer-grid">
-            <a class="drawer-nav-item" href="/smart_notes.html">
-                <i class="ri-book-2-line"></i>
-                Smart Notes
-            </a>
-            <a class="drawer-nav-item" href="/mock_test/quick_mock_homepage.html">
-                <i class="ri-timer-flash-line"></i>
-                Quick Mocks
-            </a>
-            <a class="drawer-nav-item" href="/pyqs/pyq.html">
-                <i class="ri-history-line"></i>
-                PYQs
-            </a>
-            <a class="drawer-nav-item" href="/ai_tutor.html">
-                <i class="ri-robot-2-line"></i>
-                AI Tutor
-            </a>
-        </div>
-
-        <div class="drawer-section-label">Tools</div>
-        <div class="drawer-grid">
-            <a class="drawer-nav-item" href="/iiser-iat-college-predictor.html">
-                <i class="ri-map-pin-2-line"></i>
-                Predictor
-            </a>
-            <a class="drawer-nav-item" href="/iat-planner-pro.html">
-                <i class="ri-calendar-check-line"></i>
-                Study Plan
-            </a>
-        </div>
-
-        <div class="drawer-section-label">Account</div>
-        <div class="drawer-grid">
-            <button class="drawer-nav-item" id="mobile-logout-btn"
-                style="background:rgba(239,68,68,0.1); color:var(--danger); border-color:rgba(239,68,68,0.2); width:100%; cursor:pointer; text-align:left;">
-                <i class="ri-logout-box-r-line" style="background:rgba(239,68,68,0.15); color:var(--danger);"></i>
-                Logout
-            </button>
-        </div>
-    </div>
 
     <!-- FAB -->
     <div class="fab-container" id="fab-container">
@@ -2714,44 +2550,6 @@
             setTimeout(() => t.classList.remove('show'), 3500);
         }
 
-        // Mobile Drawer
-        function toggleDrawer() {
-            const drawer = document.getElementById('mobile-drawer');
-            const overlay = document.getElementById('drawer-overlay');
-            const moreBtn = document.getElementById('more-btn');
-
-            if (!drawer || !overlay) return;
-
-            const isOpen = drawer.classList.contains('open');
-
-            if (isOpen) {
-                closeDrawer();
-            } else {
-                drawer.classList.add('open');
-                overlay.classList.add('open');
-                if (moreBtn) {
-                    const icon = moreBtn.querySelector('i');
-                    if (icon) icon.className = 'ri-close-line';
-                }
-                document.body.style.overflow = 'hidden';
-            }
-        }
-
-        function closeDrawer() {
-            const drawer = document.getElementById('mobile-drawer');
-            const overlay = document.getElementById('drawer-overlay');
-            const moreBtn = document.getElementById('more-btn');
-
-            if (drawer) drawer.classList.remove('open');
-            if (overlay) overlay.classList.remove('open');
-
-            if (moreBtn) {
-                const icon = moreBtn.querySelector('i');
-                if (icon) icon.className = 'ri-apps-line';
-            }
-
-            document.body.style.overflow = '';
-        }
 
         // Sidebar Toggle
         function toggleSidebar() {
