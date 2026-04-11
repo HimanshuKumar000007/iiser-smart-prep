@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>IISER IAT 2026 Sprint | Real Performance Tracker</title>
+    <title>IISER IAT 2026 - 60 Day Intensive</title>
 
     <!-- Favicon Setup -->
     <link rel="icon" href="/favicon.ico">
@@ -21,7 +21,6 @@
         rel="stylesheet">
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-    <script src="config.js"></script>
     <style>
         :root {
             --bg-primary: #050507;
@@ -147,15 +146,8 @@
         }
 
         @keyframes pulse-rec {
-
-            0%,
-            100% {
-                box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4);
-            }
-
-            50% {
-                box-shadow: 0 0 0 10px rgba(239, 68, 68, 0);
-            }
+            0%, 100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4); }
+            50% { box-shadow: 0 0 0 10px rgba(239, 68, 68, 0); }
         }
 
         .container {
@@ -674,18 +666,16 @@
             <div class="brand">
                 <div class="brand-icon"><i class="ph ph-atom"></i></div>
                 <div class="brand-text">
-                    <h1>Dynamic IAT Planner</h1>
-                    <span>90-Day Sprint</span>
+                    <h1>IISER IAT Sprint</h1>
+                    <span>60-Day Intensive</span>
                 </div>
             </div>
             <div class="header-actions">
                 <div style="display: flex; gap: 1rem; align-items: center;">
-                    <div
-                        style="font-weight: 700; color: var(--accent-orange); display: flex; align-items: center; gap: 0.25rem;">
+                    <div style="font-weight: 700; color: var(--accent-orange); display: flex; align-items: center; gap: 0.25rem;">
                         <i class="ph ph-fire"></i> <span id="headerStreak">0</span>
                     </div>
-                    <div
-                        style="font-weight: 700; color: var(--accent-purple); display: flex; align-items: center; gap: 0.25rem;">
+                    <div style="font-weight: 700; color: var(--accent-purple); display: flex; align-items: center; gap: 0.25rem;">
                         <i class="ph ph-lightning"></i> <span id="headerXP">0 XP</span>
                     </div>
                 </div>
@@ -703,7 +693,7 @@
 
             <div class="phase-indicator" id="phaseIndicator">
                 <div class="phase-dot phase-foundation"></div>
-                <span id="phaseText">Foundation Phase (Days 1-30)</span>
+                <span id="phaseText">Foundation Phase (Days 1-24)</span>
             </div>
 
             <div class="stats-overview" style="margin-bottom: 2rem;">
@@ -737,63 +727,24 @@
             <div class="task-list" id="taskList"></div>
         </div>
 
-        <!-- VIEW: AI PLANNER -->
-        <div id="view-plan" class="tab-view" style="display: none;">
-            <div class="stat-card primary" style="margin-bottom: 2rem; border:1px solid var(--accent-purple);">
-                <div class="stat-label" style="color:var(--accent-purple);">
-                    <i class="ph ph-sparkle"></i> AI Study Architect
-                </div>
-                <h2 style="margin: 0.5rem 0; font-size: 1.5rem; font-family: 'Space Grotesk';">Custom 30-Day Plan</h2>
-                <p style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 1.5rem;">
-                    Struggling with specific topics? Enter them below for a personalized AI-generated sprint.
-                </p>
-
-                <div style="display: flex; flex-direction: column; gap: 1rem;">
-                    <textarea id="weakTopicsInput" 
-                        placeholder="List your weak topics (e.g., Rotational Motion, Organic mechanisms, Integration...)"
-                        style="width: 100%; height: 100px; padding: 1rem; border-radius: 12px; background: rgba(0,0,0,0.2); border: 1px solid var(--glass-border); color: white; font-family: inherit; resize: none;"></textarea>
-                    
-                    <button onclick="generateAIPlan()" id="aiPlanBtn" class="focus-btn start" style="width: 100%; justify-content: center; padding: 0.8rem;">
-                        <i class="ph ph-magic-wand"></i> Architect My Plan
-                    </button>
-                </div>
-            </div>
-
-            <div id="aiPlanResult" style="display: none; background: var(--bg-card); border-radius: 16px; border: 1px solid var(--glass-border); padding: 1.5rem;">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; border-bottom: 1px solid var(--glass-border); padding-bottom: 1rem;">
-                    <span style="font-weight: 700; color: var(--accent-purple);"><i class="ph ph-calendar-check"></i> YOUR PERSONALIZED SPRINT</span>
-                    <button onclick="copyAIPlan()" class="icon-btn" title="Copy Text"><i class="ph ph-copy"></i></button>
-                </div>
-                <div id="aiPlanBody" style="font-size: 0.95rem; line-height: 1.7; color: var(--text-secondary);">
-                    <!-- AI Content -->
-                </div>
-            </div>
-
-            <div id="aiPlanLoading" style="display: none; text-align: center; padding: 3rem;">
-                <i class="ph ph-circle-notch ph-spin" style="font-size: 3rem; color: var(--accent-purple);"></i>
-                <p style="margin-top: 1rem; color: var(--text-muted);">Analyzing gaps and scheduling topics...</p>
-            </div>
-        </div>
-
         <!-- VIEW: MOCK (Placeholder) -->
         <div id="view-mock" class="tab-view" style="display: none; text-align: center; padding: 4rem 1rem;">
             <i class="ph ph-exam" style="font-size: 4rem; color: var(--text-muted); margin-bottom: 1rem;"></i>
             <h3>Mock Test Analysis</h3>
-            <p style="color: var(--text-muted); margin-top: 1rem;">Take a mock test to see your performance trends here.</p>
+            <p style="color: var(--text-muted); margin-top: 1rem;">Track your mock test performance here.</p>
         </div>
 
         <!-- VIEW: PROFILE (Placeholder) -->
         <div id="view-profile" class="tab-view" style="display: none; text-align: center; padding: 4rem 1rem;">
             <i class="ph ph-user-circle" style="font-size: 4rem; color: var(--text-muted); margin-bottom: 1rem;"></i>
             <h3>Student Profile</h3>
-            <p style="color: var(--text-muted); margin-top: 1rem;">Your learning stats and achievements will appear here.</p>
+            <p style="color: var(--text-muted); margin-top: 1rem;">Your learning stats and achievements.</p>
         </div>
     </main>
 
     <nav class="bottom-nav">
         <div class="nav-container">
             <a class="nav-item active" onclick="switchTab('home')"><i class="ph ph-house"></i><span>Today</span></a>
-            <a class="nav-item" onclick="switchTab('plan')"><i class="ph ph-calendar"></i><span>Plan</span></a>
             <a class="nav-item" onclick="switchTab('mock')"><i class="ph ph-exam"></i><span>Mock</span></a>
             <a class="nav-item" onclick="switchTab('profile')"><i class="ph ph-user"></i><span>Profile</span></a>
         </div>
@@ -804,8 +755,7 @@
         <div class="focus-title" id="focusGreeting">Focus Session</div>
         <div class="focus-subtitle" id="focusDetails">Ready to make progress?</div>
         <div id="focusIcon" style="font-size: 4rem; margin-bottom: 1rem;"><i class="ph ph-target"></i></div>
-        <div id="focusTopic" style="font-size: 1.5rem; font-weight: 700; margin-bottom: 2rem; text-align: center;">-
-        </div>
+        <div id="focusTopic" style="font-size: 1.5rem; font-weight: 700; margin-bottom: 2rem; text-align: center;">-</div>
         <div class="focus-timer-display" id="focusTimer">00:00</div>
         <div class="focus-controls">
             <button class="focus-btn start" id="startBtn" onclick="toggleFocusTimer()">
@@ -826,573 +776,419 @@
     </div>
 
     <script>
-        // STRICT 90-DAY PLAN BASED ON USER REQUIREMENTS
-        const PLAN_90_DAYS = [
-            // DAYS 1-30: FOUNDATION PHASE
+        // ========================================
+        // 60-DAY OPTIMIZED PLAN WITH STRONG LOGIC
+        // ========================================
+        
+        const PLAN_60_DAYS = [
+            // PHASE 1: FOUNDATION BUILDING (Days 1-24)
+            // Intensive coverage of all core topics with strategic cycling
+            
+            // WEEK 1: Physics & Math Foundation + Basic Chemistry & Biology
             // Day 1
             [
-                { subject: 'biology', topicName: 'Diversity in the Living World (taxonomy basics)', priority: 'medium', class: 11, allocatedTime: 120, xp: 100 },
-                { subject: 'chemistry', topicName: 'Some Basic Concepts (mole concept)', priority: 'high', class: 11, allocatedTime: 120, xp: 150 },
-                { subject: 'mathematics', topicName: 'Sets & Logic', priority: 'medium', class: 11, allocatedTime: 120, xp: 100 },
-                { subject: 'physics', topicName: 'Units & Measurements', priority: 'medium', class: 11, allocatedTime: 120, xp: 100 },
+                { subject: 'physics', topicName: 'Units & Measurements + Dimensional Analysis', priority: 'high', class: 11, allocatedTime: 90, xp: 150 },
+                { subject: 'mathematics', topicName: 'Sets, Relations & Functions', priority: 'critical', class: 11, allocatedTime: 90, xp: 200 },
+                { subject: 'chemistry', topicName: 'Mole Concept & Stoichiometry', priority: 'critical', class: 11, allocatedTime: 90, xp: 200 },
+                { subject: 'biology', topicName: 'Biological Classification & Taxonomy', priority: 'medium', class: 11, allocatedTime: 60, xp: 100 },
             ],
             // Day 2
             [
-                { subject: 'biology', topicName: 'Biological classification', priority: 'high', class: 11, allocatedTime: 120, xp: 150 },
-                { subject: 'chemistry', topicName: 'Mole concept numericals', priority: 'critical', class: 11, allocatedTime: 120, xp: 200 },
-                { subject: 'mathematics', topicName: 'Relations & functions', priority: 'high', class: 11, allocatedTime: 120, xp: 150 },
-                { subject: 'physics', topicName: 'Motion in a Straight Line', priority: 'high', class: 11, allocatedTime: 120, xp: 150 },
+                { subject: 'physics', topicName: 'Kinematics: Motion in 1D & 2D', priority: 'critical', class: 11, allocatedTime: 90, xp: 200 },
+                { subject: 'mathematics', topicName: 'Complex Numbers (Fundamentals)', priority: 'critical', class: 11, allocatedTime: 90, xp: 200 },
+                { subject: 'chemistry', topicName: 'Atomic Structure: Bohr Model + Quantum Numbers', priority: 'critical', class: 11, allocatedTime: 90, xp: 200 },
+                { subject: 'biology', topicName: 'Plant & Animal Kingdom', priority: 'high', class: 11, allocatedTime: 60, xp: 150 },
             ],
             // Day 3
             [
-                { subject: 'biology', topicName: 'Plant Kingdom', priority: 'high', class: 11, allocatedTime: 120, xp: 150 },
-                { subject: 'chemistry', topicName: 'Structure of the Atom (Bohr + quantum nos.)', priority: 'critical', class: 11, allocatedTime: 120, xp: 200 },
-                { subject: 'mathematics', topicName: 'Basic counting techniques', priority: 'medium', class: 11, allocatedTime: 120, xp: 100 },
-                { subject: 'physics', topicName: 'Motion in a Plane', priority: 'high', class: 11, allocatedTime: 120, xp: 150 },
+                { subject: 'physics', topicName: 'Newton\'s Laws of Motion + Applications', priority: 'critical', class: 11, allocatedTime: 90, xp: 200 },
+                { subject: 'mathematics', topicName: 'Quadratic Equations + Inequalities', priority: 'high', class: 11, allocatedTime: 90, xp: 150 },
+                { subject: 'chemistry', topicName: 'Periodic Properties & Trends', priority: 'high', class: 11, allocatedTime: 90, xp: 150 },
+                { subject: 'biology', topicName: 'Cell Structure & Organelles', priority: 'critical', class: 11, allocatedTime: 60, xp: 200 },
             ],
             // Day 4
             [
-                { subject: 'biology', topicName: 'Animal Kingdom', priority: 'high', class: 11, allocatedTime: 120, xp: 150 },
-                { subject: 'chemistry', topicName: 'Structure of Atom (electronic config)', priority: 'critical', class: 11, allocatedTime: 120, xp: 200 },
-                { subject: 'mathematics', topicName: 'Complex numbers', priority: 'high', class: 11, allocatedTime: 120, xp: 150 },
-                { subject: 'physics', topicName: 'Laws of Motion', priority: 'critical', class: 11, allocatedTime: 120, xp: 200 },
+                { subject: 'physics', topicName: 'Work, Energy & Power', priority: 'critical', class: 11, allocatedTime: 90, xp: 200 },
+                { subject: 'mathematics', topicName: 'Trigonometry: Identities & Equations', priority: 'critical', class: 11, allocatedTime: 90, xp: 200 },
+                { subject: 'chemistry', topicName: 'Chemical Bonding: VSEPR + Hybridization', priority: 'critical', class: 11, allocatedTime: 90, xp: 200 },
+                { subject: 'biology', topicName: 'Cell Division: Mitosis & Meiosis', priority: 'critical', class: 11, allocatedTime: 60, xp: 200 },
             ],
             // Day 5
             [
-                { subject: 'biology', topicName: 'Structural Organisation in Plants', priority: 'medium', class: 11, allocatedTime: 120, xp: 100 },
-                { subject: 'chemistry', topicName: 'Periodicity in properties', priority: 'high', class: 11, allocatedTime: 120, xp: 150 },
-                { subject: 'mathematics', topicName: 'Quadratic equations', priority: 'high', class: 11, allocatedTime: 120, xp: 150 },
-                { subject: 'physics', topicName: 'Work, Energy & Power', priority: 'critical', class: 11, allocatedTime: 120, xp: 200 },
+                { subject: 'physics', topicName: 'Rotational Motion: Torque & Angular Momentum', priority: 'critical', class: 11, allocatedTime: 90, xp: 200 },
+                { subject: 'mathematics', topicName: 'Sequences & Series (AP, GP, AGP)', priority: 'high', class: 11, allocatedTime: 90, xp: 150 },
+                { subject: 'chemistry', topicName: 'Thermodynamics: 1st & 2nd Law', priority: 'critical', class: 11, allocatedTime: 90, xp: 200 },
+                { subject: 'biology', topicName: 'Photosynthesis & Respiration', priority: 'critical', class: 11, allocatedTime: 60, xp: 200 },
             ],
             // Day 6
             [
-                { subject: 'biology', topicName: 'Structural Organisation in Animals', priority: 'medium', class: 11, allocatedTime: 120, xp: 100 },
-                { subject: 'chemistry', topicName: 'Chemical Bonding (VSEPR + hybridization)', priority: 'critical', class: 11, allocatedTime: 120, xp: 200 },
-                { subject: 'mathematics', topicName: 'Trigonometric functions (identities)', priority: 'high', class: 11, allocatedTime: 120, xp: 150 },
-                { subject: 'physics', topicName: 'System of Particles (COM)', priority: 'high', class: 11, allocatedTime: 120, xp: 150 },
+                { subject: 'physics', topicName: 'Gravitation & Satellite Motion', priority: 'high', class: 11, allocatedTime: 90, xp: 150 },
+                { subject: 'mathematics', topicName: 'Straight Lines & Circles', priority: 'critical', class: 11, allocatedTime: 90, xp: 200 },
+                { subject: 'chemistry', topicName: 'Chemical Equilibrium (Kp, Kc, Le Chatelier)', priority: 'critical', class: 11, allocatedTime: 90, xp: 200 },
+                { subject: 'biology', topicName: 'Plant Physiology: Transport & Growth', priority: 'high', class: 11, allocatedTime: 60, xp: 150 },
             ],
-            // Day 7: TEST
+            // Day 7: WEEKLY TEST
             [
-                { subject: 'physics', topicName: 'Weekly Test & Analysis', priority: 'critical', class: 11, allocatedTime: 180, xp: 300, isTest: true },
+                { subject: 'physics', topicName: 'Week 1 Comprehensive Test (All Subjects)', priority: 'critical', class: 11, allocatedTime: 180, xp: 400, isTest: true },
             ],
+            
+            // WEEK 2: Advanced Mechanics + Organic Chemistry Intro + Human Physiology
             // Day 8
             [
-                { subject: 'biology', topicName: 'Cell: Structure (organelles)', priority: 'critical', class: 11, allocatedTime: 120, xp: 200 },
-                { subject: 'chemistry', topicName: 'Chemical Bonding (MOT + H-bonding)', priority: 'critical', class: 11, allocatedTime: 120, xp: 200 },
-                { subject: 'mathematics', topicName: 'Trigonometric equations', priority: 'high', class: 11, allocatedTime: 120, xp: 150 },
-                { subject: 'physics', topicName: 'Rotational Motion', priority: 'critical', class: 11, allocatedTime: 120, xp: 200 },
+                { subject: 'physics', topicName: 'Fluids: Pressure, Buoyancy, Bernoulli', priority: 'high', class: 11, allocatedTime: 90, xp: 150 },
+                { subject: 'mathematics', topicName: 'Conic Sections: Parabola', priority: 'critical', class: 11, allocatedTime: 90, xp: 200 },
+                { subject: 'chemistry', topicName: 'Ionic Equilibrium: pH, Buffer, Solubility', priority: 'critical', class: 11, allocatedTime: 90, xp: 200 },
+                { subject: 'biology', topicName: 'Digestion & Absorption', priority: 'critical', class: 11, allocatedTime: 60, xp: 200 },
             ],
             // Day 9
             [
-                { subject: 'biology', topicName: 'Cell Cycle & Division', priority: 'critical', class: 11, allocatedTime: 120, xp: 200 },
-                { subject: 'chemistry', topicName: 'Thermodynamics (1st law)', priority: 'critical', class: 11, allocatedTime: 120, xp: 200 },
-                { subject: 'mathematics', topicName: 'Sequences & series', priority: 'high', class: 11, allocatedTime: 120, xp: 150 },
-                { subject: 'physics', topicName: 'Gravitation', priority: 'high', class: 11, allocatedTime: 120, xp: 150 },
+                { subject: 'physics', topicName: 'Thermal Properties: Calorimetry + Expansion', priority: 'medium', class: 11, allocatedTime: 90, xp: 100 },
+                { subject: 'mathematics', topicName: 'Conic Sections: Ellipse & Hyperbola', priority: 'critical', class: 11, allocatedTime: 90, xp: 200 },
+                { subject: 'chemistry', topicName: 'Redox Reactions + Electrochemistry Basics', priority: 'high', class: 11, allocatedTime: 90, xp: 150 },
+                { subject: 'biology', topicName: 'Breathing & Circulation', priority: 'critical', class: 11, allocatedTime: 60, xp: 200 },
             ],
             // Day 10
             [
-                { subject: 'biology', topicName: 'Plant Physiology (Transport in plants)', priority: 'high', class: 11, allocatedTime: 120, xp: 150 },
-                { subject: 'chemistry', topicName: 'Thermodynamics (Gibbs free energy)', priority: 'critical', class: 11, allocatedTime: 120, xp: 200 },
-                { subject: 'mathematics', topicName: 'Coordinate geometry (straight line)', priority: 'critical', class: 11, allocatedTime: 120, xp: 200 },
-                { subject: 'physics', topicName: 'Mechanical Properties of Fluids', priority: 'medium', class: 11, allocatedTime: 120, xp: 100 },
+                { subject: 'physics', topicName: 'Thermodynamics (Physics): Processes + Cycles', priority: 'critical', class: 11, allocatedTime: 90, xp: 200 },
+                { subject: 'mathematics', topicName: 'Permutations & Combinations', priority: 'high', class: 11, allocatedTime: 90, xp: 150 },
+                { subject: 'chemistry', topicName: 'Organic Chemistry: IUPAC + Isomerism', priority: 'high', class: 11, allocatedTime: 90, xp: 150 },
+                { subject: 'biology', topicName: 'Excretory System & Osmoregulation', priority: 'critical', class: 11, allocatedTime: 60, xp: 200 },
             ],
             // Day 11
             [
-                { subject: 'biology', topicName: 'Photosynthesis', priority: 'critical', class: 11, allocatedTime: 120, xp: 200 },
-                { subject: 'chemistry', topicName: 'Equilibrium (chemical)', priority: 'critical', class: 11, allocatedTime: 120, xp: 200 },
-                { subject: 'mathematics', topicName: 'Coordinate geometry (circle)', priority: 'critical', class: 11, allocatedTime: 120, xp: 200 },
-                { subject: 'physics', topicName: 'Thermal Properties of Matter', priority: 'medium', class: 11, allocatedTime: 120, xp: 100 },
+                { subject: 'physics', topicName: 'Kinetic Theory of Gases', priority: 'medium', class: 11, allocatedTime: 90, xp: 100 },
+                { subject: 'mathematics', topicName: 'Binomial Theorem & Applications', priority: 'high', class: 11, allocatedTime: 90, xp: 150 },
+                { subject: 'chemistry', topicName: 'Hydrocarbons: Alkanes, Alkenes, Alkynes', priority: 'high', class: 11, allocatedTime: 90, xp: 150 },
+                { subject: 'biology', topicName: 'Neural Control & Coordination', priority: 'critical', class: 11, allocatedTime: 60, xp: 200 },
             ],
             // Day 12
             [
-                { subject: 'biology', topicName: 'Respiration in plants', priority: 'critical', class: 11, allocatedTime: 120, xp: 200 },
-                { subject: 'chemistry', topicName: 'Ionic equilibrium', priority: 'critical', class: 11, allocatedTime: 120, xp: 200 },
-                { subject: 'mathematics', topicName: 'Parabola', priority: 'critical', class: 11, allocatedTime: 120, xp: 200 },
-                { subject: 'physics', topicName: 'Thermodynamics (physics)', priority: 'critical', class: 11, allocatedTime: 120, xp: 200 },
+                { subject: 'physics', topicName: 'Oscillations: SHM + Pendulum', priority: 'high', class: 11, allocatedTime: 90, xp: 150 },
+                { subject: 'mathematics', topicName: 'Vectors: Dot & Cross Product', priority: 'critical', class: 12, allocatedTime: 90, xp: 200 },
+                { subject: 'chemistry', topicName: 'Solutions & Colligative Properties', priority: 'high', class: 12, allocatedTime: 90, xp: 150 },
+                { subject: 'biology', topicName: 'Chemical Coordination (Endocrine)', priority: 'critical', class: 11, allocatedTime: 60, xp: 200 },
             ],
             // Day 13
             [
-                { subject: 'biology', topicName: 'Plant growth regulators', priority: 'high', class: 11, allocatedTime: 120, xp: 150 },
-                { subject: 'chemistry', topicName: 'Redox reactions', priority: 'medium', class: 11, allocatedTime: 120, xp: 100 },
-                { subject: 'mathematics', topicName: 'Ellipse & hyperbola', priority: 'critical', class: 11, allocatedTime: 120, xp: 200 },
-                { subject: 'physics', topicName: 'Kinetic Theory', priority: 'medium', class: 11, allocatedTime: 120, xp: 100 },
+                { subject: 'physics', topicName: 'Waves: Superposition, Interference, Beats', priority: 'high', class: 11, allocatedTime: 90, xp: 150 },
+                { subject: 'mathematics', topicName: '3D Geometry: Lines & Planes', priority: 'critical', class: 12, allocatedTime: 90, xp: 200 },
+                { subject: 'chemistry', topicName: 'Electrochemistry: Cells & Nernst Equation', priority: 'critical', class: 12, allocatedTime: 90, xp: 200 },
+                { subject: 'biology', topicName: 'Reproduction in Organisms', priority: 'high', class: 12, allocatedTime: 60, xp: 150 },
             ],
-            // Day 14: TEST
+            // Day 14: WEEKLY TEST
             [
-                { subject: 'physics', topicName: 'Weekly Test & Analysis', priority: 'critical', class: 11, allocatedTime: 180, xp: 300, isTest: true },
+                { subject: 'physics', topicName: 'Week 2 Comprehensive Test', priority: 'critical', class: 11, allocatedTime: 180, xp: 400, isTest: true },
             ],
+            
+            // WEEK 3: Electrostatics + Calculus + Organic Mechanisms
             // Day 15
             [
-                { subject: 'biology', topicName: 'Human Physiology (Digestion)', priority: 'critical', class: 11, allocatedTime: 120, xp: 200 },
-                { subject: 'chemistry', topicName: 'Solutions', priority: 'high', class: 12, allocatedTime: 120, xp: 150 },
-                { subject: 'mathematics', topicName: 'Vectors', priority: 'critical', class: 12, allocatedTime: 120, xp: 200 },
-                { subject: 'physics', topicName: 'Oscillations', priority: 'high', class: 11, allocatedTime: 120, xp: 150 },
+                { subject: 'physics', topicName: 'Electric Charges & Coulomb\'s Law', priority: 'critical', class: 12, allocatedTime: 90, xp: 200 },
+                { subject: 'mathematics', topicName: 'Limits & Continuity', priority: 'critical', class: 12, allocatedTime: 90, xp: 200 },
+                { subject: 'chemistry', topicName: 'Chemical Kinetics: Rate Laws & Mechanisms', priority: 'critical', class: 12, allocatedTime: 90, xp: 200 },
+                { subject: 'biology', topicName: 'Human Reproduction & Development', priority: 'high', class: 12, allocatedTime: 60, xp: 150 },
             ],
             // Day 16
             [
-                { subject: 'biology', topicName: 'Breathing & Circulation', priority: 'critical', class: 11, allocatedTime: 120, xp: 200 },
-                { subject: 'chemistry', topicName: 'Electrochemistry', priority: 'critical', class: 12, allocatedTime: 120, xp: 200 },
-                { subject: 'mathematics', topicName: '3D Geometry', priority: 'critical', class: 12, allocatedTime: 120, xp: 200 },
-                { subject: 'physics', topicName: 'Waves', priority: 'high', class: 11, allocatedTime: 120, xp: 150 },
+                { subject: 'physics', topicName: 'Electric Field & Gauss\'s Law', priority: 'critical', class: 12, allocatedTime: 90, xp: 200 },
+                { subject: 'mathematics', topicName: 'Differentiation: Rules & Applications', priority: 'critical', class: 12, allocatedTime: 90, xp: 200 },
+                { subject: 'chemistry', topicName: 'Surface Chemistry & Colloids', priority: 'medium', class: 12, allocatedTime: 90, xp: 100 },
+                { subject: 'biology', topicName: 'Genetics: Mendelian Laws', priority: 'critical', class: 12, allocatedTime: 60, xp: 200 },
             ],
             // Day 17
             [
-                { subject: 'biology', topicName: 'Excretion', priority: 'critical', class: 11, allocatedTime: 120, xp: 200 },
-                { subject: 'chemistry', topicName: 'Chemical kinetics', priority: 'critical', class: 12, allocatedTime: 120, xp: 200 },
-                { subject: 'mathematics', topicName: 'Matrices', priority: 'critical', class: 12, allocatedTime: 120, xp: 200 },
-                { subject: 'physics', topicName: 'Electric Charges & Fields', priority: 'critical', class: 12, allocatedTime: 120, xp: 200 },
+                { subject: 'physics', topicName: 'Electric Potential & Capacitance', priority: 'critical', class: 12, allocatedTime: 90, xp: 200 },
+                { subject: 'mathematics', topicName: 'Applications of Derivatives (Maxima/Minima)', priority: 'critical', class: 12, allocatedTime: 90, xp: 200 },
+                { subject: 'chemistry', topicName: 'Haloalkanes & Haloarenes', priority: 'high', class: 12, allocatedTime: 90, xp: 150 },
+                { subject: 'biology', topicName: 'Molecular Basis of Inheritance (DNA/RNA)', priority: 'critical', class: 12, allocatedTime: 60, xp: 200 },
             ],
             // Day 18
             [
-                { subject: 'biology', topicName: 'Neural Control', priority: 'critical', class: 11, allocatedTime: 120, xp: 200 },
-                { subject: 'chemistry', topicName: 'd-block elements', priority: 'high', class: 12, allocatedTime: 120, xp: 150 },
-                { subject: 'mathematics', topicName: 'Determinants', priority: 'critical', class: 12, allocatedTime: 120, xp: 200 },
-                { subject: 'physics', topicName: 'Electrostatic Potential & Capacitance', priority: 'critical', class: 12, allocatedTime: 120, xp: 200 },
+                { subject: 'physics', topicName: 'Current Electricity: Ohm\'s Law, Kirchhoff', priority: 'critical', class: 12, allocatedTime: 90, xp: 200 },
+                { subject: 'mathematics', topicName: 'Indefinite Integration', priority: 'critical', class: 12, allocatedTime: 90, xp: 200 },
+                { subject: 'chemistry', topicName: 'Alcohols, Phenols & Ethers', priority: 'high', class: 12, allocatedTime: 90, xp: 150 },
+                { subject: 'biology', topicName: 'Evolution & Origin of Life', priority: 'high', class: 12, allocatedTime: 60, xp: 150 },
             ],
             // Day 19
             [
-                { subject: 'biology', topicName: 'Endocrine system', priority: 'critical', class: 11, allocatedTime: 120, xp: 200 },
-                { subject: 'chemistry', topicName: 'f-block elements', priority: 'medium', class: 12, allocatedTime: 120, xp: 100 },
-                { subject: 'mathematics', topicName: 'Limits', priority: 'critical', class: 12, allocatedTime: 120, xp: 200 },
-                { subject: 'physics', topicName: 'Current Electricity', priority: 'critical', class: 12, allocatedTime: 120, xp: 200 },
+                { subject: 'physics', topicName: 'Magnetic Effects of Current', priority: 'critical', class: 12, allocatedTime: 90, xp: 200 },
+                { subject: 'mathematics', topicName: 'Definite Integration & Properties', priority: 'critical', class: 12, allocatedTime: 90, xp: 200 },
+                { subject: 'chemistry', topicName: 'Aldehydes, Ketones & Carboxylic Acids', priority: 'critical', class: 12, allocatedTime: 90, xp: 200 },
+                { subject: 'biology', topicName: 'Biotechnology: Principles & Processes', priority: 'high', class: 12, allocatedTime: 60, xp: 150 },
             ],
             // Day 20
             [
-                { subject: 'biology', topicName: 'Reproduction in organisms', priority: 'high', class: 12, allocatedTime: 120, xp: 150 },
-                { subject: 'chemistry', topicName: 'Coordination compounds', priority: 'high', class: 12, allocatedTime: 120, xp: 150 },
-                { subject: 'mathematics', topicName: 'Continuity', priority: 'critical', class: 12, allocatedTime: 120, xp: 200 },
-                { subject: 'physics', topicName: 'Moving Charges & Magnetism', priority: 'critical', class: 12, allocatedTime: 120, xp: 200 },
+                { subject: 'physics', topicName: 'Magnetism & Magnetic Properties', priority: 'high', class: 12, allocatedTime: 90, xp: 150 },
+                { subject: 'mathematics', topicName: 'Area Under Curves', priority: 'critical', class: 12, allocatedTime: 90, xp: 200 },
+                { subject: 'chemistry', topicName: 'Organic Nitrogen Compounds (Amines)', priority: 'high', class: 12, allocatedTime: 90, xp: 150 },
+                { subject: 'biology', topicName: 'Biotechnology Applications', priority: 'high', class: 12, allocatedTime: 60, xp: 150 },
             ],
-            // Day 21: TEST
+            // Day 21: WEEKLY TEST
             [
-                { subject: 'physics', topicName: 'Weekly Test & Analysis', priority: 'critical', class: 12, allocatedTime: 180, xp: 300, isTest: true },
+                { subject: 'physics', topicName: 'Week 3 Comprehensive Test', priority: 'critical', class: 12, allocatedTime: 180, xp: 400, isTest: true },
             ],
+            
+            // WEEK 4: Optics + Advanced Integration + Inorganic
             // Day 22
             [
-                { subject: 'biology', topicName: 'Human reproduction', priority: 'high', class: 12, allocatedTime: 120, xp: 150 },
-                { subject: 'chemistry', topicName: 'Organic basics (IUPAC + isomerism)', priority: 'high', class: 11, allocatedTime: 120, xp: 150 },
-                { subject: 'mathematics', topicName: 'Differentiation', priority: 'critical', class: 12, allocatedTime: 120, xp: 200 },
-                { subject: 'physics', topicName: 'Magnetism & Matter', priority: 'high', class: 12, allocatedTime: 120, xp: 150 },
+                { subject: 'physics', topicName: 'EMI: Faraday & Lenz Law', priority: 'critical', class: 12, allocatedTime: 90, xp: 200 },
+                { subject: 'mathematics', topicName: 'Differential Equations (1st Order)', priority: 'high', class: 12, allocatedTime: 90, xp: 150 },
+                { subject: 'chemistry', topicName: 'd-Block Elements & Coordination', priority: 'critical', class: 12, allocatedTime: 90, xp: 200 },
+                { subject: 'biology', topicName: 'Ecology: Organisms & Populations', priority: 'high', class: 12, allocatedTime: 60, xp: 150 },
             ],
             // Day 23
             [
-                { subject: 'biology', topicName: 'Reproductive health', priority: 'medium', class: 12, allocatedTime: 120, xp: 100 },
-                { subject: 'chemistry', topicName: 'Hydrocarbons', priority: 'high', class: 11, allocatedTime: 120, xp: 150 },
-                { subject: 'mathematics', topicName: 'Application of derivatives', priority: 'critical', class: 12, allocatedTime: 120, xp: 200 },
-                { subject: 'physics', topicName: 'EMI', priority: 'critical', class: 12, allocatedTime: 120, xp: 200 },
+                { subject: 'physics', topicName: 'AC Circuits: RLC, Resonance, Power', priority: 'high', class: 12, allocatedTime: 90, xp: 150 },
+                { subject: 'mathematics', topicName: 'Matrices & Determinants', priority: 'critical', class: 12, allocatedTime: 90, xp: 200 },
+                { subject: 'chemistry', topicName: 'f-Block Elements (Lanthanides/Actinides)', priority: 'medium', class: 12, allocatedTime: 90, xp: 100 },
+                { subject: 'biology', topicName: 'Ecosystem: Energy Flow & Nutrient Cycles', priority: 'high', class: 12, allocatedTime: 60, xp: 150 },
             ],
             // Day 24
             [
-                { subject: 'biology', topicName: 'Biology in Human Welfare', priority: 'medium', class: 12, allocatedTime: 120, xp: 100 },
-                { subject: 'chemistry', topicName: 'Haloalkanes & haloarenes', priority: 'high', class: 12, allocatedTime: 120, xp: 150 },
-                { subject: 'mathematics', topicName: 'Integration (basic methods)', priority: 'critical', class: 12, allocatedTime: 120, xp: 200 },
-                { subject: 'physics', topicName: 'Alternating Current', priority: 'high', class: 12, allocatedTime: 120, xp: 150 },
+                { subject: 'physics', topicName: 'Ray Optics: Reflection, Refraction, Lenses', priority: 'critical', class: 12, allocatedTime: 90, xp: 200 },
+                { subject: 'mathematics', topicName: 'Probability: Basics & Distributions', priority: 'high', class: 12, allocatedTime: 90, xp: 150 },
+                { subject: 'chemistry', topicName: 'Biomolecules & Polymers', priority: 'high', class: 12, allocatedTime: 90, xp: 150 },
+                { subject: 'biology', topicName: 'Biodiversity & Conservation', priority: 'medium', class: 12, allocatedTime: 60, xp: 100 },
             ],
+            
+            // ========================================
+            // PHASE 2: INTENSIVE REVISION (Days 25-42)
+            // Strategic topic-wise deep revision with problem solving
+            // ========================================
+            
             // Day 25
             [
-                { subject: 'biology', topicName: 'Biotechnology (Principles)', priority: 'high', class: 12, allocatedTime: 120, xp: 150 },
-                { subject: 'chemistry', topicName: 'Alcohols, phenols & ethers', priority: 'high', class: 12, allocatedTime: 120, xp: 150 },
-                { subject: 'mathematics', topicName: 'Definite integration', priority: 'critical', class: 12, allocatedTime: 120, xp: 200 },
-                { subject: 'physics', topicName: 'Ray Optics', priority: 'critical', class: 12, allocatedTime: 120, xp: 200 },
+                { subject: 'physics', topicName: 'Wave Optics: Interference, Diffraction, Polarization', priority: 'critical', class: 12, allocatedTime: 90, xp: 200 },
+                { subject: 'mathematics', topicName: 'Statistics & Probability (Advanced)', priority: 'high', class: 12, allocatedTime: 90, xp: 150 },
+                { subject: 'chemistry', topicName: 'Organic Revision: Named Reactions', priority: 'critical', class: 12, allocatedTime: 90, xp: 200 },
+                { subject: 'biology', topicName: 'Environmental Issues', priority: 'medium', class: 12, allocatedTime: 60, xp: 100 },
             ],
             // Day 26
             [
-                { subject: 'biology', topicName: 'Biotechnology applications', priority: 'high', class: 12, allocatedTime: 120, xp: 150 },
-                { subject: 'chemistry', topicName: 'Aldehydes, ketones & acids', priority: 'critical', class: 12, allocatedTime: 120, xp: 200 },
-                { subject: 'mathematics', topicName: 'Differential equations', priority: 'high', class: 12, allocatedTime: 120, xp: 150 },
-                { subject: 'physics', topicName: 'Wave Optics', priority: 'critical', class: 12, allocatedTime: 120, xp: 200 },
+                { subject: 'physics', topicName: 'Modern Physics: Photoelectric Effect, de Broglie', priority: 'critical', class: 12, allocatedTime: 90, xp: 200 },
+                { subject: 'mathematics', topicName: 'Revision: Complex Numbers + Quadratics', priority: 'high', class: 11, allocatedTime: 90, xp: 150 },
+                { subject: 'chemistry', topicName: 'Physical Chemistry Numericals (Thermo + Equilibrium)', priority: 'critical', class: 11, allocatedTime: 90, xp: 200 },
+                { subject: 'biology', topicName: 'Complete Biology Revision Part 1 (Units 1-6)', priority: 'critical', class: 11, allocatedTime: 60, xp: 200 },
             ],
             // Day 27
             [
-                { subject: 'biology', topicName: 'Ecology (Organisms & Populations)', priority: 'high', class: 12, allocatedTime: 120, xp: 150 },
-                { subject: 'chemistry', topicName: 'Organic nitrogen compounds', priority: 'high', class: 12, allocatedTime: 120, xp: 150 },
-                { subject: 'mathematics', topicName: 'Statistics', priority: 'medium', class: 12, allocatedTime: 120, xp: 100 },
-                { subject: 'physics', topicName: 'Dual Nature', priority: 'critical', class: 12, allocatedTime: 120, xp: 200 },
+                { subject: 'physics', topicName: 'Atoms & Nuclei: Bohr Model, Nuclear Physics', priority: 'critical', class: 12, allocatedTime: 90, xp: 200 },
+                { subject: 'mathematics', topicName: 'Revision: Trigonometry Full', priority: 'critical', class: 11, allocatedTime: 90, xp: 200 },
+                { subject: 'chemistry', topicName: 'Revision: Bonding + Periodic Properties', priority: 'high', class: 11, allocatedTime: 90, xp: 150 },
+                { subject: 'biology', topicName: 'Complete Biology Revision Part 2 (Units 7-12)', priority: 'critical', class: 12, allocatedTime: 60, xp: 200 },
             ],
-            // Day 28
+            // Day 28: MOCK TEST
             [
-                { subject: 'biology', topicName: 'Ecosystem', priority: 'high', class: 12, allocatedTime: 120, xp: 150 },
-                { subject: 'chemistry', topicName: 'Biomolecules', priority: 'high', class: 12, allocatedTime: 120, xp: 150 },
-                { subject: 'mathematics', topicName: 'Probability', priority: 'high', class: 12, allocatedTime: 120, xp: 150 },
-                { subject: 'physics', topicName: 'Atoms', priority: 'critical', class: 12, allocatedTime: 120, xp: 200 },
+                { subject: 'physics', topicName: 'Full Syllabus Mock Test 1', priority: 'critical', class: 12, allocatedTime: 180, xp: 500, isTest: true },
             ],
             // Day 29
             [
-                { subject: 'biology', topicName: 'Biodiversity', priority: 'medium', class: 12, allocatedTime: 120, xp: 100 },
-                { subject: 'chemistry', topicName: 'Organic revision', priority: 'high', class: 12, allocatedTime: 120, xp: 150 },
-                { subject: 'mathematics', topicName: 'Linear Programming', priority: 'medium', class: 12, allocatedTime: 120, xp: 100 },
-                { subject: 'physics', topicName: 'Nuclei', priority: 'critical', class: 12, allocatedTime: 120, xp: 200 },
+                { subject: 'physics', topicName: 'Mechanics Revision: Kinematics + Dynamics', priority: 'critical', class: 11, allocatedTime: 90, xp: 200 },
+                { subject: 'mathematics', topicName: 'Calculus Deep Dive: Differentiation Problems', priority: 'critical', class: 12, allocatedTime: 90, xp: 200 },
+                { subject: 'chemistry', topicName: 'Revision: Organic Mechanisms (Substitution, Elimination)', priority: 'critical', class: 12, allocatedTime: 90, xp: 200 },
+                { subject: 'biology', topicName: 'Genetics & Evolution Revision', priority: 'critical', class: 12, allocatedTime: 60, xp: 200 },
             ],
             // Day 30
             [
-                { subject: 'biology', topicName: 'Environmental Issues', priority: 'medium', class: 12, allocatedTime: 120, xp: 100 },
-                { subject: 'chemistry', topicName: 'Physical chemistry revision', priority: 'high', class: 11, allocatedTime: 120, xp: 150 },
-                { subject: 'mathematics', topicName: 'Mixed calculus revision', priority: 'critical', class: 12, allocatedTime: 120, xp: 200 },
-                { subject: 'physics', topicName: 'Semiconductor Electronics', priority: 'medium', class: 12, allocatedTime: 120, xp: 100 },
+                { subject: 'physics', topicName: 'Rotation + Gravitation Revision', priority: 'critical', class: 11, allocatedTime: 90, xp: 200 },
+                { subject: 'mathematics', topicName: 'Calculus Deep Dive: Integration Techniques', priority: 'critical', class: 12, allocatedTime: 90, xp: 200 },
+                { subject: 'chemistry', topicName: 'Electrochemistry Complete Revision', priority: 'critical', class: 12, allocatedTime: 90, xp: 200 },
+                { subject: 'biology', topicName: 'Human Physiology Complete Revision', priority: 'critical', class: 11, allocatedTime: 60, xp: 200 },
             ],
-            // DAYS 31-60: FULL REVISION + STRENGTHENING
-            // Day 31-40: Revise Biology, Organic mechanisms, Calculus, Electrostatics
             // Day 31
             [
-                { subject: 'biology', topicName: 'Complete Unit 1-3 Revision', priority: 'critical', class: 11, allocatedTime: 120, xp: 200 },
-                { subject: 'chemistry', topicName: 'Organic reaction mechanisms', priority: 'critical', class: 12, allocatedTime: 120, xp: 200 },
-                { subject: 'mathematics', topicName: 'Calculus deep practice', priority: 'critical', class: 12, allocatedTime: 120, xp: 200 },
-                { subject: 'physics', topicName: 'Electrostatics mastery', priority: 'critical', class: 12, allocatedTime: 120, xp: 200 },
+                { subject: 'physics', topicName: 'Electrostatics Mastery (All Concepts)', priority: 'critical', class: 12, allocatedTime: 90, xp: 200 },
+                { subject: 'mathematics', topicName: 'Coordinate Geometry Full Revision', priority: 'critical', class: 11, allocatedTime: 90, xp: 200 },
+                { subject: 'chemistry', topicName: 'Chemical Kinetics Revision', priority: 'critical', class: 12, allocatedTime: 90, xp: 200 },
+                { subject: 'biology', topicName: 'Plant Physiology Revision', priority: 'high', class: 11, allocatedTime: 60, xp: 150 },
             ],
             // Day 32
             [
-                { subject: 'biology', topicName: 'Complete Unit 4-6 Revision', priority: 'critical', class: 11, allocatedTime: 120, xp: 200 },
-                { subject: 'chemistry', topicName: 'Organic named reactions', priority: 'critical', class: 12, allocatedTime: 120, xp: 200 },
-                { subject: 'mathematics', topicName: 'Integration techniques', priority: 'critical', class: 12, allocatedTime: 120, xp: 200 },
-                { subject: 'physics', topicName: 'Current electricity mastery', priority: 'critical', class: 12, allocatedTime: 120, xp: 200 },
+                { subject: 'physics', topicName: 'Current Electricity + Circuits Mastery', priority: 'critical', class: 12, allocatedTime: 90, xp: 200 },
+                { subject: 'mathematics', topicName: 'Vectors & 3D Geometry Revision', priority: 'critical', class: 12, allocatedTime: 90, xp: 200 },
+                { subject: 'chemistry', topicName: 'd-Block & Coordination Chemistry Revision', priority: 'critical', class: 12, allocatedTime: 90, xp: 200 },
+                { subject: 'biology', topicName: 'Ecology & Environment Revision', priority: 'high', class: 12, allocatedTime: 60, xp: 150 },
             ],
             // Day 33
             [
-                { subject: 'biology', topicName: 'Complete Unit 7-9 Revision', priority: 'critical', class: 11, allocatedTime: 120, xp: 200 },
-                { subject: 'chemistry', topicName: 'Thermodynamics revision', priority: 'critical', class: 11, allocatedTime: 120, xp: 200 },
-                { subject: 'mathematics', topicName: 'Application of derivatives', priority: 'critical', class: 12, allocatedTime: 120, xp: 200 },
-                { subject: 'physics', topicName: 'Mechanics full revision', priority: 'critical', class: 11, allocatedTime: 120, xp: 200 },
+                { subject: 'physics', topicName: 'Magnetism & EMI Complete Revision', priority: 'critical', class: 12, allocatedTime: 90, xp: 200 },
+                { subject: 'mathematics', topicName: 'Probability & Statistics Revision', priority: 'high', class: 12, allocatedTime: 90, xp: 150 },
+                { subject: 'chemistry', topicName: 'Solutions & Colligative Properties Revision', priority: 'high', class: 12, allocatedTime: 90, xp: 150 },
+                { subject: 'biology', topicName: 'Biotechnology Complete Revision', priority: 'high', class: 12, allocatedTime: 60, xp: 150 },
             ],
             // Day 34
             [
-                { subject: 'biology', topicName: 'Complete Unit 10-12 Revision', priority: 'critical', class: 12, allocatedTime: 120, xp: 200 },
-                { subject: 'chemistry', topicName: 'Coordination compounds', priority: 'critical', class: 12, allocatedTime: 120, xp: 200 },
-                { subject: 'mathematics', topicName: 'Conics revision', priority: 'critical', class: 11, allocatedTime: 120, xp: 200 },
-                { subject: 'physics', topicName: 'Magnetism revision', priority: 'critical', class: 12, allocatedTime: 120, xp: 200 },
+                { subject: 'physics', topicName: 'Optics Complete Revision (Ray + Wave)', priority: 'critical', class: 12, allocatedTime: 90, xp: 200 },
+                { subject: 'mathematics', topicName: 'Matrices & Determinants Problems', priority: 'critical', class: 12, allocatedTime: 90, xp: 200 },
+                { subject: 'chemistry', topicName: 'Complete Organic Revision (All Chapters)', priority: 'critical', class: 12, allocatedTime: 90, xp: 200 },
+                { subject: 'biology', topicName: 'Cell Biology & Biomolecules Revision', priority: 'critical', class: 11, allocatedTime: 60, xp: 200 },
             ],
-            // Day 35: TEST
+            // Day 35: MOCK TEST
             [
-                { subject: 'physics', topicName: 'Full Mock Test', priority: 'critical', class: 12, allocatedTime: 180, xp: 400, isTest: true },
+                { subject: 'physics', topicName: 'Full Syllabus Mock Test 2', priority: 'critical', class: 12, allocatedTime: 180, xp: 500, isTest: true },
             ],
             // Day 36
             [
-                { subject: 'biology', topicName: 'Complete Unit 13-15 Revision', priority: 'critical', class: 12, allocatedTime: 120, xp: 200 },
-                { subject: 'chemistry', topicName: 'Electrochem numericals', priority: 'critical', class: 12, allocatedTime: 120, xp: 200 },
-                { subject: 'mathematics', topicName: 'Probability + 3D geometry', priority: 'critical', class: 12, allocatedTime: 120, xp: 200 },
-                { subject: 'physics', topicName: 'EMI & AC revision', priority: 'critical', class: 12, allocatedTime: 120, xp: 200 },
+                { subject: 'physics', topicName: 'Modern Physics Complete Revision', priority: 'critical', class: 12, allocatedTime: 90, xp: 200 },
+                { subject: 'mathematics', topicName: 'Differential Equations Revision', priority: 'high', class: 12, allocatedTime: 90, xp: 150 },
+                { subject: 'chemistry', topicName: 'Thermodynamics Complete Revision', priority: 'critical', class: 11, allocatedTime: 90, xp: 200 },
+                { subject: 'biology', topicName: 'Reproduction & Development Revision', priority: 'high', class: 12, allocatedTime: 60, xp: 150 },
             ],
             // Day 37
             [
-                { subject: 'biology', topicName: 'Genetics revision', priority: 'critical', class: 12, allocatedTime: 120, xp: 200 },
-                { subject: 'chemistry', topicName: 'Inorganic revision', priority: 'high', class: 11, allocatedTime: 120, xp: 150 },
-                { subject: 'mathematics', topicName: 'Vectors revision', priority: 'critical', class: 12, allocatedTime: 120, xp: 200 },
-                { subject: 'physics', topicName: 'Optics revision', priority: 'critical', class: 12, allocatedTime: 120, xp: 200 },
+                { subject: 'physics', topicName: 'Mixed Numericals: Mechanics', priority: 'critical', class: 11, allocatedTime: 90, xp: 200 },
+                { subject: 'mathematics', topicName: 'Mixed Problem Solving: Calculus', priority: 'critical', class: 12, allocatedTime: 90, xp: 200 },
+                { subject: 'chemistry', topicName: 'Mixed Numericals: Physical Chemistry', priority: 'critical', class: 11, allocatedTime: 90, xp: 200 },
+                { subject: 'biology', topicName: 'NCERT Diagrams Practice', priority: 'high', class: 12, allocatedTime: 60, xp: 150 },
             ],
             // Day 38
             [
-                { subject: 'biology', topicName: 'Plant physiology revision', priority: 'high', class: 11, allocatedTime: 120, xp: 150 },
-                { subject: 'chemistry', topicName: 'Physical chemistry numericals', priority: 'critical', class: 11, allocatedTime: 120, xp: 200 },
-                { subject: 'mathematics', topicName: 'Algebra revision', priority: 'high', class: 11, allocatedTime: 120, xp: 150 },
-                { subject: 'physics', topicName: 'Modern physics revision', priority: 'critical', class: 12, allocatedTime: 120, xp: 200 },
+                { subject: 'physics', topicName: 'Mixed Numericals: Electricity & Magnetism', priority: 'critical', class: 12, allocatedTime: 90, xp: 200 },
+                { subject: 'mathematics', topicName: 'Mixed Problem Solving: Algebra & Geometry', priority: 'critical', class: 11, allocatedTime: 90, xp: 200 },
+                { subject: 'chemistry', topicName: 'Organic Mechanisms Practice', priority: 'critical', class: 12, allocatedTime: 90, xp: 200 },
+                { subject: 'biology', topicName: 'Previous Year Questions (Biology)', priority: 'high', class: 12, allocatedTime: 60, xp: 150 },
             ],
             // Day 39
             [
-                { subject: 'biology', topicName: 'Human physiology revision', priority: 'high', class: 11, allocatedTime: 120, xp: 150 },
-                { subject: 'chemistry', topicName: 'Organic mechanisms revision', priority: 'critical', class: 12, allocatedTime: 120, xp: 200 },
-                { subject: 'mathematics', topicName: 'Coordinate geometry revision', priority: 'critical', class: 11, allocatedTime: 120, xp: 200 },
-                { subject: 'physics', topicName: 'Mixed mechanics problems', priority: 'critical', class: 11, allocatedTime: 120, xp: 200 },
+                { subject: 'physics', topicName: 'Mixed Numericals: Optics & Modern Physics', priority: 'critical', class: 12, allocatedTime: 90, xp: 200 },
+                { subject: 'mathematics', topicName: 'Previous Year Questions (Mathematics)', priority: 'critical', class: 12, allocatedTime: 90, xp: 200 },
+                { subject: 'chemistry', topicName: 'Previous Year Questions (Chemistry)', priority: 'critical', class: 12, allocatedTime: 90, xp: 200 },
+                { subject: 'biology', topicName: 'Weak Topics Identification & Practice', priority: 'high', class: 12, allocatedTime: 60, xp: 150 },
             ],
             // Day 40
             [
-                { subject: 'biology', topicName: 'Ecology revision', priority: 'high', class: 12, allocatedTime: 120, xp: 150 },
-                { subject: 'chemistry', topicName: 'Mixed organic practice', priority: 'critical', class: 12, allocatedTime: 120, xp: 200 },
-                { subject: 'mathematics', topicName: 'Full length maths test', priority: 'critical', class: 12, allocatedTime: 120, xp: 200 },
-                { subject: 'physics', topicName: 'Electrostatics + Magnetism', priority: 'critical', class: 12, allocatedTime: 120, xp: 200 },
+                { subject: 'physics', topicName: 'Previous Year Questions (Physics)', priority: 'critical', class: 12, allocatedTime: 90, xp: 200 },
+                { subject: 'mathematics', topicName: 'Speed Test Practice (60 min)', priority: 'critical', class: 12, allocatedTime: 90, xp: 200 },
+                { subject: 'chemistry', topicName: 'Speed Test Practice (60 min)', priority: 'critical', class: 12, allocatedTime: 90, xp: 200 },
+                { subject: 'biology', topicName: 'Speed Test Practice (60 min)', priority: 'high', class: 12, allocatedTime: 60, xp: 150 },
             ],
-            // Day 41: TEST
+            // Day 41
             [
-                { subject: 'physics', topicName: 'Full Mock Test', priority: 'critical', class: 12, allocatedTime: 180, xp: 400, isTest: true },
+                { subject: 'physics', topicName: 'Error Analysis from Previous Mocks', priority: 'critical', class: 12, allocatedTime: 90, xp: 200 },
+                { subject: 'mathematics', topicName: 'Error Analysis from Previous Mocks', priority: 'critical', class: 12, allocatedTime: 90, xp: 200 },
+                { subject: 'chemistry', topicName: 'Error Analysis from Previous Mocks', priority: 'critical', class: 12, allocatedTime: 90, xp: 200 },
+                { subject: 'biology', topicName: 'Formula Sheet Preparation', priority: 'high', class: 12, allocatedTime: 60, xp: 150 },
             ],
-            // Day 42
+            // Day 42: MOCK TEST
             [
-                { subject: 'biology', topicName: 'Weak topics focus', priority: 'high', class: 11, allocatedTime: 120, xp: 150 },
-                { subject: 'chemistry', topicName: 'Weak topics focus', priority: 'high', class: 12, allocatedTime: 120, xp: 150 },
-                { subject: 'mathematics', topicName: 'Weak topics focus', priority: 'high', class: 12, allocatedTime: 120, xp: 150 },
-                { subject: 'physics', topicName: 'Weak topics focus', priority: 'high', class: 12, allocatedTime: 120, xp: 150 },
+                { subject: 'physics', topicName: 'Full Syllabus Mock Test 3', priority: 'critical', class: 12, allocatedTime: 180, xp: 500, isTest: true },
             ],
+            
+            // ========================================
+            // PHASE 3: FINAL TEST MODE (Days 43-60)
+            // High-frequency testing + targeted weak area elimination
+            // ========================================
+            
             // Day 43
             [
-                { subject: 'biology', topicName: 'NCERT diagrams practice', priority: 'high', class: 12, allocatedTime: 120, xp: 150 },
-                { subject: 'chemistry', topicName: 'Mixed numericals', priority: 'high', class: 12, allocatedTime: 120, xp: 150 },
-                { subject: 'mathematics', topicName: 'Mixed PYQs', priority: 'high', class: 12, allocatedTime: 120, xp: 150 },
-                { subject: 'physics', topicName: 'Mixed numericals', priority: 'high', class: 12, allocatedTime: 120, xp: 150 },
+                { subject: 'physics', topicName: 'Weak Topic Elimination (Physics)', priority: 'critical', class: 12, allocatedTime: 90, xp: 200 },
+                { subject: 'mathematics', topicName: 'Weak Topic Elimination (Maths)', priority: 'critical', class: 12, allocatedTime: 90, xp: 200 },
+                { subject: 'chemistry', topicName: 'Weak Topic Elimination (Chemistry)', priority: 'critical', class: 12, allocatedTime: 90, xp: 200 },
+                { subject: 'biology', topicName: 'Weak Topic Elimination (Biology)', priority: 'high', class: 12, allocatedTime: 60, xp: 150 },
             ],
             // Day 44
             [
-                { subject: 'biology', topicName: 'Speed test practice', priority: 'high', class: 12, allocatedTime: 120, xp: 150 },
-                { subject: 'chemistry', topicName: 'Speed test (chem)', priority: 'critical', class: 12, allocatedTime: 120, xp: 200 },
-                { subject: 'mathematics', topicName: 'Speed test (maths)', priority: 'critical', class: 12, allocatedTime: 120, xp: 200 },
-                { subject: 'physics', topicName: 'Speed test (physics)', priority: 'critical', class: 12, allocatedTime: 120, xp: 200 },
+                { subject: 'physics', topicName: 'Sectional Test: Mechanics', priority: 'critical', class: 11, allocatedTime: 90, xp: 200 },
+                { subject: 'mathematics', topicName: 'Sectional Test: Calculus', priority: 'critical', class: 12, allocatedTime: 90, xp: 200 },
+                { subject: 'chemistry', topicName: 'Sectional Test: Physical Chemistry', priority: 'critical', class: 11, allocatedTime: 90, xp: 200 },
+                { subject: 'biology', topicName: 'Sectional Test: Botany', priority: 'high', class: 11, allocatedTime: 60, xp: 150 },
             ],
             // Day 45
             [
-                { subject: 'biology', topicName: 'Full syllabus bio test', priority: 'critical', class: 12, allocatedTime: 120, xp: 200 },
-                { subject: 'chemistry', topicName: 'Full syllabus chem test', priority: 'critical', class: 12, allocatedTime: 120, xp: 200 },
-                { subject: 'mathematics', topicName: 'Full syllabus maths test', priority: 'critical', class: 12, allocatedTime: 120, xp: 200 },
-                { subject: 'physics', topicName: 'Full syllabus physics test', priority: 'critical', class: 12, allocatedTime: 120, xp: 200 },
+                { subject: 'physics', topicName: 'Sectional Test: Electromagnetism', priority: 'critical', class: 12, allocatedTime: 90, xp: 200 },
+                { subject: 'mathematics', topicName: 'Sectional Test: Algebra & Geometry', priority: 'critical', class: 11, allocatedTime: 90, xp: 200 },
+                { subject: 'chemistry', topicName: 'Sectional Test: Organic Chemistry', priority: 'critical', class: 12, allocatedTime: 90, xp: 200 },
+                { subject: 'biology', topicName: 'Sectional Test: Zoology', priority: 'high', class: 11, allocatedTime: 60, xp: 150 },
             ],
             // Day 46
             [
-                { subject: 'biology', topicName: 'Error correction', priority: 'high', class: 12, allocatedTime: 120, xp: 150 },
-                { subject: 'chemistry', topicName: 'Error correction', priority: 'high', class: 12, allocatedTime: 120, xp: 150 },
-                { subject: 'mathematics', topicName: 'Error correction', priority: 'high', class: 12, allocatedTime: 120, xp: 150 },
-                { subject: 'physics', topicName: 'Error correction', priority: 'high', class: 12, allocatedTime: 120, xp: 150 },
+                { subject: 'physics', topicName: 'Sectional Test: Optics & Modern Physics', priority: 'critical', class: 12, allocatedTime: 90, xp: 200 },
+                { subject: 'mathematics', topicName: 'Sectional Test: Vectors & 3D', priority: 'critical', class: 12, allocatedTime: 90, xp: 200 },
+                { subject: 'chemistry', topicName: 'Sectional Test: Inorganic Chemistry', priority: 'high', class: 12, allocatedTime: 90, xp: 150 },
+                { subject: 'biology', topicName: 'Sectional Test: Human Physiology', priority: 'high', class: 11, allocatedTime: 60, xp: 150 },
             ],
-            // Day 47
+            // Day 47: MOCK TEST
             [
-                { subject: 'biology', topicName: 'Formula sheet prep', priority: 'high', class: 12, allocatedTime: 120, xp: 150 },
-                { subject: 'chemistry', topicName: 'Revision reactions', priority: 'critical', class: 12, allocatedTime: 120, xp: 200 },
-                { subject: 'mathematics', topicName: 'Revision theorems', priority: 'critical', class: 12, allocatedTime: 120, xp: 200 },
-                { subject: 'physics', topicName: 'Revision formulas', priority: 'critical', class: 12, allocatedTime: 120, xp: 200 },
+                { subject: 'physics', topicName: 'Full Syllabus Mock Test 4', priority: 'critical', class: 12, allocatedTime: 180, xp: 500, isTest: true },
             ],
             // Day 48
             [
-                { subject: 'physics', topicName: 'Full Mock Test & Analysis', priority: 'critical', class: 12, allocatedTime: 240, xp: 500, isTest: true },
+                { subject: 'physics', topicName: 'Rapid Revision: All Formulas & Derivations', priority: 'critical', class: 12, allocatedTime: 90, xp: 200 },
+                { subject: 'mathematics', topicName: 'Rapid Revision: All Formulas & Theorems', priority: 'critical', class: 12, allocatedTime: 90, xp: 200 },
+                { subject: 'chemistry', topicName: 'Rapid Revision: All Reactions & Equations', priority: 'critical', class: 12, allocatedTime: 90, xp: 200 },
+                { subject: 'biology', topicName: 'Rapid Revision: Key Concepts & Diagrams', priority: 'high', class: 12, allocatedTime: 60, xp: 150 },
             ],
             // Day 49
             [
-                { subject: 'biology', topicName: 'Mixed PYQ solving', priority: 'critical', class: 12, allocatedTime: 120, xp: 200 },
-                { subject: 'chemistry', topicName: 'Mixed PYQ solving', priority: 'critical', class: 12, allocatedTime: 120, xp: 200 },
-                { subject: 'mathematics', topicName: 'Mixed PYQ solving', priority: 'critical', class: 12, allocatedTime: 120, xp: 200 },
-                { subject: 'physics', topicName: 'Mixed PYQ solving', priority: 'critical', class: 12, allocatedTime: 120, xp: 200 },
+                { subject: 'physics', topicName: 'Final Error Notebook Review', priority: 'critical', class: 12, allocatedTime: 90, xp: 200 },
+                { subject: 'mathematics', topicName: 'Final Error Notebook Review', priority: 'critical', class: 12, allocatedTime: 90, xp: 200 },
+                { subject: 'chemistry', topicName: 'Final Error Notebook Review', priority: 'critical', class: 12, allocatedTime: 90, xp: 200 },
+                { subject: 'biology', topicName: 'NCERT Line-by-Line Reading', priority: 'high', class: 12, allocatedTime: 60, xp: 150 },
             ],
-            // Day 50
+            // Day 50: MOCK TEST
             [
-                { subject: 'biology', topicName: 'Sectional test practice', priority: 'high', class: 12, allocatedTime: 120, xp: 150 },
-                { subject: 'chemistry', topicName: 'Sectional test practice', priority: 'high', class: 12, allocatedTime: 120, xp: 150 },
-                { subject: 'mathematics', topicName: 'Sectional test practice', priority: 'high', class: 12, allocatedTime: 120, xp: 150 },
-                { subject: 'physics', topicName: 'Sectional test practice', priority: 'high', class: 12, allocatedTime: 120, xp: 150 },
+                { subject: 'physics', topicName: 'Full Syllabus Mock Test 5', priority: 'critical', class: 12, allocatedTime: 180, xp: 500, isTest: true },
             ],
             // Day 51
             [
-                { subject: 'biology', topicName: 'Weak topic elimination', priority: 'high', class: 12, allocatedTime: 120, xp: 150 },
-                { subject: 'chemistry', topicName: 'Weak topic elimination', priority: 'high', class: 12, allocatedTime: 120, xp: 150 },
-                { subject: 'mathematics', topicName: 'Weak topic elimination', priority: 'high', class: 12, allocatedTime: 120, xp: 150 },
-                { subject: 'physics', topicName: 'Weak topic elimination', priority: 'high', class: 12, allocatedTime: 120, xp: 150 },
+                { subject: 'physics', topicName: 'High-Yield Topics Revision', priority: 'critical', class: 12, allocatedTime: 90, xp: 200 },
+                { subject: 'mathematics', topicName: 'High-Yield Topics Revision', priority: 'critical', class: 12, allocatedTime: 90, xp: 200 },
+                { subject: 'chemistry', topicName: 'High-Yield Topics Revision', priority: 'critical', class: 12, allocatedTime: 90, xp: 200 },
+                { subject: 'biology', topicName: 'High-Yield Topics Revision', priority: 'high', class: 12, allocatedTime: 60, xp: 150 },
             ],
             // Day 52
             [
-                { subject: 'physics', topicName: 'Full Mock Test', priority: 'critical', class: 12, allocatedTime: 180, xp: 400, isTest: true },
+                { subject: 'physics', topicName: 'Time Management Practice Test', priority: 'critical', class: 12, allocatedTime: 90, xp: 200 },
+                { subject: 'mathematics', topicName: 'Time Management Practice Test', priority: 'critical', class: 12, allocatedTime: 90, xp: 200 },
+                { subject: 'chemistry', topicName: 'Time Management Practice Test', priority: 'critical', class: 12, allocatedTime: 90, xp: 200 },
+                { subject: 'biology', topicName: 'Quick Recall Practice', priority: 'high', class: 12, allocatedTime: 60, xp: 150 },
             ],
-            // Day 53
+            // Day 53: MOCK TEST
             [
-                { subject: 'biology', topicName: 'Daily sectional test', priority: 'high', class: 12, allocatedTime: 120, xp: 150 },
-                { subject: 'chemistry', topicName: 'Daily sectional test', priority: 'high', class: 12, allocatedTime: 120, xp: 150 },
-                { subject: 'mathematics', topicName: 'Daily sectional test', priority: 'high', class: 12, allocatedTime: 120, xp: 150 },
-                { subject: 'physics', topicName: 'Daily sectional test', priority: 'high', class: 12, allocatedTime: 120, xp: 150 },
+                { subject: 'physics', topicName: 'Full Syllabus Mock Test 6', priority: 'critical', class: 12, allocatedTime: 180, xp: 500, isTest: true },
             ],
             // Day 54
             [
-                { subject: 'biology', topicName: 'Formula sheet finalization', priority: 'high', class: 12, allocatedTime: 120, xp: 150 },
-                { subject: 'chemistry', topicName: 'Formula sheet finalization', priority: 'high', class: 12, allocatedTime: 120, xp: 150 },
-                { subject: 'mathematics', topicName: 'Formula sheet finalization', priority: 'high', class: 12, allocatedTime: 120, xp: 150 },
-                { subject: 'physics', topicName: 'Formula sheet finalization', priority: 'high', class: 12, allocatedTime: 120, xp: 150 },
+                { subject: 'physics', topicName: 'Conceptual Clarity: Difficult Topics', priority: 'critical', class: 12, allocatedTime: 90, xp: 200 },
+                { subject: 'mathematics', topicName: 'Conceptual Clarity: Difficult Topics', priority: 'critical', class: 12, allocatedTime: 90, xp: 200 },
+                { subject: 'chemistry', topicName: 'Conceptual Clarity: Difficult Topics', priority: 'critical', class: 12, allocatedTime: 90, xp: 200 },
+                { subject: 'biology', topicName: 'Exception & Special Cases Review', priority: 'high', class: 12, allocatedTime: 60, xp: 150 },
             ],
             // Day 55
             [
-                { subject: 'biology', topicName: 'Error notebook review', priority: 'high', class: 12, allocatedTime: 120, xp: 150 },
-                { subject: 'chemistry', topicName: 'Error notebook review', priority: 'high', class: 12, allocatedTime: 120, xp: 150 },
-                { subject: 'mathematics', topicName: 'Error notebook review', priority: 'high', class: 12, allocatedTime: 120, xp: 150 },
-                { subject: 'physics', topicName: 'Error notebook review', priority: 'high', class: 12, allocatedTime: 120, xp: 150 },
+                { subject: 'physics', topicName: 'Formula Sheet Final Review', priority: 'critical', class: 12, allocatedTime: 90, xp: 200 },
+                { subject: 'mathematics', topicName: 'Formula Sheet Final Review', priority: 'critical', class: 12, allocatedTime: 90, xp: 200 },
+                { subject: 'chemistry', topicName: 'Formula Sheet Final Review', priority: 'critical', class: 12, allocatedTime: 90, xp: 200 },
+                { subject: 'biology', topicName: 'Diagram Practice Final Round', priority: 'high', class: 12, allocatedTime: 60, xp: 150 },
             ],
-            // Day 56
+            // Day 56: MOCK TEST
             [
-                { subject: 'physics', topicName: 'Full Mock Test', priority: 'critical', class: 12, allocatedTime: 180, xp: 400, isTest: true },
+                { subject: 'physics', topicName: 'Full Syllabus Mock Test 7 (Final Simulation)', priority: 'critical', class: 12, allocatedTime: 180, xp: 500, isTest: true },
             ],
             // Day 57
             [
-                { subject: 'biology', topicName: 'NCERT rapid revision', priority: 'high', class: 12, allocatedTime: 120, xp: 150 },
-                { subject: 'chemistry', topicName: 'NCERT rapid revision', priority: 'high', class: 12, allocatedTime: 120, xp: 150 },
-                { subject: 'mathematics', topicName: 'Important formulas revision', priority: 'high', class: 12, allocatedTime: 120, xp: 150 },
-                { subject: 'physics', topicName: 'Important formulas revision', priority: 'high', class: 12, allocatedTime: 120, xp: 150 },
+                { subject: 'physics', topicName: 'Mock Analysis & Gap Filling', priority: 'critical', class: 12, allocatedTime: 90, xp: 200 },
+                { subject: 'mathematics', topicName: 'Mock Analysis & Gap Filling', priority: 'critical', class: 12, allocatedTime: 90, xp: 200 },
+                { subject: 'chemistry', topicName: 'Mock Analysis & Gap Filling', priority: 'critical', class: 12, allocatedTime: 90, xp: 200 },
+                { subject: 'biology', topicName: 'Light Revision Only', priority: 'medium', class: 12, allocatedTime: 60, xp: 100 },
             ],
             // Day 58
             [
-                { subject: 'biology', topicName: 'Diagrams practice', priority: 'high', class: 12, allocatedTime: 120, xp: 150 },
-                { subject: 'chemistry', topicName: 'Reactions rapid revision', priority: 'high', class: 12, allocatedTime: 120, xp: 150 },
-                { subject: 'mathematics', topicName: 'Theorems revision', priority: 'high', class: 12, allocatedTime: 120, xp: 150 },
-                { subject: 'physics', topicName: 'Derivations revision', priority: 'high', class: 12, allocatedTime: 120, xp: 150 },
+                { subject: 'physics', topicName: 'Confidence Building Light Practice', priority: 'high', class: 12, allocatedTime: 60, xp: 150 },
+                { subject: 'mathematics', topicName: 'Confidence Building Light Practice', priority: 'high', class: 12, allocatedTime: 60, xp: 150 },
+                { subject: 'chemistry', topicName: 'Confidence Building Light Practice', priority: 'high', class: 12, allocatedTime: 60, xp: 150 },
+                { subject: 'biology', topicName: 'Confidence Building Light Practice', priority: 'medium', class: 12, allocatedTime: 60, xp: 100 },
             ],
             // Day 59
             [
-                { subject: 'biology', topicName: 'Mixed practice', priority: 'high', class: 12, allocatedTime: 120, xp: 150 },
-                { subject: 'chemistry', topicName: 'Mixed practice', priority: 'high', class: 12, allocatedTime: 120, xp: 150 },
-                { subject: 'mathematics', topicName: 'Mixed practice', priority: 'high', class: 12, allocatedTime: 120, xp: 150 },
-                { subject: 'physics', topicName: 'Mixed practice', priority: 'high', class: 12, allocatedTime: 120, xp: 150 },
+                { subject: 'physics', topicName: 'Final Rapid Scan (All Units)', priority: 'high', class: 12, allocatedTime: 60, xp: 150 },
+                { subject: 'mathematics', topicName: 'Final Rapid Scan (All Units)', priority: 'high', class: 12, allocatedTime: 60, xp: 150 },
+                { subject: 'chemistry', topicName: 'Final Rapid Scan (All Units)', priority: 'high', class: 12, allocatedTime: 60, xp: 150 },
+                { subject: 'biology', topicName: 'Final Rapid Scan (All Units)', priority: 'medium', class: 12, allocatedTime: 60, xp: 100 },
             ],
-            // Day 60
+            // Day 60: EXAM DAY
             [
-                { subject: 'physics', topicName: 'Full Mock Test', priority: 'critical', class: 12, allocatedTime: 180, xp: 400, isTest: true },
-            ],
-            // DAYS 61-75: SECOND FAST REVISION
-            // Day 61
-            [
-                { subject: 'physics', topicName: 'Rotation revision', priority: 'critical', class: 12, allocatedTime: 120, xp: 200 },
-                { subject: 'mathematics', topicName: 'Calculus revision', priority: 'critical', class: 12, allocatedTime: 120, xp: 200 },
-                { subject: 'chemistry', topicName: 'Thermodynamics revision', priority: 'critical', class: 11, allocatedTime: 120, xp: 200 },
-                { subject: 'biology', topicName: 'Human physiology revision', priority: 'critical', class: 11, allocatedTime: 120, xp: 200 },
-            ],
-            // Day 62
-            [
-                { subject: 'physics', topicName: 'Electrostatics revision', priority: 'critical', class: 12, allocatedTime: 120, xp: 200 },
-                { subject: 'mathematics', topicName: 'Vectors revision', priority: 'critical', class: 12, allocatedTime: 120, xp: 200 },
-                { subject: 'chemistry', topicName: 'Equilibrium revision', priority: 'critical', class: 11, allocatedTime: 120, xp: 200 },
-                { subject: 'biology', topicName: 'Biotechnology revision', priority: 'critical', class: 12, allocatedTime: 120, xp: 200 },
-            ],
-            // Day 63
-            [
-                { subject: 'physics', topicName: 'Modern physics revision', priority: 'critical', class: 12, allocatedTime: 120, xp: 200 },
-                { subject: 'mathematics', topicName: 'Conics revision', priority: 'critical', class: 11, allocatedTime: 120, xp: 200 },
-                { subject: 'chemistry', topicName: 'Organic named reactions', priority: 'critical', class: 12, allocatedTime: 120, xp: 200 },
-                { subject: 'biology', topicName: 'Genetics revision', priority: 'critical', class: 12, allocatedTime: 120, xp: 200 },
-            ],
-            // Day 64
-            [
-                { subject: 'physics', topicName: 'Mechanics revision', priority: 'critical', class: 11, allocatedTime: 120, xp: 200 },
-                { subject: 'mathematics', topicName: '3D geometry revision', priority: 'critical', class: 12, allocatedTime: 120, xp: 200 },
-                { subject: 'chemistry', topicName: 'Coordination compounds', priority: 'critical', class: 12, allocatedTime: 120, xp: 200 },
-                { subject: 'biology', topicName: 'Cell biology revision', priority: 'critical', class: 11, allocatedTime: 120, xp: 200 },
-            ],
-            // Day 65: TEST
-            [
-                { subject: 'physics', topicName: 'Full Mock Test', priority: 'critical', class: 12, allocatedTime: 180, xp: 400, isTest: true },
-            ],
-            // Day 66
-            [
-                { subject: 'physics', topicName: 'Magnetism revision', priority: 'critical', class: 12, allocatedTime: 120, xp: 200 },
-                { subject: 'mathematics', topicName: 'Probability revision', priority: 'critical', class: 12, allocatedTime: 120, xp: 200 },
-                { subject: 'chemistry', topicName: 'Electrochem revision', priority: 'critical', class: 12, allocatedTime: 120, xp: 200 },
-                { subject: 'biology', topicName: 'Ecology revision', priority: 'critical', class: 12, allocatedTime: 120, xp: 200 },
-            ],
-            // Day 67
-            [
-                { subject: 'physics', topicName: 'Optics revision', priority: 'critical', class: 12, allocatedTime: 120, xp: 200 },
-                { subject: 'mathematics', topicName: 'Algebra revision', priority: 'critical', class: 11, allocatedTime: 120, xp: 200 },
-                { subject: 'chemistry', topicName: 'Organic mechanisms', priority: 'critical', class: 12, allocatedTime: 120, xp: 200 },
-                { subject: 'biology', topicName: 'Plant physiology revision', priority: 'critical', class: 11, allocatedTime: 120, xp: 200 },
-            ],
-            // Day 68
-            [
-                { subject: 'physics', topicName: 'EMI & AC revision', priority: 'critical', class: 12, allocatedTime: 120, xp: 200 },
-                { subject: 'mathematics', topicName: 'Differential equations', priority: 'critical', class: 12, allocatedTime: 120, xp: 200 },
-                { subject: 'chemistry', topicName: 'Chemical kinetics', priority: 'critical', class: 12, allocatedTime: 120, xp: 200 },
-                { subject: 'biology', topicName: 'Reproduction revision', priority: 'critical', class: 12, allocatedTime: 120, xp: 200 },
-            ],
-            // Day 69
-            [
-                { subject: 'physics', topicName: 'Semiconductors revision', priority: 'medium', class: 12, allocatedTime: 120, xp: 100 },
-                { subject: 'mathematics', topicName: 'Statistics revision', priority: 'medium', class: 12, allocatedTime: 120, xp: 100 },
-                { subject: 'chemistry', topicName: 'Solutions revision', priority: 'high', class: 12, allocatedTime: 120, xp: 150 },
-                { subject: 'biology', topicName: 'Biology in Human Welfare revision', priority: 'medium', class: 12, allocatedTime: 120, xp: 100 },
-            ],
-            // Day 70
-            [
-                { subject: 'physics', topicName: 'Nuclear physics revision', priority: 'critical', class: 12, allocatedTime: 120, xp: 200 },
-                { subject: 'mathematics', topicName: 'Linear programming', priority: 'medium', class: 12, allocatedTime: 120, xp: 100 },
-                { subject: 'chemistry', topicName: 'd & f block revision', priority: 'medium', class: 12, allocatedTime: 120, xp: 100 },
-                { subject: 'biology', topicName: 'Structural organisation revision', priority: 'high', class: 11, allocatedTime: 120, xp: 150 },
-            ],
-            // Day 71: TEST
-            [
-                { subject: 'physics', topicName: 'Full Mock Test', priority: 'critical', class: 12, allocatedTime: 180, xp: 400, isTest: true },
-            ],
-            // Day 72
-            [
-                { subject: 'physics', topicName: 'Mixed numericals', priority: 'critical', class: 12, allocatedTime: 120, xp: 200 },
-                { subject: 'mathematics', topicName: 'Mixed problems', priority: 'critical', class: 12, allocatedTime: 120, xp: 200 },
-                { subject: 'chemistry', topicName: 'Mixed numericals', priority: 'critical', class: 12, allocatedTime: 120, xp: 200 },
-                { subject: 'biology', topicName: 'Mixed revision', priority: 'critical', class: 12, allocatedTime: 120, xp: 200 },
-            ],
-            // Day 73
-            [
-                { subject: 'physics', topicName: 'Formula rapid revision', priority: 'critical', class: 12, allocatedTime: 120, xp: 200 },
-                { subject: 'mathematics', topicName: 'Formula rapid revision', priority: 'critical', class: 12, allocatedTime: 120, xp: 200 },
-                { subject: 'chemistry', topicName: 'Formula rapid revision', priority: 'critical', class: 12, allocatedTime: 120, xp: 200 },
-                { subject: 'biology', topicName: 'Key concepts rapid revision', priority: 'critical', class: 12, allocatedTime: 120, xp: 200 },
-            ],
-            // Day 74
-            [
-                { subject: 'physics', topicName: 'Important derivations', priority: 'critical', class: 12, allocatedTime: 120, xp: 200 },
-                { subject: 'mathematics', topicName: 'Important theorems', priority: 'critical', class: 12, allocatedTime: 120, xp: 200 },
-                { subject: 'chemistry', topicName: 'Important reactions', priority: 'critical', class: 12, allocatedTime: 120, xp: 200 },
-                { subject: 'biology', topicName: 'Important diagrams', priority: 'critical', class: 12, allocatedTime: 120, xp: 200 },
-            ],
-            // Day 75: TEST
-            [
-                { subject: 'physics', topicName: 'Full Mock Test', priority: 'critical', class: 12, allocatedTime: 180, xp: 400, isTest: true },
-            ],
-            // DAYS 76-90: FINAL TEST MODE
-            // Day 76
-            [
-                { subject: 'physics', topicName: 'Full Mock Test', priority: 'critical', class: 12, allocatedTime: 180, xp: 400, isTest: true },
-            ],
-            // Day 77
-            [
-                { subject: 'physics', topicName: 'Deep Analysis & Error Notebook', priority: 'critical', class: 12, allocatedTime: 180, xp: 400, isTest: true },
-            ],
-            // Day 78
-            [
-                { subject: 'physics', topicName: 'Full Mock Test', priority: 'critical', class: 12, allocatedTime: 180, xp: 400, isTest: true },
-            ],
-            // Day 79
-            [
-                { subject: 'physics', topicName: 'Deep Analysis & Error Notebook', priority: 'critical', class: 12, allocatedTime: 180, xp: 400, isTest: true },
-            ],
-            // Day 80
-            [
-                { subject: 'physics', topicName: 'Full Mock Test', priority: 'critical', class: 12, allocatedTime: 180, xp: 400, isTest: true },
-            ],
-            // Day 81
-            [
-                { subject: 'physics', topicName: 'Deep Analysis & Error Notebook', priority: 'critical', class: 12, allocatedTime: 180, xp: 400, isTest: true },
-            ],
-            // Day 82
-            [
-                { subject: 'physics', topicName: 'Full Mock Test', priority: 'critical', class: 12, allocatedTime: 180, xp: 400, isTest: true },
-            ],
-            // Day 83
-            [
-                { subject: 'physics', topicName: 'Deep Analysis & Error Notebook', priority: 'critical', class: 12, allocatedTime: 180, xp: 400, isTest: true },
-            ],
-            // Day 84
-            [
-                { subject: 'physics', topicName: 'Full Mock Test', priority: 'critical', class: 12, allocatedTime: 180, xp: 400, isTest: true },
-            ],
-            // Day 85
-            [
-                { subject: 'physics', topicName: 'Deep Analysis & Error Notebook', priority: 'critical', class: 12, allocatedTime: 180, xp: 400, isTest: true },
-            ],
-            // Day 86
-            [
-                { subject: 'physics', topicName: 'Final Polish: Formulas & Derivations', priority: 'critical', class: 12, allocatedTime: 120, xp: 200 },
-                { subject: 'chemistry', topicName: 'Final Polish: NCERT Reactions', priority: 'critical', class: 12, allocatedTime: 120, xp: 200 },
-                { subject: 'mathematics', topicName: 'Final Polish: Light Mock Selection', priority: 'critical', class: 12, allocatedTime: 120, xp: 200 },
-                { subject: 'biology', topicName: 'Final Polish: NCERT Diagrams', priority: 'critical', class: 12, allocatedTime: 120, xp: 200 },
-            ],
-            // Day 87
-            [
-                { subject: 'physics', topicName: 'Final Polish: Important concepts', priority: 'critical', class: 12, allocatedTime: 120, xp: 200 },
-                { subject: 'chemistry', topicName: 'Final Polish: Important reactions', priority: 'critical', class: 12, allocatedTime: 120, xp: 200 },
-                { subject: 'mathematics', topicName: 'Final Polish: Formula sheet', priority: 'critical', class: 12, allocatedTime: 120, xp: 200 },
-                { subject: 'biology', topicName: 'Final Polish: Key terms', priority: 'critical', class: 12, allocatedTime: 120, xp: 200 },
-            ],
-            // Day 88
-            [
-                { subject: 'physics', topicName: 'Final Polish: Quick revision', priority: 'critical', class: 12, allocatedTime: 120, xp: 200 },
-                { subject: 'chemistry', topicName: 'Final Polish: Quick revision', priority: 'critical', class: 12, allocatedTime: 120, xp: 200 },
-                { subject: 'mathematics', topicName: 'Final Polish: Quick revision', priority: 'critical', class: 12, allocatedTime: 120, xp: 200 },
-                { subject: 'biology', topicName: 'Final Polish: Quick revision', priority: 'critical', class: 12, allocatedTime: 120, xp: 200 },
-            ],
-            // Day 89
-            [
-                { subject: 'physics', topicName: 'Light revision only', priority: 'low', class: 12, allocatedTime: 90, xp: 100 },
-                { subject: 'chemistry', topicName: 'Light revision only', priority: 'low', class: 12, allocatedTime: 90, xp: 100 },
-                { subject: 'mathematics', topicName: 'Light revision only', priority: 'low', class: 12, allocatedTime: 90, xp: 100 },
-                { subject: 'biology', topicName: 'Light revision only', priority: 'low', class: 12, allocatedTime: 90, xp: 100 },
-            ],
-            // Day 90
-            [
-                { subject: 'physics', topicName: 'Exam Day - All the Best!', priority: 'critical', class: 12, allocatedTime: 0, xp: 1000, isTest: true },
+                { subject: 'physics', topicName: '🎯 EXAM DAY - All The Best! You\'ve Got This!', priority: 'critical', class: 12, allocatedTime: 0, xp: 2000, isTest: true },
             ],
         ];
 
@@ -1426,7 +1222,7 @@
 
         // Initialization
         function init() {
-            const saved = localStorage.getItem('IAT2026_90_DAY_PLANNER');
+            const saved = localStorage.getItem('IAT2026_60_DAY_PLANNER');
             if (saved) {
                 appState = JSON.parse(saved);
                 updateStreak();
@@ -1441,8 +1237,8 @@
                 <div class="focus-modal active" id="welcomeModal" style="z-index: 3000; display:flex; flex-direction:column; align-items:center; justify-content:center;">
                     <div style="text-align: center; max-width: 400px; background: var(--bg-card); padding: 2rem; border-radius: 1rem; border: 1px solid var(--glass-border);">
                         <div style="font-size: 3rem; margin-bottom: 1rem;">🎯</div>
-                        <h2 style="font-size: 1.5rem; margin-bottom: 0.5rem;">Welcome to Dynamic IAT Planner</h2>
-                        <p style="color: var(--text-muted); margin-bottom: 2rem;">Your strict 90-day blueprint. No excuses.</p>
+                        <h2 style="font-size: 1.5rem; margin-bottom: 0.5rem;">Welcome to IISER IAT Sprint</h2>
+                        <p style="color: var(--text-muted); margin-bottom: 2rem;">60 days of intensive, strategic prep. Let's do this.</p>
                         <input type="text" id="setupName" placeholder="Your Name" style="width: 100%; padding: 1rem; background: var(--bg-secondary); border: 1px solid var(--glass-border); border-radius: 12px; color: white; margin-bottom: 1rem; font-size: 1rem;">
                         <button onclick="completeSetup()" style="width: 100%; padding: 1rem; background: var(--accent-purple); color: white; border: none; border-radius: 12px; font-weight: 700; cursor: pointer;">Begin Day 1</button>
                     </div>
@@ -1462,12 +1258,12 @@
         }
 
         function saveData() {
-            localStorage.setItem('IAT2026_90_DAY_PLANNER', JSON.stringify(appState));
+            localStorage.setItem('IAT2026_60_DAY_PLANNER', JSON.stringify(appState));
         }
 
         function resetData() {
             if (confirm('Delete all progress and restart from Day 1?')) {
-                localStorage.removeItem('IAT2026_90_DAY_PLANNER');
+                localStorage.removeItem('IAT2026_60_DAY_PLANNER');
                 location.reload();
             }
         }
@@ -1490,10 +1286,9 @@
         }
 
         function getPhaseInfo(day) {
-            if (day <= 30) return { name: 'Foundation Phase', class: 'phase-foundation', text: 'Days 1-30: Building Core Concepts' };
-            if (day <= 60) return { name: 'Revision Phase', class: 'phase-revision', text: 'Days 31-60: Strengthening & Revision' };
-            if (day <= 75) return { name: '2nd Revision', class: 'phase-revision', text: 'Days 61-75: Fast Track Revision' };
-            return { name: 'Test Mode', class: 'phase-test', text: 'Days 76-90: Final Test Mode' };
+            if (day <= 24) return { name: 'Foundation', class: 'phase-foundation', text: 'Days 1-24: Core Concept Building' };
+            if (day <= 42) return { name: 'Intensive Revision', class: 'phase-revision', text: 'Days 25-42: Deep Revision & Problem Solving' };
+            return { name: 'Final Test Mode', class: 'phase-test', text: 'Days 43-60: Mock Tests & Fine-tuning' };
         }
 
         function renderDateStrip() {
@@ -1520,7 +1315,7 @@
 
                 el.onclick = () => {
                     let newDay = appState.currentDay + offsetFromCurrent;
-                    newDay = Math.max(1, Math.min(90, newDay));
+                    newDay = Math.max(1, Math.min(60, newDay));
                     if (appState.currentDay !== newDay) {
                         appState.currentDay = newDay;
                         saveData();
@@ -1542,7 +1337,6 @@
                 else titleEl.innerText = `Plan for Day ${appState.currentDay}`;
             }
 
-            // Update phase indicator
             const phaseInfo = getPhaseInfo(appState.currentDay);
             const phaseIndicator = document.getElementById('phaseIndicator');
             const phaseText = document.getElementById('phaseText');
@@ -1585,7 +1379,7 @@
                 appState.dailyStatus[dayKey] = {};
             }
 
-            const todayTasks = PLAN_90_DAYS[appState.currentDay - 1] || [];
+            const todayTasks = PLAN_60_DAYS[appState.currentDay - 1] || [];
             let compTasks = 0;
             todayTasks.forEach((t, index) => {
                 if (appState.dailyStatus[dayKey][index]) compTasks++;
@@ -1607,7 +1401,7 @@
             const container = document.getElementById('taskList');
             container.innerHTML = '';
 
-            let rawTasks = PLAN_90_DAYS[appState.currentDay - 1] || [];
+            let rawTasks = PLAN_60_DAYS[appState.currentDay - 1] || [];
             let tasks = [...rawTasks];
 
             const dayKey = `Day ${appState.currentDay}`;
@@ -1663,7 +1457,7 @@
 
         function toggleTask(originalIndex) {
             const dayKey = `Day ${appState.currentDay}`;
-            const task = PLAN_90_DAYS[appState.currentDay - 1][originalIndex];
+            const task = PLAN_60_DAYS[appState.currentDay - 1][originalIndex];
 
             if (!appState.dailyStatus[dayKey]) {
                 appState.dailyStatus[dayKey] = {};
@@ -1687,7 +1481,7 @@
 
         function openFocusModeForTask(originalIndex) {
             const dayKey = `Day ${appState.currentDay}`;
-            const task = PLAN_90_DAYS[appState.currentDay - 1][originalIndex];
+            const task = PLAN_60_DAYS[appState.currentDay - 1][originalIndex];
             if (!task || appState.dailyStatus[dayKey]?.[originalIndex]) return;
 
             currentTaskId = originalIndex;
@@ -1783,76 +1577,13 @@
         }
 
         function switchTab(tab) {
-            // UI State
             document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
             document.querySelectorAll('.tab-view').forEach(view => view.style.display = 'none');
             
-            // Show Target
             event.currentTarget.classList.add('active');
             document.getElementById(`view-${tab}`).style.display = 'block';
 
             if (tab === 'home') renderAll();
-        }
-
-        // =========================================
-        // AI PLANNER LOGIC
-        // =========================================
-        async function generateAIPlan() {
-            const topics = document.getElementById('weakTopicsInput').value.trim();
-            if (!topics) return alert("Please list some topics first!");
-
-            const btn = document.getElementById('aiPlanBtn');
-            const resultArea = document.getElementById('aiPlanResult');
-            const loading = document.getElementById('aiPlanLoading');
-            const body = document.getElementById('aiPlanBody');
-
-            btn.disabled = true;
-            loading.style.display = 'block';
-            resultArea.style.display = 'none';
-
-            try {
-                const prompt = `
-You are an expert IISER IAT Prep Coach. 
-The student is struggling with these topics: ${topics}.
-
-Create a rigorous 30-day "Gap Closer" Study Plan for the IISER Aptitude Test. 
-Focus on:
-1. Prioritizing these weak topics in the first 15 days.
-2. Integrating mock tests and revision in the last 15 days.
-3. Daily time allocation (approx 6-8 hours/day).
-
-Format the output in clean Markdown with bold headers for each week.
-`;
-
-                const res = await fetch(AI_API_URL, {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ prompt })
-                });
-
-                if (!res.ok) throw new Error("AI Backend Error");
-
-                const data = await res.json();
-                const aiText = data.candidates[0].content.parts[0].text;
-
-                body.innerHTML = marked.parse(aiText);
-                loading.style.display = 'none';
-                resultArea.style.display = 'block';
-                
-            } catch (err) {
-                console.error(err);
-                alert("Could not generate plan. Check if AI backend is running on port 5000.");
-                loading.style.display = 'none';
-            } finally {
-                btn.disabled = false;
-            }
-        }
-
-        function copyAIPlan() {
-            const text = document.getElementById('aiPlanBody').innerText;
-            navigator.clipboard.writeText(text).then(() => {
-                showToast('Plan Copied!', 'Save it to your notes');
-            });
         }
 
         // Boot

@@ -77,7 +77,7 @@ const quickActions = [
     bg: 'from-emerald-500/10 to-teal-500/10',
     border: 'border-emerald-500/30',
     glow: 'hover:shadow-[0_0_30px_rgba(16,185,129,0.2)]',
-    external: '/smart_notes/smart_notes_home.html',
+    external: '/smart_notes_homepage.html',
     internal: false,
   },
   {
