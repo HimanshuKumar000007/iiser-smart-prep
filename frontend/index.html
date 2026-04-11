@@ -3908,7 +3908,8 @@
                 heroButtons.forEach(btn => {
                     btn.classList.remove('pro-hidden');
                     const isHero = btn.closest('.hero');
-                    if (btn.textContent.trim() === 'Start Practicing Now' || btn.textContent.trim() === 'Start Preparing' || btn.textContent.trim() === 'Dashboard') {
+                    const text = btn.innerText.replace(/\s+/g, ' ').trim();
+                    if (text === 'Start Practicing Now' || text === 'Start Preparing' || text === 'Dashboard') {
                         btn.textContent = isHero ? 'Start practicing now with AI Dashboard' : 'Dashboard';
                     }
                     if (btn.tagName === 'A') {
