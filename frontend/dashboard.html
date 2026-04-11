@@ -3392,6 +3392,14 @@
         let leaderboardData = [];
         let userRankData = null;
 
+        function obfuscateName(name) {
+            if (!name) return 'Anonymous';
+            return name.split('').map((char, index) => {
+                if (char === ' ') return ' ';
+                return index % 2 !== 0 ? '*' : char;
+            }).join('');
+        }
+
         async function loadLeaderboard() {
             try {
                 const payload = JSON.parse(atob(token.split('.')[1]));
@@ -3459,7 +3467,7 @@
                             <div class="lb-user-info">
                                 <div class="lb-avatar">${initials}</div>
                                 <div class="lb-user-details">
-                                    <h4>${user.name || 'Anonymous'}</h4>
+                                    <h4>${obfuscateName(user.name)}</h4>
                                     <p>${user.attempts || 0} attempt${user.attempts !== 1 ? 's' : ''}</p>
                                 </div>
                             </div>
@@ -3511,7 +3519,7 @@
                 : `💪 Keep Going`;
 
             document.getElementById('user-rank-number').textContent = `#${rankNumber}`;
-            document.getElementById('user-rank-name').textContent = userRankData.name || 'You';
+            document.getElementById('user-rank-name').textContent = obfuscateName(userRankData.name) || 'You';
             document.getElementById('user-rank-score').textContent = `${userRankData.best_score || 0}/240`;
             document.getElementById('user-percentile').textContent = positionText;
         }
