@@ -3907,8 +3907,9 @@
                 const heroButtons = document.querySelectorAll('.hero .btn-ai, .countdown-sticky .btn-ai');
                 heroButtons.forEach(btn => {
                     btn.classList.remove('pro-hidden');
-                    if (btn.textContent.trim() === 'Start Practicing Now' || btn.textContent.trim() === 'Start Preparing') {
-                        btn.textContent = 'Dashboard';
+                    const isHero = btn.closest('.hero');
+                    if (btn.textContent.trim() === 'Start Practicing Now' || btn.textContent.trim() === 'Start Preparing' || btn.textContent.trim() === 'Dashboard') {
+                        btn.textContent = isHero ? 'Start practicing now with AI Dashboard' : 'Dashboard';
                     }
                     if (btn.tagName === 'A') {
                         btn.onclick = null; // Remove inline onclick if it's there
