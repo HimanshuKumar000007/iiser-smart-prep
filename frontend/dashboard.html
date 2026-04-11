@@ -3716,38 +3716,37 @@
 
             const rankNumber = userRankData.rank || '—';
             const bestScore  = userRankData.best_score || 0;
-            const accuracy   = userRankData.accuracy ? parseFloat(userRankData.accuracy).toFixed(0) : '0';
-            const accPct     = Math.min(parseFloat(accuracy), 100);
-            const name       = userRankData.name || 'You';
-            const initials   = name.substring(0, 2).toUpperCase();
-            
-            const rankLabel = rankNumber <= 3 ? ['🥇','🥈','🥉'][rankNumber - 1] : rankNumber;
 
-            // Render exact same structure as a normal leaderboard row, but with a special highlight class
+            const badge = rankNumber === 1       ? { emoji: '🏆', text: 'Top 1'}
+                        : rankNumber <= 3         ? { emoji: '🥈', text: 'Top 3'}
+                        : rankNumber <= 10        ? { emoji: '🎯', text: 'Top 10'}
+                        : rankNumber <= 50        ? { emoji: '⭐', text: 'Top 50'}
+                        : rankNumber <= 100       ? { emoji: '👍', text: 'Top 100'}
+                        :                          { emoji: '💪', text: 'Keep Grinding'};
+
             infoEl.innerHTML = `
-                <div class="leaderboard-row rank-${rankNumber} my-rank-highlight" style="margin-top: 0; box-shadow: 0 4px 20px rgba(99, 102, 241, 0.15); border: 1px solid rgba(99, 102, 241, 0.4);">
-                    ${rankNumber === 1 ? '<div class="lb-crown">👑</div>' : ''}
-                    <div class="lb-rank">
-                        <div class="lb-rank-bubble">${rankLabel}</div>
-                    </div>
-                    <div class="lb-name">
-                        <div class="lb-user-info">
-                            <div class="lb-avatar-glass">${initials}</div>
-                            <div class="lb-user-details lb-details">
-                                <h4>${name} (You)</h4>
-                                <p>${userRankData.attempts || 0} attempt${(userRankData.attempts || 0) !== 1 ? 's' : ''}</p>
+                <div style="display: flex; justify-content: space-between; align-items: center; padding: 1.1rem 1.75rem; background: rgba(248, 250, 252, 0.6); border: 1px solid rgba(167, 139, 250, 0.4); border-radius: 14px; margin-top: 0.5rem; transition: transform 0.2s;">
+                    <!-- Left Side -->
+                    <div style="display: flex; flex-direction: column; gap: 0.4rem;">
+                        <span style="font-size: 0.65rem; color: #94a3b8; font-weight: 800; text-transform: uppercase; letter-spacing: 0.08em;">Your Position</span>
+                        <div style="display: flex; align-items: center; gap: 1rem;">
+                            <!-- Purple Circle for Rank -->
+                            <div style="display: flex; align-items: center; justify-content: center; background: #6366f1; color: white; width: 36px; height: 36px; border-radius: 50%; font-weight: 900; font-family: 'Outfit', sans-serif; font-size: 1.25rem; box-shadow: 0 4px 12px rgba(99,102,241,0.25);">
+                                <span style="font-size:0.65rem;opacity:0.85;margin-right:1px;margin-top:2px;">#</span>${rankNumber}
+                            </div>
+                            <div style="display: flex; flex-direction: column; gap: 0.1rem;">
+                                <span style="font-size: 0.65rem; color: #64748b; font-weight: 700;">Best Score</span>
+                                <span style="font-weight: 900; color: #4338ca; font-size: 1.05rem; font-family: 'Outfit', sans-serif; line-height: 1;">${bestScore}<span style="font-size: 0.75rem; color: #818cf8;">/240</span></span>
                             </div>
                         </div>
                     </div>
-                    <div class="lb-score">
-                        <div class="lb-score-glass">${bestScore}/240</div>
-                    </div>
-                    <div class="lb-accuracy">
-                        <div class="lb-accuracy-wrapper">
-                            <div class="lb-accuracy-label">${accuracy}%</div>
-                            <div class="lb-accuracy-container">
-                                <div class="lb-accuracy-fill" style="width: ${accPct}%"></div>
-                            </div>
+                    
+                    <!-- Right Side -->
+                    <div style="display: flex; flex-direction: column; gap: 0.4rem; align-items: flex-end;">
+                        <span style="font-size: 0.65rem; color: #94a3b8; font-weight: 800; text-transform: uppercase; letter-spacing: 0.08em;">Status</span>
+                        <div style="font-weight: 800; font-size: 0.95rem; color: #0f172a; display: flex; align-items: center; gap: 0.4rem; background: rgba(241,245,249,0.8); padding: 0.3rem 0.8rem; border-radius: 100px; border: 1px solid rgba(226,232,240,0.8);">
+                            <span>${badge.emoji}</span>
+                            <span>${badge.text}</span>
                         </div>
                     </div>
                 </div>
