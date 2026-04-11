@@ -3899,7 +3899,7 @@
 
             if (token) {
                 container.innerHTML = `
-                    <a href="/dashboard.html" class="btn btn-primary" style="padding: 0.5rem 1rem;">Start Preparation</a>
+                    <a href="/dashboard.html" class="btn btn-primary" style="padding: 0.5rem 1rem;">Dashboard</a>
                     <button onclick="logout()" class="btn btn-outline" style="border:none; color: var(--text-muted);">Logout</button>
                 `;
 
@@ -3908,7 +3908,7 @@
                 heroButtons.forEach(btn => {
                     btn.classList.remove('pro-hidden');
                     if (btn.textContent.trim() === 'Start Practicing Now' || btn.textContent.trim() === 'Start Preparing') {
-                        btn.textContent = 'Start Preparation';
+                        btn.textContent = 'Dashboard';
                     }
                     if (btn.tagName === 'A') {
                         btn.onclick = null; // Remove inline onclick if it's there
