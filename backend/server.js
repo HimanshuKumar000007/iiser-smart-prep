@@ -43,6 +43,9 @@ app.use(cors({
 app.use("/api/razorpay-webhook", express.raw({ type: "*/*" }));
 app.use(express.json());
 
+const leaderboardRoutes = require('./routes/leaderboard');
+app.use('/', leaderboardRoutes);
+
 // Debug
 console.log("SUPABASE_URL =", process.env.SUPABASE_URL ? "Set" : "Not Set");
 console.log("RAZORPAY_KEY_ID =", process.env.RAZORPAY_KEY_ID ? "Set" : "Not Set");
@@ -116,7 +119,7 @@ app.post("/api/check-mock-access", authMiddleware, async (req, res) => {
     }
 
     // FREE MOCKS — Quick Mocks 1-10, and Physics Topic 1 & 2 (IDs 41-48)
-    const FREE_MOCK_IDS = [1,2,3,4,5,6,7,8,9,10, 41,42,43,44,45,46,47,48];
+    const FREE_MOCK_IDS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 41, 42, 43, 44, 45, 46, 47, 48];
     if (FREE_MOCK_IDS.includes(Number(mockId))) {
       return res.json({ access: true });
     }

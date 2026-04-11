@@ -37,7 +37,7 @@ const menuItems: NavItem[] = [
   { id: 'mock-tests', label: 'Mock Tests', icon: FileQuestion },
   { external: '/news/iiser-iat-formula-sheet.html', label: 'Master Formula', icon: Scroll },
   { external: '/ai_tutor.html', label: 'AI Doubts', icon: Bot },
-  { external: '/smart_notes_homepage.html', label: 'Smart Notes', icon: BookOpen },
+  { external: '/smart_notes/smart_notes_home.html', label: 'Smart Notes', icon: BookOpen },
 ];
 
 export default function Sidebar({ currentPage, onPageChange, isOpen, onToggle }: SidebarProps) {
@@ -86,7 +86,7 @@ export default function Sidebar({ currentPage, onPageChange, isOpen, onToggle }:
 
       <motion.aside
         initial={false}
-        animate={{ 
+        animate={{
           width: window.innerWidth >= 1024 ? (isOpen ? 240 : 72) : (isOpen ? 240 : 0),
           x: window.innerWidth < 1024 && !isOpen ? -240 : 0
         }}
