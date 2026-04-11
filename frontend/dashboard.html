@@ -2852,7 +2852,7 @@
                         <!-- Divider to separate leaderboard from My Rank -->
                         <div style="height: 1px; background: linear-gradient(90deg, transparent, rgba(99,102,241,0.2), transparent); margin: 0 1.5rem 1rem 1.5rem;"></div>
 
-                        <div id="user-rank-info" class="user-rank-card" style="margin: 0 0.75rem 0.75rem 0.75rem;">
+                        <div id="user-rank-info" class="user-rank-card" style="margin: 0;">
                             <!-- Populated by JS -->
                         </div>
                     </div>
@@ -3716,55 +3716,38 @@
 
             const rankNumber = userRankData.rank || '—';
             const bestScore  = userRankData.best_score || 0;
-            const name = userRankData.name || 'You';
+            const accuracy   = userRankData.accuracy ? parseFloat(userRankData.accuracy).toFixed(0) : '0';
+            const accPct     = Math.min(parseFloat(accuracy), 100);
+            const name       = userRankData.name || 'You';
+            const initials   = name.substring(0, 2).toUpperCase();
+            
+            const rankLabel = rankNumber <= 3 ? ['🥇','🥈','🥉'][rankNumber - 1] : rankNumber;
 
-            const badge = rankNumber === 1       ? { emoji: '🏆', text: 'Top 1', color: '#0f172a' }
-                        : rankNumber <= 3         ? { emoji: '🥈', text: 'Top 3',  color: '#0f172a' }
-                        : rankNumber <= 10        ? { emoji: '🎯', text: 'Top 10', color: '#0f172a' }
-                        : rankNumber <= 50        ? { emoji: '⭐', text: 'Top 50', color: '#0f172a' }
-                        : rankNumber <= 100       ? { emoji: '👍', text: 'Top 100', color: '#0f172a' }
-                        :                          { emoji: '💪', text: 'Keep Grinding', color: '#0f172a' };
-
+            // Render exact same structure as a normal leaderboard row, but with a special highlight class
             infoEl.innerHTML = `
-                <div style="
-                    background: linear-gradient(135deg, rgba(238,242,255,0.8), rgba(240,249,255,0.6));
-                    backdrop-filter: blur(20px);
-                    border: 1px solid rgba(255,255,255,0.6);
-                    border-radius: 16px;
-                    padding: 1.25rem 1.5rem;
-                    display: flex;
-                    justify-content: space-between;
-                    align-items: center;
-                    box-shadow: 0 4px 15px rgba(0,0,0,0.03);
-                ">
-                    <!-- Left Side: Rank Data -->
-                    <div style="display:flex; flex-direction:column; gap:0.5rem;">
-                        <div style="font-size:0.65rem; font-weight:700; color:#94a3b8; text-transform:uppercase; letter-spacing:0.1em;">
-                            Your Rank
-                        </div>
-                        <div style="display:flex; align-items:center; gap:0.75rem;">
-                            <div style="font-size:2.2rem; font-weight:900; color:#0f172a; font-family:'Inter', sans-serif; line-height:1;">
-                                #${rankNumber}
-                            </div>
-                            <div style="display:flex; flex-direction:column; justify-content:center; padding-top: 0.2rem;">
-                                <div style="font-size:0.8rem; font-weight:500; color:#64748b; line-height:1.2;">
-                                    ${name}
-                                </div>
-                                <div style="font-size:1rem; font-weight:800; color:#6366f1; font-family:'Outfit',sans-serif; line-height:1.2;">
-                                    ${bestScore}<span style="font-size:0.8rem;opacity:0.8;">/240</span>
-                                </div>
+                <div class="leaderboard-row rank-${rankNumber} my-rank-highlight" style="margin-top: 0; box-shadow: 0 4px 20px rgba(99, 102, 241, 0.15); border: 1px solid rgba(99, 102, 241, 0.4);">
+                    ${rankNumber === 1 ? '<div class="lb-crown">👑</div>' : ''}
+                    <div class="lb-rank">
+                        <div class="lb-rank-bubble">${rankLabel}</div>
+                    </div>
+                    <div class="lb-name">
+                        <div class="lb-user-info">
+                            <div class="lb-avatar-glass">${initials}</div>
+                            <div class="lb-user-details lb-details">
+                                <h4>${name} (You)</h4>
+                                <p>${userRankData.attempts || 0} attempt${(userRankData.attempts || 0) !== 1 ? 's' : ''}</p>
                             </div>
                         </div>
                     </div>
-
-                    <!-- Right Side: Status/Position -->
-                    <div style="display:flex; flex-direction:column; align-items:flex-end; justify-content:center; gap:0.4rem;">
-                        <div style="font-size:0.65rem; font-weight:500; color:#94a3b8; text-transform:capitalize;">
-                            Position
-                        </div>
-                        <div style="display:flex; align-items:center; gap:0.35rem; font-size:1.1rem; font-weight:800; color:${badge.color}; font-family:'Outfit',sans-serif;">
-                            <span>${badge.emoji}</span>
-                            <span>${badge.text}</span>
+                    <div class="lb-score">
+                        <div class="lb-score-glass">${bestScore}/240</div>
+                    </div>
+                    <div class="lb-accuracy">
+                        <div class="lb-accuracy-wrapper">
+                            <div class="lb-accuracy-label">${accuracy}%</div>
+                            <div class="lb-accuracy-container">
+                                <div class="lb-accuracy-fill" style="width: ${accPct}%"></div>
+                            </div>
                         </div>
                     </div>
                 </div>
