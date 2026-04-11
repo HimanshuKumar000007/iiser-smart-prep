@@ -2353,7 +2353,7 @@
         }
 
         .user-rank-collapsible.show {
-            max-height: 300px;
+            max-height: 800px;
         }
 
         /* Dark Mode Overrides */
@@ -2372,19 +2372,31 @@
             box-shadow: inset 0 2px 4px rgba(0,0,0,0.4);
         }
 
-        /* Mobile Adjustments (Card Stack) */
+        /* Mobile Adjustments (Card Stack & Compact Leaderboard) */
         @media (max-width: 900px) {
             .leaderboard-header { display: none; }
             .leaderboard-row {
-                grid-template-columns: 1fr;
-                padding: 1.5rem;
-                gap: 1.25rem;
-                text-align: center;
+                grid-template-columns: 40px 1fr 70px;
+                padding: 1rem;
+                gap: 0.75rem;
+                text-align: left;
+                align-items: center;
+                border-radius: 16px;
             }
-            .lb-user-info { flex-direction: column; text-align: center; }
-            .lb-rank-bubble { position: absolute; top: -15px; left: -10px; transform: rotate(-10deg); width: 48px; height: 48px; }
-            .rank-1 .lb-rank-bubble { scale: 1; top: -20px; }
-            .lb-score-glass { width: 100%; }
+            .lb-user-info { flex-direction: row; text-align: left; gap: 0.5rem; }
+            .lb-avatar-glass { width: 32px; height: 32px; font-size: 0.8rem; border-radius: 10px; }
+            .lb-details h4 { font-size: 0.85rem; }
+            .lb-details p { font-size: 0.65rem; }
+            
+            .lb-rank-bubble { position: relative; top: 0; left: 0; transform: none; width: 34px; height: 34px; font-size: 0.8rem; }
+            .rank-1 .lb-rank-bubble { scale: 1.1; top: 0; }
+            .leaderboard-row.rank-1::after { top: -10px; font-size: 1.2rem; }
+            
+            .lb-score-glass { width: auto; padding: 0.3rem; font-size: 0.75rem; border-radius: 8px; }
+            .lb-accuracy { display: none; } /* Hide accuracy column on mobile to keep it compact */
+            
+            .user-rank-inner { flex-direction: column !important; align-items: flex-start !important; gap: 1rem; }
+            .user-rank-inner > div:last-child { text-align: left !important; }
         }
     </style>
 </head>
@@ -2555,14 +2567,6 @@
                                 <span>My Rank</span>
                                 <i class="ri-arrow-down-s-line"></i>
                             </button>
-                        </div>
-                        <div class="leaderboard-filter-group" style="margin-top: 1rem;">
-                            <button class="leaderboard-filter-btn active" onclick="setLeaderboardFilter('all')">All
-                                Time</button>
-                            <button class="leaderboard-filter-btn" onclick="setLeaderboardFilter('monthly')">This
-                                Month</button>
-                            <button class="leaderboard-filter-btn" onclick="setLeaderboardFilter('weekly')">This
-                                Week</button>
                         </div>
                     </div>
                     <div id="leaderboard-container">
@@ -3451,11 +3455,11 @@
                             : `💪 Keep Going`;
 
             infoEl.innerHTML = `
-                <div style="display:flex; align-items:center; justify-content:space-between; padding: 1.5rem; background: var(--glass-bg); backdrop-filter: var(--ios-blur); border-radius: 20px; border: 1px solid var(--ios-indigo);">
+                <div class="user-rank-inner" style="display:flex; align-items:center; justify-content:space-between; padding: 1.5rem; background: var(--glass-bg); backdrop-filter: var(--ios-blur); border-radius: 20px; border: 1px solid var(--ios-indigo);">
                     <div>
                         <div style="font-size:0.7rem; color:var(--text-light); text-transform:uppercase; font-weight:800; letter-spacing:0.1em; margin-bottom:0.5rem;">Your Position</div>
                         <div style="display:flex; align-items:center; gap:1.5rem;">
-                            <div class="lb-rank-bubble" style="width: 60px; height: 60px; font-size: 1.5rem; background: var(--ios-indigo); color: white;">
+                            <div class="lb-rank-bubble" style="width: 60px; height: 60px; font-size: 1.5rem; background: var(--ios-indigo); color: white; transform: none; top:0; left:0; position:relative;">
                                 #${rankNumber}
                             </div>
                             <div>
