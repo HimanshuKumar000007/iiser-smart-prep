@@ -2562,25 +2562,25 @@
                                 <i class="ri-trophy-line" style="color:#f59e0b;"></i>
                                 Leaderboard
                             </div>
-                            <button class="leaderboard-toggle-btn" id="rank-toggle-btn" onclick="toggleUserRank()">
+                            <button class="leaderboard-toggle-btn show active" id="rank-toggle-btn" onclick="toggleUserRank()">
                                 <i class="ri-user-star-line"></i>
-                                <span>My Rank</span>
+                                <span>Leaderboard</span>
                                 <i class="ri-arrow-down-s-line"></i>
                             </button>
                         </div>
                     </div>
-                    <div id="leaderboard-container">
-                        <div class="leaderboard-header">
-                            <div class="lb-rank">Rank</div>
-                            <div class="lb-name">Name</div>
-                            <div class="lb-score">Score</div>
-                            <div class="lb-accuracy">Accuracy</div>
+                    <div id="leaderboard-full-collapse" class="user-rank-collapsible show">
+                        <div id="leaderboard-container">
+                            <div class="leaderboard-header">
+                                <div class="lb-rank">Rank</div>
+                                <div class="lb-name">Name</div>
+                                <div class="lb-score">Score</div>
+                                <div class="lb-accuracy">Accuracy</div>
+                            </div>
+                            <div id="leaderboard-list">
+                                <!-- Populated by JS -->
+                            </div>
                         </div>
-                        <div id="leaderboard-list">
-                            <!-- Populated by JS -->
-                        </div>
-                    </div>
-                    <div id="user-rank-collapse" class="user-rank-collapsible">
                         <div id="user-rank-info" class="user-rank-card" style="margin: 1rem; margin-top: 0;">
                             <!-- Populated by JS -->
                         </div>
@@ -3477,7 +3477,7 @@
         }
 
         function toggleUserRank() {
-            const collapse = document.getElementById('user-rank-collapse');
+            const collapse = document.getElementById('leaderboard-full-collapse');
             const btn = document.getElementById('rank-toggle-btn');
             collapse.classList.toggle('show');
             btn.classList.toggle('active');
