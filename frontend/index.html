@@ -3899,7 +3899,7 @@
 
             if (token) {
                 container.innerHTML = `
-                    <a href="/dashboard.html" class="btn btn-primary" style="padding: 0.5rem 1rem;">Dashboard</a>
+                    <a href="/dashboard.html" class="btn btn-primary" style="padding: 0.5rem 1rem;">AI Dashboard</a>
                     <button onclick="logout()" class="btn btn-outline" style="border:none; color: var(--text-muted);">Logout</button>
                 `;
 
@@ -3910,7 +3910,7 @@
                     const isHero = btn.closest('.hero');
                     const text = btn.innerText.replace(/\s+/g, ' ').trim();
                     if (text === 'Start Practicing Now' || text === 'Start Preparing' || text === 'Dashboard') {
-                        btn.textContent = isHero ? 'Start practicing now with AI Dashboard' : 'Dashboard';
+                        btn.textContent = isHero ? 'AI Dashboard' : 'Dashboard';
                     }
                     if (btn.tagName === 'A') {
                         btn.onclick = null; // Remove inline onclick if it's there
