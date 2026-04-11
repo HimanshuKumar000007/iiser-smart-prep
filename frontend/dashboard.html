@@ -2120,7 +2120,6 @@
                 }
             }
         }
-
         /* ══════════════════════════════════════════════════════════
            PREMIUM IOS GLASSMORMPSHISM LEADERBOARD
            ═════════════════════════════════════════════════════════ */
@@ -2241,7 +2240,7 @@
             margin-bottom: 1.5rem;
             box-shadow: 0 20px 50px rgba(251, 191, 36, 0.2);
         }
-
+        
         .leaderboard-row.rank-1::after {
             content: '👑';
             position: absolute;
@@ -2249,18 +2248,11 @@
             left: 50%;
             transform: translateX(-50%);
             font-size: 1.5rem;
-            filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
+            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.2));
         }
 
-        .leaderboard-row.rank-2 {
-            border: 1.5px solid #d1d5db;
-            box-shadow: 0 15px 35px rgba(209, 213, 219, 0.25);
-        }
-
-        .leaderboard-row.rank-3 {
-            border: 1.5px solid #f97316;
-            box-shadow: 0 15px 35px rgba(249, 115, 22, 0.25);
-        }
+        .leaderboard-row.rank-2 { border: 1.5px solid #d1d5db; box-shadow: 0 15px 35px rgba(209, 213, 219, 0.25); }
+        .leaderboard-row.rank-3 { border: 1.5px solid #f97316; box-shadow: 0 15px 35px rgba(249, 115, 22, 0.25); }
 
         /* Liquid Rank Badges */
         .lb-rank-bubble {
@@ -2274,27 +2266,14 @@
             font-size: 1rem;
             font-family: 'Outfit', sans-serif;
             background: white;
-            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1), 0 4px 12px rgba(0, 0, 0, 0.1);
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.1), 0 4px 12px rgba(0,0,0,0.1);
             position: relative;
             z-index: 2;
         }
 
-        .rank-1 .lb-rank-bubble {
-            background: linear-gradient(135deg, #fbbf24, #f59e0b);
-            color: white;
-            scale: 1.2;
-            box-shadow: 0 0 20px rgba(251, 191, 36, 0.5);
-        }
-
-        .rank-2 .lb-rank-bubble {
-            background: linear-gradient(135deg, #e5e7eb, #9ca3af);
-            color: #374151;
-        }
-
-        .rank-3 .lb-rank-bubble {
-            background: linear-gradient(135deg, #ffedd5, #f97316);
-            color: white;
-        }
+        .rank-1 .lb-rank-bubble { background: linear-gradient(135deg, #fbbf24, #f59e0b); color: white; scale: 1.2; box-shadow: 0 0 20px rgba(251, 191, 36, 0.5); }
+        .rank-2 .lb-rank-bubble { background: linear-gradient(135deg, #e5e7eb, #9ca3af); color: #374151; }
+        .rank-3 .lb-rank-bubble { background: linear-gradient(135deg, #ffedd5, #f97316); color: white; }
 
         .lb-user-info {
             display: flex;
@@ -2316,7 +2295,7 @@
             font-weight: 700;
             font-size: 1.1rem;
             backdrop-filter: var(--ios-blur);
-            border: 1px solid rgba(255, 255, 255, 0.3);
+            border: 1px solid rgba(255,255,255,0.3);
             box-shadow: 0 6px 15px rgba(99, 102, 241, 0.3);
         }
 
@@ -2351,11 +2330,11 @@
         .lb-accuracy-container {
             width: 100%;
             height: 10px;
-            background: rgba(0, 0, 0, 0.05);
+            background: rgba(0,0,0,0.05);
             border-radius: 100px;
             overflow: hidden;
             position: relative;
-            border: 1px solid rgba(255, 255, 255, 0.5);
+            border: 1px solid rgba(255,255,255,0.5);
             z-index: 2;
         }
 
@@ -2390,15 +2369,12 @@
         [data-theme="dark"] .lb-rank-bubble {
             background: #1e293b;
             color: white;
-            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.4);
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.4);
         }
 
         /* Mobile Adjustments (Card Stack & Compact Leaderboard) */
         @media (max-width: 900px) {
-            .leaderboard-header {
-                display: none;
-            }
-
+            .leaderboard-header { display: none; }
             .leaderboard-row {
                 grid-template-columns: 40px 1fr 70px;
                 padding: 1rem;
@@ -2407,70 +2383,20 @@
                 align-items: center;
                 border-radius: 16px;
             }
-
-            .lb-user-info {
-                flex-direction: row;
-                text-align: left;
-                gap: 0.5rem;
-            }
-
-            .lb-avatar-glass {
-                width: 32px;
-                height: 32px;
-                font-size: 0.8rem;
-                border-radius: 10px;
-            }
-
-            .lb-details h4 {
-                font-size: 0.85rem;
-            }
-
-            .lb-details p {
-                font-size: 0.65rem;
-            }
-
-            .lb-rank-bubble {
-                position: relative;
-                top: 0;
-                left: 0;
-                transform: none;
-                width: 34px;
-                height: 34px;
-                font-size: 0.8rem;
-            }
-
-            .rank-1 .lb-rank-bubble {
-                scale: 1.1;
-                top: 0;
-            }
-
-            .leaderboard-row.rank-1::after {
-                top: -10px;
-                font-size: 1.2rem;
-            }
-
-            .lb-score-glass {
-                width: auto;
-                padding: 0.3rem;
-                font-size: 0.75rem;
-                border-radius: 8px;
-            }
-
-            .lb-accuracy {
-                display: none;
-            }
-
-            /* Hide accuracy column on mobile to keep it compact */
-
-            .user-rank-inner {
-                flex-direction: column !important;
-                align-items: flex-start !important;
-                gap: 1rem;
-            }
-
-            .user-rank-inner>div:last-child {
-                text-align: left !important;
-            }
+            .lb-user-info { flex-direction: row; text-align: left; gap: 0.5rem; }
+            .lb-avatar-glass { width: 32px; height: 32px; font-size: 0.8rem; border-radius: 10px; }
+            .lb-details h4 { font-size: 0.85rem; }
+            .lb-details p { font-size: 0.65rem; }
+            
+            .lb-rank-bubble { position: relative; top: 0; left: 0; transform: none; width: 34px; height: 34px; font-size: 0.8rem; }
+            .rank-1 .lb-rank-bubble { scale: 1.1; top: 0; }
+            .leaderboard-row.rank-1::after { top: -10px; font-size: 1.2rem; }
+            
+            .lb-score-glass { width: auto; padding: 0.3rem; font-size: 0.75rem; border-radius: 8px; }
+            .lb-accuracy { display: none; } /* Hide accuracy column on mobile to keep it compact */
+            
+            .user-rank-inner { flex-direction: column !important; align-items: flex-start !important; gap: 1rem; }
+            .user-rank-inner > div:last-child { text-align: left !important; }
         }
     </style>
 </head>
@@ -2636,25 +2562,25 @@
                                 <i class="ri-trophy-line" style="color:#f59e0b;"></i>
                                 Leaderboard
                             </div>
-                            <button class="leaderboard-toggle-btn" id="rank-toggle-btn" onclick="toggleUserRank()">
+                            <button class="leaderboard-toggle-btn show active" id="rank-toggle-btn" onclick="toggleUserRank()">
                                 <i class="ri-user-star-line"></i>
-                                <span>My Rank</span>
+                                <span>Leaderboard</span>
                                 <i class="ri-arrow-down-s-line"></i>
                             </button>
                         </div>
                     </div>
-                    <div id="leaderboard-container">
-                        <div class="leaderboard-header">
-                            <div class="lb-rank">Rank</div>
-                            <div class="lb-name">Name</div>
-                            <div class="lb-score">Score</div>
-                            <div class="lb-accuracy">Accuracy</div>
+                    <div id="leaderboard-full-collapse" class="user-rank-collapsible show">
+                        <div id="leaderboard-container">
+                            <div class="leaderboard-header">
+                                <div class="lb-rank">Rank</div>
+                                <div class="lb-name">Name</div>
+                                <div class="lb-score">Score</div>
+                                <div class="lb-accuracy">Accuracy</div>
+                            </div>
+                            <div id="leaderboard-list">
+                                <!-- Populated by JS -->
+                            </div>
                         </div>
-                        <div id="leaderboard-list">
-                            <!-- Populated by JS -->
-                        </div>
-                    </div>
-                    <div id="user-rank-collapse" class="user-rank-collapsible">
                         <div id="user-rank-info" class="user-rank-card" style="margin: 1rem; margin-top: 0;">
                             <!-- Populated by JS -->
                         </div>
@@ -3551,7 +3477,7 @@
         }
 
         function toggleUserRank() {
-            const collapse = document.getElementById('user-rank-collapse');
+            const collapse = document.getElementById('leaderboard-full-collapse');
             const btn = document.getElementById('rank-toggle-btn');
             collapse.classList.toggle('show');
             btn.classList.toggle('active');
