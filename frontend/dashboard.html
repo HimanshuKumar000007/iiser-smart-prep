@@ -2520,27 +2520,12 @@
 
         /* ── My Rank Expanded Card ── */
         .user-rank-card {
-            margin: 0.75rem;
-            padding: 1.5rem;
-            background: linear-gradient(135deg, rgba(99,102,241,0.1), rgba(6,182,212,0.06), rgba(255,255,255,0.3));
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(99, 102, 241, 0.2);
-            border-radius: 20px;
-            box-shadow: var(--ios-shadow), inset 0 1px 0 rgba(255,255,255,0.6);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .user-rank-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 40%;
-            background: linear-gradient(180deg, rgba(255,255,255,0.4) 0%, transparent 100%);
-            pointer-events: none;
-            border-radius: 20px 20px 0 0;
+            margin: 0 0 0.75rem 0;
+            background: transparent;
+            border: none;
+            box-shadow: none;
+            padding: 0;
+            backdrop-filter: none;
         }
 
         /* ── Empty State ── */
@@ -3717,46 +3702,56 @@
             const bestScore  = currentUser.best_score || 0;
             const totalUsers = currentUser.total_users || 1;
 
-            const positionText = rankNumber === 1  ? '🔝 #1 (Top!)'
+            const positionText = rankNumber === 1  ? '🔝 Top 1'
                 : rankNumber <= 10                 ? '🎯 Top 10'
                 : rankNumber <= 50                 ? '⭐ Top 50'
                 : rankNumber <= 100                ? '👍 Top 100'
                 :                                    '💪 Keep Going';
 
             infoEl.innerHTML = `
-                <div class="user-rank-inner" style="display:flex; justify-content:space-between; align-items:center;">
-                    <!-- Left: rank + score -->
-                    <div style="display:flex; flex-direction:column; gap:0.4rem;">
-                        <span style="font-size:0.65rem; color:var(--text-light); font-weight:800;
-                                     text-transform:uppercase; letter-spacing:0.08em;">Your Position</span>
+                <div style="display:flex; justify-content:space-between; align-items:center;
+                            background: linear-gradient(135deg, rgba(255,255,255,0.8), rgba(200,245,240,0.4));
+                            border: 1px solid rgba(167,139,250,0.3);
+                            border-radius: 16px; padding: 1.25rem 1.75rem;">
+
+                    <!-- Left: Your Position label + rank circle + score -->
+                    <div style="display:flex; flex-direction:column; gap:0.5rem;">
+                        <span style="font-size:0.62rem; color:#94a3b8; font-weight:800;
+                                     text-transform:uppercase; letter-spacing:0.1em;">Your Position</span>
                         <div style="display:flex; align-items:center; gap:1rem;">
-                            <div style="display:flex; align-items:center; justify-content:center;
-                                        background:#6366f1; color:white; width:44px; height:44px;
-                                        border-radius:50%; font-weight:900; font-family:'Outfit',sans-serif;
-                                        font-size:1.1rem; box-shadow:0 4px 12px rgba(99,102,241,0.3);
-                                        flex-shrink:0;">
+
+                            <!-- Purple rank circle -->
+                            <div style="width:40px; height:40px; border-radius:50%;
+                                        background:#6366f1; color:white;
+                                        display:flex; align-items:center; justify-content:center;
+                                        font-weight:900; font-family:'Outfit',sans-serif; font-size:1rem;
+                                        box-shadow:0 4px 14px rgba(99,102,241,0.35); flex-shrink:0;">
                                 #${rankNumber}
                             </div>
+
+                            <!-- Best Score -->
                             <div style="display:flex; flex-direction:column; gap:0.1rem;">
-                                <span style="font-size:0.65rem; color:var(--text-muted); font-weight:700;">
-                                    Best Score
-                                </span>
-                                <span style="font-weight:900; color:var(--ios-indigo); font-size:1.2rem;
+                                <span style="font-size:0.62rem; color:#64748b; font-weight:700;">Best Score</span>
+                                <span style="font-weight:900; color:#6366f1; font-size:1.3rem;
                                              font-family:'Outfit',sans-serif; line-height:1;">
                                     ${bestScore}
-                                    <span style="font-size:0.75rem; color:var(--text-muted);">/240</span>
+                                    <span style="font-size:0.78rem; color:#94a3b8; font-weight:600;">/240</span>
                                 </span>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Right: status badge -->
+                    <!-- Right: Status -->
                     <div style="display:flex; flex-direction:column; gap:0.4rem; align-items:flex-end;">
-                        <span style="font-size:0.65rem; color:var(--text-light); font-weight:800;
-                                     text-transform:uppercase; letter-spacing:0.08em;">Status</span>
-                        <div style="font-weight:800; font-size:1rem; color:var(--ios-cyan);
-                                    font-family:'Outfit',sans-serif;">
-                            ${positionText}
+                        <span style="font-size:0.62rem; color:#94a3b8; font-weight:800;
+                                     text-transform:uppercase; letter-spacing:0.1em;">Status</span>
+                        <div style="display:flex; align-items:center; gap:0.4rem;
+                                    background:rgba(241,245,249,0.9); border:1px solid rgba(226,232,240,0.8);
+                                    padding:0.35rem 0.9rem; border-radius:100px;">
+                            <span style="font-size:1rem;">${positionText.split(' ')[0]}</span>
+                            <span style="font-weight:800; font-size:0.88rem; color:#0f172a;">
+                                ${positionText.split(' ').slice(1).join(' ')}
+                            </span>
                         </div>
                     </div>
                 </div>
