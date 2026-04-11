@@ -2518,15 +2518,129 @@
             opacity: 1;
         }
 
-        /* ── My Rank Expanded Card ── */
+        /* ── My Rank Card ── */
         .user-rank-card {
-            margin: 0 0 0.75rem 0;
-            background: transparent;
-            border: none;
-            box-shadow: none;
-            padding: 0;
-            backdrop-filter: none;
+            margin: 0.5rem 1rem 1.25rem 1rem;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.7), rgba(200, 245, 240, 0.35));
+            backdrop-filter: blur(20px) saturate(180%);
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            border: 1px solid rgba(167, 139, 250, 0.3);
+            box-shadow: var(--ios-shadow);
+            position: relative;
+            z-index: 10;
         }
+
+        .user-rank-card:hover {
+            transform: translateY(-5px) scale(1.015);
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(200, 245, 240, 0.5));
+            box-shadow: var(--ios-shadow-lg), 0 0 25px rgba(99, 102, 241, 0.15);
+            border-color: rgba(99, 102, 241, 0.45);
+        }
+
+        .user-rank-card:active {
+            transform: scale(0.97);
+        }
+
+        [data-theme="dark"] .user-rank-card {
+            background: linear-gradient(135deg, rgba(30, 41, 80, 0.55), rgba(15, 23, 52, 0.45));
+            border-color: rgba(255, 255, 255, 0.08);
+        }
+
+        [data-theme="dark"] .user-rank-card:hover {
+            background: linear-gradient(135deg, rgba(40, 55, 100, 0.65), rgba(20, 30, 65, 0.55));
+            border-color: rgba(99, 102, 241, 0.4);
+        }
+
+        .user-rank-inner {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.25rem 1.75rem;
+        }
+
+        .user-rank-left {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .user-rank-label {
+            font-size: 0.62rem;
+            color: var(--text-light);
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        .user-rank-main {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .user-rank-bubble {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background: var(--primary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 950;
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.05rem;
+            box-shadow: 0 4px 14px var(--primary-glow);
+            flex-shrink: 0;
+            border: 1.5px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .user-rank-score-box {
+            display: flex;
+            flex-direction: column;
+            gap: 0.1rem;
+        }
+
+        .user-rank-score-val {
+            font-weight: 900;
+            color: var(--primary);
+            font-size: 1.35rem;
+            font-family: 'Outfit', sans-serif;
+            line-height: 1;
+        }
+
+        .user-rank-score-max {
+            font-size: 0.78rem;
+            color: var(--text-light);
+            font-weight: 600;
+        }
+
+        .user-rank-badge {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            background: rgba(241, 245, 249, 0.9);
+            border: 1px solid rgba(226, 232, 240, 0.8);
+            padding: 0.4rem 1rem;
+            border-radius: 100px;
+            transition: all 0.3s ease;
+        }
+
+        .user-rank-card:hover .user-rank-badge {
+            background: var(--primary-glow);
+            border-color: var(--primary);
+            transform: translateX(-5px);
+        }
+
+        [data-theme="dark"] .user-rank-badge {
+            background: rgba(15, 23, 42, 0.6);
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .user-rank-badge-icon { font-size: 1rem; }
+        .user-rank-badge-text { font-weight: 800; font-size: 0.88rem; color: var(--text); }
 
         /* ── Empty State ── */
         .leaderboard-empty {
@@ -2813,15 +2927,22 @@
                                 <i class="ri-trophy-line" style="color:#f59e0b;"></i>
                                 Leaderboard
                             </div>
-                            <button class="leaderboard-toggle-btn active" id="rank-toggle-btn" onclick="toggleUserRank()">
+                            <!-- Small toggle indicator -->
+                            <button class="leaderboard-toggle-btn" id="rank-toggle-btn" onclick="toggleUserRank()">
                                 <i class="ri-user-star-line"></i>
-                                <span>My Rank</span>
+                                <span>All Ranks</span>
                                 <i class="ri-arrow-down-s-line"></i>
                             </button>
                         </div>
                     </div>
-                    <!-- Single collapsible wrapper for the ENTIRE leaderboard body -->
-                    <div id="leaderboard-body-collapse" class="user-rank-collapsible show">
+
+                    <!-- User's Rank Card - Clickable Trigger -->
+                    <div id="user-rank-info" class="user-rank-card" onclick="toggleUserRank()">
+                        <!-- Populated by JS -->
+                    </div>
+
+                    <!-- Collapsible wrapper for the rest of the leaderboard -->
+                    <div id="leaderboard-body-collapse" class="user-rank-collapsible">
                         <div id="leaderboard-container">
                             <div class="leaderboard-header">
                                 <div class="lb-rank">Rank</div>
@@ -2832,13 +2953,6 @@
                             <div id="leaderboard-list">
                                 <!-- Populated by JS -->
                             </div>
-                        </div>
-                        
-                        <!-- Divider to separate leaderboard from My Rank -->
-                        <div style="height: 1px; background: linear-gradient(90deg, transparent, rgba(99,102,241,0.2), transparent); margin: 0 1.5rem 1rem 1.5rem;"></div>
-
-                        <div id="user-rank-info" class="user-rank-card" style="margin: 0 0 0.75rem 0;">
-                            <!-- Populated by JS -->
                         </div>
                     </div>
                 </div>
@@ -3709,33 +3823,20 @@
                 :                                    '💪 Keep Going';
 
             infoEl.innerHTML = `
-                <div style="display:flex; justify-content:space-between; align-items:center;
-                            background: linear-gradient(135deg, rgba(255,255,255,0.8), rgba(200,245,240,0.4));
-                            border: 1px solid rgba(167,139,250,0.3);
-                            border-radius: 16px; padding: 1.25rem 1.75rem;">
-
+                <div class="user-rank-inner">
                     <!-- Left: Your Position label + rank circle + score -->
-                    <div style="display:flex; flex-direction:column; gap:0.5rem;">
-                        <span style="font-size:0.62rem; color:#94a3b8; font-weight:800;
-                                     text-transform:uppercase; letter-spacing:0.1em;">Your Position</span>
-                        <div style="display:flex; align-items:center; gap:1rem;">
-
+                    <div class="user-rank-left">
+                        <span class="user-rank-label">Your Position</span>
+                        <div class="user-rank-main">
                             <!-- Purple rank circle -->
-                            <div style="width:40px; height:40px; border-radius:50%;
-                                        background:#6366f1; color:white;
-                                        display:flex; align-items:center; justify-content:center;
-                                        font-weight:900; font-family:'Outfit',sans-serif; font-size:1rem;
-                                        box-shadow:0 4px 14px rgba(99,102,241,0.35); flex-shrink:0;">
-                                #${rankNumber}
-                            </div>
+                            <div class="user-rank-bubble">#${rankNumber}</div>
 
                             <!-- Best Score -->
-                            <div style="display:flex; flex-direction:column; gap:0.1rem;">
-                                <span style="font-size:0.62rem; color:#64748b; font-weight:700;">Best Score</span>
-                                <span style="font-weight:900; color:#6366f1; font-size:1.3rem;
-                                             font-family:'Outfit',sans-serif; line-height:1;">
+                            <div class="user-rank-score-box">
+                                <span class="user-rank-label" style="text-transform:none; margin-bottom:2px;">Best Score</span>
+                                <span class="user-rank-score-val">
                                     ${bestScore}
-                                    <span style="font-size:0.78rem; color:#94a3b8; font-weight:600;">/240</span>
+                                    <span class="user-rank-score-max">/240</span>
                                 </span>
                             </div>
                         </div>
@@ -3743,13 +3844,10 @@
 
                     <!-- Right: Status -->
                     <div style="display:flex; flex-direction:column; gap:0.4rem; align-items:flex-end;">
-                        <span style="font-size:0.62rem; color:#94a3b8; font-weight:800;
-                                     text-transform:uppercase; letter-spacing:0.1em;">Status</span>
-                        <div style="display:flex; align-items:center; gap:0.4rem;
-                                    background:rgba(241,245,249,0.9); border:1px solid rgba(226,232,240,0.8);
-                                    padding:0.35rem 0.9rem; border-radius:100px;">
-                            <span style="font-size:1rem;">${positionText.split(' ')[0]}</span>
-                            <span style="font-weight:800; font-size:0.88rem; color:#0f172a;">
+                        <span class="user-rank-label">Status</span>
+                        <div class="user-rank-badge">
+                            <span class="user-rank-badge-icon">${positionText.split(' ')[0]}</span>
+                            <span class="user-rank-badge-text">
                                 ${positionText.split(' ').slice(1).join(' ')}
                             </span>
                         </div>
@@ -3761,8 +3859,17 @@
         function toggleUserRank() {
             const collapse = document.getElementById('leaderboard-body-collapse');
             const btn = document.getElementById('rank-toggle-btn');
-            collapse.classList.toggle('show');
+            const isShowing = collapse.classList.toggle('show');
             btn.classList.toggle('active');
+            
+            // Update button label
+            const btnSpan = btn.querySelector('span');
+            if (btnSpan) {
+                btnSpan.textContent = isShowing ? 'Hide All' : 'All Ranks';
+            }
+
+            // Optional haptic
+            haptic('medium');
         }
 
         function setLeaderboardFilter(period) {
