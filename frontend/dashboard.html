@@ -2120,6 +2120,328 @@
                 }
             }
         }
+        /* ══════════════════════════════════════════════════════════
+           LEADERBOARD STYLES
+           ═════════════════════════════════════════════════════════ */
+
+        .leaderboard-filter-group {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .leaderboard-filter-btn {
+            padding: 0.35rem 0.85rem;
+            border-radius: 100px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            border: 1px solid var(--border);
+            background: var(--bg-hover);
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: all 0.2s;
+            white-space: nowrap;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .leaderboard-filter-btn:hover {
+            background: var(--primary-glow);
+            color: var(--primary);
+            border-color: var(--primary);
+        }
+
+        .leaderboard-filter-btn.active {
+            background: var(--primary);
+            border-color: var(--primary);
+            color: white;
+            box-shadow: 0 4px 12px var(--primary-glow);
+        }
+
+        #leaderboard-container {
+            margin-top: 1.5rem;
+        }
+
+        .leaderboard-header {
+            display: grid;
+            grid-template-columns: 50px 1fr 80px 80px;
+            gap: 1rem;
+            padding: 0.75rem 1rem;
+            background: var(--bg-hover);
+            border-radius: 14px;
+            margin-bottom: 0.5rem;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.07em;
+            color: var(--text-light);
+        }
+
+        .lb-rank,
+        .lb-name,
+        .lb-score,
+        .lb-accuracy {
+            display: flex;
+            align-items: center;
+        }
+
+        .leaderboard-row {
+            display: grid;
+            grid-template-columns: 50px 1fr 80px 80px;
+            gap: 1rem;
+            padding: 1rem;
+            border-bottom: 1px solid var(--border);
+            align-items: center;
+            transition: all 0.2s;
+            position: relative;
+        }
+
+        .leaderboard-row:hover {
+            background: var(--bg-hover);
+            border-radius: 12px;
+        }
+
+        .leaderboard-row.user-row {
+            background: var(--primary-glow);
+            border-radius: 12px;
+            border: 1px solid var(--primary);
+            margin-top: 0.5rem;
+            padding: 1.2rem 1rem;
+            font-weight: 600;
+        }
+
+        .lb-rank-num {
+            font-weight: 900;
+            font-size: 1.1rem;
+            font-family: 'Outfit', sans-serif;
+            color: var(--text);
+        }
+
+        .lb-rank-num.medal {
+            font-size: 1.3rem;
+        }
+
+        .lb-rank-num.medal.first {
+            color: #fbbf24;
+            text-shadow: 0 2px 8px rgba(251, 191, 36, 0.3);
+        }
+
+        .lb-rank-num.medal.second {
+            color: #d1d5db;
+            text-shadow: 0 2px 8px rgba(209, 213, 219, 0.3);
+        }
+
+        .lb-rank-num.medal.third {
+            color: #f97316;
+            text-shadow: 0 2px 8px rgba(249, 115, 22, 0.3);
+        }
+
+        .lb-user-info {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .lb-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 0.9rem;
+        }
+
+        .lb-user-details h4 {
+            margin: 0;
+            font-size: 0.9rem;
+            color: var(--text);
+            font-weight: 600;
+        }
+
+        .lb-user-details p {
+            margin: 0;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .lb-score-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 100px;
+            font-weight: 700;
+            font-size: 0.8rem;
+            text-align: center;
+        }
+
+        .lb-score-high {
+            background: rgba(16, 185, 129, 0.12);
+            color: #059669;
+        }
+
+        .lb-score-mid {
+            background: rgba(245, 158, 11, 0.12);
+            color: #d97706;
+        }
+
+        .lb-score-low {
+            background: rgba(239, 68, 68, 0.12);
+            color: #dc2626;
+        }
+
+        .lb-accuracy-bar {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        .user-rank-card {
+            background: linear-gradient(135deg, var(--primary-glow), rgba(6, 182, 212, 0.1));
+            padding: 1.5rem;
+            border-radius: 16px;
+            border: 1px solid var(--primary);
+        }
+
+        .leaderboard-empty {
+            text-align: center;
+            padding: 3rem 1rem;
+            color: var(--text-muted);
+        }
+
+        .leaderboard-empty-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+
+        .leaderboard-empty h3 {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--text);
+            margin: 0 0 0.5rem;
+        }
+
+        /* Mobile Leaderboard Optimizations */
+        @media (max-width: 900px) {
+            .leaderboard-filter-group {
+                gap: 0.4rem;
+            }
+
+            .leaderboard-filter-btn {
+                padding: 0.4rem 0.8rem;
+                font-size: 0.7rem;
+            }
+
+            .leaderboard-header {
+                display: none;
+            }
+
+            .leaderboard-row {
+                grid-template-columns: 1fr;
+                padding: 1.1rem;
+                gap: 0.75rem;
+                border-radius: 16px;
+                border: 1px solid var(--border);
+                background: var(--bg-hover);
+                margin-bottom: 0.75rem;
+            }
+
+            .leaderboard-row.user-row {
+                margin-top: 1rem;
+                background: var(--primary-glow);
+                border: 1px solid var(--primary);
+            }
+
+            .lb-rank-num {
+                font-size: 1.3rem;
+                position: absolute;
+                top: 0.8rem;
+                right: 1rem;
+                background: var(--primary);
+                color: white;
+                width: 36px;
+                height: 36px;
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .leaderboard-row.user-row .lb-rank-num {
+                background: linear-gradient(135deg, var(--primary), var(--accent));
+            }
+
+            .lb-rank-num.medal {
+                font-size: 1.5rem;
+            }
+
+            .lb-row-content {
+                display: flex;
+                align-items: center;
+                gap: 1rem;
+                padding-right: 50px;
+            }
+
+            .lb-user-info {
+                flex: 1;
+            }
+
+            .lb-row-stats {
+                display: flex;
+                gap: 1rem;
+                width: 100%;
+                flex-wrap: wrap;
+            }
+
+            .lb-row-stat {
+                flex: 1;
+                min-width: 100px;
+                text-align: center;
+                background: var(--bg);
+                padding: 0.6rem;
+                border-radius: 12px;
+            }
+
+            .lb-row-stat-label {
+                font-size: 0.65rem;
+                color: var(--text-light);
+                text-transform: uppercase;
+                font-weight: 700;
+                letter-spacing: 0.06em;
+                margin-bottom: 0.3rem;
+            }
+
+            .lb-row-stat-value {
+                font-size: 1rem;
+                font-weight: 800;
+                font-family: 'Outfit', sans-serif;
+                color: var(--primary);
+            }
+
+            .user-rank-card {
+                margin-top: 2rem !important;
+                padding-top: 1.5rem !important;
+                padding-bottom: 1.5rem;
+                display: flex;
+                flex-direction: column;
+                gap: 1.5rem;
+            }
+
+            .user-rank-card > div {
+                flex-direction: column !important;
+            }
+
+            .user-rank-card > div > div:last-child {
+                text-align: center;
+                width: 100%;
+            }
+        }
     </style>
 </head>
 
@@ -2151,8 +2473,8 @@
             <a class="nav-item" href="/ai_tutor.html">
                 <i class="ri-robot-2-line"></i> AI Tutor
             </a>
-            <a class="nav-item" href="/frontend/smart_notes/smart_note          <i class=" ri-book-2-line"></i> Smart
-                Notes
+            <a class="nav-item" href="/frontend/smart_notes/smart_notes_home.html">
+                <i class="ri-book-2-line"></i> Smart Notes
             </a>
 
             <div class="nav-section-label">Tools</div>
@@ -2180,7 +2502,7 @@
                     <a href="/"
                         style="display:flex;align-items:center;gap:0.5rem;font-weight:800;color:var(--text);text-decoration:none;font-family:'Outfit',sans-serif;">
                         <div class="logo-icon" style="width:34px;height:34px;border-radius:10px;font-size:0.95rem;"><i
-                                class="ri-gradu ation-cap-line"></i></div>
+                                class="ri-graduation-cap-line"></i></div>
                         <span class="logo-text-mobile" style="display:none;">IISER Prep AI</span>
                     </a>
                     <button class="btn-icon mobile-only" onclick="toggleSidebar()" style="margin-left:auto;">
@@ -2272,6 +2594,52 @@
                             <div class="skeleton" style="height:20px;margin-bottom:12px;"></div>
                             <div class="skeleton" style="height:20px;margin-bottom:12px;"></div>
                             <div class="skeleton" style="height:20px;"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- LEADERBOARD SECTION -->
+                <div class="card fade-up">
+                    <div class="card-header">
+                        <div class="card-title">
+                            <i class="ri-trophy-line" style="color:#f59e0b;"></i>
+                            Leaderboard
+                        </div>
+                        <div class="leaderboard-filter-group">
+                            <button class="leaderboard-filter-btn active" onclick="setLeaderboardFilter('all')">All Time</button>
+                            <button class="leaderboard-filter-btn" onclick="setLeaderboardFilter('monthly')">This Month</button>
+                            <button class="leaderboard-filter-btn" onclick="setLeaderboardFilter('weekly')">This Week</button>
+                        </div>
+                    </div>
+                    <div id="leaderboard-container">
+                        <div class="leaderboard-header">
+                            <div class="lb-rank">Rank</div>
+                            <div class="lb-name">Name</div>
+                            <div class="lb-score">Score</div>
+                            <div class="lb-accuracy">Accuracy</div>
+                        </div>
+                        <div id="leaderboard-list">
+                            <!-- Populated by JS -->
+                        </div>
+                    </div>
+                    <div id="user-rank-info" class="user-rank-card" style="display:none; margin-top:1.5rem; padding-top:1.5rem; border-top:1px solid var(--border);">
+                        <div style="display:flex; align-items:center; justify-content:space-between;">
+                            <div>
+                                <div style="font-size:0.8rem; color:var(--text-light); text-transform:uppercase; font-weight:700; letter-spacing:0.08em; margin-bottom:0.5rem;">Your Rank</div>
+                                <div style="display:flex; align-items:center; gap:1rem;">
+                                    <div>
+                                        <div style="font-size:2.5rem; font-weight:900; font-family:'Outfit',sans-serif;" id="user-rank-number">#--</div>
+                                    </div>
+                                    <div>
+                                        <div style="font-size:0.9rem; color:var(--text-muted);" id="user-rank-name">Loading...</div>
+                                        <div style="font-size:1.3rem; font-weight:800; color:var(--primary);" id="user-rank-score">0/240</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div style="text-align:right;">
+                                <div style="font-size:0.8rem; color:var(--text-light); margin-bottom:0.5rem;">Position</div>
+                                <div style="font-size:1.5rem; font-weight:800; font-family:'Outfit',sans-serif;" id="user-percentile">Top 50%</div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -2388,7 +2756,8 @@
             // Load data
             await Promise.all([
                 loadUserInfo(),
-                loadDashboardData()
+                loadDashboardData(),
+                loadLeaderboard()
             ]);
         });
 
@@ -3014,6 +3383,150 @@
                 el.ontouchmove = null;
                 el.ontouchend = null;
             };
+        }
+        // ═══════════════════════════════════════════════════════
+        //  LEADERBOARD
+        // ═══════════════════════════════════════════════════════
+
+        let currentLeaderboardFilter = 'all';
+        let leaderboardData = [];
+        let userRankData = null;
+
+        async function loadLeaderboard() {
+            try {
+                const payload = JSON.parse(atob(token.split('.')[1]));
+                const userId = payload.id || payload.userId || payload.sub;
+
+                // Fetch leaderboard data
+                const response = await apiFetch(`/api/leaderboard/${currentLeaderboardFilter}?limit=10`);
+                leaderboardData = response.data || [];
+
+                // Fetch user's rank
+                const userRankRes = await apiFetch(`/api/leaderboard/user-rank/${userId}?period=${currentLeaderboardFilter}`);
+                userRankData = userRankRes.data || null;
+
+                renderLeaderboard();
+                renderUserRank();
+            } catch (err) {
+                console.error('Leaderboard load error:', err);
+                renderLeaderboardEmpty();
+            }
+        }
+
+        function renderLeaderboard() {
+            const container = document.getElementById('leaderboard-list');
+
+            if (!leaderboardData || leaderboardData.length === 0) {
+                renderLeaderboardEmpty();
+                return;
+            }
+
+            const getMedalEmoji = (rank) => {
+                if (rank === 1) return '🥇';
+                if (rank === 2) return '🥈';
+                if (rank === 3) return '🥉';
+                return null;
+            };
+
+            const getMedalClass = (rank) => {
+                if (rank === 1) return 'medal first';
+                if (rank === 2) return 'medal second';
+                if (rank === 3) return 'medal third';
+                return '';
+            };
+
+            const getScoreBadgeClass = (score) => {
+                if (score >= 160) return 'lb-score-high';
+                if (score >= 100) return 'lb-score-mid';
+                return 'lb-score-low';
+            };
+
+            container.innerHTML = leaderboardData.map((user, idx) => {
+                const rank = idx + 1;
+                const medal = getMedalEmoji(rank);
+                const medalClass = getMedalClass(rank);
+                const initials = (user.name || 'U').substring(0, 2).toUpperCase();
+                const accuracy = user.accuracy || 0;
+
+                return `
+                    <div class="leaderboard-row fade-up" style="animation-delay:${idx * 0.05}s;">
+                        <div class="lb-rank">
+                            <div class="lb-rank-num ${medalClass}">
+                                ${medal || `#${rank}`}
+                            </div>
+                        </div>
+                        <div class="lb-name">
+                            <div class="lb-user-info">
+                                <div class="lb-avatar">${initials}</div>
+                                <div class="lb-user-details">
+                                    <h4>${user.name || 'Anonymous'}</h4>
+                                    <p>${user.attempts || 0} attempt${user.attempts !== 1 ? 's' : ''}</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="lb-score">
+                            <span class="lb-score-badge ${getScoreBadgeClass(user.best_score || 0)}">
+                                ${user.best_score || 0}/240
+                            </span>
+                        </div>
+                        <div class="lb-accuracy">
+                            <div class="lb-accuracy-bar">
+                                <span>${accuracy.toFixed(0)}%</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function renderLeaderboardEmpty() {
+            const container = document.getElementById('leaderboard-list');
+            container.innerHTML = `
+                <div class="leaderboard-empty">
+                    <div class="leaderboard-empty-icon">🏆</div>
+                    <h3>No Data Yet</h3>
+                    <p>Leaderboard will populate once more students complete mock tests.</p>
+                </div>
+            `;
+        }
+
+        function renderUserRank() {
+            const infoEl = document.getElementById('user-rank-info');
+
+            if (!userRankData) {
+                infoEl.style.display = 'none';
+                return;
+            }
+
+            infoEl.style.display = 'block';
+
+            const rankNumber = userRankData.rank || '—';
+            const totalUsers = userRankData.total_users || 1;
+            const percentile = Math.round(((rankNumber / totalUsers) * 100));
+
+            const positionText = rankNumber === 1 ? '🔝 #1 (Top!)' 
+                : rankNumber <= 10 ? `🎯 Top 10`
+                : rankNumber <= 50 ? `⭐ Top 50`
+                : rankNumber <= 100 ? `👍 Top 100`
+                : `💪 Keep Going`;
+
+            document.getElementById('user-rank-number').textContent = `#${rankNumber}`;
+            document.getElementById('user-rank-name').textContent = userRankData.name || 'You';
+            document.getElementById('user-rank-score').textContent = `${userRankData.best_score || 0}/240`;
+            document.getElementById('user-percentile').textContent = positionText;
+        }
+
+        function setLeaderboardFilter(period) {
+            currentLeaderboardFilter = period;
+
+            // Update button states
+            document.querySelectorAll('.leaderboard-filter-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+
+            // Reload data
+            loadLeaderboard();
         }
     </script>
 
