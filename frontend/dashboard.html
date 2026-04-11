@@ -3615,48 +3615,40 @@
                 const response = await apiFetch(`/api/leaderboard/${currentLeaderboardFilter}?limit=10`);
                 leaderboardData = response.data || [];
 
-                // Fetch user's rank
+                // Fetch user's rank (fallback for when user is not in top leaderboard)
                 const userRankRes = await apiFetch(`/api/leaderboard/user-rank/${userId}?period=${currentLeaderboardFilter}`);
                 userRankData = userRankRes.data || null;
 
-                renderLeaderboard();
-                renderUserRank();
+                // Calculate Ranks
+                leaderboardData = calculateRanks(leaderboardData);
+
+                renderLeaderboard(leaderboardData);
+                renderUserRank(leaderboardData);
             } catch (err) {
                 console.error('Leaderboard load error:', err);
                 renderLeaderboardEmpty();
             }
         }
 
-        function renderLeaderboard() {
+        function calculateRanks(data) {
+            return data
+                .sort((a, b) => (b.best_score || 0) - (a.best_score || 0))
+                .map((user, index) => ({
+                    ...user,
+                    rank: index + 1
+                }));
+        }
+
+        function renderLeaderboard(data) {
             const container = document.getElementById('leaderboard-list');
 
-            if (!leaderboardData || leaderboardData.length === 0) {
+            if (!data || data.length === 0) {
                 renderLeaderboardEmpty();
                 return;
             }
 
-            const getMedalEmoji = (rank) => {
-                if (rank === 1) return '🥇';
-                if (rank === 2) return '🥈';
-                if (rank === 3) return '🥉';
-                return null;
-            };
-
-            const getMedalClass = (rank) => {
-                if (rank === 1) return 'medal first';
-                if (rank === 2) return 'medal second';
-                if (rank === 3) return 'medal third';
-                return '';
-            };
-
-            const getScoreBadgeClass = (score) => {
-                if (score >= 160) return 'lb-score-high';
-                if (score >= 100) return 'lb-score-mid';
-                return 'lb-score-low';
-            };
-
-            container.innerHTML = leaderboardData.map((user, idx) => {
-                const rank = idx + 1;
+            container.innerHTML = data.map((user, idx) => {
+                const rank = user.rank;
                 const initials = (user.name || 'U').substring(0, 2).toUpperCase();
                 const accuracy = user.accuracy || 0;
                 const rankLabel = rank <= 3 ? ['🥇','🥈','🥉'][rank - 1] : rank;
@@ -3703,19 +3695,31 @@
             `;
         }
 
-        function renderUserRank() {
+        function renderUserRank(rankedData) {
             const infoEl = document.getElementById('user-rank-info');
             if (!infoEl) return;
 
-            if (!userRankData) {
+            // Get current user ID from token
+            const payload = JSON.parse(atob(token.split('.')[1]));
+            const userId = payload.id || payload.userId || payload.sub;
+
+            // Step 4 logic: find current user in the same ranked set
+            let currentUser = rankedData.find(u => u.user_id === userId || u.id === userId);
+
+            // Fallback: If current user isn't in the top 10, use the already fetched userRankData
+            if (!currentUser && userRankData) {
+                currentUser = userRankData;
+            }
+
+            if (!currentUser) {
                 infoEl.style.display = 'none';
                 return;
             }
 
             infoEl.style.display = 'block';
 
-            const rankNumber = userRankData.rank || '—';
-            const bestScore  = userRankData.best_score || 0;
+            const rankNumber = currentUser.rank || '—';
+            const bestScore  = currentUser.best_score || 0;
 
             const badge = rankNumber === 1       ? { emoji: '🏆', text: 'Top 1'}
                         : rankNumber <= 3         ? { emoji: '🥈', text: 'Top 3'}
