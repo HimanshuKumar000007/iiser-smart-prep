@@ -1,9 +1,19 @@
 const express = require("express");
 const app = express();
+const nodemailer = require("nodemailer");
 
 if (process.env.NODE_ENV !== "production") {
   require("dotenv").config();
 }
+
+// ── Email transporter (Gmail App Password) ──────────────
+const mailer = nodemailer.createTransport({
+  service: "gmail",
+  auth: {
+    user: process.env.EMAIL_USER,
+    pass: process.env.EMAIL_PASS   // Gmail App Password (16-char, no spaces)
+  }
+});
 
 const PORT = process.env.PORT || 8080;
 
@@ -471,24 +481,68 @@ app.post("/api/login", async (req, res) => {
 app.post('/api/forgot-password', async (req, res) => {
   try {
     const { email } = req.body;
+    if (!email) return res.status(400).json({ error: "Email required" });
 
-    const { error } = await Promise.race([
-      supabase.auth.resetPasswordForEmail(email, {
-        redirectTo: "https://iisersmartprep.space/reset-password.html"
-      }),
-      new Promise((_, reject) => setTimeout(() => reject(new Error("Timeout")), 8000))
-    ]);
+    // 1️⃣ Check user exists in our custom users table
+    const { data: users, error: findErr } = await supabase
+      .from("users")
+      .select("id, email")
+      .eq("email", email)
+      .limit(1);
 
-    if (error) {
-      return res.status(400).json({ error: error.message });
+    if (findErr || !users || users.length === 0) {
+      // Don't reveal if email exists — security best practice
+      return res.json({ success: true });
     }
 
+    const user = users[0];
+
+    // 2️⃣ Generate secure random token
+    const resetToken = crypto.randomBytes(32).toString("hex");
+    const expiry = new Date(Date.now() + 60 * 60 * 1000); // 1 hour
+
+    // 3️⃣ Store token in DB
+    const { error: updateErr } = await supabase
+      .from("users")
+      .update({
+        reset_token: resetToken,
+        reset_token_expiry: expiry.toISOString()
+      })
+      .eq("id", user.id);
+
+    if (updateErr) {
+      console.error("Failed to store reset token:", updateErr);
+      return res.status(500).json({ error: "Server error. Please try again." });
+    }
+
+    // 4️⃣ Send email via Nodemailer (Gmail App Password)
+    const resetLink = `https://iisersmartprep.space/reset-password.html?token=${resetToken}`;
+
+    await mailer.sendMail({
+      from: `"IISER Smart Prep" <${process.env.EMAIL_USER}>`,
+      to: user.email,
+      subject: "Reset Your Password — IISER Smart Prep",
+      html: `
+        <div style="font-family:Arial,sans-serif;max-width:500px;margin:auto;padding:24px;border-radius:12px;border:1px solid #e2e8f0;">
+          <h2 style="color:#2563eb;">🔐 Reset Your Password</h2>
+          <p>Hello,</p>
+          <p>We received a request to reset your IISER Smart Prep password. Click the button below to set a new password:</p>
+          <a href="${resetLink}" style="display:inline-block;margin:16px 0;padding:12px 24px;background:#2563eb;color:#fff;border-radius:8px;text-decoration:none;font-weight:bold;">
+            Reset Password
+          </a>
+          <p style="color:#64748b;font-size:0.85rem;">This link expires in <strong>1 hour</strong>. If you didn't request this, ignore this email — your account is safe.</p>
+          <hr style="border:none;border-top:1px solid #e2e8f0;margin:20px 0;">
+          <p style="color:#94a3b8;font-size:0.8rem;">IISER Smart Prep | iisersmartprep.space</p>
+        </div>
+      `
+    });
+
+    console.log(`✅ Password reset email sent to: ${user.email}`);
     return res.json({ success: true });
 
   } catch (err) {
-    console.error(err);
-    const message = err.message === "Timeout" ? "Request timed out. Try again." : "Server error";
-    res.status(err.message === "Timeout" ? 408 : 500).json({ error: message });
+    console.error("Forgot password error:", err);
+    res.status(500).json({ error: "Failed to send reset email. Please try again." });
   }
 });
 
