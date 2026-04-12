@@ -188,9 +188,9 @@ app.post("/api/signup", async (req, res) => {
 
     if (error) throw error;
 
-    // Create JWT
+    // Create JWT — use 'id' consistently (same as login)
     const token = jwt.sign(
-      { userId: data.id, email: data.email, plan: data.plan },
+      { id: data.id, email: data.email, plan: data.plan },
       process.env.JWT_SECRET,
       { expiresIn: "7d" }
     );
@@ -215,17 +215,27 @@ app.post("/api/signup", async (req, res) => {
 // =======================
 app.post("/api/create-order", authMiddleware, async (req, res) => {
   try {
+    // BUG FIX: Always resolve id consistently — JWT now always emits 'id'
+    const userId = req.user.id;
+    const userEmail = req.user.email;
+
+    if (!userId || !userEmail) {
+      return res.status(400).json({ error: "User identity missing from token. Please log out and log back in." });
+    }
+
     const options = {
       amount: 29900, // ₹299 = 29900 paise
       currency: "INR",
       receipt: "receipt_" + Date.now(),
       notes: {
-        user_id: req.user.id || req.user.userId, // JWT from authMiddleware (signup uses userId, login uses id. Best to handle both or standardize)
-        email: req.user.email
+        user_id: userId,   // BUG FIX: always defined now
+        email: userEmail   // BUG FIX: email added as fallback for webhook
       }
     };
 
     const order = await razorpay.orders.create(options);
+
+    console.log(`Order created: ${order.id} for user ${userEmail} (${userId})`);
 
     // Return all fields for Razorpay SDK
     res.json({
@@ -236,7 +246,7 @@ app.post("/api/create-order", authMiddleware, async (req, res) => {
     });
 
   } catch (err) {
-    console.error(err);
+    console.error("create-order error:", err);
     res.status(500).json({ error: "Order creation failed" });
   }
 });
@@ -249,6 +259,10 @@ app.post("/api/verify-payment", authMiddleware, async (req, res) => {
     razorpay_signature
   } = req.body;
 
+  if (!razorpay_order_id || !razorpay_payment_id || !razorpay_signature) {
+    return res.status(400).json({ success: false, error: "Missing payment fields" });
+  }
+
   const body = razorpay_order_id + "|" + razorpay_payment_id;
 
   const expectedSignature = crypto
@@ -256,36 +270,57 @@ app.post("/api/verify-payment", authMiddleware, async (req, res) => {
     .update(body.toString())
     .digest("hex");
 
-  if (expectedSignature === razorpay_signature) {
-    // ✅ PAYMENT VERIFIED
+  // ❌ Signature mismatch — reject immediately
+  if (expectedSignature !== razorpay_signature) {
+    console.warn(`⚠️ Signature mismatch for order ${razorpay_order_id} by ${req.user.email}`);
+    return res.status(400).json({ success: false, error: "Payment signature invalid" });
+  }
 
-    // 💾 UPDATE DATABASE
-    try {
-      // Use req.user from authMiddleware
-      const { error } = await supabase
-        .from("users")
-        .update({
-          plan: "PRO",
-          plan_expiry: null // Persistent access
-        })
-        .eq("email", req.user.email); // or req.user.userId depending on JWT structure
+  // ✅ PAYMENT VERIFIED — now upgrade in DB
+  try {
+    const userEmail = req.user.email;
 
-      if (error) {
-        console.error("Database update failed:", error);
-        // We still return success for payment, but maybe log it critically
-      } else {
-        console.log(`Plan upgraded to PRO for user: ${req.user.email}`);
-      }
+    // BUG FIX: DB error now causes HTTP 500 — NOT silently swallowed
+    const { error: updateError } = await supabase
+      .from("users")
+      .update({
+        plan: "PRO",
+        is_pro: true,
+        payment_id: razorpay_payment_id,
+        plan_expiry: null // lifetime access
+      })
+      .eq("email", userEmail);
 
-      return res.json({ success: true });
-
-    } catch (dbErr) {
-      console.error("DB Error:", dbErr);
-      return res.json({ success: true }); // Payment was legit, even if DB failed (rare)
+    if (updateError) {
+      console.error(`❌ CRITICAL: DB upgrade failed for ${userEmail}:`, updateError);
+      // BUG FIX: Return 500 so frontend knows upgrade failed — not a false success
+      return res.status(500).json({
+        success: false,
+        error: "Payment received but account upgrade failed. Please contact support with your payment ID: " + razorpay_payment_id
+      });
     }
 
-  } else {
-    return res.status(400).json({ success: false });
+    // ✅ Log payment for audit trail
+    await supabase.from("payments").insert([{
+      email: userEmail,
+      user_id: req.user.id,
+      razorpay_order_id,
+      razorpay_payment_id,
+      amount: 29900,
+      currency: "INR",
+      status: "captured",
+      source: "verify-payment"
+    }]).catch(logErr => console.error("Payment log insert failed (non-critical):", logErr));
+
+    console.log(`✅ PRO upgrade successful for: ${userEmail}`);
+    return res.json({ success: true, plan: "PRO" });
+
+  } catch (dbErr) {
+    console.error("❌ CRITICAL DB Error in verify-payment:", dbErr);
+    return res.status(500).json({
+      success: false,
+      error: "Account upgrade failed. Payment was received. Contact support with payment ID: " + razorpay_payment_id
+    });
   }
 });
 
@@ -307,42 +342,63 @@ app.post("/api/razorpay-webhook", async (req, res) => {
 
     // ❌ Signature invalid
     if (expectedSignature !== signature) {
-      console.log("Invalid webhook signature");
+      console.warn("⚠️ Invalid webhook signature — rejected");
       return res.status(400).json({ success: false });
     }
 
     // Parse the raw body into JSON for event handling
     const event = JSON.parse(req.body.toString());
-    console.log("Event:", event.event);
+    console.log("Webhook event:", event.event);
 
     // 🎯 Payment success event
     if (event.event === "payment.captured" || event.event === "order.paid") {
 
       const payment = event.payload.payment.entity;
-
       const paymentId = payment.id;
-      const userId = payment.notes.user_id;
 
-      if (!userId) {
-        console.log("No user_id found in notes");
-        return res.status(200).send("OK");
+      // BUG FIX: Try by user_id first, fallback to email from notes
+      const userId   = payment.notes?.user_id;
+      const userEmail = payment.notes?.email;
+
+      if (!userId && !userEmail) {
+        console.error("❌ Webhook: No user_id or email in notes — cannot upgrade", payment.notes);
+        return res.status(200).send("OK"); // Always 200 to Razorpay
       }
 
-      // 🔥 UPDATE USER TO PRO
-      const { error } = await supabase
-        .from("users")
-        .update({
-          plan: "PRO",
-          is_pro: true,
-          payment_id: paymentId,
-          plan_expiry: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000)
-        })
-        .eq("id", userId);
+      // BUG FIX: Resolve by email (most reliable) or fall back to userId
+      let updateQuery = supabase.from("users").update({
+        plan: "PRO",
+        is_pro: true,
+        payment_id: paymentId,
+        plan_expiry: null // lifetime
+      });
+
+      if (userEmail) {
+        updateQuery = updateQuery.eq("email", userEmail);
+        console.log(`Webhook upgrading by email: ${userEmail}`);
+      } else {
+        updateQuery = updateQuery.eq("id", userId);
+        console.log(`Webhook upgrading by id: ${userId}`);
+      }
+
+      const { error } = await updateQuery;
 
       if (error) {
-        console.error("Supabase update error:", error);
+        console.error("❌ Webhook Supabase update error:", error);
       } else {
-        console.log("User upgraded to PRO:", userId);
+        console.log(`✅ Webhook: User upgraded to PRO — email=${userEmail}, id=${userId}`);
+
+        // Log payment for audit trail
+        await supabase.from("payments").insert([{
+          email: userEmail,
+          user_id: userId,
+          razorpay_payment_id: paymentId,
+          razorpay_order_id: payment.order_id,
+          amount: payment.amount,
+          currency: payment.currency,
+          status: "captured",
+          source: "webhook"
+        }]).catch(logErr => console.error("Payment log insert failed (non-critical):", logErr));
       }
     }
 
@@ -350,7 +406,7 @@ app.post("/api/razorpay-webhook", async (req, res) => {
 
   } catch (err) {
     console.error("Webhook error:", err);
-    res.status(500).send("Error");
+    res.status(200).send("OK"); // Always 200 — Razorpay retries on non-200
   }
 });
 
@@ -501,7 +557,7 @@ app.get("/api/me", async (req, res) => {
 
     const { data, error } = await supabase
       .from("users")
-      .select("email, plan")
+      .select("email, plan, is_pro, payment_id")
       .eq("email", decoded.email)
       .single();
 
@@ -510,6 +566,60 @@ app.get("/api/me", async (req, res) => {
     res.json(data);
   } catch (err) {
     res.status(401).json({ error: "Invalid token" });
+  }
+});
+
+// =======================
+// 🔄 CHECK PRO STATUS (re-sync from DB)
+// =======================
+app.get("/api/check-pro-status", authMiddleware, async (req, res) => {
+  try {
+    const { data, error } = await supabase
+      .from("users")
+      .select("email, plan, is_pro")
+      .eq("email", req.user.email)
+      .single();
+
+    if (error || !data) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    res.json({ plan: data.plan, is_pro: data.is_pro === true });
+  } catch (err) {
+    console.error("check-pro-status error:", err);
+    res.status(500).json({ error: "Server error" });
+  }
+});
+
+// =======================
+// 🔧 ADMIN: MANUALLY FIX PRO USERS
+// (for users who paid but weren't upgraded)
+// =======================
+app.post("/api/admin/fix-pro", async (req, res) => {
+  const { adminKey, email } = req.body;
+
+  // Simple secret gate — set ADMIN_SECRET in .env
+  if (adminKey !== process.env.ADMIN_SECRET) {
+    return res.status(403).json({ error: "Forbidden" });
+  }
+
+  if (!email) {
+    return res.status(400).json({ error: "email required" });
+  }
+
+  try {
+    const { error } = await supabase
+      .from("users")
+      .update({ plan: "PRO", is_pro: true })
+      .eq("email", email);
+
+    if (error) throw error;
+
+    console.log(`Admin manually upgraded ${email} to PRO`);
+    res.json({ success: true, message: `${email} upgraded to PRO` });
+  } catch (err) {
+    console.error("Admin fix-pro error:", err);
+    res.status(500).json({ error: err.message });
   }
 });
 
