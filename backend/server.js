@@ -1,19 +1,13 @@
 const express = require("express");
 const app = express();
-const nodemailer = require("nodemailer");
+const { Resend } = require("resend");
 
 if (process.env.NODE_ENV !== "production") {
   require("dotenv").config();
 }
 
-// ── Email transporter (Gmail App Password) ──────────────
-const mailer = nodemailer.createTransport({
-  service: "gmail",
-  auth: {
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASS   // Gmail App Password (16-char, no spaces)
-  }
-});
+// ── Resend email client (HTTPS-based, works on Railway) ────
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 const PORT = process.env.PORT || 8080;
 
@@ -515,11 +509,11 @@ app.post('/api/forgot-password', async (req, res) => {
       return res.status(500).json({ error: "Server error. Please try again." });
     }
 
-    // 4️⃣ Send email via Nodemailer (Gmail App Password)
+    // 4️⃣ Send email via Resend (HTTPS API — works on Railway)
     const resetLink = `https://iisersmartprep.space/reset-password.html?token=${resetToken}`;
 
-    await mailer.sendMail({
-      from: `"IISER Smart Prep" <${process.env.EMAIL_USER}>`,
+    const { error: emailErr } = await resend.emails.send({
+      from: "IISER Smart Prep <noreply@iisersmartprep.space>",
       to: user.email,
       subject: "Reset Your Password — IISER Smart Prep",
       html: `
@@ -536,6 +530,11 @@ app.post('/api/forgot-password', async (req, res) => {
         </div>
       `
     });
+
+    if (emailErr) {
+      console.error("Resend email error:", emailErr);
+      return res.status(500).json({ error: "Failed to send reset email. Please try again." });
+    }
 
     console.log(`✅ Password reset email sent to: ${user.email}`);
     return res.json({ success: true });
