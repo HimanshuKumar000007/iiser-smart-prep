@@ -114,25 +114,17 @@
 
         <div id="contentPlaceholder">
             <div class="question-block">
-                <div class="q-number">Question 1</div>
-                <p>This is a placeholder for the actual question paper content. The full HTML version of the paper would
-                    be rendered here.</p>
-                <div class="solution-box visible">
-                    <strong>Solution:</strong> <br>
-                    Detailed step-by-step solution would appear here.
-                </div>
-            </div>
-            <!-- More questions would be dynamically loaded or static -->
-        </div>
-
-        <div style="text-align: center; margin-top: 2rem;">
-            <p style="color: var(--text-muted);">End of Paper</p>
+        <div class="content">
+            <p style="text-align: center; color: var(--text-muted); padding: 5rem 0;">
+                <i class="fas fa-spinner fa-spin" style="font-size: 2rem;"></i><br><br>
+                Loading Question Paper...
+            </p>
         </div>
     </div>
 
     <script>
         const urlParams = new URLSearchParams(window.location.search);
-        const year = urlParams.get('year') || '2025';
+        const year = urlParams.get('year') || '2024';
         document.getElementById('paperTitle').textContent = `IAT ${year} - Question Paper`;
     </script>
 </body>

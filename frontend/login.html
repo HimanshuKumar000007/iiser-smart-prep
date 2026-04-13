@@ -581,7 +581,7 @@
         // Sync real plan from DB
         if (typeof refreshPlanFromServer === 'function') await refreshPlanFromServer();
         const redirect = new URLSearchParams(window.location.search).get('redirect');
-        window.location.href = redirect ? decodeURIComponent(redirect) : '/dashboard.html';
+        window.location.href = redirect ? decodeURIComponent(redirect) : '/index.html';
       } catch(err) {
         showMsg('login-error', err.message, 'error');
         setLoading('login-btn','login-spin','login-btn-text', false, 'Log In →');
@@ -610,7 +610,7 @@
         localStorage.setItem('IAT_TOKEN', data.token);
         localStorage.setItem('IAT_PLAN', data.user?.plan || 'FREE');
         showMsg('signup-success', '🎉 Account created! Redirecting...', 'success');
-        setTimeout(() => { window.location.href = '/dashboard.html'; }, 1200);
+        setTimeout(() => { window.location.href = '/index.html'; }, 1200);
       } catch(err) {
         showMsg('signup-error', err.message, 'error');
         setLoading('signup-btn','signup-spin','signup-btn-text', false, 'Create Account →');
