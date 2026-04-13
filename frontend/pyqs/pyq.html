@@ -1172,6 +1172,43 @@
             <div class="pyq-grid" id="pyqGrid">
 
 
+                <!-- 2025 Paper -->
+                <article class="pyq-card fade-in-up" data-year="2025" data-category="recent">
+                    <div class="card-header">
+                        <div class="year-badge">
+                            <div class="year-icon">🏆</div>
+                            <div class="year-text">IAT 2025</div>
+                        </div>
+                        <div class="paper-info">
+                            <span class="info-tag"><i class="fas fa-clock"></i> 180 min</span>
+                            <span class="info-tag"><i class="fas fa-fire" style="color: #ef4444;"></i>
+                                Latest</span>
+                        </div>
+                        <p class="paper-description">
+                            The most recent IAT paper. Featured a sophisticated mix of logical reasoning and deep conceptual 
+                            inquiry across all four subjects.
+                        </p>
+                        <div class="subject-bars">
+                            <div class="subj-segment subj-phy" style="flex: 1.1;"></div>
+                            <div class="subj-segment subj-chem" style="flex: 1;"></div>
+                            <div class="subj-segment subj-math" style="flex: 1.2;"></div>
+                            <div class="subj-segment subj-bio" style="flex: 0.9;"></div>
+                        </div>
+                        <div class="subj-labels">
+                            <span>Conceptual</span>
+                            <span>Logic Intensive</span>
+                        </div>
+                    </div>
+                    <div class="card-actions">
+                        <button class="action-btn primary" onclick="handlePaperClick('2025')">
+                            <i class="fas fa-play"></i> Start Test
+                        </button>
+                        <button class="action-btn success" onclick="handlePaperClick('2025')">
+                            <i class="fas fa-download"></i> PDF + Sol
+                        </button>
+                    </div>
+                </article>
+
                 <!-- 2024 Paper -->
                 <article class="pyq-card fade-in-up" data-year="2024" data-category="recent">
                     <div class="card-header">
@@ -1182,8 +1219,8 @@
                         </div>
                         <div class="paper-info">
                             <span class="info-tag"><i class="fas fa-clock"></i> 180 min</span>
-                            <span class="info-tag"><i class="fas fa-edit" style="color: var(--primary);"></i>
-                                Newest</span>
+                            <span class="info-tag"><i class="fas fa-check-circle" style="color: var(--success);"></i>
+                                Verified</span>
                         </div>
                         <p class="paper-description">
                             Balanced difficulty with conceptual focus. Biology application-based questions dominated.
@@ -2214,6 +2251,7 @@
             item.classList.toggle('open', !isOpen);
             btn.setAttribute('aria-expanded', String(!isOpen));
         }
+    </script>
     <script>
         (function() {
             const countdownElement = document.getElementById('countdown-line');
