@@ -36,37 +36,49 @@
 
     <style>
         :root {
-            --primary: #6366f1;
-            --primary-light: #818cf8;
-            --primary-glow: rgba(99, 102, 241, 0.25);
-            --accent: #06b6d4;
-            --accent-glow: rgba(6, 182, 212, 0.25);
-            --success: #10b981;
-            --danger: #ef4444;
-            --warning: #f59e0b;
+            --primary: #5b5fc7;
+            --primary-light: #7b7fd4;
+            --primary-glow: rgba(91, 95, 199, 0.18);
+            --accent: #0891b2;
+            --accent-glow: rgba(8, 145, 178, 0.18);
+            --success: #0d9488;
+            --danger: #dc2626;
+            --warning: #d97706;
 
-            --bg: #f0f2f8;
+            --bg: #f4f6fb;
             --bg-card: #ffffff;
-            --bg-hover: #f8fafc;
-            --text: #0f172a;
-            --text-muted: #64748b;
-            --text-light: #94a3b8;
-            --border: #e2e8f0;
-            --radius: 20px;
-            --shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
-            --shadow-lg: 0 10px 40px rgba(0, 0, 0, 0.1);
+            --bg-hover: #f8fafd;
+            --bg-subtle: #f0f3fa;
+            --text: #0d1626;
+            --text-muted: #5a697a;
+            --text-light: #8fa1b3;
+            --border: #e4e9f0;
+            --border-subtle: #edf0f7;
+            --radius: 16px;
+            --radius-sm: 10px;
+            --radius-lg: 22px;
+            --shadow-xs: 0 1px 3px rgba(0,0,0,0.04), 0 1px 2px rgba(0,0,0,0.03);
+            --shadow: 0 2px 8px rgba(0,0,0,0.05), 0 1px 3px rgba(0,0,0,0.04);
+            --shadow-md: 0 4px 16px rgba(0,0,0,0.07), 0 2px 6px rgba(0,0,0,0.04);
+            --shadow-lg: 0 8px 32px rgba(0,0,0,0.09), 0 2px 8px rgba(0,0,0,0.05);
+            --shadow-xl: 0 16px 48px rgba(0,0,0,0.12), 0 4px 16px rgba(0,0,0,0.06);
         }
 
         [data-theme="dark"] {
             --bg: #080c18;
-            --bg-card: #0f1629;
-            --bg-hover: #1a2340;
-            --text: #f1f5f9;
-            --text-muted: #94a3b8;
-            --text-light: #64748b;
-            --border: #1e2d4a;
-            --shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
-            --shadow-lg: 0 10px 40px rgba(0, 0, 0, 0.5);
+            --bg-card: #0e1525;
+            --bg-hover: #162035;
+            --bg-subtle: #101929;
+            --text: #eef2f8;
+            --text-muted: #8a9ab0;
+            --text-light: #5a6882;
+            --border: #1c2d47;
+            --border-subtle: #162038;
+            --shadow-xs: 0 1px 4px rgba(0,0,0,0.35);
+            --shadow: 0 2px 10px rgba(0,0,0,0.45);
+            --shadow-md: 0 4px 18px rgba(0,0,0,0.5);
+            --shadow-lg: 0 8px 32px rgba(0,0,0,0.55);
+            --shadow-xl: 0 16px 48px rgba(0,0,0,0.65);
         }
 
         *,
@@ -3044,6 +3056,592 @@
 
         /* ── FORECAST STRIP VISIBLE ──────────────── */
         #forecast-strip { display: none; }
+
+        /* ═══════════════════════════════════════════════════════════════
+           ██████╗ ██████╗ ███████╗███╗   ███╗██╗██╗   ██╗███╗   ███╗
+           PREMIUM UI UPGRADE  v3.0  — Pure Visual / No Logic Changes
+           ═══════════════════════════════════════════════════════════════ */
+
+        /* ── 1. DESIGN TOKEN REFINEMENTS ─────────────────────────────── */
+        :root {
+            /* Tighter, more Apple-like shadow system */
+            --shadow-xs: 0 1px 2px rgba(0,0,0,0.04);
+            --shadow:    0 2px 8px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+            --shadow-md: 0 4px 16px rgba(0,0,0,0.08), 0 2px 4px rgba(0,0,0,0.04);
+            --shadow-lg: 0 8px 28px rgba(0,0,0,0.10), 0 3px 8px rgba(0,0,0,0.05);
+            --shadow-xl: 0 20px 60px rgba(0,0,0,0.13), 0 6px 20px rgba(0,0,0,0.07);
+            /* Unified radius */
+            --radius:    18px;
+            --radius-sm: 12px;
+            --radius-lg: 24px;
+            /* Cleaner muted bg */
+            --bg: #f5f7fc;
+            --bg-subtle: #eef1f9;
+        }
+        [data-theme="dark"] :root,
+        [data-theme="dark"] {
+            --shadow-xs: 0 1px 4px rgba(0,0,0,0.30);
+            --shadow:    0 2px 10px rgba(0,0,0,0.40);
+            --shadow-md: 0 4px 20px rgba(0,0,0,0.50);
+            --shadow-lg: 0 8px 34px rgba(0,0,0,0.55);
+            --shadow-xl: 0 20px 60px rgba(0,0,0,0.65);
+        }
+
+        /* ── 2. BODY & SCROLLBAR ──────────────────────────────────────── */
+        body {
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        ::-webkit-scrollbar       { width: 5px; height: 5px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--text-light); }
+
+        /* ── 3. SIDEBAR — tighter, cleaner ───────────────────────────── */
+        .sidebar {
+            padding: 1.75rem 1.25rem;
+            gap: 2px;
+            border-right: 1px solid var(--border-subtle);
+            background: var(--bg-card);
+        }
+        .sidebar-logo {
+            padding: 0.5rem 0.75rem;
+            margin-bottom: 1.5rem;
+            border-radius: var(--radius-sm);
+            letter-spacing: -0.02em;
+        }
+        .sidebar-logo:hover {
+            background: var(--bg-hover);
+        }
+        .logo-icon {
+            width: 34px;
+            height: 34px;
+            border-radius: 9px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+            box-shadow: 0 4px 12px rgba(91,95,199,0.35);
+        }
+        .nav-section-label {
+            font-size: 0.6rem;
+            letter-spacing: 0.12em;
+            padding: 0.5rem 0.75rem 0.2rem;
+            margin-top: 1.25rem;
+        }
+        .nav-item {
+            padding: 0.65rem 0.875rem;
+            border-radius: var(--radius-sm);
+            font-size: 0.875rem;
+            font-weight: 600;
+            gap: 0.65rem;
+            transition: all 0.18s ease;
+            color: var(--text-muted);
+        }
+        .nav-item i {
+            font-size: 1.05rem;
+            width: 20px;
+            opacity: 0.8;
+        }
+        .nav-item:hover {
+            background: var(--bg-subtle);
+            color: var(--text);
+        }
+        .nav-item:hover i { opacity: 1; }
+        .nav-item.active {
+            background: linear-gradient(135deg, rgba(91,95,199,0.12), rgba(8,145,178,0.08));
+            color: var(--primary);
+            font-weight: 700;
+            box-shadow: inset 3px 0 0 var(--primary);
+        }
+        .nav-item.active i { opacity: 1; }
+        .sidebar-bottom {
+            padding-top: 1rem;
+            border-top: 1px solid var(--border-subtle);
+        }
+
+        /* ── 4. TOPNAV — glassier, more refined ──────────────────────── */
+        .topnav {
+            padding: 0.85rem 2rem;
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            background: rgba(255,255,255,0.82);
+            box-shadow: 0 1px 0 var(--border-subtle), 0 4px 20px rgba(0,0,0,0.04);
+            border-bottom: 1px solid var(--border-subtle);
+        }
+        [data-theme="dark"] .topnav {
+            background: rgba(8,12,24,0.85);
+            box-shadow: 0 1px 0 rgba(255,255,255,0.06), 0 4px 20px rgba(0,0,0,0.2);
+        }
+        .topnav-greeting { font-size: 0.8rem; color: var(--text-muted); }
+        .topnav-name { font-size: 0.975rem; font-weight: 700; letter-spacing: -0.01em; }
+        .btn-icon {
+            width: 36px; height: 36px;
+            border-radius: 9px;
+            border: 1px solid var(--border-subtle);
+            background: var(--bg-card);
+            color: var(--text-muted);
+            transition: all 0.18s ease;
+            font-size: 0.95rem;
+        }
+        .btn-icon:hover {
+            background: var(--bg-subtle);
+            color: var(--primary);
+            border-color: var(--primary);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(91,95,199,0.15);
+        }
+        .btn-primary {
+            padding: 0.5rem 1.1rem;
+            border-radius: 10px;
+            font-size: 0.83rem;
+            font-weight: 700;
+            letter-spacing: 0.01em;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            box-shadow: 0 4px 14px rgba(91,95,199,0.30);
+            transition: all 0.22s cubic-bezier(0.34,1.56,0.64,1);
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: 0 8px 22px rgba(91,95,199,0.40);
+        }
+        .btn-primary:active {
+            transform: translateY(0) scale(0.98);
+            box-shadow: 0 2px 8px rgba(91,95,199,0.25);
+        }
+
+        /* ── 5. PAGE HEADER ───────────────────────────────────────────── */
+        .page-content { padding: 2rem 2.25rem; }
+        .page-header { margin-bottom: 1.75rem; }
+        .page-title {
+            font-size: 1.65rem;
+            font-weight: 800;
+            letter-spacing: -0.035em;
+            line-height: 1.2;
+        }
+        .page-subtitle {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-top: 0.3rem;
+            font-weight: 500;
+        }
+
+        /* ── 6. FILTER BAR CHIPS ──────────────────────────────────────── */
+        .filter-bar { gap: 0.45rem; margin-bottom: 1.75rem; }
+        .filter-btn {
+            padding: 0.42rem 1rem;
+            border-radius: 100px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            border: 1px solid var(--border);
+            background: var(--bg-card);
+            color: var(--text-muted);
+            transition: all 0.18s cubic-bezier(0.34,1.56,0.64,1);
+        }
+        .filter-btn:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+            background: rgba(91,95,199,0.05);
+        }
+        .filter-btn.active {
+            background: var(--primary);
+            border-color: var(--primary);
+            color: white;
+            box-shadow: 0 4px 14px rgba(91,95,199,0.30);
+            transform: translateY(-1px);
+        }
+
+        /* ── 7. STAT CARDS — elevated system ─────────────────────────── */
+        .stats-grid { gap: 1.25rem; margin-bottom: 2rem; }
+        .stat-card {
+            background: var(--bg-card);
+            border-radius: var(--radius-lg);
+            padding: 1.4rem 1.35rem 1.25rem;
+            border: 1px solid var(--border-subtle);
+            box-shadow: var(--shadow);
+            transition: transform 0.22s ease, box-shadow 0.22s ease;
+            cursor: pointer;
+        }
+        .stat-card::before {
+            height: 3px;
+            border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+            opacity: 0.9;
+        }
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+        }
+        .stat-card:active { transform: translateY(-1px); box-shadow: var(--shadow-md); }
+        .stat-icon {
+            width: 40px; height: 40px;
+            border-radius: 11px;
+            font-size: 1rem;
+            margin-bottom: 0.875rem;
+        }
+        .stat-label {
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.09em;
+            color: var(--text-light);
+            margin-bottom: 0.35rem;
+        }
+        .stat-num {
+            font-size: 2.25rem;
+            font-weight: 800;
+            letter-spacing: -0.04em;
+            line-height: 1;
+            color: var(--text);
+        }
+        .stat-sub {
+            font-size: 0.775rem;
+            color: var(--text-muted);
+            margin-top: 0.35rem;
+            font-weight: 500;
+            line-height: 1.4;
+        }
+
+        /* ── 8. CARDS (chart containers, sections) ────────────────────── */
+        .card {
+            background: var(--bg-card);
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--border-subtle);
+            box-shadow: var(--shadow);
+            padding: 1.5rem;
+            transition: box-shadow 0.22s ease, transform 0.22s ease;
+        }
+        .card:hover {
+            box-shadow: var(--shadow-md);
+            transform: translateY(-2px);
+        }
+        .card-header { margin-bottom: 1.25rem; align-items: center; }
+        .card-title {
+            font-weight: 700;
+            font-size: 0.935rem;
+            color: var(--text);
+            gap: 0.45rem;
+            letter-spacing: -0.01em;
+        }
+        .card-title i { font-size: 1rem; }
+        .card-badge {
+            background: var(--primary-glow);
+            color: var(--primary);
+            padding: 3px 10px;
+            border-radius: 100px;
+            font-size: 0.68rem;
+            font-weight: 700;
+            letter-spacing: 0.03em;
+        }
+
+        /* ── 9. CHART CONTAINERS ──────────────────────────────────────── */
+        .chart-container {
+            padding: 0.25rem 0;
+            border-radius: var(--radius-sm);
+        }
+        .charts-grid { gap: 1.25rem; margin-bottom: 2rem; }
+        .charts-grid-3 { gap: 1.25rem; margin-bottom: 2rem; }
+
+        /* ── 10. SUBJECT BARS — feel premium ──────────────────────────── */
+        .subject-bar-item { margin-bottom: 1.15rem; }
+        .subject-bar-header { margin-bottom: 0.4rem; }
+        .subject-bar-name { font-size: 0.84rem; font-weight: 650; color: var(--text); }
+        .subject-bar-pct {
+            font-size: 0.78rem;
+            font-weight: 700;
+            color: var(--text-muted);
+        }
+        .subject-bar-bg {
+            height: 7px;
+            background: var(--bg-subtle);
+            border-radius: 100px;
+            overflow: hidden;
+        }
+        .subject-bar-fill {
+            height: 100%;
+            border-radius: 100px;
+            transition: width 1.2s cubic-bezier(0.4,0,0.2,1);
+        }
+
+        /* ── 11. AI INSIGHT CARDS — desktop ──────────────────────────── */
+        .insights-grid { gap: 1rem; margin-bottom: 2rem; }
+        .insight-card {
+            background: var(--bg-card);
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--border-subtle);
+            padding: 1.35rem;
+            box-shadow: var(--shadow);
+            transition: all 0.22s ease;
+        }
+        .insight-card:hover {
+            box-shadow: var(--shadow-md);
+            transform: translateY(-3px);
+            border-color: var(--border);
+        }
+        .insight-icon {
+            width: 42px; height: 42px;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            margin-bottom: 0.75rem;
+        }
+        .insight-title {
+            font-weight: 700;
+            font-size: 0.875rem;
+            color: var(--text);
+            margin-bottom: 0.4rem;
+            letter-spacing: -0.01em;
+        }
+        .insight-text {
+            font-size: 0.815rem;
+            line-height: 1.65;
+            color: var(--text-muted);
+            font-weight: 450;
+        }
+
+        /* ── 12. TABLE — clean, airy ──────────────────────────────────── */
+        .attempts-table-wrap { overflow-x: auto; border-radius: var(--radius-sm); }
+        table { font-size: 0.855rem; border-collapse: collapse; }
+        thead th {
+            padding: 0.875rem 1.1rem;
+            font-size: 0.68rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.09em;
+            color: var(--text-light);
+            border-bottom: 1px solid var(--border-subtle);
+            white-space: nowrap;
+            background: var(--bg-subtle);
+        }
+        thead th:first-child { border-radius: var(--radius-sm) 0 0 0; }
+        thead th:last-child  { border-radius: 0 var(--radius-sm) 0 0; }
+        tbody td {
+            padding: 0.95rem 1.1rem;
+            border-bottom: 1px solid var(--border-subtle);
+            vertical-align: middle;
+            color: var(--text);
+            line-height: 1.4;
+        }
+        tbody tr:last-child td { border-bottom: none; }
+        tbody tr {
+            transition: background 0.14s ease;
+        }
+        tbody tr:hover td {
+            background: var(--bg-subtle);
+        }
+        .score-pill {
+            padding: 3px 11px;
+            border-radius: 100px;
+            font-weight: 700;
+            font-size: 0.78rem;
+            letter-spacing: 0.01em;
+        }
+        .score-high { background: rgba(13,148,136,0.10); color: #0d9488; }
+        .score-mid  { background: rgba(217,119, 6,0.10); color: #d97706; }
+        .score-low  { background: rgba(220, 38,38,0.10); color: #dc2626; }
+
+        /* ── 13. LEADERBOARD SECTION ──────────────────────────────────── */
+        .leaderboard-section-card {
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--border-subtle);
+        }
+        .leaderboard-row {
+            border-radius: 16px;
+            margin-bottom: 0.65rem;
+            transition: all 0.22s ease;
+        }
+        .leaderboard-row:hover {
+            transform: translateY(-4px) scale(1.01);
+        }
+
+        /* ── 14. FORECAST STRIP ───────────────────────────────────────── */
+        .forecast-strip {
+            border-radius: var(--radius-lg);
+            padding: 1.25rem 1.5rem;
+        }
+        .forecast-strip-val {
+            font-size: 1.85rem;
+            letter-spacing: -0.04em;
+        }
+
+        /* ── 15. ANOMALY BANNER ───────────────────────────────────────── */
+        .anomaly-banner {
+            border-radius: var(--radius);
+            padding: 0.875rem 1.25rem;
+            margin-bottom: 1.5rem;
+        }
+
+        /* ── 16. EMPTY STATE ──────────────────────────────────────────── */
+        .empty-state { padding: 3.5rem 2rem; }
+        .empty-state-icon { font-size: 2.75rem; margin-bottom: 0.875rem; }
+        .empty-state h3 { font-size: 1.05rem; font-weight: 700; }
+        .empty-state p { font-size: 0.855rem; }
+
+        /* ── 17. TOAST ────────────────────────────────────────────────── */
+        .toast {
+            border-radius: 14px;
+            padding: 0.875rem 1.25rem;
+            font-size: 0.84rem;
+            box-shadow: var(--shadow-xl);
+            border: 1px solid var(--border);
+        }
+
+        /* ── 18. SKELETON ─────────────────────────────────────────────── */
+        .skeleton {
+            border-radius: 10px;
+            background: linear-gradient(
+                90deg,
+                var(--bg-subtle) 25%,
+                var(--border-subtle) 50%,
+                var(--bg-subtle) 75%
+            );
+            background-size: 200% 100%;
+            animation: shimmer 1.6s ease-in-out infinite;
+        }
+
+        /* ── 19. TREND / MOM BADGE REFINEMENT ────────────────────────── */
+        .trend-arrow-badge, .mom-badge {
+            border-radius: 100px;
+            font-weight: 700;
+            letter-spacing: 0.01em;
+        }
+
+        /* ── 20. SEARCH BAR ───────────────────────────────────────────── */
+        .attempts-search {
+            border-radius: 10px;
+            padding: 0.5rem 0.85rem 0.5rem 2.2rem;
+            border: 1.5px solid var(--border);
+            font-size: 0.84rem;
+            transition: border-color 0.18s, box-shadow 0.18s;
+        }
+        .attempts-search:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(91,95,199,0.12);
+            outline: none;
+        }
+        .export-btn {
+            border-radius: 10px;
+            font-size: 0.8rem;
+            transition: all 0.18s ease;
+        }
+        .export-btn:hover {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(91,95,199,0.25);
+        }
+
+        /* ── 21. DRILL-DOWN MODAL ─────────────────────────────────────── */
+        .dd-box {
+            border-radius: 22px;
+            padding: 1.75rem;
+            box-shadow: 0 28px 80px rgba(0,0,0,0.22);
+        }
+        .dd-stat {
+            border-radius: 14px;
+            background: var(--bg-subtle);
+        }
+
+        /* ── 22. FAB BUTTON ───────────────────────────────────────────── */
+        .fab-main {
+            box-shadow: 0 8px 28px rgba(91,95,199,0.40), 0 4px 12px rgba(0,0,0,0.12);
+            transition: all 0.3s cubic-bezier(0.34,1.56,0.64,1);
+        }
+        .fab-main:hover {
+            transform: scale(1.12) rotate(45deg);
+            box-shadow: 0 14px 36px rgba(91,95,199,0.50);
+        }
+        .fab-action {
+            border-radius: 100px;
+            font-size: 0.8rem;
+            font-weight: 650;
+            box-shadow: var(--shadow-md);
+        }
+        .fab-action:hover {
+            transform: translateX(-4px);
+        }
+
+        /* ── 23. MOBILE OPTIMISATIONS (≤900px) ───────────────────────── */
+        @media (max-width: 900px) {
+            .page-content {
+                padding: 1.25rem 1rem;
+                gap: 1.5rem;
+            }
+            .stats-grid {
+                gap: 0.75rem;
+                margin-bottom: 1.25rem;
+            }
+            .stat-card {
+                border-radius: 20px;
+                padding: 1.25rem 1.1rem 1.1rem;
+                min-height: 148px;
+            }
+            .stat-num { font-size: 2.6rem; letter-spacing: -0.05em; }
+            .stat-label { font-size: 0.67rem; }
+            .stat-sub { font-size: 0.78rem; }
+            /* Breathable cards */
+            .card { border-radius: 22px; padding: 1.35rem 1.25rem; }
+            .card-title { font-size: 1.1rem; font-weight: 800; }
+            /* Insight cards on mobile — bigger text */
+            .insight-card { border-radius: 22px; padding: 1.5rem 1.35rem; }
+            .insight-title { font-size: 1.05rem; }
+            .insight-text { font-size: 0.9rem; }
+            /* Filter bar */
+            .filter-btn { padding: 0.5rem 1.1rem; font-size: 0.855rem; }
+            /* Attempt cards */
+            .attempt-card { border-radius: 18px; }
+            .ac-stat-item { border-radius: 12px; padding: 0.55rem 0.35rem; }
+            .ac-stat-val { font-size: 1rem; }
+            .ac-stat-label { font-size: 0.62rem; }
+            /* Welcome banner */
+            .mobile-welcome-banner { border-radius: 24px; padding: 1.5rem 1.3rem; }
+            /* Chart containers */
+            .chart-container { border-radius: 14px; }
+            /* Leaderboard rows */
+            .leaderboard-row { border-radius: 14px; padding: 0.85rem 1rem; }
+        }
+
+        /* ── 24. SMALL PHONES (≤390px) ────────────────────────────────── */
+        @media (max-width: 390px) {
+            .page-content { padding: 1rem 0.875rem; }
+            .stat-card { padding: 1.1rem; min-height: 140px; border-radius: 18px; }
+            .stat-num { font-size: 2rem; }
+            .card { padding: 1.1rem 1rem; border-radius: 18px; }
+        }
+
+        /* ── 25. DARK MODE POLISH ─────────────────────────────────────── */
+        [data-theme="dark"] .stat-card {
+            border-color: rgba(255,255,255,0.07);
+            background: linear-gradient(145deg, #111827 0%, #0f1725 100%);
+        }
+        [data-theme="dark"] .card {
+            border-color: rgba(255,255,255,0.06);
+            background: linear-gradient(145deg, #111827, #0d1623);
+        }
+        [data-theme="dark"] .insight-card {
+            border-color: rgba(255,255,255,0.06);
+        }
+        [data-theme="dark"] thead th {
+            background: rgba(255,255,255,0.04);
+        }
+        [data-theme="dark"] tbody tr:hover td {
+            background: rgba(255,255,255,0.04);
+        }
+        [data-theme="dark"] .filter-btn {
+            border-color: rgba(255,255,255,0.08);
+            background: rgba(255,255,255,0.04);
+        }
+        [data-theme="dark"] .filter-btn:hover {
+            background: rgba(91,95,199,0.12);
+        }
+        [data-theme="dark"] .attempts-search {
+            background: rgba(255,255,255,0.04);
+            border-color: rgba(255,255,255,0.10);
+        }
+        [data-theme="dark"] .subject-bar-bg {
+            background: rgba(255,255,255,0.06);
+        }
+        [data-theme="dark"] .nav-item.active {
+            background: linear-gradient(135deg, rgba(91,95,199,0.18), rgba(8,145,178,0.10));
+            box-shadow: inset 3px 0 0 var(--primary);
+        }
     </style>
 </head>
 
