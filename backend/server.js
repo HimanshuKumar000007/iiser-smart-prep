@@ -610,7 +610,7 @@ app.get("/api/me", async (req, res) => {
 
     const { data, error } = await supabase
       .from("users")
-      .select("email, plan, is_pro, payment_id")
+      .select("email, name, plan, is_pro, payment_id")
       .eq("email", decoded.email)
       .single();
 

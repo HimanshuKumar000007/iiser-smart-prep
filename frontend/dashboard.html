@@ -2763,11 +2763,295 @@
                 text-align: left !important;
             }
         }
+
+        /* ═══════════════════════════════════════════════
+           DASHBOARD UPGRADES v2 — All 7 Categories
+           ═══════════════════════════════════════════════ */
+
+        /* ── TOP PROGRESS LOADER ─────────────────── */
+        .top-loader {
+            position: fixed; top: 0; left: 0; width: 100%; height: 3px;
+            z-index: 99999; pointer-events: none;
+            background: linear-gradient(90deg, var(--primary), var(--accent), var(--primary));
+            background-size: 200% 100%;
+            animation: topLoaderAnim 1.2s linear infinite;
+            opacity: 0; transition: opacity 0.2s;
+        }
+        .top-loader.active { opacity: 1; }
+        @keyframes topLoaderAnim {
+            0%   { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+
+        /* ── TOOLTIP ─────────────────────────────── */
+        [data-tooltip] { position: relative; }
+        [data-tooltip]::after {
+            content: attr(data-tooltip);
+            position: absolute; bottom: calc(100% + 10px); left: 50%;
+            transform: translateX(-50%) scale(0.9) translateY(4px);
+            background: var(--bg-card); color: var(--text);
+            border: 1px solid var(--border);
+            padding: 0.45rem 0.75rem; border-radius: 10px;
+            font-size: 0.74rem; font-weight: 500; line-height: 1.5;
+            width: max-content; max-width: 220px; white-space: normal;
+            box-shadow: var(--shadow-lg); z-index: 200;
+            opacity: 0; pointer-events: none;
+            transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        [data-tooltip]:hover::after {
+            opacity: 1; transform: translateX(-50%) scale(1) translateY(0);
+        }
+
+        /* ── TREND ARROW BADGE ───────────────────── */
+        .trend-arrow-badge {
+            display: inline-flex; align-items: center; gap: 2px;
+            font-size: 0.65rem; font-weight: 800;
+            padding: 2px 6px; border-radius: 100px;
+            margin-left: 0.4rem; vertical-align: middle;
+        }
+        .tab-up   { background: rgba(16,185,129,0.12); color: #059669; }
+        .tab-down { background: rgba(239,68,68,0.12);  color: #dc2626; }
+        .tab-flat { background: rgba(245,158,11,0.12); color: #d97706; }
+
+        /* ── MoM BADGE ───────────────────────────── */
+        .mom-badge {
+            display: inline-flex; align-items: center; gap: 3px;
+            font-size: 0.68rem; font-weight: 700;
+            padding: 2px 8px; border-radius: 100px; margin-top: 0.3rem;
+        }
+        .mom-up   { background: rgba(16,185,129,0.10); color: #059669; }
+        .mom-down { background: rgba(239,68,68,0.10);  color: #dc2626; }
+        .mom-flat { background: rgba(245,158,11,0.10); color: #d97706; }
+
+        /* ── GAUGE RING ──────────────────────────── */
+        .gauge-wrap { display: flex; justify-content: center; align-items: center; margin-top: 0.6rem; }
+        .gauge-svg  { width: 52px; height: 52px; overflow: visible; }
+        .gauge-track { fill: none; stroke: var(--border); stroke-width: 5; }
+        .gauge-fill  { fill: none; stroke-width: 5; stroke-linecap: round;
+            transition: stroke-dashoffset 1.4s cubic-bezier(0.4,0,0.2,1); }
+        .gauge-txt { font-family: 'Outfit',sans-serif; font-weight: 800; font-size: 9px;
+            fill: var(--text); text-anchor: middle; dominant-baseline: central; }
+
+        /* ── ANOMALY BANNER ──────────────────────── */
+        .anomaly-banner {
+            display: none; align-items: center; gap: 1rem;
+            background: linear-gradient(135deg,rgba(239,68,68,0.08),rgba(239,68,68,0.03));
+            border: 1px solid rgba(239,68,68,0.3);
+            border-radius: var(--radius); padding: 1rem 1.5rem;
+            margin-bottom: 1.5rem; animation: fadeUp 0.4s ease;
+        }
+        .anomaly-banner.show { display: flex; }
+        .anomaly-banner > i { font-size: 1.5rem; color: #ef4444; flex-shrink: 0; }
+        .anomaly-banner strong { color: #ef4444; }
+        .anomaly-banner > div { flex: 1; font-size: 0.875rem; line-height: 1.5; }
+        .dismiss-anomaly { background: none; border: none; cursor: pointer;
+            color: var(--text-muted); font-size: 1.1rem;
+            padding: 0.25rem 0.5rem; border-radius: 6px;
+            transition: color 0.2s; line-height: 1; flex-shrink: 0; }
+        .dismiss-anomaly:hover { color: var(--text); }
+
+        /* ── FORECAST STRIP ──────────────────────── */
+        .forecast-strip {
+            display: flex; align-items: center; gap: 1.25rem;
+            background: linear-gradient(135deg,rgba(99,102,241,0.07),rgba(6,182,212,0.04));
+            border: 1px dashed rgba(99,102,241,0.35);
+            border-radius: var(--radius); padding: 1.2rem 1.5rem;
+            margin-bottom: 2rem; animation: fadeUp 0.5s ease;
+        }
+        .forecast-strip-icon { font-size: 2rem; }
+        .forecast-strip-body { flex: 1; }
+        .forecast-strip-title { font-size: 0.75rem; font-weight: 700; text-transform: uppercase;
+            letter-spacing: 0.08em; color: var(--text-light); margin-bottom: 0.2rem; }
+        .forecast-strip-val { font-family: 'Outfit',sans-serif; font-size: 1.9rem; font-weight: 900;
+            letter-spacing: -0.04em; line-height: 1;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        .forecast-strip-sub { font-size: 0.77rem; color: var(--text-muted); margin-top: 0.2rem; }
+        .forecast-confidence { font-size: 0.72rem; font-weight: 700; padding: 4px 12px;
+            border-radius: 100px; white-space: nowrap; }
+
+        /* ── THREE-COLUMN CHARTS GRID ────────────── */
+        .charts-grid-3 { display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            gap: 1.25rem; margin-bottom: 2rem; }
+        @media (max-width: 1350px) { .charts-grid-3 { grid-template-columns: 2fr 1fr; } }
+        @media (max-width: 1100px) { .charts-grid-3 { grid-template-columns: 1fr; } }
+        @media (max-width: 900px)  { .charts-grid-3 { gap: 1.2rem; } }
+        .donut-legend { display: flex; flex-wrap: wrap; gap: 0.5rem 1rem; margin-top: 1rem; justify-content: center; }
+        .donut-legend-item { display: flex; align-items: center; gap: 0.4rem; font-size: 0.75rem; color: var(--text); font-weight: 600; }
+        .donut-legend-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+
+        /* ── DATE RANGE POPOVER ──────────────────── */
+        .filter-bar-custom-wrap { position: relative; display: inline-flex; flex-shrink: 0; }
+        .date-popover {
+            position: absolute; top: calc(100% + 10px); left: 0;
+            background: var(--bg-card); border: 1px solid var(--border);
+            border-radius: 16px; padding: 1.25rem;
+            box-shadow: var(--shadow-lg); z-index: 500;
+            display: none; min-width: 275px; animation: fadeUp 0.2s ease;
+        }
+        .date-popover.open { display: block; }
+        .date-popover-title { font-weight: 700; font-size: 0.85rem; color: var(--text); margin-bottom: 1rem; }
+        .date-popover-fields { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 1rem; }
+        .date-popover label { font-size: 0.72rem; font-weight: 700; color: var(--text-light);
+            text-transform: uppercase; letter-spacing: 0.06em; display: block; margin-bottom: 4px; }
+        .date-popover input[type="date"] { width: 100%; padding: 0.45rem 0.6rem;
+            border: 1px solid var(--border); border-radius: 8px;
+            background: var(--bg); color: var(--text);
+            font-size: 0.8rem; font-family: inherit; outline: none;
+            transition: border-color 0.2s; }
+        .date-popover input[type="date"]:focus { border-color: var(--primary); }
+        .date-popover-actions { display: flex; gap: 0.5rem; justify-content: flex-end; }
+        .date-popover-actions button { padding: 0.4rem 1rem; border-radius: 8px; font-size: 0.8rem;
+            font-weight: 600; cursor: pointer; border: none; font-family: inherit; transition: all 0.2s; }
+        .dp-cancel { background: var(--bg-hover); color: var(--text-muted); }
+        .dp-apply  { background: var(--primary); color: white; }
+        .dp-apply:hover { opacity: 0.9; }
+
+        /* ── SEARCH & SORT BAR ───────────────────── */
+        .search-sort-bar { display: flex; gap: 0.75rem; align-items: center;
+            margin-bottom: 1rem; flex-wrap: wrap; }
+        .search-input-wrap { position: relative; flex: 1; min-width: 160px; }
+        .search-input-wrap i { position: absolute; left: 0.75rem; top: 50%;
+            transform: translateY(-50%); color: var(--text-light); font-size: 0.9rem; pointer-events: none; }
+        .attempts-search { width: 100%; padding: 0.5rem 0.75rem 0.5rem 2.1rem;
+            border: 1px solid var(--border); border-radius: 10px;
+            background: var(--bg-hover); color: var(--text);
+            font-size: 0.85rem; font-family: inherit; outline: none;
+            transition: border-color 0.2s; }
+        .attempts-search:focus { border-color: var(--primary); }
+        .export-btn { display: flex; align-items: center; gap: 0.4rem;
+            padding: 0.5rem 1rem; border-radius: 10px;
+            font-size: 0.8rem; font-weight: 600;
+            border: 1px solid var(--border); background: var(--bg-hover);
+            color: var(--text-muted); cursor: pointer; font-family: inherit;
+            transition: all 0.2s; white-space: nowrap; }
+        .export-btn:hover { background: var(--primary); color: white; border-color: var(--primary); }
+        .sortable-th { cursor: pointer; user-select: none; transition: color 0.15s; }
+        .sortable-th:hover { color: var(--primary); }
+        .sort-icon { display: inline; margin-left: 3px; opacity: 0.35; font-size: 0.65em; }
+        .sort-icon.active { opacity: 1; color: var(--primary); }
+
+        /* ── STATUS PILL EXTRAS ──────────────────── */
+        .status-err  { background: rgba(239,68,68,0.12);  color: #dc2626; }
+        .status-low  { background: rgba(245,158,11,0.12); color: #d97706; }
+        .status-pass { background: rgba(16,185,129,0.12); color: #059669; }
+
+        /* ── DRILL-DOWN MODAL ────────────────────── */
+        .dd-overlay { position: fixed; inset: 0;
+            background: rgba(0,0,0,0.42); backdrop-filter: blur(8px);
+            z-index: 2000; display: flex; align-items: center; justify-content: center;
+            opacity: 0; pointer-events: none; transition: opacity 0.25s; }
+        .dd-overlay.open { opacity: 1; pointer-events: all; }
+        .dd-box { background: var(--bg-card); border: 1px solid var(--border);
+            border-radius: 24px; padding: 2rem;
+            width: min(90vw,520px); max-height: 85vh; overflow-y: auto;
+            box-shadow: 0 24px 64px rgba(0,0,0,0.25);
+            transform: translateY(30px) scale(0.96);
+            transition: transform 0.35s cubic-bezier(0.34,1.56,0.64,1); }
+        .dd-overlay.open .dd-box { transform: translateY(0) scale(1); }
+        .dd-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.5rem; }
+        .dd-title { font-family:'Outfit',sans-serif; font-weight: 800; font-size: 1.1rem; }
+        .dd-close { background: none; border: none; font-size: 1.4rem; cursor: pointer;
+            color: var(--text-muted); padding: 0.2rem 0.5rem; border-radius: 8px; transition: color 0.2s; }
+        .dd-close:hover { color: var(--text); }
+        .dd-stats { display: grid; grid-template-columns: repeat(3,1fr); gap: 1rem; margin-bottom: 1.5rem; }
+        .dd-stat { background: var(--bg-hover); border-radius: 14px; padding: 1rem; text-align: center; }
+        .dd-stat-label { font-size: 0.65rem; font-weight: 700; text-transform: uppercase;
+            letter-spacing: 0.08em; color: var(--text-light); margin-bottom: 0.4rem; }
+        .dd-stat-val { font-family:'Outfit',sans-serif; font-size: 1.5rem; font-weight: 900; color: var(--text); }
+        .dd-chart-wrap { height: 120px; margin-bottom: 1rem; }
+        .dd-insight { background: linear-gradient(135deg,rgba(99,102,241,0.06),rgba(6,182,212,0.04));
+            border: 1px solid rgba(99,102,241,0.15); border-radius: 14px;
+            padding: 1rem 1.25rem; font-size: 0.83rem; color: var(--text-muted); line-height: 1.6; }
+
+        /* ── COLLAPSIBLE SECTIONS (mobile) ───────── */
+        .cs-toggle { display: none; align-items: center; justify-content: space-between;
+            cursor: pointer; user-select: none; -webkit-tap-highlight-color: transparent;
+            padding: 0.25rem 0; margin-bottom: 0.85rem; }
+        .cs-toggle-icon { transition: transform 0.35s cubic-bezier(0.34,1.56,0.64,1); font-size: 1rem; color: var(--text-muted); }
+        .cs-toggle.collapsed .cs-toggle-icon { transform: rotate(-90deg); }
+        .cs-body { overflow: hidden; transition: max-height 0.45s cubic-bezier(0.4,0,0.2,1), opacity 0.35s; }
+        .cs-body.collapsed { max-height: 0 !important; opacity: 0; }
+        @media (max-width: 900px) { .cs-toggle { display: flex; } .cs-body { opacity: 1; } }
+
+        /* ── GOAL MARKER ON SUBJECT BARS ────────── */
+        .subject-bar-goal {
+            position: relative; margin-top: 3px;
+            font-size: 0.68rem; color: var(--text-light); text-align: right;
+        }
+        .subject-bar-bg { position: relative; }
+        .goal-marker {
+            position: absolute; top: -2px; bottom: -2px;
+            width: 2px; background: rgba(245,158,11,0.7);
+            border-radius: 2px;
+        }
+        .goal-marker::after {
+            content: 'Goal';
+            position: absolute; top: -16px; left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.6rem; color: #d97706; font-weight: 700;
+            white-space: nowrap;
+        }
+
+        /* ── STATUS PILLS ────────────────────────── */
+        .status-pass { background: rgba(16,185,129,0.15); color: #059669; }
+        .status-low  { background: rgba(245,158,11,0.15); color: #d97706; }
+        .status-err  { background: rgba(239,68,68,0.15);  color: #dc2626; }
+
+        /* ── TREND ARROW BADGE (stat cards) ─────── */
+        .trend-arrow-badge {
+            display: inline-flex; align-items: center; gap: 2px;
+            font-size: 0.7rem; font-weight: 700;
+            padding: 2px 7px; border-radius: 20px; margin-right: 4px;
+        }
+        .tab-up   { background: rgba(16,185,129,0.12); color: #059669; }
+        .tab-down { background: rgba(239,68,68,0.12);  color: #dc2626; }
+        .tab-flat { background: rgba(100,116,139,0.12); color: #64748b; }
+
+        /* ── MONTH-OVER-MONTH BADGE ──────────────── */
+        .mom-badge {
+            display: inline-block; font-size: 0.65rem; font-weight: 700;
+            padding: 2px 7px; border-radius: 20px;
+        }
+        .mom-up   { background: rgba(16,185,129,0.12); color: #059669; }
+        .mom-down { background: rgba(239,68,68,0.12);  color: #dc2626; }
+        .mom-flat { background: rgba(100,116,139,0.12); color: #64748b; }
+
+        /* ── GAUGE RING ON ACCURACY CARD ─────────── */
+        .gauge-wrap { display: inline-flex; align-items: center; justify-content: center; margin-top: 4px; }
+        .gauge-svg  { width: 54px; height: 54px; }
+        .gauge-track { fill: none; stroke: rgba(100,116,139,0.15); stroke-width: 5; }
+        .gauge-fill  { fill: none; stroke-width: 5; stroke-linecap: round;
+            transition: stroke-dashoffset 0.8s cubic-bezier(0.4,0,0.2,1); }
+        .gauge-txt { fill: var(--text); font-size: 9px; font-weight: 700;
+            dominant-baseline: middle; text-anchor: middle; }
+
+        /* ── DONUT LEGEND ────────────────────────── */
+        .donut-legend-item { display: flex; align-items: center; gap: 6px;
+            font-size: 0.72rem; color: var(--text-muted); }
+        .donut-legend-dot  { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+
+        /* ── SORT ICON ACTIVE ────────────────────── */
+        .sort-icon.active { color: var(--primary); font-weight: 900; }
+
+        /* ── DRILL-DOWN MODAL OPEN STATE ─────────── */
+        .dd-overlay.open { display: flex; }
+        .dd-stat { display: flex; flex-direction: column; gap: 2px; text-align: center;
+            background: var(--card-bg); border-radius: 12px; padding: 0.75rem 1rem; flex: 1; }
+        .dd-stat-label { font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.06em; }
+        .dd-stat-val   { font-size: 1.1rem; font-weight: 800; color: var(--primary); }
+
+        /* ── FORECAST STRIP VISIBLE ──────────────── */
+        #forecast-strip { display: none; }
     </style>
 </head>
 
 
 <body>
+
+    <!-- Top Progress Loader -->
+    <div id="top-loader" class="top-loader"></div>
 
     <div class="app-layout">
 
@@ -2869,6 +3153,29 @@
                     <button class="filter-btn" onclick="setFilter(7, this)">Last 7 Days</button>
                     <button class="filter-btn" onclick="setFilter(30, this)">Last 30 Days</button>
                     <button class="filter-btn" onclick="setFilter(90, this)">Last 3 Months</button>
+                    <div class="filter-bar-custom-wrap">
+                        <button class="filter-btn" id="custom-range-btn" onclick="toggleDatePopover(event)">
+                            <i class="ri-calendar-2-line" style="margin-right:4px;font-size:0.85rem;"></i>Custom
+                        </button>
+                        <div class="date-popover" id="date-popover">
+                            <div class="date-popover-title">📅 Custom Date Range</div>
+                            <div class="date-popover-fields">
+                                <div><label>From</label><input type="date" id="date-from"></div>
+                                <div><label>To</label><input type="date" id="date-to"></div>
+                            </div>
+                            <div class="date-popover-actions">
+                                <button class="dp-cancel" onclick="closeDatePopover()">Cancel</button>
+                                <button class="dp-apply" onclick="applyCustomRange()">Apply</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Anomaly Banner -->
+                <div class="anomaly-banner" id="anomaly-banner">
+                    <i class="ri-alert-line"></i>
+                    <div id="anomaly-msg">Unusual pattern detected in your recent attempts.</div>
+                    <button class="dismiss-anomaly" onclick="document.getElementById('anomaly-banner').classList.remove('show')" title="Dismiss">✕</button>
                 </div>
 
                 <!-- Stat Cards -->
@@ -2889,10 +3196,10 @@
                 </div>
 
                 <!-- Charts Row -->
-                <div class="charts-grid">
+                <div class="charts-grid-3">
                     <div class="card fade-up">
                         <div class="card-header">
-                            <div class="card-title">
+                            <div class="card-title" data-tooltip="Your score across all attempts — includes goal (160) &amp; platform avg (110) lines">
                                 <i class="ri-line-chart-line" style="color:var(--primary);"></i>
                                 Score Progress
                             </div>
@@ -2905,8 +3212,8 @@
 
                     <div class="card fade-up">
                         <div class="card-header">
-                            <div class="card-title">
-                                <i class="ri-pie-chart-2-line" style="color:var(--accent);"></i>
+                            <div class="card-title" data-tooltip="Accuracy per subject — goal marker at 80%">
+                                <i class="ri-bar-chart-grouped-line" style="color:var(--accent);"></i>
                                 Subject Performance
                             </div>
                         </div>
@@ -2915,6 +3222,22 @@
                             <div class="skeleton" style="height:20px;margin-bottom:12px;"></div>
                             <div class="skeleton" style="height:20px;margin-bottom:12px;"></div>
                             <div class="skeleton" style="height:20px;"></div>
+                        </div>
+                    </div>
+
+                    <div class="card fade-up">
+                        <div class="card-header">
+                            <div class="card-title" data-tooltip="Distribution of attempts across subjects">
+                                <i class="ri-donut-chart-line" style="color:#f59e0b;"></i>
+                                Distribution
+                            </div>
+                        </div>
+                        <div class="chart-container" style="height:160px;">
+                            <canvas id="donut-canvas"></canvas>
+                        </div>
+                        <div class="donut-legend" id="donut-legend">
+                            <div class="skeleton" style="height:14px;width:70px;border-radius:8px;"></div>
+                            <div class="skeleton" style="height:14px;width:70px;border-radius:8px;"></div>
                         </div>
                     </div>
                 </div>
@@ -2957,6 +3280,17 @@
                     </div>
                 </div>
 
+                <!-- Predictive Forecast Strip -->
+                <div class="forecast-strip fade-up" id="forecast-strip" style="display:none;">
+                    <div class="forecast-strip-icon">🔮</div>
+                    <div class="forecast-strip-body">
+                        <div class="forecast-strip-title">Predictive Forecast · Linear Regression</div>
+                        <div class="forecast-strip-val" id="forecast-val">—</div>
+                        <div class="forecast-strip-sub" id="forecast-sub">Need ≥ 3 mocks to unlock your forecast.</div>
+                    </div>
+                    <span class="forecast-confidence" id="forecast-confidence"></span>
+                </div>
+
                 <!-- AI Insights -->
                 <div class="insights-grid" id="insights-grid">
                     <!-- Populated by JS -->
@@ -2969,29 +3303,46 @@
                             <i class="ri-history-line" style="color:var(--warning);"></i>
                             Recent Attempts
                         </div>
-                        <a href="/mock_test/full_mock_test_homepage.html" class="btn-primary"
-                            style="padding:0.4rem 1rem; font-size:0.75rem;">
-                            <i class="ri-add-line"></i> New Mock
-                        </a>
+                        <div style="display:flex;gap:0.5rem;align-items:center;flex-wrap:wrap;">
+                            <button class="export-btn" onclick="exportCSV()" data-tooltip="Download attempts as CSV">
+                                <i class="ri-download-2-line"></i> CSV
+                            </button>
+                            <a href="/mock_test/full_mock_test_homepage.html" class="btn-primary"
+                                style="padding:0.4rem 1rem; font-size:0.75rem;">
+                                <i class="ri-add-line"></i> New Mock
+                            </a>
+                        </div>
                     </div>
+                    <!-- Search & Sort Controls -->
+                    <div class="search-sort-bar">
+                        <div class="search-input-wrap">
+                            <i class="ri-search-line"></i>
+                            <input class="attempts-search" type="text" id="attempts-search"
+                                placeholder="Search by test name or subject…" oninput="onSearchInput(this.value)">
+                        </div>
+                    </div>
+                    <!-- Desktop Table -->
                     <div class="attempts-table-wrap">
                         <table>
                             <thead>
                                 <tr>
                                     <th>Mock Test</th>
-                                    <th>Score</th>
+                                    <th class="sortable-th" onclick="setSortColumn('score')" data-tooltip="Sort by score">
+                                        Score <span class="sort-icon" id="sort-icon-score">↕</span>
+                                    </th>
                                     <th>Correct</th>
                                     <th>Wrong</th>
-                                    <th>Accuracy</th>
-                                    <th>Date</th>
+                                    <th class="sortable-th" onclick="setSortColumn('accuracy')" data-tooltip="Sort by accuracy">
+                                        Accuracy <span class="sort-icon" id="sort-icon-accuracy">↕</span>
+                                    </th>
+                                    <th class="sortable-th" onclick="setSortColumn('date')" data-tooltip="Sort by date">
+                                        Date <span class="sort-icon" id="sort-icon-date">↕</span>
+                                    </th>
+                                    <th>Status</th>
                                 </tr>
                             </thead>
                             <tbody id="attempts-tbody">
-                                <tr>
-                                    <td colspan="6">
-                                        <div class="skeleton" style="height:36px;"></div>
-                                    </td>
-                                </tr>
+                                <tr><td colspan="7"><div class="skeleton" style="height:36px;"></div></td></tr>
                             </tbody>
                         </table>
                     </div>
@@ -3012,6 +3363,19 @@
         <span id="toast-msg">Info</span>
     </div>
 
+    <!-- Drill-Down Modal -->
+    <div class="dd-overlay" id="dd-overlay" onclick="closeDrillDown(event)">
+        <div class="dd-box" id="dd-box">
+            <div class="dd-header">
+                <div class="dd-title" id="dd-title">Details</div>
+                <button class="dd-close" onclick="closeDrillDownBtn()"><i class="ri-close-line"></i></button>
+            </div>
+            <div class="dd-stats" id="dd-stats"></div>
+            <div class="dd-chart-wrap"><canvas id="dd-canvas"></canvas></div>
+            <div class="dd-insight" id="dd-insight"></div>
+        </div>
+    </div>
+
     <!-- ── MOBILE BOTTOM NAV ─────────────────────── -->
 
 
@@ -3029,6 +3393,12 @@
         let allAttempts = [];
         let currentFilter = 'all';
         let scoreChart = null;
+        let currentStats = {};
+        let donutChart = null;
+        let drillChart = null;
+        let sortColumn = null;
+        let sortDir = -1;
+        let searchQuery = '';
 
         // ═══════════════════════════════════════════════════════
         //  INIT
@@ -3106,8 +3476,8 @@
         //  MAIN DATA LOAD
         // ═══════════════════════════════════════════════════════
         async function loadDashboardData() {
+            showLoader();
             try {
-                // Decode user_id from JWT payload
                 const payload = JSON.parse(atob(token.split('.')[1]));
                 const userId = payload.id || payload.userId || payload.sub;
 
@@ -3118,12 +3488,16 @@
                 ]);
 
                 allAttempts = progressRes.data || [];
+                currentStats  = statsRes.stats;
 
-                renderStatCards(statsRes.stats);
+                renderStatCards(statsRes.stats, allAttempts);
                 renderScoreChart(allAttempts);
                 renderSubjectBars(subjectRes.performance || []);
-                renderAttempts(allAttempts.slice(0, 10));
+                renderDonutChart(subjectRes.performance || []);
+                renderAttempts(getDisplayAttempts());
                 renderInsights(statsRes.stats, subjectRes.performance || []);
+                renderForecast(allAttempts);
+                detectAnomalies(allAttempts, statsRes.stats);
 
                 const now = new Date();
                 const updatedStr = `Last updated: ${now.toLocaleString('en-IN', { dateStyle: 'medium', timeStyle: 'short' })}`;
@@ -3133,61 +3507,113 @@
 
             } catch (err) {
                 console.error('Dashboard load error:', err);
-                // Show empty state
-                renderStatCards({ total_attempts: 0, best_score: 0, avg_score: '0.00', accuracy: '0.00', improvement: 0, recent_trend: 'insufficient_data' });
+                renderStatCards({ total_attempts: 0, best_score: 0, avg_score: '0.00', accuracy: '0.00', improvement: 0, recent_trend: 'insufficient_data' }, []);
                 renderAttempts([]);
                 renderInsights({ total_attempts: 0 }, []);
                 document.getElementById('last-updated').textContent = 'Complete a mock test to see your progress here!';
                 const mobileUpdated = document.getElementById('mobile-last-updated');
                 if (mobileUpdated) mobileUpdated.textContent = 'Complete a mock to see progress!';
+            } finally {
+                hideLoader();
             }
         }
 
         // ═══════════════════════════════════════════════════════
         //  STAT CARDS
         // ═══════════════════════════════════════════════════════
-        function renderStatCards(stats) {
-            const trend = stats.recent_trend;
+        function renderStatCards(stats, attempts) {
+            const trend = stats.recent_trend || 'insufficient_data';
             const trendIcon = trend === 'improving' ? '📈' : trend === 'declining' ? '📉' : '➡️';
             const trendClass = trend === 'improving' ? 'trend-up' : trend === 'declining' ? 'trend-down' : 'trend-stable';
             const improvSign = stats.improvement >= 0 ? '+' : '';
 
+            // Trend arrow from last 2 scores
+            const sorted = (attempts || []).slice().sort((a, b) => new Date(a.created_at) - new Date(b.created_at));
+            const last2 = sorted.slice(-2);
+            let scoreTrendHtml = '';
+            if (last2.length === 2) {
+                const delta = (last2[1].score || 0) - (last2[0].score || 0);
+                const cl = delta > 0 ? 'tab-up' : delta < 0 ? 'tab-down' : 'tab-flat';
+                const icon = delta > 0 ? '↑' : delta < 0 ? '↓' : '→';
+                scoreTrendHtml = `<span class="trend-arrow-badge ${cl}">${icon} ${Math.abs(delta)}</span>`;
+            }
+
+            // Month-over-Month comparison
+            const now2 = new Date();
+            const thisMonth = now2.getMonth(), thisYear = now2.getFullYear();
+            const lastMonth = (thisMonth - 1 + 12) % 12;
+            const lastMonthYear = thisMonth === 0 ? thisYear - 1 : thisYear;
+            const thisMA = sorted.filter(a => { const d = new Date(a.created_at); return d.getMonth() === thisMonth && d.getFullYear() === thisYear; });
+            const lastMA = sorted.filter(a => { const d = new Date(a.created_at); return d.getMonth() === lastMonth && d.getFullYear() === lastMonthYear; });
+            const thisAvg = thisMA.length ? (thisMA.reduce((s, a) => s + (a.score || 0), 0) / thisMA.length) : null;
+            const lastAvg = lastMA.length ? (lastMA.reduce((s, a) => s + (a.score || 0), 0) / lastMA.length) : null;
+            let momHtml = '';
+            if (thisAvg !== null && lastAvg !== null) {
+                const diff = Math.round(thisAvg - lastAvg);
+                const cl = diff > 0 ? 'mom-up' : diff < 0 ? 'mom-down' : 'mom-flat';
+                const icon = diff > 0 ? '▲' : diff < 0 ? '▼' : '→';
+                momHtml = `<div><span class="mom-badge ${cl}">${icon} ${Math.abs(diff)} vs last month</span></div>`;
+            }
+
+            // Accuracy gauge ring
+            const acc = parseFloat(stats.accuracy || 0);
+            const r = 20, circ = 2 * Math.PI * r;
+            const offset = circ - (acc / 100) * circ;
+            const gaugeColor = acc >= 70 ? '#10b981' : acc >= 50 ? '#f59e0b' : '#ef4444';
+            const gaugeHtml = `<div class="gauge-wrap" data-tooltip="${acc}% of all answers were correct">
+                <svg class="gauge-svg" viewBox="0 0 52 52">
+                    <circle class="gauge-track" cx="26" cy="26" r="${r}"/>
+                    <circle class="gauge-fill" cx="26" cy="26" r="${r}" stroke="${gaugeColor}"
+                        stroke-dasharray="${circ}" stroke-dashoffset="${circ}"
+                        id="gauge-fill-acc" transform="rotate(-90 26 26)"/>
+                    <text class="gauge-txt" x="26" y="26">${Math.round(acc)}%</text>
+                </svg></div>`;
+
             const cards = [
-                {
-                    icon: '🏆', iconBg: 'rgba(99,102,241,0.1)',
-                    label: 'Best Score', num: stats.best_score,
-                    sub: `Out of 240 marks`,
-                    accent: 'linear-gradient(90deg, #6366f1, #818cf8)'
-                },
-                {
-                    icon: '📊', iconBg: 'rgba(6,182,212,0.1)',
-                    label: 'Average Score', num: stats.avg_score,
-                    sub: `Across ${stats.total_attempts} attempt${stats.total_attempts !== 1 ? 's' : ''}`,
-                    accent: 'linear-gradient(90deg, #06b6d4, #22d3ee)'
-                },
-                {
-                    icon: '🎯', iconBg: 'rgba(16,185,129,0.1)',
-                    label: 'Accuracy', num: `${stats.accuracy}%`,
-                    sub: `${stats.total_correct || 0} correct answers`,
-                    accent: 'linear-gradient(90deg, #10b981, #34d399)'
-                },
-                {
-                    icon: trendIcon, iconBg: 'rgba(245,158,11,0.1)',
-                    label: 'Improvement', num: `${improvSign}${stats.improvement}%`,
-                    numClass: trendClass,
-                    sub: `Trend: <span class="${trendClass}" style="font-weight:700;">${trend.replace('_', ' ')}</span>`,
-                    accent: 'linear-gradient(90deg, #f59e0b, #fbbf24)'
-                }
+                { id:'best',  icon:'🏆', iconBg:'rgba(99,102,241,0.1)',
+                  label:'Best Score', num: stats.best_score,
+                  sub:`Out of 240 marks`,
+                  extra: scoreTrendHtml + momHtml,
+                  accent:'linear-gradient(90deg,#6366f1,#818cf8)',
+                  tooltip:'Your highest score across all mocks. Click for details.' },
+                { id:'avg',   icon:'📊', iconBg:'rgba(6,182,212,0.1)',
+                  label:'Average Score', num: stats.avg_score,
+                  sub:`Across ${stats.total_attempts} attempt${stats.total_attempts !== 1 ? 's' : ''}`,
+                  extra: '',
+                  accent:'linear-gradient(90deg,#06b6d4,#22d3ee)',
+                  tooltip:'Mean score averaged over all your attempts in the selected period.' },
+                { id:'acc',   icon:'🎯', iconBg:'rgba(16,185,129,0.1)',
+                  label:'Accuracy', num:`${stats.accuracy}%`,
+                  sub:`${stats.total_correct || 0} correct answers`,
+                  extra: gaugeHtml,
+                  accent:'linear-gradient(90deg,#10b981,#34d399)',
+                  tooltip:'% of questions answered correctly. IAT gives +4 for correct, -1 for wrong.' },
+                { id:'impr',  icon: trendIcon, iconBg:'rgba(245,158,11,0.1)',
+                  label:'Improvement', num:`${improvSign}${stats.improvement}%`,
+                  numClass: trendClass,
+                  sub:`Trend: <span class="${trendClass}" style="font-weight:700;">${trend.replace('_',' ')}</span>`,
+                  extra: '',
+                  accent:'linear-gradient(90deg,#f59e0b,#fbbf24)',
+                  tooltip:'Score improvement from your first attempts to recent ones.' }
             ];
 
             document.getElementById('stats-grid').innerHTML = cards.map((c, i) => `
-                <div class="stat-card fade-up" style="--card-accent:${c.accent}; animation-delay:${i * 0.08}s">
+                <div class="stat-card fade-up" style="--card-accent:${c.accent}; animation-delay:${i * 0.08}s; cursor:pointer;"
+                     data-tooltip="${c.tooltip}"
+                     onclick="openDrillDown('${c.id}', currentStats, allAttempts)">
                     <div class="stat-icon" style="background:${c.iconBg}; font-size:1.2rem;">${c.icon}</div>
                     <div class="stat-label">${c.label}</div>
                     <div class="stat-num ${c.numClass || ''}">${c.num}</div>
                     <div class="stat-sub">${c.sub}</div>
+                    ${c.extra ? `<div style="margin-top:0.4rem;">${c.extra}</div>` : ''}
                 </div>
             `).join('');
+
+            // Animate gauge ring
+            setTimeout(() => {
+                const gf = document.getElementById('gauge-fill-acc');
+                if (gf) gf.style.strokeDashoffset = offset;
+            }, 400);
         }
 
         // ═══════════════════════════════════════════════════════
@@ -3202,22 +3628,23 @@
             }
 
             const sorted = [...attempts].sort((a, b) => new Date(a.created_at) - new Date(b.created_at));
-
-            // 🔥 MOBILE OPTIMIZATION: Limit data points on small screens
             const isMobile = window.innerWidth <= 900;
-            const displayData = isMobile && sorted.length > 10
-                ? sorted.slice(-10) // Show last 10 on mobile
-                : sorted;
+            const displayData = isMobile && sorted.length > 10 ? sorted.slice(-10) : sorted;
 
-            const labels = displayData.map(a => {
-                const date = new Date(a.created_at);
-                // Shorter labels on mobile
+            const labels  = displayData.map(a => {
+                const d = new Date(a.created_at);
                 return isMobile
-                    ? date.toLocaleDateString('en-IN', { day: 'numeric', month: 'short' }).replace(' ', '\n')
-                    : date.toLocaleDateString('en-IN', { day: 'numeric', month: 'short' });
+                    ? d.toLocaleDateString('en-IN', { day:'numeric', month:'short' }).replace(' ','\n')
+                    : d.toLocaleDateString('en-IN', { day:'numeric', month:'short' });
             });
 
-            const scores = displayData.map(a => a.score);
+            const scores     = displayData.map(a => a.score);
+            const accuracies = displayData.map(a => {
+                const t = (a.correct||0)+(a.wrong||0)+(a.skipped||0);
+                return t > 0 ? +((a.correct/t)*100).toFixed(1) : 0;
+            });
+            const goalLine   = Array(labels.length).fill(160);
+            const benchLine  = Array(labels.length).fill(110);
 
             const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
             const gridColor = isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.04)';
@@ -3227,69 +3654,57 @@
 
             const ctx = document.getElementById('scoreChart').getContext('2d');
             const gradient = ctx.createLinearGradient(0, 0, 0, 240);
-            gradient.addColorStop(0, 'rgba(99, 102, 241, 0.35)');
-            gradient.addColorStop(1, 'rgba(99, 102, 241, 0.0)');
+            gradient.addColorStop(0, 'rgba(99,102,241,0.35)');
+            gradient.addColorStop(1, 'rgba(99,102,241,0.0)');
 
             scoreChart = new Chart(ctx, {
                 type: 'line',
                 data: {
                     labels,
-                    datasets: [{
-                        label: 'Score',
-                        data: scores,
-                        borderColor: '#6366f1',
-                        backgroundColor: gradient,
-                        tension: 0.4,
-                        fill: true,
-                        pointBackgroundColor: '#6366f1',
-                        pointRadius: isMobile ? 4 : 5, // Smaller on mobile
-                        pointHoverRadius: isMobile ? 6 : 8,
-                        borderWidth: isMobile ? 2 : 2.5
-                    }]
+                    datasets: [
+                        { label:'Your Score', data: scores, borderColor:'#6366f1',
+                          backgroundColor: gradient, tension:0.4, fill:true,
+                          pointBackgroundColor:'#6366f1',
+                          pointRadius: isMobile?4:5, pointHoverRadius: isMobile?6:8,
+                          borderWidth: isMobile?2:2.5, order:1 },
+                        { label:'Accuracy %', data: accuracies, borderColor:'#06b6d4',
+                          backgroundColor:'transparent', tension:0.4, fill:false,
+                          pointRadius: isMobile?3:4, pointHoverRadius: isMobile?5:6,
+                          borderWidth:1.5, borderDash:[4,3], yAxisID:'y2', order:2 },
+                        { label:'Goal (160)', data: goalLine, borderColor:'rgba(16,185,129,0.65)',
+                          backgroundColor:'transparent', borderDash:[6,4], borderWidth:1.5,
+                          fill:false, pointRadius:0, pointHoverRadius:0, order:3 },
+                        { label:'Platform Avg (110)', data: benchLine, borderColor:'rgba(245,158,11,0.55)',
+                          backgroundColor:'transparent', borderDash:[3,3], borderWidth:1.5,
+                          fill:false, pointRadius:0, pointHoverRadius:0, order:4 }
+                    ]
                 },
                 options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
+                    responsive: true, maintainAspectRatio: false,
+                    interaction: { mode:'index', intersect:false },
                     plugins: {
-                        legend: { display: false },
+                        legend: { display:!isMobile, position:'top',
+                            labels:{ color:textColor, font:{size:10}, boxWidth:12, padding:10 } },
                         tooltip: {
-                            backgroundColor: isDark ? '#0f1629' : '#fff',
-                            titleColor: textColor,
-                            bodyColor: '#6366f1',
-                            borderColor: '#6366f1',
-                            borderWidth: 1,
-                            padding: isMobile ? 10 : 12,
-                            titleFont: { size: isMobile ? 11 : 12 },
-                            bodyFont: { size: isMobile ? 12 : 13 },
-                            callbacks: {
-                                label: ctx => `Score: ${ctx.parsed.y}/240`
-                            }
+                            backgroundColor: isDark?'#0f1629':'#fff',
+                            titleColor: textColor, bodyColor:'#6366f1',
+                            borderColor:'#6366f1', borderWidth:1,
+                            padding: isMobile?10:12
                         }
                     },
                     scales: {
                         x: {
-                            grid: {
-                                color: gridColor,
-                                display: !isMobile // Hide grid on mobile for clarity
-                            },
-                            ticks: {
-                                color: textColor,
-                                font: { size: isMobile ? 9 : 11 },
-                                maxRotation: 0,
-                                autoSkip: true,
-                                maxTicksLimit: isMobile ? 6 : 10 // Fewer labels on mobile
-                            }
+                            grid:{ color:gridColor, display:!isMobile },
+                            ticks:{ color:textColor, font:{size:isMobile?9:11},
+                                maxRotation:0, autoSkip:true, maxTicksLimit:isMobile?6:10 }
                         },
-                        y: {
-                            min: 0,
-                            max: 240,
-                            grid: { color: gridColor },
-                            ticks: {
-                                color: textColor,
-                                font: { size: isMobile ? 9 : 11 },
-                                stepSize: isMobile ? 60 : 40 // Fewer ticks on mobile
-                            }
-                        }
+                        y: { min:0, max:240, grid:{color:gridColor},
+                            ticks:{ color:textColor, font:{size:isMobile?9:11}, stepSize:isMobile?60:40 } },
+                        y2: { type:'linear', position:'right', min:0, max:100,
+                            grid:{ display:false },
+                            ticks:{ color:'#06b6d4', font:{size:isMobile?9:10},
+                                callback:v=>v+'%' },
+                            display:!isMobile }
                     }
                 }
             });
@@ -3298,7 +3713,7 @@
             const trendEl = document.getElementById('trend-badge');
             const fullScores = sorted.map(a => a.score);
             if (fullScores.length > 1) {
-                const delta = fullScores[fullScores.length - 1] - fullScores[fullScores.length - 2];
+                const delta = fullScores[fullScores.length-1] - fullScores[fullScores.length-2];
                 trendEl.textContent = delta >= 0 ? `+${delta} from last` : `${delta} from last`;
                 trendEl.style.background = delta >= 0 ? 'rgba(16,185,129,0.12)' : 'rgba(239,68,68,0.12)';
                 trendEl.style.color = delta >= 0 ? '#059669' : '#dc2626';
@@ -3335,20 +3750,24 @@
             el.innerHTML = performance.map(p => {
                 const color = SUBJECT_COLORS[p.subject] || '#6366f1';
                 const acc = parseFloat(p.accuracy);
+                const goalPct = 80; // 80% goal marker
                 return `
                     <div class="subject-bar-item">
                         <div class="subject-bar-header">
                             <div class="subject-bar-name">${p.subject}</div>
-                            <div class="subject-bar-pct">${acc.toFixed(1)}% accuracy · ${p.attempts} attempt${p.attempts !== 1 ? 's' : ''}</div>
+                            <div class="subject-bar-pct">${acc.toFixed(1)}% · ${p.attempts} attempt${p.attempts !== 1 ? 's' : ''}</div>
                         </div>
-                        <div class="subject-bar-bg">
+                        <div class="subject-bar-bg" style="position:relative;">
                             <div class="subject-bar-fill" style="width:0%; background:${color};" data-target="${acc}"></div>
+                            <div class="goal-marker" style="left:${goalPct}%;" title="Goal: ${goalPct}%"></div>
+                        </div>
+                        <div class="subject-bar-goal" style="padding-right:${100-goalPct}%;">
+                            <span style="color:${acc>=goalPct?'#059669':'#d97706'};">${acc>=goalPct?'✓ On target':'Need +'+(goalPct-acc).toFixed(0)+'%'}</span>
                         </div>
                     </div>
                 `;
             }).join('');
 
-            // Animate bars
             requestAnimationFrame(() => {
                 document.querySelectorAll('.subject-bar-fill').forEach(bar => {
                     bar.style.width = bar.dataset.target + '%';
@@ -3372,7 +3791,7 @@
                         <a href="/mock_test/full_mock_test_homepage.html" class="btn-primary">Start First Mock</a>
                     </div>
                 `;
-                tbody.innerHTML = `<tr><td colspan="6">${emptyHtml}</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="7">${emptyHtml}</td></tr>`;
                 cardList.innerHTML = emptyHtml;
                 return;
             }
@@ -3381,8 +3800,11 @@
             tbody.innerHTML = attempts.map(a => {
                 const total = (a.correct || 0) + (a.wrong || 0) + (a.skipped || 0);
                 const acc = total > 0 ? ((a.correct / total) * 100).toFixed(1) : '0.0';
+                const accNum = parseFloat(acc);
                 const scoreClass = a.score >= 160 ? 'score-high' : a.score >= 100 ? 'score-mid' : 'score-low';
-                const date = new Date(a.created_at).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: '2-digit' });
+                const statusClass = accNum >= 67 ? 'status-pass' : accNum >= 40 ? 'status-low' : 'status-err';
+                const statusLabel = accNum >= 67 ? '✓ Pass' : accNum >= 40 ? '⚠ Low' : '✗ Error';
+                const date = new Date(a.created_at).toLocaleDateString('en-IN', { day:'numeric', month:'short', year:'2-digit' });
 
                 return `
                     <tr>
@@ -3395,6 +3817,7 @@
                         <td style="color:var(--danger);font-weight:600;">-${a.wrong || 0}</td>
                         <td style="font-weight:600;">${acc}%</td>
                         <td style="color:var(--text-muted);font-size:0.8rem;">${date}</td>
+                        <td><span class="score-pill ${statusClass}">${statusLabel}</span></td>
                     </tr>
                 `;
             }).join('');
@@ -3517,6 +3940,7 @@
             document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
             currentFilter = days;
+            closeDatePopover();
 
             let filtered = allAttempts;
             if (days !== 'all') {
@@ -3526,7 +3950,7 @@
             }
 
             renderScoreChart(filtered);
-            renderAttempts(filtered.slice(0, 10));
+            renderAttempts(getDisplayAttempts());
         }
 
         // ═══════════════════════════════════════════════════════
@@ -3874,15 +4298,284 @@
 
         function setLeaderboardFilter(period) {
             currentLeaderboardFilter = period;
-
-            // Update button states
             document.querySelectorAll('.leaderboard-filter-btn').forEach(btn => {
                 btn.classList.remove('active');
             });
             event.target.classList.add('active');
-
-            // Reload data
             loadLeaderboard();
+        }
+
+        // ═══════════════════════════════════════════════════════
+        //  NEW FEATURE FUNCTIONS — v2
+        // ═══════════════════════════════════════════════════════
+
+        // ── TOP LOADER ──────────────────────────────────────────
+        function showLoader() { document.getElementById('top-loader').classList.add('active'); }
+        function hideLoader() { document.getElementById('top-loader').classList.remove('active'); }
+
+        // ── DISPLAY FILTER (search + sort + period) ─────────────
+        function getDisplayAttempts() {
+            let list = [...allAttempts];
+            if (currentFilter !== 'all' && typeof currentFilter === 'number') {
+                const cutoff = new Date();
+                cutoff.setDate(cutoff.getDate() - currentFilter);
+                list = list.filter(a => new Date(a.created_at) >= cutoff);
+            }
+            if (searchQuery) {
+                const q = searchQuery.toLowerCase();
+                list = list.filter(a =>
+                    (a.mock_title||'').toLowerCase().includes(q) ||
+                    (a.subject||'').toLowerCase().includes(q));
+            }
+            if (sortColumn) {
+                list.sort((a, b) => {
+                    let va, vb;
+                    if (sortColumn === 'score') { va = a.score||0; vb = b.score||0; }
+                    if (sortColumn === 'accuracy') {
+                        const ta = (a.correct||0)+(a.wrong||0)+(a.skipped||0);
+                        const tb = (b.correct||0)+(b.wrong||0)+(b.skipped||0);
+                        va = ta > 0 ? (a.correct/ta)*100 : 0;
+                        vb = tb > 0 ? (b.correct/tb)*100 : 0;
+                    }
+                    if (sortColumn === 'date') { va = new Date(a.created_at); vb = new Date(b.created_at); }
+                    return (va < vb ? -1 : va > vb ? 1 : 0) * sortDir;
+                });
+            }
+            return list.slice(0, 10);
+        }
+
+        function setSortColumn(col) {
+            if (sortColumn === col) { sortDir *= -1; } else { sortColumn = col; sortDir = -1; }
+            document.querySelectorAll('.sort-icon').forEach(el => el.classList.remove('active'));
+            const icon = document.getElementById(`sort-icon-${col}`);
+            if (icon) { icon.classList.add('active'); icon.textContent = sortDir === 1 ? '↑' : '↓'; }
+            renderAttempts(getDisplayAttempts());
+        }
+
+        function onSearchInput(val) {
+            searchQuery = val.trim();
+            renderAttempts(getDisplayAttempts());
+        }
+
+        // ── DATE RANGE PICKER ───────────────────────────────────
+        function toggleDatePopover(e) {
+            if (e) e.stopPropagation();
+            document.getElementById('date-popover').classList.toggle('open');
+        }
+        function closeDatePopover() {
+            const p = document.getElementById('date-popover');
+            if (p) p.classList.remove('open');
+        }
+        function applyCustomRange() {
+            const from = document.getElementById('date-from').value;
+            const to   = document.getElementById('date-to').value;
+            if (!from || !to) { showToast('Select both dates', 'ri-information-line'); return; }
+            const fromD = new Date(from), toD = new Date(to);
+            toD.setHours(23,59,59,999);
+            if (fromD > toD) { showToast('From must be before To', 'ri-alert-line'); return; }
+
+            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById('custom-range-btn').classList.add('active');
+            closeDatePopover();
+
+            const filtered = allAttempts.filter(a => {
+                const d = new Date(a.created_at);
+                return d >= fromD && d <= toD;
+            });
+            renderScoreChart(filtered);
+            renderAttempts(filtered.slice(0, 10));
+            showToast(`Showing ${filtered.length} attempt(s) in range`, 'ri-calendar-check-line');
+        }
+        document.addEventListener('click', e => {
+            const wrap = document.querySelector('.filter-bar-custom-wrap');
+            if (wrap && !wrap.contains(e.target)) closeDatePopover();
+        });
+
+        // ── EXPORT CSV ──────────────────────────────────────────
+        function exportCSV() {
+            const list = getDisplayAttempts();
+            if (!list.length) { showToast('No data to export', 'ri-information-line'); return; }
+            const headers = ['Mock Test','Subject','Score','Correct','Wrong','Skipped','Accuracy%','Date'];
+            const rows = list.map(a => {
+                const total = (a.correct||0)+(a.wrong||0)+(a.skipped||0);
+                const acc = total > 0 ? ((a.correct/total)*100).toFixed(1) : '0.0';
+                const date = new Date(a.created_at).toLocaleDateString('en-IN');
+                return [`"${(a.mock_title||'Mock Test').replace(/"/g,'""')}"`,
+                    a.subject||'Mixed', a.score||0,
+                    a.correct||0, a.wrong||0, a.skipped||0, acc, date].join(',');
+            });
+            const csv  = [headers.join(','), ...rows].join('\n');
+            const blob = new Blob([csv], { type:'text/csv;charset=utf-8;' });
+            const url  = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `iiser_attempts_${new Date().toISOString().slice(0,10)}.csv`;
+            link.click();
+            URL.revokeObjectURL(url);
+            showToast('CSV exported! ✓', 'ri-download-2-line');
+        }
+
+        // ── DONUT CHART ─────────────────────────────────────────
+        const DONUT_COLORS_MAP = {
+            Physics:'#ef4444', Chemistry:'#3b82f6',
+            Mathematics:'#f59e0b', Biology:'#10b981',
+            Mixed:'#8b5cf6', General:'#6366f1'
+        };
+        function renderDonutChart(performance) {
+            const el = document.getElementById('donut-canvas');
+            const legendEl = document.getElementById('donut-legend');
+            if (!el) return;
+            if (!performance || performance.length === 0) {
+                if (legendEl) legendEl.innerHTML = '<span style="font-size:0.75rem;color:var(--text-muted);">Complete a mock to see distribution.</span>';
+                return;
+            }
+            const labels = performance.map(p => p.subject);
+            const counts = performance.map(p => parseInt(p.attempts) || 0);
+            const colors = labels.map(l => DONUT_COLORS_MAP[l] || '#6366f1');
+            const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+
+            if (donutChart) donutChart.destroy();
+            donutChart = new Chart(el, {
+                type: 'doughnut',
+                data: { labels, datasets: [{ data:counts, backgroundColor:colors,
+                    borderColor: isDark?'#0f1629':'#fff', borderWidth:2, hoverOffset:8 }] },
+                options: { responsive:true, maintainAspectRatio:false, cutout:'70%',
+                    plugins: {
+                        legend:{ display:false },
+                        tooltip:{ backgroundColor: isDark?'#0f1629':'#fff',
+                            titleColor: isDark?'#94a3b8':'#64748b', bodyColor:'#6366f1',
+                            borderColor:'#6366f1', borderWidth:1,
+                            callbacks:{ label: ctx => ` ${ctx.label}: ${ctx.raw} attempts` } } } }
+            });
+            if (legendEl) {
+                legendEl.innerHTML = performance.map(p =>
+                    `<div class="donut-legend-item">
+                        <div class="donut-legend-dot" style="background:${DONUT_COLORS_MAP[p.subject]||'#6366f1'};"></div>
+                        ${p.subject}
+                    </div>`).join('');
+            }
+        }
+
+        // ── PREDICTIVE FORECAST ─────────────────────────────────
+        function renderForecast(attempts) {
+            const strip = document.getElementById('forecast-strip');
+            if (!strip) return;
+            const sorted = [...attempts].sort((a,b) => new Date(a.created_at)-new Date(b.created_at));
+            if (sorted.length < 3) { strip.style.display = 'none'; return; }
+
+            const n = sorted.length;
+            const xs = sorted.map((_,i) => i);
+            const ys = sorted.map(a => a.score||0);
+            const meanX = xs.reduce((s,x)=>s+x,0)/n;
+            const meanY = ys.reduce((s,y)=>s+y,0)/n;
+            const num = xs.reduce((s,x,i)=>s+(x-meanX)*(ys[i]-meanY),0);
+            const den = xs.reduce((s,x)=>s+(x-meanX)**2,0);
+            if (den===0) { strip.style.display='none'; return; }
+            const slope = num/den, intercept = meanY - slope*meanX;
+
+            const future  = Math.max(0, Math.min(240, Math.round(slope*(n+2)+intercept)));
+            const ssRes   = ys.reduce((s,y,i)=>s+(y-(slope*i+intercept))**2,0);
+            const ssTot   = ys.reduce((s,y)=>s+(y-meanY)**2,0);
+            const r2      = ssTot===0 ? 0 : Math.max(0,1-ssRes/ssTot);
+            const conf    = r2>=0.7?'High':r2>=0.4?'Medium':'Low';
+            const confBg  = {High:'rgba(16,185,129,0.12)',Medium:'rgba(245,158,11,0.12)',Low:'rgba(239,68,68,0.12)'};
+            const confClr = {High:'#059669',Medium:'#d97706',Low:'#dc2626'};
+
+            document.getElementById('forecast-val').textContent = `${future}/240`;
+            document.getElementById('forecast-sub').textContent =
+                slope>0 ? `📈 Improving +${slope.toFixed(1)} pts/test on average`
+                : slope<0 ? `📉 Scores trending down — focus on consistency!`
+                : `➡ Scores are stable — push for a breakthrough!`;
+            const confEl = document.getElementById('forecast-confidence');
+            if (confEl) { confEl.textContent=`${conf} Confidence`;
+                confEl.style.background=confBg[conf]; confEl.style.color=confClr[conf]; }
+            strip.style.display = 'flex';
+        }
+
+        // ── ANOMALY DETECTION ───────────────────────────────────
+        function detectAnomalies(attempts, stats) {
+            const banner = document.getElementById('anomaly-banner');
+            const msgEl  = document.getElementById('anomaly-msg');
+            if (!banner || !attempts || attempts.length < 3) return;
+
+            const scores = attempts.map(a => a.score||0);
+            const mean   = scores.reduce((s,x)=>s+x,0)/scores.length;
+            const std    = Math.sqrt(scores.reduce((s,x)=>s+(x-mean)**2,0)/scores.length);
+            const recent = [...attempts].sort((a,b)=>new Date(b.created_at)-new Date(a.created_at)).slice(0,3);
+            const latest = scores[scores.length-1];
+
+            if (std > 5 && latest < mean - 2*std) {
+                msgEl.innerHTML = `<strong>Anomaly Detected:</strong> Your most recent score (${latest}) is significantly below your average (${Math.round(mean)}). Review time management and weak areas.`;
+                banner.classList.add('show');
+            } else if (recent.length===3 && recent.every(a=>(a.score||0) < mean - std*0.4)) {
+                msgEl.innerHTML = `<strong>Attention:</strong> 3 consecutive below-average scores (${recent.map(a=>a.score).join(', ')}). Consider a targeted revision session before your next mock.`;
+                banner.classList.add('show');
+            } else {
+                banner.classList.remove('show');
+            }
+        }
+
+        // ── DRILL-DOWN MODAL ────────────────────────────────────
+        function openDrillDown(type, stats, attempts) {
+            const overlay = document.getElementById('dd-overlay');
+            if (!overlay || !stats || !attempts) return;
+
+            const sorted = [...attempts].sort((a,b)=>new Date(a.created_at)-new Date(b.created_at));
+            const scores = sorted.map(a=>a.score||0);
+            const min  = scores.length ? Math.min(...scores) : 0;
+            const max  = scores.length ? Math.max(...scores) : 0;
+            const avg  = scores.length ? (scores.reduce((s,x)=>s+x,0)/scores.length).toFixed(1) : '0';
+
+            const cfgs = {
+                best:  { title:'🏆 Best Score Details',  keys:[['Best',max+'/240'],['Average',avg+'/240'],['Attempts',attempts.length]] },
+                avg:   { title:'📊 Average Score Details',keys:[['Mean',avg+'/240'],['Min',min+'/240'],['Max',max+'/240']] },
+                acc:   { title:'🎯 Accuracy Breakdown',   keys:[['Accuracy',stats.accuracy+'%'],['Correct',stats.total_correct||0],['Attempts',attempts.length]] },
+                impr:  { title:'📈 Improvement Analysis', keys:[['Change',(stats.improvement>=0?'+':'')+stats.improvement+'%'],['Trend',(stats.recent_trend||'unknown').replace('_',' ')],['Attempts',attempts.length]] }
+            };
+            const cfg = cfgs[type] || cfgs['best'];
+            document.getElementById('dd-title').textContent = cfg.title;
+            document.getElementById('dd-stats').innerHTML = cfg.keys.map(([l,v]) =>
+                `<div class="dd-stat"><div class="dd-stat-label">${l}</div><div class="dd-stat-val">${v}</div></div>`).join('');
+
+            // Sparkline
+            const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+            const ddCtx  = document.getElementById('dd-canvas');
+            if (ddCtx && scores.length > 0) {
+                if (drillChart) drillChart.destroy();
+                const grad = ddCtx.getContext('2d').createLinearGradient(0,0,0,120);
+                grad.addColorStop(0,'rgba(99,102,241,0.3)'); grad.addColorStop(1,'rgba(99,102,241,0)');
+                drillChart = new Chart(ddCtx, {
+                    type:'line',
+                    data:{ labels:sorted.map((_,i)=>`#${i+1}`),
+                        datasets:[{ data:scores, borderColor:'#6366f1', backgroundColor:grad,
+                            fill:true, tension:0.4, pointRadius:3, borderWidth:2 }] },
+                    options:{ responsive:true, maintainAspectRatio:false,
+                        plugins:{ legend:{display:false}, tooltip:{callbacks:{label:c=>`Score: ${c.raw}/240`}} },
+                        scales:{ x:{grid:{display:false},ticks:{display:false}},
+                            y:{min:0,max:240,grid:{color:isDark?'rgba(255,255,255,0.05)':'rgba(0,0,0,0.04)'},
+                                ticks:{color:isDark?'#94a3b8':'#64748b',font:{size:10},stepSize:60}} } }
+                });
+            }
+
+            const insights = {
+                best:  `Your best score is <strong>${max}/240</strong>. The IISER IAT safe cutoff is ~160. You're <strong>${max>=160?'above':''+Math.max(0,160-max)+' marks below'}</strong> it.`,
+                avg:   `Your mean score is <strong>${avg}/240</strong>. Consistency is key — try to stay above ${Math.max(0,Math.round(parseFloat(avg)*1.05))} in your next attempt.`,
+                acc:   `With <strong>${stats.accuracy}%</strong> accuracy, wrong answers cost you marks via negative marking (-1 per wrong). Focus on eliminating guesses.`,
+                impr:  `Your trend is <strong>${(stats.recent_trend||'').replace('_',' ')}</strong>. ${scores.length>=2?`You've ranged from ${min} to ${max} across ${scores.length} attempts.`:'Complete more mocks to track trajectory.'}`
+            };
+            document.getElementById('dd-insight').innerHTML = insights[type] || insights['best'];
+
+            overlay.classList.add('open');
+            document.body.style.overflow = 'hidden';
+        }
+        function closeDrillDown(e) {
+            if (e && e.target !== document.getElementById('dd-overlay')) return;
+            _closeDDModal();
+        }
+        function closeDrillDownBtn() { _closeDDModal(); }
+        function _closeDDModal() {
+            document.getElementById('dd-overlay').classList.remove('open');
+            document.body.style.overflow = '';
         }
     </script>
 
