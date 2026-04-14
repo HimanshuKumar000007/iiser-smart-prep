@@ -4176,6 +4176,15 @@
                 const accuracy = user.accuracy || 0;
                 const rankLabel = rank <= 3 ? ['🥇','🥈','🥉'][rank - 1] : rank;
 
+                let displayName = user.name || 'Anonymous';
+                if (displayName !== 'Anonymous') {
+                    let masked = '';
+                    for (let i = 0; i < displayName.length; i++) {
+                        masked += (i === 0 || i === 2 || i === 4) ? displayName[i] : '*';
+                    }
+                    displayName = masked;
+                }
+
                 return `
                     <div class="leaderboard-row rank-${rank} fade-up" style="animation-delay:${idx * 0.07}s;">
                         ${rank === 1 ? '<div class="lb-crown">👑</div>' : ''}
@@ -4186,7 +4195,7 @@
                             <div class="lb-user-info">
                                 <div class="lb-avatar-glass">${initials}</div>
                                 <div class="lb-user-details lb-details">
-                                    <h4>${user.name || 'Anonymous'}</h4>
+                                    <h4>${displayName}</h4>
                                     <p>${user.attempts || 0} attempt${(user.attempts || 0) !== 1 ? 's' : ''}</p>
                                 </div>
                             </div>
