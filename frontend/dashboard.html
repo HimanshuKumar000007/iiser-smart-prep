@@ -3073,7 +3073,14 @@
     }
 
     function maskName(name) {
-      return (name || 'Student').split(' ').map((p, i) => i === 0 ? p : p[0] + '*'.repeat(Math.max(0, p.length - 1))).join(' ');
+      // Mask each word: show first 3 chars + asterisks + last char
+      // e.g. "himanshu" → "him****u" | "hi" → "h*" | "a" → "*"
+      return (name || 'Student').split(' ').map(word => {
+        if (word.length <= 1) return '*';
+        if (word.length <= 3) return word[0] + '*'.repeat(word.length - 1);
+        const show = Math.min(3, Math.floor(word.length / 3));
+        return word.slice(0, show) + '*'.repeat(word.length - show - 1) + word.at(-1);
+      }).join(' ');
     }
 
     // ── FILTER & SORT ──
