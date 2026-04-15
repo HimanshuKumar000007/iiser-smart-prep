@@ -10,26 +10,16 @@ import AIDoubts from './pages/AIDoubts';
 import Analytics from './pages/Analytics';
 import type { Page } from './types';
 import { supabase } from './lib/supabase';
-import type { Session } from '@supabase/supabase-js';
 import './App.css';
 
 function App() {
   const [currentPage, setCurrentPage] = useState<Page>('dashboard');
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
-  const [session, setSession] = useState<Session | null | undefined>(undefined); // undefined = loading
+  const [ready, setReady] = useState(false);
 
   useEffect(() => {
-    // Get initial session
-    supabase.auth.getSession().then(({ data: { session: s } }) => {
-      setSession(s);
-    });
-
-    // Listen for auth changes
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, s) => {
-      setSession(s);
-    });
-
-    return () => subscription.unsubscribe();
+    // Just mark ready once session check is done — no redirect
+    supabase.auth.getSession().finally(() => setReady(true));
   }, []);
 
   const renderPage = () => {
@@ -44,13 +34,12 @@ function App() {
     }
   };
 
-  // Loading session check
-  if (session === undefined) {
+  if (!ready) {
     return (
       <div className="min-h-screen bg-[#0B0F14] flex items-center justify-center">
         <div className="flex flex-col items-center gap-4">
           <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center animate-pulse">
-            <span className="text-2xl">✦</span>
+            <span className="text-2xl text-white font-bold">✦</span>
           </div>
           <p className="text-gray-400 text-sm">Loading IISER Smart Prep...</p>
         </div>
@@ -58,37 +47,12 @@ function App() {
     );
   }
 
-  // Not logged in → redirect to login (for standalone use; in main site, auth is handled via login.html)
-  if (!session) {
-    return (
-      <div className="min-h-screen bg-[#0B0F14] flex items-center justify-center">
-        <div className="text-center max-w-sm mx-auto px-6">
-          <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center mx-auto mb-6">
-            <span className="text-3xl">✦</span>
-          </div>
-          <h1 className="text-2xl font-bold text-white mb-2">IISER Smart Prep</h1>
-          <p className="text-gray-400 mb-6">Sign in to access your personalized AI dashboard</p>
-          <a
-            href="/login.html"
-            className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-indigo-500 to-purple-600 text-white font-semibold hover:from-indigo-600 hover:to-purple-700 transition-all"
-          >
-            Go to Login →
-          </a>
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div className="min-h-screen bg-[#0B0F14] text-white overflow-hidden">
-      {/* Background gradient effects */}
       <div className="fixed inset-0 pointer-events-none">
         <div className="absolute top-0 left-1/4 w-96 h-96 bg-indigo-500/10 rounded-full blur-3xl" />
         <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl" />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-indigo-500/5 rounded-full blur-3xl" />
       </div>
-
-      {/* Grid pattern overlay */}
       <div
         className="fixed inset-0 pointer-events-none opacity-[0.02]"
         style={{
@@ -97,7 +61,6 @@ function App() {
           backgroundSize: '50px 50px'
         }}
       />
-
       <div className="relative flex h-screen">
         <Sidebar
           currentPage={currentPage}
