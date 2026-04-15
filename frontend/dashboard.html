@@ -1,0 +1,1295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Dashboard — IISER Smart Prep</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #0B0F14; --card: rgba(255,255,255,0.03);
+      --border: rgba(255,255,255,0.08); --border2: rgba(255,255,255,0.14);
+      --indigo: #6366f1; --purple: #a855f7; --green: #22c55e;
+      --orange: #f59e0b; --red: #ef4444; --text: #ffffff; --muted: #9ca3af;
+    }
+    html, body { height: 100%; overflow: hidden; }
+    body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); display: flex; }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar { width: 6px; } ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 3px; }
+
+    /* Background */
+    .bg-glow { position: fixed; inset: 0; pointer-events: none; z-index: 0; }
+    .bg-glow::before { content:''; position:absolute; top:0; left:25%; width:400px; height:400px; background:rgba(99,102,241,0.1); border-radius:50%; filter:blur(80px); }
+    .bg-glow::after  { content:''; position:absolute; bottom:0; right:25%; width:400px; height:400px; background:rgba(168,85,247,0.08); border-radius:50%; filter:blur(80px); }
+
+    /* Sidebar */
+    #sidebar {
+      width: 240px; flex-shrink: 0; height: 100vh; overflow-y: auto;
+      background: rgba(255,255,255,0.02); border-right: 1px solid var(--border);
+      display: flex; flex-direction: column; position: relative; z-index: 10;
+      transition: width 0.25s ease;
+    }
+    #sidebar.collapsed { width: 68px; }
+    .sidebar-logo { padding: 20px 16px; display: flex; align-items: center; gap: 12px; border-bottom: 1px solid var(--border); }
+    .logo-icon { width: 36px; height: 36px; border-radius: 10px; background: linear-gradient(135deg, var(--indigo), var(--purple)); display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; }
+    .logo-text { font-weight: 800; font-size: 14px; white-space: nowrap; overflow: hidden; }
+    .logo-text span { color: var(--indigo); }
+    .sidebar-nav { padding: 12px 8px; flex: 1; }
+    .nav-item {
+      display: flex; align-items: center; gap: 12px; padding: 10px 12px;
+      border-radius: 10px; cursor: pointer; margin-bottom: 2px;
+      transition: all 0.2s; color: var(--muted); font-size: 14px; font-weight: 500;
+      white-space: nowrap; overflow: hidden; border: 1px solid transparent;
+    }
+    .nav-item:hover { background: rgba(255,255,255,0.05); color: #fff; }
+    .nav-item.active { background: rgba(99,102,241,0.15); color: var(--indigo); border-color: rgba(99,102,241,0.3); }
+    .nav-icon { width: 20px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
+    .sidebar-bottom { padding: 12px 8px; border-top: 1px solid var(--border); }
+    .user-pill { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 10px; background: var(--card); border: 1px solid var(--border); }
+    .user-avatar { width: 32px; height: 32px; border-radius: 8px; background: linear-gradient(135deg,var(--indigo),var(--purple)); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 13px; flex-shrink: 0; }
+    .user-info { overflow: hidden; }
+    .user-name { font-size: 13px; font-weight: 600; truncate white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .user-email { font-size: 11px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+    /* Main */
+    #main { flex: 1; display: flex; flex-direction: column; height: 100vh; min-width: 0; position: relative; z-index: 1; }
+    #topbar { height: 60px; border-bottom: 1px solid var(--border); display: flex; align-items: center; padding: 0 20px; gap: 16px; background: rgba(255,255,255,0.01); flex-shrink: 0; }
+    .topbar-toggle { width: 36px; height: 36px; border-radius: 8px; border: 1px solid var(--border); background: var(--card); cursor: pointer; display: flex; align-items: center; justify-content: center; color: var(--muted); transition: all 0.2s; }
+    .topbar-toggle:hover { color: #fff; border-color: var(--border2); }
+    .topbar-title { font-weight: 700; font-size: 16px; flex: 1; }
+    .topbar-badge { padding: 4px 10px; border-radius: 20px; background: rgba(99,102,241,0.2); border: 1px solid rgba(99,102,241,0.4); font-size: 11px; font-weight: 700; color: var(--indigo); }
+    #content { flex: 1; overflow-y: auto; padding: 24px; }
+
+    /* Pages */
+    .page { display: none; animation: fadeIn 0.3s ease; }
+    .page.active { display: block; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+
+    /* Cards */
+    .card { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 20px; }
+    .card-lg { padding: 24px; }
+
+    /* Grid */
+    .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+    .grid-3-lg { display: grid; grid-template-columns: 2fr 1fr; gap: 16px; }
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    @media(max-width:1100px) { .grid-4 { grid-template-columns: 1fr 1fr; } .grid-3-lg { grid-template-columns: 1fr; } .grid-2 { grid-template-columns: 1fr; } }
+    @media(max-width:600px) { .grid-4 { grid-template-columns: 1fr 1fr; } }
+
+    /* Stat cards */
+    .stat-card { border-radius: 14px; padding: 18px; background: var(--card); border: 1px solid var(--border); }
+    .stat-icon { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; margin-bottom: 12px; font-size: 18px; }
+    .stat-value { font-size: 26px; font-weight: 800; }
+    .stat-label { font-size: 12px; color: var(--muted); margin-top: 2px; }
+
+    /* Progress bar */
+    .progress-track { height: 8px; background: rgba(255,255,255,0.05); border-radius: 4px; overflow: hidden; }
+    .progress-bar { height: 100%; border-radius: 4px; transition: width 1s ease; }
+
+    /* Badges */
+    .badge { display: inline-flex; align-items: center; gap: 5px; padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 600; }
+    .badge-indigo { background: rgba(99,102,241,0.2); color: var(--indigo); }
+    .badge-green  { background: rgba(34,197,94,0.2); color: var(--green); }
+    .badge-orange { background: rgba(245,158,11,0.2); color: var(--orange); }
+    .badge-red    { background: rgba(239,68,68,0.2); color: var(--red); }
+    .badge-purple { background: rgba(168,85,247,0.2); color: var(--purple); }
+
+    /* Buttons */
+    .btn { display: inline-flex; align-items: center; gap: 8px; padding: 10px 20px; border-radius: 10px; font-size: 14px; font-weight: 600; cursor: pointer; border: none; transition: all 0.2s; }
+    .btn-primary { background: linear-gradient(135deg, var(--indigo), var(--purple)); color: #fff; }
+    .btn-primary:hover { opacity: 0.9; transform: translateY(-1px); }
+    .btn-ghost { background: transparent; color: var(--muted); border: 1px solid var(--border); }
+    .btn-ghost:hover { background: rgba(255,255,255,0.05); color: #fff; }
+    .btn-sm { padding: 7px 14px; font-size: 13px; }
+
+    /* Section title */
+    .section-title { font-size: 17px; font-weight: 700; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+    .sec-icon { width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 14px; }
+
+    /* Alert */
+    .alert { padding: 14px 16px; border-radius: 12px; display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
+    .alert-info { background: rgba(99,102,241,0.1); border: 1px solid rgba(99,102,241,0.3); }
+    .alert-warn { background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.25); }
+    .alert-orange { background: rgba(245,158,11,0.1); border: 1px solid rgba(245,158,11,0.3); }
+
+    /* Sign in banner */
+    #signin-banner { display: none; }
+    #signin-banner.show { display: flex; }
+    .signin-btn { margin-left: auto; padding: 8px 18px; border-radius: 8px; background: var(--indigo); color: #fff; font-size: 13px; font-weight: 600; text-decoration: none; flex-shrink: 0; }
+
+    /* Welcome row */
+    .welcome-row { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; flex-wrap: wrap; margin-bottom: 20px; }
+    .welcome-title { font-size: 28px; font-weight: 800; }
+    .gradient-text { background: linear-gradient(135deg, var(--indigo), var(--purple)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .welcome-sub { color: var(--muted); font-size: 13px; margin-top: 4px; }
+    .pill-group { display: flex; gap: 10px; }
+    .pill { display: flex; align-items: center; gap: 10px; padding: 10px 18px; border-radius: 14px; border: 1px solid; }
+    .pill-orange { background: rgba(245,158,11,0.1); border-color: rgba(245,158,11,0.3); }
+    .pill-green  { background: rgba(34,197,94,0.1);  border-color: rgba(34,197,94,0.3);  }
+    .pill-icon { width: 30px; height: 30px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 14px; }
+    .pill-val { font-size: 18px; font-weight: 800; }
+    .pill-lbl { font-size: 11px; color: var(--muted); }
+
+    /* Task items */
+    .task-item { display: flex; align-items: center; gap: 12px; padding: 12px 14px; border-radius: 10px; border: 1px solid var(--border); margin-bottom: 8px; background: rgba(255,255,255,0.02); }
+    .task-type-icon { width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 14px; flex-shrink: 0; }
+    .task-title { font-size: 13px; font-weight: 600; }
+    .task-sub   { font-size: 11px; color: var(--muted); margin-top: 2px; }
+
+    /* Subject bar */
+    .subject-row { margin-bottom: 14px; }
+    .subject-header { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
+    .subject-name { font-size: 13px; font-weight: 600; flex: 1; }
+    .subject-pct  { font-size: 13px; font-weight: 700; }
+    .subject-meta { font-size: 11px; color: var(--muted); margin-top: 4px; }
+
+    /* Mock test styles */
+    .subject-pill { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 16px 12px; border-radius: 12px; border: 2px solid var(--border); cursor: pointer; transition: all 0.2s; text-align: center; flex: 1; min-width: 90px; }
+    .subject-pill.selected { border-color: var(--indigo); background: rgba(99,102,241,0.1); }
+    .subject-pill:hover { border-color: var(--border2); }
+    .subject-pill-icon { font-size: 22px; margin-bottom: 6px; }
+    .subject-pill-name { font-size: 12px; font-weight: 600; }
+    .mode-card { padding: 18px; border-radius: 14px; border: 2px solid var(--border); cursor: pointer; flex: 1; transition: all 0.2s; }
+    .mode-card.selected { border-color: var(--indigo); background: rgba(99,102,241,0.08); }
+    .mode-card:hover { border-color: var(--border2); }
+    .mode-title { font-size: 15px; font-weight: 700; margin-bottom: 6px; }
+    .mode-desc { font-size: 12px; color: var(--muted); line-height: 1.5; }
+    .question-card { padding: 24px; border-radius: 16px; border: 1px solid var(--border); background: var(--card); }
+    .option-btn { width: 100%; text-align: left; padding: 14px 16px; border-radius: 10px; border: 1px solid var(--border); background: rgba(255,255,255,0.02); cursor: pointer; font-size: 14px; color: #fff; display: flex; align-items: center; gap: 12px; margin-bottom: 10px; transition: all 0.2s; }
+    .option-btn:hover:not(:disabled) { background: rgba(255,255,255,0.06); border-color: var(--border2); }
+    .option-btn.correct { background: rgba(34,197,94,0.1); border-color: var(--green); }
+    .option-btn.wrong   { background: rgba(239,68,68,0.1);  border-color: var(--red); }
+    .option-btn.dimmed  { opacity: 0.4; }
+    .option-letter { width: 30px; height: 30px; border-radius: 7px; background: rgba(255,255,255,0.06); flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 12px; }
+    .q-nav-dot { width: 32px; height: 32px; border-radius: 8px; border: 1px solid var(--border); background: rgba(255,255,255,0.04); cursor: pointer; font-size: 12px; font-weight: 600; color: var(--muted); transition: all 0.2s; }
+    .q-nav-dot.current { background: var(--indigo); color: #fff; border-color: var(--indigo); }
+    .q-nav-dot.correct-dot { background: rgba(34,197,94,0.2); color: var(--green); border-color: var(--green); }
+    .q-nav-dot.wrong-dot   { background: rgba(239,68,68,0.2);  color: var(--red);   border-color: var(--red); }
+    .explanation-box { padding: 14px 16px; border-radius: 10px; background: rgba(99,102,241,0.1); border: 1px solid rgba(99,102,241,0.25); margin-top: 14px; display: none; }
+    .explanation-box.show { display: block; }
+
+    /* AI Doubts */
+    .chat-messages { max-height: 340px; overflow-y: auto; display: flex; flex-direction: column; gap: 12px; padding-right: 4px; }
+    .msg { max-width: 80%; padding: 12px 16px; border-radius: 14px; font-size: 13px; line-height: 1.6; }
+    .msg-user { background: var(--indigo); color: #fff; margin-left: auto; border-bottom-right-radius: 4px; }
+    .msg-bot  { background: rgba(255,255,255,0.06); border: 1px solid var(--border); border-bottom-left-radius: 4px; }
+    .chat-input-row { display: flex; gap: 10px; margin-top: 14px; }
+    .chat-input { flex: 1; background: rgba(255,255,255,0.04); border: 1px solid var(--border); border-radius: 10px; padding: 11px 14px; font-size: 13px; color: #fff; font-family: Inter,sans-serif; outline: none; }
+    .chat-input:focus { border-color: var(--indigo); }
+    .flashcard { padding: 20px; border-radius: 14px; background: linear-gradient(135deg, rgba(99,102,241,0.1), rgba(168,85,247,0.08)); border: 1px solid rgba(99,102,241,0.3); text-align: center; min-height: 120px; display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; }
+    .rating-row { display: flex; gap: 8px; justify-content: center; margin-top: 14px; }
+    .rating-btn { padding: 8px 16px; border-radius: 8px; font-size: 12px; font-weight: 600; cursor: pointer; border: none; transition: all 0.2s; }
+
+    /* Analytics */
+    .chart-container { position: relative; height: 200px; }
+    .heatmap-row { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
+    .heatmap-label { width: 110px; font-size: 11px; color: var(--muted); flex-shrink: 0; }
+    .heatmap-cell { flex: 1; height: 32px; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; }
+
+    /* Loading */
+    #loading-overlay { position: fixed; inset: 0; background: var(--bg); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px; z-index: 1000; }
+    .spinner { width: 44px; height: 44px; border-radius: 12px; background: linear-gradient(135deg, var(--indigo), var(--purple)); display: flex; align-items: center; justify-content: center; animation: pulse 1.5s infinite; font-size: 20px; }
+    @keyframes pulse { 0%,100% { transform: scale(1); opacity:1; } 50% { transform: scale(0.9); opacity:0.7; } }
+
+    /* Recent tests */
+    .result-item { display: flex; align-items: center; gap: 14px; padding: 12px 14px; border-radius: 10px; border: 1px solid var(--border); background: rgba(255,255,255,0.02); margin-bottom: 8px; }
+    .result-score { width: 46px; height: 46px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 800; flex-shrink: 0; }
+    .result-title { font-size: 13px; font-weight: 600; }
+    .result-meta  { font-size: 11px; color: var(--muted); margin-top: 2px; }
+
+    /* Battles & Groups */
+    .battle-card { padding: 18px; border-radius: 14px; border: 1px solid var(--border); background: var(--card); display: flex; align-items: center; gap: 16px; margin-bottom: 12px; }
+    .battle-avatar { width: 44px; height: 44px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
+    .group-card { padding: 20px; border-radius: 14px; border: 1px solid var(--border); background: var(--card); margin-bottom: 12px; }
+    .group-header { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+    .group-icon { width: 42px; height: 42px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+
+    input[type="text"],input[type="search"],textarea{font-family:Inter,sans-serif;}
+    .flex{display:flex;} .items-center{align-items:center;} .justify-between{justify-content:space-between;}
+    .gap-8{gap:8px;} .gap-12{gap:12px;} .gap-16{gap:16px;} .mt-4{margin-top:4px;} .mt-8{margin-top:8px;} .mt-12{margin-top:12px;} .mt-16{margin-top:16px;} .mt-20{margin-top:20px;}
+    .mb-4{margin-bottom:4px;} .mb-8{margin-bottom:8px;} .mb-12{margin-bottom:12px;} .mb-16{margin-bottom:16px;} .mb-20{margin-bottom:20px;}
+    .text-sm{font-size:13px;} .text-xs{font-size:11px;} .text-muted{color:var(--muted);} .font-bold{font-weight:700;} .font-semibold{font-weight:600;} .text-center{text-align:center;}
+    .w-full{width:100%;} .flex-1{flex:1;} .truncate{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+    .rounded-full{border-radius:9999px;} .space-y{margin-bottom:12px;}
+  </style>
+</head>
+<body>
+<div class="bg-glow"></div>
+
+<!-- Loading -->
+<div id="loading-overlay">
+  <div class="spinner">✦</div>
+  <p style="color:var(--muted);font-size:13px;">Loading IISER Smart Prep...</p>
+</div>
+
+<!-- Sidebar -->
+<nav id="sidebar">
+  <div class="sidebar-logo">
+    <div class="logo-icon">✦</div>
+    <div class="logo-text">IISER <span>SmartPrep</span></div>
+  </div>
+  <div class="sidebar-nav">
+    <div class="nav-item active" onclick="showPage('dashboard')" data-page="dashboard">
+      <span class="nav-icon">⊞</span><span class="nav-label">Dashboard</span>
+    </div>
+    <div class="nav-item" onclick="showPage('mock-tests')" data-page="mock-tests">
+      <span class="nav-icon">📝</span><span class="nav-label">Mock Tests</span>
+    </div>
+    <div class="nav-item" onclick="showPage('ai-doubts')" data-page="ai-doubts">
+      <span class="nav-icon">🤖</span><span class="nav-label">AI Doubts</span>
+    </div>
+    <div class="nav-item" onclick="showPage('analytics')" data-page="analytics">
+      <span class="nav-icon">📊</span><span class="nav-label">Analytics</span>
+    </div>
+    <div class="nav-item" onclick="showPage('battles')" data-page="battles">
+      <span class="nav-icon">⚔️</span><span class="nav-label">Battles</span>
+    </div>
+    <div class="nav-item" onclick="showPage('study-groups')" data-page="study-groups">
+      <span class="nav-icon">👥</span><span class="nav-label">Study Groups</span>
+    </div>
+  </div>
+  <div class="sidebar-bottom">
+    <div class="user-pill">
+      <div class="user-avatar" id="avatar-initial">?</div>
+      <div class="user-info nav-label">
+        <div class="user-name" id="sidebar-name">Loading...</div>
+        <div class="user-email text-xs" id="sidebar-email">—</div>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- Main -->
+<div id="main">
+  <div id="topbar">
+    <button class="topbar-toggle" onclick="toggleSidebar()" title="Toggle sidebar">☰</button>
+    <span class="topbar-title" id="topbar-title">Dashboard</span>
+    <span class="topbar-badge">AI Powered</span>
+  </div>
+
+  <div id="content">
+
+    <!-- ═══════════════════════════════ DASHBOARD ═══════════════════════════════ -->
+    <div id="page-dashboard" class="page active">
+
+      <!-- Sign-in banner (hidden when logged in) -->
+      <div id="signin-banner" class="alert alert-info mb-16" style="display:none;">
+        <span>🔐</span>
+        <div>
+          <div style="font-weight:600;font-size:13px;color:#a5b4fc;">Sign in to see your real stats</div>
+          <div style="font-size:11px;color:var(--muted);">Your accuracy, scores and performance are waiting</div>
+        </div>
+        <a href="login.html" class="signin-btn">Sign In →</a>
+      </div>
+
+      <!-- Welcome -->
+      <div class="welcome-row">
+        <div>
+          <div class="welcome-title">Welcome back, <span class="gradient-text" id="dash-username">Student</span>! 👋</div>
+          <div class="welcome-sub" id="dash-subtitle">Loading your stats...</div>
+        </div>
+        <div class="pill-group">
+          <div class="pill pill-orange" id="streak-pill" style="display:none;">
+            <div class="pill-icon" style="background:rgba(245,158,11,0.2);">🔥</div>
+            <div><div class="pill-val" id="streak-val">0</div><div class="pill-lbl">Day Streak</div></div>
+          </div>
+          <div class="pill pill-green" id="forecast-pill" style="display:none;">
+            <div class="pill-icon" style="background:rgba(34,197,94,0.2);">🧠</div>
+            <div><div class="pill-val" id="forecast-val">0%</div><div class="pill-lbl">AI Forecast</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Anomaly alert -->
+      <div id="anomaly-alert" class="alert alert-warn mb-16" style="display:none;">
+        ⚠️ <div>
+          <div style="font-weight:600;font-size:13px;color:#fca5a5;">Performance Drop Detected</div>
+          <div style="font-size:11px;color:var(--muted);">Today's accuracy dropped significantly. Review your fundamentals before taking another test.</div>
+        </div>
+      </div>
+
+      <!-- KPI Stats from user_stats -->
+      <div class="grid-4 mb-20">
+        <div class="stat-card">
+          <div class="stat-icon" style="background:rgba(99,102,241,0.15);">🎯</div>
+          <div class="stat-value" id="stat-accuracy">—</div>
+          <div class="stat-label">Avg Accuracy</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon" style="background:rgba(245,158,11,0.15);">🏆</div>
+          <div class="stat-value" id="stat-best">—</div>
+          <div class="stat-label">Best Score</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon" style="background:rgba(34,197,94,0.15);">✅</div>
+          <div class="stat-value" id="stat-questions">—</div>
+          <div class="stat-label">Questions Solved</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon" style="background:rgba(239,68,68,0.15);">📋</div>
+          <div class="stat-value" id="stat-mocks">—</div>
+          <div class="stat-label">Mock Tests</div>
+        </div>
+      </div>
+
+      <!-- Chart + Tasks -->
+      <div class="grid-3-lg mb-16">
+        <div class="card card-lg">
+          <div class="flex items-center justify-between mb-16">
+            <div>
+              <div style="font-size:15px;font-weight:700;">7-Day Performance</div>
+              <div style="font-size:12px;color:var(--muted);" id="chart-subtitle">From your real test data</div>
+            </div>
+            <div style="display:flex;gap:12px;font-size:11px;color:var(--muted);">
+              <span><span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#6366f1;margin-right:4px;"></span>Accuracy</span>
+              <span><span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#22c55e;margin-right:4px;"></span>Questions</span>
+            </div>
+          </div>
+          <div class="chart-container"><canvas id="weeklyChart"></canvas></div>
+        </div>
+        <div class="card card-lg">
+          <div style="font-size:15px;font-weight:700;margin-bottom:4px;">Today's Plan</div>
+          <div style="font-size:11px;color:var(--muted);margin-bottom:14px;">🧠 AI-suggested tasks</div>
+          <div class="task-item"><div class="task-type-icon" style="background:rgba(99,102,241,0.15);">📚</div><div><div class="task-title">Adaptive Mock Test</div><div class="task-sub">AI picks your weak topics</div></div></div>
+          <div class="task-item"><div class="task-type-icon" style="background:rgba(168,85,247,0.15);">🔁</div><div><div class="task-title">Review Wrong Answers</div><div class="task-sub">Spaced Repetition → AI Doubts</div></div></div>
+          <div class="task-item"><div class="task-type-icon" style="background:rgba(245,158,11,0.15);">⚔️</div><div><div class="task-title">Join a Battle</div><div class="task-sub">5-question live challenge</div></div></div>
+          <div class="task-item"><div class="task-type-icon" style="background:rgba(34,197,94,0.15);">👥</div><div><div class="task-title">Group Session</div><div class="task-sub">Weekly study group meet</div></div></div>
+          <button class="btn btn-ghost w-full mt-12" onclick="showPage('mock-tests')" style="justify-content:center;">Go to Mock Tests →</button>
+        </div>
+      </div>
+
+      <!-- Subject Mastery from mock_results.subject -->
+      <div class="grid-2">
+        <div class="card card-lg">
+          <div class="section-title">📚 Subject Mastery</div>
+          <div id="subject-mastery-content">
+            <div style="text-align:center;padding:32px 0;color:var(--muted);font-size:13px;">⭐ Take tests to see subject mastery</div>
+          </div>
+        </div>
+        <div class="card card-lg">
+          <div class="section-title">⚡ Quick Actions</div>
+          <div onclick="showPage('mock-tests')" style="cursor:pointer;" class="task-item" style="background:rgba(99,102,241,0.05);border-color:rgba(99,102,241,0.2);">
+            <div class="task-type-icon" style="background:rgba(99,102,241,0.2);">🧠</div>
+            <div class="flex-1"><div class="task-title">Adaptive Mock Test</div><div class="task-sub">AI-calibrated difficulty</div></div><span style="color:var(--muted);">›</span>
+          </div>
+          <div onclick="showPage('ai-doubts')" style="cursor:pointer;" class="task-item" style="background:rgba(168,85,247,0.05);border-color:rgba(168,85,247,0.2);">
+            <div class="task-type-icon" style="background:rgba(168,85,247,0.2);">⚡</div>
+            <div class="flex-1"><div class="task-title">Ask AI Tutor</div><div class="task-sub">Instant concept explanations</div></div><span style="color:var(--muted);">›</span>
+          </div>
+          <div onclick="showPage('analytics')" style="cursor:pointer;" class="task-item" style="background:rgba(34,197,94,0.05);border-color:rgba(34,197,94,0.2);">
+            <div class="task-type-icon" style="background:rgba(34,197,94,0.2);">📈</div>
+            <div class="flex-1"><div class="task-title">Performance Analytics</div><div class="task-sub">Deep insights into your tests</div></div><span style="color:var(--muted);">›</span>
+          </div>
+          <div onclick="showPage('battles')" style="cursor:pointer;" class="task-item" style="background:rgba(239,68,68,0.05);border-color:rgba(239,68,68,0.2);">
+            <div class="task-type-icon" style="background:rgba(239,68,68,0.2);">⚔️</div>
+            <div class="flex-1"><div class="task-title">Join a Battle</div><div class="task-sub">Live peer competition</div></div><span style="color:var(--muted);">›</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════ MOCK TESTS ══════════════════════════════ -->
+    <div id="page-mock-tests" class="page">
+      <div id="mt-select">
+        <div style="text-align:center;margin-bottom:28px;">
+          <div style="width:72px;height:72px;border-radius:18px;background:linear-gradient(135deg,#3b82f6,#6366f1);margin:0 auto 14px;display:flex;align-items:center;justify-content:center;font-size:30px;">🧠</div>
+          <div style="font-size:24px;font-weight:800;">Adaptive Mock Tests</div>
+          <div style="font-size:13px;color:var(--muted);margin-top:6px;">AI-powered difficulty scaling tailored to your performance</div>
+        </div>
+
+        <!-- Weak topics -->
+        <div class="alert alert-orange mb-20">
+          <span>⚠️</span>
+          <div>
+            <div style="font-weight:600;font-size:13px;color:#fcd34d;">🧠 AI Weak Topic Detector</div>
+            <div style="font-size:12px;color:var(--muted);margin-top:4px;" id="weak-topics-list">Analysing your performance...</div>
+          </div>
+        </div>
+
+        <div style="font-size:13px;font-weight:700;margin-bottom:10px;display:flex;align-items:center;gap:8px;"><span style="width:26px;height:26px;border-radius:50%;background:rgba(99,102,241,0.2);color:var(--indigo);display:inline-flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;">1</span> Select Subject</div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:24px;" id="subject-pills">
+          <div class="subject-pill selected" onclick="selectSubject(this,'All')"><div class="subject-pill-icon">📚</div><div class="subject-pill-name">All</div></div>
+          <div class="subject-pill" onclick="selectSubject(this,'Physics')"><div class="subject-pill-icon">⚛️</div><div class="subject-pill-name">Physics</div></div>
+          <div class="subject-pill" onclick="selectSubject(this,'Chemistry')"><div class="subject-pill-icon">🧪</div><div class="subject-pill-name">Chemistry</div></div>
+          <div class="subject-pill" onclick="selectSubject(this,'Biology')"><div class="subject-pill-icon">🧬</div><div class="subject-pill-name">Biology</div></div>
+          <div class="subject-pill" onclick="selectSubject(this,'Mathematics')"><div class="subject-pill-icon">🔢</div><div class="subject-pill-name">Mathematics</div></div>
+        </div>
+
+        <div style="font-size:13px;font-weight:700;margin-bottom:10px;display:flex;align-items:center;gap:8px;"><span style="width:26px;height:26px;border-radius:50%;background:rgba(99,102,241,0.2);color:var(--indigo);display:inline-flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;">2</span> Test Mode</div>
+        <div style="display:flex;gap:12px;margin-bottom:28px;flex-wrap:wrap;">
+          <div class="mode-card selected" onclick="selectMode(this,true)" id="mode-adaptive">
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
+              <div style="width:34px;height:34px;border-radius:9px;background:linear-gradient(135deg,var(--indigo),var(--purple));display:flex;align-items:center;justify-content:center;font-size:16px;">🧠</div>
+              <div class="mode-title">Adaptive Mode <span class="badge badge-indigo" style="margin-left:6px;font-size:10px;">AI</span></div>
+            </div>
+            <div class="mode-desc">Difficulty adjusts dynamically. 3 correct → harder. 3 wrong → easier. Optimal learning zone.</div>
+          </div>
+          <div class="mode-card" onclick="selectMode(this,false)" id="mode-fixed">
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
+              <div style="width:34px;height:34px;border-radius:9px;background:rgba(255,255,255,0.05);display:flex;align-items:center;justify-content:center;font-size:16px;">📋</div>
+              <div class="mode-title">Fixed Mode</div>
+            </div>
+            <div class="mode-desc">Mixed difficulty, standard 10-question test. Simulates actual IISER IAT format.</div>
+          </div>
+        </div>
+
+        <div style="text-align:center;">
+          <button class="btn btn-primary" onclick="startTest()" style="padding:14px 36px;font-size:15px;">▶ Start Test</button>
+        </div>
+      </div>
+
+      <!-- In-test view -->
+      <div id="mt-test" style="display:none;max-width:720px;margin:0 auto;">
+        <div style="display:flex;align-items:center;gap:16px;margin-bottom:16px;flex-wrap:wrap;">
+          <div style="flex:1;">
+            <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--muted);margin-bottom:6px;">
+              <span id="q-progress-text">Question 1 of 10</span>
+              <span id="difficulty-badge" style="font-weight:600;"></span>
+            </div>
+            <div class="progress-track"><div class="progress-bar" id="q-progress-bar" style="background:linear-gradient(90deg,var(--indigo),var(--purple));width:10%;"></div></div>
+          </div>
+          <div id="timer-display" style="font-family:monospace;font-size:18px;font-weight:800;padding:8px 16px;border-radius:10px;background:rgba(255,255,255,0.05);border:1px solid var(--border);">20:00</div>
+        </div>
+
+        <div class="question-card mb-16">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;" id="q-subject-badge"></div>
+          <div style="font-size:16px;font-weight:600;line-height:1.6;margin-bottom:20px;" id="q-text"></div>
+          <div id="q-options"></div>
+          <div class="explanation-box" id="q-explanation"></div>
+        </div>
+
+        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;">
+          <button class="btn btn-ghost btn-sm" onclick="prevQuestion()">← Prev</button>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;" id="q-nav-dots"></div>
+          <button class="btn btn-primary btn-sm" id="next-btn" onclick="nextQuestion()">Next →</button>
+        </div>
+      </div>
+
+      <!-- Review view -->
+      <div id="mt-review" style="display:none;max-width:720px;margin:0 auto;">
+        <div style="text-align:center;padding:24px 0 20px;">
+          <div id="score-circle" style="width:110px;height:110px;border-radius:50%;margin:0 auto 14px;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:900;"></div>
+          <div style="font-size:26px;font-weight:800;">Test Complete!</div>
+          <div style="font-size:13px;color:var(--muted);margin-top:6px;" id="review-subtitle"></div>
+        </div>
+        <div class="grid-4 mb-20" id="review-stats"></div>
+        <div class="card card-lg mb-16">
+          <div class="section-title">📊 Subject Breakdown</div>
+          <div id="review-subjects"></div>
+        </div>
+        <div id="review-badge" style="display:none;" class="alert alert-orange mb-16">
+          🏆 <div><div style="font-weight:700;font-size:14px;color:#fcd34d;">Excellent Performance!</div><div style="font-size:12px;color:var(--muted);margin-top:4px;">You scored above 80%. You're in the top tier!</div></div>
+        </div>
+        <div style="display:flex;justify-content:center;gap:12px;">
+          <button class="btn btn-ghost" onclick="resetTest()">🔄 New Test</button>
+          <button class="btn btn-primary" onclick="showPage('analytics')">📊 View Analytics</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ════════════════════════════════ AI DOUBTS ═══════════════════════════════ -->
+    <div id="page-ai-doubts" class="page">
+      <div class="section-title"><div class="sec-icon" style="background:rgba(168,85,247,0.15);">🤖</div> AI Doubts Assistant</div>
+      <div style="font-size:12px;color:var(--muted);margin-bottom:20px;">Spaced repetition • Concept mapper • Instant explanations</div>
+
+      <div class="grid-2" style="align-items:start;">
+        <!-- Chat -->
+        <div class="card card-lg">
+          <div style="font-size:14px;font-weight:700;margin-bottom:12px;">💬 Ask a Doubt</div>
+          <div class="chat-messages" id="chat-messages">
+            <div class="msg msg-bot">👋 Hi! Ask me any IISER IAT concept — Physics, Chemistry, Biology or Mathematics. I'll explain with examples and formulas!</div>
+          </div>
+          <div class="chat-input-row">
+            <input class="chat-input" id="chat-input" placeholder="Type a concept or question..." onkeydown="if(event.key==='Enter')sendChat()"/>
+            <button class="btn btn-primary btn-sm" onclick="sendChat()">Send</button>
+          </div>
+        </div>
+
+        <!-- Flashcards (SM-2) -->
+        <div class="card card-lg">
+          <div style="font-size:14px;font-weight:700;margin-bottom:4px;">🔁 Spaced Repetition</div>
+          <div style="font-size:11px;color:var(--muted);margin-bottom:14px;">SM-2 algorithm • Click card to reveal answer</div>
+
+          <div class="flashcard" id="flashcard" onclick="flipFlashcard()">
+            <div style="font-size:11px;color:var(--muted);margin-bottom:8px;" id="fc-subject-badge"></div>
+            <div style="font-size:15px;font-weight:700;margin-bottom:8px;" id="fc-question">Loading...</div>
+            <div style="font-size:11px;color:var(--muted);" id="fc-hint">Click to reveal answer</div>
+          </div>
+
+          <div id="fc-answer" style="display:none;padding:14px;border-radius:10px;background:rgba(34,197,94,0.08);border:1px solid rgba(34,197,94,0.2);margin-top:10px;">
+            <div style="font-size:12px;font-weight:700;color:var(--green);margin-bottom:6px;">Answer:</div>
+            <div style="font-size:13px;" id="fc-answer-text"></div>
+          </div>
+
+          <div class="rating-row" id="fc-rating" style="display:none;">
+            <button class="rating-btn" style="background:rgba(239,68,68,0.2);color:#f87171;" onclick="rateCard(1)">😕 Hard</button>
+            <button class="rating-btn" style="background:rgba(245,158,11,0.2);color:#fbbf24;" onclick="rateCard(3)">🤔 OK</button>
+            <button class="rating-btn" style="background:rgba(34,197,94,0.2);color:#4ade80;" onclick="rateCard(5)">✅ Easy</button>
+          </div>
+          <div style="font-size:11px;color:var(--muted);text-align:center;margin-top:10px;" id="fc-due-info"></div>
+        </div>
+      </div>
+
+      <!-- Concept Library -->
+      <div class="card card-lg mt-16">
+        <div class="section-title">📖 Concept Library</div>
+        <div style="display:flex;flex-wrap:wrap;gap:8px;" id="concept-chips"></div>
+        <div id="concept-detail" style="display:none;margin-top:16px;padding:16px;border-radius:12px;background:rgba(99,102,241,0.06);border:1px solid rgba(99,102,241,0.2);">
+          <div style="font-size:15px;font-weight:700;margin-bottom:8px;" id="concept-name"></div>
+          <div style="font-size:13px;color:var(--muted);line-height:1.7;" id="concept-desc"></div>
+          <div id="concept-formula" style="margin-top:10px;padding:10px 14px;border-radius:8px;background:rgba(255,255,255,0.04);font-family:monospace;font-size:13px;display:none;"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ════════════════════════════════ ANALYTICS ═══════════════════════════════ -->
+    <div id="page-analytics" class="page">
+      <div class="flex items-center justify-between mb-20" style="flex-wrap:wrap;gap:12px;">
+        <div>
+          <div class="section-title" style="margin-bottom:4px;font-size:20px;"><div class="sec-icon" style="background:linear-gradient(135deg,var(--indigo),var(--purple));">📊</div> Performance Intelligence</div>
+          <div style="font-size:12px;color:var(--muted);">AI-powered deep analysis of your IISER IAT preparation</div>
+        </div>
+        <div style="text-align:right;">
+          <div style="font-size:11px;color:var(--muted);">Momentum Index</div>
+          <div style="font-size:32px;font-weight:900;" id="momentum-val">0</div>
+          <div style="font-size:11px;color:var(--muted);">/100 • Streak × Accuracy × Volume</div>
+        </div>
+      </div>
+
+      <!-- No data -->
+      <div id="analytics-no-data" class="card" style="text-align:center;padding:40px;display:none;">
+        <div style="font-size:40px;margin-bottom:12px;">⭐</div>
+        <div style="font-size:16px;font-weight:700;margin-bottom:6px;">No test data yet</div>
+        <div style="font-size:13px;color:var(--muted);">Take a mock test and your detailed analytics will appear here automatically.</div>
+      </div>
+
+      <div id="analytics-data">
+        <div class="grid-4 mb-20">
+          <div class="stat-card"><div class="stat-icon" style="background:rgba(99,102,241,0.15);">🎯</div><div class="stat-value" id="an-accuracy">—</div><div class="stat-label">Avg Accuracy</div></div>
+          <div class="stat-card"><div class="stat-icon" style="background:rgba(34,197,94,0.15);">✅</div><div class="stat-value" id="an-questions">—</div><div class="stat-label">Questions Solved</div></div>
+          <div class="stat-card"><div class="stat-icon" style="background:rgba(245,158,11,0.15);">🔥</div><div class="stat-value" id="an-streak">—</div><div class="stat-label">Streak</div></div>
+          <div class="stat-card"><div class="stat-icon" style="background:rgba(168,85,247,0.15);">🏆</div><div class="stat-value" id="an-best">—</div><div class="stat-label">Best Score</div></div>
+        </div>
+
+        <div class="grid-3-lg mb-16">
+          <div class="card card-lg">
+            <div class="flex items-center justify-between mb-12">
+              <div style="font-size:15px;font-weight:700;">7-Day Trend</div>
+              <div style="display:flex;gap:4px;" id="chart-tabs">
+                <button class="btn btn-sm" style="padding:5px 10px;font-size:11px;background:var(--indigo);color:#fff;border:none;border-radius:6px;" onclick="switchChart('accuracy',this)">Accuracy</button>
+                <button class="btn btn-ghost btn-sm" style="padding:5px 10px;font-size:11px;" onclick="switchChart('questions',this)">Questions</button>
+                <button class="btn btn-ghost btn-sm" style="padding:5px 10px;font-size:11px;" onclick="switchChart('correct',this)">Correct</button>
+              </div>
+            </div>
+            <div class="chart-container"><canvas id="analyticsChart"></canvas></div>
+          </div>
+          <div class="card card-lg">
+            <div style="font-size:15px;font-weight:700;margin-bottom:12px;">🎯 AI Insights</div>
+            <div id="ai-insights" style="display:flex;flex-direction:column;gap:10px;"></div>
+          </div>
+        </div>
+
+        <div class="grid-2">
+          <div class="card card-lg">
+            <div class="section-title">📚 Subject Breakdown</div>
+            <div id="an-subjects"></div>
+          </div>
+          <div class="card card-lg">
+            <div class="section-title">📋 Recent Tests</div>
+            <div id="an-recent"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ════════════════════════════════ BATTLES ════════════════════════════════ -->
+    <div id="page-battles" class="page">
+      <div class="section-title"><div class="sec-icon" style="background:rgba(239,68,68,0.15);">⚔️</div> Battles</div>
+      <div style="font-size:13px;color:var(--muted);margin-bottom:20px;">Challenge peers to real-time 5-question duels</div>
+
+      <div style="display:flex;gap:12px;margin-bottom:20px;flex-wrap:wrap;">
+        <div class="stat-card" style="flex:1;"><div class="stat-icon" style="background:rgba(245,158,11,0.15);">🏆</div><div class="stat-value">12</div><div class="stat-label">Battles Won</div></div>
+        <div class="stat-card" style="flex:1;"><div class="stat-icon" style="background:rgba(239,68,68,0.15);">💀</div><div class="stat-value">4</div><div class="stat-label">Battles Lost</div></div>
+        <div class="stat-card" style="flex:1;"><div class="stat-icon" style="background:rgba(99,102,241,0.15);">🎖️</div><div class="stat-value">75%</div><div class="stat-label">Win Rate</div></div>
+      </div>
+
+      <div class="card card-lg mb-16">
+        <div class="section-title">🔴 Live Challenges</div>
+        <div class="battle-card"><div class="battle-avatar" style="background:rgba(239,68,68,0.15);">⚛️</div><div style="flex:1;"><div class="task-title">Rahul • Physics Duel</div><div class="task-sub">5 questions • 10 minutes • Medium</div></div><button class="btn btn-primary btn-sm">Accept</button></div>
+        <div class="battle-card"><div class="battle-avatar" style="background:rgba(34,197,94,0.15);">🧬</div><div style="flex:1;"><div class="task-title">Priya • Biology Quiz</div><div class="task-sub">5 questions • 10 minutes • Easy</div></div><button class="btn btn-primary btn-sm">Accept</button></div>
+      </div>
+
+      <div class="card card-lg">
+        <div class="section-title">📜 Battle History</div>
+        <div class="battle-card"><div class="battle-avatar" style="background:rgba(34,197,94,0.15);">🏆</div><div style="flex:1;"><div class="task-title">vs Amit — Physics</div><div class="task-sub">Won 4-1 • 3 days ago</div></div><span class="badge badge-green">Win</span></div>
+        <div class="battle-card"><div class="battle-avatar" style="background:rgba(239,68,68,0.15);">💀</div><div style="flex:1;"><div class="task-title">vs Deepika — Mathematics</div><div class="task-sub">Lost 2-3 • 5 days ago</div></div><span class="badge badge-red">Loss</span></div>
+        <div class="battle-card"><div class="battle-avatar" style="background:rgba(34,197,94,0.15);">🏆</div><div style="flex:1;"><div class="task-title">vs Kavya — Chemistry</div><div class="task-sub">Won 5-2 • 1 week ago</div></div><span class="badge badge-green">Win</span></div>
+      </div>
+    </div>
+
+    <!-- ════════════════════════════════ STUDY GROUPS ═══════════════════════════ -->
+    <div id="page-study-groups" class="page">
+      <div class="section-title"><div class="sec-icon" style="background:rgba(34,197,94,0.15);">👥</div> Study Groups</div>
+      <div style="font-size:13px;color:var(--muted);margin-bottom:20px;">Collaborate, discuss and grow together</div>
+
+      <div class="group-card">
+        <div class="group-header"><div class="group-icon" style="background:rgba(99,102,241,0.15);">⚛️</div><div><div style="font-weight:700;">Physics Masters</div><div class="text-xs text-muted">24 members • Active now</div></div><button class="btn btn-primary btn-sm" style="margin-left:auto;">Join</button></div>
+        <div style="font-size:12px;color:var(--muted);margin-bottom:10px;">Focused on Mechanics, Thermodynamics and Modern Physics for IISER IAT.</div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;"><span class="badge badge-indigo">Mechanics</span><span class="badge badge-indigo">Thermodynamics</span><span class="badge badge-indigo">Optics</span></div>
+      </div>
+
+      <div class="group-card">
+        <div class="group-header"><div class="group-icon" style="background:rgba(34,197,94,0.15);">🧪</div><div><div style="font-weight:700;">Chemistry Champions</div><div class="text-xs text-muted">18 members • 3 online</div></div><button class="btn btn-primary btn-sm" style="margin-left:auto;">Join</button></div>
+        <div style="font-size:12px;color:var(--muted);margin-bottom:10px;">Covering Organic, Inorganic and Physical Chemistry with weekly mock challenges.</div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;"><span class="badge badge-green">Organic</span><span class="badge badge-green">Electrochemistry</span></div>
+      </div>
+
+      <div class="group-card">
+        <div class="group-header"><div class="group-icon" style="background:rgba(168,85,247,0.15);">🧬</div><div><div style="font-weight:700;">Bio Warriors</div><div class="text-xs text-muted">31 members • 7 online</div></div><button class="btn btn-primary btn-sm" style="margin-left:auto;">Join</button></div>
+        <div style="font-size:12px;color:var(--muted);margin-bottom:10px;">Cell biology, genetics, ecology and evolution. Weekly doubt-clearing sessions.</div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;"><span class="badge badge-purple">Genetics</span><span class="badge badge-purple">Cell Biology</span><span class="badge badge-purple">Ecology</span></div>
+      </div>
+
+      <div class="group-card">
+        <div class="group-header"><div class="group-icon" style="background:rgba(245,158,11,0.15);">🔢</div><div><div style="font-weight:700;">Math Wizards</div><div class="text-xs text-muted">15 members • 2 online</div></div><button class="btn btn-primary btn-sm" style="margin-left:auto;">Join</button></div>
+        <div style="font-size:12px;color:var(--muted);margin-bottom:10px;">Calculus, Algebra, Probability and Coordinate Geometry mastery group.</div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;"><span class="badge badge-orange">Calculus</span><span class="badge badge-orange">Probability</span></div>
+      </div>
+    </div>
+
+  </div><!-- /content -->
+</div><!-- /main -->
+
+<script>
+// ═══════════════════════════ SUPABASE INIT ════════════════════════════════════
+const SUPABASE_URL = 'https://cjobsjdwmxbdzebohvzr.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNqb2JzamR3bXhiZHplYm9odnpyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjkwNTg4NjQsImV4cCI6MjA4NDYzNDg2NH0.SApuGNV6lvuu_TzaEw6QzA8ZWLPQ4h3DBG4xo_Xt13k';
+const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+// ═══════════════════════════ STATE ════════════════════════════════════════════
+let currentUser = null, userStats = null, mockResults = [];
+let weeklyData = [], subjectBreakdown = [];
+let weeklyChartInst = null, analyticsChartInst = null;
+let currentChartKey = 'accuracy';
+
+// ═══════════════════════════ AI ALGORITHMS ═══════════════════════════════════
+function linearForecast(data) {
+  const pts = data.filter(v => v > 0);
+  if (pts.length < 2) return pts[pts.length-1] ?? 0;
+  const n = pts.length, xBar = (n-1)/2;
+  const yBar = pts.reduce((a,b)=>a+b)/n;
+  let num=0, den=0;
+  pts.forEach((y,x) => { num+=(x-xBar)*(y-yBar); den+=(x-xBar)**2; });
+  const slope = den !== 0 ? num/den : 0;
+  return Math.round(Math.min(100, Math.max(0, yBar - slope*xBar + slope*n)));
+}
+
+function detectAnomaly(data) {
+  const pts = data.filter(v => v > 0);
+  if (pts.length < 3) return false;
+  const recent = pts[pts.length-1];
+  const avg = pts.slice(0,-1).reduce((a,b)=>a+b) / (pts.length-1);
+  return recent < avg - 15;
+}
+
+function calcStreak(results) {
+  if (!results.length) return 0;
+  const dates = [...new Set(results.map(r => r.created_at.slice(0,10)))].sort().reverse();
+  let streak = 0;
+  for (let i=0; i<dates.length; i++) {
+    const d = new Date(); d.setDate(d.getDate()-i);
+    if (dates[i] === d.toISOString().slice(0,10)) streak++;
+    else break;
+  }
+  return streak;
+}
+
+function calcMomentum(streak, accuracy, questionsThisWeek) {
+  return Math.round(Math.min(streak*5,40) + Math.min(accuracy*0.35,35) + Math.min((questionsThisWeek/10)*2.5,25));
+}
+
+function buildWeeklyData(results) {
+  return Array.from({length:7}, (_,i) => {
+    const d = new Date(); d.setDate(d.getDate()-(6-i));
+    const str = d.toISOString().slice(0,10);
+    const lbl = d.toLocaleDateString('en',{weekday:'short'});
+    const day = results.filter(r => r.created_at.slice(0,10) === str);
+    const totalQ = day.reduce((s,r)=>s+r.total_questions,0);
+    const totalC = day.reduce((s,r)=>s+r.correct,0);
+    return { date:lbl, accuracy: totalQ>0 ? Math.round((totalC/totalQ)*100):0, questions:totalQ, correct:totalC };
+  });
+}
+
+function buildSubjects(results) {
+  const map = {};
+  results.forEach(r => {
+    const s = r.subject || 'General';
+    if (!map[s]) map[s] = {correct:0,total:0,count:0};
+    map[s].correct += r.correct; map[s].total += r.total_questions; map[s].count++;
+  });
+  return Object.entries(map).map(([s,v]) => ({
+    subject:s, accuracy: v.total>0 ? Math.round((v.correct/v.total)*100):0,
+    count:v.count, correct:v.correct, total:v.total
+  })).sort((a,b)=>b.count-a.count);
+}
+
+function detectWeakTopics(results) {
+  const map = {};
+  results.forEach(r => {
+    if (!r.subject) return;
+    if (!map[r.subject]) map[r.subject]={c:0,t:0};
+    map[r.subject].c+=r.correct; map[r.subject].t+=r.total_questions;
+  });
+  return Object.entries(map)
+    .map(([s,v]) => ({subject:s, pct: v.t>0?Math.round((v.c/v.t)*100):0}))
+    .sort((a,b)=>a.pct-b.pct).slice(0,3);
+}
+
+// ═══════════════════════════ AUTH + DATA FETCH ════════════════════════════════
+async function initApp() {
+  try {
+    const { data: { user } } = await db.auth.getUser();
+    currentUser = user;
+
+    if (user) {
+      document.getElementById('signin-banner').style.display = 'none';
+      document.getElementById('avatar-initial').textContent = (user.user_metadata?.full_name || user.email || '?')[0].toUpperCase();
+      document.getElementById('sidebar-name').textContent = user.user_metadata?.full_name || user.email?.split('@')[0] || 'Student';
+      document.getElementById('sidebar-email').textContent = user.email || '';
+      document.getElementById('dash-username').textContent = user.user_metadata?.full_name || user.email?.split('@')[0] || 'Student';
+
+      // Fetch user_stats
+      const { data: stats } = await db.from('user_stats')
+        .select('user_id,total_mocks,best_score,avg_score,total_correct,total_questions,updated_at')
+        .eq('user_id', user.id).single();
+      userStats = stats;
+
+      // Fetch mock_results (last 90 days)
+      const since = new Date(); since.setDate(since.getDate()-90);
+      const { data: results } = await db.from('mock_results')
+        .select('id,user_id,mock_id,mock_title,score,total_questions,correct,wrong,skipped,time_taken,subject,difficulty,created_at')
+        .eq('user_id', user.id)
+        .gte('created_at', since.toISOString())
+        .order('created_at', {ascending:false});
+      mockResults = results || [];
+    } else {
+      // Not logged in
+      document.getElementById('signin-banner').style.display = 'flex';
+      document.getElementById('dash-username').textContent = 'Student';
+      document.getElementById('dash-subtitle').textContent = 'Sign in to see your personalized stats';
+    }
+
+    weeklyData = buildWeeklyData(mockResults);
+    subjectBreakdown = buildSubjects(mockResults);
+
+    renderDashboard();
+    renderAnalytics();
+    renderWeakTopics();
+  } catch(e) {
+    console.error('Init error:', e);
+  }
+  document.getElementById('loading-overlay').style.display = 'none';
+}
+
+// ═══════════════════════════ DASHBOARD RENDER ═════════════════════════════════
+function renderDashboard() {
+  if (!userStats) {
+    document.getElementById('dash-subtitle').textContent = 'Complete your first mock test to see your stats!';
+    renderWeeklyChart();
+    return;
+  }
+  const acc = userStats.total_questions > 0
+    ? Math.round((userStats.total_correct / userStats.total_questions) * 100)
+    : Math.round(userStats.avg_score || 0);
+
+  document.getElementById('stat-accuracy').textContent  = acc + '%';
+  document.getElementById('stat-best').textContent      = Math.round(userStats.best_score || 0) + '%';
+  document.getElementById('stat-questions').textContent = (userStats.total_questions || 0).toLocaleString();
+  document.getElementById('stat-mocks').textContent     = userStats.total_mocks || 0;
+  document.getElementById('dash-subtitle').textContent  =
+    `${userStats.total_mocks} mock tests • ${userStats.total_questions} questions solved`;
+
+  const streak = calcStreak(mockResults);
+  if (streak > 0) {
+    document.getElementById('streak-val').textContent = streak;
+    document.getElementById('streak-pill').style.display = 'flex';
+  }
+
+  const accHistory = weeklyData.map(d=>d.accuracy);
+  const forecast = linearForecast(accHistory);
+  if (weeklyData.some(d=>d.accuracy>0)) {
+    document.getElementById('forecast-val').textContent = forecast + '%';
+    document.getElementById('forecast-pill').style.display = 'flex';
+  }
+
+  if (detectAnomaly(accHistory)) document.getElementById('anomaly-alert').style.display = 'flex';
+
+  // Subject mastery
+  const el = document.getElementById('subject-mastery-content');
+  if (subjectBreakdown.length > 0) {
+    const icons = {Physics:'⚛️',Chemistry:'🧪',Biology:'🧬',Mathematics:'🔢'};
+    const colors = {Physics:'#6366f1',Chemistry:'#22c55e',Biology:'#a855f7',Mathematics:'#f59e0b'};
+    el.innerHTML = subjectBreakdown.slice(0,5).map(s => {
+      const color = colors[s.subject] || '#6366f1';
+      const pctColor = s.accuracy>=75?'#4ade80':s.accuracy>=55?'#fbbf24':'#f87171';
+      return `<div class="subject-row">
+        <div class="subject-header">
+          <span>${icons[s.subject]||'📚'}</span>
+          <span class="subject-name">${s.subject}</span>
+          <span class="subject-pct" style="color:${pctColor}">${s.accuracy}%</span>
+        </div>
+        <div class="progress-track"><div class="progress-bar" style="background:${color};width:${s.accuracy}%"></div></div>
+        <div class="subject-meta">${s.count} test${s.count!==1?'s':''} · ${s.correct}/${s.total} correct${s.accuracy<55?' · <span style="color:#f97316">⚠ Focus needed</span>':''}${s.accuracy>=80?' · <span style="color:#4ade80">★ Strong</span>':''}</div>
+      </div>`;
+    }).join('');
+  }
+
+  renderWeeklyChart();
+}
+
+function renderWeeklyChart() {
+  const ctx = document.getElementById('weeklyChart').getContext('2d');
+  if (weeklyChartInst) weeklyChartInst.destroy();
+  weeklyChartInst = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: weeklyData.map(d=>d.date),
+      datasets: [
+        { label:'Accuracy %', data: weeklyData.map(d=>d.accuracy), borderColor:'#6366f1', backgroundColor:'rgba(99,102,241,0.12)', fill:true, tension:0.4, pointBackgroundColor:'#6366f1', pointRadius:4 },
+        { label:'Questions',  data: weeklyData.map(d=>d.questions), borderColor:'#22c55e', backgroundColor:'rgba(34,197,94,0.08)', fill:true, tension:0.4, pointBackgroundColor:'#22c55e', pointRadius:4 },
+      ]
+    },
+    options: {
+      responsive:true, maintainAspectRatio:false,
+      plugins:{ legend:{labels:{color:'#9ca3af',font:{size:11}}}, tooltip:{ backgroundColor:'#1f2937', titleColor:'#9ca3af', bodyColor:'#fff', padding:10, cornerRadius:8 } },
+      scales:{
+        x:{grid:{color:'rgba(255,255,255,0.04)'},ticks:{color:'#9ca3af',font:{size:11}}},
+        y:{grid:{color:'rgba(255,255,255,0.04)'},ticks:{color:'#9ca3af',font:{size:11}}},
+      }
+    }
+  });
+}
+
+// ═══════════════════════════ ANALYTICS RENDER ═════════════════════════════════
+function renderAnalytics() {
+  const hasData = userStats && mockResults.length > 0;
+  document.getElementById('analytics-no-data').style.display = hasData ? 'none' : 'block';
+  if (!hasData && !userStats) return;
+
+  const acc = userStats
+    ? (userStats.total_questions>0 ? Math.round((userStats.total_correct/userStats.total_questions)*100) : Math.round(userStats.avg_score||0))
+    : 0;
+  const streak = calcStreak(mockResults);
+  const questionsThisWeek = weeklyData.reduce((s,d)=>s+d.questions,0);
+  const momentum = calcMomentum(streak, acc, questionsThisWeek);
+
+  document.getElementById('an-accuracy').textContent  = userStats ? acc+'%' : '—';
+  document.getElementById('an-questions').textContent = userStats ? (userStats.total_questions||0).toLocaleString() : '—';
+  document.getElementById('an-streak').textContent    = streak > 0 ? streak+' days' : '—';
+  document.getElementById('an-best').textContent      = userStats ? Math.round(userStats.best_score||0)+'%' : '—';
+  document.getElementById('momentum-val').textContent = momentum;
+  document.getElementById('momentum-val').style.color = momentum>=70?'#4ade80':momentum>=40?'#fbbf24':'#f87171';
+
+  // AI Insights
+  const insightsEl = document.getElementById('ai-insights');
+  const weakest = subjectBreakdown.sort((a,b)=>a.accuracy-b.accuracy)[0];
+  insightsEl.innerHTML = [
+    { icon:'📈', color:'rgba(34,197,94,0.1)', text: userStats ? `Avg accuracy: <b>${acc}%</b> across ${userStats.total_mocks} tests. ${acc>=70?'Strong performance!':'Keep practicing to improve.'}` : 'Complete tests to see insights.' },
+    { icon:'⚠️', color:'rgba(245,158,11,0.1)', text: weakest ? `<b>${weakest.subject}</b> needs most work at <b>${weakest.accuracy}%</b>. Schedule extra practice sessions.` : 'Take subject-specific tests to find weak areas.' },
+    { icon:'🎯', color:'rgba(99,102,241,0.1)', text: `Momentum score: <b>${momentum}/100</b>. ${momentum>=70?'Excellent pace — keep it up!':'Boost daily practice volume to raise your score.'}` },
+  ].map(i=>`<div style="padding:12px 14px;border-radius:10px;background:${i.color};border:1px solid rgba(255,255,255,0.07);font-size:12px;line-height:1.6;">${i.icon} ${i.text}</div>`).join('');
+
+  // Subject breakdown
+  const colors2 = {Physics:'#6366f1',Chemistry:'#22c55e',Biology:'#a855f7',Mathematics:'#f59e0b'};
+  const anSub = document.getElementById('an-subjects');
+  if (subjectBreakdown.length > 0) {
+    anSub.innerHTML = subjectBreakdown.map(s=>{
+      const c = colors2[s.subject]||'#6366f1';
+      const pc = s.accuracy>=75?'#4ade80':s.accuracy>=55?'#fbbf24':'#f87171';
+      return `<div class="subject-row"><div class="subject-header"><span class="subject-name">${s.subject}</span><span style="font-size:13px;font-weight:700;color:${pc}">${s.accuracy}%</span></div>
+        <div class="progress-track"><div class="progress-bar" style="background:${c};width:${s.accuracy}%"></div></div>
+        <div class="subject-meta">${s.count} tests · ${s.correct}/${s.total} correct</div></div>`;
+    }).join('');
+  } else { anSub.innerHTML = '<div style="text-align:center;padding:20px;color:var(--muted);font-size:13px;">No subject data yet</div>'; }
+
+  // Recent tests
+  const anRec = document.getElementById('an-recent');
+  if (mockResults.length > 0) {
+    anRec.innerHTML = mockResults.slice(0,5).map(r=>{
+      const pct = r.total_questions>0 ? Math.round((r.correct/r.total_questions)*100) : r.score;
+      const bg = pct>=70?'rgba(34,197,94,0.15)':pct>=50?'rgba(245,158,11,0.15)':'rgba(239,68,68,0.15)';
+      const fc = pct>=70?'#4ade80':pct>=50?'#fbbf24':'#f87171';
+      const date = new Date(r.created_at).toLocaleDateString('en-IN',{month:'short',day:'numeric'});
+      return `<div class="result-item"><div class="result-score" style="background:${bg};color:${fc}">${pct}%</div>
+        <div><div class="result-title">${r.mock_title||r.mock_id||'Mock Test'}</div>
+        <div class="result-meta">${r.subject||''} · ${r.correct}/${r.total_questions} correct · ${date}</div></div></div>`;
+    }).join('');
+  } else { anRec.innerHTML = '<div style="text-align:center;padding:20px;color:var(--muted);font-size:13px;">No tests yet</div>'; }
+
+  renderAnalyticsChart();
+}
+
+function renderAnalyticsChart() {
+  const ctx = document.getElementById('analyticsChart').getContext('2d');
+  if (analyticsChartInst) analyticsChartInst.destroy();
+  const palette = { accuracy:'#6366f1', questions:'#22c55e', correct:'#a855f7' };
+  const color = palette[currentChartKey];
+  analyticsChartInst = new Chart(ctx, {
+    type:'line',
+    data:{
+      labels: weeklyData.map(d=>d.date),
+      datasets:[{ label: currentChartKey, data: weeklyData.map(d=>d[currentChartKey]),
+        borderColor:color, backgroundColor: color+'20', fill:true, tension:0.4,
+        pointBackgroundColor:color, pointRadius:4 }]
+    },
+    options:{
+      responsive:true, maintainAspectRatio:false,
+      plugins:{legend:{display:false},tooltip:{backgroundColor:'#1f2937',titleColor:'#9ca3af',bodyColor:'#fff',padding:10,cornerRadius:8}},
+      scales:{x:{grid:{color:'rgba(255,255,255,0.04)'},ticks:{color:'#9ca3af',font:{size:11}}},y:{grid:{color:'rgba(255,255,255,0.04)'},ticks:{color:'#9ca3af',font:{size:11}}}}
+    }
+  });
+}
+
+function switchChart(key, btn) {
+  currentChartKey = key;
+  document.querySelectorAll('#chart-tabs .btn').forEach(b=>{
+    b.style.background='transparent'; b.style.color='var(--muted)'; b.style.border='1px solid var(--border)';
+  });
+  btn.style.background = key==='accuracy'?'#6366f1':key==='questions'?'#22c55e':'#a855f7';
+  btn.style.color='#fff'; btn.style.border='none';
+  renderAnalyticsChart();
+}
+
+// ═══════════════════════════ WEAK TOPICS ══════════════════════════════════════
+function renderWeakTopics() {
+  const el = document.getElementById('weak-topics-list');
+  const weak = detectWeakTopics(mockResults);
+  if (weak.length > 0) {
+    el.innerHTML = 'Focus on: ' + weak.map(w=>`<span style="display:inline-flex;align-items:center;gap:6px;padding:3px 10px;border-radius:20px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);font-size:12px;font-weight:600;margin:2px 4px;">${w.subject}<span style="color:${w.pct<50?'#f87171':'#fbbf24'}">${w.pct}%</span></span>`).join('');
+  } else {
+    el.textContent = mockResults.length > 0 ? 'Great work! No critical weaknesses detected.' : 'Take tests to detect your weak topics.';
+  }
+}
+
+// ═══════════════════════════ UI NAV ═══════════════════════════════════════════
+const pageTitles = { 'dashboard':'Dashboard','mock-tests':'Mock Tests','ai-doubts':'AI Doubts','analytics':'Analytics','battles':'Battles','study-groups':'Study Groups' };
+
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  const pg = document.getElementById('page-'+id);
+  if (pg) pg.classList.add('active');
+  document.querySelector(`[data-page="${id}"]`)?.classList.add('active');
+  document.getElementById('topbar-title').textContent = pageTitles[id] || id;
+  if (id === 'analytics') renderAnalytics();
+}
+
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('collapsed');
+  document.querySelectorAll('.nav-label,.logo-text').forEach(el=>el.style.display='');
+}
+
+// ═══════════════════════════ MOCK TEST ENGINE ══════════════════════════════════
+const QUESTIONS = [
+  {id:'p1',subject:'Physics',topic:'Mechanics',difficulty:1,q:'A body thrown vertically upward with velocity u reaches maximum height:',opts:['u²/g','u²/2g','2u²/g','u/2g'],correct:1,exp:'Using v²=u²-2gh at v=0: h = u²/2g'},
+  {id:'p2',subject:'Physics',topic:'Thermodynamics',difficulty:2,q:'For an ideal gas in adiabatic process, which relation holds?',opts:['PV = const','TV^(γ-1) = const','P/T = const','PV/T = const'],correct:1,exp:'TV^(γ-1) = constant for adiabatic process (derived from PV^γ = const).'},
+  {id:'p3',subject:'Physics',topic:'Electromagnetism',difficulty:3,q:'Work done by electric field on charge moving in a closed path:',opts:['Maximum','qV','Zero','qE'],correct:2,exp:'Electric force is conservative. Work in closed loop = 0.'},
+  {id:'p4',subject:'Physics',topic:'Optics',difficulty:2,q:'Critical angle for total internal reflection depends on:',opts:['Wavelength only','RI only','Both','Neither'],correct:2,exp:'sin(C) = 1/μ, and μ varies with wavelength (dispersion), so both matter.'},
+  {id:'p5',subject:'Physics',topic:'Modern Physics',difficulty:3,q:'De Broglie wavelength of particle with KE = E is proportional to:',opts:['E','1/√E','√E','1/E'],correct:1,exp:'λ = h/p = h/√(2mE) ∝ 1/√E'},
+  {id:'c1',subject:'Chemistry',topic:'Organic',difficulty:1,q:'IUPAC name of CH₃-CH(OH)-CH₃ is:',opts:['1-propanol','2-propanol','propan-2-ol','Options B and C'],correct:3,exp:'Propan-2-ol (IUPAC). 2-propanol is the common name. Both B and C are correct.'},
+  {id:'c2',subject:'Chemistry',topic:'Physical',difficulty:2,q:'Half-life of a first-order reaction is:',opts:['0.693/k','0.693k','1/k','2/k'],correct:0,exp:'t₁/₂ = ln2/k = 0.693/k for first-order.'},
+  {id:'c3',subject:'Chemistry',topic:'Inorganic',difficulty:3,q:'Number of σ bonds in benzene:',opts:['6','9','12','3'],correct:2,exp:'6 C-H + 6 C-C σ bonds = 12 total.'},
+  {id:'c4',subject:'Chemistry',topic:'Electrochemistry',difficulty:2,q:'ΔG and EMF of galvanic cell are related by:',opts:['ΔG=nFE','ΔG=-nFE','ΔG=nRT ln E','ΔG=-nRT'],correct:1,exp:'ΔG = -nFE (negative for spontaneous reaction).'},
+  {id:'b1',subject:'Biology',topic:'Cell Biology',difficulty:1,q:'Fluid mosaic model was proposed by:',opts:['Watson & Crick','Singer & Nicolson','Gorter & Grendel','Robertson'],correct:1,exp:'Singer and Nicolson (1972) proposed the fluid mosaic model.'},
+  {id:'b2',subject:'Biology',topic:'Genetics',difficulty:2,q:'Test cross offspring ratio 1:1:1:1 indicates:',opts:['Complete dominance','Codominance','Dihybrid cross','Independent assortment'],correct:3,exp:'1:1:1:1 from testcross = dihybrid parent (AaBb) with independent assortment.'},
+  {id:'b3',subject:'Biology',topic:'Ecology',difficulty:2,q:'Which trophic level has highest energy content?',opts:['Producers','Primary consumers','Secondary consumers','All equal'],correct:0,exp:'Producers have maximum energy; ~90% lost at each trophic level.'},
+  {id:'m1',subject:'Mathematics',topic:'Calculus',difficulty:1,q:'Derivative of sin(x²) with respect to x is:',opts:['cos(x²)','2x·cos(x²)','cos(2x)','2cos(x²)'],correct:1,exp:'Chain rule: d/dx[sin(x²)] = cos(x²)·2x'},
+  {id:'m2',subject:'Mathematics',topic:'Algebra',difficulty:2,q:'If |z-2| = 2|z-1|, the locus of z is:',opts:['Circle','Line','Ellipse','Parabola'],correct:0,exp:'Expanding gives a circle equation.'},
+  {id:'m3',subject:'Mathematics',topic:'Probability',difficulty:2,q:'P(A∪B) where P(A)=0.5, P(B)=0.4, P(A∩B)=0.2',opts:['0.7','0.9','0.5','0.3'],correct:0,exp:'P(A∪B) = 0.5+0.4-0.2 = 0.7'},
+  {id:'m4',subject:'Mathematics',topic:'Coordinate Geometry',difficulty:3,q:'Eccentricity of x²/9 + y²/4 = 1:',opts:['√5/3','√5/2','2/3','√13/3'],correct:0,exp:'a²=9,b²=4. c²=5. e=c/a=√5/3'},
+];
+
+let selectedSubject = 'All', isAdaptive = true;
+let testQuestions = [], testAnswers = [], testAnswered = [], currentQ = 0;
+let currentDiff = 1, timerInt = null, timeLeft = 0;
+
+function selectSubject(el, subj) {
+  document.querySelectorAll('.subject-pill').forEach(p=>p.classList.remove('selected'));
+  el.classList.add('selected'); selectedSubject = subj;
+}
+
+function selectMode(el, adaptive) {
+  document.querySelectorAll('.mode-card').forEach(c=>c.classList.remove('selected'));
+  el.classList.add('selected'); isAdaptive = adaptive;
+}
+
+function getNextDifficulty(answers, current) {
+  if (answers.length < 3) return current;
+  const last3 = answers.slice(-3);
+  const correct = last3.filter(Boolean).length;
+  if (correct === 3 && current < 3) return current + 1;
+  if (correct === 0 && current > 1) return current - 1;
+  return current;
+}
+
+function startTest() {
+  let pool = selectedSubject === 'All' ? QUESTIONS : QUESTIONS.filter(q=>q.subject===selectedSubject);
+  if (isAdaptive) pool = pool.filter(q=>q.difficulty<=2);
+  testQuestions = [...pool].sort(()=>Math.random()-0.5).slice(0,10);
+  testAnswers = new Array(testQuestions.length).fill(null);
+  testAnswered = new Array(testQuestions.length).fill(false);
+  currentQ = 0; currentDiff = 1;
+  timeLeft = testQuestions.length * 120;
+  document.getElementById('mt-select').style.display = 'none';
+  document.getElementById('mt-test').style.display = 'block';
+  document.getElementById('mt-review').style.display = 'none';
+  startTimer(); renderQuestion();
+}
+
+function startTimer() {
+  clearInterval(timerInt);
+  timerInt = setInterval(() => {
+    timeLeft--;
+    const m = String(Math.floor(timeLeft/60)).padStart(2,'0');
+    const s = String(timeLeft%60).padStart(2,'0');
+    const el = document.getElementById('timer-display');
+    el.textContent = `${m}:${s}`;
+    el.style.color = timeLeft < 60 ? '#f87171' : '#fff';
+    if (timeLeft <= 0) { clearInterval(timerInt); showReview(); }
+  }, 1000);
+}
+
+function renderQuestion() {
+  const q = testQuestions[currentQ];
+  if (!q) return;
+  const subjectColors = {Physics:'rgba(99,102,241,0.15)',Chemistry:'rgba(34,197,94,0.15)',Biology:'rgba(168,85,247,0.15)',Mathematics:'rgba(245,158,11,0.15)'};
+  const subjectText  = {Physics:'#818cf8',Chemistry:'#4ade80',Biology:'#c084fc',Mathematics:'#fbbf24'};
+  const icons = {Physics:'⚛️',Chemistry:'🧪',Biology:'🧬',Mathematics:'🔢'};
+  const diffLabels = {1:'Easy',2:'Medium',3:'Hard'};
+  const diffColors = {1:'#4ade80',2:'#fbbf24',3:'#f87171'};
+
+  document.getElementById('q-progress-text').textContent = `Question ${currentQ+1} of ${testQuestions.length}`;
+  document.getElementById('q-progress-bar').style.width = `${((currentQ+1)/testQuestions.length)*100}%`;
+  document.getElementById('difficulty-badge').textContent = isAdaptive ? `🎯 ${diffLabels[currentDiff]}` : '';
+  document.getElementById('difficulty-badge').style.color = diffColors[currentDiff];
+
+  document.getElementById('q-subject-badge').innerHTML =
+    `<span style="display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border-radius:8px;background:${subjectColors[q.subject]};border:1px solid rgba(255,255,255,0.06);font-size:12px;font-weight:600;color:${subjectText[q.subject]}">${icons[q.subject]} ${q.subject}</span>
+     <span style="font-size:12px;color:var(--muted);margin-left:4px;">${q.topic}</span>`;
+
+  document.getElementById('q-text').textContent = q.q;
+
+  const answered = testAnswered[currentQ], userAns = testAnswers[currentQ];
+  document.getElementById('q-options').innerHTML = q.opts.map((opt,i)=>{
+    let cls=''; let letter='';
+    if (answered) {
+      if (i===q.correct) cls='correct';
+      else if (i===userAns&&i!==q.correct) cls='wrong';
+      else cls='dimmed';
+    }
+    return `<button class="option-btn ${cls}" onclick="answerQuestion(${i})" ${answered?'disabled':''}>
+      <span class="option-letter">${String.fromCharCode(65+i)}</span>${opt}
+      ${answered&&i===q.correct?' <span style="margin-left:auto;color:#4ade80;">✓</span>':''}
+      ${answered&&i===userAns&&i!==q.correct?' <span style="margin-left:auto;color:#f87171;">✗</span>':''}
+    </button>`;
+  }).join('');
+
+  const expEl = document.getElementById('q-explanation');
+  if (answered) { expEl.innerHTML = `<span style="font-size:12px;font-weight:700;color:#818cf8;margin-bottom:6px;display:block;">💡 Explanation</span><span style="font-size:12px;">${q.explanation||''}</span>`; expEl.classList.add('show'); }
+  else { expEl.innerHTML=''; expEl.classList.remove('show'); }
+
+  const nextBtn = document.getElementById('next-btn');
+  nextBtn.textContent = currentQ < testQuestions.length-1 ? 'Next →' : 'Submit ✓';
+  nextBtn.onclick = currentQ < testQuestions.length-1 ? nextQuestion : showReview;
+
+  // Nav dots
+  document.getElementById('q-nav-dots').innerHTML = testQuestions.map((_,i)=>{
+    let cls='q-nav-dot'; if(i===currentQ) cls+=' current';
+    else if(testAnswered[i]) cls+= testAnswers[i]===testQuestions[i].correct?' correct-dot':' wrong-dot';
+    return `<button class="${cls}" onclick="jumpTo(${i})">${i+1}</button>`;
+  }).join('');
+}
+
+function answerQuestion(idx) {
+  if (testAnswered[currentQ]) return;
+  testAnswers[currentQ] = idx; testAnswered[currentQ] = true;
+  if (isAdaptive) {
+    const hist = testAnswers.slice(0,currentQ+1).map((a,i)=>a===testQuestions[i].correct);
+    currentDiff = getNextDifficulty(hist, currentDiff);
+  }
+  renderQuestion();
+}
+
+function nextQuestion() { if (currentQ < testQuestions.length-1) { currentQ++; renderQuestion(); } }
+function prevQuestion() { if (currentQ > 0) { currentQ--; renderQuestion(); } }
+function jumpTo(i) { currentQ = i; renderQuestion(); }
+
+function showReview() {
+  clearInterval(timerInt);
+  const score = testAnswers.filter((a,i)=>a===testQuestions[i]?.correct).length;
+  const pct = Math.round((score/testQuestions.length)*100);
+  document.getElementById('mt-test').style.display='none';
+  document.getElementById('mt-review').style.display='block';
+  const bg=pct>=70?'rgba(34,197,94,0.15)':pct>=50?'rgba(245,158,11,0.15)':'rgba(239,68,68,0.15)';
+  const fc=pct>=70?'#4ade80':pct>=50?'#fbbf24':'#f87171';
+  document.getElementById('score-circle').style.cssText=`background:${bg};color:${fc};width:110px;height:110px;border-radius:50%;margin:0 auto 14px;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:900;`;
+  document.getElementById('score-circle').textContent=pct+'%';
+  document.getElementById('review-subtitle').textContent=`${score} out of ${testQuestions.length} correct`;
+  document.getElementById('review-stats').innerHTML=[
+    {l:'Score',v:`${score}/${testQuestions.length}`,ic:'🎯',bg:'rgba(99,102,241,0.15)'},
+    {l:'Accuracy',v:`${pct}%`,ic:'📈',bg:'rgba(34,197,94,0.15)'},
+    {l:'XP Earned',v:`+${score*15}`,ic:'⚡',bg:'rgba(245,158,11,0.15)'},
+    {l:'Time Used',v:fmtTime(testQuestions.length*120-timeLeft),ic:'⏱️',bg:'rgba(168,85,247,0.15)'},
+  ].map(s=>`<div class="stat-card"><div class="stat-icon" style="background:${s.bg}">${s.ic}</div><div class="stat-value">${s.v}</div><div class="stat-label">${s.l}</div></div>`).join('');
+
+  const subs = {};
+  testQuestions.forEach((q,i)=>{if(!subs[q.subject])subs[q.subject]={c:0,t:0};subs[q.subject].t++;if(testAnswers[i]===q.correct)subs[q.subject].c++;});
+  const colors={Physics:'#6366f1',Chemistry:'#22c55e',Biology:'#a855f7',Mathematics:'#f59e0b'};
+  document.getElementById('review-subjects').innerHTML=Object.entries(subs).map(([s,v])=>{
+    const p=Math.round((v.c/v.t)*100);const c=colors[s]||'#6366f1';const pc=p>=70?'#4ade80':p>=50?'#fbbf24':'#f87171';
+    return `<div class="subject-row"><div class="subject-header"><span class="subject-name">${s}</span><span style="font-size:13px;font-weight:700;color:${pc}">${p}% (${v.c}/${v.t})</span></div><div class="progress-track"><div class="progress-bar" style="background:${c};width:${p}%"></div></div></div>`;
+  }).join('');
+
+  if (pct >= 80) document.getElementById('review-badge').style.display='flex';
+}
+
+function fmtTime(s) { return `${String(Math.floor(s/60)).padStart(2,'0')}:${String(s%60).padStart(2,'0')}`; }
+
+function resetTest() {
+  clearInterval(timerInt);
+  document.getElementById('mt-test').style.display='none';
+  document.getElementById('mt-review').style.display='none';
+  document.getElementById('mt-select').style.display='block';
+  document.getElementById('review-badge').style.display='none';
+}
+
+// ═══════════════════════════ AI DOUBTS ════════════════════════════════════════
+const CONCEPTS = {
+  "Newton's Laws": { desc:"Newton's three laws of motion: (1) Inertia — a body remains at rest or uniform motion unless acted on by a net force. (2) F = ma — net force equals mass × acceleration. (3) Action-Reaction — every action has an equal and opposite reaction.", formula:"F = ma | p = mv | F·Δt = Δp" },
+  "Thermodynamics": { desc:"Study of heat, work, and energy. First law: ΔU = Q - W (energy conservation). Second law: entropy of universe always increases. Third law: entropy→0 at absolute zero.", formula:"ΔU = Q - W | PV^γ = const (adiabatic) | S = k ln Ω" },
+  "Electromagnetism": { desc:"Electric charges create electric fields (Coulomb's law). Moving charges create magnetic fields. Changing magnetic fields create electric fields (Faraday's law). Maxwell unified all four in his equations.", formula:"F = kq₁q₂/r² | B = μ₀I/2πr | emf = -dΦ/dt" },
+  "Cell Biology": { desc:"Cells are the basic units of life. Prokaryotes have no nucleus; eukaryotes have a membrane-bound nucleus. Key organelles: mitochondria (energy), ER (protein synthesis), Golgi (packaging), chloroplasts (photosynthesis in plants).", formula:"" },
+  "Genetics": { desc:"Genetics is the study of heredity and variation. Mendel's laws: segregation and independent assortment. DNA → RNA → Protein (Central Dogma). Mutations: substitution, insertion, deletion.", formula:"Hardy-Weinberg: p² + 2pq + q² = 1" },
+  "Calculus": { desc:"Differential calculus: rate of change (derivatives). Integral calculus: accumulation (integrals). Fundamental theorem links differentiation and integration.", formula:"d/dx[xⁿ] = nxⁿ⁻¹ | ∫xⁿ dx = xⁿ⁺¹/(n+1) + C | FTC: ∫ₐᵇ f'(x)dx = f(b)-f(a)" },
+  "Organic Chemistry": { desc:"Study of carbon compounds. Functional groups determine reactivity. Key reactions: addition, elimination, substitution (SN1, SN2), oxidation, reduction. IUPAC naming follows parent chain + substituents.", formula:"SN2: rate = k[substrate][nucleophile] | SN1: rate = k[substrate]" },
+  "Probability": { desc:"Probability measures likelihood of events. Addition rule: P(A∪B) = P(A)+P(B)-P(A∩B). Multiplication rule: P(A∩B) = P(A)·P(B|A). Bayes' theorem updates probability with new evidence.", formula:"P(B|A) = P(A|B)·P(B)/P(A) | E(X) = Σx·P(x)" },
+  "Optics": { desc:"Snell's law governs refraction. Total internal reflection occurs when angle > critical angle. Lenses: convex (converging), concave (diverging). Lens formula: 1/v - 1/u = 1/f.", formula:"n₁sinθ₁ = n₂sinθ₂ | sinC = 1/μ | 1/v - 1/u = 1/f" },
+  "Ecology": { desc:"Study of interactions between organisms and environment. Food chains, food webs, energy pyramids. Ecological pyramids: number, biomass, energy. 10% law: only 10% energy transfers to next trophic level.", formula:"NPP = GPP - Respiration | Energy efficiency = output/input × 100%" },
+};
+
+const CHAT_RESPONSES = {
+  newton: "🔬 **Newton's Laws:**\n1. **Inertia**: Body stays at rest or uniform motion unless acted upon by net force\n2. **F = ma**: Net force = mass × acceleration\n3. **Action-Reaction**: Equal and opposite reaction\n\n📐 *For IISER IAT, focus on problems combining all 3 laws with friction and pulleys.*",
+  thermodynamics: "🌡️ **Thermodynamics Key Points:**\n• 1st Law: ΔU = Q - W (energy conservation)\n• 2nd Law: Entropy of universe always increases\n• For adiabatic: PV^γ = constant\n• TV^(γ-1) = constant\n\n⚡ *Tip: Memorise the PV diagram shapes for each process.*",
+  organic: "🧪 **Organic Chemistry Tips:**\n• SN2: backside attack, inversion, bimolecular rate\n• SN1: carbocation intermediate, racemisation, unimolecular\n• Elimination (E2) competes with SN2\n• Named reactions: Aldol, Cannizzaro, Grignard, Wittig\n\n📝 *IISER IAT loves reaction mechanism MCQs!*",
+  genetics: "🧬 **Genetics Key Concepts:**\n• Mendelian ratios: 3:1 (monohybrid), 9:3:3:1 (dihybrid)\n• Test cross: 1:1 (heterozygous) or all dominant (homozygous)\n• Central Dogma: DNA → mRNA → Protein\n• Hardy-Weinberg: p² + 2pq + q² = 1\n\n🎯 *Practice pedigree analysis — common IISER IAT question type.*",
+  calculus: "📐 **Calculus Essentials:**\n• d/dx[sin x] = cos x, d/dx[eˣ] = eˣ, d/dx[ln x] = 1/x\n• Chain rule: d/dx[f(g(x))] = f'(g(x))·g'(x)\n• Integration by parts: ∫u dv = uv - ∫v du\n• L'Hopital's rule for 0/0 or ∞/∞ forms\n\n✅ *IISER IAT: Focus on differentiating composite functions.*",
+  probability: "🎲 **Probability Rules:**\n• P(A∪B) = P(A) + P(B) - P(A∩B)\n• P(A|B) = P(A∩B)/P(B)\n• Bayes: P(B|A) = P(A|B)·P(B)/P(A)\n• Binomial: P(X=k) = C(n,k)·p^k·(1-p)^(n-k)\n\n📊 *IISER IAT often gives conditional probability word problems.*",
+};
+
+function detectIntent(msg) {
+  const m = msg.toLowerCase();
+  if (m.includes('newton') || m.includes('law') || m.includes('force')) return 'newton';
+  if (m.includes('thermo') || m.includes('heat') || m.includes('entropy')) return 'thermodynamics';
+  if (m.includes('organic') || m.includes('sn1') || m.includes('sn2') || m.includes('reaction')) return 'organic';
+  if (m.includes('genetics') || m.includes('mendel') || m.includes('dna')) return 'genetics';
+  if (m.includes('calculus') || m.includes('derivative') || m.includes('integral')) return 'calculus';
+  if (m.includes('probability') || m.includes('bayes') || m.includes('random')) return 'probability';
+  return null;
+}
+
+function addMsg(text, isUser) {
+  const el = document.createElement('div');
+  el.className = 'msg ' + (isUser ? 'msg-user' : 'msg-bot');
+  el.style.whiteSpace = 'pre-line';
+  el.textContent = text;
+  document.getElementById('chat-messages').appendChild(el);
+  el.scrollIntoView({behavior:'smooth'});
+}
+
+function sendChat() {
+  const inp = document.getElementById('chat-input');
+  const msg = inp.value.trim(); if (!msg) return;
+  addMsg(msg, true); inp.value='';
+  setTimeout(() => {
+    const intent = detectIntent(msg);
+    if (intent && CHAT_RESPONSES[intent]) addMsg(CHAT_RESPONSES[intent], false);
+    else addMsg("I found that concept! For IISER IAT, I recommend:\n• Review your class 11-12 NCERT thoroughly\n• Practice 5 MCQs per topic daily\n• Use the SM-2 flashcards on the right to remember formulas\n\nTry asking me about: Newton's Laws, Thermodynamics, Organic Chemistry, Genetics, Calculus, or Probability", false);
+  }, 600);
+}
+
+// SM-2 Flashcards
+const FLASHCARDS = [
+  {subject:'Physics',q:'State Newton\'s Second Law',a:'F = ma. Net force equals mass times acceleration. Force and acceleration are in the same direction.',due:0,interval:1,easeFactor:2.5},
+  {subject:'Chemistry',q:'What is the half-life formula for first-order reaction?',a:'t₁/₂ = 0.693/k = ln2/k, where k is the rate constant. It is concentration-independent.',due:0,interval:1,easeFactor:2.5},
+  {subject:'Biology',q:'What is the Central Dogma of molecular biology?',a:'DNA → RNA → Protein. DNA is transcribed to mRNA which is translated to protein.',due:0,interval:1,easeFactor:2.5},
+  {subject:'Mathematics',q:'State the Chain Rule for differentiation',a:'d/dx[f(g(x))] = f\'(g(x)) · g\'(x). Differentiate outer function, multiply by derivative of inner.',due:0,interval:1,easeFactor:2.5},
+  {subject:'Physics',q:'State Snell\'s Law',a:'n₁sinθ₁ = n₂sinθ₂. The product of refractive index and sine of angle is constant at interface.',due:0,interval:1,easeFactor:2.5},
+  {subject:'Chemistry',q:'What is ΔG = -nFE?',a:'Gibbs free energy change equals negative n (moles of electrons) times Faraday constant times EMF. Negative ΔG = spontaneous.',due:0,interval:1,easeFactor:2.5},
+];
+let fcIndex = 0, fcFlipped = false;
+
+function loadFlashcard() {
+  const fc = FLASHCARDS[fcIndex % FLASHCARDS.length];
+  const colors = {Physics:'#818cf8',Chemistry:'#4ade80',Biology:'#c084fc',Mathematics:'#fbbf24'};
+  fcFlipped = false;
+  document.getElementById('fc-subject-badge').innerHTML = `<span style="color:${colors[fc.subject]||'#818cf8'};font-weight:700;">◆ ${fc.subject}</span>`;
+  document.getElementById('fc-question').textContent = fc.q;
+  document.getElementById('fc-hint').textContent = 'Click to reveal answer';
+  document.getElementById('fc-answer').style.display = 'none';
+  document.getElementById('fc-rating').style.display = 'none';
+  document.getElementById('fc-answer-text').textContent = '';
+  const dueIn = Math.max(0, fc.interval);
+  document.getElementById('fc-due-info').textContent = `Due in ${dueIn} day${dueIn!==1?'s':''}`;
+}
+
+function flipFlashcard() {
+  if (fcFlipped) return;
+  fcFlipped = true;
+  const fc = FLASHCARDS[fcIndex % FLASHCARDS.length];
+  document.getElementById('fc-answer').style.display = 'block';
+  document.getElementById('fc-answer-text').textContent = fc.a;
+  document.getElementById('fc-hint').textContent = '✓ Rating saved with spaced repetition';
+  document.getElementById('fc-rating').style.display = 'flex';
+}
+
+function rateCard(quality) {
+  // SM-2 algorithm
+  const fc = FLASHCARDS[fcIndex % FLASHCARDS.length];
+  fc.easeFactor = Math.max(1.3, fc.easeFactor + 0.1 - (5-quality)*(0.08+(5-quality)*0.02));
+  if (quality < 3) { fc.interval = 1; }
+  else if (fc.interval === 1) { fc.interval = 6; }
+  else { fc.interval = Math.round(fc.interval * fc.easeFactor); }
+  fc.due = Date.now() + fc.interval * 86400000;
+  fcIndex++;
+  loadFlashcard();
+}
+
+function renderConceptChips() {
+  const el = document.getElementById('concept-chips');
+  el.innerHTML = Object.keys(CONCEPTS).map(c=>`<button onclick="showConcept('${c}')" style="padding:6px 14px;border-radius:20px;border:1px solid var(--border);background:rgba(255,255,255,0.04);font-size:12px;font-weight:500;cursor:pointer;color:var(--muted);transition:all 0.2s;" onmouseover="this.style.color='#fff';this.style.borderColor='var(--indigo)'" onmouseout="this.style.color='var(--muted)';this.style.borderColor='var(--border)'">${c}</button>`).join('');
+}
+
+function showConcept(name) {
+  const c = CONCEPTS[name];
+  document.getElementById('concept-detail').style.display = 'block';
+  document.getElementById('concept-name').textContent = name;
+  document.getElementById('concept-desc').textContent = c.desc;
+  const fEl = document.getElementById('concept-formula');
+  if (c.formula) { fEl.style.display='block'; fEl.textContent = '📐 ' + c.formula; }
+  else { fEl.style.display='none'; }
+  document.getElementById('concept-detail').scrollIntoView({behavior:'smooth'});
+}
+
+// ═══════════════════════════ INIT ═════════════════════════════════════════════
+loadFlashcard();
+renderConceptChips();
+initApp();
+</script>
+</body>
+</html>
