@@ -2941,43 +2941,55 @@
     // ── LEADERBOARD ──
     async function loadLeaderboard() {
       try {
-        const res = await apiFetch('/api/leaderboard');
-        const rows = res?.leaderboard || res?.data || res || [];
+        // ── Step 1: Fetch leaderboard list (period required by backend) ──
+        const res = await apiFetch('/api/leaderboard/all');
+        // Backend returns: { data: [{user_id, name, best_score, accuracy, attempts}], success: true }
+        const rows = Array.isArray(res?.data) ? res.data : (Array.isArray(res) ? res : []);
 
-        // API may return userRank under various keys
-        let userRank = res?.userRank || res?.user_rank || res?.myRank || res?.my_rank || null;
+        // ── Step 2: Fetch user's own rank from the dedicated endpoint ──
+        const payload = parseToken();
+        const myId = payload.id || payload.userId || payload.sub || payload.user_id || '';
+        let userRank = null;
 
-        // If API didn't include it, derive it from the rows using the JWT userId
-        if (!userRank && Array.isArray(rows) && rows.length) {
-          const payload = parseToken();
-          const myId = String(payload.id || payload.userId || payload.sub || payload.user_id || '');
-
-          let matchIdx = -1;
-          if (myId) {
-            matchIdx = rows.findIndex(r =>
-              String(r.user_id || r.id || r.userId || '') === myId
-            );
+        if (myId) {
+          try {
+            const rankRes = await apiFetch(`/api/leaderboard/user-rank/${myId}`);
+            // Backend returns: { data: {rank, best_score, accuracy, total_users, name}, success: true }
+            const rd = rankRes?.data;
+            if (rd && rd.rank) {
+              userRank = {
+                rank: rd.rank,
+                score: rd.best_score || 0,
+                accuracy: rd.accuracy || 0,
+                name: rd.name || 'You',
+                total_users: rd.total_users || 0
+              };
+            }
+          } catch (rankErr) {
+            console.warn('User rank fetch failed, deriving from list:', rankErr);
           }
+        }
 
-          // Fallback: match by best_score from the already-loaded stats
+        // ── Step 3: Fallback — derive rank from the list if endpoint failed ──
+        if (!userRank && rows.length && myId) {
+          const myIdStr = String(myId);
+          let matchIdx = rows.findIndex(r => String(r.user_id || '') === myIdStr);
           if (matchIdx === -1 && currentStats.best_score) {
-            matchIdx = rows.findIndex(r =>
-              (r.score || r.best_score || 0) === currentStats.best_score
-            );
+            matchIdx = rows.findIndex(r => (r.best_score || 0) === currentStats.best_score);
           }
-
           if (matchIdx !== -1) {
             const r = rows[matchIdx];
             userRank = {
               rank: matchIdx + 1,
-              score: r.score || r.best_score || 0,
+              score: r.best_score || 0,
               accuracy: r.accuracy || 0,
-              name: r.name || 'You'
+              name: r.name || 'You',
+              total_users: rows.length
             };
           }
         }
 
-        renderLeaderboard(Array.isArray(rows) ? rows : [], userRank);
+        renderLeaderboard(rows, userRank);
       } catch (err) {
         console.error('Leaderboard error:', err);
         document.getElementById('leaderboard-list').innerHTML = '<div class="lb-empty"><div class="lb-empty-icon">🏆</div><p>Leaderboard unavailable</p></div>';
@@ -2998,7 +3010,7 @@
             <div class="user-rank-badge">${medal} Your Rank</div>
             <div>
               <div class="user-rank-num">#${rn}</div>
-              <div class="user-rank-detail">${userRank.score || 0}/240 &nbsp;·&nbsp; ${Math.round(userRank.accuracy || 0)}% accuracy</div>
+              <div class="user-rank-detail">${userRank.score || 0}/240 · ${Math.round(userRank.accuracy || 0)}% accuracy${userRank.total_users ? ` · out of ${userRank.total_users}` : ''}</div>
             </div>
           </div>
           <div style="font-size:12px;color:var(--text-muted);">${msg}</div>`;
@@ -3034,7 +3046,7 @@
           return `<div class="podium-slot">
         <div class="podium-avatar ${pc}">${crown}${initials}</div>
         <div class="podium-name">${maskedName}</div>
-        <div class="podium-score ${pc}">${row.score || 0}/240</div>
+        <div class="podium-score ${pc}">${row.best_score || row.score || 0}/240</div>
         <div class="podium-base ${pc}"><div class="podium-rank-num">#${rank}</div></div>
       </div>`;
         }).join('');
@@ -3054,7 +3066,7 @@
       <div class="lb-rank">${rank}</div>
       <div class="lb-avatar">${initials}</div>
       <div class="lb-name">${maskedName}</div>
-      <div class="lb-score">${row.score || 0}/240</div>
+      <div class="lb-score">${row.best_score || row.score || 0}/240</div>
       <div class="lb-acc">${row.accuracy || 0}%</div>
     </div>`;
       }).join('');
