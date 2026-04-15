@@ -2644,8 +2644,8 @@
 
     // ── AI FORECAST (Upgraded: EWMA + Weighted Regression + R² confidence) ──
     function renderForecast(attempts) {
-      const fVal  = document.getElementById('forecast-val');
-      const fSub  = document.getElementById('forecast-sub');
+      const fVal = document.getElementById('forecast-val');
+      const fSub = document.getElementById('forecast-sub');
       const fConf = document.getElementById('forecast-confidence');
       if (!fVal) return;
 
@@ -2692,15 +2692,15 @@
       // Confidence level
       const confLevel = r2 >= 0.7 ? 'High' : r2 >= 0.4 ? 'Medium' : 'Low';
       const confColor = r2 >= 0.7 ? '#10b981' : r2 >= 0.4 ? '#f59e0b' : '#ef4444';
-      const confBg    = r2 >= 0.7 ? 'rgba(16,185,129,0.12)' : r2 >= 0.4 ? 'rgba(245,158,11,0.12)' : 'rgba(239,68,68,0.12)';
+      const confBg = r2 >= 0.7 ? 'rgba(16,185,129,0.12)' : r2 >= 0.4 ? 'rgba(245,158,11,0.12)' : 'rgba(239,68,68,0.12)';
 
       // Trend label
       const trendLabel = isPlateau ? '➡️ Plateau — push harder'
         : velocity > 1.5 ? '🚀 Strong upward momentum'
-        : velocity > 0.3 ? '📈 Improving'
-        : velocity < -1.5 ? '⚠️ Declining fast'
-        : velocity < -0.3 ? '📉 Slightly declining'
-        : '➡️ Stable';
+          : velocity > 0.3 ? '📈 Improving'
+            : velocity < -1.5 ? '⚠️ Declining fast'
+              : velocity < -0.3 ? '📉 Slightly declining'
+                : '➡️ Stable';
 
       fVal.textContent = `${forecast} / 240`;
       const goalNote = sessionsToGoal && sessionsToGoal > 0 && forecast < cutoff
@@ -2721,7 +2721,7 @@
       const n = scores.length;
 
       const allMean = mean(scores);
-      const allSd   = stddev(scores);
+      const allSd = stddev(scores);
       const lastScore = scores.at(-1);
 
       // Z-score of last test
@@ -2758,9 +2758,9 @@
     // ── AI INSIGHTS ENGINE (Upgraded: 8-signal deep analysis) ──
     function renderInsights(stats, perf) {
       const total = stats.total_attempts || 0;
-      const acc   = parseFloat(stats.accuracy || 0);
-      const best  = stats.best_score || 0;
-      const avg   = stats.avg_score || 0;
+      const acc = parseFloat(stats.accuracy || 0);
+      const best = stats.best_score || 0;
+      const avg = stats.avg_score || 0;
       const sorted = [...allAttempts].sort((a, b) => new Date(a.created_at) - new Date(b.created_at));
       const scores = sorted.map(a => a.score || 0);
       const n = scores.length;
@@ -2785,8 +2785,8 @@
       const gapToCutoff = cutoff - avgS;
 
       // 5. Subject analytics
-      const perfSorted   = [...perf].sort((a, b) => (a.accuracy || 0) - (b.accuracy || 0));
-      const weakest   = perfSorted[0];
+      const perfSorted = [...perf].sort((a, b) => (a.accuracy || 0) - (b.accuracy || 0));
+      const weakest = perfSorted[0];
       const strongest = perfSorted.at(-1);
       const subjectGap = perf.length >= 2
         ? Math.round((strongest?.accuracy || 0) - (weakest?.accuracy || 0))
@@ -2818,7 +2818,7 @@
       if (total === 0) {
         insights.push(
           { icon: '🚀', iconBg: 'rgba(99,102,241,0.1)', blob: 'rgba(99,102,241,0.05)', title: 'Start Your Journey', text: 'Take your first IISER IAT mock test. The AI will instantly analyse your performance and give you a personalised roadmap.' },
-          { icon: '📊', iconBg: 'rgba(6,182,212,0.1)',   blob: 'rgba(6,182,212,0.05)',  title: 'AI Forecast Awaits', text: 'After 3+ tests, the AI unlocks score predictions using exponential trend analysis and weighted regression — unique to your learning curve.' },
+          { icon: '📊', iconBg: 'rgba(6,182,212,0.1)', blob: 'rgba(6,182,212,0.05)', title: 'AI Forecast Awaits', text: 'After 3+ tests, the AI unlocks score predictions using exponential trend analysis and weighted regression — unique to your learning curve.' },
           { icon: '🎯', iconBg: 'rgba(16,185,129,0.1)', blob: 'rgba(16,185,129,0.05)', title: 'Target: 160+ / 240', text: 'IISER IAT cutoff is typically 160/240. Your dashboard will show how many tests away you are and what subjects to fix first.' }
         );
       } else {
@@ -2828,11 +2828,10 @@
           iconBg: acc >= 70 ? 'rgba(16,185,129,0.1)' : acc >= 50 ? 'rgba(245,158,11,0.1)' : 'rgba(239,68,68,0.1)',
           blob: acc >= 70 ? 'rgba(16,185,129,0.05)' : 'rgba(239,68,68,0.05)',
           title: acc >= 75 ? 'Excellent Accuracy!' : acc >= 60 ? 'Good Accuracy' : acc >= 45 ? 'Accuracy Needs Work' : 'Critical: Low Accuracy',
-          text: `Overall: <b>${acc.toFixed(1)}%</b> across ${total} test${total !== 1 ? 's' : ''}. ${
-            acc >= 70 ? 'You are above the accuracy threshold for strong IISER candidates. Maintain this.' :
-            acc >= 50 ? `Improve by ${(70 - acc).toFixed(0)}% to reach target. Focus on avoiding negative-marked guesses.` :
-            'Review each wrong answer. Negative marking means every 3 wrongs cancel 1 correct. Attempt only confident questions.'
-          }`
+          text: `Overall: <b>${acc.toFixed(1)}%</b> across ${total} test${total !== 1 ? 's' : ''}. ${acc >= 70 ? 'You are above the accuracy threshold for strong IISER candidates. Maintain this.' :
+              acc >= 50 ? `Improve by ${(70 - acc).toFixed(0)}% to reach target. Focus on avoiding negative-marked guesses.` :
+                'Review each wrong answer. Negative marking means every 3 wrongs cancel 1 correct. Attempt only confident questions.'
+            }`
         });
 
         // Insight 2: Momentum & Trajectory
@@ -2843,11 +2842,10 @@
           title: momentum > 2 ? 'Strong Momentum 🔥' : momentum > 0.3 ? 'Upward Trend' : isPlateau ? 'Performance Plateau' : momentum < -1 ? 'Declining — Act Now' : 'Stable Performance',
           text: isPlateau
             ? `Your last 4 scores (σ=${sd.toFixed(1)}) show a plateau. You're not getting worse — but you're not improving. Try new question types, timed practice, or chapter-wise drills to break through.`
-            : `Recent velocity: <b>${momentum > 0 ? '+' : ''}${momentum.toFixed(1)} pts/test</b> over last 5 tests. ${
-              momentum > 2 ? 'Outstanding growth rate — you are accelerating toward your goal.'
+            : `Recent velocity: <b>${momentum > 0 ? '+' : ''}${momentum.toFixed(1)} pts/test</b> over last 5 tests. ${momentum > 2 ? 'Outstanding growth rate — you are accelerating toward your goal.'
               : momentum > 0.3 ? 'Keep this upward trajectory. Consistency is key.'
-              : momentum < -1 ? 'Immediate action needed. Analyse your last 3 tests for patterns.'
-              : 'Small ups and downs are normal. Focus on your 30-day average.'
+                : momentum < -1 ? 'Immediate action needed. Analyse your last 3 tests for patterns.'
+                  : 'Small ups and downs are normal. Focus on your 30-day average.'
             }`
         });
 
@@ -2859,10 +2857,9 @@
           title: avgS >= cutoff ? 'Above Cutoff Average!' : `${Math.round(gapToCutoff)} pts to IISER Cutoff`,
           text: avgS >= cutoff
             ? `Your average score <b>${Math.round(avgS)}/240</b> already exceeds the typical IISER cutoff of <b>160</b>. Focus on consistency — your best score is <b>${best}</b>.`
-            : `You need <b>+${Math.round(gapToCutoff)} pts</b> on average to reach 160. ${
-                momentum > 0 ? `At current pace (+${momentum.toFixed(1)}/test), estimate ~${Math.ceil(gapToCutoff / (momentum || 0.5))} more focused tests.`
-                : 'Prioritise high-weightage chapters and reduce time on sections you already know.'
-              }`
+            : `You need <b>+${Math.round(gapToCutoff)} pts</b> on average to reach 160. ${momentum > 0 ? `At current pace (+${momentum.toFixed(1)}/test), estimate ~${Math.ceil(gapToCutoff / (momentum || 0.5))} more focused tests.`
+              : 'Prioritise high-weightage chapters and reduce time on sections you already know.'
+            }`
         });
 
         // Insight 4: Subject Weakness
@@ -2873,8 +2870,7 @@
             blob: 'rgba(245,158,11,0.05)',
             title: weakest ? `Weakest Subject: ${weakest.subject}` : 'Subject Balance',
             text: weakest
-              ? `<b>${weakest.subject}</b> accuracy: <b>${Math.round(weakest.accuracy || 0)}%</b>. ${
-                subjectGap > 30 ? `There is a <b>${subjectGap}%</b> gap between your best and worst subject — high risk on exam day. ` : ''
+              ? `<b>${weakest.subject}</b> accuracy: <b>${Math.round(weakest.accuracy || 0)}%</b>. ${subjectGap > 30 ? `There is a <b>${subjectGap}%</b> gap between your best and worst subject — high risk on exam day. ` : ''
               }Spend 60% of study time on ${weakest.subject} this week. Target: above 65%.`
               : 'Take subject-wise tests to reveal weak areas.'
           });
@@ -2886,11 +2882,10 @@
           iconBg: 'rgba(6,182,212,0.1)',
           blob: 'rgba(6,182,212,0.05)',
           title: `Consistency: ${consistencyScore}/100`,
-          text: `Your score standard deviation is <b>${sd.toFixed(1)} pts</b>. ${
-            consistencyScore >= 75 ? 'Very consistent performance — indicative of strong conceptual clarity.'
-            : consistencyScore >= 50 ? 'Moderate variance. Some tests spiked or dropped. Work on exam-day stability.'
-            : 'High variance suggests topic gaps. Some days great, others not. Chapter-wise practice reduces this dramatically.'
-          } Best: <b>${best}</b>, Avg: <b>${Math.round(avgS)}</b>.`
+          text: `Your score standard deviation is <b>${sd.toFixed(1)} pts</b>. ${consistencyScore >= 75 ? 'Very consistent performance — indicative of strong conceptual clarity.'
+              : consistencyScore >= 50 ? 'Moderate variance. Some tests spiked or dropped. Work on exam-day stability.'
+                : 'High variance suggests topic gaps. Some days great, others not. Chapter-wise practice reduces this dramatically.'
+            } Best: <b>${best}</b>, Avg: <b>${Math.round(avgS)}</b>.`
         });
 
         // Insight 6: Optimal Study Pattern
@@ -2911,21 +2906,20 @@
             iconBg: pctile >= 70 ? 'rgba(16,185,129,0.1)' : 'rgba(245,158,11,0.1)',
             blob: 'rgba(99,102,241,0.05)',
             title: `~Top ${100 - pctile}% Estimated`,
-            text: `Based on your avg of <b>${Math.round(avgS)}/240</b>, the AI estimates you are in approximately the <b>top ${100 - pctile}%</b> of IAT test-takers. ${
-              pctile >= 80 ? 'Excellent standing — maintain revision and mock frequency.'
-              : pctile >= 60 ? 'Good position. 2–3 more focused weeks can push you into the top tier.'
-              : 'Significant improvement headroom. Focus on NCERT-level mastery first, then advanced questions.'
-            }`
+            text: `Based on your avg of <b>${Math.round(avgS)}/240</b>, the AI estimates you are in approximately the <b>top ${100 - pctile}%</b> of IAT test-takers. ${pctile >= 80 ? 'Excellent standing — maintain revision and mock frequency.'
+                : pctile >= 60 ? 'Good position. 2–3 more focused weeks can push you into the top tier.'
+                  : 'Significant improvement headroom. Focus on NCERT-level mastery first, then advanced questions.'
+              }`
           });
         }
 
         // Insight 8: Smart Action Suggestion
         const actionText =
           isPlateau ? `Break your plateau: mock a <b>timed 3-hour full test</b> this weekend, then drill the chapters with lowest scores. Plateaus are broken by intensity—not volume.`
-          : momentum < -1 ? `Recovery plan: take a 2-day break, then attempt <b>subject-wise mini tests</b> (20 Qs) rather than full mocks. Rebuild accuracy before speed.`
-          : acc < 50 ? `Stop attempting questions you're unsure of. Practice <b>selective answering</b>: attempt 40/60 with 80%+ confidence for higher net score.`
-          : avgS >= cutoff ? `You're in the zone! Now focus on <b>time management</b>: track time per question and aim to finish with 15 min to spare for review.`
-          : `Next focus: take 1 full mock + 2 subject tests per week. Review every wrong answer within 24h — that review session is worth 3x the mock attempt.`;
+            : momentum < -1 ? `Recovery plan: take a 2-day break, then attempt <b>subject-wise mini tests</b> (20 Qs) rather than full mocks. Rebuild accuracy before speed.`
+              : acc < 50 ? `Stop attempting questions you're unsure of. Practice <b>selective answering</b>: attempt 40/60 with 80%+ confidence for higher net score.`
+                : avgS >= cutoff ? `You're in the zone! Now focus on <b>time management</b>: track time per question and aim to finish with 15 min to spare for review.`
+                  : `Next focus: take 1 full mock + 2 subject tests per week. Review every wrong answer within 24h — that review session is worth 3x the mock attempt.`;
 
         insights.push({
           icon: '🤖',
@@ -2948,8 +2942,44 @@
     async function loadLeaderboard() {
       try {
         const res = await apiFetch('/api/leaderboard');
-        renderLeaderboard(res?.leaderboard || res?.data || [], res?.userRank || null);
-      } catch {
+        const rows = res?.leaderboard || res?.data || res || [];
+
+        // API may return userRank under various keys
+        let userRank = res?.userRank || res?.user_rank || res?.myRank || res?.my_rank || null;
+
+        // If API didn't include it, derive it from the rows using the JWT userId
+        if (!userRank && Array.isArray(rows) && rows.length) {
+          const payload = parseToken();
+          const myId = String(payload.id || payload.userId || payload.sub || payload.user_id || '');
+
+          let matchIdx = -1;
+          if (myId) {
+            matchIdx = rows.findIndex(r =>
+              String(r.user_id || r.id || r.userId || '') === myId
+            );
+          }
+
+          // Fallback: match by best_score from the already-loaded stats
+          if (matchIdx === -1 && currentStats.best_score) {
+            matchIdx = rows.findIndex(r =>
+              (r.score || r.best_score || 0) === currentStats.best_score
+            );
+          }
+
+          if (matchIdx !== -1) {
+            const r = rows[matchIdx];
+            userRank = {
+              rank: matchIdx + 1,
+              score: r.score || r.best_score || 0,
+              accuracy: r.accuracy || 0,
+              name: r.name || 'You'
+            };
+          }
+        }
+
+        renderLeaderboard(Array.isArray(rows) ? rows : [], userRank);
+      } catch (err) {
+        console.error('Leaderboard error:', err);
         document.getElementById('leaderboard-list').innerHTML = '<div class="lb-empty"><div class="lb-empty-icon">🏆</div><p>Leaderboard unavailable</p></div>';
         document.getElementById('user-rank-info').innerHTML = '<div style="padding:14px 20px;font-size:13px;color:var(--text-muted);">Could not load rankings.</div>';
       }
@@ -2959,16 +2989,19 @@
       // ── Your rank strip ──
       const rankInfo = document.getElementById('user-rank-info');
       if (rankInfo) {
-        if (userRank) {
+        if (userRank && userRank.rank) {
+          const rn = userRank.rank;
+          const medal = rn === 1 ? '🥇' : rn === 2 ? '🥈' : rn === 3 ? '🥉' : '🏅';
+          const msg = rn <= 3 ? "🎉 You're on the podium!" : rn <= 10 ? '🔥 Top 10 — keep it up!' : '📈 Keep practicing to climb ranks';
           rankInfo.innerHTML = `
-        <div class="user-rank-left">
-          <div class="user-rank-badge">🏅 Your Rank</div>
-          <div>
-            <div class="user-rank-num">#${userRank.rank || '—'}</div>
-            <div class="user-rank-detail">${userRank.score || 0}/240 · ${userRank.accuracy || 0}% accuracy</div>
+          <div class="user-rank-left">
+            <div class="user-rank-badge">${medal} Your Rank</div>
+            <div>
+              <div class="user-rank-num">#${rn}</div>
+              <div class="user-rank-detail">${userRank.score || 0}/240 &nbsp;·&nbsp; ${Math.round(userRank.accuracy || 0)}% accuracy</div>
+            </div>
           </div>
-        </div>
-        <div style="font-size:12px;color:var(--text-muted);">${userRank.rank <= 3 ? '🎉 You are on the podium!' : userRank.rank <= 10 ? '🔥 Top 10 — keep it up!' : '📈 Keep practicing to climb ranks'}</div>`;
+          <div style="font-size:12px;color:var(--text-muted);">${msg}</div>`;
         } else {
           rankInfo.innerHTML = '<div style="font-size:13px;color:var(--text-muted);padding:4px 0;">Complete a mock test to appear on the leaderboard!</div>';
         }
