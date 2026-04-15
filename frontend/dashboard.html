@@ -164,13 +164,17 @@
 
     /* ── CHARTS GRID ── */
     .charts-grid { display: grid; grid-template-columns: 1.8fr 1fr; gap: 16px; margin-bottom: 22px; }
-    @media(max-width:900px) { .charts-grid { grid-template-columns: 1fr; } }
+    @media(max-width:900px) { .charts-grid { grid-template-columns: 1fr; gap: 12px; } }
     .charts-grid-3 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 22px; }
-    @media(max-width:900px) { .charts-grid-3 { grid-template-columns: 1fr; } }
+    @media(max-width:900px) { .charts-grid-3 { grid-template-columns: 1fr; gap: 12px; } }
     .chart-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 22px; box-shadow: var(--shadow-card); }
+    @media(max-width:700px) { .chart-card { padding: 14px 14px; border-radius: 12px; } }
     .chart-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; flex-wrap: wrap; gap: 8px; }
+    @media(max-width:700px) { .chart-header { margin-bottom: 10px; } }
     .chart-title { font-size: 14px; font-weight: 700; letter-spacing: -0.01em; }
+    @media(max-width:700px) { .chart-title { font-size: 13px; } }
     .chart-body { position: relative; height: 220px; }
+    @media(max-width:700px) { .chart-body { height: 180px; } }
     .trend-badge-sm { font-size: 11px; font-weight: 700; padding: 4px 12px; border-radius: 20px; background: var(--primary-glow); color: var(--primary); }
 
     /* ── SUBJECT BARS ── */
@@ -189,22 +193,30 @@
 
     /* ── FORECAST ── */
     .forecast-strip { background: linear-gradient(120deg, rgba(99,102,241,0.08), rgba(6,182,212,0.06)); border: 1px solid rgba(99,102,241,0.18); border-radius: var(--radius); padding: 16px 20px; margin-bottom: 22px; display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
+    @media(max-width:700px) { .forecast-strip { padding: 14px 14px; gap: 12px; border-radius: 12px; } }
     .forecast-icon { font-size: 30px; flex-shrink: 0; }
-    .forecast-info { flex: 1; }
+    @media(max-width:700px) { .forecast-icon { font-size: 24px; } }
+    .forecast-info { flex: 1; min-width: 160px; }
     .forecast-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; color: var(--primary); margin-bottom: 2px; }
     .forecast-val { font-size: 1.7rem; font-weight: 800; letter-spacing: -0.02em; }
+    @media(max-width:700px) { .forecast-val { font-size: 1.4rem; } }
     .forecast-sub { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
     .forecast-conf { font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 20px; }
 
     /* ── AI INSIGHTS ── */
     .insights-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 14px; margin-bottom: 22px; }
-    @media(max-width:900px) { .insights-grid { grid-template-columns: 1fr; } }
+    @media(max-width:900px) { .insights-grid { grid-template-columns: 1fr 1fr; gap: 12px; } }
+    @media(max-width:600px) { .insights-grid { grid-template-columns: 1fr; gap: 10px; } }
     .insight-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; position: relative; overflow: hidden; box-shadow: var(--shadow-card); transition: transform var(--transition), box-shadow var(--transition); }
+    @media(max-width:700px) { .insight-card { padding: 14px; border-radius: 12px; } }
     .insight-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-lg); }
     .insight-card::before { content:''; position:absolute; top:-30px; right:-30px; width:90px; height:90px; border-radius:50%; background: var(--card-blob,rgba(99,102,241,0.05)); filter: blur(22px); pointer-events: none; }
     .insight-icon { width: 40px; height: 40px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 19px; margin-bottom: 12px; }
+    @media(max-width:700px) { .insight-icon { width: 34px; height: 34px; font-size: 17px; margin-bottom: 8px; } }
     .insight-title { font-size: 14px; font-weight: 700; margin-bottom: 7px; letter-spacing: -0.01em; }
+    @media(max-width:700px) { .insight-title { font-size: 13px; margin-bottom: 5px; } }
     .insight-text { font-size: 13px; color: var(--text-muted); line-height: 1.65; }
+    @media(max-width:700px) { .insight-text { font-size: 12px; } }
 
     /* ── LEADERBOARD ── */
     .leaderboard-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 22px; overflow: hidden; box-shadow: var(--shadow-card); }
@@ -216,14 +228,19 @@
 
     /* Podium */
     .lb-podium { display: flex; align-items: flex-end; justify-content: center; gap: 10px; padding: 28px 20px 0; background: linear-gradient(180deg, rgba(99,102,241,0.04) 0%, transparent 100%); }
+    @media(max-width:400px) { .lb-podium { gap: 6px; padding: 20px 10px 0; } }
     .podium-slot { display: flex; flex-direction: column; align-items: center; gap: 6px; flex: 1; max-width: 120px; }
     .podium-avatar { width: 52px; height: 52px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 18px; color: #fff; position: relative; border: 3px solid transparent; }
+    @media(max-width:400px) { .podium-avatar { width: 42px !important; height: 42px !important; font-size: 15px !important; } }
     .podium-avatar.p1 { width: 62px; height: 62px; font-size: 22px; background: linear-gradient(135deg,#f59e0b,#fbbf24); border-color: #fde68a; box-shadow: 0 6px 20px rgba(245,158,11,0.35); }
     .podium-avatar.p2 { background: linear-gradient(135deg,#64748b,#94a3b8); border-color: #cbd5e1; box-shadow: 0 4px 14px rgba(100,116,139,0.3); }
     .podium-avatar.p3 { background: linear-gradient(135deg,#b07040,#d4956a); border-color: #e4b58a; box-shadow: 0 4px 14px rgba(176,112,64,0.3); }
     .podium-crown { position: absolute; top: -18px; font-size: 18px; }
+    @media(max-width:400px) { .podium-crown { top: -14px; font-size: 14px; } }
     .podium-name { font-size: 12px; font-weight: 700; color: var(--text); text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 100%; }
+    @media(max-width:400px) { .podium-name { font-size: 10px; } }
     .podium-score { font-size: 11px; font-weight: 700; padding: 2px 9px; border-radius: 20px; }
+    @media(max-width:400px) { .podium-score { font-size: 10px; padding: 2px 6px; } }
     .podium-score.p1 { background: rgba(245,158,11,0.15); color: #d97706; }
     .podium-score.p2 { background: rgba(100,116,139,0.12); color: #64748b; }
     .podium-score.p3 { background: rgba(176,112,64,0.12); color: #b07040; }
