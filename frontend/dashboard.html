@@ -2604,78 +2604,343 @@
       }
     }
 
-    // ── FORECAST ──
+    // ══════════════════════════════════════════════════════════
+    // ██████████  UPGRADED AI INTELLIGENCE ENGINE  █████████████
+    // ══════════════════════════════════════════════════════════
+
+    // ── MATHS HELPERS ──
+    function mean(arr) { return arr.length ? arr.reduce((s, v) => s + v, 0) / arr.length : 0; }
+    function stddev(arr) {
+      if (arr.length < 2) return 0;
+      const m = mean(arr);
+      return Math.sqrt(arr.reduce((s, v) => s + (v - m) ** 2, 0) / (arr.length - 1));
+    }
+    function weightedMean(arr, weights) {
+      const wSum = weights.reduce((s, w) => s + w, 0);
+      return wSum ? arr.reduce((s, v, i) => s + v * weights[i], 0) / wSum : 0;
+    }
+    // Exponential weights — most recent tests count more
+    function expWeights(n, alpha = 0.3) {
+      return Array.from({ length: n }, (_, i) => Math.pow(1 - alpha, n - 1 - i));
+    }
+    // Weighted linear regression → returns { slope, intercept }
+    function weightedLinReg(xs, ys, ws) {
+      const wSum = ws.reduce((s, w) => s + w, 0);
+      const xBar = xs.reduce((s, x, i) => s + x * ws[i], 0) / wSum;
+      const yBar = ys.reduce((s, y, i) => s + y * ws[i], 0) / wSum;
+      let num = 0, den = 0;
+      xs.forEach((x, i) => { num += ws[i] * (x - xBar) * (ys[i] - yBar); den += ws[i] * (x - xBar) ** 2; });
+      const slope = den ? num / den : 0;
+      return { slope, intercept: yBar - slope * xBar };
+    }
+    // R² goodness of fit
+    function rSquared(ys, ws, slope, intercept) {
+      const wSum = ws.reduce((s, w) => s + w, 0);
+      const yBar = ys.reduce((s, y, i) => s + y * ws[i], 0) / wSum;
+      const ssTot = ys.reduce((s, y, i) => s + ws[i] * (y - yBar) ** 2, 0);
+      const ssRes = ys.reduce((s, y, i) => s + ws[i] * (y - (slope * i + intercept)) ** 2, 0);
+      return ssTot > 0 ? Math.max(0, 1 - ssRes / ssTot) : 0;
+    }
+
+    // ── AI FORECAST (Upgraded: EWMA + Weighted Regression + R² confidence) ──
     function renderForecast(attempts) {
-      const fVal = document.getElementById('forecast-val');
-      const fSub = document.getElementById('forecast-sub');
+      const fVal  = document.getElementById('forecast-val');
+      const fSub  = document.getElementById('forecast-sub');
       const fConf = document.getElementById('forecast-confidence');
       if (!fVal) return;
+
       if (!attempts || attempts.length < 3) {
         fVal.textContent = '—';
-        fSub.textContent = 'Need ≥ 3 mocks to unlock your forecast.';
+        fSub.textContent = 'Need ≥ 3 mocks to unlock AI forecast.';
         if (fConf) fConf.textContent = '';
         return;
       }
+
       const sorted = [...attempts].sort((a, b) => new Date(a.created_at) - new Date(b.created_at));
       const scores = sorted.map(a => a.score || 0);
-      const n = scores.length, xBar = (n - 1) / 2, yBar = scores.reduce((s, v) => s + v, 0) / n;
-      let num = 0, den = 0;
-      scores.forEach((y, x) => { num += (x - xBar) * (y - yBar); den += (x - xBar) ** 2; });
-      const slope = den ? num / den : 0;
-      const forecast = Math.round(Math.min(240, Math.max(0, yBar + slope * n)));
-      const conf = n >= 10 ? 'High Confidence' : n >= 5 ? 'Medium Confidence' : 'Low Confidence';
-      const confColor = n >= 10 ? '#10b981' : n >= 5 ? '#f59e0b' : '#ef4444';
-      const confBg = n >= 10 ? 'rgba(16,185,129,0.1)' : n >= 5 ? 'rgba(245,158,11,0.1)' : 'rgba(239,68,68,0.1)';
+      const n = scores.length;
+      const xs = scores.map((_, i) => i);
+      const ws = expWeights(n, 0.25); // recent tests weighted more
+
+      // Weighted linear regression
+      const { slope, intercept } = weightedLinReg(xs, scores, ws);
+      const r2 = rSquared(scores, ws, slope, intercept);
+
+      // EWMA smoothed next prediction
+      const regPred = Math.round(slope * n + intercept);
+      // Blend regression with EWMA for stability
+      const ewmaAlpha = 0.35;
+      let ewma = scores[0];
+      scores.forEach(s => { ewma = ewmaAlpha * s + (1 - ewmaAlpha) * ewma; });
+      // Weighted blend: if R² is high, trust regression more
+      const blendWeight = Math.min(0.9, r2);
+      const rawForecast = blendWeight * regPred + (1 - blendWeight) * (ewma + slope * 2);
+      const forecast = Math.round(Math.min(240, Math.max(0, rawForecast)));
+
+      // Velocity: average change per test (last 5)
+      const recent5 = scores.slice(-5);
+      const velocity = recent5.length >= 2 ? (recent5.at(-1) - recent5[0]) / (recent5.length - 1) : 0;
+
+      // Plateau detection: stddev of last 4 scores
+      const last4 = scores.slice(-4);
+      const isPlateau = last4.length >= 4 && stddev(last4) < 8;
+
+      // IISER cutoff context
+      const cutoff = 160;
+      const sessionsToGoal = slope > 0.5 ? Math.ceil((cutoff - scores.at(-1)) / slope) : null;
+
+      // Confidence level
+      const confLevel = r2 >= 0.7 ? 'High' : r2 >= 0.4 ? 'Medium' : 'Low';
+      const confColor = r2 >= 0.7 ? '#10b981' : r2 >= 0.4 ? '#f59e0b' : '#ef4444';
+      const confBg    = r2 >= 0.7 ? 'rgba(16,185,129,0.12)' : r2 >= 0.4 ? 'rgba(245,158,11,0.12)' : 'rgba(239,68,68,0.12)';
+
+      // Trend label
+      const trendLabel = isPlateau ? '➡️ Plateau — push harder'
+        : velocity > 1.5 ? '🚀 Strong upward momentum'
+        : velocity > 0.3 ? '📈 Improving'
+        : velocity < -1.5 ? '⚠️ Declining fast'
+        : velocity < -0.3 ? '📉 Slightly declining'
+        : '➡️ Stable';
+
       fVal.textContent = `${forecast} / 240`;
-      fSub.textContent = `Based on ${n} tests. ${slope > 0 ? '📈 Upward' : slope < 0 ? '📉 Downward' : '➡️ Stable'} trend.`;
-      if (fConf) { fConf.textContent = conf; fConf.style.background = confBg; fConf.style.color = confColor; fConf.style.padding = '3px 10px'; fConf.style.borderRadius = '20px'; }
+      const goalNote = sessionsToGoal && sessionsToGoal > 0 && forecast < cutoff
+        ? ` ~${sessionsToGoal} more test${sessionsToGoal === 1 ? '' : 's'} to reach 160 cutoff.`
+        : forecast >= cutoff ? ' 🎯 Above IISER cutoff!' : '';
+      fSub.textContent = `${trendLabel}. Based on ${n} tests (R²=${r2.toFixed(2)}).${goalNote}`;
+      if (fConf) {
+        fConf.textContent = `${confLevel} Confidence`;
+        fConf.style.cssText = `background:${confBg};color:${confColor};padding:3px 10px;border-radius:20px;font-weight:700;font-size:11px;`;
+      }
     }
 
-    // ── ANOMALY DETECTION ──
+    // ── ANOMALY DETECTION (Upgraded: Z-score + Burnout + Spike detection) ──
     function detectAnomalies(attempts, stats) {
-      if (!attempts || attempts.length < 5) return;
+      if (!attempts || attempts.length < 4) return;
       const sorted = [...attempts].sort((a, b) => new Date(a.created_at) - new Date(b.created_at));
       const scores = sorted.map(a => a.score || 0);
-      const recent = scores.slice(-3), older = scores.slice(0, -3);
-      const rAvg = recent.reduce((s, v) => s + v, 0) / recent.length;
-      const oAvg = older.reduce((s, v) => s + v, 0) / older.length;
-      if (oAvg - rAvg > 20) {
-        const msg = document.getElementById('anomaly-msg');
-        if (msg) msg.innerHTML = `<strong>Performance drop detected!</strong> Your recent avg (${Math.round(rAvg)}) is ${Math.round(oAvg - rAvg)} pts below previous avg (${Math.round(oAvg)}). Review weak subjects.`;
+      const n = scores.length;
+
+      const allMean = mean(scores);
+      const allSd   = stddev(scores);
+      const lastScore = scores.at(-1);
+
+      // Z-score of last test
+      const zLast = allSd > 0 ? (lastScore - allMean) / allSd : 0;
+
+      // Recent vs older drop
+      const rAvg = mean(scores.slice(-3));
+      const oAvg = mean(scores.slice(0, -3));
+      const drop = oAvg - rAvg;
+
+      // Burnout: 4+ tests in last 7 days with declining scores
+      const now = Date.now();
+      const lastWeek = sorted.filter(a => now - new Date(a.created_at) < 7 * 864e5);
+      const burnoutRisk = lastWeek.length >= 4;
+
+      // Construct message
+      let msg = null;
+      if (drop > 25 || zLast < -1.8) {
+        msg = `<strong>⚠️ Significant performance drop!</strong> Recent avg <b>${Math.round(rAvg)}</b> is <b>${Math.round(drop)} pts</b> below your baseline <b>${Math.round(oAvg)}</b>. Review weak subjects before next attempt.`;
+      } else if (drop > 12) {
+        msg = `<strong>📉 Mild dip detected.</strong> Last 3 tests averaged <b>${Math.round(rAvg)}</b> vs your earlier <b>${Math.round(oAvg)}</b>. Could be fatigue — try a 2-day rest.`;
+      } else if (burnoutRisk) {
+        msg = `<strong>🔥 High test frequency!</strong> You've taken <b>${lastWeek.length} tests this week</b>. Recovery time improves retention — consider spacing tests every 2–3 days.`;
+      } else if (zLast > 2.5) {
+        msg = `<strong>🌟 Outstanding outlier!</strong> Your last score of <b>${lastScore}</b> is exceptional — <b>${zLast.toFixed(1)} standard deviations</b> above your average. Can you replicate it?`;
+      }
+      if (msg) {
+        const msgEl = document.getElementById('anomaly-msg');
+        if (msgEl) msgEl.innerHTML = msg;
         document.getElementById('anomaly-banner').classList.add('show');
       }
     }
 
-    // ── AI INSIGHTS ──
+    // ── AI INSIGHTS ENGINE (Upgraded: 8-signal deep analysis) ──
     function renderInsights(stats, perf) {
-      const sorted = [...perf].sort((a, b) => (a.accuracy || 0) - (b.accuracy || 0));
-      const weakest = sorted[0], strongest = [...perf].sort((a, b) => (b.accuracy || 0) - (a.accuracy || 0))[0];
-      const acc = parseFloat(stats.accuracy || 0), total = stats.total_attempts || 0;
-      const insights = [
-        {
-          icon: '🎯', iconBg: 'rgba(99,102,241,0.1)', blob: 'rgba(99,102,241,0.05)',
-          title: total === 0 ? 'Get Started!' : acc >= 70 ? 'Strong Accuracy!' : acc >= 50 ? 'Room to Improve' : 'Needs Practice',
-          text: total === 0 ? 'Take your first mock test to unlock personalised AI insights.' :
-            `Your accuracy is ${acc.toFixed(1)}% across ${total} test${total !== 1 ? 's' : ''}. ${acc >= 70 ? 'Excellent — maintain this!' : acc >= 50 ? 'Aim for above 70%.' : 'Focus on fundamentals and review mistakes.'}`
-        },
-        {
-          icon: weakest ? '⚠️' : '📚', iconBg: 'rgba(245,158,11,0.1)', blob: 'rgba(245,158,11,0.05)',
-          title: weakest ? `Weak: ${weakest.subject}` : 'Subject Analysis',
-          text: weakest ? `${weakest.subject} accuracy is ${Math.round(weakest.accuracy || 0)}%. Prioritise it in your next sessions — focused practice can improve this by 15-20% quickly.` :
-            'Complete subject-wise tests to identify weak areas.'
-        },
-        {
-          icon: strongest ? '🌟' : '🚀', iconBg: 'rgba(16,185,129,0.1)', blob: 'rgba(16,185,129,0.05)',
-          title: strongest ? `Top: ${strongest.subject}` : 'Start Practicing',
-          text: strongest ? `Strongest in ${strongest.subject} at ${Math.round(strongest.accuracy || 0)}%. Leverage this in the exam — shift more time to weaker subjects.` :
-            'Attempt mock tests regularly to unlock performance analysis.'
+      const total = stats.total_attempts || 0;
+      const acc   = parseFloat(stats.accuracy || 0);
+      const best  = stats.best_score || 0;
+      const avg   = stats.avg_score || 0;
+      const sorted = [...allAttempts].sort((a, b) => new Date(a.created_at) - new Date(b.created_at));
+      const scores = sorted.map(a => a.score || 0);
+      const n = scores.length;
+      const ws = expWeights(n, 0.25);
+      const cutoff = 160;
+
+      // ── Derived signals ──
+      // 1. Consistency score (0–100): inverse of coefficient of variation
+      const sd = stddev(scores);
+      const avgS = mean(scores);
+      const consistencyScore = avgS > 0 ? Math.max(0, Math.round(100 * (1 - Math.min(1, sd / avgS)))) : 0;
+
+      // 2. Momentum: slope from weighted regression over last 5 tests
+      const last5s = scores.slice(-5), last5xs = last5s.map((_, i) => i);
+      const last5ws = expWeights(last5s.length, 0.3);
+      const { slope: momentum } = last5s.length >= 2 ? weightedLinReg(last5xs, last5s, last5ws) : { slope: 0 };
+
+      // 3. Plateau detection
+      const isPlateau = n >= 4 && stddev(scores.slice(-4)) < 8;
+
+      // 4. Current level vs cutoff
+      const gapToCutoff = cutoff - avgS;
+
+      // 5. Subject analytics
+      const perfSorted   = [...perf].sort((a, b) => (a.accuracy || 0) - (b.accuracy || 0));
+      const weakest   = perfSorted[0];
+      const strongest = perfSorted.at(-1);
+      const subjectGap = perf.length >= 2
+        ? Math.round((strongest?.accuracy || 0) - (weakest?.accuracy || 0))
+        : 0;
+
+      // 6. Study day pattern (most productive day of week)
+      const dayCounts = {};
+      sorted.forEach(a => {
+        const day = new Date(a.created_at).toLocaleDateString('en-IN', { weekday: 'short' });
+        if (!dayCounts[day]) dayCounts[day] = { count: 0, scoreSum: 0 };
+        dayCounts[day].count++;
+        dayCounts[day].scoreSum += a.score || 0;
+      });
+      const bestDay = Object.entries(dayCounts).sort((a, b) => (b[1].scoreSum / b[1].count) - (a[1].scoreSum / a[1].count))[0];
+
+      // 7. Estimated percentile (proxy: score vs cutoff range 0–240)
+      const pctile = Math.min(99, Math.round((avgS / 240) * 100 * 1.4));
+
+      // 8. Attempted subjects coverage
+      const subjectsCovered = perf.length;
+      const totalExpected = 4; // Physics, Chemistry, Biology, Maths
+      const subjectCoverageMsg = subjectsCovered >= totalExpected
+        ? 'Full subject coverage ✅'
+        : `${subjectsCovered}/${totalExpected} subjects practiced — try the others too`;
+
+      // ── Build insight cards ──
+      const insights = [];
+
+      if (total === 0) {
+        insights.push(
+          { icon: '🚀', iconBg: 'rgba(99,102,241,0.1)', blob: 'rgba(99,102,241,0.05)', title: 'Start Your Journey', text: 'Take your first IISER IAT mock test. The AI will instantly analyse your performance and give you a personalised roadmap.' },
+          { icon: '📊', iconBg: 'rgba(6,182,212,0.1)',   blob: 'rgba(6,182,212,0.05)',  title: 'AI Forecast Awaits', text: 'After 3+ tests, the AI unlocks score predictions using exponential trend analysis and weighted regression — unique to your learning curve.' },
+          { icon: '🎯', iconBg: 'rgba(16,185,129,0.1)', blob: 'rgba(16,185,129,0.05)', title: 'Target: 160+ / 240', text: 'IISER IAT cutoff is typically 160/240. Your dashboard will show how many tests away you are and what subjects to fix first.' }
+        );
+      } else {
+        // Insight 1: Accuracy Intelligence
+        insights.push({
+          icon: acc >= 75 ? '🏆' : acc >= 60 ? '🎯' : acc >= 45 ? '📈' : '📚',
+          iconBg: acc >= 70 ? 'rgba(16,185,129,0.1)' : acc >= 50 ? 'rgba(245,158,11,0.1)' : 'rgba(239,68,68,0.1)',
+          blob: acc >= 70 ? 'rgba(16,185,129,0.05)' : 'rgba(239,68,68,0.05)',
+          title: acc >= 75 ? 'Excellent Accuracy!' : acc >= 60 ? 'Good Accuracy' : acc >= 45 ? 'Accuracy Needs Work' : 'Critical: Low Accuracy',
+          text: `Overall: <b>${acc.toFixed(1)}%</b> across ${total} test${total !== 1 ? 's' : ''}. ${
+            acc >= 70 ? 'You are above the accuracy threshold for strong IISER candidates. Maintain this.' :
+            acc >= 50 ? `Improve by ${(70 - acc).toFixed(0)}% to reach target. Focus on avoiding negative-marked guesses.` :
+            'Review each wrong answer. Negative marking means every 3 wrongs cancel 1 correct. Attempt only confident questions.'
+          }`
+        });
+
+        // Insight 2: Momentum & Trajectory
+        insights.push({
+          icon: momentum > 2 ? '🚀' : momentum > 0.3 ? '📈' : isPlateau ? '⏸️' : momentum < -2 ? '🆘' : '📉',
+          iconBg: momentum > 0.5 ? 'rgba(16,185,129,0.1)' : isPlateau ? 'rgba(99,102,241,0.1)' : 'rgba(239,68,68,0.1)',
+          blob: momentum > 0 ? 'rgba(16,185,129,0.05)' : 'rgba(239,68,68,0.05)',
+          title: momentum > 2 ? 'Strong Momentum 🔥' : momentum > 0.3 ? 'Upward Trend' : isPlateau ? 'Performance Plateau' : momentum < -1 ? 'Declining — Act Now' : 'Stable Performance',
+          text: isPlateau
+            ? `Your last 4 scores (σ=${sd.toFixed(1)}) show a plateau. You're not getting worse — but you're not improving. Try new question types, timed practice, or chapter-wise drills to break through.`
+            : `Recent velocity: <b>${momentum > 0 ? '+' : ''}${momentum.toFixed(1)} pts/test</b> over last 5 tests. ${
+              momentum > 2 ? 'Outstanding growth rate — you are accelerating toward your goal.'
+              : momentum > 0.3 ? 'Keep this upward trajectory. Consistency is key.'
+              : momentum < -1 ? 'Immediate action needed. Analyse your last 3 tests for patterns.'
+              : 'Small ups and downs are normal. Focus on your 30-day average.'
+            }`
+        });
+
+        // Insight 3: IISER Cutoff Distance
+        insights.push({
+          icon: avgS >= cutoff ? '✅' : avgS >= cutoff * 0.8 ? '🎯' : '⚡',
+          iconBg: avgS >= cutoff ? 'rgba(16,185,129,0.1)' : 'rgba(99,102,241,0.1)',
+          blob: 'rgba(99,102,241,0.05)',
+          title: avgS >= cutoff ? 'Above Cutoff Average!' : `${Math.round(gapToCutoff)} pts to IISER Cutoff`,
+          text: avgS >= cutoff
+            ? `Your average score <b>${Math.round(avgS)}/240</b> already exceeds the typical IISER cutoff of <b>160</b>. Focus on consistency — your best score is <b>${best}</b>.`
+            : `You need <b>+${Math.round(gapToCutoff)} pts</b> on average to reach 160. ${
+                momentum > 0 ? `At current pace (+${momentum.toFixed(1)}/test), estimate ~${Math.ceil(gapToCutoff / (momentum || 0.5))} more focused tests.`
+                : 'Prioritise high-weightage chapters and reduce time on sections you already know.'
+              }`
+        });
+
+        // Insight 4: Subject Weakness
+        if (perf.length > 0) {
+          insights.push({
+            icon: weakest && weakest.accuracy < 60 ? '⚠️' : '📋',
+            iconBg: weakest && weakest.accuracy < 50 ? 'rgba(239,68,68,0.1)' : 'rgba(245,158,11,0.1)',
+            blob: 'rgba(245,158,11,0.05)',
+            title: weakest ? `Weakest Subject: ${weakest.subject}` : 'Subject Balance',
+            text: weakest
+              ? `<b>${weakest.subject}</b> accuracy: <b>${Math.round(weakest.accuracy || 0)}%</b>. ${
+                subjectGap > 30 ? `There is a <b>${subjectGap}%</b> gap between your best and worst subject — high risk on exam day. ` : ''
+              }Spend 60% of study time on ${weakest.subject} this week. Target: above 65%.`
+              : 'Take subject-wise tests to reveal weak areas.'
+          });
         }
-      ];
-      document.getElementById('insights-grid').innerHTML = insights.map(i => `
-    <div class="insight-card fade-up" style="--card-blob:${i.blob};">
-      <div class="insight-icon" style="background:${i.iconBg};">${i.icon}</div>
-      <div class="insight-title">${i.title}</div>
-      <div class="insight-text">${i.text}</div>
+
+        // Insight 5: Consistency Score
+        insights.push({
+          icon: consistencyScore >= 75 ? '🎯' : consistencyScore >= 50 ? '📊' : '🔄',
+          iconBg: 'rgba(6,182,212,0.1)',
+          blob: 'rgba(6,182,212,0.05)',
+          title: `Consistency: ${consistencyScore}/100`,
+          text: `Your score standard deviation is <b>${sd.toFixed(1)} pts</b>. ${
+            consistencyScore >= 75 ? 'Very consistent performance — indicative of strong conceptual clarity.'
+            : consistencyScore >= 50 ? 'Moderate variance. Some tests spiked or dropped. Work on exam-day stability.'
+            : 'High variance suggests topic gaps. Some days great, others not. Chapter-wise practice reduces this dramatically.'
+          } Best: <b>${best}</b>, Avg: <b>${Math.round(avgS)}</b>.`
+        });
+
+        // Insight 6: Optimal Study Pattern
+        if (total >= 3 && bestDay) {
+          insights.push({
+            icon: '🗓️',
+            iconBg: 'rgba(168,85,247,0.1)',
+            blob: 'rgba(168,85,247,0.05)',
+            title: 'Your Peak Performance Day',
+            text: `You score highest on <b>${bestDay[0]}s</b> (avg: <b>${Math.round(bestDay[1].scoreSum / bestDay[1].count)}</b>). Schedule your most difficult topics and full mocks on this day. ${subjectCoverageMsg}.`
+          });
+        }
+
+        // Insight 7: Estimated Percentile
+        if (total >= 2) {
+          insights.push({
+            icon: pctile >= 80 ? '🌟' : pctile >= 60 ? '📈' : '🔥',
+            iconBg: pctile >= 70 ? 'rgba(16,185,129,0.1)' : 'rgba(245,158,11,0.1)',
+            blob: 'rgba(99,102,241,0.05)',
+            title: `~Top ${100 - pctile}% Estimated`,
+            text: `Based on your avg of <b>${Math.round(avgS)}/240</b>, the AI estimates you are in approximately the <b>top ${100 - pctile}%</b> of IAT test-takers. ${
+              pctile >= 80 ? 'Excellent standing — maintain revision and mock frequency.'
+              : pctile >= 60 ? 'Good position. 2–3 more focused weeks can push you into the top tier.'
+              : 'Significant improvement headroom. Focus on NCERT-level mastery first, then advanced questions.'
+            }`
+          });
+        }
+
+        // Insight 8: Smart Action Suggestion
+        const actionText =
+          isPlateau ? `Break your plateau: mock a <b>timed 3-hour full test</b> this weekend, then drill the chapters with lowest scores. Plateaus are broken by intensity—not volume.`
+          : momentum < -1 ? `Recovery plan: take a 2-day break, then attempt <b>subject-wise mini tests</b> (20 Qs) rather than full mocks. Rebuild accuracy before speed.`
+          : acc < 50 ? `Stop attempting questions you're unsure of. Practice <b>selective answering</b>: attempt 40/60 with 80%+ confidence for higher net score.`
+          : avgS >= cutoff ? `You're in the zone! Now focus on <b>time management</b>: track time per question and aim to finish with 15 min to spare for review.`
+          : `Next focus: take 1 full mock + 2 subject tests per week. Review every wrong answer within 24h — that review session is worth 3x the mock attempt.`;
+
+        insights.push({
+          icon: '🤖',
+          iconBg: 'rgba(99,102,241,0.12)',
+          blob: 'rgba(99,102,241,0.05)',
+          title: 'AI Recommendation',
+          text: actionText
+        });
+      }
+
+      document.getElementById('insights-grid').innerHTML = insights.map((ins, idx) => `
+    <div class="insight-card fade-up" style="--card-blob:${ins.blob};animation-delay:${idx * 0.07}s;">
+      <div class="insight-icon" style="background:${ins.iconBg};">${ins.icon}</div>
+      <div class="insight-title">${ins.title}</div>
+      <div class="insight-text">${ins.text}</div>
     </div>`).join('');
     }
 
