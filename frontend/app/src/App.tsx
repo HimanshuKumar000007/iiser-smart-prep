@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Sidebar from './components/Sidebar';
 import Topbar from './components/Topbar';
@@ -9,11 +9,28 @@ import MockTests from './pages/MockTests';
 import AIDoubts from './pages/AIDoubts';
 import Analytics from './pages/Analytics';
 import type { Page } from './types';
+import { supabase } from './lib/supabase';
+import type { Session } from '@supabase/supabase-js';
 import './App.css';
 
 function App() {
   const [currentPage, setCurrentPage] = useState<Page>('dashboard');
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [session, setSession] = useState<Session | null | undefined>(undefined); // undefined = loading
+
+  useEffect(() => {
+    // Get initial session
+    supabase.auth.getSession().then(({ data: { session: s } }) => {
+      setSession(s);
+    });
+
+    // Listen for auth changes
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, s) => {
+      setSession(s);
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
 
   const renderPage = () => {
     switch (currentPage) {
@@ -26,6 +43,41 @@ function App() {
       default:             return <Dashboard />;
     }
   };
+
+  // Loading session check
+  if (session === undefined) {
+    return (
+      <div className="min-h-screen bg-[#0B0F14] flex items-center justify-center">
+        <div className="flex flex-col items-center gap-4">
+          <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center animate-pulse">
+            <span className="text-2xl">✦</span>
+          </div>
+          <p className="text-gray-400 text-sm">Loading IISER Smart Prep...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Not logged in → redirect to login (for standalone use; in main site, auth is handled via login.html)
+  if (!session) {
+    return (
+      <div className="min-h-screen bg-[#0B0F14] flex items-center justify-center">
+        <div className="text-center max-w-sm mx-auto px-6">
+          <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center mx-auto mb-6">
+            <span className="text-3xl">✦</span>
+          </div>
+          <h1 className="text-2xl font-bold text-white mb-2">IISER Smart Prep</h1>
+          <p className="text-gray-400 mb-6">Sign in to access your personalized AI dashboard</p>
+          <a
+            href="/login.html"
+            className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-indigo-500 to-purple-600 text-white font-semibold hover:from-indigo-600 hover:to-purple-700 transition-all"
+          >
+            Go to Login →
+          </a>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-[#0B0F14] text-white overflow-hidden">
@@ -47,21 +99,17 @@ function App() {
       />
 
       <div className="relative flex h-screen">
-        {/* Sidebar */}
         <Sidebar
           currentPage={currentPage}
           onPageChange={setCurrentPage}
           isOpen={isSidebarOpen}
           onToggle={() => setIsSidebarOpen(!isSidebarOpen)}
         />
-
-        {/* Main Content */}
         <div className="flex-1 flex flex-col min-w-0">
           <Topbar
             onMenuToggle={() => setIsSidebarOpen(!isSidebarOpen)}
             isSidebarOpen={isSidebarOpen}
           />
-
           <main className="flex-1 overflow-auto p-6">
             <AnimatePresence mode="wait">
               <motion.div
