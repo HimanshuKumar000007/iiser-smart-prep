@@ -1,13 +1,3 @@
-# ⚠️ ARCHIVED — Unused React/Vite Scaffold
-
-This `app/` folder is **not deployed** and **not connected** to the live site.
-
-The live platform at `iisersmartprep.space` runs from the `frontend/` directory (plain HTML/JS static files). This React SPA was scaffolded but never integrated.
-
-**Do not edit these files** — make all changes in `frontend/` and `backend/` instead.
-
----
-
 # React + TypeScript + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.

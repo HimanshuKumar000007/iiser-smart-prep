@@ -1,40 +1,29 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Sidebar from './components/Sidebar';
 import Topbar from './components/Topbar';
 import Dashboard from './pages/Dashboard';
+import StudyGroups from './pages/StudyGroups';
+import Battles from './pages/Battles';
 import MockTests from './pages/MockTests';
-import MasterFormula from './pages/MasterFormula';
+import AIDoubts from './pages/AIDoubts';
+import Analytics from './pages/Analytics';
 import type { Page } from './types';
 import './App.css';
 
 function App() {
   const [currentPage, setCurrentPage] = useState<Page>('dashboard');
-  const [isSidebarOpen, setIsSidebarOpen] = useState(window.innerWidth >= 1024);
-
-  useEffect(() => {
-    const handleResize = () => {
-      if (window.innerWidth < 1024) {
-        setIsSidebarOpen(false);
-      } else {
-        setIsSidebarOpen(true);
-      }
-    };
-
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 
   const renderPage = () => {
     switch (currentPage) {
-      case 'dashboard':
-        return <Dashboard onNavigate={setCurrentPage} />;
-      case 'mock-tests':
-        return <MockTests />;
-      case 'master-formula':
-        return <MasterFormula />;
-      default:
-        return <Dashboard onNavigate={setCurrentPage} />;
+      case 'dashboard':    return <Dashboard />;
+      case 'study-groups': return <StudyGroups />;
+      case 'battles':      return <Battles />;
+      case 'mock-tests':   return <MockTests />;
+      case 'ai-doubts':    return <AIDoubts />;
+      case 'analytics':    return <Analytics />;
+      default:             return <Dashboard />;
     }
   };
 
