@@ -54,7 +54,7 @@
     .user-pill { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 10px; background: var(--card); border: 1px solid var(--border); }
     .user-avatar { width: 32px; height: 32px; border-radius: 8px; background: linear-gradient(135deg,var(--indigo),var(--purple)); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 13px; flex-shrink: 0; }
     .user-info { overflow: hidden; }
-    .user-name { font-size: 13px; font-weight: 600; truncate white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .user-name { font-size: 13px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     .user-email { font-size: 11px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
     /* Main */
@@ -374,19 +374,19 @@
         </div>
         <div class="card card-lg">
           <div class="section-title">⚡ Quick Actions</div>
-          <div onclick="showPage('mock-tests')" style="cursor:pointer;" class="task-item" style="background:rgba(99,102,241,0.05);border-color:rgba(99,102,241,0.2);">
+          <div onclick="showPage('mock-tests')" class="task-item" style="cursor:pointer;background:rgba(99,102,241,0.05);border-color:rgba(99,102,241,0.2);">
             <div class="task-type-icon" style="background:rgba(99,102,241,0.2);">🧠</div>
             <div class="flex-1"><div class="task-title">Adaptive Mock Test</div><div class="task-sub">AI-calibrated difficulty</div></div><span style="color:var(--muted);">›</span>
           </div>
-          <div onclick="showPage('ai-doubts')" style="cursor:pointer;" class="task-item" style="background:rgba(168,85,247,0.05);border-color:rgba(168,85,247,0.2);">
+          <div onclick="showPage('ai-doubts')" class="task-item" style="cursor:pointer;background:rgba(168,85,247,0.05);border-color:rgba(168,85,247,0.2);">
             <div class="task-type-icon" style="background:rgba(168,85,247,0.2);">⚡</div>
             <div class="flex-1"><div class="task-title">Ask AI Tutor</div><div class="task-sub">Instant concept explanations</div></div><span style="color:var(--muted);">›</span>
           </div>
-          <div onclick="showPage('analytics')" style="cursor:pointer;" class="task-item" style="background:rgba(34,197,94,0.05);border-color:rgba(34,197,94,0.2);">
+          <div onclick="showPage('analytics')" class="task-item" style="cursor:pointer;background:rgba(34,197,94,0.05);border-color:rgba(34,197,94,0.2);">
             <div class="task-type-icon" style="background:rgba(34,197,94,0.2);">📈</div>
             <div class="flex-1"><div class="task-title">Performance Analytics</div><div class="task-sub">Deep insights into your tests</div></div><span style="color:var(--muted);">›</span>
           </div>
-          <div onclick="showPage('battles')" style="cursor:pointer;" class="task-item" style="background:rgba(239,68,68,0.05);border-color:rgba(239,68,68,0.2);">
+          <div onclick="showPage('battles')" class="task-item" style="cursor:pointer;background:rgba(239,68,68,0.05);border-color:rgba(239,68,68,0.2);">
             <div class="task-type-icon" style="background:rgba(239,68,68,0.2);">⚔️</div>
             <div class="flex-1"><div class="task-title">Join a Battle</div><div class="task-sub">Live peer competition</div></div><span style="color:var(--muted);">›</span>
           </div>
@@ -991,8 +991,11 @@ function showPage(id) {
 }
 
 function toggleSidebar() {
-  document.getElementById('sidebar').classList.toggle('collapsed');
-  document.querySelectorAll('.nav-label,.logo-text').forEach(el=>el.style.display='');
+  const sb = document.getElementById('sidebar');
+  const collapsed = sb.classList.toggle('collapsed');
+  document.querySelectorAll('.nav-label,.logo-text').forEach(el => {
+    el.style.display = collapsed ? 'none' : '';
+  });
 }
 
 // ═══════════════════════════ MOCK TEST ENGINE ══════════════════════════════════
@@ -1101,7 +1104,7 @@ function renderQuestion() {
   }).join('');
 
   const expEl = document.getElementById('q-explanation');
-  if (answered) { expEl.innerHTML = `<span style="font-size:12px;font-weight:700;color:#818cf8;margin-bottom:6px;display:block;">💡 Explanation</span><span style="font-size:12px;">${q.explanation||''}</span>`; expEl.classList.add('show'); }
+  if (answered) { expEl.innerHTML = `<span style="font-size:12px;font-weight:700;color:#818cf8;margin-bottom:6px;display:block;">💡 Explanation</span><span style="font-size:12px;">${q.exp||''}</span>`; expEl.classList.add('show'); }
   else { expEl.innerHTML=''; expEl.classList.remove('show'); }
 
   const nextBtn = document.getElementById('next-btn');
