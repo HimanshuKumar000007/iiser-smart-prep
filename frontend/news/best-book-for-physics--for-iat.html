@@ -1960,11 +1960,11 @@
             </div>
 
             <div style="text-align: center; margin-bottom: 1rem;">
-                <span id="countdown-line" style="color: #ef4444; font-weight: 700; font-size: 0.9rem;">Ends in 5 days ⏳</span>
+                <span id="countdown-line" style="color: #ef4444; font-weight: 700; font-size: 0.9rem;">Ends in 4 days ⏳</span>
                 <div style="font-size: 0.9rem; color: var(--text-muted); text-decoration: line-through; margin-top: 0.25rem;">₹499</div>
             </div>
             <button class="btn btn-primary" style="width: 100%; margin-bottom: 0.75rem;" onclick="redirectToPricing()">
-                Upgrade to PRO - ₹299
+                Upgrade to PRO - ₹249
             </button>
             <button class="btn btn-outline" style="width: 100%; border: none;" onclick="closeModal()">
                 Maybe Later
@@ -2020,10 +2020,10 @@
     <script>
         (function() {
             const countdownElement = document.getElementById('countdown-line');
-            let expiry = localStorage.getItem('IAT_SALE_EXPIRY');
+            let expiry = localStorage.getItem('IAT_SALE_EXPIRY_4DAY');
             if (!expiry) {
-                expiry = Date.now() + (5 * 24 * 60 * 60 * 1000);
-                localStorage.setItem('IAT_SALE_EXPIRY', expiry);
+                expiry = Date.now() + (4 * 24 * 60 * 60 * 1000);
+                localStorage.setItem('IAT_SALE_EXPIRY_4DAY', expiry);
             } else {
                 expiry = parseInt(expiry);
             }
