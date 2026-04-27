@@ -228,7 +228,7 @@ app.post("/api/create-order", authMiddleware, async (req, res) => {
     }
 
     const options = {
-      amount: 69900, // ₹699 = 69900 paise
+      amount: 39900, // ₹399 = 39900 paise
       currency: "INR",
       receipt: "receipt_" + Date.now(),
       notes: {
@@ -310,7 +310,7 @@ app.post("/api/verify-payment", authMiddleware, async (req, res) => {
       user_id: req.user.id,
       razorpay_order_id,
       razorpay_payment_id,
-      amount: 69900,
+      amount: 39900,
       currency: "INR",
       status: "captured",
       source: "verify-payment"
