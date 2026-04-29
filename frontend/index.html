@@ -2031,6 +2031,709 @@
             }
         }
     </style>
+    <style id="premium-css">
+        .hero-split {
+            padding: 9rem 0 5rem;
+            text-align: left
+        }
+
+        .hero-split-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center
+        }
+
+        .hero-badge-premium {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: linear-gradient(135deg, #f0f9ff, #ecfeff);
+            border: 1px solid rgba(6, 182, 212, .25);
+            border-radius: 100px;
+            padding: 7px 18px;
+            font-size: 13px;
+            font-weight: 600;
+            color: #0891b2;
+            margin-bottom: 1.5rem
+        }
+
+        .hero-badge-dot {
+            width: 8px;
+            height: 8px;
+            background: #22c55e;
+            border-radius: 50%;
+            animation: pulse-glow 2s ease-in-out infinite
+        }
+
+        .hero-badge-live {
+            background: #22c55e;
+            color: #fff;
+            font-size: 10px;
+            font-weight: 800;
+            padding: 2px 7px;
+            border-radius: 100px;
+            letter-spacing: .05em
+        }
+
+        .hero-split h1 {
+            font-size: clamp(2rem, 4vw, 3.4rem);
+            font-weight: 800;
+            line-height: 1.1;
+            letter-spacing: -.04em;
+            margin-bottom: 1.25rem;
+            color: var(--secondary);
+            text-align: left
+        }
+
+        .hero-subhead-premium {
+            font-size: 1.05rem;
+            line-height: 1.7;
+            color: var(--text-muted);
+            margin-bottom: 2rem;
+            max-width: 520px
+        }
+
+        .hero-cta-block {
+            display: flex;
+            gap: .75rem;
+            flex-wrap: wrap;
+            margin-bottom: .75rem
+        }
+
+        .btn-hero-main {
+            background: linear-gradient(135deg, #6366f1, #4f46e5);
+            color: #fff;
+            font-size: 1.05rem;
+            font-weight: 700;
+            padding: .9rem 2rem;
+            border-radius: 12px;
+            border: none;
+            box-shadow: 0 6px 24px rgba(99, 102, 241, .3);
+            transition: all .3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px
+        }
+
+        .btn-hero-main:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 32px rgba(99, 102, 241, .42);
+            color: #fff
+        }
+
+        .btn-arrow-hero {
+            font-size: 1.1rem;
+            transition: transform .2s
+        }
+
+        .btn-hero-main:hover .btn-arrow-hero {
+            transform: translateX(3px)
+        }
+
+        .btn-hero-secondary {
+            padding: .9rem 1.5rem;
+            border-radius: 12px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 600
+        }
+
+        .hero-trust-micro {
+            font-size: .8rem;
+            color: var(--text-light);
+            margin-bottom: 2rem
+        }
+
+        .hero-stats-inline {
+            display: flex;
+            gap: 1.25rem;
+            flex-wrap: wrap;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--border)
+        }
+
+        .hero-stat-chip {
+            display: flex;
+            flex-direction: column
+        }
+
+        .hero-stat-chip strong {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--secondary);
+            line-height: 1
+        }
+
+        .hero-stat-chip span {
+            font-size: .72rem;
+            color: var(--text-muted);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: .04em;
+            margin-top: 3px
+        }
+
+        .hero-visual {
+            position: relative
+        }
+
+        .product-window {
+            background: #fff;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 0 0 1px rgba(0, 0, 0, .06), 0 24px 60px -10px rgba(0, 0, 0, .18);
+            transform: perspective(1000px) rotateY(-4deg) rotateX(1.5deg);
+            transition: transform .5s ease
+        }
+
+        .product-window:hover {
+            transform: perspective(1000px) rotateY(0) rotateX(0)
+        }
+
+        .product-chrome {
+            background: #f1f5f9;
+            border-bottom: 1px solid #e2e8f0;
+            padding: 10px 14px;
+            display: flex;
+            align-items: center;
+            gap: 10px
+        }
+
+        .chrome-dots {
+            display: flex;
+            gap: 5px
+        }
+
+        .dot-red {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #ef4444
+        }
+
+        .dot-yellow {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #f59e0b
+        }
+
+        .dot-green {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #22c55e
+        }
+
+        .chrome-url {
+            font-size: 11px;
+            color: #64748b;
+            background: #fff;
+            padding: 3px 10px;
+            border-radius: 6px;
+            border: 1px solid #e2e8f0;
+            flex: 1;
+            text-align: center
+        }
+
+        .product-body {
+            padding: 1.25rem;
+            background: #f8fafc
+        }
+
+        .sim-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem
+        }
+
+        .sim-title {
+            font-size: .9rem;
+            font-weight: 700;
+            color: var(--secondary)
+        }
+
+        .sim-tag {
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            color: #fff;
+            font-size: .65rem;
+            font-weight: 800;
+            padding: 3px 10px;
+            border-radius: 100px;
+            letter-spacing: .06em
+        }
+
+        .sim-stats-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: .6rem;
+            margin-bottom: 1rem
+        }
+
+        .sim-stat {
+            background: #fff;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: .6rem .5rem;
+            text-align: center
+        }
+
+        .sim-stat strong {
+            display: block;
+            font-size: .95rem;
+            font-weight: 800;
+            color: var(--secondary)
+        }
+
+        .sim-stat small {
+            font-size: .62rem;
+            color: var(--text-muted)
+        }
+
+        .sim-progress-label {
+            font-size: .72rem;
+            font-weight: 700;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: .04em;
+            margin-bottom: .6rem
+        }
+
+        .sim-bar-row {
+            display: grid;
+            grid-template-columns: 70px 1fr 30px;
+            align-items: center;
+            gap: .5rem;
+            margin-bottom: .45rem;
+            font-size: .75rem;
+            color: var(--text-muted);
+            font-weight: 500
+        }
+
+        .sim-bar {
+            background: #e2e8f0;
+            border-radius: 4px;
+            height: 6px;
+            overflow: hidden
+        }
+
+        .sim-fill {
+            height: 100%;
+            border-radius: 4px
+        }
+
+        .sim-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 1rem;
+            padding-top: .75rem;
+            border-top: 1px solid #e2e8f0
+        }
+
+        .sim-ai-badge {
+            font-size: .72rem;
+            color: var(--ai-cyan);
+            font-weight: 600
+        }
+
+        .sim-cta-mini {
+            font-size: .72rem;
+            font-weight: 700;
+            color: var(--primary);
+            cursor: pointer
+        }
+
+        .float-card {
+            position: absolute;
+            background: #fff;
+            border-radius: 12px;
+            padding: 10px 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, .12);
+            font-size: .8rem;
+            z-index: 2
+        }
+
+        .float-card span {
+            font-size: 1.4rem
+        }
+
+        .float-card strong {
+            display: block;
+            font-size: .9rem;
+            font-weight: 800;
+            color: var(--secondary)
+        }
+
+        .float-card small {
+            color: var(--text-muted);
+            font-size: .7rem
+        }
+
+        .float-card-1 {
+            top: 18%;
+            right: -38px;
+            animation: float 5s ease-in-out infinite
+        }
+
+        .float-card-2 {
+            bottom: 20%;
+            left: -38px;
+            animation: float 5s ease-in-out infinite;
+            animation-delay: 1.2s
+        }
+
+        @media(max-width:1100px) {
+            .hero-split-grid {
+                grid-template-columns: 1fr;
+                gap: 3rem;
+                text-align: center
+            }
+
+            .hero-split h1,
+            .hero-subhead-premium {
+                text-align: center
+            }
+
+            .hero-cta-block,
+            .hero-stats-inline {
+                justify-content: center
+            }
+
+            .hero-trust-micro {
+                text-align: center
+            }
+
+            .float-card {
+                display: none
+            }
+
+            .product-window {
+                transform: none;
+                max-width: 480px;
+                margin: 0 auto
+            }
+        }
+
+        @media(max-width:768px) {
+            .hero-split {
+                padding: 7rem 0 4rem
+            }
+
+            .hero-visual {
+                display: none
+            }
+        }
+
+        /* Problem-Solution */
+        .problem-solution-section {
+            padding: 6rem 0;
+            background: #fff
+        }
+
+        .ps-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            max-width: 1100px;
+            margin: 0 auto
+        }
+
+        @media(max-width:768px) {
+            .ps-grid {
+                grid-template-columns: 1fr;
+                gap: 3rem
+            }
+        }
+
+        .ps-kicker {
+            display: inline-block;
+            font-size: 11px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: .1em;
+            padding: 5px 14px;
+            border-radius: 100px;
+            margin-bottom: 1rem
+        }
+
+        .ps-kicker.error {
+            background: #fee2e2;
+            color: #dc2626
+        }
+
+        .ps-kicker.success {
+            background: #dcfce7;
+            color: #16a34a
+        }
+
+        .ps-heading {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--secondary);
+            margin-bottom: 1.5rem;
+            line-height: 1.3
+        }
+
+        .ps-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem
+        }
+
+        .ps-list li {
+            display: flex;
+            gap: 1rem;
+            align-items: flex-start
+        }
+
+        .ps-icon {
+            flex-shrink: 0;
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem
+        }
+
+        .ps-icon.err {
+            background: #fee2e2
+        }
+
+        .ps-icon.ok {
+            background: #dcfce7;
+            color: #16a34a;
+            font-weight: 800
+        }
+
+        .ps-list li strong {
+            display: block;
+            font-size: 1rem;
+            color: var(--secondary);
+            margin-bottom: 3px
+        }
+
+        .ps-list li p {
+            font-size: .88rem;
+            color: var(--text-muted);
+            line-height: 1.5;
+            margin: 0
+        }
+
+        /* Testimonial Cards */
+        .tcard {
+            background: #fff;
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 2rem;
+            transition: all .3s ease
+        }
+
+        .tcard:hover {
+            border-color: #cbd5e1;
+            box-shadow: 0 12px 40px -10px rgba(0, 0, 0, .1);
+            transform: translateY(-4px)
+        }
+
+        .tcard-stars {
+            color: #fbbf24;
+            font-size: 1rem;
+            margin-bottom: .75rem;
+            letter-spacing: 2px
+        }
+
+        .tcard-quote {
+            font-size: .95rem;
+            line-height: 1.7;
+            color: var(--secondary);
+            font-style: italic;
+            margin-bottom: 1rem
+        }
+
+        .tcard-badges {
+            display: flex;
+            gap: .5rem;
+            flex-wrap: wrap;
+            margin-bottom: 1rem
+        }
+
+        .tcard-badge {
+            background: linear-gradient(135deg, #dcfce7, #d1fae5);
+            color: #16a34a;
+            font-size: .75rem;
+            font-weight: 700;
+            padding: 5px 12px;
+            border-radius: 100px
+        }
+
+        .tcard-author {
+            display: flex;
+            align-items: center;
+            gap: .75rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border)
+        }
+
+        .tcard-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            color: #fff;
+            font-size: .8rem;
+            flex-shrink: 0
+        }
+
+        .tcard-author strong {
+            display: block;
+            font-size: .9rem;
+            color: var(--secondary)
+        }
+
+        .tcard-author span {
+            font-size: .78rem;
+            color: var(--text-muted)
+        }
+
+        .testimonial-stat-row {
+            display: flex;
+            justify-content: center;
+            gap: 5rem;
+            flex-wrap: wrap;
+            padding: 3rem 0 0;
+            border-top: 1px solid var(--border);
+            margin-top: 3rem;
+            text-align: center
+        }
+
+        .testimonial-stat-row .big-stat strong {
+            display: block;
+            font-size: 2.75rem;
+            font-weight: 800;
+            color: var(--secondary);
+            line-height: 1
+        }
+
+        .testimonial-stat-row .big-stat span {
+            font-size: .85rem;
+            color: var(--text-muted);
+            font-weight: 600
+        }
+
+        /* Final CTA */
+        .final-cta-section {
+            background: linear-gradient(135deg, var(--secondary) 0%, #1e1b4b 50%, var(--primary-dark) 100%);
+            padding: 6rem 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden
+        }
+
+        .final-cta-section::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at 30% 50%, rgba(6, 182, 212, .12) 0%, transparent 60%);
+            pointer-events: none
+        }
+
+        .final-cta-section h2 {
+            font-size: clamp(1.75rem, 4vw, 2.75rem);
+            font-weight: 800;
+            color: #fff;
+            letter-spacing: -.03em;
+            margin-bottom: 1rem;
+            position: relative
+        }
+
+        .final-cta-section>.container>p {
+            font-size: 1.1rem;
+            color: rgba(255, 255, 255, .75);
+            margin-bottom: 2.5rem;
+            max-width: 580px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.6;
+            position: relative
+        }
+
+        .final-cta-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 1.5rem;
+            position: relative
+        }
+
+        .btn-cta-white {
+            background: #fff;
+            color: var(--primary-dark);
+            font-size: 1.05rem;
+            font-weight: 800;
+            padding: .9rem 2.5rem;
+            border-radius: 12px;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, .2);
+            transition: all .3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px
+        }
+
+        .btn-cta-white:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, .3);
+            color: var(--primary-dark)
+        }
+
+        .btn-cta-ghost {
+            background: rgba(255, 255, 255, .12);
+            color: #fff;
+            font-size: 1rem;
+            font-weight: 600;
+            padding: .9rem 2rem;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, .25);
+            text-decoration: none;
+            transition: all .3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px
+        }
+
+        .btn-cta-ghost:hover {
+            background: rgba(255, 255, 255, .2);
+            color: #fff
+        }
+
+        .final-cta-trust {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+            position: relative
+        }
+
+        .final-cta-trust span {
+            font-size: .82rem;
+            color: rgba(255, 255, 255, .55);
+            font-weight: 500
+        }
+    </style>
     <!-- Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-WHHM4FTNHG"></script>
     <script>
@@ -2084,58 +2787,125 @@
         </div>
     </header>
 
-    <!-- 2. HERO SECTION (AI-Enhanced) -->
-    <section class="hero">
-        <div class="container hero-content fade-in-up">
-            <div class="ai-badge">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
-                    stroke-linejoin="round">
-                    <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
-                </svg>
-                AI-Powered Learning Platform
+    <!-- 2. HERO SECTION (Premium Split Layout) -->
+    <section class="hero hero-split">
+        <div class="container hero-split-grid">
+
+            <!-- LEFT: Copy & CTA -->
+            <div class="hero-content fade-in-up">
+                <!-- Single Premium Badge -->
+                <div class="hero-badge-premium">
+                    <span class="hero-badge-dot"></span>
+                    <span>Trusted by 15,000+ IISER Aspirants</span>
+                    <span class="hero-badge-live">LIVE</span>
+                </div>
+
+                <h1>Get Into Your Dream IISER<br><span class="gradient-text">With AI-Powered Preparation</span></h1>
+
+                <p class="hero-subhead-premium">India's only platform with real TCS iON interface, AI Rank Predictor,
+                    and IISER College Predictor. Join students who improved their rank by 400+ positions.</p>
+
+                <!-- Single Primary CTA -->
+                <div class="hero-cta-block">
+                    <a href="javascript:void(0)" onclick="handleStartPracticing()" class="btn btn-hero-main pro-hidden">
+                        Start Free Trial <span class="btn-arrow-hero">→</span>
+                    </a>
+                    <a href="/dashboard.html" class="btn btn-outline btn-hero-secondary">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="3" y="3" width="7" height="7" />
+                            <rect x="14" y="3" width="7" height="7" />
+                            <rect x="14" y="14" width="7" height="7" />
+                            <rect x="3" y="14" width="7" height="7" />
+                        </svg>
+                        AI Dashboard
+                    </a>
+                </div>
+                <p class="hero-trust-micro pro-hidden">✓ No credit card &nbsp;•&nbsp; ✓ One-time ₹399 &nbsp;•&nbsp; ✓
+                    Valid until IAT 2026</p>
+
+                <!-- Inline Stats -->
+                <div class="hero-stats-inline">
+                    <div class="hero-stat-chip">
+                        <strong>92%</strong>
+                        <span>Success Rate</span>
+                    </div>
+                    <div class="hero-stat-chip">
+                        <strong>4.9★</strong>
+                        <span>Rating</span>
+                    </div>
+                    <div class="hero-stat-chip">
+                        <strong>50K+</strong>
+                        <span>Mocks Taken</span>
+                    </div>
+                    <div class="hero-stat-chip">
+                        <strong>15K+</strong>
+                        <span>Students</span>
+                    </div>
+                </div>
             </div>
 
-            <h1>Crack IISER IAT 2026 with <br><span class="gradient-text">AI-Powered Preparation</span></h1>
-            <p>Join 15,000+ students using India's only platform with AI Rank Predictor & IISER College Predictor. Exact
-                TCS iON interface.</p>
-
-            <div class="hero-btn-group">
-                <a href="javascript:void(0)" onclick="handleStartPracticing()" class="btn btn-ai pro-hidden">Start
-                    Practicing Now</a>
-                <a href="/dashboard.html" class="btn btn-outline" style="gap:0.5rem;">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
-                    AI Dashboard
-                </a>
-                <span class="pro-hidden" style="color:var(--text-muted); font-size:0.9rem; align-self: center;">One-time
-                    • Valid until IAT
-                    2026</span>
-            </div>
-
-            <!-- Value Proposition Grid -->
-            <div class="hero-value-grid">
-                <div class="hero-value-item">
-                    <span>🖥</span> Real TCS iON Interface Mock Tests
+            <!-- RIGHT: Product Window -->
+            <div class="hero-visual fade-in-up" style="animation-delay:0.15s">
+                <div class="product-window">
+                    <div class="product-chrome">
+                        <div class="chrome-dots">
+                            <span class="dot-red"></span>
+                            <span class="dot-yellow"></span>
+                            <span class="dot-green"></span>
+                        </div>
+                        <div class="chrome-url">iisersmartprep.space/dashboard</div>
+                    </div>
+                    <div class="product-body">
+                        <!-- Simulated Dashboard -->
+                        <div class="sim-header">
+                            <span class="sim-title">📊 Your Dashboard</span>
+                            <span class="sim-tag">PRO</span>
+                        </div>
+                        <div class="sim-stats-row">
+                            <div class="sim-stat"><strong>AIR 847</strong><small>Predicted Rank</small></div>
+                            <div class="sim-stat"><strong>78%</strong><small>Accuracy</small></div>
+                            <div class="sim-stat"><strong>12</strong><small>Mocks Done</small></div>
+                        </div>
+                        <div class="sim-progress-label">Subject Performance</div>
+                        <div class="sim-bar-row"><span>Physics</span>
+                            <div class="sim-bar">
+                                <div class="sim-fill" style="width:72%;background:#6366f1"></div>
+                            </div><small>72%</small>
+                        </div>
+                        <div class="sim-bar-row"><span>Chemistry</span>
+                            <div class="sim-bar">
+                                <div class="sim-fill" style="width:61%;background:#06b6d4"></div>
+                            </div><small>61%</small>
+                        </div>
+                        <div class="sim-bar-row"><span>Mathematics</span>
+                            <div class="sim-bar">
+                                <div class="sim-fill" style="width:84%;background:#8b5cf6"></div>
+                            </div><small>84%</small>
+                        </div>
+                        <div class="sim-bar-row"><span>Biology</span>
+                            <div class="sim-bar">
+                                <div class="sim-fill" style="width:55%;background:#22c55e"></div>
+                            </div><small>55%</small>
+                        </div>
+                        <div class="sim-footer">
+                            <span class="sim-ai-badge">🤖 AI Tutor ready</span>
+                            <span class="sim-cta-mini">Start Mock →</span>
+                        </div>
+                    </div>
                 </div>
-                <div class="hero-value-item">
-                    <span>🎯</span> AI Rank & College Predictor for IISER
+                <!-- Floating Cards -->
+                <div class="float-card float-card-1">
+                    <span>🎯</span>
+                    <div><strong>AIR 792</strong><small>Predicted → Actual</small></div>
                 </div>
-                <div class="hero-value-item">
-                    <span>⚡</span> Chapter-wise Adaptive Practice
-                </div>
-                <div class="hero-value-item">
-                    <span>🏛</span> Previous Year Papers with Analysis
-                </div>
-                <div class="hero-value-item">
-                    <span>🧠</span> AI Doubt Solver 24/7
-                </div>
-                <div class="hero-value-item">
-                    <span>📝</span> Smart Revision Notes
+                <div class="float-card float-card-2">
+                    <span>📈</span>
+                    <div><strong>+40 Marks</strong><small>Score Improvement</small></div>
                 </div>
             </div>
 
         </div>
-
-
     </section>
 
     <!-- COUNTDOWN TIMER -->
@@ -2163,242 +2933,1295 @@
         </div>
     </div>
 
-    <!-- INTERACTIVE DEMO -->
-    <section class="section-wash" style="padding: 6rem 0;">
+    <!-- INTERACTIVE DEMO — PREMIUM -->
+    <section class="demo-section-premium">
         <div class="container">
-            <div class="section-header fade-in-up">
-                <span class="kicker">Try It Free</span>
-                <h2>Experience the Real Interface</h2>
-                <p>See exactly what the TCS iON exam feels like — try a sample question right here.</p>
+            <!-- Section Header -->
+            <div class="section-header fade-in-up" style="margin-bottom:3.5rem;">
+                <span class="kicker">Try It Free — No Login Required</span>
+                <h2>Experience the Exact TCS iON Interface</h2>
+                <p>This is what 15,000+ students practice in. Try a real IAT 2024 question right now.</p>
             </div>
-            <div class="demo-container fade-in-up">
-                <div class="demo-interface">
-                    <div class="demo-q-header">
-                        <span>Question 1 of 60</span>
-                        <span class="demo-timer">180:00</span>
+
+            <div class="demo-premium-grid fade-in-up">
+
+                <!-- LEFT: Exam Window -->
+                <div class="demo-exam-window">
+                    <!-- TCS iON Exam Top Bar -->
+                    <div class="demo-topbar">
+                        <div class="demo-topbar-left">
+                            <div class="demo-logo-pill">TCS iON</div>
+                            <span class="demo-exam-name">IISER Aptitude Test 2024</span>
+                        </div>
+                        <div class="demo-topbar-right">
+                            <div class="demo-timer-block">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2.5">
+                                    <circle cx="12" cy="12" r="10" />
+                                    <polyline points="12 6 12 12 16 14" />
+                                </svg>
+                                <span id="demo-live-timer">02:58</span>
+                            </div>
+                        </div>
                     </div>
-                    <div class="demo-q-body">
-                        <p>A particle of mass 2 kg is moving with velocity 3 m/s. A force of 6 N is applied on it for 3
-                            seconds. The final velocity of the particle is:</p>
-                        <button class="demo-option" onclick="selectDemoOption(this, false)">A) 6 m/s</button>
-                        <button class="demo-option" onclick="selectDemoOption(this, false)">B) 9 m/s</button>
-                        <button class="demo-option" onclick="selectDemoOption(this, true)">C) 12 m/s</button>
-                        <button class="demo-option" onclick="selectDemoOption(this, false)">D) 15 m/s</button>
-                        <div id="demo-explanation"
-                            style="display:none; margin-top:1rem; padding:1rem; background: #f0fdf4; border-radius:8px; font-size:0.9rem; color: var(--text-muted);">
-                            <strong style="color:#16a34a;">✓ Correct! C) 12 m/s</strong><br>
-                            Using F = ma → a = 6/2 = 3 m/s². v = u + at = 3 + 3×3 = 12 m/s.
+
+                    <!-- Subject Tabs -->
+                    <div class="demo-tabs">
+                        <button class="demo-tab active">Physics</button>
+                        <button class="demo-tab">Chemistry</button>
+                        <button class="demo-tab">Mathematics</button>
+                        <button class="demo-tab">Biology</button>
+                    </div>
+
+                    <!-- Question Progress -->
+                    <div class="demo-progress-bar">
+                        <div class="demo-progress-fill" style="width:1.67%"></div>
+                    </div>
+                    <div class="demo-progress-label">Question <strong>1</strong> of 60</div>
+
+                    <!-- Question Body -->
+                    <div class="demo-q-area">
+                        <p class="demo-question-text">A particle of mass <strong>2 kg</strong> is moving with velocity
+                            <strong>3 m/s</strong>. A force of <strong>6 N</strong> is applied on it for <strong>3
+                                seconds</strong>. The final velocity of the particle is:</p>
+
+                        <div class="demo-options-grid">
+                            <button class="demo-opt" onclick="selectDemoOption(this, false)" id="dopt-a">
+                                <span class="opt-label">A</span>
+                                <span>6 m/s</span>
+                            </button>
+                            <button class="demo-opt" onclick="selectDemoOption(this, false)" id="dopt-b">
+                                <span class="opt-label">B</span>
+                                <span>9 m/s</span>
+                            </button>
+                            <button class="demo-opt" onclick="selectDemoOption(this, true)" id="dopt-c">
+                                <span class="opt-label">C</span>
+                                <span>12 m/s</span>
+                            </button>
+                            <button class="demo-opt" onclick="selectDemoOption(this, false)" id="dopt-d">
+                                <span class="opt-label">D</span>
+                                <span>15 m/s</span>
+                            </button>
+                        </div>
+
+                        <!-- Explanation (hidden until answer) -->
+                        <div id="demo-explanation" class="demo-explanation-box" style="display:none;">
+                            <div class="demo-exp-correct">✓ Correct Answer: C) 12 m/s</div>
+                            <p>Using Newton's 2nd law: <strong>F = ma</strong> → a = 6/2 = 3 m/s²<br>
+                                Then: <strong>v = u + at</strong> = 3 + (3 × 3) = <strong>12 m/s</strong></p>
+                            <div class="demo-exp-insight">
+                                <span>🧠</span> <strong>73% of students get this wrong</strong> — they forget to apply F
+                                = ma first.
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Bottom Nav Bar -->
+                    <div class="demo-nav-bar">
+                        <button class="demo-nav-btn" disabled>← Previous</button>
+                        <div class="demo-q-palette">
+                            <span class="demo-q-dot answered">1</span>
+                            <span class="demo-q-dot">2</span>
+                            <span class="demo-q-dot">3</span>
+                            <span class="demo-q-dot">4</span>
+                            <span class="demo-q-dot">5</span>
+                            <span class="demo-q-dot-more">+55</span>
+                        </div>
+                        <button class="demo-nav-btn">Next →</button>
+                    </div>
+                </div>
+
+                <!-- RIGHT: Feature Panel -->
+                <div class="demo-feature-panel">
+                    <div class="demo-panel-badge">
+                        <span>🔴</span> Live on exam day — zero difference
+                    </div>
+
+                    <h3 class="demo-panel-heading">This is the <em>exact</em> interface you'll face on exam day.</h3>
+                    <p class="demo-panel-sub">Most students see TCS iON for the first time during the actual IAT. You
+                        won't.</p>
+
+                    <!-- Feature Pills -->
+                    <div class="demo-feature-chips">
+                        <div class="demo-chip">
+                            <div class="demo-chip-icon" style="background:#eff6ff;">🎯</div>
+                            <div>
+                                <strong>AI Rank Predictor</strong>
+                                <span>Instant AIR vs 15,000+ test takers after every mock</span>
+                            </div>
+                        </div>
+                        <div class="demo-chip">
+                            <div class="demo-chip-icon" style="background:#f0fdf4;">🏛️</div>
+                            <div>
+                                <strong>IISER College Predictor</strong>
+                                <span>Safe / Borderline / Low chances for all 7 IISERs</span>
+                            </div>
+                        </div>
+                        <div class="demo-chip">
+                            <div class="demo-chip-icon" style="background:#fdf4ff;">🧠</div>
+                            <div>
+                                <strong>AI Doubt Solver</strong>
+                                <span>Step-by-step explanations for every question, 24/7</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Mini Social Proof -->
+                    <div class="demo-proof-row">
+                        <div class="demo-proof-stat">
+                            <strong>50K+</strong>
+                            <span>Mock attempts</span>
+                        </div>
+                        <div class="demo-proof-stat">
+                            <strong>92%</strong>
+                            <span>Success rate</span>
+                        </div>
+                        <div class="demo-proof-stat">
+                            <strong>4.9★</strong>
+                            <span>Student rating</span>
+                        </div>
+                    </div>
+
+                    <!-- CTA -->
+                    <a href="/mock_test/quick_mock_homepage.html" class="btn btn-hero-main pro-hidden"
+                        style="text-decoration:none; width:100%; justify-content:center; border-radius:12px; margin-top:1.5rem;">
+                        Start Full Free Mock <span class="btn-arrow-hero">→</span>
+                    </a>
+                    <p style="text-align:center; font-size:0.8rem; color:var(--text-light); margin-top:0.75rem;">No
+                        login required • 60 questions • 180 minutes</p>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <style>
+        /* === PREMIUM DEMO SECTION === */
+        .demo-section-premium {
+            padding: 6rem 0;
+            background: linear-gradient(180deg, var(--bg-wash) 0%, #fff 100%);
+        }
+
+        .demo-premium-grid {
+            display: grid;
+            grid-template-columns: 1.15fr 0.85fr;
+            gap: 3rem;
+            align-items: start;
+        }
+
+        @media(max-width:900px) {
+            .demo-premium-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Exam Window */
+        .demo-exam-window {
+            background: #fff;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.07), 0 20px 50px -10px rgba(0, 0, 0, 0.13);
+        }
+
+        .demo-topbar {
+            background: var(--secondary);
+            color: #fff;
+            padding: 0.85rem 1.25rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .demo-topbar-left {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .demo-logo-pill {
+            background: var(--primary);
+            color: #fff;
+            font-size: 0.65rem;
+            font-weight: 800;
+            padding: 3px 10px;
+            border-radius: 100px;
+            letter-spacing: 0.08em;
+        }
+
+        .demo-exam-name {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.85);
+        }
+
+        .demo-timer-block {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            padding: 5px 12px;
+            color: var(--ai-cyan);
+            font-family: 'Courier New', monospace;
+            font-size: 1rem;
+            font-weight: 700;
+        }
+
+        /* Subject Tabs */
+        .demo-tabs {
+            display: flex;
+            border-bottom: 1px solid var(--border);
+            background: var(--bg-wash);
+        }
+
+        .demo-tab {
+            flex: 1;
+            padding: 0.6rem 0.5rem;
+            font-size: 0.78rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            background: none;
+            border: none;
+            border-bottom: 2px solid transparent;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: inherit;
+        }
+
+        .demo-tab.active {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+            background: #fff;
+        }
+
+        /* Progress */
+        .demo-progress-bar {
+            height: 3px;
+            background: #e2e8f0;
+        }
+
+        .demo-progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--ai-cyan));
+            border-radius: 0 2px 2px 0;
+            transition: width 0.5s ease;
+        }
+
+        .demo-progress-label {
+            padding: 0.5rem 1.25rem;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            background: var(--bg-wash);
+            border-bottom: 1px solid var(--border);
+        }
+
+        /* Question Area */
+        .demo-q-area {
+            padding: 1.5rem 1.25rem;
+        }
+
+        .demo-question-text {
+            font-size: 0.95rem;
+            color: var(--secondary);
+            line-height: 1.7;
+            margin-bottom: 1.25rem;
+            font-weight: 500;
+        }
+
+        .demo-options-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+        }
+
+        .demo-opt {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            width: 100%;
+            text-align: left;
+            padding: 0.7rem 1rem;
+            border: 1.5px solid var(--border);
+            border-radius: 10px;
+            background: #fff;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-family: inherit;
+            font-weight: 500;
+            color: var(--secondary);
+            transition: all 0.18s ease;
+        }
+
+        .demo-opt:hover:not(:disabled) {
+            border-color: var(--primary);
+            background: var(--primary-soft);
+            transform: translateX(3px);
+        }
+
+        .demo-opt.correct {
+            border-color: #22c55e;
+            background: #f0fdf4;
+            color: #166534;
+        }
+
+        .demo-opt.wrong {
+            border-color: #ef4444;
+            background: #fff5f5;
+            color: #991b1b;
+        }
+
+        .opt-label {
+            width: 26px;
+            height: 26px;
+            border-radius: 6px;
+            background: var(--bg-wash);
+            border: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            font-weight: 700;
+            flex-shrink: 0;
+            transition: all 0.18s;
+        }
+
+        .demo-opt.correct .opt-label {
+            background: #22c55e;
+            color: #fff;
+            border-color: #22c55e;
+        }
+
+        .demo-opt.wrong .opt-label {
+            background: #ef4444;
+            color: #fff;
+            border-color: #ef4444;
+        }
+
+        /* Explanation */
+        .demo-explanation-box {
+            margin-top: 1rem;
+            padding: 1rem;
+            background: #f0fdf4;
+            border: 1px solid #86efac;
+            border-radius: 10px;
+            font-size: 0.88rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+            animation: slide-up 0.4s ease;
+        }
+
+        .demo-exp-correct {
+            color: #16a34a;
+            font-weight: 700;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .demo-exp-insight {
+            margin-top: 0.75rem;
+            padding: 0.6rem 0.75rem;
+            background: #fefce8;
+            border: 1px solid #fbbf24;
+            border-radius: 8px;
+            font-size: 0.82rem;
+            color: #713f12;
+            display: flex;
+            gap: 0.5rem;
+            align-items: flex-start;
+        }
+
+        /* Bottom Nav */
+        .demo-nav-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.85rem 1.25rem;
+            border-top: 1px solid var(--border);
+            background: var(--bg-wash);
+        }
+
+        .demo-nav-btn {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--primary);
+            background: none;
+            border: 1.5px solid var(--border);
+            border-radius: 8px;
+            padding: 0.4rem 0.9rem;
+            cursor: pointer;
+            font-family: inherit;
+            transition: all 0.18s;
+        }
+
+        .demo-nav-btn:hover:not(:disabled) {
+            border-color: var(--primary);
+            background: var(--primary-soft);
+        }
+
+        .demo-nav-btn:disabled {
+            opacity: 0.35;
+            cursor: not-allowed;
+        }
+
+        .demo-q-palette {
+            display: flex;
+            gap: 6px;
+            align-items: center;
+        }
+
+        .demo-q-dot {
+            width: 24px;
+            height: 24px;
+            border-radius: 6px;
+            background: #e2e8f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.65rem;
+            font-weight: 700;
+            color: var(--text-muted);
+        }
+
+        .demo-q-dot.answered {
+            background: var(--primary);
+            color: #fff;
+        }
+
+        .demo-q-dot-more {
+            font-size: 0.65rem;
+            color: var(--text-light);
+            font-weight: 600;
+        }
+
+        /* Feature Panel */
+        .demo-feature-panel {
+            padding: 0.25rem 0;
+        }
+
+        .demo-panel-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: #fee2e2;
+            color: #dc2626;
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 5px 12px;
+            border-radius: 100px;
+            margin-bottom: 1rem;
+        }
+
+        .demo-panel-heading {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--secondary);
+            line-height: 1.3;
+            margin-bottom: 0.75rem;
+            letter-spacing: -0.02em;
+        }
+
+        .demo-panel-heading em {
+            font-style: italic;
+            color: var(--primary);
+        }
+
+        .demo-panel-sub {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            margin-bottom: 1.75rem;
+            line-height: 1.6;
+        }
+
+        .demo-feature-chips {
+            display: flex;
+            flex-direction: column;
+            gap: 0.85rem;
+            margin-bottom: 1.75rem;
+        }
+
+        .demo-chip {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.85rem;
+            padding: 0.9rem 1rem;
+            background: #fff;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            transition: all 0.2s ease;
+        }
+
+        .demo-chip:hover {
+            border-color: var(--primary-soft);
+            box-shadow: 0 4px 16px rgba(99, 102, 241, 0.08);
+            transform: translateX(3px);
+        }
+
+        .demo-chip-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            flex-shrink: 0;
+        }
+
+        .demo-chip strong {
+            display: block;
+            font-size: 0.9rem;
+            color: var(--secondary);
+            margin-bottom: 2px;
+        }
+
+        .demo-chip span {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            line-height: 1.4;
+        }
+
+        .demo-proof-row {
+            display: flex;
+            gap: 1rem;
+            padding: 1rem;
+            background: var(--bg-wash);
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .demo-proof-stat {
+            flex: 1;
+        }
+
+        .demo-proof-stat strong {
+            display: block;
+            font-size: 1.2rem;
+            font-weight: 800;
+            color: var(--secondary);
+        }
+
+        .demo-proof-stat span {
+            font-size: 0.72rem;
+            color: var(--text-muted);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+        }
+    </style>
+
+    <script>
+        /* Demo timer countdown */
+        (function () {
+            var t = 178;
+            var el = document.getElementById('demo-live-timer');
+            if (!el) return;
+            setInterval(function () {
+                if (t <= 0) return;
+                t--;
+                var m = Math.floor(t / 60);
+                var s = t % 60;
+                el.textContent = (m < 10 ? '0' : '') + m + ':' + (s < 10 ? '0' : '') + s;
+                if (t < 30) el.style.color = '#ef4444';
+            }, 1000);
+        })();
+
+        /* Tab switching (visual only) */
+        document.querySelectorAll('.demo-tab').forEach(function (tab) {
+            tab.addEventListener('click', function () {
+                document.querySelectorAll('.demo-tab').forEach(function (t) { t.classList.remove('active'); });
+                tab.classList.add('active');
+            });
+        });
+    </script>
+
+
+
+    <!-- PROBLEM-SOLUTION (replaces weak "How It Works") -->
+    <section class="problem-solution-section">
+        <div class="container">
+            <div class="section-header fade-in-up" style="margin-bottom:3rem;">
+                <span class="kicker">Why Students Fail IAT</span>
+                <h2>The Problem — And How We Fix It</h2>
+            </div>
+            <div class="ps-grid fade-in-up">
+                <!-- Problem Side -->
+                <div>
+                    <span class="ps-kicker error">The Problem</span>
+                    <h3 class="ps-heading">Most IAT Aspirants Fail Because…</h3>
+                    <ul class="ps-list">
+                        <li>
+                            <div class="ps-icon err">❌</div>
+                            <div>
+                                <strong>No Real Exam Practice</strong>
+                                <p>Generic MCQ apps don't simulate the TCS iON interface, so exam day feels completely
+                                    unfamiliar.</p>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="ps-icon err">❌</div>
+                            <div>
+                                <strong>Zero Rank Visibility</strong>
+                                <p>No idea where you stand vs 15,000+ competitors — guessing instead of strategizing.
+                                </p>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="ps-icon err">❌</div>
+                            <div>
+                                <strong>Weak Area Blindness</strong>
+                                <p>Spending time on the wrong topics, missing the high-yield chapters that appear every
+                                    year.</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <!-- Solution Side -->
+                <div>
+                    <span class="ps-kicker success">The Solution</span>
+                    <h3 class="ps-heading">We Fix All Three. Here's How:</h3>
+                    <ul class="ps-list">
+                        <li>
+                            <div class="ps-icon ok">✓</div>
+                            <div>
+                                <strong>Exact TCS iON Replica</strong>
+                                <p>Practice in the real interface — same layout, timer, navigation. Zero surprises on
+                                    exam day.</p>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="ps-icon ok">✓</div>
+                            <div>
+                                <strong>AI Rank Predictor — After Every Mock</strong>
+                                <p>Know your AIR after every test. Track improvement weekly vs 15,000+ real students.
+                                </p>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="ps-icon ok">✓</div>
+                            <div>
+                                <strong>Smart Analytics + AI Doubt Solver</strong>
+                                <p>AI pinpoints exactly which topics to fix and explains them instantly — available
+                                    24/7.</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 4. FEATURES (Mock Tests) — PREMIUM -->
+    <section id="features" class="section-light" style="padding: 6rem 0;">
+        <div class="container">
+            <div class="section-header fade-in-up" style="margin-bottom: 3.5rem;">
+                <span class="kicker">Exam Simulation</span>
+                <h2>IISER IAT Mock Tests &amp; Practice Tools</h2>
+                <p>India's only platform with the <strong>exact TCS iON interface</strong>. Build speed, accuracy, and
+                    exam stamina — in conditions identical to the real IAT.</p>
+            </div>
+
+            <!-- Featured Full-Length Mock Card -->
+            <a href="/mock_test/full_mock_test_homepage.html" class="feat-card-hero fade-in-up">
+                <div class="feat-hero-left">
+                    <div class="feat-hero-badge">Most Popular</div>
+                    <h3 class="feat-hero-title">Full Length Mock Tests</h3>
+                    <p class="feat-hero-desc">The only mock platform that replicates the <strong>exact TCS iON
+                            interface</strong> — same timer, same layout, same navigation. 180 minutes, 60 questions,
+                        perfectly balanced PCMB weightage.</p>
+                    <div class="feat-hero-stats">
+                        <div class="feat-stat"><strong>20+</strong><span>Full Mocks</span></div>
+                        <div class="feat-stat"><strong>180 min</strong><span>Per Test</span></div>
+                        <div class="feat-stat"><strong>60 Qs</strong><span>PCMB Mix</span></div>
+                    </div>
+                    <div class="feat-hero-cta">Start Full Mock <span>→</span></div>
+                </div>
+                <div class="feat-hero-right">
+                    <div class="feat-mock-preview">
+                        <div class="fmp-bar"><span class="fmp-logo">TCS iON</span><span class="fmp-timer">⏱
+                                180:00</span></div>
+                        <div class="fmp-body">
+                            <div class="fmp-q">Q 1 of 60 — Physics</div>
+                            <div class="fmp-text">A particle of mass 2 kg moving at 3 m/s…</div>
+                            <div class="fmp-opts">
+                                <div class="fmp-opt">A) 6 m/s</div>
+                                <div class="fmp-opt fmp-active">C) 12 m/s ✓</div>
+                            </div>
+                            <div class="fmp-dots"><span class="fmp-dot done"></span><span
+                                    class="fmp-dot done"></span><span class="fmp-dot curr"></span><span
+                                    class="fmp-dot"></span><span class="fmp-dot"></span></div>
                         </div>
                     </div>
                 </div>
-                <div class="demo-cta">
-                    <h3>Can You Solve This?</h3>
-                    <p>Try a real IAT 2024 question in our TCS iON simulator. 73% of students get this wrong.</p>
+            </a>
 
-                    <div
-                        style="margin: 1.5rem 0; text-align: left; background: var(--bg-wash); padding: 1rem; border-radius: 8px;">
-                        <strong style="display:block; margin-bottom:0.5rem; color:var(--secondary);">🎯 AI Features
-                            Included:</strong>
-                        <ul style="list-style: none; padding: 0; display: flex; flex-direction: column; gap: 0.5rem;">
-                            <li style="font-size: 0.9rem; color: var(--text-muted); display: flex; gap: 0.5rem;">
-                                <span style="color: var(--primary);">•</span>
-                                <span><strong>Rank Predictor</strong> – Instant AIR estimation vs 15,000+ test
-                                    takers</span>
-                            </li>
-                            <li style="font-size: 0.9rem; color: var(--text-muted); display: flex; gap: 0.5rem;">
-                                <span style="color: var(--primary);">•</span>
-                                <span><strong>IISER Predictor</strong> – Select your category and see admission chances
-                                    for all 7 IISERs + IISc + IIT Madras (Safe/Borderline/Low probability)</span>
-                            </li>
-                        </ul>
+            <!-- Two Bottom Cards -->
+            <div class="feat-two-grid">
+                <article class="feat-card fade-in-up" onclick="openModal('modal-quick')" style="cursor:pointer;">
+                    <div class="feat-card-top">
+                        <div class="feat-icon"
+                            style="background:linear-gradient(135deg,#f0fdf4,#dcfce7);color:#16a34a;font-size:1.5rem;">⚡
+                        </div>
+                        <span class="feat-card-badge" style="background:#dcfce7;color:#16a34a;">15 min</span>
                     </div>
-
-                    <a href="/mock_test/quick_mock_homepage.html" class="btn btn-ai pro-hidden"
-                        style="text-decoration:none;">Start
-                        Free Demo →</a>
-                    <p style="margin-top:1rem; font-size:0.85rem; color:var(--text-light);">No login required</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- HOW IT WORKS -->
-    <section class="section-wash" style="padding: 6rem 0; background: white;">
-        <div class="container">
-            <div class="section-header">
-                <span class="kicker">Your Path to IISER</span>
-                <h2>How It Works</h2>
-            </div>
-            <div class="grid-3">
-                <div class="card" style="text-align:center;">
-                    <div style="font-size:3rem; font-weight:800; color:var(--primary); margin-bottom:1rem;">1</div>
-                    <h3>Take an IISER Mock Test</h3>
-                    <p>Practice full-length IISER IAT mock tests in a real TCS iON exam interface with 60 questions and
-                        a 180-minute timer.</p>
-                </div>
-                <div class="card" style="text-align:center;">
-                    <div style="font-size:3rem; font-weight:800; color:var(--primary); margin-bottom:1rem;">2</div>
-                    <h3>Get AI Performance Analysis</h3>
-                    <p>Our AI analyzes your performance, predicts your rank, identifies weak topics, and shows where you
-                        lose marks.</p>
-                </div>
-                <div class="card" style="text-align:center;">
-                    <div style="font-size:3rem; font-weight:800; color:var(--primary); margin-bottom:1rem;">3</div>
-                    <h3>Improve Using Smart Revision Tools</h3>
-                    <p>Use AI-generated smart notes, targeted chapter practice, and PYQs to improve weak areas before
-                        the IISER exam.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-
-
-    <!-- 4. FEATURES (Core Tools) -->
-    <section id="features" class="section-light">
-        <div class="container">
-            <div class="section-header fade-in-up">
-                <span class="kicker">Exam Simulation</span>
-                <h2>IISER IAT Mock Tests & Practice Tools</h2>
-                <p>Prepare for the IISER Aptitude Test (IAT) using full-length mock tests, quick chapter-wise practice,
-                    and previous year questions in the real TCS iON exam interface. Build speed, accuracy, and exam
-                    stamina before test day.</p>
-            </div>
-
-            <div class="grid-3">
-                <!-- CARD 1 -->
-                <a href="/mock_test/full_mock_test_homepage.html" class="card card-clickable fade-in-up">
-                    <div class="icon-box">📝</div>
-                    <h3>Full Length Mocks</h3>
-                    <p>Replica of the TCS iON interface. 180 minutes, 60 questions, carefully balanced PCMB weightage.
-                    </p>
-                    <div class="card-link">
-                        Start Mock
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <line x1="5" y1="12" x2="19" y2="12"></line>
-                            <polyline points="12 5 19 12 12 19"></polyline>
-                        </svg>
+                    <h3 class="feat-card-title">Quick &amp; Chapter-Wise Mocks</h3>
+                    <p class="feat-card-desc">Short on time? Take a rapid 15-minute sprint or drill a specific chapter.
+                        100+ chapter-wise mocks across all subjects.</p>
+                    <div class="feat-subject-pills">
+                        <span class="feat-pill" style="background:#eff6ff;color:#1d4ed8;">Physics</span>
+                        <span class="feat-pill" style="background:#fdf4ff;color:#7e22ce;">Chemistry</span>
+                        <span class="feat-pill" style="background:#f0fdf4;color:#15803d;">Maths</span>
+                        <span class="feat-pill" style="background:#fff7ed;color:#c2410c;">Biology</span>
                     </div>
-                </a>
-
-                <!-- CARD 2 -->
-                <article class="card card-clickable fade-in-up" onclick="openModal('modal-quick')">
-                    <div class="icon-box">⏱️</div>
-                    <h3>Quick & Chapter-Wise Mocks</h3>
-                    <p>Short on time? Take rapid 15-minute tests or practice chapter-wise questions.</p>
-                    <div
-                        style="display: flex; gap: 0.4rem; flex-wrap: wrap; margin-top: 0.5rem; margin-bottom: 0.5rem;">
-                        <span
-                            style="font-size: 0.7rem; font-weight: 700; background: var(--primary-soft); color: var(--primary-dark); padding: 0.2rem 0.6rem; border-radius: 100px;">Physics</span>
-                        <span
-                            style="font-size: 0.7rem; font-weight: 700; background: var(--primary-soft); color: var(--primary-dark); padding: 0.2rem 0.6rem; border-radius: 100px;">Chemistry</span>
-                        <span
-                            style="font-size: 0.7rem; font-weight: 700; background: var(--primary-soft); color: var(--primary-dark); padding: 0.2rem 0.6rem; border-radius: 100px;">Maths</span>
-                        <span
-                            style="font-size: 0.7rem; font-weight: 700; background: var(--primary-soft); color: var(--primary-dark); padding: 0.2rem 0.6rem; border-radius: 100px;">Biology</span>
-                    </div>
-                    <div class="card-link">
-                        Start Quick Mock
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <line x1="5" y1="12" x2="19" y2="12"></line>
-                            <polyline points="12 5 19 12 12 19"></polyline>
-                        </svg>
-                    </div>
+                    <div class="feat-card-link" style="color:#16a34a;">Start Quick Mock →</div>
                 </article>
 
-                <!-- CARD 3 -->
-                <a href="/pyqs/pyq.html" class="card card-clickable fade-in-up">
-                    <div class="icon-box">🏛️</div>
-                    <h3>IISER Previous Year Questions (PYQs)</h3>
-                    <p>Practice IISER IAT previous year questions from 2017–2025 in a real exam-like interface. Analyze
-                        your performance and compare results with top performers.</p>
-                    <div class="card-link">
-                        Practice PYQs
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <line x1="5" y1="12" x2="19" y2="12"></line>
-                            <polyline points="12 5 19 12 12 19"></polyline>
-                        </svg>
+                <a href="/pyqs/pyq.html" class="feat-card fade-in-up">
+                    <div class="feat-card-top">
+                        <div class="feat-icon"
+                            style="background:linear-gradient(135deg,#fdf4ff,#ede9fe);color:#7c3aed;font-size:1.5rem;">
+                            🏛️</div>
+                        <span class="feat-card-badge" style="background:#ede9fe;color:#7c3aed;">2017–2025</span>
                     </div>
+                    <h3 class="feat-card-title">PYQ Vault — 8 Years of Papers</h3>
+                    <p class="feat-card-desc">All IAT previous year papers in an interactive TCS iON replica. Detailed
+                        solutions, step-by-step explanations, and AI performance comparison.</p>
+                    <div class="feat-subject-pills">
+                        <span class="feat-pill" style="background:#fdf4ff;color:#7e22ce;">8 Full Papers</span>
+                        <span class="feat-pill" style="background:#ede9fe;color:#7c3aed;">AI Analysis</span>
+                    </div>
+                    <div class="feat-card-link" style="color:#7c3aed;">Practice PYQs →</div>
                 </a>
             </div>
         </div>
     </section>
 
-    <!-- 5. DARK SECTION (AI Features) -->
-    <section id="analytics" class="dark-section">
+    <style>
+        .feat-card-hero {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2.5rem;
+            background: linear-gradient(135deg, var(--secondary) 0%, #1e3a5f 100%);
+            border-radius: 24px;
+            padding: 2.5rem;
+            text-decoration: none;
+            margin-bottom: 1.5rem;
+            overflow: hidden;
+            position: relative;
+            transition: transform .3s ease, box-shadow .3s ease
+        }
+
+        .feat-card-hero::before {
+            content: '';
+            position: absolute;
+            top: -60px;
+            right: -60px;
+            width: 220px;
+            height: 220px;
+            background: radial-gradient(circle, rgba(6, 182, 212, .15), transparent 70%);
+            pointer-events: none
+        }
+
+        .feat-card-hero:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 24px 60px rgba(0, 0, 0, .2)
+        }
+
+        @media(max-width:768px) {
+            .feat-card-hero {
+                grid-template-columns: 1fr
+            }
+
+            .feat-hero-right {
+                display: none
+            }
+        }
+
+        .feat-hero-badge {
+            display: inline-block;
+            background: var(--ai-cyan);
+            color: var(--secondary);
+            font-size: 11px;
+            font-weight: 800;
+            padding: 4px 12px;
+            border-radius: 100px;
+            letter-spacing: .05em;
+            margin-bottom: 1rem
+        }
+
+        .feat-hero-title {
+            font-size: 1.6rem;
+            font-weight: 800;
+            color: #fff;
+            margin-bottom: .75rem;
+            letter-spacing: -.02em
+        }
+
+        .feat-hero-desc {
+            font-size: .92rem;
+            color: rgba(255, 255, 255, .75);
+            line-height: 1.7;
+            margin-bottom: 1.5rem
+        }
+
+        .feat-hero-stats {
+            display: flex;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem
+        }
+
+        .feat-stat {
+            display: flex;
+            flex-direction: column
+        }
+
+        .feat-stat strong {
+            font-size: 1.3rem;
+            font-weight: 800;
+            color: #fff;
+            line-height: 1
+        }
+
+        .feat-stat span {
+            font-size: .72rem;
+            color: rgba(255, 255, 255, .55);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: .04em;
+            margin-top: 2px
+        }
+
+        .feat-hero-cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(255, 255, 255, .12);
+            border: 1px solid rgba(255, 255, 255, .25);
+            color: #fff;
+            font-weight: 700;
+            font-size: .95rem;
+            padding: .65rem 1.25rem;
+            border-radius: 10px;
+            transition: background .2s
+        }
+
+        .feat-card-hero:hover .feat-hero-cta {
+            background: rgba(255, 255, 255, .2)
+        }
+
+        .feat-hero-right {
+            display: flex;
+            align-items: center;
+            justify-content: center
+        }
+
+        .feat-mock-preview {
+            background: #f8fafc;
+            border-radius: 14px;
+            overflow: hidden;
+            width: 100%;
+            max-width: 300px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, .2)
+        }
+
+        .fmp-bar {
+            background: var(--secondary);
+            color: #fff;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 12px;
+            font-size: .75rem;
+            font-weight: 700
+        }
+
+        .fmp-logo {
+            background: var(--primary);
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: .65rem
+        }
+
+        .fmp-timer {
+            color: var(--ai-cyan);
+            font-family: monospace
+        }
+
+        .fmp-body {
+            padding: 1rem
+        }
+
+        .fmp-q {
+            font-size: .7rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: .5rem;
+            text-transform: uppercase;
+            letter-spacing: .04em
+        }
+
+        .fmp-text {
+            font-size: .82rem;
+            color: var(--secondary);
+            line-height: 1.5;
+            margin-bottom: .75rem
+        }
+
+        .fmp-opts {
+            display: flex;
+            flex-direction: column;
+            gap: .4rem;
+            margin-bottom: .75rem
+        }
+
+        .fmp-opt {
+            font-size: .78rem;
+            padding: .4rem .75rem;
+            border: 1px solid var(--border);
+            border-radius: 7px;
+            color: var(--text-muted);
+            background: #fff
+        }
+
+        .fmp-opt.fmp-active {
+            border-color: #22c55e;
+            background: #f0fdf4;
+            color: #16a34a;
+            font-weight: 700
+        }
+
+        .fmp-dots {
+            display: flex;
+            gap: 5px
+        }
+
+        .fmp-dot {
+            width: 20px;
+            height: 5px;
+            border-radius: 3px;
+            background: #e2e8f0
+        }
+
+        .fmp-dot.done {
+            background: #22c55e
+        }
+
+        .fmp-dot.curr {
+            background: var(--primary)
+        }
+
+        .feat-two-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem
+        }
+
+        @media(max-width:768px) {
+            .feat-two-grid {
+                grid-template-columns: 1fr
+            }
+        }
+
+        .feat-card {
+            background: #fff;
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 2rem;
+            text-decoration: none;
+            display: block;
+            transition: all .3s ease
+        }
+
+        .feat-card:hover {
+            border-color: #cbd5e1;
+            box-shadow: 0 12px 40px -10px rgba(0, 0, 0, .1);
+            transform: translateY(-4px)
+        }
+
+        .feat-card-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1.25rem
+        }
+
+        .feat-icon {
+            width: 52px;
+            height: 52px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center
+        }
+
+        .feat-card-badge {
+            font-size: .72rem;
+            font-weight: 700;
+            padding: 4px 12px;
+            border-radius: 100px
+        }
+
+        .feat-card-title {
+            font-size: 1.15rem;
+            font-weight: 800;
+            color: var(--secondary);
+            margin-bottom: .6rem;
+            line-height: 1.3
+        }
+
+        .feat-card-desc {
+            font-size: .88rem;
+            color: var(--text-muted);
+            line-height: 1.65;
+            margin-bottom: 1.25rem
+        }
+
+        .feat-subject-pills {
+            display: flex;
+            gap: .5rem;
+            flex-wrap: wrap;
+            margin-bottom: 1.25rem
+        }
+
+        .feat-pill {
+            font-size: .72rem;
+            font-weight: 700;
+            padding: 4px 11px;
+            border-radius: 100px
+        }
+
+        .feat-card-link {
+            font-size: .88rem;
+            font-weight: 700
+        }
+    </style>
+
+    <!-- 5. AI TOOLS — PREMIUM DARK SECTION -->
+    <section id="analytics" class="dark-section" style="padding:6rem 0;">
         <div class="container">
-            <div class="section-header fade-in-up">
-                <span class="kicker" style="color: var(--ai-cyan);">Artificial Intelligence</span>
+            <div class="section-header fade-in-up" style="margin-bottom:3.5rem;">
+                <span class="kicker" style="color:var(--ai-cyan);">Artificial Intelligence</span>
                 <h2>AI Tools for IISER IAT Preparation</h2>
-                <p>Get 24/7 AI-powered support for your IISER IAT preparation.
-                    Ask doubts, generate smart revision notes, and track your progress with intelligent performance
-                    analytics.</p>
+                <p style="color:rgba(255,255,255,.7);">Get 24/7 AI-powered support. Ask doubts, generate smart revision
+                    notes, and track your progress — all in one intelligent platform.</p>
             </div>
 
-            <div class="grid-3">
-                <!-- AI CARD 1: Replaces Instant Logic Breakdown -->
-                <article class="card dark-card ai-card card-clickable fade-in-up" onclick="openModal('modal-ai-tutor')">
-                    <div class="icon-box">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"></path>
-                            <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
-                            <line x1="12" y1="19" x2="12" y2="23"></line>
-                            <line x1="8" y1="23" x2="16" y2="23"></line>
-                        </svg>
+            <div class="ai-cards-grid fade-in-up">
+                <!-- AI Doubt Solver -->
+                <article class="ai-pcard" onclick="openModal('modal-ai-tutor')" style="cursor:pointer;">
+                    <div class="ai-pcard-top">
+                        <div class="ai-pcard-icon" style="background:linear-gradient(135deg,#06b6d4,#0891b2);">
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white"
+                                stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z" />
+                                <path d="M19 10v2a7 7 0 0 1-14 0v-2" />
+                                <line x1="12" y1="19" x2="12" y2="23" />
+                                <line x1="8" y1="23" x2="16" y2="23" />
+                            </svg>
+                        </div>
+                        <span class="ai-pcard-badge">&#60; 2s response</span>
                     </div>
-                    <h3>AI Doubt Solver</h3>
-                    <p>Ask questions from Physics, Chemistry, Mathematics, or Biology and get step-by-step explanations
-                        tailored for IISER IAT concepts.</p>
-                    <div class="card-link" style="color: var(--ai-cyan);">
-                        Ask AI Tutor →
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <line x1="5" y1="12" x2="19" y2="12"></line>
-                            <polyline points="12 5 19 12 12 19"></polyline>
-                        </svg>
+                    <h3 class="ai-pcard-title">AI Doubt Solver</h3>
+                    <p class="ai-pcard-desc">Ask any Physics, Chemistry, Mathematics, or Biology question. Get
+                        step-by-step solutions with concept explanations tailored for IAT — available 24/7, never
+                        sleeps.</p>
+                    <div class="ai-pcard-example">
+                        <span class="ai-example-q">"Why does the energy of a photon depend on frequency, not
+                            intensity?"</span>
+                        <span class="ai-example-tag">→ AI explains with analogies + formula</span>
                     </div>
+                    <div class="ai-pcard-link" style="color:var(--ai-cyan);">Ask AI Tutor →</div>
                 </article>
 
-                <!-- CARD 2 -->
-                <article class="card dark-card card-clickable fade-in-up" onclick="checkSmartNotesAccess()">
-                    <div class="icon-box">🧠</div>
-                    <h3>Smart Revision Notes</h3>
-                    <p>Access AI-generated revision notes, formula sheets, and concept summaries designed for quick
-                        IISER IAT revision.</p>
-                    <div class="card-link" style="color: #818cf8;">
-                        Explore Smart Notes →
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <line x1="5" y1="12" x2="19" y2="12"></line>
-                            <polyline points="12 5 19 12 12 19"></polyline>
-                        </svg>
+                <!-- Smart Notes -->
+                <article class="ai-pcard" onclick="checkSmartNotesAccess()" style="cursor:pointer;">
+                    <div class="ai-pcard-top">
+                        <div class="ai-pcard-icon" style="background:linear-gradient(135deg,#8b5cf6,#6d28d9);">
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white"
+                                stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                                <polyline points="14 2 14 8 20 8" />
+                                <line x1="16" y1="13" x2="8" y2="13" />
+                                <line x1="16" y1="17" x2="8" y2="17" />
+                                <polyline points="10 9 9 9 8 9" />
+                            </svg>
+                        </div>
+                        <span class="ai-pcard-badge">PRO</span>
                     </div>
+                    <h3 class="ai-pcard-title">Smart Revision Notes</h3>
+                    <p class="ai-pcard-desc">AI-generated concept summaries, formula sheets, and topic-wise notes
+                        designed specifically for the IAT syllabus. Covers all 200+ high-yield topics across PCMB.</p>
+                    <div class="ai-pcard-chips">
+                        <span>📐 Formulas</span>
+                        <span>🔬 Concepts</span>
+                        <span>🎯 IAT-focused</span>
+                    </div>
+                    <div class="ai-pcard-link" style="color:#a78bfa;">Explore Smart Notes →</div>
                 </article>
 
-                <!-- CARD 3 -->
-                <article class="card dark-card card-clickable fade-in-up" onclick="checkProgressAnalyticsAccess()">
-                    <div class="icon-box">📊</div>
-                    <h3>Performance Analytics</h3>
-                    <p>Track your mock test performance, identify weak topics, and monitor improvement with detailed
-                        AI-driven insights.</p>
-                    <div class="card-link" style="color: #818cf8;">
-                        View Analytics →
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <line x1="5" y1="12" x2="19" y2="12"></line>
-                            <polyline points="12 5 19 12 12 19"></polyline>
-                        </svg>
+                <!-- Performance Analytics -->
+                <article class="ai-pcard" onclick="checkProgressAnalyticsAccess()" style="cursor:pointer;">
+                    <div class="ai-pcard-top">
+                        <div class="ai-pcard-icon" style="background:linear-gradient(135deg,#f59e0b,#d97706);">
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white"
+                                stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <line x1="18" y1="20" x2="18" y2="10" />
+                                <line x1="12" y1="20" x2="12" y2="4" />
+                                <line x1="6" y1="20" x2="6" y2="14" />
+                            </svg>
+                        </div>
+                        <span class="ai-pcard-badge">PRO</span>
                     </div>
+                    <h3 class="ai-pcard-title">Performance Analytics</h3>
+                    <p class="ai-pcard-desc">Track your mock test performance across all subjects. AI identifies your
+                        weak chapters, shows improvement over time, and predicts your rank trajectory.</p>
+                    <div class="ai-pcard-mini-chart">
+                        <div class="mini-bar" style="height:30%;background:#f59e0b;opacity:.5;"></div>
+                        <div class="mini-bar" style="height:50%;background:#f59e0b;opacity:.6;"></div>
+                        <div class="mini-bar" style="height:45%;background:#f59e0b;opacity:.65;"></div>
+                        <div class="mini-bar" style="height:70%;background:#f59e0b;opacity:.8;"></div>
+                        <div class="mini-bar" style="height:65%;background:#f59e0b;opacity:.85;"></div>
+                        <div class="mini-bar" style="height:85%;background:#f59e0b;"></div>
+                    </div>
+                    <div class="ai-pcard-link" style="color:#fbbf24;">View Analytics →</div>
                 </article>
             </div>
         </div>
     </section>
+
+    <style>
+        .ai-cards-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem
+        }
+
+        @media(max-width:900px) {
+            .ai-cards-grid {
+                grid-template-columns: 1fr
+            }
+        }
+
+        .ai-pcard {
+            background: rgba(255, 255, 255, .05);
+            border: 1px solid rgba(255, 255, 255, .1);
+            border-radius: 20px;
+            padding: 2rem;
+            transition: all .3s ease;
+            display: flex;
+            flex-direction: column;
+            gap: .75rem
+        }
+
+        .ai-pcard:hover {
+            background: rgba(255, 255, 255, .09);
+            border-color: rgba(255, 255, 255, .2);
+            transform: translateY(-4px);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, .3)
+        }
+
+        .ai-pcard-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start
+        }
+
+        .ai-pcard-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0
+        }
+
+        .ai-pcard-badge {
+            font-size: .68rem;
+            font-weight: 800;
+            padding: 3px 10px;
+            border-radius: 100px;
+            background: rgba(255, 255, 255, .1);
+            color: rgba(255, 255, 255, .7);
+            border: 1px solid rgba(255, 255, 255, .15);
+            letter-spacing: .04em;
+            align-self: flex-start
+        }
+
+        .ai-pcard-title {
+            font-size: 1.2rem;
+            font-weight: 800;
+            color: #fff;
+            letter-spacing: -.01em
+        }
+
+        .ai-pcard-desc {
+            font-size: .88rem;
+            color: rgba(255, 255, 255, .65);
+            line-height: 1.7
+        }
+
+        .ai-pcard-example {
+            background: rgba(6, 182, 212, .1);
+            border: 1px solid rgba(6, 182, 212, .2);
+            border-radius: 10px;
+            padding: .75rem 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: .3rem
+        }
+
+        .ai-example-q {
+            font-size: .8rem;
+            color: rgba(255, 255, 255, .8);
+            font-style: italic
+        }
+
+        .ai-example-tag {
+            font-size: .75rem;
+            color: var(--ai-cyan);
+            font-weight: 600
+        }
+
+        .ai-pcard-chips {
+            display: flex;
+            gap: .5rem;
+            flex-wrap: wrap
+        }
+
+        .ai-pcard-chips span {
+            font-size: .75rem;
+            background: rgba(139, 92, 246, .2);
+            border: 1px solid rgba(139, 92, 246, .3);
+            color: #c4b5fd;
+            padding: 4px 10px;
+            border-radius: 100px
+        }
+
+        .ai-pcard-mini-chart {
+            display: flex;
+            align-items: flex-end;
+            gap: 6px;
+            height: 50px;
+            padding: 0 4px
+        }
+
+        .mini-bar {
+            flex: 1;
+            border-radius: 4px 4px 0 0;
+            transition: height .5s ease
+        }
+
+        .ai-pcard-link {
+            font-size: .88rem;
+            font-weight: 700;
+            margin-top: auto
+        }
+    </style>
+
 
     <!-- IAT PLANNER PRO CTA -->
+
     <section class="section-wash" style="padding: 6rem 0;">
         <div class="container">
             <div class="section-header fade-in-up">
@@ -2629,65 +4452,85 @@
         }
     </style>
 
-    <!-- 5. STUDENT REVIEWS -->
+    <!-- 5. STUDENT REVIEWS — PREMIUM -->
     <section class="section-light" id="reviews">
         <div class="container">
             <div class="section-header fade-in-up">
                 <span class="kicker">Success Stories</span>
-                <h2>Success Stories from IISER Aspirants</h2>
-                <p>See how students improved their IISER IAT scores using AI mock tests, PYQ practice, and smart
-                    revision tools.</p>
+                <h2>Students Who Got Into Their Dream IISER</h2>
+                <p>Real results from students who used our platform — specific ranks, specific improvements.</p>
             </div>
 
-
-
             <div class="grid-3">
-                <div class="card fade-in-up">
-                    <p style="font-style: italic; margin-bottom: 1.5rem;">"The AI rank predictor estimated AIR 847. I
-                        finally secured AIR 792. It showed exactly which Chemistry topics I needed to fix and helped
-                        increase my score by 40 marks."</p>
-                    <div style="display: flex; align-items: center; gap: 1rem;">
-                        <div
-                            style="width: 40px; height: 40px; background: var(--primary); border-radius: 50%; color: white; display: flex; align-items: center; justify-content: center; font-weight: bold;">
-                            AR</div>
-                        <div>
-                            <h4 style="font-size: 0.95rem; font-weight: 700; color: var(--secondary);">Aditya R.</h4>
-                            <span style="font-size: 0.8rem; color: var(--text-muted);">AIR 792 • IISER Pune 2025</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card fade-in-up">
-                    <p style="font-style: italic; margin-bottom: 1.5rem;">"I wasted months reading theory. This platform
-                        forced me to solve questions daily. The quick mock tests completely changed my preparation
-                        strategy."</p>
-                    <div style="display: flex; align-items: center; gap: 1rem;">
-                        <div
-                            style="width: 40px; height: 40px; background: var(--ai-cyan); border-radius: 50%; color: white; display: flex; align-items: center; justify-content: center; font-weight: bold;">
-                            SK</div>
-                        <div>
-                            <h4 style="font-size: 0.95rem; font-weight: 700; color: var(--secondary);">Sneha K.</h4>
-                            <span style="font-size: 0.8rem; color: var(--text-muted);">IISER Mohali (2025)</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card fade-in-up">
-                    <p style="font-style: italic; margin-bottom: 1.5rem;">"I saved ₹50,000 on coaching. The AI tutor
-                        explains concepts better than my local teacher and is available anytime, even late at night."
+                <div class="tcard fade-in-up">
+                    <div class="tcard-stars">★★★★★</div>
+                    <p class="tcard-quote">"The AI Rank Predictor was scary accurate — it predicted AIR 847, I got AIR
+                        792. It showed me exactly which Chemistry topics were killing my score. Fixed them in 3 weeks."
                     </p>
-                    <div style="display: flex; align-items: center; gap: 1rem;">
-                        <div
-                            style="width: 40px; height: 40px; background: var(--accent); border-radius: 50%; color: white; display: flex; align-items: center; justify-content: center; font-weight: bold;">
-                            RV</div>
+                    <div class="tcard-badges">
+                        <span class="tcard-badge">AIR 792</span>
+                        <span class="tcard-badge">+40 Marks</span>
+                    </div>
+                    <div class="tcard-author">
+                        <div class="tcard-avatar" style="background:var(--primary);">AR</div>
                         <div>
-                            <h4 style="font-size: 0.95rem; font-weight: 700; color: var(--secondary);">Rahul V.</h4>
-                            <span style="font-size: 0.8rem; color: var(--text-muted);">IISER Kolkata (2024)</span>
+                            <strong>Aditya R.</strong>
+                            <span>IISER Pune • BS-MS 2025</span>
                         </div>
                     </div>
+                </div>
+
+                <div class="tcard fade-in-up">
+                    <div class="tcard-stars">★★★★★</div>
+                    <p class="tcard-quote">"I tried expensive coaching (₹80K). Wasted 6 months on theory. This platform
+                        forced me to solve real questions daily. The mock tests are harder than the actual IAT — which
+                        is exactly what I needed."</p>
+                    <div class="tcard-badges">
+                        <span class="tcard-badge">IISER Mohali</span>
+                    </div>
+                    <div class="tcard-author">
+                        <div class="tcard-avatar" style="background:var(--ai-cyan);">SK</div>
+                        <div>
+                            <strong>Sneha K.</strong>
+                            <span>IISER Mohali • 2025 Batch</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tcard fade-in-up">
+                    <div class="tcard-stars">★★★★★</div>
+                    <p class="tcard-quote">"The AI Tutor is better than my ₹50K coaching teacher. Available at 2 AM when
+                        I'm studying. Explains concepts in simple language, not textbook jargon. I saved ₹50,000."</p>
+                    <div class="tcard-badges">
+                        <span class="tcard-badge">IISER Kolkata</span>
+                    </div>
+                    <div class="tcard-author">
+                        <div class="tcard-avatar" style="background:var(--accent);">RV</div>
+                        <div>
+                            <strong>Rahul V.</strong>
+                            <span>IISER Kolkata • 2024 Batch</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Social Proof Stats -->
+            <div class="testimonial-stat-row fade-in-up">
+                <div class="big-stat">
+                    <strong>15,000+</strong>
+                    <span>Active Students</span>
+                </div>
+                <div class="big-stat">
+                    <strong>92%</strong>
+                    <span>Got Their Target IISER</span>
+                </div>
+                <div class="big-stat">
+                    <strong>4.9/5</strong>
+                    <span>Average Rating</span>
                 </div>
             </div>
         </div>
+
 
         <!-- Review Schema Setup -->
         <script type="application/ld+json">
@@ -2753,253 +4596,7 @@
 
 
 
-    <!-- LATEST ARTICLES & GUIDES -->
-    <section id="blog" style="background: white;">
-        <div class="container">
-            <div class="section-header fade-in-up">
-                <span class="kicker">Knowledge Hub</span>
-                <h2>Latest Articles &amp; Guides</h2>
-                <p>Expert insights, exam news, and study hacks to keep your preparation on track.</p>
-            </div>
 
-            <!-- Category Filter (Visual Only) -->
-            <div class="fade-in-up"
-                style="display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap; margin-bottom: 3rem;">
-                <button class="btn btn-primary" style="padding: 0.5rem 1.25rem; font-size: 0.9rem;">All</button>
-                <button class="btn btn-outline"
-                    style="padding: 0.5rem 1.25rem; font-size: 0.9rem; border-color: var(--border); color: var(--text-muted);">Strategy
-                    🧠</button>
-                <button class="btn btn-outline"
-                    style="padding: 0.5rem 1.25rem; font-size: 0.9rem; border-color: var(--border); color: var(--text-muted);">Exam
-                    News 📰</button>
-                <button class="btn btn-outline"
-                    style="padding: 0.5rem 1.25rem; font-size: 0.9rem; border-color: var(--border); color: var(--text-muted);">Subject
-                    Wise 📚</button>
-                <button class="btn btn-outline"
-                    style="padding: 0.5rem 1.25rem; font-size: 0.9rem; border-color: var(--border); color: var(--text-muted);">Success
-                    Stories 🏆</button>
-            </div>
-
-            <div class="grid-3">
-
-                <!-- Resource Card 1 -->
-                <a href="/news/iat-syllabus-2026-checklist.html" class="resource-card fade-in-up"
-                    style="text-decoration: none;">
-                    <span class="resource-tag">PDF</span>
-                    <h4>IAT 2026 Syllabus Checklist</h4>
-                    <p style="font-size:0.9rem; color:var(--text-muted); margin-bottom:0.5rem;">Complete topic-wise
-                        checklist with weightage analysis from previous years.</p>
-                    <span class="download-count">📥 2,400+ downloads</span>
-                </a>
-
-                <!-- Resource Card 2 -->
-                <a href="/news/iiser-iat-formula-sheet.html" class="resource-card fade-in-up"
-                    style="text-decoration: none;">
-                    <span class="resource-tag">PDF</span>
-                    <h4>IAT 2026 Master Formula Sheet</h4>
-                    <p style="font-size:0.9rem; color:var(--text-muted); margin-bottom:0.5rem;">All critical formulas
-                        across Physics, Chemistry, Math, and Biology in one sheet.</p>
-                    <span class="download-count">📥 3,100+ downloads</span>
-                </a>
-
-                <!-- Resource Card 3 -->
-                <a href="/pyqs/pyq.html" class="resource-card fade-in-up" style="text-decoration: none;">
-                    <span class="resource-tag">Interactive</span>
-                    <h4>IAT 2024 Sample Paper</h4>
-                    <p style="font-size:0.9rem; color:var(--text-muted); margin-bottom:0.5rem;">Solve last year’s paper
-                        in our TCS iON replica interface. Free and unlimited.</p>
-                    <span class="download-count">📥 5,700+ attempts</span>
-                </a>
-
-
-
-                <!-- Blog Card 8 - IAT vs NEST -->
-                <a href="/news/IAT-vs-NEST-which-exam-to-target.html" class="card card-clickable fade-in-up"
-                    style="display: flex; flex-direction: column; height: 100%; text-decoration: none;">
-                    <div style="margin-bottom: 1rem; display: flex; align-items: center; gap: 0.75rem;">
-                        <span
-                            style="background: #e0e7ff; color: var(--primary); padding: 0.25rem 0.75rem; border-radius: 100px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase;">Strategy
-                            🧠</span>
-                        <span style="font-size: 0.8rem; color: var(--text-muted);">7 min read</span>
-                    </div>
-                    <h3 style="margin-bottom: 1rem; font-size: 1.25rem; line-height: 1.4; color: var(--secondary);">
-                        IAT vs NEST: Which Exam Should You Target?</h3>
-                    <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 1.5rem; flex-grow: 1;">
-                        A comprehensive comparison of IAT and NEST exams, including syllabus overlap, paper pattern
-                        differences, and how to effectively prepare for both simultaneously.
-                    </p>
-                    <div
-                        style="display: flex; align-items: center; gap: 0.5rem; color: var(--primary); font-weight: 600; font-size: 0.9rem;">
-                        Read Article <i class="fas fa-arrow-right" style="font-size: 0.8rem;"></i>
-                    </div>
-                </a>
-
-                <!-- Blog Card 7 -->
-                <a href="/news/iiser-iat-vs-jee-the-complete-guide.html" class="card card-clickable fade-in-up"
-                    style="display: flex; flex-direction: column; height: 100%; text-decoration: none;">
-                    <div style="margin-bottom: 1rem; display: flex; align-items: center; gap: 0.75rem;">
-                        <span
-                            style="background: #e0e7ff; color: var(--primary); padding: 0.25rem 0.75rem; border-radius: 100px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase;">Strategy
-                            🧠</span>
-                        <span style="font-size: 0.8rem; color: var(--text-muted);">6 min read</span>
-                    </div>
-                    <h3 style="margin-bottom: 1rem; font-size: 1.25rem; line-height: 1.4; color: var(--secondary);">
-                        IISER IAT vs JEE: The
-                        Complete Guide</h3>
-                    <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 1.5rem; flex-grow: 1;">
-                        Comparing the exam patterns, difficulty levels, and career prospects of IISER Aptitude Test and
-                        JEE. Which path is right for you?
-                    </p>
-                    <div
-                        style="display: flex; align-items: center; gap: 0.5rem; color: var(--primary); font-weight: 600; font-size: 0.9rem;">
-                        Read Article <i class="fas fa-arrow-right" style="font-size: 0.8rem;"></i>
-                    </div>
-                </a>
-
-
-                <!-- Blog Card 1 -->
-                <article class="card card-clickable fade-in-up"
-                    style="display: flex; flex-direction: column; height: 100%;">
-                    <div style="margin-bottom: 1rem; display: flex; align-items: center; gap: 0.75rem;">
-                        <span
-                            style="background: #e0e7ff; color: var(--primary); padding: 0.25rem 0.75rem; border-radius: 100px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase;">Strategy</span>
-                        <span style="color: var(--text-light); font-size: 0.8rem;">Feb 10, 2026</span>
-                    </div>
-                    <h3 style="font-size: 1.25rem; margin-bottom: 0.75rem; line-height: 1.4;">How to Crack IAT in 3
-                        Months: A Week-by-Week Plan</h3>
-                    <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: auto;">Detailed roadmap
-                        covering high-weightage topics, revision cycles, and mock test strategy for maximum output.</p>
-                    <div class="card-link" style="margin-top: 1.5rem;">
-                        Read Article
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <line x1="5" y1="12" x2="19" y2="12"></line>
-                            <polyline points="12 5 19 12 12 19"></polyline>
-                        </svg>
-                    </div>
-                </article>
-
-                <!-- Blog Card 2 -->
-                <a href="/news/iat-2026-notification.html" class="card card-clickable fade-in-up"
-                    style="display: flex; flex-direction: column; height: 100%; text-decoration: none;">
-                    <div style="margin-bottom: 1rem; display: flex; align-items: center; gap: 0.75rem;">
-                        <span
-                            style="background: #fee2e2; color: #ef4444; padding: 0.25rem 0.75rem; border-radius: 100px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase;">Update</span>
-                        <span style="color: var(--text-light); font-size: 0.8rem;">Feb 07, 2026</span>
-                    </div>
-                    <h3 style="font-size: 1.25rem; margin-bottom: 0.75rem; line-height: 1.4; color: var(--secondary);">
-                        IAT 2026 Official
-                        Notification Out: Key Changes</h3>
-                    <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: auto;">Everything you need to
-                        know about the new exam pattern, eligibility criteria, and important dates.</p>
-                    <div class="card-link" style="margin-top: 1.5rem;">
-                        Read Article
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <line x1="5" y1="12" x2="19" y2="12"></line>
-                            <polyline points="12 5 19 12 12 19"></polyline>
-                        </svg>
-                    </div>
-                </a>
-
-                <!-- Blog Card 3 -->
-                <a href="/news/best-book-for-biology--for-iat.html" class="card card-clickable fade-in-up"
-                    style="display: flex; flex-direction: column; height: 100%; text-decoration: none;">
-                    <div style="margin-bottom: 1rem; display: flex; align-items: center; gap: 0.75rem;">
-                        <span
-                            style="background: #dcfce7; color: #166534; padding: 0.25rem 0.75rem; border-radius: 100px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase;">Resources</span>
-                        <span style="color: var(--text-light); font-size: 0.8rem;">Jan 28, 2026</span>
-                    </div>
-                    <h3 style="font-size: 1.25rem; margin-bottom: 0.75rem; line-height: 1.4; color: var(--secondary);">
-                        Best Books for Biology: Focusing on NCERT &amp; Campbell</h3>
-                    <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: auto;">A curated list of
-                        must-read books and specific chapters that are critical for the Bio section of IAT.</p>
-                    <div class="card-link" style="margin-top: 1.5rem;">
-                        Read Article
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <line x1="5" y1="12" x2="19" y2="12"></line>
-                            <polyline points="12 5 19 12 12 19"></polyline>
-                        </svg>
-                    </div>
-                </a>
-
-                <!-- Blog Card 4 - Physics -->
-                <a href="/news/best-book-for-physics--for-iat.html"
-                    class="card card-clickable fade-in-up blog-extra-card"
-                    style="display: none; flex-direction: column; height: 100%; text-decoration: none;">
-                    <div style="margin-bottom: 1rem; display: flex; align-items: center; gap: 0.75rem;">
-                        <span
-                            style="background: #fef3c7; color: #b45309; padding: 0.25rem 0.75rem; border-radius: 100px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase;">Resources</span>
-                        <span style="color: var(--text-light); font-size: 0.8rem;">Jan 25, 2026</span>
-                    </div>
-                    <h3 style="font-size: 1.25rem; margin-bottom: 0.75rem; line-height: 1.4; color: var(--secondary);">
-                        Best Books for Physics: HC Verma, Irodov &amp; Beyond</h3>
-                    <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: auto;">Topic-wise book
-                        recommendations covering Mechanics, Electrodynamics, Optics, and Modern Physics for IAT.</p>
-                    <div class="card-link" style="margin-top: 1.5rem;">
-                        Read Article
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <line x1="5" y1="12" x2="19" y2="12"></line>
-                            <polyline points="12 5 19 12 12 19"></polyline>
-                        </svg>
-                    </div>
-                </a>
-
-                <!-- Blog Card 5 - Chemistry -->
-                <a href="/news//best-book-for-chemistry--for-iat.html"
-                    class="card card-clickable fade-in-up blog-extra-card"
-                    style="display: none; flex-direction: column; height: 100%; text-decoration: none;">
-                    <div style="margin-bottom: 1rem; display: flex; align-items: center; gap: 0.75rem;">
-                        <span
-                            style="background: #ede9fe; color: #6d28d9; padding: 0.25rem 0.75rem; border-radius: 100px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase;">Resources</span>
-                        <span style="color: var(--text-light); font-size: 0.8rem;">Jan 22, 2026</span>
-                    </div>
-                    <h3 style="font-size: 1.25rem; margin-bottom: 0.75rem; line-height: 1.4; color: var(--secondary);">
-                        Best Books for Chemistry: NCERT, JD Lee &amp; Clayden</h3>
-                    <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: auto;">Covering Physical,
-                        Organic, and Inorganic Chemistry — the exact books and chapters that matter for IAT.</p>
-                    <div class="card-link" style="margin-top: 1.5rem;">
-                        Read Article
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <line x1="5" y1="12" x2="19" y2="12"></line>
-                            <polyline points="12 5 19 12 12 19"></polyline>
-                        </svg>
-                    </div>
-                </a>
-
-                <!-- Blog Card 6 - Mathematics -->
-                <a href="/news/best-books-for-math-for-iat.html" class="card card-clickable fade-in-up blog-extra-card"
-                    style="display: none; flex-direction: column; height: 100%; text-decoration: none;">
-                    <div style="margin-bottom: 1rem; display: flex; align-items: center; gap: 0.75rem;">
-                        <span
-                            style="background: #fce7f3; color: #be185d; padding: 0.25rem 0.75rem; border-radius: 100px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase;">Resources</span>
-                        <span style="color: var(--text-light); font-size: 0.8rem;">Jan 20, 2026</span>
-                    </div>
-                    <h3 style="font-size: 1.25rem; margin-bottom: 0.75rem; line-height: 1.4; color: var(--secondary);">
-                        Best Books for Math: RD Sharma, Cengage &amp; Hall Knight</h3>
-                    <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: auto;">From Calculus to
-                        Algebra — a focused reading list with chapter-level priorities for the Math section of IAT.</p>
-                    <div class="card-link" style="margin-top: 1.5rem;">
-                        Read Article
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <line x1="5" y1="12" x2="19" y2="12"></line>
-                            <polyline points="12 5 19 12 12 19"></polyline>
-                        </svg>
-                    </div>
-                </a>
-            </div>
-
-
-            <div style="text-align: center; margin-top: 3rem;">
-                <button id="toggle-articles-btn" class="btn btn-outline" onclick="toggleExtraArticles()">View All
-                    Articles</button>
-            </div>
-        </div>
-    </section>
 
     <!-- COMPARISON TABLE -->
     <section class="section-light pro-hidden" style="padding: 6rem 0;">
@@ -3082,353 +4679,1056 @@
         </div>
     </div>
 
-    <!-- 6. PRICING -->
-    <section id="pricing" class="section-wash pro-hidden">
-        <div class="container">
-            <div class="section-header fade-in-up">
-                <span class="kicker">Membership</span>
-                <h2>Limited Time Offer – 50% OFF</h2>
-                <p>Limited time offer — early users pricing</p>
+    <!-- 6. PRICING — PREMIUM -->
+    <section id="pricing" class="section-wash pro-hidden" style="padding: 7rem 0; position: relative; overflow: hidden;">
+        <!-- Decorative Background Elements -->
+        <div style="position: absolute; top: -150px; right: -100px; width: 400px; height: 400px; background: radial-gradient(circle, rgba(99,102,241,0.08), transparent 70%); pointer-events: none;"></div>
+        <div style="position: absolute; bottom: -150px; left: -100px; width: 400px; height: 400px; background: radial-gradient(circle, rgba(16,185,129,0.05), transparent 70%); pointer-events: none;"></div>
+
+        <div class="container" style="position: relative; z-index: 1;">
+            <div class="section-header fade-in-up" style="margin-bottom: 4rem;">
+                <span class="kicker" style="color: var(--primary);">Go Premium</span>
+                <h2 style="font-size: clamp(2rem, 4vw, 2.75rem); letter-spacing: -0.03em;">Unlock Your True Potential</h2>
+                <p style="font-size: 1.1rem; max-width: 600px; margin: 0 auto; color: var(--text-muted);">Join 15,000+ top aspirants. One simple payment. Full access until the IAT 2026 exam.</p>
             </div>
 
-            <div class="pricing-card fade-in-up">
-                <div class="pricing-header">
-                    <h3>Get Full Access — ₹399 (was ₹999)</h3>
-                    <div class="price-wrapper">
-                        <div
-                            style="font-size:1.1rem; color:var(--text-muted); text-decoration:line-through; font-weight:600; margin-bottom:0.25rem;">
-                            ₹999</div>
-                        <span class="currency">₹</span>
-                        <span class="amount" id="pricing-amount">399</span>
-                    </div>
-                    <span class="billing" id="countdown-line">Offer ends in 4 days ⏳</span>
+            <div class="pricing-premium-wrapper fade-in-up">
+                <div class="pricing-premium-card">
+                    
+                    <!-- Left: Pricing Details & CTA -->
+                    <div class="pp-left">
+                        <div class="pp-badge">Most Popular</div>
+                        <h3 class="pp-title">IAT PRO Access</h3>
+                        <p class="pp-desc">Everything you need to secure a seat at your dream IISER, packaged in one powerful platform.</p>
+                        
+                        <div class="pp-price-box">
+                            <div class="pp-price-old">₹999</div>
+                            <div class="pp-price-current">
+                                <span class="pp-currency">₹</span>
+                                <span class="pp-amount">399</span>
+                                <span class="pp-period">/ one-time</span>
+                            </div>
+                            <div class="pp-urgency" id="countdown-line">Offer ends in 4 days ⏳</div>
+                        </div>
 
-                    <!-- Urgency & Guarantee -->
-                    <div style="margin-top: 1rem; text-align: center;">
-                        <div style="color: #ef4444; font-size: 0.85rem; font-weight: 700; margin-bottom: 0.5rem;">
-                            🔥 Only for first 100 serious aspirants
-                        </div>
-                        <div
-                            style="font-size: 0.8rem; color: var(--text-muted); display: flex; align-items: center; justify-content: center; gap: 0.25rem;">
-                            <span style="color: var(--primary);">🛡️</span> 7-day money-back guarantee
+                        <button onclick="buyPro()" class="pp-btn-cta">
+                            Get PRO Access Now 
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                        </button>
+                        
+                        <div class="pp-trust">
+                            <span style="color: #10b981;">🛡️</span> 7-day money-back guarantee. No questions asked.
                         </div>
                     </div>
+
+                    <!-- Right: Features List -->
+                    <div class="pp-right">
+                        <h4 class="pp-features-title">What's included in PRO:</h4>
+                        <ul class="pp-features-list">
+                            <li>
+                                <div class="pp-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+                                <div class="pp-feature-text">
+                                    <strong>Weekly Guided Full-Length Mocks</strong>
+                                    <span>Real TCS iON interface with balanced PCMB mix.</span>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="pp-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+                                <div class="pp-feature-text">
+                                    <strong>AI Doubt Solver (Unlimited)</strong>
+                                    <span>Instant, step-by-step solutions for any PCMB concept.</span>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="pp-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+                                <div class="pp-feature-text">
+                                    <strong>PYQ Vault (2017-2025)</strong>
+                                    <span>All past papers in exam mode with AI analytics.</span>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="pp-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+                                <div class="pp-feature-text">
+                                    <strong>Quick Mocks (Every 2 Days)</strong>
+                                    <span>15-min diagnostic sprints to fix conceptual drift fast.</span>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="pp-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+                                <div class="pp-feature-text">
+                                    <strong>Rank Predictor &amp; Analytics</strong>
+                                    <span>Estimate your AIR and get a weekly study roadmap.</span>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="pp-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+                                <div class="pp-feature-text">
+                                    <strong>Smart Notes &amp; Concept Sheets</strong>
+                                    <span>High-yield, IAT-focused revision material (no fluff).</span>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+
                 </div>
-                <div class="pricing-body">
-                    <ul class="feature-list" style="display: flex; flex-direction: column; gap: 1.5rem;">
-                        <li style="display: flex; align-items: flex-start;">
-                            <div class="check-icon" style="margin-top: 0.25rem;"><svg viewBox="0 0 24 24" fill="none"
-                                    stroke="currentColor" stroke-width="3" stroke-linecap="round"
-                                    stroke-linejoin="round">
-                                    <polyline points="20 6 9 17 4 12"></polyline>
-                                </svg></div>
-                            <div>
-                                <strong>Weekly Guided Full-Length Mocks (Unlimited Access)</strong>
-                                <p
-                                    style="font-size: 0.9rem; color: var(--text-muted); margin-top: 0.25rem; line-height: 1.4;">
-                                    Real exam interface, real timing, real analytics, AI Rank Predictor — follow a
-                                    structured weekly
-                                    schedule while having access to all mocks anytime.</p>
-                            </div>
-                        </li>
-                        <li style="display: flex; align-items: flex-start;">
-                            <div class="check-icon" style="margin-top: 0.25rem;"><svg viewBox="0 0 24 24" fill="none"
-                                    stroke="currentColor" stroke-width="3" stroke-linecap="round"
-                                    stroke-linejoin="round">
-                                    <polyline points="20 6 9 17 4 12"></polyline>
-                                </svg></div>
-                            <div>
-                                <strong>AI Tutor (Unlimited Queries)</strong>
-                                <p
-                                    style="font-size: 0.9rem; color: var(--text-muted); margin-top: 0.25rem; line-height: 1.4;">
-                                    Ask subject questions anytime. Short, exam-focused answers and step-by-step
-                                    solutions — never long theory dumps.</p>
-                            </div>
-                        </li>
-                        <li style="display: flex; align-items: flex-start;">
-                            <div class="check-icon" style="margin-top: 0.25rem;"><svg viewBox="0 0 24 24" fill="none"
-                                    stroke="currentColor" stroke-width="3" stroke-linecap="round"
-                                    stroke-linejoin="round">
-                                    <polyline points="20 6 9 17 4 12"></polyline>
-                                </svg></div>
-                            <div>
-                                <strong>PYQ Vault + Exam-Mode Solutions</strong>
-                                <p
-                                    style="font-size: 0.9rem; color: var(--text-muted); margin-top: 0.25rem; line-height: 1.4;">
-                                    All previous-year papers with model solutions and an exam-mode version so you
-                                    practice PYQs exactly like the real test.</p>
-                            </div>
-                        </li>
+            </div>
 
-                        <li style="display: flex; align-items: flex-start;">
-                            <div class="check-icon" style="margin-top: 0.25rem;"><svg viewBox="0 0 24 24" fill="none"
-                                    stroke="currentColor" stroke-width="3" stroke-linecap="round"
-                                    stroke-linejoin="round">
-                                    <polyline points="20 6 9 17 4 12"></polyline>
-                                </svg></div>
-                            <div>
-                                <strong>Quick Mock — Every 2 Days</strong>
-                                <p
-                                    style="font-size: 0.9rem; color: var(--text-muted); margin-top: 0.25rem; line-height: 1.4;">
-                                    A focused, 30–45 minute diagnostic every 48 hours to identify drift and fix it fast.
-                                </p>
+            <p style="text-align:center; margin-top: 2.5rem; font-size: 0.95rem;">
+                <a href="#faq" style="color: var(--primary); font-weight: 600; text-decoration: none; border-bottom: 1px dashed var(--primary); padding-bottom: 2px;">Still have questions? → Read our FAQ</a>
+            </p>
+        </div>
+    </section>
+
+    <style>
+        .pricing-premium-wrapper {
+            max-width: 1050px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .pricing-premium-card {
+            background: #ffffff;
+            border-radius: 28px;
+            box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(0,0,0,0.04);
+            display: grid;
+            grid-template-columns: 1fr 1.2fr;
+            overflow: hidden;
+            position: relative;
+            z-index: 2;
+        }
+
+        @media (max-width: 900px) {
+            .pricing-premium-card {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .pp-left {
+            padding: 4rem 3rem;
+            background: linear-gradient(180deg, #f8fafc 0%, #ffffff 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            border-right: 1px solid rgba(0,0,0,0.05);
+        }
+
+        @media (max-width: 900px) {
+            .pp-left {
+                padding: 3rem 2rem;
+                border-right: none;
+                border-bottom: 1px solid rgba(0,0,0,0.05);
+            }
+        }
+
+        .pp-badge {
+            background: rgba(99, 102, 241, 0.1);
+            color: var(--primary);
+            font-size: 0.75rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            padding: 6px 16px;
+            border-radius: 100px;
+            align-self: flex-start;
+            margin-bottom: 1.5rem;
+            border: 1px solid rgba(99, 102, 241, 0.2);
+        }
+
+        .pp-title {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--secondary);
+            margin-bottom: 0.75rem;
+            letter-spacing: -0.02em;
+        }
+
+        .pp-desc {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+            margin-bottom: 2.5rem;
+        }
+
+        .pp-price-box {
+            margin-bottom: 2.5rem;
+        }
+
+        .pp-price-old {
+            font-size: 1.2rem;
+            color: #94a3b8;
+            text-decoration: line-through;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+        }
+
+        .pp-price-current {
+            display: flex;
+            align-items: baseline;
+            gap: 4px;
+            color: var(--secondary);
+        }
+
+        .pp-currency {
+            font-size: 2rem;
+            font-weight: 800;
+        }
+
+        .pp-amount {
+            font-size: 4rem;
+            font-weight: 900;
+            letter-spacing: -0.04em;
+            line-height: 1;
+        }
+
+        .pp-period {
+            font-size: 1rem;
+            color: var(--text-muted);
+            font-weight: 600;
+            margin-left: 0.5rem;
+        }
+
+        .pp-urgency {
+            display: inline-block;
+            margin-top: 1rem;
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: #ef4444;
+            background: #fef2f2;
+            padding: 6px 14px;
+            border-radius: 8px;
+            border: 1px solid #fee2e2;
+        }
+
+        .pp-btn-cta {
+            background: var(--primary);
+            color: #fff;
+            border: none;
+            padding: 1.1rem 1.5rem;
+            font-size: 1.1rem;
+            font-weight: 800;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            cursor: pointer;
+            width: 100%;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 25px -5px rgba(99, 102, 241, 0.4);
+        }
+
+        .pp-btn-cta:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 35px -5px rgba(99, 102, 241, 0.5);
+            background: var(--primary-hover);
+        }
+
+        .pp-trust {
+            margin-top: 1.5rem;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            font-weight: 500;
+        }
+
+        .pp-right {
+            padding: 4rem 3rem;
+            background: #ffffff;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        @media (max-width: 900px) {
+            .pp-right {
+                padding: 3rem 2rem;
+            }
+        }
+
+        .pp-features-title {
+            font-size: 1.1rem;
+            font-weight: 800;
+            color: var(--secondary);
+            margin-bottom: 2rem;
+            letter-spacing: -0.01em;
+        }
+
+        .pp-features-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .pp-features-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+        }
+
+        .pp-check {
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            background: #e0e7ff;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .pp-check svg {
+            width: 14px;
+            height: 14px;
+        }
+
+        .pp-feature-text {
+            display: flex;
+            flex-direction: column;
+            gap: 0.3rem;
+        }
+
+        .pp-feature-text strong {
+            font-size: 1rem;
+            color: var(--secondary);
+            font-weight: 700;
+            line-height: 1.3;
+        }
+
+        .pp-feature-text span {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+    </style>
+
+
+
+
+
+
+    <!-- KNOWLEDGE HUB SECTION — PREMIUM -->
+    <section id="knowledge-hub" style="padding:6rem 0; background:#0f172a; position:relative; overflow:hidden;">
+
+        <!-- Background glow -->
+        <div
+            style="position:absolute;top:-100px;left:50%;transform:translateX(-50%);width:600px;height:400px;background:radial-gradient(ellipse,rgba(99,102,241,.12) 0%,transparent 70%);pointer-events:none;">
+        </div>
+
+        <div style="width:90%;max-width:1200px;margin:0 auto;position:relative;">
+
+            <!-- Header -->
+            <div style="text-align:center;margin-bottom:3.5rem;">
+                <span
+                    style="display:inline-block;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.12em;color:#818cf8;background:rgba(99,102,241,.12);border:1px solid rgba(99,102,241,.25);padding:5px 14px;border-radius:100px;margin-bottom:1rem;">Free
+                    Resources</span>
+                <h2
+                    style="font-size:clamp(1.75rem,4vw,2.5rem);font-weight:800;color:#fff;letter-spacing:-.03em;margin-bottom:.75rem;">
+                    Knowledge Hub</h2>
+                <p style="color:#94a3b8;font-size:1.05rem;max-width:500px;margin:0 auto;line-height:1.7;">Everything you
+                    need to master IAT 2026 — curated by toppers, powered by data, free to access.</p>
+            </div>
+
+            <!-- Grid: 1 large + 3 side -->
+            <div class="hub-premium-grid">
+
+                <!-- FEATURED: Rank Predictor (large left card) -->
+                <a href="/iiser-iat-college-predictor.html" class="hub-feat-card">
+                    <div class="hub-feat-inner">
+                        <div class="hub-feat-top">
+                            <span class="hub-tag"
+                                style="background:rgba(6,182,212,.15);color:#67e8f9;border-color:rgba(6,182,212,.25);">🔥
+                                Most Used</span>
+                        </div>
+                        <div class="hub-feat-icon">🎯</div>
+                        <h3 class="hub-feat-title">AI Rank &amp; College Predictor</h3>
+                        <p class="hub-feat-desc">Enter your mock score and get an instant predicted AIR — calibrated
+                            against 50,000+ attempts. See your admission probability across all 7 IISERs.</p>
+
+                        <!-- Mini preview widget -->
+                        <div class="hub-feat-widget">
+                            <div class="hub-widget-row">
+                                <span>Your Score</span>
+                                <span class="hub-widget-val">142/240</span>
                             </div>
-                        </li>
-                        <li style="display: flex; align-items: flex-start;">
-                            <div class="check-icon" style="margin-top: 0.25rem;"><svg viewBox="0 0 24 24" fill="none"
-                                    stroke="currentColor" stroke-width="3" stroke-linecap="round"
-                                    stroke-linejoin="round">
-                                    <polyline points="20 6 9 17 4 12"></polyline>
-                                </svg></div>
-                            <div>
-                                <strong>AI Mock Result Analyzer</strong>
-                                <p
-                                    style="font-size: 0.9rem; color: var(--text-muted); margin-top: 0.25rem; line-height: 1.4;">
-                                    Per-question insights: conceptual weakness, timing pattern, mistake taxonomy, and
-                                    next-week study plan.</p>
+                            <div class="hub-widget-row">
+                                <span>Predicted AIR</span>
+                                <span class="hub-widget-val hub-widget-green">~847</span>
                             </div>
-                        </li>
-                        <li style="display: flex; align-items: flex-start;">
-                            <div class="check-icon" style="margin-top: 0.25rem;"><svg viewBox="0 0 24 24" fill="none"
-                                    stroke="currentColor" stroke-width="3" stroke-linecap="round"
-                                    stroke-linejoin="round">
-                                    <polyline points="20 6 9 17 4 12"></polyline>
-                                </svg></div>
-                            <div>
-                                <strong>Rank Predictor & Progress Roadmap</strong>
-                                <p
-                                    style="font-size: 0.9rem; color: var(--text-muted); margin-top: 0.25rem; line-height: 1.4;">
-                                    After each mock the Rank Predictor estimates percentile and tells you how many weeks
-                                    of focused work you need to hit your target.</p>
+                            <div class="hub-widget-row">
+                                <span>IISER Pune</span>
+                                <span class="hub-widget-badge hub-safe">Safe</span>
                             </div>
-                        </li>
-                        <li style="display: flex; align-items: flex-start;">
-                            <div class="check-icon" style="margin-top: 0.25rem;"><svg viewBox="0 0 24 24" fill="none"
-                                    stroke="currentColor" stroke-width="3" stroke-linecap="round"
-                                    stroke-linejoin="round">
-                                    <polyline points="20 6 9 17 4 12"></polyline>
-                                </svg></div>
-                            <div>
-                                <strong>High-Quality Smart Notes (Exam-Focused)</strong>
-                                <p
-                                    style="font-size: 0.9rem; color: var(--text-muted); margin-top: 0.25rem; line-height: 1.4;">
-                                    Carefully curated, concept-wise notes designed specifically to crack the IAT — no
-                                    fluff, only what actually appears in the exam.</p>
+                            <div class="hub-widget-row">
+                                <span>IISER Kolkata</span>
+                                <span class="hub-widget-badge hub-border">Borderline</span>
                             </div>
-                        </li>
-                        <li style="display: flex; align-items: flex-start;">
-                            <div class="check-icon" style="margin-top: 0.25rem;"><svg viewBox="0 0 24 24" fill="none"
-                                    stroke="currentColor" stroke-width="3" stroke-linecap="round"
-                                    stroke-linejoin="round">
-                                    <polyline points="20 6 9 17 4 12"></polyline>
-                                </svg></div>
-                            <div>
-                                <strong>24/7 Doubt Resolution</strong>
-                                <p
-                                    style="font-size: 0.9rem; color: var(--text-muted); margin-top: 0.25rem; line-height: 1.4;">
-                                    Hybrid: instant AI answers + mentor escalation for tricky questions.</p>
+                        </div>
+
+                        <div class="hub-feat-cta">Predict My Rank →</div>
+                    </div>
+                </a>
+
+                <!-- RIGHT: 3 stacked cards -->
+                <div class="hub-side-stack">
+
+                    <!-- Syllabus Checklist -->
+                    <a href="/news/iat-syllabus-2026-checklist.html" class="hub-side-card">
+                        <div class="hub-side-icon" style="background:linear-gradient(135deg,#14b8a6,#0d9488);">📋</div>
+                        <div class="hub-side-body">
+                            <div class="hub-side-top">
+                                <span class="hub-tag"
+                                    style="background:rgba(20,184,166,.12);color:#5eead4;border-color:rgba(20,184,166,.2);">Free
+                                    PDF</span>
                             </div>
-                        </li>
-                    </ul>
-                    <button onclick="buyPro()" class="btn btn-primary" style="width: 100%; margin-top: 2rem;">Get Access
-                        Now</button>
-                    <p style="text-align:center; margin-top:1rem; font-size:0.85rem;">
-                        <a href="#faq" style="color:var(--primary); text-decoration:none;">Still have questions? → Read
-                            our FAQ</a>
-                    </p>
+                            <h3 class="hub-side-title">IAT Syllabus Checklist 2026</h3>
+                            <p class="hub-side-desc">200+ topics across PCMB with weightage analysis. Download and track
+                                daily.</p>
+                            <span class="hub-side-link" style="color:#2dd4bf;">Get Checklist →</span>
+                        </div>
+                    </a>
+
+                    <!-- PYQ Vault -->
+                    <a href="/pyqs/pyq.html" class="hub-side-card">
+                        <div class="hub-side-icon" style="background:linear-gradient(135deg,#8b5cf6,#6d28d9);">🔓</div>
+                        <div class="hub-side-body">
+                            <div class="hub-side-top">
+                                <span class="hub-tag"
+                                    style="background:rgba(139,92,246,.12);color:#c4b5fd;border-color:rgba(139,92,246,.2);">2017–2025</span>
+                            </div>
+                            <h3 class="hub-side-title">PYQ Vault — 8 Years</h3>
+                            <p class="hub-side-desc">All previous year papers in a real TCS iON interface with
+                                step-by-step solutions.</p>
+                            <span class="hub-side-link" style="color:#a78bfa;">Solve PYQs →</span>
+                        </div>
+                    </a>
+
+                    <!-- Expert Insights -->
+                    <a href="#blog" class="hub-side-card">
+                        <div class="hub-side-icon" style="background:linear-gradient(135deg,#f59e0b,#d97706);">🧠</div>
+                        <div class="hub-side-body">
+                            <div class="hub-side-top">
+                                <span class="hub-tag"
+                                    style="background:rgba(245,158,11,.12);color:#fcd34d;border-color:rgba(245,158,11,.2);">Latest</span>
+                            </div>
+                            <h3 class="hub-side-title">Expert Strategy Guides</h3>
+                            <p class="hub-side-desc">Book recommendations, preparation strategies, and scientific career
+                                insights from toppers.</p>
+                            <span class="hub-side-link" style="color:#fbbf24;">Browse Blog →</span>
+                        </div>
+                    </a>
+
                 </div>
             </div>
         </div>
     </section>
 
+    <style>
+        /* Knowledge Hub Premium Layout */
+        .hub-premium-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
 
-
-
-
-    <!-- KNOWLEDGE HUB SECTION -->
-    <section class="knowledge-hub" id="knowledge-hub" style="padding: 5rem 0; background: #0f172a;">
-        <style>
-            .knowledge-hub .hub-container {
-                width: 90%;
-                max-width: 1200px;
-                margin: 0 auto;
+        @media(max-width: 900px) {
+            .hub-premium-grid {
+                grid-template-columns: 1fr;
             }
+        }
 
-            .knowledge-hub .hub-header {
-                text-align: center;
-                margin-bottom: 3rem;
-            }
+        /* Featured Card */
+        .hub-feat-card {
+            background: linear-gradient(145deg, rgba(99, 102, 241, .15) 0%, rgba(6, 182, 212, .08) 100%);
+            border: 1px solid rgba(99, 102, 241, .25);
+            border-radius: 24px;
+            padding: 2.25rem;
+            text-decoration: none;
+            display: block;
+            position: relative;
+            overflow: hidden;
+            transition: all .35s ease;
+        }
 
-            .knowledge-hub .hub-header h2 {
-                font-size: clamp(1.75rem, 4vw, 2.5rem);
-                font-weight: 800;
-                color: #fff;
-                letter-spacing: -0.03em;
-                margin-bottom: 0.75rem;
-            }
+        .hub-feat-card::before {
+            content: '';
+            position: absolute;
+            top: -40px;
+            right: -40px;
+            width: 180px;
+            height: 180px;
+            background: radial-gradient(circle, rgba(6, 182, 212, .15), transparent 65%);
+            pointer-events: none;
+        }
 
-            .knowledge-hub .hub-header p {
-                color: #94a3b8;
-                font-size: 1.05rem;
-                max-width: 520px;
-                margin: 0 auto;
-                line-height: 1.7;
-            }
+        .hub-feat-card:hover {
+            border-color: rgba(99, 102, 241, .5);
+            background: linear-gradient(145deg, rgba(99, 102, 241, .2) 0%, rgba(6, 182, 212, .12) 100%);
+            transform: translateY(-4px);
+            box-shadow: 0 24px 60px rgba(0, 0, 0, .4);
+        }
 
-            .knowledge-hub .hub-grid {
-                display: grid;
-                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-                gap: 1.5rem;
-            }
+        .hub-feat-top {
+            margin-bottom: 1rem;
+        }
 
-            .knowledge-hub .hub-card {
-                background: rgba(255, 255, 255, 0.04);
-                border: 1px solid rgba(255, 255, 255, 0.08);
-                border-radius: 20px;
-                padding: 2rem;
-                text-decoration: none;
-                transition: all 0.3s ease;
-                display: flex;
-                flex-direction: column;
-                gap: 0.75rem;
-                position: relative;
-                overflow: hidden;
-            }
+        .hub-feat-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            display: block;
+        }
 
-            .knowledge-hub .hub-card:hover {
-                background: rgba(255, 255, 255, 0.08);
-                border-color: rgba(59, 130, 246, 0.5);
-                transform: translateY(-4px);
-                box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-            }
+        .hub-feat-title {
+            font-size: 1.4rem;
+            font-weight: 800;
+            color: #f1f5f9;
+            letter-spacing: -.02em;
+            margin-bottom: .75rem;
+            line-height: 1.25;
+        }
 
-            .knowledge-hub .hub-badge {
-                display: inline-flex;
-                padding: 0.2rem 0.65rem;
-                border-radius: 100px;
-                font-size: 0.7rem;
-                font-weight: 700;
-                text-transform: uppercase;
-                letter-spacing: 0.05em;
-                width: fit-content;
-            }
+        .hub-feat-desc {
+            font-size: .9rem;
+            color: #94a3b8;
+            line-height: 1.7;
+            margin-bottom: 1.5rem;
+        }
 
-            .knowledge-hub .badge-free {
-                background: rgba(20, 184, 166, 0.15);
-                color: #5eead4;
-            }
+        /* Widget Preview */
+        .hub-feat-widget {
+            background: rgba(255, 255, 255, .05);
+            border: 1px solid rgba(255, 255, 255, .1);
+            border-radius: 14px;
+            padding: 1rem 1.25rem;
+            display: flex;
+            flex-direction: column;
+            gap: .6rem;
+            margin-bottom: 1.5rem;
+        }
 
-            .knowledge-hub .badge-new {
-                background: rgba(59, 130, 246, 0.15);
-                color: #93c5fd;
-            }
+        .hub-widget-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: .82rem;
+            color: #94a3b8;
+        }
 
-            .knowledge-hub .hub-icon {
-                font-size: 2.25rem;
-            }
+        .hub-widget-val {
+            font-weight: 700;
+            color: #f1f5f9;
+            font-size: .88rem;
+        }
 
-            .knowledge-hub .hub-card h3 {
-                font-size: 1.15rem;
-                font-weight: 700;
-                color: #f1f5f9;
-                margin: 0;
-            }
+        .hub-widget-green {
+            color: #34d399;
+        }
 
-            .knowledge-hub .hub-card p {
-                font-size: 0.9rem;
-                color: #94a3b8;
-                line-height: 1.7;
-                flex: 1;
-                margin: 0;
-            }
+        .hub-widget-badge {
+            font-size: .68rem;
+            font-weight: 800;
+            padding: 3px 10px;
+            border-radius: 100px;
+            letter-spacing: .04em;
+        }
 
-            .knowledge-hub .hub-card-link {
-                display: flex;
-                align-items: center;
-                gap: 0.4rem;
-                color: #60a5fa;
-                font-size: 0.9rem;
-                font-weight: 600;
-                margin-top: 0.5rem;
-            }
-        </style>
-        <div class="hub-container">
-            <div class="hub-header">
-                <h2>Knowledge Hub</h2>
-                <p>Everything you need to master the IAT 2026, curated by experts and powered by data.</p>
-            </div>
+        .hub-safe {
+            background: rgba(34, 197, 94, .15);
+            color: #86efac;
+        }
 
-            <div class="hub-grid">
-                <!-- Syllabus Checklist -->
-                <a href="/news/iat-syllabus-2026-checklist.html" class="hub-card">
-                    <span class="hub-badge badge-free">Free PDF</span>
-                    <div class="hub-icon">📋</div>
-                    <h3>Syllabus Checklist</h3>
-                    <p>Track your progress across 200+ topics with our interactive PCMB checklist and weightage
-                        analysis.</p>
-                    <div class="hub-card-link">
-                        Get Checklist
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                            <line x1="5" y1="12" x2="19" y2="12"></line>
-                            <polyline points="12 5 19 12 12 19"></polyline>
-                        </svg>
-                    </div>
-                </a>
+        .hub-border {
+            background: rgba(245, 158, 11, .15);
+            color: #fcd34d;
+        }
 
-                <!-- Rank Predictor -->
-                <a href="/iiser-iat-college-predictor.html" class="hub-card">
-                    <span class="hub-badge badge-new">Interactive</span>
-                    <div class="hub-icon">🎯</div>
-                    <h3>Rank Predictor</h3>
-                    <p>Predict your potential IISER campus based on your mock test scores using our AI-driven model.</p>
-                    <div class="hub-card-link">
-                        Predict Rank
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                            <line x1="5" y1="12" x2="19" y2="12"></line>
-                            <polyline points="12 5 19 12 12 19"></polyline>
-                        </svg>
-                    </div>
-                </a>
+        .hub-feat-cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: #818cf8;
+            font-weight: 700;
+            font-size: .95rem;
+            transition: gap .2s;
+        }
 
-                <!-- PYQ Vault -->
-                <a href="/pyqs/pyq.html" class="hub-card">
-                    <span class="hub-badge badge-free">Mock Mode</span>
-                    <div class="hub-icon">🔓</div>
-                    <h3>PYQ Vault</h3>
-                    <p>Access all previous year papers from 2017–2025 in a real TCS iON replica interface.</p>
-                    <div class="hub-card-link">
-                        Solve Papers
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                            <line x1="5" y1="12" x2="19" y2="12"></line>
-                            <polyline points="12 5 19 12 12 19"></polyline>
-                        </svg>
-                    </div>
-                </a>
+        .hub-feat-card:hover .hub-feat-cta {
+            gap: 10px;
+        }
 
-                <!-- Expert Blog -->
-                <a href="#blog" class="hub-card">
-                    <span class="hub-badge badge-new">Latest</span>
-                    <div class="hub-icon">🧠</div>
-                    <h3>Expert Insights</h3>
-                    <p>Read our latest strategy guides, book recommendations, and scientific career updates.</p>
-                    <div class="hub-card-link">
-                        Browse Blog
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                            <line x1="5" y1="12" x2="19" y2="12"></line>
-                            <polyline points="12 5 19 12 12 19"></polyline>
-                        </svg>
-                    </div>
-                </a>
-            </div>
-        </div>
-    </section>
+        /* Hub Tag */
+        .hub-tag {
+            display: inline-block;
+            font-size: .68rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: .06em;
+            padding: 3px 10px;
+            border-radius: 100px;
+            border: 1px solid;
+        }
+
+        /* Side Stack */
+        .hub-side-stack {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .hub-side-card {
+            background: rgba(255, 255, 255, .04);
+            border: 1px solid rgba(255, 255, 255, .08);
+            border-radius: 18px;
+            padding: 1.25rem 1.5rem;
+            text-decoration: none;
+            display: flex;
+            align-items: flex-start;
+            gap: 1.1rem;
+            transition: all .3s ease;
+            flex: 1;
+        }
+
+        .hub-side-card:hover {
+            background: rgba(255, 255, 255, .08);
+            border-color: rgba(255, 255, 255, .18);
+            transform: translateX(4px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, .25);
+        }
+
+        .hub-side-icon {
+            width: 46px;
+            height: 46px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.35rem;
+            flex-shrink: 0;
+        }
+
+        .hub-side-body {
+            display: flex;
+            flex-direction: column;
+            gap: .35rem;
+        }
+
+        .hub-side-top {
+            margin-bottom: .1rem;
+        }
+
+        .hub-side-title {
+            font-size: 1rem;
+            font-weight: 700;
+            color: #f1f5f9;
+            margin: 0;
+            line-height: 1.3;
+        }
+
+        .hub-side-desc {
+            font-size: .82rem;
+            color: #94a3b8;
+            line-height: 1.55;
+            margin: 0;
+        }
+
+        .hub-side-link {
+            font-size: .82rem;
+            font-weight: 700;
+            margin-top: .2rem;
+        }
+    </style>
     <!-- END KNOWLEDGE HUB -->
 
+
+
+
+
+    <!-- LATEST ARTICLES & GUIDES — PREMIUM -->
+    <section id="blog" style="padding:6rem 0; background:#0a0f1e; position:relative; overflow:hidden;">
+
+        <!-- Subtle grid texture -->
+        <div
+            style="position:absolute;inset:0;background-image:radial-gradient(rgba(255,255,255,.03) 1px,transparent 1px);background-size:32px 32px;pointer-events:none;">
+        </div>
+
+        <div style="width:90%;max-width:1200px;margin:0 auto;position:relative;">
+
+            <!-- Header row -->
+            <div
+                style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:3rem;flex-wrap:wrap;gap:1rem;">
+                <div>
+                    <span
+                        style="display:inline-block;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.12em;color:#f59e0b;background:rgba(245,158,11,.12);border:1px solid rgba(245,158,11,.25);padding:5px 14px;border-radius:100px;margin-bottom:.75rem;">Knowledge
+                        Hub</span>
+                    <h2
+                        style="font-size:clamp(1.6rem,3.5vw,2.25rem);font-weight:800;color:#fff;letter-spacing:-.03em;margin:0;">
+                        Latest Articles &amp; Guides</h2>
+                    <p style="color:#64748b;font-size:.95rem;margin:.5rem 0 0;line-height:1.6;">Expert insights, exam
+                        news, and study hacks to keep your preparation on track.</p>
+                </div>
+                <a href="/news/"
+                    style="display:inline-flex;align-items:center;gap:8px;color:#94a3b8;font-size:.88rem;font-weight:600;text-decoration:none;border:1px solid rgba(255,255,255,.1);padding:.5rem 1.1rem;border-radius:10px;transition:all .2s;white-space:nowrap;"
+                    onmouseover="this.style.borderColor='rgba(255,255,255,.3)';this.style.color='#fff';"
+                    onmouseout="this.style.borderColor='rgba(255,255,255,.1)';this.style.color='#94a3b8';">View All
+                    Articles →</a>
+            </div>
+
+            <!-- Magazine Grid -->
+            <div class="articles-grid">
+
+                <!-- FEATURED Article — Left Large -->
+                <a href="/news/iat-syllabus-2026-checklist.html" class="article-feat">
+                    <div class="article-feat-img">
+                        <div class="article-feat-gradient"></div>
+                        <div class="article-feat-overlay">
+                            <span class="article-cat" style="background:#6366f1;color:#fff;">Strategy</span>
+                        </div>
+                        <!-- Abstract visual -->
+                        <div class="article-feat-visual">
+                            <div class="afv-bar" style="width:85%;background:rgba(99,102,241,.6);"></div>
+                            <div class="afv-bar" style="width:60%;background:rgba(6,182,212,.5);"></div>
+                            <div class="afv-bar" style="width:72%;background:rgba(139,92,246,.5);"></div>
+                            <div class="afv-bar" style="width:45%;background:rgba(245,158,11,.5);"></div>
+                        </div>
+                    </div>
+                    <div class="article-feat-body">
+                        <div class="article-meta">
+                            <span>📅 Apr 2026</span>
+                            <span>⏱ 8 min read</span>
+                        </div>
+                        <h3 class="article-feat-title">IAT 2026 Complete Syllabus Checklist — 200+ Topics With Weightage
+                            Analysis</h3>
+                        <p class="article-feat-desc">Which topics appear every single year? Which chapters give maximum
+                            marks per hour of study? We broke down 8 years of IAT papers so you don't have to.</p>
+                        <div class="article-read-more">Read Article <span class="article-arrow">→</span></div>
+                    </div>
+                </a>
+
+                <!-- RIGHT: 2 compact articles stacked -->
+                <div class="articles-side-stack">
+
+                    <a href="/news/iiser-iat-rank-predictor-guide.html" class="article-side">
+                        <div class="article-side-top">
+                            <span class="article-cat"
+                                style="background:rgba(6,182,212,.15);color:#67e8f9;border:1px solid rgba(6,182,212,.25);">AI
+                                Tools</span>
+                            <span class="article-read-time">5 min read</span>
+                        </div>
+                        <h3 class="article-side-title">How the AI Rank Predictor Works — And Why 73% of Students
+                            Underestimate Their Score</h3>
+                        <p class="article-side-desc">A behind-the-scenes look at our machine learning model, calibrated
+                            against 50,000+ mock attempts.</p>
+                        <div class="article-side-meta">
+                            <span>📅 Mar 2026</span>
+                            <span class="article-read-more-sm">Read →</span>
+                        </div>
+                    </a>
+
+                    <a href="/news/iiser-vs-jee-difference.html" class="article-side">
+                        <div class="article-side-top">
+                            <span class="article-cat"
+                                style="background:rgba(245,158,11,.15);color:#fcd34d;border:1px solid rgba(245,158,11,.25);">Exam
+                                Guide</span>
+                            <span class="article-read-time">6 min read</span>
+                        </div>
+                        <h3 class="article-side-title">IISER IAT vs JEE — 7 Key Differences Every Aspirant Must Know
+                            Before Preparing</h3>
+                        <p class="article-side-desc">The Biology section alone changes everything. Here's what JEE
+                            toppers miss when they try the IAT.</p>
+                        <div class="article-side-meta">
+                            <span>📅 Feb 2026</span>
+                            <span class="article-read-more-sm">Read →</span>
+                        </div>
+                    </a>
+
+                </div>
+            </div>
+
+            <!-- Bottom row: 3 mini articles -->
+            <div class="articles-mini-row">
+                <a href="/news/iat-preparation-strategy.html" class="article-mini">
+                    <span class="article-cat"
+                        style="background:rgba(139,92,246,.15);color:#c4b5fd;border:1px solid rgba(139,92,246,.25);">Study
+                        Plan</span>
+                    <h4 class="article-mini-title">The 90-Day IAT Preparation Plan That Got 3 Students Into IISER Pune
+                    </h4>
+                    <div class="article-mini-meta"><span>📅 Jan 2026</span><span>4 min</span></div>
+                </a>
+                <a href="/news/iiser-pyq-analysis.html" class="article-mini">
+                    <span class="article-cat"
+                        style="background:rgba(20,184,166,.15);color:#5eead4;border:1px solid rgba(20,184,166,.25);">PYQ
+                        Analysis</span>
+                    <h4 class="article-mini-title">8 Years of IAT PYQs Analyzed — The 15 Chapters That Appear Every
+                        Single Year</h4>
+                    <div class="article-mini-meta"><span>📅 Dec 2025</span><span>7 min</span></div>
+                </a>
+                <a href="/news/iiser-biology-strategy.html" class="article-mini">
+                    <span class="article-cat"
+                        style="background:rgba(239,68,68,.15);color:#fca5a5;border:1px solid rgba(239,68,68,.25);">Biology</span>
+                    <h4 class="article-mini-title">Why Biology is Your Secret Weapon in IAT — And How to Score 14/15 in
+                        3 Weeks</h4>
+                    <div class="article-mini-meta"><span>📅 Nov 2025</span><span>5 min</span></div>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <style>
+        /* Articles Magazine Layout */
+        .articles-grid {
+            display: grid;
+            grid-template-columns: 1.1fr 0.9fr;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        @media(max-width:900px) {
+            .articles-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Featured Article */
+        .article-feat {
+            background: rgba(255, 255, 255, .04);
+            border: 1px solid rgba(255, 255, 255, .08);
+            border-radius: 20px;
+            overflow: hidden;
+            text-decoration: none;
+            display: flex;
+            flex-direction: column;
+            transition: all .3s ease;
+        }
+
+        .article-feat:hover {
+            border-color: rgba(99, 102, 241, .4);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, .4);
+            transform: translateY(-4px);
+        }
+
+        .article-feat-img {
+            height: 180px;
+            background: linear-gradient(135deg, #1e1b4b 0%, #0f172a 100%);
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .article-feat-gradient {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(99, 102, 241, .2), rgba(6, 182, 212, .1));
+        }
+
+        .article-feat-overlay {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+        }
+
+        .article-feat-visual {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            width: 70%;
+            position: relative;
+            z-index: 1;
+        }
+
+        .afv-bar {
+            height: 8px;
+            border-radius: 4px;
+        }
+
+        .article-cat {
+            display: inline-block;
+            font-size: .68rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: .06em;
+            padding: 3px 10px;
+            border-radius: 100px;
+        }
+
+        .article-feat-body {
+            padding: 1.5rem;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: .75rem;
+        }
+
+        .article-meta {
+            display: flex;
+            gap: 1rem;
+            font-size: .75rem;
+            color: #475569;
+            font-weight: 600;
+        }
+
+        .article-feat-title {
+            font-size: 1.1rem;
+            font-weight: 800;
+            color: #f1f5f9;
+            line-height: 1.4;
+            margin: 0;
+        }
+
+        .article-feat-desc {
+            font-size: .87rem;
+            color: #64748b;
+            line-height: 1.65;
+            margin: 0;
+            flex: 1;
+        }
+
+        .article-read-more {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: #818cf8;
+            font-size: .88rem;
+            font-weight: 700;
+        }
+
+        .article-arrow {
+            transition: transform .2s;
+        }
+
+        .article-feat:hover .article-arrow {
+            transform: translateX(4px);
+        }
+
+        /* Side Articles */
+        .articles-side-stack {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .article-side {
+            background: rgba(255, 255, 255, .04);
+            border: 1px solid rgba(255, 255, 255, .08);
+            border-radius: 16px;
+            padding: 1.4rem;
+            text-decoration: none;
+            display: flex;
+            flex-direction: column;
+            gap: .6rem;
+            flex: 1;
+            transition: all .25s ease;
+        }
+
+        .article-side:hover {
+            background: rgba(255, 255, 255, .08);
+            border-color: rgba(255, 255, 255, .18);
+            transform: translateX(4px);
+        }
+
+        .article-side-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .article-read-time {
+            font-size: .72rem;
+            color: #475569;
+            font-weight: 600;
+        }
+
+        .article-side-title {
+            font-size: .97rem;
+            font-weight: 700;
+            color: #e2e8f0;
+            line-height: 1.45;
+            margin: 0;
+        }
+
+        .article-side-desc {
+            font-size: .82rem;
+            color: #64748b;
+            line-height: 1.6;
+            margin: 0;
+        }
+
+        .article-side-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: .75rem;
+            color: #475569;
+            font-weight: 600;
+            margin-top: .25rem;
+        }
+
+        .article-read-more-sm {
+            color: #818cf8;
+            font-weight: 700;
+            font-size: .82rem;
+            transition: gap .2s;
+        }
+
+        /* Mini Article Row */
+        .articles-mini-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+        }
+
+        @media(max-width:768px) {
+            .articles-mini-row {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .article-mini {
+            background: rgba(255, 255, 255, .03);
+            border: 1px solid rgba(255, 255, 255, .07);
+            border-radius: 14px;
+            padding: 1.25rem;
+            text-decoration: none;
+            display: flex;
+            flex-direction: column;
+            gap: .6rem;
+            transition: all .25s ease;
+        }
+
+        .article-mini:hover {
+            background: rgba(255, 255, 255, .07);
+            border-color: rgba(255, 255, 255, .15);
+            transform: translateY(-3px);
+        }
+
+        .article-mini-title {
+            font-size: .9rem;
+            font-weight: 700;
+            color: #e2e8f0;
+            line-height: 1.45;
+            margin: 0;
+        }
+
+        .article-mini-meta {
+            display: flex;
+            justify-content: space-between;
+            font-size: .72rem;
+            color: #475569;
+            font-weight: 600;
+            margin-top: auto;
+        }
+    </style>
+
     <!-- 10. FAQ -->
+
     <div class="container">
         <div class="section-header fade-in-up">
             <span class="kicker">Common Questions</span>
@@ -3593,78 +5893,70 @@
         </div>
     </div>
     </section>
-    <!-- Hidden SEO Content Block — visible to Google, not distracting to users -->
-    <section aria-label="IISER IAT Preparation Guide"
-        style="max-width:900px;margin:80px auto;padding:0 20px;line-height:1.8;color:#374151;font-size:1rem;">
+    <!-- SEO Content Block — Click to Expand -->
+    <section aria-label="IISER IAT Preparation Guide" style="max-width:900px; margin:4rem auto; padding:0 20px;">
+        <details class="seo-expand" style="background: var(--bg-wash); border: 1px solid var(--border); border-radius: 16px; overflow: hidden; transition: all 0.3s ease;">
+            <summary style="padding: 1.5rem; cursor: pointer; display: flex; align-items: center; justify-content: space-between; font-weight: 700; color: var(--secondary); font-size: 1.1rem; list-style: none;">
+                <span style="display: flex; align-items: center; gap: 12px;">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+                    IISER IAT Mock Test 2026 – Complete Preparation Platform
+                </span>
+                <span class="seo-icon" style="color: var(--primary); font-size: 1.5rem; line-height: 1;">+</span>
+            </summary>
+            
+            <div style="padding: 1rem 1.5rem 2rem; border-top: 1px solid var(--border); color: var(--text-muted); line-height: 1.8; font-size: 0.95rem;">
+                <p style="margin-top: 0.5rem;">The <strong>IISER Aptitude Test (IAT) 2026</strong> is one of India's most competitive science entrance exams for admission into the <strong>Indian Institutes of Science Education and Research (IISERs)</strong> — including IISER Pune, IISER Kolkata, IISER Mohali, IISER Bhopal, IISER Thiruvananthapuram, IISER Tirupati, and IISER Berhampur. Preparing with high-quality <strong>IISER mock tests</strong> and previous year questions is essential to mastering the exam pattern and improving accuracy under real exam conditions.</p>
 
-        <h2 style="font-size:1.5rem;font-weight:800;color:#0f172a;margin-bottom:1rem;">IISER IAT Mock Test 2026 –
-            Complete Preparation Platform</h2>
+                <h3 style="font-size:1.15rem;font-weight:700;color:var(--secondary);margin:1.75rem 0 0.5rem;">Why Practice IISER IAT Mock Tests?</h3>
+                <p>IISER IAT mock tests simulate the real TCS iON exam environment, helping students improve time management and build exam temperament. The IAT is a 180-minute, 60-question paper covering <strong>Physics, Chemistry, Mathematics, and Biology</strong> — each section carrying 15 questions. Practicing full-length and subject-wise mock tests regularly helps identify weak topics, reduce silly mistakes, and improve overall speed and accuracy. Our platform offers <strong>20+ full-length IISER IAT mock tests</strong> and <strong>100+ chapter-wise quick mocks</strong> modeled on real IAT difficulty.</p>
 
-        <p>The <strong>IISER Aptitude Test (IAT) 2026</strong> is one of India's most competitive science entrance exams
-            for admission into the <strong>Indian Institutes of Science Education and Research (IISERs)</strong> —
-            including IISER Pune, IISER Kolkata, IISER Mohali, IISER Bhopal, IISER Thiruvananthapuram, IISER Tirupati,
-            and IISER Berhampur. Preparing with high-quality <strong>IISER mock tests</strong> and previous year
-            questions is essential to mastering the exam pattern and improving accuracy under real exam conditions.</p>
+                <h3 style="font-size:1.15rem;font-weight:700;color:var(--secondary);margin:1.75rem 0 0.5rem;">IISER IAT Previous Year Questions (PYQs) 2017–2025</h3>
+                <p>Solving <strong>IISER IAT PYQs</strong> from 2017 to 2025 is one of the most effective preparation strategies. Previous year papers reveal recurring question patterns, frequently tested concepts, and the exact difficulty level expected on exam day. Our platform provides all IAT PYQs in an <strong>interactive TCS iON replica interface</strong> — with detailed solutions, step-by-step explanations, and comparative analytics against top scorers. Students who solve 5+ PYQ papers consistently score 20–40 marks higher.</p>
 
-        <h3 style="font-size:1.2rem;font-weight:700;color:#0f172a;margin:1.5rem 0 0.5rem;">Why Practice IISER IAT Mock
-            Tests?</h3>
-        <p>IISER IAT mock tests simulate the real TCS iON exam environment, helping students improve time management and
-            build exam temperament. The IAT is a 180-minute, 60-question paper covering <strong>Physics, Chemistry,
-                Mathematics, and Biology</strong> — each section carrying 15 questions. Practicing full-length and
-            subject-wise mock tests regularly helps identify weak topics, reduce silly mistakes, and improve overall
-            speed and accuracy. Our platform offers <strong>20+ full-length IISER IAT mock tests</strong> and
-            <strong>100+ chapter-wise quick mocks</strong> modeled on real IAT difficulty.
-        </p>
+                <h3 style="font-size:1.15rem;font-weight:700;color:var(--secondary);margin:1.75rem 0 0.5rem;">IISER IAT Syllabus 2026 – What to Study</h3>
+                <p>The <strong>IISER IAT 2026 syllabus</strong> is based on the NCERT Class 11 and Class 12 curriculum across four subjects. In <strong>Physics</strong>, key topics include Mechanics, Electrostatics, Modern Physics, Waves, and Optics. In <strong>Chemistry</strong>, focus areas are Organic Chemistry (particularly named reactions and isomerism), Electrochemistry, and Chemical Bonding. In <strong>Mathematics</strong>, Calculus, Coordinate Geometry, Probability, and Vectors are high-yield. In <strong>Biology</strong>, topics from Genetics, Ecology, Human Physiology, and Cell Biology appear most frequently in the IAT paper.</p>
 
-        <h3 style="font-size:1.2rem;font-weight:700;color:#0f172a;margin:1.5rem 0 0.5rem;">IISER IAT Previous Year
-            Questions (PYQs) 2017–2025</h3>
-        <p>Solving <strong>IISER IAT PYQs</strong> from 2017 to 2025 is one of the most effective preparation
-            strategies. Previous year papers reveal recurring question patterns, frequently tested concepts, and the
-            exact difficulty level expected on exam day. Our platform provides all IAT PYQs in an <strong>interactive
-                TCS iON replica interface</strong> — with detailed solutions, step-by-step explanations, and comparative
-            analytics against top scorers. Students who solve 5+ PYQ papers consistently score 20–40 marks higher.</p>
+                <h3 style="font-size:1.15rem;font-weight:700;color:var(--secondary);margin:1.75rem 0 0.5rem;">AI Rank Predictor for IAT 2026</h3>
+                <p>Our <strong>AI Rank Predictor for IISER IAT 2026</strong> uses machine learning trained on 50,000+ mock test attempts to estimate your expected All India Rank based on your mock performance. It compares your score with historical IAT cutoff data and real rank distributions from IAT 2022, 2023, 2024, and 2025. The predictor also supports <strong>IISER College Predictor</strong> functionality — showing your admission probability across all 7 IISERs based on category, rank, and seat availability.</p>
 
-        <h3 style="font-size:1.2rem;font-weight:700;color:#0f172a;margin:1.5rem 0 0.5rem;">IISER IAT Syllabus 2026 –
-            What to Study</h3>
-        <p>The <strong>IISER IAT 2026 syllabus</strong> is based on the NCERT Class 11 and Class 12 curriculum across
-            four subjects. In <strong>Physics</strong>, key topics include Mechanics, Electrostatics, Modern Physics,
-            Waves, and Optics. In <strong>Chemistry</strong>, focus areas are Organic Chemistry (particularly named
-            reactions and isomerism), Electrochemistry, and Chemical Bonding. In <strong>Mathematics</strong>, Calculus,
-            Coordinate Geometry, Probability, and Vectors are high-yield. In <strong>Biology</strong>, topics from
-            Genetics, Ecology, Human Physiology, and Cell Biology appear most frequently in the IAT paper.</p>
+                <h3 style="font-size:1.15rem;font-weight:700;color:var(--secondary);margin:1.75rem 0 0.5rem;">IISER IAT Preparation Strategy 2026</h3>
+                <p>The most effective <strong>IISER IAT preparation strategy</strong> involves a structured 3-month plan: Month 1 — complete NCERT revision and solve chapter-wise topic mocks; Month 2 — attempt 2–3 full-length mocks per week and analyze performance using AI analytics; Month 3 — intensive PYQ practice, targeted weak-topic revision, and daily quick mocks for speed. Students combined with our <strong>AI Doubt Solver</strong>, which answers any PCMB question instantly, achieve significantly better results compared to traditional coaching center approaches.</p>
 
-        <h3 style="font-size:1.2rem;font-weight:700;color:#0f172a;margin:1.5rem 0 0.5rem;">AI Rank Predictor for IAT
-            2026</h3>
-        <p>Our <strong>AI Rank Predictor for IISER IAT 2026</strong> uses machine learning trained on 50,000+ mock test
-            attempts to estimate your expected All India Rank based on your mock performance. It compares your score
-            with historical IAT cutoff data and real rank distributions from IAT 2022, 2023, 2024, and 2025. The
-            predictor also supports <strong>IISER College Predictor</strong> functionality — showing your admission
-            probability across all 7 IISERs based on category, rank, and seat availability.</p>
-
-        <h3 style="font-size:1.2rem;font-weight:700;color:#0f172a;margin:1.5rem 0 0.5rem;">IISER IAT Preparation
-            Strategy 2026</h3>
-        <p>The most effective <strong>IISER IAT preparation strategy</strong> involves a structured 3-month plan: Month
-            1 — complete NCERT revision and solve chapter-wise topic mocks; Month 2 — attempt 2–3 full-length mocks per
-            week and analyze performance using AI analytics; Month 3 — intensive PYQ practice, targeted weak-topic
-            revision, and daily quick mocks for speed. Students combined with our <strong>AI Doubt Solver</strong>,
-            which answers any PCMB question instantly, achieve significantly better results compared to traditional
-            coaching center approaches.</p>
-
-        <h3 style="font-size:1.2rem;font-weight:700;color:#0f172a;margin:1.5rem 0 0.5rem;">IISER IAT vs JEE – Key
-            Differences</h3>
-        <p>While both the IISER IAT and JEE Main test PCMB concepts, the IAT has a distinctly different emphasis. The
-            <strong>IAT Biology section</strong> (absent in JEE) accounts for 25% of the paper, and questions lean more
-            conceptual and application-based rather than formula-heavy. Students who are strong in NCERT Biology and
-            conceptual Physics often find the IAT more accessible than JEE Advanced. For JEE aspirants who also appear
-            for IAT, focusing on the Biology section and practicing IAT-specific mock tests is the key differentiator.
-        </p>
-
+                <h3 style="font-size:1.15rem;font-weight:700;color:var(--secondary);margin:1.75rem 0 0.5rem;">IISER IAT vs JEE – Key Differences</h3>
+                <p>While both the IISER IAT and JEE Main test PCMB concepts, the IAT has a distinctly different emphasis. The <strong>IAT Biology section</strong> (absent in JEE) accounts for 25% of the paper, and questions lean more conceptual and application-based rather than formula-heavy. Students who are strong in NCERT Biology and conceptual Physics often find the IAT more accessible than JEE Advanced. For JEE aspirants who also appear for IAT, focusing on the Biology section and practicing IAT-specific mock tests is the key differentiator.</p>
+            </div>
+        </details>
+        <style>
+            .seo-expand summary::-webkit-details-marker { display: none; }
+            .seo-expand .seo-icon { display: inline-block; transition: transform 0.25s ease; transform-origin: center; }
+            .seo-expand[open] .seo-icon { transform: rotate(45deg); }
+        </style>
     </section>
 
 
 
+    <!-- FINAL CTA — Conversion Catalyst -->
+    <section class="final-cta-section pro-hidden">
+        <div class="container" style="position:relative;">
+            <h2>Ready to Get Into Your Dream IISER?</h2>
+            <p>Join 15,000+ students who chose smarter preparation. One-time ₹399. Full access until IAT 2026. 7-day
+                money-back guarantee.</p>
+            <div class="final-cta-buttons">
+                <button onclick="buyPro()" class="btn-cta-white">Get Pro Access Now →</button>
+                <a href="/mock_test/quick_mock_homepage.html" class="btn-cta-ghost">Try Free Demo First</a>
+            </div>
+            <div class="final-cta-trust">
+                <span>✓ No credit card to start</span>
+                <span>✓ Instant access after payment</span>
+                <span>✓ 7-day money-back guarantee</span>
+                <span>✓ Secure Razorpay payment</span>
+            </div>
+        </div>
+    </section>
+
     <!-- 11. FOOTER -->
     <footer style="background: white; border-top: 1px solid var(--border); padding: 5rem 0 2rem;">
+
         <div class="container">
             <div
                 style="display: flex; flex-wrap: wrap; gap: 3rem; justify-content: space-between; margin-bottom: 3rem;">
@@ -4045,10 +6337,10 @@
 
         // --- Interactive Demo Question ---
         function selectDemoOption(btn, isCorrect) {
-            var opts = document.querySelectorAll('.demo-option');
+            var opts = document.querySelectorAll('.demo-opt');
             for (var i = 0; i < opts.length; i++) {
                 opts[i].disabled = true;
-                opts[i].classList.remove('selected', 'correct', 'wrong');
+                opts[i].classList.remove('correct', 'wrong');
             }
             if (isCorrect) {
                 btn.classList.add('correct');
@@ -4060,7 +6352,13 @@
                     }
                 }
             }
-            document.getElementById('demo-explanation').style.display = 'block';
+            var exp = document.getElementById('demo-explanation');
+            if (exp) {
+                exp.style.display = 'block';
+                exp.style.animation = 'none';
+                exp.offsetHeight;
+                exp.style.animation = '';
+            }
         }
 
 

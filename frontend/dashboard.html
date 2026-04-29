@@ -2042,7 +2042,8 @@
       <a href="/ai_tutor.html" class="nav-item" id="nav-ai">
         <span class="nav-icon"><i class="ri-robot-2-line"></i></span>
         <span class="nav-label">AI Tutor</span>
-      </a>
+      </a>Running.
+
       <div class="sidebar-divider"></div>
       <div class="nav-section-label">Account</div>
       <a href="/" class="nav-item" id="nav-home">
@@ -2292,7 +2293,8 @@
     <a href="/mock_test/full_mock_test_homepage.html" class="mnav-item"><i
         class="ri-file-list-3-line"></i><span>Mocks</span></a>
     <a href="/ai_tutor.html" class="mnav-item"><i class="ri-robot-2-line"></i><span>AI Tutor</span></a>
-    <a href="/smart_notes/smart_notes_home.html" class="mnav-item"><i class="ri-book-open-line"></i><span>Notes</span></a>
+    <a href="/smart_notes/smart_notes_home.html" class="mnav-item"><i
+        class="ri-book-open-line"></i><span>Notes</span></a>
     <a href="#" class="mnav-item" id="mobile-logout"><i class="ri-logout-box-line"></i><span>Logout</span></a>
   </nav>
 
@@ -2829,8 +2831,8 @@
           blob: acc >= 70 ? 'rgba(16,185,129,0.05)' : 'rgba(239,68,68,0.05)',
           title: acc >= 75 ? 'Excellent Accuracy!' : acc >= 60 ? 'Good Accuracy' : acc >= 45 ? 'Accuracy Needs Work' : 'Critical: Low Accuracy',
           text: `Overall: <b>${acc.toFixed(1)}%</b> across ${total} test${total !== 1 ? 's' : ''}. ${acc >= 70 ? 'You are above the accuracy threshold for strong IISER candidates. Maintain this.' :
-              acc >= 50 ? `Improve by ${(70 - acc).toFixed(0)}% to reach target. Focus on avoiding negative-marked guesses.` :
-                'Review each wrong answer. Negative marking means every 3 wrongs cancel 1 correct. Attempt only confident questions.'
+            acc >= 50 ? `Improve by ${(70 - acc).toFixed(0)}% to reach target. Focus on avoiding negative-marked guesses.` :
+              'Review each wrong answer. Negative marking means every 3 wrongs cancel 1 correct. Attempt only confident questions.'
             }`
         });
 
@@ -2883,8 +2885,8 @@
           blob: 'rgba(6,182,212,0.05)',
           title: `Consistency: ${consistencyScore}/100`,
           text: `Your score standard deviation is <b>${sd.toFixed(1)} pts</b>. ${consistencyScore >= 75 ? 'Very consistent performance — indicative of strong conceptual clarity.'
-              : consistencyScore >= 50 ? 'Moderate variance. Some tests spiked or dropped. Work on exam-day stability.'
-                : 'High variance suggests topic gaps. Some days great, others not. Chapter-wise practice reduces this dramatically.'
+            : consistencyScore >= 50 ? 'Moderate variance. Some tests spiked or dropped. Work on exam-day stability.'
+              : 'High variance suggests topic gaps. Some days great, others not. Chapter-wise practice reduces this dramatically.'
             } Best: <b>${best}</b>, Avg: <b>${Math.round(avgS)}</b>.`
         });
 
@@ -2907,8 +2909,8 @@
             blob: 'rgba(99,102,241,0.05)',
             title: `~Top ${100 - pctile}% Estimated`,
             text: `Based on your avg of <b>${Math.round(avgS)}/240</b>, the AI estimates you are in approximately the <b>top ${100 - pctile}%</b> of IAT test-takers. ${pctile >= 80 ? 'Excellent standing — maintain revision and mock frequency.'
-                : pctile >= 60 ? 'Good position. 2–3 more focused weeks can push you into the top tier.'
-                  : 'Significant improvement headroom. Focus on NCERT-level mastery first, then advanced questions.'
+              : pctile >= 60 ? 'Good position. 2–3 more focused weeks can push you into the top tier.'
+                : 'Significant improvement headroom. Focus on NCERT-level mastery first, then advanced questions.'
               }`
           });
         }
