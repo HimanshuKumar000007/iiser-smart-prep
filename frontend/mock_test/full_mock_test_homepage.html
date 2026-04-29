@@ -14,38 +14,30 @@
 
     <style>
         /* =========================================
-           1. SHARED DESIGN SYSTEM (From Home Page)
+           PREMIUM DESIGN SYSTEM — DARK MODE SAAS
            ========================================= */
         :root {
-            /* Palette: Indigo & Slate */
-            --primary: #4f46e5;
-            --primary-dark: #4338ca;
-            --primary-soft: #e0e7ff;
-
-            --secondary: #0f172a;
-            /* Slate 900 */
-
-            --text-main: #1e293b;
-            --text-muted: #64748b;
-            --text-light: #94a3b8;
-
-            --bg-white: #ffffff;
-            --bg-wash: #f8fafc;
-            --border: #e2e8f0;
-
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --primary-soft: rgba(99, 102, 241, 0.15);
+            --secondary: #f1f5f9;
+            --text-main: #e2e8f0;
+            --text-muted: #94a3b8;
+            --text-light: #64748b;
+            --bg-page: #080d1a;
+            --bg-card: rgba(255, 255, 255, 0.04);
+            --bg-card-free: rgba(99, 102, 241, 0.08);
+            --border: rgba(255, 255, 255, 0.08);
+            --border-free: rgba(99, 102, 241, 0.35);
             --success: #10b981;
-            /* Green for Free tag */
-            --lock: #64748b;
-            /* Color for lock icon */
-
-            --radius-md: 12px;
+            --success-soft: rgba(16, 185, 129, 0.15);
+            --lock: #475569;
+            --radius-md: 16px;
             --radius-lg: 24px;
             --radius-pill: 100px;
-
-            --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-            --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-
-            --container-width: 1140px;
+            --shadow-card: 0 8px 32px rgba(0, 0, 0, 0.35);
+            --shadow-glow: 0 0 40px rgba(99, 102, 241, 0.15);
+            --container-width: 1200px;
         }
 
         * {
@@ -59,8 +51,9 @@
         body {
             font-family: 'Inter', sans-serif;
             color: var(--text-main);
-            background: var(--bg-wash);
+            background: var(--bg-page);
             line-height: 1.6;
+            min-height: 100vh;
         }
 
         a {
@@ -76,68 +69,87 @@
         }
 
         /* =========================================
-           2. COMPONENTS (Buttons & Cards)
+           BUTTONS
            ========================================= */
         .btn {
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            padding: 0.6rem 1.5rem;
+            padding: 0.65rem 1.5rem;
             border-radius: var(--radius-pill);
-            font-weight: 600;
-            font-size: 0.9rem;
+            font-weight: 700;
+            font-size: 0.88rem;
             cursor: pointer;
-            transition: all 0.2s ease;
+            transition: all 0.25s ease;
             gap: 0.5rem;
             border: none;
+            font-family: inherit;
         }
 
         .btn-primary {
-            background: var(--primary);
-            color: white;
-            box-shadow: 0 4px 6px rgba(79, 70, 229, 0.2);
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            color: #fff;
+            box-shadow: 0 4px 20px rgba(99, 102, 241, 0.4);
         }
 
         .btn-primary:hover {
-            background: var(--primary-dark);
-            transform: translateY(-1px);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 28px rgba(99, 102, 241, 0.55);
         }
 
         .btn-primary:disabled {
-            background: var(--text-light);
+            opacity: 0.5;
             cursor: not-allowed;
             transform: none;
-            box-shadow: none;
         }
 
         .btn-outline {
             background: transparent;
-            color: var(--text-main);
-            border: 1px solid var(--border);
-        }
-
-        .btn-outline:hover {
-            border-color: var(--text-main);
-            background: white;
-        }
-
-        .btn-lock {
-            background: var(--bg-wash);
             color: var(--text-muted);
             border: 1px solid var(--border);
         }
 
+        .btn-outline:hover {
+            border-color: rgba(255, 255, 255, 0.25);
+            color: #fff;
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .btn-lock {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-light);
+            border: 1px solid var(--border);
+        }
+
         .btn-lock:hover {
-            background: #e2e8f0;
-            color: var(--secondary);
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-muted);
+        }
+
+        .btn-full {
+            width: 100%;
+        }
+
+        .btn-white {
+            background: white;
+            color: #1e293b;
+            font-weight: 800;
+            border-radius: var(--radius-pill);
+            padding: 0.8rem 2rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .btn-white:hover {
+            background: var(--primary-soft);
+            transform: translateY(-2px);
         }
 
         /* =========================================
-           3. FLOATING HEADER (From Home Page)
+           FLOATING HEADER
            ========================================= */
         header {
             position: fixed;
-            top: 20px;
+            top: 16px;
             left: 0;
             right: 0;
             z-index: 1000;
@@ -153,10 +165,10 @@
 
         .nav-container {
             pointer-events: auto;
-            background: rgba(255, 255, 255, 0.9);
-            backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.5);
-            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.08);
+            background: rgba(8, 13, 26, 0.8);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
             padding: 0.75rem 1.5rem;
             border-radius: 100px;
             display: flex;
@@ -174,15 +186,13 @@
             border-top: 0;
             border-left: 0;
             border-right: 0;
-            background: rgba(255, 255, 255, 0.95);
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-            padding: 1rem 2rem;
+            padding: 0.9rem 2rem;
         }
 
         .logo {
-            font-size: 1.1rem;
+            font-size: 1rem;
             font-weight: 800;
-            color: var(--secondary);
+            color: #fff;
             display: flex;
             align-items: center;
             gap: 0.5rem;
@@ -193,58 +203,136 @@
         }
 
         /* =========================================
-           4. PAGE LAYOUT
+           PAGE LAYOUT & HERO
            ========================================= */
         .page-wrapper {
-            padding-top: 8rem;
-            padding-bottom: 4rem;
+            padding-top: 7rem;
+            padding-bottom: 5rem;
         }
 
-        /* Hero-ish Title */
-        .page-header {
+        .page-hero {
             text-align: center;
-            max-width: 700px;
-            margin: 0 auto 3rem;
+            max-width: 720px;
+            margin: 0 auto 1.5rem;
+            position: relative;
         }
 
-        .page-header h1 {
-            font-size: 2.5rem;
+        .page-hero-kicker {
+            display: inline-block;
+            font-size: 11px;
             font-weight: 800;
-            color: var(--secondary);
-            letter-spacing: -0.03em;
-            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            color: #818cf8;
+            background: rgba(99, 102, 241, 0.12);
+            border: 1px solid rgba(99, 102, 241, 0.25);
+            padding: 5px 16px;
+            border-radius: 100px;
+            margin-bottom: 1.25rem;
         }
 
-        .page-header p {
+        .page-hero h1 {
+            font-size: clamp(2rem, 4.5vw, 3rem);
+            font-weight: 900;
+            color: #fff;
+            letter-spacing: -0.04em;
+            line-height: 1.1;
+            margin-bottom: 1rem;
+        }
+
+        .page-hero h1 span {
+            color: var(--primary);
+        }
+
+        .page-hero p {
             color: var(--text-muted);
-            font-size: 1.1rem;
+            font-size: 1.05rem;
+            line-height: 1.7;
         }
 
-        /* Upsell Banner (Styled like Dark Section) */
+        /* Stats strip */
+        .stats-strip {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+            margin: 2rem auto 3.5rem;
+            padding: 1.25rem 2rem;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            max-width: 700px;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-num {
+            font-size: 1.5rem;
+            font-weight: 900;
+            color: #fff;
+            letter-spacing: -0.03em;
+        }
+
+        .stat-num span {
+            color: var(--primary);
+        }
+
+        .stat-label {
+            font-size: 0.75rem;
+            color: var(--text-light);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        /* Section label */
+        .section-label {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .section-label-text {
+            font-size: 0.8rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-light);
+        }
+
+        .section-label-line {
+            flex: 1;
+            height: 1px;
+            background: var(--border);
+        }
+
+        /* Upsell Banner */
         .upsell-banner {
-            background: var(--secondary);
-            color: white;
-            border-radius: var(--radius-lg);
-            padding: 2rem 3rem;
+            border-radius: 20px;
+            padding: 1.75rem 2.5rem;
             margin-bottom: 3rem;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            box-shadow: var(--shadow-lg);
+            gap: 1.5rem;
             position: relative;
             overflow: hidden;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.2) 0%, rgba(139, 92, 246, 0.15) 100%);
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            backdrop-filter: blur(10px);
         }
 
-        /* Subtle mesh background for banner */
         .upsell-banner::before {
             content: '';
             position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle at 80% 20%, rgba(79, 70, 229, 0.3) 0%, transparent 40%);
+            top: -60px;
+            right: -60px;
+            width: 250px;
+            height: 250px;
+            background: radial-gradient(circle, rgba(139, 92, 246, 0.25), transparent 65%);
             pointer-events: none;
         }
 
@@ -254,43 +342,34 @@
         }
 
         .upsell-content h3 {
-            font-size: 1.5rem;
-            font-weight: 700;
+            font-size: 1.3rem;
+            font-weight: 800;
+            color: #fff;
             margin-bottom: 0.25rem;
         }
 
         .upsell-content p {
-            color: var(--text-light);
+            color: rgba(255, 255, 255, 0.65);
+            font-size: 0.9rem;
         }
 
         .upsell-action {
             position: relative;
             z-index: 2;
-        }
-
-        .btn-white {
-            background: white;
-            color: var(--secondary);
-            font-weight: 700;
-            border-radius: var(--radius-pill);
-            padding: 0.75rem 1.5rem;
-        }
-
-        .btn-white:hover {
-            background: var(--primary-soft);
+            flex-shrink: 0;
         }
 
         /* =========================================
-           5. TEST CARDS GRID
+           TEST CARDS GRID
            ========================================= */
         .grid-3 {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 1.5rem;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.25rem;
         }
 
         .test-card {
-            background: white;
+            background: var(--bg-card);
             border: 1px solid var(--border);
             border-radius: var(--radius-md);
             padding: 1.5rem;
@@ -298,29 +377,45 @@
             flex-direction: column;
             transition: all 0.3s ease;
             position: relative;
+            overflow: hidden;
+        }
+
+        .test-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: transparent;
+            transition: background 0.3s;
         }
 
         .test-card:hover {
-            transform: translateY(-4px);
-            box-shadow: var(--shadow-sm);
-            border-color: var(--primary-soft);
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-card);
+            border-color: rgba(99, 102, 241, 0.3);
         }
 
-        /* Free Test Special Style */
+        .test-card:hover::before {
+            background: linear-gradient(90deg, #6366f1, #8b5cf6);
+        }
+
         .test-card.free {
-            border: 2px solid var(--primary);
-            background: linear-gradient(to bottom, #fff, #f5f3ff);
+            background: var(--bg-card-free);
+            border: 1px solid var(--border-free);
         }
 
-        /* Locked Test Style */
+        .test-card.free::before {
+            background: linear-gradient(90deg, #6366f1, #8b5cf6);
+        }
+
         .test-card.locked {
-            opacity: 0.9;
-            background: #fafafa;
+            opacity: 0.75;
         }
 
-        .test-card.locked .icon-box {
-            background: #f1f5f9;
-            color: var(--text-light);
+        .test-card.locked:hover {
+            opacity: 1;
         }
 
         .card-top {
@@ -331,71 +426,81 @@
         }
 
         .test-icon {
-            width: 42px;
-            height: 42px;
-            background: var(--primary-soft);
-            color: var(--primary);
-            border-radius: 10px;
+            width: 44px;
+            height: 44px;
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.3), rgba(139, 92, 246, 0.2));
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.25rem;
+            font-size: 1.2rem;
+        }
+
+        .test-card.locked .test-icon {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: var(--border);
         }
 
         .badge {
-            font-size: 0.75rem;
-            font-weight: 700;
-            padding: 0.25rem 0.75rem;
+            font-size: 0.68rem;
+            font-weight: 800;
+            padding: 0.25rem 0.7rem;
             border-radius: 100px;
             text-transform: uppercase;
-            letter-spacing: 0.05em;
+            letter-spacing: 0.07em;
         }
 
         .badge-free {
-            background: #dcfce7;
-            color: #15803d;
+            background: var(--success-soft);
+            color: #34d399;
+            border: 1px solid rgba(16, 185, 129, 0.3);
         }
 
         .badge-pro {
-            background: var(--secondary);
-            color: white;
+            background: rgba(99, 102, 241, 0.2);
+            color: #a5b4fc;
+            border: 1px solid rgba(99, 102, 241, 0.3);
             display: flex;
             align-items: center;
             gap: 4px;
         }
 
         .test-title {
-            font-size: 1.1rem;
+            font-size: 1rem;
             font-weight: 700;
-            color: var(--text-main);
-            margin-bottom: 0.2rem;
+            color: #f1f5f9;
+            margin-bottom: 0.15rem;
+            letter-spacing: -0.01em;
+        }
+
+        .test-subtitle {
+            font-size: 0.82rem;
+            color: var(--text-light);
+            margin-bottom: 1rem;
         }
 
         .test-meta {
-            font-size: 0.85rem;
-            color: var(--text-muted);
+            font-size: 0.8rem;
+            color: var(--text-light);
             display: flex;
             gap: 1rem;
-            margin-bottom: 1.5rem;
+            margin-bottom: 1.25rem;
+            flex-wrap: wrap;
         }
 
         .meta-item {
             display: flex;
             align-items: center;
-            gap: 4px;
+            gap: 5px;
         }
 
-        /* Card Button Area */
         .card-action {
             margin-top: auto;
         }
 
-        .btn-full {
-            width: 100%;
-        }
-
         /* =========================================
-           6. MODAL & RESPONSIVE
+           MODALS
            ========================================= */
         .modal-overlay {
             position: fixed;
@@ -403,8 +508,8 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(15, 23, 42, 0.6);
-            backdrop-filter: blur(4px);
+            background: rgba(0, 0, 0, 0.75);
+            backdrop-filter: blur(8px);
             z-index: 2000;
             display: flex;
             align-items: center;
@@ -420,15 +525,16 @@
         }
 
         .modal-card {
-            background: white;
+            background: #111827;
+            border: 1px solid rgba(255, 255, 255, 0.1);
             width: 90%;
-            max-width: 450px;
-            border-radius: var(--radius-lg);
+            max-width: 440px;
+            border-radius: 24px;
             padding: 2.5rem;
             text-align: center;
             transform: scale(0.95);
             transition: 0.3s ease;
-            box-shadow: var(--shadow-lg);
+            box-shadow: 0 32px 80px rgba(0, 0, 0, 0.6);
             position: relative;
         }
 
@@ -437,10 +543,10 @@
         }
 
         .modal-icon {
-            width: 60px;
-            height: 60px;
-            background: var(--primary-soft);
-            color: var(--primary);
+            width: 64px;
+            height: 64px;
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.3), rgba(139, 92, 246, 0.2));
+            border: 1px solid rgba(99, 102, 241, 0.4);
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -450,54 +556,83 @@
         }
 
         .modal-card h2 {
-            color: var(--secondary);
+            color: #fff;
             margin-bottom: 0.5rem;
+            font-size: 1.4rem;
+            font-weight: 800;
+        }
+
+        .modal-card>p {
+            color: var(--text-muted);
         }
 
         .price-tag {
-            font-size: 2.5rem;
-            font-weight: 800;
-            color: var(--primary);
+            font-size: 2.75rem;
+            font-weight: 900;
+            color: #fff;
             display: block;
-            margin: 1.5rem 0;
-            letter-spacing: -0.02em;
+            margin: 1rem 0 0.25rem;
+            letter-spacing: -0.04em;
         }
 
         .feature-check {
             text-align: left;
-            background: var(--bg-wash);
-            padding: 1rem;
-            border-radius: var(--radius-md);
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.07);
+            padding: 1rem 1.25rem;
+            border-radius: 12px;
             margin-bottom: 1.5rem;
         }
 
         .feature-check li {
             list-style: none;
-            margin-bottom: 0.5rem;
-            font-size: 0.9rem;
+            margin-bottom: 0.6rem;
+            font-size: 0.88rem;
             display: flex;
             align-items: center;
-            gap: 0.5rem;
+            gap: 0.6rem;
+            color: var(--text-main);
         }
 
         .feature-check li:last-child {
             margin-bottom: 0;
         }
 
-        @media (max-width: 768px) {
+        /* =========================================
+           FOOTER
+           ========================================= */
+        footer {
+            background: rgba(255, 255, 255, 0.02);
+            border-top: 1px solid var(--border);
+            padding: 4rem 0 2rem;
+            margin-top: 4rem;
+        }
+
+        footer a {
+            color: var(--text-light);
+            font-size: 0.88rem;
+        }
+
+        footer a:hover {
+            color: var(--primary);
+        }
+
+        /* =========================================
+           RESPONSIVE
+           ========================================= */
+        @media(max-width:768px) {
             .upsell-banner {
                 flex-direction: column;
                 text-align: center;
+                padding: 1.5rem;
+            }
+
+            .stats-strip {
                 gap: 1.5rem;
-                padding: 2rem;
             }
 
-            .nav-container {
-                padding: 0.75rem 1rem;
-            }
-
-            .page-header h1 {
-                font-size: 2rem;
+            .grid-3 {
+                grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
             }
         }
     </style>
@@ -533,21 +668,50 @@
 
     <div class="page-wrapper container">
 
-        <!-- 2. PAGE HEADER -->
-        <div class="page-header">
-            <h1>Select Mock Test</h1>
-            <p>Based on the latest 2026 Exam Pattern • 60 Questions • 180 Minutes</p>
+        <!-- 2. PREMIUM PAGE HERO -->
+        <div class="page-hero">
+            <div class="page-hero-kicker">IAT 2026 • TCS iON Interface Replica</div>
+            <h1>Full Length <span>Mock Tests</span></h1>
+            <p>Based on the official 2026 exam pattern • 60 questions • 180 minutes • PCMB coverage.<br>Attempt in real
+                exam conditions and get AI-powered analytics instantly.</p>
+        </div>
+
+        <!-- Stats strip -->
+        <div class="stats-strip">
+            <div class="stat-item">
+                <div class="stat-num">45<span>+</span></div>
+                <div class="stat-label">Full Mocks</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-num">60</div>
+                <div class="stat-label">Questions Each</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-num">180</div>
+                <div class="stat-label">Minutes</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-num">15K<span>+</span></div>
+                <div class="stat-label">Students</div>
+            </div>
         </div>
 
         <!-- 3. UPSELL BANNER (Hidden if Pro) -->
         <div class="upsell-banner pro-hidden" id="pro-banner">
             <div class="upsell-content">
-                <h3>Unlock Full Access</h3>
-                <p>Get access to 40+ Premium Mocks, AI Analytics & Smart Notes.</p>
+                <h3>🔓 Unlock 37 More Premium Mocks</h3>
+                <p>Get full access to all 45 tests + AI Analytics, Smart Notes & Rank Predictor — just ₹399 one-time.
+                </p>
             </div>
             <div class="upsell-action">
-                <button onclick="openUpgradeModal()" class="btn btn-white">Unlock Pro for ₹399</button>
+                <button onclick="openUpgradeModal()" class="btn btn-white">Unlock Pro for ₹399 →</button>
             </div>
+        </div>
+
+        <!-- Free tests section label -->
+        <div class="section-label">
+            <span class="section-label-text">✅ Free Tests — No Login Required</span>
+            <div class="section-label-line"></div>
         </div>
 
         <!-- 4. TEST GRID -->
@@ -699,6 +863,16 @@
                     <button class="btn btn-primary btn-full" onclick="startMock(8)">Start Test</button>
                 </div>
             </div>
+
+        </div>
+
+        <!-- PRO tests section label -->
+        <div class="section-label" style="margin-top:2.5rem;">
+            <span class="section-label-text">🔒 PRO Tests — Unlock with ₹399</span>
+            <div class="section-label-line"></div>
+        </div>
+
+        <div class="grid-3">
 
             <!-- TEST 9: LOCKED -->
             <div class="test-card locked">
@@ -1335,7 +1509,7 @@
     </div>
 
     <!-- FOOTER -->
-    <footer style="background: white; border-top: 1px solid var(--border); padding: 5rem 0 2rem; margin-top: 4rem;">
+    <footer>
         <div class="container">
             <div
                 style="display: flex; flex-wrap: wrap; gap: 3rem; justify-content: space-between; margin-bottom: 3rem;">
@@ -1404,9 +1578,12 @@
             <h2>Unlock Pro Series</h2>
             <p style="color: var(--text-muted);">Gain the edge over 50,000+ aspirants.</p>
 
-            <div style="font-size: 1rem; color: var(--text-muted); text-decoration: line-through; margin-bottom: 0.25rem;">₹999</div>
+            <div
+                style="font-size: 1rem; color: var(--text-muted); text-decoration: line-through; margin-bottom: 0.25rem;">
+                ₹999</div>
             <span class="price-tag">₹399</span>
-            <div id="countdown-line" style="color: #ef4444; font-weight: 700; font-size: 0.9rem; margin-bottom: 1rem;">Offer ends in 4 days ⏳</div>
+            <div id="countdown-line" style="color: #ef4444; font-weight: 700; font-size: 0.9rem; margin-bottom: 1rem;">
+                Offer ends in 4 days ⏳</div>
 
             <div class="feature-check">
                 <li><span style="color: var(--success);">✔</span> 30+ Full Length Mocks</li>
@@ -1650,7 +1827,7 @@
     </script>
     <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
     <script>
-        (function() {
+        (function () {
             const countdownElement = document.getElementById('countdown-line');
             let expiry = localStorage.getItem('IAT_SALE_EXPIRY_4DAY');
             if (!expiry) {
