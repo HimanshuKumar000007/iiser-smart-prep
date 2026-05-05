@@ -333,7 +333,7 @@ app.post("/api/verify-payment", authMiddleware, async (req, res) => {
           <!-- Body -->
           <div style="padding:32px;">
             <p style="color:#0f172a;font-size:1rem;line-height:1.7;margin:0 0 20px;">
-              Congratulations! Your payment was successful and your account has been instantly upgraded to <strong style="color:#6366f1;">PRO — Lifetime Access</strong>. 🎯
+              Congratulations! Your payment was successful and your account has been instantly upgraded to <strong style="color:#6366f1;">PRO — Access till IAT 2026</strong>. 🎯
             </p>
 
             <!-- What you unlocked -->
@@ -345,7 +345,7 @@ app.post("/api/verify-payment", authMiddleware, async (req, res) => {
                 <li>📊 <strong>Smart Dashboard</strong> — AI rank predictor & analytics</li>
                 <li>📘 <strong>Smart Notes</strong> — All subjects, all chapters</li>
                 <li>🏆 <strong>PYQ Bank</strong> — Previous year questions with solutions</li>
-                <li>🔒 <strong>Lifetime Access</strong> — Valid until IAT 2026 & beyond</li>
+                <li>🔒 <strong>Full Access</strong> — Valid until IAT 2026</li>
               </ul>
             </div>
 
