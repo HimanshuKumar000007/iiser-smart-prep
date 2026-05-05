@@ -33,9 +33,21 @@ function requirePro() {
 }
 
 // Re-sync IAT_PLAN from Supabase DB (call on login + protected page loads)
-async function refreshPlanFromServer() {
+// Smart cache: skips API call if checked within last 5 minutes (saves ~80% calls)
+// Pass force=true after login/payment to always hit the DB
+const PLAN_CACHE_MS = 5 * 60 * 1000; // 5 minutes
+
+async function refreshPlanFromServer(force) {
     const token = getToken();
     if (!token) return null;
+
+    // Skip API call if recently synced (unless forced by login/payment)
+    if (!force) {
+        const lastCheck = parseInt(localStorage.getItem("IAT_PLAN_CHECKED") || "0");
+        if (Date.now() - lastCheck < PLAN_CACHE_MS) {
+            return getPlan(); // Use cached plan — checked recently
+        }
+    }
 
     try {
         const res = await fetch(`${API_BASE}/api/check-pro-status`, {
@@ -47,6 +59,7 @@ async function refreshPlanFromServer() {
             console.warn("Token expired — clearing session");
             localStorage.removeItem("IAT_TOKEN");
             localStorage.removeItem("IAT_PLAN");
+            localStorage.removeItem("IAT_PLAN_CHECKED");
             return null;
         }
 
@@ -55,6 +68,7 @@ async function refreshPlanFromServer() {
             if (data.plan) {
                 const normalizedPlan = data.plan.toUpperCase();
                 localStorage.setItem("IAT_PLAN", normalizedPlan);
+                localStorage.setItem("IAT_PLAN_CHECKED", String(Date.now()));
                 console.log("✅ Plan synced from DB:", normalizedPlan);
                 return normalizedPlan;
             }
