@@ -6171,16 +6171,7 @@
 
         updateButtons();
 
-        // --- Auto Refresh Plan from Server (uses auth.js) ---
-        if (token) {
-            const oldPlan = localStorage.getItem("IAT_PLAN");
-            refreshPlanFromServer().then(newPlan => {
-                if (newPlan && newPlan !== oldPlan) {
-                    console.log("Plan updated:", oldPlan, "→", newPlan);
-                    updateButtons(); // Re-render nav/CTA buttons to reflect new plan
-                }
-            }).catch(() => {});
-        }
+        // NOTE: Plan auto-refresh is handled AFTER auth.js loads (see script block below auth.js)
 
         function logout() {
             localStorage.clear();
@@ -6369,6 +6360,21 @@
     </script>
     <script src="/config.js"></script>
     <script src="/auth.js"></script>
+    <script>
+        // --- Auto Refresh Plan from Server (auth.js is now loaded) ---
+        (function() {
+            var _token = localStorage.getItem('IAT_TOKEN');
+            if (_token && typeof refreshPlanFromServer === 'function') {
+                var _oldPlan = localStorage.getItem('IAT_PLAN');
+                refreshPlanFromServer().then(function(newPlan) {
+                    if (newPlan && newPlan !== _oldPlan) {
+                        console.log('Plan updated:', _oldPlan, '→', newPlan);
+                        if (typeof updateButtons === 'function') updateButtons();
+                    }
+                }).catch(function() {});
+            }
+        })();
+    </script>
     <script src="/payment.js"></script>
     <!-- Floating Activity Ticker -->
     <div id="floating-ticker" class="activity-ticker"
