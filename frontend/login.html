@@ -581,7 +581,7 @@
         const initialPlan = (data.plan || data.user?.plan || 'FREE').toUpperCase();
         localStorage.setItem('IAT_PLAN', initialPlan);
         // Invalidate cache so this login always checks DB for real plan
-        localStorage.removeItem('IAT_PLAN_CHECKED');
+        localStorage.removeItem('IAT_PLAN_SYNCED_AT');
         // Show redirecting state immediately so user sees feedback
         setLoading('login-btn','login-spin','login-btn-text', true, 'Redirecting...');
         // Re-sync plan from DB with a 3-second timeout — never blocks the redirect
@@ -598,7 +598,7 @@
             if (planData.plan) localStorage.setItem('IAT_PLAN', planData.plan.toUpperCase());
           }
           // Stamp sync time so homepage doesn't re-check immediately
-          localStorage.setItem('IAT_PLAN_CHECKED', String(Date.now()));
+          localStorage.setItem('IAT_PLAN_SYNCED_AT', String(Date.now()));
         } catch(_) { /* timeout or network error — plan already set from login response */ }
         const redirect = new URLSearchParams(window.location.search).get('redirect');
         window.location.href = redirect ? decodeURIComponent(redirect) : '/index.html';

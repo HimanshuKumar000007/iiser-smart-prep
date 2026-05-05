@@ -65,9 +65,8 @@ async function buyPro() {
 
                     if (verifyData.success) {
                         // Re-sync plan from DB using the canonical auth.js function
-                        // force=true bypasses the 5-minute cache — payment MUST hit DB
                         if (typeof refreshPlanFromServer === "function") {
-                            await refreshPlanFromServer(true);
+                            await refreshPlanFromServer();
                         }
 
                         const currentPlan = localStorage.getItem("IAT_PLAN") || "";
