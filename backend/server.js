@@ -316,6 +316,66 @@ app.post("/api/verify-payment", authMiddleware, async (req, res) => {
       source: "verify-payment"
     }]).catch(logErr => console.error("Payment log insert failed (non-critical):", logErr));
 
+    // 🎉 Send congratulation email (non-blocking — failure won't affect payment success)
+    resend.emails.send({
+      from: "IISER Smart Prep <noreply@iisersmartprep.space>",
+      to: userEmail,
+      subject: "🎉 Welcome to PRO — You're All Set!",
+      html: `
+        <div style="font-family:'Segoe UI',Arial,sans-serif;max-width:560px;margin:auto;background:#ffffff;border-radius:16px;overflow:hidden;border:1px solid #e2e8f0;">
+          <!-- Header -->
+          <div style="background:linear-gradient(135deg,#6366f1 0%,#8b5cf6 100%);padding:40px 32px;text-align:center;">
+            <div style="font-size:3rem;margin-bottom:8px;">🚀</div>
+            <h1 style="color:white;font-size:1.6rem;margin:0;font-weight:800;letter-spacing:-0.5px;">You're officially PRO!</h1>
+            <p style="color:rgba(255,255,255,0.85);margin:8px 0 0;font-size:0.95rem;">Welcome to the IISER Smart Prep family</p>
+          </div>
+
+          <!-- Body -->
+          <div style="padding:32px;">
+            <p style="color:#0f172a;font-size:1rem;line-height:1.7;margin:0 0 20px;">
+              Congratulations! Your payment was successful and your account has been instantly upgraded to <strong style="color:#6366f1;">PRO — Lifetime Access</strong>. 🎯
+            </p>
+
+            <!-- What you unlocked -->
+            <div style="background:#f8fafc;border-radius:12px;padding:20px;margin-bottom:24px;">
+              <p style="color:#6366f1;font-weight:700;margin:0 0 12px;font-size:0.9rem;text-transform:uppercase;letter-spacing:0.5px;">✨ What you've unlocked</p>
+              <ul style="margin:0;padding:0;list-style:none;color:#334155;font-size:0.95rem;line-height:2;">
+                <li>⚡ <strong>AI Tutor</strong> — Unlimited questions, instant answers</li>
+                <li>📄 <strong>All Mock Tests</strong> — Full IAT-pattern papers</li>
+                <li>📊 <strong>Smart Dashboard</strong> — AI rank predictor & analytics</li>
+                <li>📘 <strong>Smart Notes</strong> — All subjects, all chapters</li>
+                <li>🏆 <strong>PYQ Bank</strong> — Previous year questions with solutions</li>
+                <li>🔒 <strong>Lifetime Access</strong> — Valid until IAT 2026 & beyond</li>
+              </ul>
+            </div>
+
+            <!-- CTA Button -->
+            <div style="text-align:center;margin-bottom:24px;">
+              <a href="https://iisersmartprep.space/dashboard.html"
+                style="display:inline-block;background:linear-gradient(135deg,#6366f1,#8b5cf6);color:white;text-decoration:none;padding:14px 36px;border-radius:50px;font-weight:700;font-size:1rem;letter-spacing:-0.2px;">
+                Go to My Dashboard →
+              </a>
+            </div>
+
+            <p style="color:#64748b;font-size:0.85rem;line-height:1.7;margin:0;">
+              Payment ID: <code style="background:#f1f5f9;padding:2px 6px;border-radius:4px;font-size:0.8rem;">${razorpay_payment_id}</code><br>
+              Keep this for your records. If you ever face any issue, email us at
+              <a href="mailto:weborbitsolutions0@gmail.com" style="color:#6366f1;">weborbitsolutions0@gmail.com</a>.
+            </p>
+          </div>
+
+          <!-- Footer -->
+          <div style="background:#f8fafc;padding:16px 32px;text-align:center;border-top:1px solid #e2e8f0;">
+            <p style="color:#94a3b8;font-size:0.8rem;margin:0;">IISER Smart Prep · iisersmartprep.space</p>
+          </div>
+        </div>
+      `
+    }).then(() => {
+      console.log(`📧 Congratulation email sent to: ${userEmail}`);
+    }).catch(emailErr => {
+      console.error("Congratulation email failed (non-critical):", emailErr);
+    });
+
     console.log(`✅ PRO upgrade successful for: ${userEmail}`);
     return res.json({ success: true, plan: "PRO" });
 
