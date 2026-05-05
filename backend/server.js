@@ -470,6 +470,68 @@ app.post("/api/login", async (req, res) => {
 });
 
 // =======================
+// 📬 CONTACT US API
+// =======================
+const contactRateLimit = new Map(); // IP → { count, resetAt }
+
+app.post('/api/contact', async (req, res) => {
+  try {
+    const { name, email, message } = req.body;
+    if (!name || !email || !message) {
+      return res.status(400).json({ error: 'Name, email and message are required.' });
+    }
+    if (message.length > 2000) {
+      return res.status(400).json({ error: 'Message too long (max 2000 chars).' });
+    }
+
+    // Simple rate limit: 5 submissions per IP per hour
+    const ip = req.headers['x-forwarded-for']?.split(',')[0]?.trim() || req.socket.remoteAddress || 'unknown';
+    const now = Date.now();
+    const rl = contactRateLimit.get(ip) || { count: 0, resetAt: now + 3600000 };
+    if (now > rl.resetAt) { rl.count = 0; rl.resetAt = now + 3600000; }
+    if (rl.count >= 5) {
+      return res.status(429).json({ error: 'Too many messages. Please try again later.' });
+    }
+    rl.count++;
+    contactRateLimit.set(ip, rl);
+
+    // Send email to support inbox
+    const { error: emailErr } = await resend.emails.send({
+      from: 'IISER Smart Prep Contact <noreply@iisersmartprep.space>',
+      to: 'weborbitsolutions0@gmail.com',
+      replyTo: email,
+      subject: `📩 Contact Form: ${name}`,
+      html: `
+        <div style="font-family:Arial,sans-serif;max-width:560px;margin:auto;padding:24px;border-radius:12px;border:1px solid #e2e8f0;">
+          <h2 style="color:#6366f1;margin-bottom:4px;">New Contact Form Message</h2>
+          <p style="color:#64748b;font-size:0.85rem;margin-bottom:20px;">Submitted from iisersmartprep.space/contact-us.html</p>
+          <table style="width:100%;border-collapse:collapse;">
+            <tr><td style="padding:8px 0;color:#64748b;font-size:0.9rem;width:90px;"><strong>Name</strong></td><td style="padding:8px 0;">${name}</td></tr>
+            <tr><td style="padding:8px 0;color:#64748b;font-size:0.9rem;"><strong>Email</strong></td><td style="padding:8px 0;"><a href="mailto:${email}" style="color:#6366f1;">${email}</a></td></tr>
+          </table>
+          <hr style="border:none;border-top:1px solid #e2e8f0;margin:16px 0;">
+          <p style="color:#0f172a;white-space:pre-wrap;line-height:1.7;">${message.replace(/</g,'&lt;').replace(/>/g,'&gt;')}</p>
+          <hr style="border:none;border-top:1px solid #e2e8f0;margin:16px 0;">
+          <p style="color:#94a3b8;font-size:0.8rem;">Reply directly to this email to respond to ${name}.</p>
+        </div>
+      `
+    });
+
+    if (emailErr) {
+      console.error('Contact form email error:', emailErr);
+      return res.status(500).json({ error: 'Failed to send message. Please email us directly.' });
+    }
+
+    console.log(`✅ Contact form submitted by ${name} <${email}>`);
+    res.json({ success: true });
+
+  } catch (err) {
+    console.error('Contact route error:', err);
+    res.status(500).json({ error: 'Server error. Please try again.' });
+  }
+});
+
+// =======================
 // 🔐 FORGOT PASSWORD API
 // =======================
 app.post('/api/forgot-password', async (req, res) => {

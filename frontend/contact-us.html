@@ -432,7 +432,12 @@
 
                 <!-- CONTACT FORM -->
                 <div class="card">
-                    <form onsubmit="event.preventDefault(); alert('Message sent! We will contact you shortly.');">
+                    <div id="contact-success" style="display:none; background:#f0fdf4; border:1px solid #86efac; border-radius:10px; padding:1.2rem; margin-bottom:1.2rem; color:#166534; font-weight:600; text-align:center;">
+                        ✅ Message sent! We’ll reply to your email within 24 hours.
+                    </div>
+                    <div id="contact-error" style="display:none; background:#fef2f2; border:1px solid #fca5a5; border-radius:10px; padding:1rem; margin-bottom:1.2rem; color:#991b1b; font-size:0.9rem;"></div>
+
+                    <form id="contact-form" onsubmit="handleContactSubmit(event)">
                         <label for="name">Your Name</label>
                         <input type="text" id="name" placeholder="Enter your name" required>
 
@@ -442,7 +447,7 @@
                         <label for="message">Your Message</label>
                         <textarea id="message" placeholder="Write your query or feedback here..." required></textarea>
 
-                        <button type="submit">Send Message</button>
+                        <button type="submit" id="contact-btn">Send Message →</button>
 
                         <p class="note" style="border: none; padding: 0;">
                             We usually respond within <strong>24 hours</strong>.
@@ -489,18 +494,45 @@
     </footer>
 
     <script>
-        // --- Mobile Menu Logic ---
         function toggleMenu() {
             const navLinks = document.getElementById('nav-links');
             const lines = document.querySelectorAll('.hamburger-line');
             navLinks.classList.toggle('active');
-
             lines.forEach(line => line.classList.toggle('active'));
+            document.body.style.overflow = navLinks.classList.contains('active') ? 'hidden' : 'auto';
+        }
 
-            if (navLinks.classList.contains('active')) {
-                document.body.style.overflow = 'hidden';
-            } else {
-                document.body.style.overflow = 'auto';
+        async function handleContactSubmit(e) {
+            e.preventDefault();
+            const btn = document.getElementById('contact-btn');
+            const successBox = document.getElementById('contact-success');
+            const errorBox = document.getElementById('contact-error');
+
+            successBox.style.display = 'none';
+            errorBox.style.display = 'none';
+            btn.disabled = true;
+            btn.textContent = 'Sending...';
+
+            const name    = document.getElementById('name').value.trim();
+            const email   = document.getElementById('email').value.trim();
+            const message = document.getElementById('message').value.trim();
+
+            try {
+                const res = await fetch('https://api.iisersmartprep.space/api/contact', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ name, email, message })
+                });
+                const data = await res.json();
+                if (!res.ok) throw new Error(data.error || 'Failed to send message.');
+                successBox.style.display = 'block';
+                document.getElementById('contact-form').reset();
+            } catch (err) {
+                errorBox.textContent = '⚠️ ' + err.message;
+                errorBox.style.display = 'block';
+            } finally {
+                btn.disabled = false;
+                btn.textContent = 'Send Message →';
             }
         }
     </script>
