@@ -715,14 +715,6 @@
     </script>
     <!-- Auth System -->
     <script src="/auth.js"></script>
-    <script>
-        (async () => {
-            if (requireLogin()) {
-                await refreshPlanFromServer();
-                requirePro();
-            }
-        })();
-    </script>
 </head>
 
 <body>
@@ -817,6 +809,17 @@
     </div>
 
     <script>
+        // ── Auth guard (runs after body renders — no blank screen) ──
+        (async () => {
+            if (requireLogin('/login.html')) {
+                await refreshPlanFromServer();
+                if (!isPro()) {
+                    alert('This feature is for PRO users only. Upgrade to unlock unlimited access.');
+                    window.location.href = '/#pricing';
+                }
+            }
+        })();
+
         // ── Config ──────────────────────────────────────────
         const AI_CONFIG = {
             url: 'https://api.iisersmartprep.space/api/ai-chat',

@@ -580,16 +580,22 @@
         // Store initial plan from login response (normalized)
         const initialPlan = (data.plan || data.user?.plan || 'FREE').toUpperCase();
         localStorage.setItem('IAT_PLAN', initialPlan);
-        // Re-sync with DB to catch any plan updates (e.g. user paid but token had old plan)
+        // Show redirecting state immediately so user sees feedback
+        setLoading('login-btn','login-spin','login-btn-text', true, 'Redirecting...');
+        // Re-sync plan from DB with a 3-second timeout — never blocks the redirect
         try {
+          const controller = new AbortController();
+          const timeout = setTimeout(() => controller.abort(), 3000);
           const planRes = await fetch(`${API_BASE}/check-pro-status`, {
-            headers: { 'Authorization': 'Bearer ' + data.token }
+            headers: { 'Authorization': 'Bearer ' + data.token },
+            signal: controller.signal
           });
+          clearTimeout(timeout);
           if (planRes.ok) {
             const planData = await planRes.json();
             if (planData.plan) localStorage.setItem('IAT_PLAN', planData.plan.toUpperCase());
           }
-        } catch(_) {}
+        } catch(_) { /* timeout or network error — plan already set from login response */ }
         const redirect = new URLSearchParams(window.location.search).get('redirect');
         window.location.href = redirect ? decodeURIComponent(redirect) : '/index.html';
       } catch(err) {
