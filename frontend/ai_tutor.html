@@ -713,6 +713,16 @@
         function gtag() { dataLayer.push(arguments); }
         gtag('js', new Date()); gtag('config', 'G-WHHM4FTNHG');
     </script>
+    <!-- Auth System -->
+    <script src="/auth.js"></script>
+    <script>
+        (async () => {
+            if (requireLogin()) {
+                await refreshPlanFromServer();
+                requirePro();
+            }
+        })();
+    </script>
 </head>
 
 <body>

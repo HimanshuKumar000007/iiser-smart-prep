@@ -577,9 +577,19 @@
         const data = await res.json();
         if (!res.ok) throw new Error(data.error || 'Login failed');
         localStorage.setItem('IAT_TOKEN', data.token);
-        localStorage.setItem('IAT_PLAN', data.plan || 'FREE');
-        // Sync real plan from DB
-        if (typeof refreshPlanFromServer === 'function') await refreshPlanFromServer();
+        // Store initial plan from login response (normalized)
+        const initialPlan = (data.plan || data.user?.plan || 'FREE').toUpperCase();
+        localStorage.setItem('IAT_PLAN', initialPlan);
+        // Re-sync with DB to catch any plan updates (e.g. user paid but token had old plan)
+        try {
+          const planRes = await fetch(`${API_BASE}/check-pro-status`, {
+            headers: { 'Authorization': 'Bearer ' + data.token }
+          });
+          if (planRes.ok) {
+            const planData = await planRes.json();
+            if (planData.plan) localStorage.setItem('IAT_PLAN', planData.plan.toUpperCase());
+          }
+        } catch(_) {}
         const redirect = new URLSearchParams(window.location.search).get('redirect');
         window.location.href = redirect ? decodeURIComponent(redirect) : '/index.html';
       } catch(err) {
@@ -608,7 +618,8 @@
         const data = await res.json();
         if (!res.ok) throw new Error(data.error || 'Signup failed');
         localStorage.setItem('IAT_TOKEN', data.token);
-        localStorage.setItem('IAT_PLAN', data.user?.plan || 'FREE');
+        const plan = (data.user?.plan || 'FREE').toUpperCase();
+        localStorage.setItem('IAT_PLAN', plan);
         showMsg('signup-success', '🎉 Account created! Redirecting...', 'success');
         setTimeout(() => { window.location.href = '/index.html'; }, 1200);
       } catch(err) {

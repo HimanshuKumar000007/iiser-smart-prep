@@ -7,7 +7,7 @@ function getToken() {
 }
 
 function getPlan() {
-    return localStorage.getItem("IAT_PLAN");
+    return localStorage.getItem("IAT_PLAN") || "FREE";
 }
 
 function requireLogin(redirectPath) {
@@ -24,7 +24,7 @@ function requireLogin(redirectPath) {
 
 function requirePro() {
     const plan = getPlan();
-    if (plan !== "PRO" && plan !== "Pro") {
+    if (!isPro()) {
         alert("This feature is for PRO users only. Upgrade to unlock unlimited access.");
         window.location.href = "/#pricing";
         return false;
@@ -53,9 +53,10 @@ async function refreshPlanFromServer() {
         if (res.ok) {
             const data = await res.json();
             if (data.plan) {
-                localStorage.setItem("IAT_PLAN", data.plan);
-                console.log("Plan synced from DB:", data.plan);
-                return data.plan;
+                const normalizedPlan = data.plan.toUpperCase();
+                localStorage.setItem("IAT_PLAN", normalizedPlan);
+                console.log("✅ Plan synced from DB:", normalizedPlan);
+                return normalizedPlan;
             }
         }
     } catch (err) {
@@ -67,7 +68,7 @@ async function refreshPlanFromServer() {
 // Check if user is PRO (from local cache — fast)
 function isPro() {
     const plan = getPlan();
-    return plan === "PRO" || plan === "Pro";
+    return plan.toUpperCase() === "PRO";
 }
 
 // Expose globally
@@ -77,3 +78,8 @@ window.requireLogin = requireLogin;
 window.requirePro = requirePro;
 window.refreshPlanFromServer = refreshPlanFromServer;
 window.isPro = isPro;
+
+// Auto-sync plan on load if logged in (non-blocking)
+if (getToken()) {
+    refreshPlanFromServer().catch(() => {});
+}

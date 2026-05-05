@@ -1,7 +1,9 @@
-// payment.js — Robust payment flow with DB re-sync
+// payment.js — Razorpay checkout flow
+// NOTE: refreshPlanFromServer is defined in auth.js and loaded globally.
+//       Do NOT redefine it here.
 
 async function buyPro() {
-    // 0️⃣ Check Login
+    // 0️⃣ Require login
     const token = localStorage.getItem("IAT_TOKEN");
     if (!token) {
         if (window.showAuthSheet) {
@@ -27,7 +29,6 @@ async function buyPro() {
         const data = await res.json();
 
         if (!res.ok || data.error) {
-            // If token is stale (user signed up before JWT fix), prompt re-login
             if (res.status === 400 && data.error && data.error.includes("token")) {
                 alert("Session expired. Please log out and log back in, then try again.");
             } else {
@@ -49,9 +50,7 @@ async function buyPro() {
             // 3️⃣ Payment success handler
             handler: async function (response) {
                 try {
-                    // Show loading state
-                    const verifyingMsg = "⏳ Verifying payment and activating PRO...";
-                    console.log(verifyingMsg);
+                    console.log("⏳ Verifying payment and activating PRO...");
 
                     const verifyRes = await fetch("https://api.iisersmartprep.space/api/verify-payment", {
                         method: "POST",
@@ -65,20 +64,19 @@ async function buyPro() {
                     const verifyData = await verifyRes.json();
 
                     if (verifyData.success) {
-                        // BUG FIX: Re-sync actual plan from DB instead of blindly trusting response
-                        await refreshPlanFromServer(token);
-
-                        const currentPlan = localStorage.getItem("IAT_PLAN");
-                        if (currentPlan === "PRO") {
-                            alert("🎉 PRO activated successfully! Enjoy unlimited access.");
-                            window.location.reload();
-                        } else {
-                            // Payment verified but DB sync failed — extremely rare
-                            alert("✅ Payment verified! Your account is being activated. Please refresh in 30 seconds or contact support if PRO isn't active.");
-                            window.location.reload();
+                        // Re-sync plan from DB using the canonical auth.js function
+                        if (typeof refreshPlanFromServer === "function") {
+                            await refreshPlanFromServer();
                         }
+
+                        const currentPlan = localStorage.getItem("IAT_PLAN") || "";
+                        if (currentPlan.toUpperCase() === "PRO") {
+                            alert("🎉 PRO activated successfully! Enjoy unlimited access.");
+                        } else {
+                            alert("✅ Payment verified! Your PRO access is being activated. The page will reload now.");
+                        }
+                        window.location.reload();
                     } else {
-                        // BUG FIX: Now we actually receive the error (no longer swallowed)
                         const errMsg = verifyData.error || "Payment verification failed";
                         console.error("Verify payment failed:", errMsg);
                         alert("⚠️ " + errMsg);
@@ -89,17 +87,17 @@ async function buyPro() {
                 }
             },
 
-            // Handle payment failures
+            // Handle modal close
             modal: {
                 ondismiss: function () {
-                    console.log("Razorpay modal closed by user");
+                    console.log("Razorpay modal closed by user.");
                 }
             },
 
             theme: { color: "#2563eb" }
         };
 
-        // 4️⃣ Open checkout
+        // 4️⃣ Open Razorpay checkout
         const rzp = new Razorpay(options);
 
         rzp.on("payment.failed", function (response) {
@@ -115,28 +113,5 @@ async function buyPro() {
     }
 }
 
-// Sync IAT_PLAN in localStorage from the real Supabase DB
-async function refreshPlanFromServer(token) {
-    try {
-        const t = token || localStorage.getItem("IAT_TOKEN");
-        if (!t) return;
-
-        const res = await fetch("https://api.iisersmartprep.space/api/check-pro-status", {
-            headers: { "Authorization": "Bearer " + t }
-        });
-
-        if (res.ok) {
-            const data = await res.json();
-            if (data.plan) {
-                localStorage.setItem("IAT_PLAN", data.plan);
-                console.log("✅ Plan synced from DB:", data.plan);
-            }
-        }
-    } catch (err) {
-        console.warn("refreshPlanFromServer failed (non-critical):", err.message);
-    }
-}
-
-// Expose globally so other scripts can call it
+// Expose globally
 window.buyPro = buyPro;
-window.refreshPlanFromServer = refreshPlanFromServer;

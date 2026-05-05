@@ -17,7 +17,8 @@ const RAZORPAY_KEY_ID = "rzp_live_SC3R47SGOoJHvE";
 
 // Global PRO UI Manager
 document.addEventListener("DOMContentLoaded", () => {
-    const isPro = localStorage.getItem("IAT_PLAN") === "PRO";
+    const plan = localStorage.getItem("IAT_PLAN") || "FREE";
+    const isPro = plan.toUpperCase() === "PRO";
     if (isPro) {
         // 1. Inject strictly enforced CSS to hide all .pro-hidden elements globally
         // We use double classes, IDs, and aggressive resets to win all specificity wars.

@@ -2376,6 +2376,7 @@
         const data = await apiFetch('/api/me');
         const name = data.name || data.email?.split('@')[0] || 'Student';
         const plan = data.plan || data.subscription || 'FREE';
+        localStorage.setItem('IAT_PLAN', plan.toUpperCase());
         document.getElementById('user-name').textContent = name;
         document.getElementById('user-plan').textContent = plan.toUpperCase();
         document.getElementById('user-avatar').textContent = name[0].toUpperCase();
