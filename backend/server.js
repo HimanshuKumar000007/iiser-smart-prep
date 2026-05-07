@@ -83,6 +83,11 @@ const razorpay = new Razorpay({
 // 🔒 MIDDLEWARE
 // ===============================
 function authMiddleware(req, res, next) {
+  // ✅ Let CORS preflight pass — OPTIONS has no auth header by design
+  if (req.method === "OPTIONS") {
+    return next();
+  }
+
   const authHeader = req.headers.authorization;
   if (!authHeader) {
     return res.status(401).json({ error: "No token provided" });
@@ -305,16 +310,21 @@ app.post("/api/verify-payment", authMiddleware, async (req, res) => {
     }
 
     // ✅ Log payment for audit trail
-    await supabase.from("payments").insert([{
-      email: userEmail,
-      user_id: req.user.id,
-      razorpay_order_id,
-      razorpay_payment_id,
-      amount: 39900,
-      currency: "INR",
-      status: "captured",
-      source: "verify-payment"
-    }]).catch(logErr => console.error("Payment log insert failed (non-critical):", logErr));
+    try {
+      const { error: logErr } = await supabase.from("payments").insert([{
+        email: userEmail,
+        user_id: req.user.id,
+        razorpay_order_id,
+        razorpay_payment_id,
+        amount: 39900,
+        currency: "INR",
+        status: "captured",
+        source: "verify-payment"
+      }]);
+      if (logErr) console.error("Payment log insert failed (non-critical):", logErr);
+    } catch (logErr) {
+      console.error("Payment log insert failed (non-critical):", logErr);
+    }
 
     // 🎉 Send congratulation email (non-blocking — failure won't affect payment success)
     resend.emails.send({
@@ -453,16 +463,21 @@ app.post("/api/razorpay-webhook", async (req, res) => {
         console.log(`✅ Webhook: User upgraded to PRO — email=${userEmail}, id=${userId}`);
 
         // Log payment for audit trail
-        await supabase.from("payments").insert([{
-          email: userEmail,
-          user_id: userId,
-          razorpay_payment_id: paymentId,
-          razorpay_order_id: payment.order_id,
-          amount: payment.amount,
-          currency: payment.currency,
-          status: "captured",
-          source: "webhook"
-        }]).catch(logErr => console.error("Payment log insert failed (non-critical):", logErr));
+        try {
+          const { error: logErr } = await supabase.from("payments").insert([{
+            email: userEmail,
+            user_id: userId,
+            razorpay_payment_id: paymentId,
+            razorpay_order_id: payment.order_id,
+            amount: payment.amount,
+            currency: payment.currency,
+            status: "captured",
+            source: "webhook"
+          }]);
+          if (logErr) console.error("Payment log insert failed (non-critical):", logErr);
+        } catch (logErr) {
+          console.error("Payment log insert failed (non-critical):", logErr);
+        }
       }
     }
 
