@@ -309,9 +309,9 @@ app.post("/api/verify-payment", authMiddleware, async (req, res) => {
       });
     }
 
-    // ✅ Log payment for audit trail
+    // ✅ Log payment for audit trail (upsert — silently skips if webhook already logged it)
     try {
-      const { error: logErr } = await supabase.from("payments").insert([{
+      const { error: logErr } = await supabase.from("payments").upsert([{
         email: userEmail,
         user_id: req.user.id,
         razorpay_order_id,
@@ -320,10 +320,10 @@ app.post("/api/verify-payment", authMiddleware, async (req, res) => {
         currency: "INR",
         status: "captured",
         source: "verify-payment"
-      }]);
-      if (logErr) console.error("Payment log insert failed (non-critical):", logErr);
+      }], { onConflict: "razorpay_payment_id", ignoreDuplicates: true });
+      if (logErr) console.error("Payment log upsert failed (non-critical):", logErr);
     } catch (logErr) {
-      console.error("Payment log insert failed (non-critical):", logErr);
+      console.error("Payment log upsert failed (non-critical):", logErr);
     }
 
     // 🎉 Send congratulation email (non-blocking — failure won't affect payment success)
@@ -462,9 +462,9 @@ app.post("/api/razorpay-webhook", async (req, res) => {
       } else {
         console.log(`✅ Webhook: User upgraded to PRO — email=${userEmail}, id=${userId}`);
 
-        // Log payment for audit trail
+        // Log payment for audit trail (upsert — silently skips if verify-payment already logged it)
         try {
-          const { error: logErr } = await supabase.from("payments").insert([{
+          const { error: logErr } = await supabase.from("payments").upsert([{
             email: userEmail,
             user_id: userId,
             razorpay_payment_id: paymentId,
@@ -473,10 +473,10 @@ app.post("/api/razorpay-webhook", async (req, res) => {
             currency: payment.currency,
             status: "captured",
             source: "webhook"
-          }]);
-          if (logErr) console.error("Payment log insert failed (non-critical):", logErr);
+          }], { onConflict: "razorpay_payment_id", ignoreDuplicates: true });
+          if (logErr) console.error("Payment log upsert failed (non-critical):", logErr);
         } catch (logErr) {
-          console.error("Payment log insert failed (non-critical):", logErr);
+          console.error("Payment log upsert failed (non-critical):", logErr);
         }
       }
     }
