@@ -47,7 +47,7 @@
                 "159 Hz, 5",
                 "159 Hz, 15.8"
             ],
-            "correct": 3,
+            "correct": 1,
             "explanation": "<strong>Step 1:</strong> Resonant frequency f₀ = 1/(2π√(LC)) = 1/(2π√(0.5 × 20×10⁻⁶)) = 1/(2π√(10⁻⁵)) = 1/(2π × 3.16×10⁻³) ≈ 50.3 Hz? Recheck: √(10⁻⁵) = 3.16×10⁻³, 2π × 3.16×10⁻³ = 0.0198, 1/0.0198 = 50.3 Hz.<br><strong>Step 2:</strong> Wait, let me recalculate: LC = 0.5 × 20×10⁻⁶ = 10⁻⁵. √LC = 10⁻²·⁵ = 3.16×10⁻³. 2π√LC = 0.0199 s. f₀ = 50.3 Hz.<br><strong>Step 3:</strong> Quality factor Q = ω₀L/R = (1/√LC) × L/R = √(L/C)/R = √(0.5/20×10⁻⁶)/10 = √(25000)/10 = 158/10 = 15.8.<br><strong>Answer:</strong> <strong>50.3 Hz, 15.8</strong>.",
             "difficulty": "Hard",
             "imagePrompt": ""
@@ -120,15 +120,15 @@
             "id": 8,
             "subject": "Physics",
             "section": "A",
-            "question": "A particle of mass m moves in potential V(x) = V₀(x/a)⁴. For small oscillations about equilibrium, the time period scales as:",
+            "question": "A particle of mass m moves in a potential V(x) = ½k x², where k = V₀/a². The time period of small oscillations scales as:",
             "options": [
-                "a⁰m⁰ (independent of a and m)",
-                "a^(1/2)m^(-1/2)",
-                "a^(-1)m^(1/2)",
-                "a^(3/2)m^(-1/2)"
+                "a m^(1/2) V₀^(-1/2)",
+                "a^(-1) m^(1/2) V₀^(1/2)",
+                "a m^(-1/2) V₀^(1/2)",
+                "a² m V₀⁻¹"
             ],
-            "correct": 1,
-            "explanation": "<strong>Step 1:</strong> Equilibrium at x = 0. For small x, expand V(x) ≈ 0 (not harmonic).<br><strong>Step 2:</strong> Actually need to check if x=0 is stable minimum. V''(0) = 0, so not simple harmonic.<br><strong>Step 3:</strong> For finite amplitude A, effective spring constant k_eff ∝ V₀A²/a⁴.<br><strong>Step 4:</strong> ω ∝ √(k_eff/m) ∝ A/a²√(V₀/m).<br><strong>Step 5:</strong> Period T ∝ 1/ω ∝ a²√(m/V₀)/A. For fixed amplitude ratio, T ∝ a√m.<br><strong>Given dimensional analysis:</strong> [V₀] = ML²/T², [a] = L. For oscillation: T ∝ √(ma²/V₀) ∝ <strong>a^(1/2)m^(-1/2)</strong> with adjusted exponents.",
+            "correct": 0,
+            "explanation": "<strong>Step 1:</strong> For a harmonic oscillator, T = 2π√(m/k).<br><strong>Step 2:</strong> Given k = V₀/a².<br><strong>Step 3:</strong> T = 2π√(m / (V₀/a²)) = 2π√(ma²/V₀) = <strong>2π a m^(1/2) V₀^(-1/2)</strong>.<br><strong>Step 4:</strong> Thus, T scales as <strong>a m^(1/2) V₀^(-1/2)</strong>.",
             "difficulty": "Hard",
             "imagePrompt": ""
         },
@@ -506,13 +506,13 @@
             "section": "C",
             "question": "The function f(x) = ∫₀ˣ (t² - 5t + 6)e^t dt has local minima at:",
             "options": [
-                "x = 2 only",
-                "x = 3 only",
-                "x = 2 and x = 3",
+                "x = 2",
+                "x = 3",
+                "x = 0",
                 "No local minima"
             ],
-            "correct": 0,
-            "explanation": "<strong>Step 1:</strong> By Leibniz rule: f'(x) = (x² - 5x + 6)e^x = (x-2)(x-3)e^x.<br><strong>Step 2:</strong> Critical points: x = 2, 3 (e^x > 0 always).<br><strong>Step 3:</strong> f''(x) = [(2x-5) + (x²-5x+6)]e^x = (x²-3x+1)e^x.<br><strong>Step 4:</strong> f''(2) = (4-6+1)e² = -e² < 0 (local max).<br><strong>Step 5:</strong> f''(3) = (9-9+1)e³ = e³ > 0 (local min).<br><strong>Answer:</strong> <strong>x = 3 only</strong>... but option says 2 only. Recheck sign analysis.<br><strong>Actually:</strong> f'(x) changes from + to - at x=2 (max), from - to + at x=3 (min). So answer should be x=3. Given options, <strong>x = 2 only</strong> appears incorrect, or question asks for maxima.",
+            "correct": 1,
+            "explanation": "<strong>Step 1:</strong> f'(x) = (x-2)(x-3)e^x.<br><strong>Step 2:</strong> f'(x) changes sign from negative to positive at <strong>x = 3</strong>.<br><strong>Step 3:</strong> Therefore, f has a local minimum at x = 3.",
             "difficulty": "Hard",
             "imagePrompt": ""
         },
@@ -568,15 +568,15 @@
             "id": 36,
             "subject": "Mathematics",
             "section": "C",
-            "question": "The shortest distance between the lines r = (î + ĵ) + t(2î + ĵ + k̂) and r = (2î + ĵ - k̂) + s(3î - ĵ + k̂) is:",
+            "question": "The shortest distance between the lines r = (î + ĵ) + t(k̂) and r = (2î + ĵ) + s(ĵ) is:",
             "options": [
-                "1/√6",
-                "1/√3",
-                "√6",
-                "3/√6"
+                "1",
+                "2",
+                "√2",
+                "0"
             ],
             "correct": 0,
-            "explanation": "<strong>Step 1:</strong> a₁ = (1,1,0), b₁ = (2,1,1); a₂ = (2,1,-1), b₂ = (3,-1,1).<br><strong>Step 2:</strong> a₂ - a₁ = (1,0,-1).<br><strong>Step 3:</strong> b₁ × b₂ = (2,1,1) × (3,-1,1) = (2,1,-5).<br><strong>Step 4:</strong> |b₁ × b₂| = √(4+1+25) = √30.<br><strong>Step 5:</strong> Shortest distance = |(a₂-a₁)·(b₁×b₂)|/|b₁×b₂| = |(2-0+5)|/√30 = 7/√30? Recheck cross product...<br><strong>Cross product:</strong> i(1·1 - 1·(-1)) - j(2·1 - 1·3) + k(2·(-1) - 1·3) = i(2) - j(-1) + k(-5) = (2, 1, -5).<br>(a₂-a₁)·(2,1,-5) = 2 + 0 + 5 = 7. Distance = 7/√30. Not matching.<br><strong>Given options, likely</strong> <strong>1/√6</strong> with adjusted vectors.",
+            "explanation": "<strong>Step 1:</strong> Line 1 is (1, 1, t), Line 2 is (2, 1+s, 0).<br><strong>Step 2:</strong> a₂ - a₁ = (1, 0, 0).<br><strong>Step 3:</strong> b₁ × b₂ = (0, 0, 1) × (0, 1, 0) = (-1, 0, 0).<br><strong>Step 4:</strong> Distance = |(a₂-a₁)·(b₁×b₂)|/|b₁×b₂| = |(1,0,0)·(-1,0,0)|/1 = <strong>1</strong>.",
             "difficulty": "Hard",
             "imagePrompt": ""
         },
@@ -655,8 +655,8 @@
                 "2",
                 "3"
             ],
-            "correct": 2,
-            "explanation": "<strong>Step 1:</strong> By Rolle's theorem: f'(c₁) = 0 for some c₁ ∈ (0,1), and f'(c₂) = 0 for some c₂ ∈ (1,2).<br><strong>Step 2:</strong> Apply Rolle's to f' on [c₁, c₂]: f''(c) = 0 for some c ∈ (c₁, c₂).<br><strong>Step 3:</strong> At least <strong>2</strong> points where f'' = 0? Actually at least 1 point in (c₁,c₂).<br><strong>Step 4:</strong> But f' has at least 2 zeros, so f'' has at least 1 zero between them.<br><strong>Given multiple applications, answer is</strong> <strong>2</strong> (considering inflection behavior).",
+            "correct": 1,
+            "explanation": "By Rolle's Theorem, if f(0)=f(1)=f(2)=0, then f'(x) has at least one zero in (0,1) and at least one zero in (1,2). Let these be c1 and c2. Then applying Rolle's Theorem to f'(x) on [c1, c2], there is at least one point c in (c1, c2) such that f''(c) = 0. So the minimum number of points is 1.",
             "difficulty": "Hard",
             "imagePrompt": ""
         },

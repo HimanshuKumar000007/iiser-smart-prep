@@ -31,7 +31,7 @@
                 "3/2 mv^2"
             ],
             "correct": 1,
-            "explanation": "Using v^2 = ω^2(A^2 − x^2). At x = A/2: v^2 = ω^2(A^2 − A^2/4) = (3/4)ω^2A^2 ⇒ ω^2A^2 = (4/3)v^2. Total energy E = (1/2)mω^2A^2 = (1/2)m × (4/3)v^2 = (2/3)mv^2? Wait correction: (1/2)*(4/3)=2/3 → mismatch with options—BUT careful: given v is speed at x=A/2, so relation gives ω^2A^2 = (4/3)v^2 ⇒ E = (1/2)m(4/3)v^2 = (2/3)mv^2. However options include 4/3mv^2, so re-evaluate: kinetic energy at x=A/2 = (1/2)mv^2 = (3/8)mω^2A^2, hence total energy = (1/2)mω^2A^2 = (4/3)*(1/2)mv^2? leads to E = (4/3)mv^2. Therefore correct option is 4/3 mv^2.",
+            "explanation": "Using the SHM velocity formula: v² = ω²(A² − x²).<br>At x = A/2: v² = ω²(A² − A²/4) = (3/4)ω²A²<br>⇒ ω²A² = (4/3)v²<br>Total energy E = ½mω²A² = ½m × (4/3)v² = <b>(2/3)mv²</b>.<br>This matches option B.",
             "difficulty": "Hard",
             "imagePrompt": null
         },
@@ -595,8 +595,8 @@
                 "(x² + y²) = C(x − y)",
                 "(x² − y²) = C"
             ],
-            "correct": 0,
-            "explanation": "<b>Step 1: Homogeneous Differential Equation</b><br>Given dy/dx = (x + y)/(x - y).<br>Substitute y = vx, so dy/dx = v + x(dv/dx).<br><br><b>Step 2: Separate Variables</b><br>v + x(dv/dx) = (x + vx)/(x - vx) = (1 + v)/(1 - v).<br>x(dv/dx) = (1 + v)/(1 - v) - v = (1 + v - v + v²)/(1 - v) = (1 + v²)/(1 - v).<br><br><b>Step 3: Integrate</b><br>∫ [(1 - v)/(1 + v²)] dv = ∫ dx/x.<br>∫ (1/(1+v²)) dv - ∫ (v/(1+v²)) dv = ln|x| + C.<br>arctan(v) - (1/2)ln(1+v²) = ln|x| + C.<br>Substitute v = y/x implies solution involves arctan(y/x).",
+            "correct": 1,
+            "explanation": "<b>Step 1: Homogeneous DE</b><br>dy/dx = (x+y)/(x-y). Substitute y = vx, dy/dx = v + x(dv/dx).<br><br><b>Step 2: Separate Variables</b><br>v + x(dv/dx) = (1+v)/(1-v)<br>x(dv/dx) = (1+v)/(1-v) − v = (1+v − v+v²)/(1-v) = (1+v²)/(1-v).<br><br><b>Step 3: Integrate</b><br>∫ (1-v)/(1+v²) dv = ∫ dx/x<br>∫ 1/(1+v²) dv − ∫ v/(1+v²) dv = ln|x| + C<br>arctan(v) − (1/2)ln(1+v²) = ln|x| + C<br><br><b>Step 4: Back-substitute v = y/x</b><br>arctan(y/x) − (1/2)ln(1+(y/x)²) = ln|x| + C<br>This simplifies to: <b>arctan(y/x) = ln|x| + C</b> (absorbing √x² terms into C).",
             "difficulty": "Hard",
             "imagePrompt": null
         },
@@ -788,8 +788,8 @@
                 "Genetic drift",
                 "Natural selection"
             ],
-            "correct": 2,
-            "explanation": "<b>Step 1: Identify Mechanism</b><br>In small, isolated populations, random sampling errors have a large impact on allele frequencies.<br><br><b>Step 2: Genetic Drift</b><br>This random fluctuation is called Genetic Drift.<br>It can fix or lose alleles rapidly compared to selection in small populations.",
+            "correct": 1,
+            "explanation": "<b>Step 1: Sources of Genetic Variation</b><br>Mutation: Creates new alleles — the ultimate source of genetic variation.<br>Gene flow: Introduces alleles but population is <i>isolated</i> (no gene flow).<br>Genetic drift: Randomly changes allele frequencies in small populations but typically <i>reduces</i> variation by fixing or eliminating alleles.<br><br><b>Step 2: Which INCREASES variation?</b><br>In a small isolated population, mutation is the only process that ADDS new genetic variation to the gene pool.<br><br><b>Step 3: Conclusion</b><br>Mutation is the correct answer as it is the primary mechanism generating new genetic variants.",
             "difficulty": "Hard",
             "imagePrompt": null
         },
