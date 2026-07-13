@@ -6,6 +6,7 @@ import { Footer } from '../layout/Footer';
 import { useSlsMyPath } from '../../hooks/useSlsMyPath';
 import type { SlsRecommendation, SlsMasteryChapter, SlsWeakChapter, SlsWeakTopic } from '../../types/sls';
 import { LESSONS_DATA } from '../../data/lessons';
+import { useTheme } from '../../context/ThemeContext';
 interface PathToIISERProps {
   onNavigate?: (view: string) => void;
   dashboardData?: any;
@@ -233,6 +234,7 @@ function getSeverityLabel(severity: 'mild' | 'moderate' | 'high' | 'critical'): 
 }
 
 export function PathToIISER({ onNavigate, dashboardData, dashboardLoading, actionPlan: plan, actionPlanLoading: planLoading }: PathToIISERProps) {
+  const { theme } = useTheme();
   const examLabel = (() => {
     const raw = localStorage.getItem('onboarding_exam') || 'iiser';
     if (raw === 'nest') return 'NEST 2027';
@@ -522,7 +524,12 @@ export function PathToIISER({ onNavigate, dashboardData, dashboardLoading, actio
           </div>
 
           <div className="relative flex flex-col justify-center">
-            <div className="p-6 lg:p-8 rounded-3xl bg-[#05060F]/80 backdrop-blur-xl border border-white/10 shadow-2xl relative overflow-hidden group">
+            <div className={cn(
+              "p-6 lg:p-8 rounded-3xl border shadow-2xl relative overflow-hidden group backdrop-blur-xl",
+              theme === 'light'
+                ? "bg-white/70 border-slate-200/80 shadow-[0_8px_32px_rgba(15,23,42,0.08),inset_0_1px_0_rgba(255,255,255,0.9)]"
+                : "bg-[#05060F]/80 border-white/10"
+            )}>
               <div className="absolute inset-0 bg-gradient-to-b from-cyan-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
               
               <div className="flex justify-between items-end mb-8 relative z-10">
@@ -581,14 +588,19 @@ export function PathToIISER({ onNavigate, dashboardData, dashboardLoading, actio
                 {supportingMessage}
               </div>
 
-              <div className="p-5 rounded-2xl bg-indigo-500/10 border border-indigo-500/20 flex items-center gap-4 relative z-10">
-                <Compass className="w-8 h-8 text-indigo-400" />
+              <div className={cn(
+                "p-5 rounded-2xl flex items-center gap-4 relative z-10 border",
+                theme === 'light'
+                  ? "bg-indigo-500/8 border-indigo-500/15"
+                  : "bg-indigo-500/10 border-indigo-500/20"
+              )}>
+                <Compass className={cn("w-8 h-8", theme === 'light' ? "text-indigo-600" : "text-indigo-400")} />
                 <div className="flex-1">
-                  <p className="text-xs font-medium text-indigo-300/70 mb-1">Current Position</p>
+                  <p className={cn("text-xs font-medium mb-1", theme === 'light' ? "text-indigo-600/80" : "text-indigo-300/70")}>Current Position</p>
                   {loading ? (
-                    <div className="h-5 w-40 bg-white/10 rounded animate-pulse" />
+                    <div className={cn("h-5 w-40 rounded animate-pulse", theme === 'light' ? "bg-indigo-500/10" : "bg-white/10")} />
                   ) : (
-                    <p className="text-sm font-bold text-indigo-100">{stage}</p>
+                    <p className={cn("text-sm font-bold", theme === 'light' ? "text-indigo-950" : "text-indigo-100")}>{stage}</p>
                   )}
                 </div>
               </div>
