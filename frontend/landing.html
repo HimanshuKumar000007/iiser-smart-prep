@@ -1,0 +1,3442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script>
+    if (localStorage.getItem('IAT_TOKEN')) {
+      window.location.replace('dashboard-react/index.html');
+    }
+  </script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IISER SmartPrep — AI-Powered IISER Aptitude Test Preparation</title>
+  <meta name="description" content="The #1 AI-powered platform for IISER Aptitude Test (IAT) preparation. Personalized roadmaps, weak-area detection, mock tests, and readiness tracking.">
+  <meta property="og:title" content="IISER SmartPrep — AI-Powered IAT Preparation">
+  <meta property="og:description" content="Your personalized roadmap to IISER success powered by AI.">
+  <meta name="theme-color" content="#030712">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* =========================================
+       DESIGN TOKENS & RESET
+    ========================================= */
+    :root {
+      --bg-primary: #030712;
+      --bg-secondary: #070f1f;
+      --bg-card: rgba(255,255,255,0.04);
+      --bg-card-hover: rgba(255,255,255,0.07);
+      --border: rgba(255,255,255,0.08);
+      --border-hover: rgba(99,179,237,0.4);
+
+      --blue: #3b82f6;
+      --blue-bright: #60a5fa;
+      --cyan: #22d3ee;
+      --violet: #8b5cf6;
+      --violet-bright: #a78bfa;
+      --pink: #ec4899;
+      --green: #10b981;
+      --amber: #f59e0b;
+
+      --text-primary: #f1f5f9;
+      --text-secondary: #94a3b8;
+      --text-muted: #475569;
+
+      --gradient-hero: linear-gradient(135deg, #1e3a8a 0%, #312e81 50%, #0c0a1a 100%);
+      --gradient-blue: linear-gradient(135deg, #3b82f6, #1d4ed8);
+      --gradient-violet: linear-gradient(135deg, #8b5cf6, #6d28d9);
+      --gradient-cyan: linear-gradient(135deg, #22d3ee, #0891b2);
+      --gradient-mixed: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 50%, #22d3ee 100%);
+      --gradient-text: linear-gradient(135deg, #60a5fa 0%, #a78bfa 50%, #22d3ee 100%);
+
+      --shadow-glow-blue: 0 0 40px rgba(59,130,246,0.3);
+      --shadow-glow-violet: 0 0 40px rgba(139,92,246,0.3);
+      --shadow-glow-cyan: 0 0 40px rgba(34,211,238,0.2);
+      --shadow-card: 0 8px 32px rgba(0,0,0,0.4);
+
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 20px;
+      --radius-xl: 28px;
+      --radius-2xl: 40px;
+
+      --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-display: 'Space Grotesk', 'Inter', sans-serif;
+
+      --transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
+      --transition-slow: all 0.5s cubic-bezier(0.4,0,0.2,1);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html {
+      scroll-behavior: smooth;
+      overflow-x: hidden;
+    }
+
+    body {
+      font-family: var(--font-sans);
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      line-height: 1.6;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    img { max-width: 100%; display: block; }
+    a { text-decoration: none; color: inherit; }
+    button { cursor: pointer; border: none; font-family: inherit; }
+    ul { list-style: none; }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* =========================================
+       TYPOGRAPHY UTILITIES
+    ========================================= */
+    .gradient-text {
+      background: var(--gradient-text);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .section-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(59,130,246,0.12);
+      border: 1px solid rgba(59,130,246,0.3);
+      color: var(--blue-bright);
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 6px 14px;
+      border-radius: 100px;
+      margin-bottom: 20px;
+    }
+
+    .section-badge .dot {
+      width: 6px; height: 6px;
+      background: var(--cyan);
+      border-radius: 50%;
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    .section-title {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 700;
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+      margin-bottom: 16px;
+    }
+
+    .section-subtitle {
+      font-size: 1.1rem;
+      color: var(--text-secondary);
+      max-width: 580px;
+      line-height: 1.7;
+    }
+
+    section {
+      padding: 120px 0;
+      position: relative;
+    }
+
+    /* =========================================
+       ANIMATIONS
+    ========================================= */
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(1.4); }
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-12px); }
+    }
+
+    @keyframes float-slow {
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-20px) rotate(3deg); }
+    }
+
+    @keyframes glow-pulse {
+      0%, 100% { opacity: 0.4; transform: scale(1); }
+      50% { opacity: 0.8; transform: scale(1.05); }
+    }
+
+    @keyframes spin-slow {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    @keyframes shimmer {
+      0% { background-position: -200% 0; }
+      100% { background-position: 200% 0; }
+    }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes slideInLeft {
+      from { opacity: 0; transform: translateX(-40px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+
+    @keyframes slideInRight {
+      from { opacity: 0; transform: translateX(40px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+
+    @keyframes countUp {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes particleFloat {
+      0% { transform: translateY(0) translateX(0) rotate(0deg); opacity: 0; }
+      10% { opacity: 1; }
+      90% { opacity: 0.6; }
+      100% { transform: translateY(-120vh) translateX(40px) rotate(360deg); opacity: 0; }
+    }
+
+    @keyframes borderGlow {
+      0%, 100% { border-color: rgba(59,130,246,0.3); box-shadow: 0 0 20px rgba(59,130,246,0.1); }
+      50% { border-color: rgba(139,92,246,0.5); box-shadow: 0 0 30px rgba(139,92,246,0.2); }
+    }
+
+    @keyframes progressFill {
+      from { width: 0%; }
+      to { width: var(--target-width); }
+    }
+
+    @keyframes scoreCount {
+      from { --n: 0; }
+      to { --n: 68; }
+    }
+
+    @keyframes ripple {
+      0% { transform: scale(0); opacity: 0.6; }
+      100% { transform: scale(4); opacity: 0; }
+    }
+
+    @keyframes orbitSpin {
+      from { transform: rotate(0deg) translateX(80px) rotate(0deg); }
+      to { transform: rotate(360deg) translateX(80px) rotate(-360deg); }
+    }
+
+    .animate-on-scroll {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.7s cubic-bezier(0.4,0,0.2,1), transform 0.7s cubic-bezier(0.4,0,0.2,1);
+    }
+
+    .animate-on-scroll.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* =========================================
+       PARTICLE CANVAS
+    ========================================= */
+    #particle-canvas {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.4;
+    }
+
+    /* =========================================
+       NOISE OVERLAY
+    ========================================= */
+    .noise-overlay {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      pointer-events: none;
+      z-index: 1;
+      opacity: 0.03;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    }
+
+    /* =========================================
+       NAVBAR
+    ========================================= */
+    #navbar {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 1000;
+      padding: 16px 0;
+      transition: var(--transition);
+    }
+
+    #navbar.scrolled {
+      background: rgba(3,7,18,0.85);
+      backdrop-filter: blur(24px) saturate(180%);
+      -webkit-backdrop-filter: blur(24px) saturate(180%);
+      border-bottom: 1px solid var(--border);
+      padding: 12px 0;
+    }
+
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 1.2rem;
+    }
+
+    .nav-logo-icon {
+      width: 36px; height: 36px;
+      background: var(--gradient-mixed);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+    }
+
+    .nav-logo-text span { color: var(--cyan); }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .nav-links a {
+      color: var(--text-secondary);
+      font-size: 0.875rem;
+      font-weight: 500;
+      padding: 8px 14px;
+      border-radius: var(--radius-sm);
+      transition: var(--transition);
+    }
+
+    .nav-links a:hover {
+      color: var(--text-primary);
+      background: rgba(255,255,255,0.06);
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      font-size: 0.875rem;
+      font-weight: 600;
+      padding: 10px 22px;
+      border-radius: var(--radius-md);
+      transition: var(--transition);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(rgba(255,255,255,0.1), transparent);
+      opacity: 0;
+      transition: var(--transition);
+    }
+
+    .btn:hover::after { opacity: 1; }
+
+    .btn-ghost {
+      color: var(--text-secondary);
+      background: transparent;
+    }
+
+    .btn-ghost:hover {
+      color: var(--text-primary);
+      background: rgba(255,255,255,0.06);
+    }
+
+    .btn-outline {
+      color: var(--text-primary);
+      background: transparent;
+      border: 1px solid var(--border);
+    }
+
+    .btn-outline:hover {
+      border-color: var(--blue);
+      background: rgba(59,130,246,0.08);
+    }
+
+    .btn-primary {
+      background: var(--gradient-blue);
+      color: white;
+      box-shadow: 0 0 20px rgba(59,130,246,0.4);
+    }
+
+    .btn-primary:hover {
+      box-shadow: 0 0 35px rgba(59,130,246,0.6);
+      transform: translateY(-1px);
+    }
+
+    .btn-lg {
+      font-size: 1rem;
+      padding: 14px 32px;
+      border-radius: var(--radius-lg);
+    }
+
+    .btn-xl {
+      font-size: 1.05rem;
+      padding: 16px 40px;
+      border-radius: var(--radius-lg);
+    }
+
+    .btn-gradient {
+      background: var(--gradient-mixed);
+      color: white;
+      box-shadow: 0 0 30px rgba(99,130,246,0.35);
+    }
+
+    .btn-gradient:hover {
+      box-shadow: 0 0 50px rgba(99,130,246,0.55);
+      transform: translateY(-2px);
+    }
+
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      padding: 8px;
+      border-radius: var(--radius-sm);
+      background: transparent;
+      border: 1px solid var(--border);
+    }
+
+    .hamburger span {
+      width: 20px; height: 2px;
+      background: var(--text-secondary);
+      border-radius: 2px;
+      transition: var(--transition);
+    }
+
+    /* =========================================
+       HERO SECTION
+    ========================================= */
+    #hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      position: relative;
+      padding: 140px 0 80px;
+      overflow: hidden;
+    }
+
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+    }
+
+    .hero-glow-1 {
+      position: absolute;
+      top: -200px; left: -200px;
+      width: 800px; height: 800px;
+      background: radial-gradient(circle, rgba(59,130,246,0.15) 0%, transparent 70%);
+      border-radius: 50%;
+      animation: glow-pulse 6s ease-in-out infinite;
+    }
+
+    .hero-glow-2 {
+      position: absolute;
+      top: 0; right: -300px;
+      width: 700px; height: 700px;
+      background: radial-gradient(circle, rgba(139,92,246,0.12) 0%, transparent 70%);
+      border-radius: 50%;
+      animation: glow-pulse 8s ease-in-out infinite reverse;
+    }
+
+    .hero-glow-3 {
+      position: absolute;
+      bottom: -100px; left: 30%;
+      width: 600px; height: 400px;
+      background: radial-gradient(ellipse, rgba(34,211,238,0.08) 0%, transparent 70%);
+      border-radius: 50%;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: center;
+      position: relative;
+      z-index: 2;
+    }
+
+    .hero-left { animation: slideInLeft 0.8s ease forwards; }
+    .hero-right { animation: slideInRight 0.9s ease forwards; }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(99,130,246,0.1);
+      border: 1px solid rgba(99,130,246,0.25);
+      padding: 8px 16px;
+      border-radius: 100px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--blue-bright);
+      margin-bottom: 28px;
+      animation: borderGlow 4s ease-in-out infinite;
+    }
+
+    .hero-badge .emoji { font-size: 1rem; }
+
+    .hero-title {
+      font-family: var(--font-display);
+      font-size: clamp(2.4rem, 5vw, 3.8rem);
+      font-weight: 800;
+      line-height: 1.1;
+      letter-spacing: -0.03em;
+      margin-bottom: 24px;
+    }
+
+    .hero-subtitle {
+      font-size: 1.15rem;
+      color: var(--text-secondary);
+      line-height: 1.75;
+      margin-bottom: 40px;
+      max-width: 480px;
+    }
+
+    .hero-ctas {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-bottom: 48px;
+    }
+
+    .hero-social-proof {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .avatar-stack {
+      display: flex;
+    }
+
+    .avatar {
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      border: 2px solid var(--bg-primary);
+      margin-left: -10px;
+      background: var(--gradient-mixed);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+
+    .avatar:first-child { margin-left: 0; }
+
+    .social-proof-text {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+    }
+
+    .social-proof-text strong { color: var(--text-primary); }
+
+    .stars {
+      color: #f59e0b;
+      font-size: 0.9rem;
+      letter-spacing: 2px;
+    }
+
+    /* =========================================
+       DASHBOARD MOCKUP
+    ========================================= */
+    .dashboard-mockup {
+      position: relative;
+      animation: float 6s ease-in-out infinite;
+    }
+
+    .mockup-window {
+      background: rgba(10,15,30,0.9);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: var(--radius-xl);
+      overflow: hidden;
+      box-shadow:
+        0 0 0 1px rgba(255,255,255,0.05),
+        0 30px 80px rgba(0,0,0,0.6),
+        0 0 80px rgba(59,130,246,0.15),
+        inset 0 1px 0 rgba(255,255,255,0.08);
+      backdrop-filter: blur(20px);
+    }
+
+    .mockup-titlebar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 14px 18px;
+      background: rgba(255,255,255,0.03);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .dot-red { width: 12px; height: 12px; background: #ff5f57; border-radius: 50%; }
+    .dot-yellow { width: 12px; height: 12px; background: #febc2e; border-radius: 50%; }
+    .dot-green { width: 12px; height: 12px; background: #28c840; border-radius: 50%; }
+
+    .mockup-url {
+      flex: 1;
+      text-align: center;
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      background: rgba(255,255,255,0.04);
+      padding: 4px 12px;
+      border-radius: 6px;
+      border: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .mockup-body {
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .mockup-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 10px;
+    }
+
+    .stat-card {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: var(--radius-md);
+      padding: 14px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .stat-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: var(--gradient-mixed);
+    }
+
+    .stat-label {
+      font-size: 0.68rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 6px;
+    }
+
+    .stat-value {
+      font-family: var(--font-display);
+      font-size: 1.4rem;
+      font-weight: 700;
+    }
+
+    .stat-value.blue { color: var(--blue-bright); }
+    .stat-value.violet { color: var(--violet-bright); }
+    .stat-value.cyan { color: var(--cyan); }
+
+    .stat-sub {
+      font-size: 0.68rem;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    .readiness-ring {
+      position: relative;
+      width: 60px; height: 60px;
+      margin-bottom: 6px;
+    }
+
+    .readiness-ring svg {
+      transform: rotate(-90deg);
+    }
+
+    .readiness-ring .ring-bg {
+      fill: none;
+      stroke: rgba(255,255,255,0.08);
+      stroke-width: 4;
+    }
+
+    .readiness-ring .ring-fill {
+      fill: none;
+      stroke: url(#ringGradient);
+      stroke-width: 4;
+      stroke-linecap: round;
+      stroke-dasharray: 163;
+      stroke-dashoffset: 52;
+      animation: ringFill 2s ease forwards;
+    }
+
+    @keyframes ringFill {
+      from { stroke-dashoffset: 163; }
+      to { stroke-dashoffset: 52; }
+    }
+
+    .ring-label {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--blue-bright);
+    }
+
+    .subject-progress-card {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: var(--radius-md);
+      padding: 14px;
+    }
+
+    .subject-title {
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      margin-bottom: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .subject-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .subject-icon {
+      width: 24px; height: 24px;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      flex-shrink: 0;
+    }
+
+    .subject-name { font-size: 0.7rem; color: var(--text-secondary); width: 60px; flex-shrink: 0; }
+
+    .progress-track {
+      flex: 1;
+      height: 5px;
+      background: rgba(255,255,255,0.08);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .progress-bar {
+      height: 100%;
+      border-radius: 10px;
+      animation: progressFill 1.5s ease forwards;
+    }
+
+    .subject-pct { font-size: 0.68rem; color: var(--text-muted); width: 24px; text-align: right; }
+
+    .weak-area-card {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(239,68,68,0.2);
+      border-radius: var(--radius-md);
+      padding: 14px;
+    }
+
+    .weak-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      background: rgba(239,68,68,0.12);
+      border: 1px solid rgba(239,68,68,0.25);
+      color: #f87171;
+      font-size: 0.65rem;
+      font-weight: 600;
+      padding: 3px 8px;
+      border-radius: 6px;
+      margin: 3px;
+    }
+
+    .ai-card {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(139,92,246,0.2);
+      border-radius: var(--radius-md);
+      padding: 14px;
+    }
+
+    .ai-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(139,92,246,0.12);
+      color: var(--violet-bright);
+      font-size: 0.68rem;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 6px;
+      margin-bottom: 8px;
+    }
+
+    .ai-recommend {
+      font-size: 0.7rem;
+      color: var(--text-secondary);
+      line-height: 1.5;
+      padding: 6px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+
+    .ai-recommend:last-child { border-bottom: none; }
+    .ai-recommend::before { content: '→ '; color: var(--violet-bright); }
+
+    /* Floating elements */
+    .float-elem {
+      position: absolute;
+      pointer-events: none;
+    }
+
+    .float-elem-1 {
+      top: -20px; right: -20px;
+      background: rgba(34,211,238,0.1);
+      border: 1px solid rgba(34,211,238,0.3);
+      color: var(--cyan);
+      border-radius: var(--radius-md);
+      padding: 10px 14px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      animation: float 5s ease-in-out infinite 1s;
+      backdrop-filter: blur(12px);
+    }
+
+    .float-elem-2 {
+      bottom: 80px; left: -30px;
+      background: rgba(139,92,246,0.1);
+      border: 1px solid rgba(139,92,246,0.3);
+      color: var(--violet-bright);
+      border-radius: var(--radius-md);
+      padding: 10px 14px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      animation: float 4s ease-in-out infinite;
+      backdrop-filter: blur(12px);
+    }
+
+    /* =========================================
+       TRUST / STATS SECTION
+    ========================================= */
+    #trust {
+      padding: 60px 0;
+      position: relative;
+      z-index: 2;
+    }
+
+    .trust-divider {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.08), transparent);
+      margin-bottom: 60px;
+    }
+
+    .trust-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+    }
+
+    .trust-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 28px 24px;
+      text-align: center;
+      transition: var(--transition);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .trust-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: var(--gradient-mixed);
+      opacity: 0;
+      transition: var(--transition);
+    }
+
+    .trust-card:hover {
+      border-color: rgba(59,130,246,0.4);
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-glow-blue);
+    }
+
+    .trust-card:hover::before { opacity: 0.04; }
+
+    .trust-icon {
+      width: 52px; height: 52px;
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.4rem;
+      margin: 0 auto 16px;
+    }
+
+    .trust-number {
+      font-family: var(--font-display);
+      font-size: 2.2rem;
+      font-weight: 800;
+      margin-bottom: 6px;
+    }
+
+    .trust-label {
+      font-size: 0.875rem;
+      color: var(--text-secondary);
+      font-weight: 500;
+    }
+
+    /* =========================================
+       FEATURES SECTION
+    ========================================= */
+    #features { background: var(--bg-secondary); }
+
+    .features-header { text-align: center; margin-bottom: 60px; }
+    .features-header .section-subtitle { margin: 0 auto; }
+
+    .bento-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-auto-rows: minmax(200px, auto);
+      gap: 16px;
+    }
+
+    .bento-item {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xl);
+      padding: 28px;
+      transition: var(--transition-slow);
+      cursor: default;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .bento-item::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: var(--radius-xl);
+      background: var(--gradient-mixed);
+      opacity: 0;
+      transition: var(--transition);
+    }
+
+    .bento-item:hover {
+      transform: translateY(-4px);
+      border-color: rgba(99,130,246,0.35);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.4), 0 0 30px rgba(59,130,246,0.1);
+    }
+
+    .bento-item:hover::after { opacity: 0.03; }
+
+    .bento-item.span-2 { grid-column: span 2; }
+    .bento-item.tall { grid-row: span 2; }
+
+    .bento-icon {
+      width: 48px; height: 48px;
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.3rem;
+      margin-bottom: 16px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .bento-title {
+      font-family: var(--font-display);
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .bento-desc {
+      font-size: 0.875rem;
+      color: var(--text-secondary);
+      line-height: 1.65;
+      position: relative;
+      z-index: 1;
+    }
+
+    .bento-visual {
+      margin-top: 20px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .mini-chart {
+      display: flex;
+      align-items: flex-end;
+      gap: 5px;
+      height: 50px;
+    }
+
+    .chart-bar {
+      flex: 1;
+      border-radius: 4px 4px 0 0;
+      background: var(--gradient-blue);
+      opacity: 0.7;
+      animation: chartGrow 1s ease forwards;
+      transform-origin: bottom;
+    }
+
+    @keyframes chartGrow {
+      from { transform: scaleY(0); }
+      to { transform: scaleY(1); }
+    }
+
+    .ai-roadmap-visual {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-top: 16px;
+    }
+
+    .roadmap-step {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: rgba(255,255,255,0.04);
+      border-radius: var(--radius-sm);
+      padding: 8px 12px;
+      font-size: 0.75rem;
+      color: var(--text-secondary);
+    }
+
+    .roadmap-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .tag-cloud {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 16px;
+    }
+
+    .tag {
+      font-size: 0.72rem;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 6px;
+    }
+
+    /* =========================================
+       HOW IT WORKS
+    ========================================= */
+    #how-it-works { background: var(--bg-primary); }
+
+    .steps-header { text-align: center; margin-bottom: 70px; }
+
+    .steps-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 24px;
+      position: relative;
+    }
+
+    .steps-connector {
+      position: absolute;
+      top: 44px;
+      left: calc(12.5% + 24px);
+      right: calc(12.5% + 24px);
+      height: 1px;
+      background: linear-gradient(90deg, var(--blue), var(--violet), var(--cyan));
+      z-index: 0;
+    }
+
+    .steps-connector::before,
+    .steps-connector::after {
+      content: '';
+      position: absolute;
+      width: 6px; height: 6px;
+      background: var(--cyan);
+      border-radius: 50%;
+      top: -2.5px;
+    }
+    .steps-connector::before { left: 0; }
+    .steps-connector::after { right: 0; }
+
+    .step-card {
+      text-align: center;
+      position: relative;
+      z-index: 1;
+    }
+
+    .step-number {
+      width: 88px; height: 88px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 20px;
+      font-family: var(--font-display);
+      font-size: 1.6rem;
+      font-weight: 800;
+      position: relative;
+    }
+
+    .step-number::before {
+      content: '';
+      position: absolute;
+      inset: -3px;
+      border-radius: 50%;
+      background: var(--gradient-mixed);
+      z-index: -1;
+      opacity: 0.4;
+      animation: spin-slow 8s linear infinite;
+    }
+
+    .step-icon { font-size: 1.8rem; }
+
+    .step-title {
+      font-family: var(--font-display);
+      font-size: 1.05rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+
+    .step-desc {
+      font-size: 0.875rem;
+      color: var(--text-secondary);
+      line-height: 1.65;
+    }
+
+    /* =========================================
+       DASHBOARD SHOWCASE
+    ========================================= */
+    #showcase { background: var(--bg-secondary); overflow: hidden; }
+
+    .showcase-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.6fr;
+      gap: 60px;
+      align-items: center;
+    }
+
+    .showcase-features {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .showcase-feature-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      padding: 18px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      transition: var(--transition);
+    }
+
+    .showcase-feature-item:hover {
+      border-color: rgba(59,130,246,0.3);
+      background: var(--bg-card-hover);
+    }
+
+    .showcase-feature-icon {
+      width: 42px; height: 42px;
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      flex-shrink: 0;
+    }
+
+    .showcase-feature-text h4 {
+      font-size: 0.95rem;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .showcase-feature-text p {
+      font-size: 0.82rem;
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
+
+    .big-mockup {
+      position: relative;
+    }
+
+    .big-mockup-window {
+      background: rgba(8,12,26,0.95);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: var(--radius-2xl);
+      overflow: hidden;
+      box-shadow:
+        0 0 0 1px rgba(255,255,255,0.04),
+        0 40px 100px rgba(0,0,0,0.7),
+        0 0 60px rgba(139,92,246,0.1);
+      animation: float-slow 8s ease-in-out infinite;
+    }
+
+    .big-mockup-header {
+      background: rgba(255,255,255,0.03);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      padding: 14px 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .big-mockup-title {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+    }
+
+    .live-badge {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      background: rgba(16,185,129,0.15);
+      border: 1px solid rgba(16,185,129,0.3);
+      color: var(--green);
+      font-size: 0.65rem;
+      font-weight: 600;
+      padding: 3px 8px;
+      border-radius: 20px;
+    }
+
+    .live-badge .dot { width: 5px; height: 5px; background: var(--green); border-radius: 50%; animation: pulse 1.5s infinite; }
+
+    .big-mockup-body {
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .metrics-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+    }
+
+    .metric-card {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: var(--radius-md);
+      padding: 12px;
+      text-align: center;
+    }
+
+    .metric-icon { font-size: 1.1rem; margin-bottom: 6px; }
+    .metric-value { font-family: var(--font-display); font-size: 1.1rem; font-weight: 700; }
+    .metric-label { font-size: 0.62rem; color: var(--text-muted); margin-top: 2px; }
+
+    .subjects-mastery {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: var(--radius-md);
+      padding: 14px;
+    }
+
+    .mastery-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .mastery-subject { font-size: 0.72rem; color: var(--text-secondary); width: 60px; }
+
+    .mastery-bar-track {
+      flex: 1;
+      height: 8px;
+      background: rgba(255,255,255,0.07);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .mastery-bar {
+      height: 100%;
+      border-radius: 10px;
+      animation: progressFill 2s ease forwards;
+    }
+
+    .mastery-pct { font-size: 0.68rem; font-weight: 600; width: 28px; text-align: right; }
+
+    .performance-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .perf-card {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: var(--radius-md);
+      padding: 12px;
+    }
+
+    .perf-label { font-size: 0.65rem; color: var(--text-muted); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.06em; }
+
+    .perf-chart {
+      display: flex;
+      align-items: flex-end;
+      gap: 3px;
+      height: 36px;
+    }
+
+    .perf-bar {
+      flex: 1;
+      border-radius: 2px 2px 0 0;
+      opacity: 0.7;
+      animation: chartGrow 1.5s ease forwards;
+      transform-origin: bottom;
+    }
+
+    /* =========================================
+       LESSONS SECTION
+    ========================================= */
+    #lessons { background: var(--bg-primary); }
+
+    .lessons-header { text-align: center; margin-bottom: 60px; }
+
+    .lessons-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+
+    .lesson-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xl);
+      overflow: hidden;
+      transition: var(--transition-slow);
+    }
+
+    .lesson-card:hover {
+      transform: translateY(-6px);
+      border-color: rgba(99,130,246,0.35);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.4), 0 0 30px rgba(59,130,246,0.1);
+    }
+
+    .lesson-header {
+      padding: 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .lesson-subject-icon {
+      width: 44px; height: 44px;
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.3rem;
+    }
+
+    .lesson-meta { flex: 1; }
+    .lesson-subject { font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.06em; }
+    .lesson-title { font-size: 0.9rem; font-weight: 600; margin-top: 2px; }
+
+    .lesson-xp {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      background: rgba(245,158,11,0.12);
+      border: 1px solid rgba(245,158,11,0.25);
+      color: var(--amber);
+      font-size: 0.68rem;
+      font-weight: 700;
+      padding: 4px 8px;
+      border-radius: 6px;
+    }
+
+    .lesson-body {
+      padding: 20px;
+      min-height: 140px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .lesson-visual {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: var(--radius-sm);
+      padding: 12px;
+      font-size: 0.78rem;
+      color: var(--text-secondary);
+      font-family: 'Courier New', monospace;
+      line-height: 1.7;
+    }
+
+    .formula { color: var(--cyan); }
+    .highlight { color: var(--violet-bright); }
+    .comment { color: var(--text-muted); font-style: italic; }
+
+    .lesson-footer {
+      padding: 14px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-top: 1px solid var(--border);
+    }
+
+    .lesson-progress { font-size: 0.72rem; color: var(--text-muted); }
+    .lesson-progress strong { color: var(--text-primary); }
+
+    .lesson-btn {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--blue-bright);
+      background: rgba(59,130,246,0.1);
+      border: 1px solid rgba(59,130,246,0.2);
+      padding: 6px 14px;
+      border-radius: var(--radius-sm);
+      transition: var(--transition);
+    }
+
+    .lesson-btn:hover {
+      background: rgba(59,130,246,0.2);
+    }
+
+    .checkpoint-row {
+      display: flex;
+      gap: 6px;
+    }
+
+    .checkpoint {
+      flex: 1;
+      height: 6px;
+      border-radius: 3px;
+    }
+
+    /* =========================================
+       MOCK TEST SECTION
+    ========================================= */
+    #mock-test { background: var(--bg-secondary); }
+
+    .mock-test-grid {
+      display: grid;
+      grid-template-columns: 1.6fr 1fr;
+      gap: 60px;
+      align-items: center;
+    }
+
+    .exam-simulator {
+      background: rgba(8,12,26,0.95);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: var(--radius-2xl);
+      overflow: hidden;
+      box-shadow: 0 40px 100px rgba(0,0,0,0.7), 0 0 40px rgba(59,130,246,0.1);
+    }
+
+    .exam-header {
+      background: rgba(255,255,255,0.04);
+      border-bottom: 1px solid rgba(255,255,255,0.07);
+      padding: 16px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .exam-title {
+      font-size: 0.85rem;
+      font-weight: 700;
+    }
+
+    .exam-timer {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(239,68,68,0.12);
+      border: 1px solid rgba(239,68,68,0.25);
+      color: #f87171;
+      font-family: var(--font-display);
+      font-size: 0.85rem;
+      font-weight: 700;
+      padding: 6px 14px;
+      border-radius: var(--radius-sm);
+      animation: borderGlow 2s ease-in-out infinite;
+    }
+
+    .exam-body {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 0;
+    }
+
+    .exam-question-area {
+      padding: 20px;
+      border-right: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .q-number {
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      margin-bottom: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .q-text {
+      font-size: 0.85rem;
+      line-height: 1.65;
+      color: var(--text-primary);
+      margin-bottom: 16px;
+    }
+
+    .q-options {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .q-option {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 14px;
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: var(--radius-sm);
+      font-size: 0.8rem;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .q-option:hover {
+      border-color: rgba(59,130,246,0.4);
+      background: rgba(59,130,246,0.06);
+    }
+
+    .q-option.selected {
+      border-color: var(--blue);
+      background: rgba(59,130,246,0.1);
+      color: var(--blue-bright);
+    }
+
+    .q-option.correct {
+      border-color: var(--green);
+      background: rgba(16,185,129,0.1);
+      color: #34d399;
+    }
+
+    .option-letter {
+      width: 22px; height: 22px;
+      border-radius: 50%;
+      border: 1px solid currentColor;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.68rem;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    .exam-palette {
+      padding: 16px 14px;
+      width: 130px;
+    }
+
+    .palette-title {
+      font-size: 0.65rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 10px;
+    }
+
+    .palette-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 5px;
+    }
+
+    .palette-q {
+      width: 24px; height: 24px;
+      border-radius: 5px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.6rem;
+      font-weight: 600;
+    }
+
+    .palette-q.answered { background: rgba(59,130,246,0.3); color: var(--blue-bright); }
+    .palette-q.current { background: var(--blue); color: white; }
+    .palette-q.unanswered { background: rgba(255,255,255,0.06); color: var(--text-muted); }
+    .palette-q.marked { background: rgba(245,158,11,0.25); color: var(--amber); }
+
+    .exam-footer {
+      padding: 14px 20px;
+      border-top: 1px solid rgba(255,255,255,0.06);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .exam-nav {
+      display: flex;
+      gap: 8px;
+    }
+
+    .exam-nav-btn {
+      font-size: 0.78rem;
+      font-weight: 600;
+      padding: 8px 16px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border);
+      color: var(--text-secondary);
+      transition: var(--transition);
+    }
+
+    .exam-nav-btn:hover { border-color: var(--blue); color: var(--blue-bright); }
+    .exam-nav-btn.primary { background: var(--gradient-blue); color: white; border-color: transparent; }
+
+    .mock-features {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    /* =========================================
+       TESTIMONIALS
+    ========================================= */
+    #testimonials { background: var(--bg-primary); }
+
+    .testimonials-header { text-align: center; margin-bottom: 60px; }
+
+    .testimonials-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+
+    .testimonial-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xl);
+      padding: 28px;
+      transition: var(--transition-slow);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .testimonial-card::before {
+      content: '"';
+      position: absolute;
+      top: -10px; right: 20px;
+      font-size: 8rem;
+      color: rgba(59,130,246,0.08);
+      font-family: Georgia, serif;
+      line-height: 1;
+      pointer-events: none;
+    }
+
+    .testimonial-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(99,130,246,0.3);
+    }
+
+    .testimonial-stars { margin-bottom: 16px; }
+
+    .testimonial-text {
+      font-size: 0.9rem;
+      line-height: 1.7;
+      color: var(--text-secondary);
+      margin-bottom: 24px;
+    }
+
+    .testimonial-author {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .author-avatar {
+      width: 44px; height: 44px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    .author-name { font-size: 0.9rem; font-weight: 600; }
+
+    .author-detail {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    .author-badge {
+      margin-left: auto;
+      background: rgba(16,185,129,0.12);
+      border: 1px solid rgba(16,185,129,0.25);
+      color: var(--green);
+      font-size: 0.65rem;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 6px;
+    }
+
+    /* =========================================
+       PRICING
+    ========================================= */
+    #pricing { background: var(--bg-secondary); }
+
+    .pricing-header { text-align: center; margin-bottom: 60px; }
+
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      align-items: start;
+    }
+
+    .pricing-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xl);
+      padding: 32px;
+      position: relative;
+      transition: var(--transition-slow);
+    }
+
+    .pricing-card:hover {
+      transform: translateY(-6px);
+    }
+
+    .pricing-card.recommended {
+      background: rgba(59,130,246,0.05);
+      border-color: rgba(59,130,246,0.4);
+      box-shadow:
+        0 0 0 1px rgba(59,130,246,0.15),
+        0 20px 60px rgba(59,130,246,0.1),
+        0 0 60px rgba(59,130,246,0.08);
+    }
+
+    .pricing-card.recommended:hover {
+      box-shadow:
+        0 0 0 1px rgba(59,130,246,0.3),
+        0 30px 80px rgba(59,130,246,0.15),
+        0 0 80px rgba(59,130,246,0.12);
+    }
+
+    .recommended-badge {
+      position: absolute;
+      top: -14px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--gradient-blue);
+      color: white;
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 5px 16px;
+      border-radius: 100px;
+      white-space: nowrap;
+      box-shadow: 0 0 20px rgba(59,130,246,0.4);
+    }
+
+    .pricing-plan {
+      font-size: 0.78rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--text-muted);
+      margin-bottom: 12px;
+    }
+
+    .pricing-price {
+      font-family: var(--font-display);
+      font-size: 2.8rem;
+      font-weight: 800;
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+
+    .pricing-price span {
+      font-size: 1rem;
+      font-weight: 500;
+      color: var(--text-muted);
+    }
+
+    .pricing-period {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-bottom: 24px;
+    }
+
+    .pricing-divider {
+      height: 1px;
+      background: var(--border);
+      margin: 24px 0;
+    }
+
+    .pricing-features {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-bottom: 28px;
+    }
+
+    .pricing-feature {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.875rem;
+      color: var(--text-secondary);
+    }
+
+    .check-icon {
+      width: 18px; height: 18px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.65rem;
+      flex-shrink: 0;
+    }
+
+    .check-icon.yes {
+      background: rgba(16,185,129,0.15);
+      color: var(--green);
+    }
+
+    .check-icon.no {
+      background: rgba(255,255,255,0.05);
+      color: var(--text-muted);
+    }
+
+    .pricing-btn {
+      width: 100%;
+      padding: 14px;
+      border-radius: var(--radius-lg);
+      font-size: 0.9rem;
+      font-weight: 600;
+      text-align: center;
+      transition: var(--transition);
+    }
+
+    /* =========================================
+       FINAL CTA
+    ========================================= */
+    #final-cta {
+      padding: 160px 0;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cta-glow {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 600px; height: 400px;
+      background: radial-gradient(ellipse, rgba(59,130,246,0.15) 0%, rgba(139,92,246,0.08) 50%, transparent 70%);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    .cta-title {
+      font-family: var(--font-display);
+      font-size: clamp(2.5rem, 5vw, 4rem);
+      font-weight: 800;
+      line-height: 1.1;
+      letter-spacing: -0.03em;
+      margin-bottom: 20px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .cta-subtitle {
+      font-size: 1.1rem;
+      color: var(--text-secondary);
+      max-width: 480px;
+      margin: 0 auto 40px;
+      line-height: 1.7;
+      position: relative;
+      z-index: 1;
+    }
+
+    .cta-actions {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+      position: relative;
+      z-index: 1;
+    }
+
+    .cta-note {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-top: 20px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .btn-cta-main {
+      background: var(--gradient-mixed);
+      color: white;
+      font-size: 1.1rem;
+      padding: 18px 48px;
+      border-radius: var(--radius-xl);
+      font-weight: 700;
+      box-shadow: 0 0 40px rgba(99,130,246,0.4);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn-cta-main::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(rgba(255,255,255,0.15), transparent);
+      opacity: 0;
+      transition: var(--transition);
+    }
+
+    .btn-cta-main:hover {
+      box-shadow: 0 0 70px rgba(99,130,246,0.6);
+      transform: translateY(-3px);
+    }
+
+    .btn-cta-main:hover::before { opacity: 1; }
+
+    /* Ripple effect */
+    .btn-cta-main .ripple-container {
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      overflow: hidden;
+    }
+
+    /* =========================================
+       FOOTER
+    ========================================= */
+    footer {
+      background: rgba(3,5,12,0.95);
+      border-top: 1px solid var(--border);
+      padding: 70px 0 30px;
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 1.5fr 1fr 1fr 1fr;
+      gap: 50px;
+      padding-bottom: 50px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 30px;
+    }
+
+    .footer-brand p {
+      font-size: 0.875rem;
+      color: var(--text-muted);
+      margin-top: 12px;
+      line-height: 1.65;
+      max-width: 240px;
+    }
+
+    .footer-social {
+      display: flex;
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    .social-link {
+      width: 36px; height: 36px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      transition: var(--transition);
+    }
+
+    .social-link:hover {
+      border-color: var(--blue);
+      color: var(--blue-bright);
+      background: rgba(59,130,246,0.1);
+    }
+
+    .footer-col h4 {
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--text-secondary);
+      margin-bottom: 18px;
+    }
+
+    .footer-col ul li {
+      margin-bottom: 10px;
+    }
+
+    .footer-col ul li a {
+      font-size: 0.875rem;
+      color: var(--text-muted);
+      transition: var(--transition);
+    }
+
+    .footer-col ul li a:hover {
+      color: var(--text-primary);
+    }
+
+    .footer-bottom {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    .footer-bottom-links {
+      display: flex;
+      gap: 20px;
+    }
+
+    .footer-bottom-links a {
+      color: var(--text-muted);
+      transition: var(--transition);
+    }
+
+    .footer-bottom-links a:hover { color: var(--text-primary); }
+
+    /* =========================================
+       SCROLL INDICATOR
+    ========================================= */
+    .scroll-indicator {
+      position: absolute;
+      bottom: 40px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      color: var(--text-muted);
+      font-size: 0.72rem;
+      z-index: 2;
+      animation: float 3s ease-in-out infinite;
+    }
+
+    .scroll-mouse {
+      width: 24px; height: 36px;
+      border: 2px solid rgba(255,255,255,0.2);
+      border-radius: 12px;
+      display: flex;
+      justify-content: center;
+      padding-top: 6px;
+    }
+
+    .scroll-dot {
+      width: 4px; height: 6px;
+      background: var(--blue);
+      border-radius: 2px;
+      animation: scrollDot 2s ease-in-out infinite;
+    }
+
+    @keyframes scrollDot {
+      0%, 100% { transform: translateY(0); opacity: 1; }
+      50% { transform: translateY(8px); opacity: 0.3; }
+    }
+
+    /* =========================================
+       MOBILE NAV
+    ========================================= */
+    .mobile-nav {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(3,7,18,0.98);
+      backdrop-filter: blur(20px);
+      z-index: 999;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 24px;
+    }
+
+    .mobile-nav.open { display: flex; }
+
+    .mobile-nav a {
+      font-size: 1.3rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      transition: var(--transition);
+    }
+
+    .mobile-nav a:hover { color: var(--text-primary); }
+
+    .mobile-nav-close {
+      position: absolute;
+      top: 24px; right: 24px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      width: 40px; height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      color: var(--text-secondary);
+      cursor: pointer;
+    }
+
+    /* =========================================
+       RESPONSIVE
+    ========================================= */
+    @media (max-width: 1024px) {
+      .hero-grid { grid-template-columns: 1fr; gap: 50px; }
+      .hero-right { order: -1; }
+      .bento-grid { grid-template-columns: 1fr 1fr; }
+      .bento-item.span-2 { grid-column: span 1; }
+      .trust-grid { grid-template-columns: repeat(2, 1fr); }
+      .steps-grid { grid-template-columns: repeat(2, 1fr); gap: 30px; }
+      .steps-connector { display: none; }
+      .showcase-grid { grid-template-columns: 1fr; }
+      .lessons-grid { grid-template-columns: 1fr 1fr; }
+      .mock-test-grid { grid-template-columns: 1fr; }
+      .testimonials-grid { grid-template-columns: 1fr 1fr; }
+      .pricing-grid { grid-template-columns: 1fr; max-width: 440px; margin: 0 auto; }
+      .footer-grid { grid-template-columns: 1fr 1fr; gap: 30px; }
+    }
+
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .nav-actions { display: none; }
+      .hamburger { display: flex; }
+      section { padding: 80px 0; }
+      .hero-title { font-size: 2.2rem; }
+      .bento-grid { grid-template-columns: 1fr; }
+      .trust-grid { grid-template-columns: 1fr 1fr; }
+      .steps-grid { grid-template-columns: 1fr; }
+      .lessons-grid { grid-template-columns: 1fr; }
+      .testimonials-grid { grid-template-columns: 1fr; }
+      .footer-grid { grid-template-columns: 1fr; }
+      .footer-bottom { flex-direction: column; gap: 12px; text-align: center; }
+      .metrics-row { grid-template-columns: 1fr 1fr; }
+      .performance-grid { grid-template-columns: 1fr; }
+    }
+
+    /* =========================================
+       UTILITY COLORS
+    ========================================= */
+    .bg-blue { background: rgba(59,130,246,0.15); }
+    .bg-violet { background: rgba(139,92,246,0.15); }
+    .bg-cyan { background: rgba(34,211,238,0.15); }
+    .bg-green { background: rgba(16,185,129,0.15); }
+    .bg-amber { background: rgba(245,158,11,0.15); }
+    .bg-pink { background: rgba(236,72,153,0.15); }
+
+    .text-blue { color: var(--blue-bright); }
+    .text-violet { color: var(--violet-bright); }
+    .text-cyan { color: var(--cyan); }
+    .text-green { color: var(--green); }
+    .text-amber { color: var(--amber); }
+    .text-pink { color: var(--pink); }
+
+    .bar-blue { background: var(--gradient-blue); }
+    .bar-violet { background: var(--gradient-violet); }
+    .bar-cyan { background: var(--gradient-cyan); }
+    .bar-green { background: linear-gradient(135deg, #10b981, #059669); }
+    .bar-amber { background: linear-gradient(135deg, #f59e0b, #d97706); }
+    .bar-mixed { background: var(--gradient-mixed); }
+  </style>
+</head>
+<body>
+
+<!-- Particle Canvas -->
+<canvas id="particle-canvas"></canvas>
+<div class="noise-overlay"></div>
+
+<!-- Mobile Nav -->
+<nav class="mobile-nav" id="mobile-nav">
+  <button class="mobile-nav-close" onclick="closeMobileNav()">✕</button>
+  <a href="#features" onclick="closeMobileNav()">Features</a>
+  <a href="#how-it-works" onclick="closeMobileNav()">How It Works</a>
+  <a href="#showcase" onclick="closeMobileNav()">Dashboard</a>
+  <a href="#mock-test" onclick="closeMobileNav()">Mock Tests</a>
+  <a href="#pricing" onclick="closeMobileNav()">Pricing</a>
+  <div style="display:flex;gap:12px;margin-top:16px;">
+    <a href="login.html" class="btn btn-outline btn-lg">Log In</a>
+    <a href="login.html" class="btn btn-gradient btn-lg">Get Started</a>
+  </div>
+</nav>
+
+<!-- =========================================
+     NAVBAR
+========================================= -->
+<nav id="navbar">
+  <div class="container">
+    <div class="nav-inner">
+      <a href="#" class="nav-logo">
+        <div class="nav-logo-icon">🧬</div>
+        <span class="nav-logo-text">IISER <span>Smart</span>Prep</span>
+      </a>
+
+      <ul class="nav-links">
+        <li><a href="#features">Features</a></li>
+        <li><a href="#how-it-works">How It Works</a></li>
+        <li><a href="#showcase">Dashboard</a></li>
+        <li><a href="#mock-test">Mock Tests</a></li>
+        <li><a href="#pricing">Pricing</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <a href="login.html" class="btn btn-ghost">Log In</a>
+        <a href="login.html" class="btn btn-primary" id="nav-cta">Start Free →</a>
+      </div>
+
+      <button class="hamburger" id="hamburger-btn" onclick="openMobileNav()" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<!-- =========================================
+     HERO SECTION
+========================================= -->
+<section id="hero">
+  <div class="hero-bg">
+    <div class="hero-glow-1"></div>
+    <div class="hero-glow-2"></div>
+    <div class="hero-glow-3"></div>
+  </div>
+
+  <div class="container">
+    <div class="hero-grid">
+      <!-- LEFT: Content -->
+      <div class="hero-left">
+        <div class="hero-badge">
+          <span class="emoji">✨</span>
+          AI-Powered IAT Preparation Platform
+        </div>
+
+        <h1 class="hero-title">
+          Your Personalized<br>
+          Roadmap to<br>
+          <span class="gradient-text">IISER Success</span>
+        </h1>
+
+        <p class="hero-subtitle">
+          Detect your weak areas, build a custom study plan, track readiness in real-time, and ace the IAT with AI-powered mock tests and smart analytics.
+        </p>
+
+        <div class="hero-ctas">
+          <a href="login.html" class="btn btn-gradient btn-xl" id="hero-cta-primary">
+            🚀 Start Free Assessment
+          </a>
+          <a href="dashboard-react/index.html" class="btn btn-outline btn-xl" id="hero-cta-secondary">
+            ▶ Try Demo
+          </a>
+        </div>
+
+        <div class="hero-social-proof">
+          <div class="avatar-stack">
+            <div class="avatar" style="background:linear-gradient(135deg,#3b82f6,#8b5cf6)">R</div>
+            <div class="avatar" style="background:linear-gradient(135deg,#10b981,#3b82f6)">A</div>
+            <div class="avatar" style="background:linear-gradient(135deg,#f59e0b,#ef4444)">S</div>
+            <div class="avatar" style="background:linear-gradient(135deg,#ec4899,#8b5cf6)">M</div>
+            <div class="avatar" style="background:linear-gradient(135deg,#22d3ee,#3b82f6)">+</div>
+          </div>
+          <div>
+            <div class="stars">★★★★★</div>
+            <div class="social-proof-text"><strong>4,800+ students</strong> already cracking IAT</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT: Dashboard Mockup -->
+      <div class="hero-right">
+        <div class="dashboard-mockup">
+          <!-- Floating elements -->
+          <div class="float-elem float-elem-1">
+            📈 +12% this week
+          </div>
+          <div class="float-elem float-elem-2">
+            🎯 Rank Prediction: Top 200
+          </div>
+
+          <div class="mockup-window">
+            <svg style="width:0;height:0;position:absolute">
+              <defs>
+                <linearGradient id="ringGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%" style="stop-color:#3b82f6"/>
+                  <stop offset="50%" style="stop-color:#8b5cf6"/>
+                  <stop offset="100%" style="stop-color:#22d3ee"/>
+                </linearGradient>
+              </defs>
+            </svg>
+
+            <div class="mockup-titlebar">
+              <div class="dot-red"></div>
+              <div class="dot-yellow"></div>
+              <div class="dot-green"></div>
+              <div class="mockup-url">iisersmartprep.space/dashboard</div>
+            </div>
+
+            <div class="mockup-body">
+              <!-- Stats Row -->
+              <div class="mockup-row">
+                <!-- Readiness -->
+                <div class="stat-card">
+                  <div class="stat-label">Readiness</div>
+                  <div class="readiness-ring">
+                    <svg width="60" height="60" viewBox="0 0 60 60">
+                      <circle class="ring-bg" cx="30" cy="30" r="26"/>
+                      <circle class="ring-fill" cx="30" cy="30" r="26"/>
+                    </svg>
+                    <div class="ring-label">68%</div>
+                  </div>
+                  <div class="stat-sub">↑ 4% this week</div>
+                </div>
+                <!-- Streak -->
+                <div class="stat-card">
+                  <div class="stat-label">Study Streak</div>
+                  <div class="stat-value violet">🔥 14</div>
+                  <div class="stat-sub">Days in a row</div>
+                </div>
+                <!-- Countdown -->
+                <div class="stat-card">
+                  <div class="stat-label">Exam In</div>
+                  <div class="stat-value cyan">127</div>
+                  <div class="stat-sub">Days remaining</div>
+                </div>
+              </div>
+
+              <!-- Subject Progress -->
+              <div class="subject-progress-card">
+                <div class="subject-title">Subject Progress</div>
+                <div class="subject-row">
+                  <div class="subject-icon bg-blue">🔬</div>
+                  <div class="subject-name">Physics</div>
+                  <div class="progress-track"><div class="progress-bar bar-blue" style="--target-width:72%;width:72%"></div></div>
+                  <div class="subject-pct text-blue">72%</div>
+                </div>
+                <div class="subject-row">
+                  <div class="subject-icon bg-violet">⚗️</div>
+                  <div class="subject-name">Chemistry</div>
+                  <div class="progress-track"><div class="progress-bar bar-violet" style="--target-width:58%;width:58%"></div></div>
+                  <div class="subject-pct text-violet">58%</div>
+                </div>
+                <div class="subject-row">
+                  <div class="subject-icon bg-green">🧫</div>
+                  <div class="subject-name">Biology</div>
+                  <div class="progress-track"><div class="progress-bar bar-green" style="--target-width:81%;width:81%"></div></div>
+                  <div class="subject-pct text-green">81%</div>
+                </div>
+                <div class="subject-row">
+                  <div class="subject-icon bg-amber">∑</div>
+                  <div class="subject-name">Math</div>
+                  <div class="progress-track"><div class="progress-bar bar-amber" style="--target-width:64%;width:64%"></div></div>
+                  <div class="subject-pct text-amber">64%</div>
+                </div>
+              </div>
+
+              <!-- Weak Areas + AI Rec -->
+              <div class="mockup-row" style="grid-template-columns:1fr 1fr">
+                <div class="weak-area-card">
+                  <div class="stat-label" style="color:#f87171;margin-bottom:10px">⚠ Weak Areas</div>
+                  <div>
+                    <span class="weak-tag">🔴 Thermodynamics</span>
+                    <span class="weak-tag">🔴 Organic Rxn</span>
+                    <span class="weak-tag">🟡 Calculus</span>
+                    <span class="weak-tag">🟡 Genetics</span>
+                  </div>
+                </div>
+                <div class="ai-card">
+                  <div class="ai-tag">🤖 AI Picks</div>
+                  <div class="ai-recommend">Revise Hess's Law today</div>
+                  <div class="ai-recommend">10 SN1/SN2 practice Qs</div>
+                  <div class="ai-recommend">Full mock Sunday 9AM</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scroll Indicator -->
+  <div class="scroll-indicator">
+    <div class="scroll-mouse"><div class="scroll-dot"></div></div>
+    <span>Scroll to explore</span>
+  </div>
+</section>
+
+<!-- =========================================
+     TRUST SECTION
+========================================= -->
+<section id="trust" style="padding:80px 0;">
+  <div class="container">
+    <div class="trust-divider"></div>
+    <div class="trust-grid animate-on-scroll">
+      <div class="trust-card">
+        <div class="trust-icon bg-blue">🎯</div>
+        <div class="trust-number gradient-text">10,000+</div>
+        <div class="trust-label">Curated Questions</div>
+      </div>
+      <div class="trust-card">
+        <div class="trust-icon bg-violet">📋</div>
+        <div class="trust-number" style="color:var(--violet-bright)">500+</div>
+        <div class="trust-label">Mock Tests</div>
+      </div>
+      <div class="trust-card">
+        <div class="trust-icon bg-cyan">🤖</div>
+        <div class="trust-number" style="color:var(--cyan)">AI</div>
+        <div class="trust-label">Powered Analysis</div>
+      </div>
+      <div class="trust-card">
+        <div class="trust-icon bg-green">🗺️</div>
+        <div class="trust-number" style="color:var(--green)">100%</div>
+        <div class="trust-label">Personalized Plans</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =========================================
+     FEATURES SECTION
+========================================= -->
+<section id="features">
+  <div class="container">
+    <div class="features-header animate-on-scroll">
+      <div class="section-badge"><span class="dot"></span> Features</div>
+      <h2 class="section-title">Everything You Need to <span class="gradient-text">Crack the IAT</span></h2>
+      <p class="section-subtitle">A complete AI-powered ecosystem built for serious IISER aspirants — from diagnosis to rank prediction.</p>
+    </div>
+
+    <div class="bento-grid">
+      <!-- 1. AI Roadmap -->
+      <div class="bento-item span-2 animate-on-scroll">
+        <div class="bento-icon bg-blue">🗺️</div>
+        <div class="bento-title">AI Study Roadmap Generator</div>
+        <div class="bento-desc">Our AI analyzes your performance, identifies knowledge gaps, and generates a day-by-day customized study plan tailored to your exam date and current level.</div>
+        <div class="bento-visual">
+          <div class="ai-roadmap-visual">
+            <div class="roadmap-step"><div class="roadmap-dot" style="background:var(--blue)"></div>Week 1-2: Thermodynamics + Equilibrium deep-dive</div>
+            <div class="roadmap-step"><div class="roadmap-dot" style="background:var(--violet)"></div>Week 3: SN1/SN2 mechanisms + practice set (50 Qs)</div>
+            <div class="roadmap-step"><div class="roadmap-dot" style="background:var(--cyan)"></div>Week 4: Full-length Mock Test + Error Analysis</div>
+            <div class="roadmap-step"><div class="roadmap-dot" style="background:var(--green)"></div>Week 5: Revision of flagged topics + micro-tests</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2. Weak Area -->
+      <div class="bento-item animate-on-scroll">
+        <div class="bento-icon bg-pink">🔍</div>
+        <div class="bento-title">Weak Area Detection Engine</div>
+        <div class="bento-desc">Pinpoints exactly which topics drag you down — not just subjects, but specific subtopics. Fix the 20% that causes 80% of your mistakes.</div>
+        <div class="tag-cloud">
+          <span class="tag" style="background:rgba(239,68,68,0.15);color:#f87171">Thermodynamics</span>
+          <span class="tag" style="background:rgba(245,158,11,0.15);color:var(--amber)">Organic Chemistry</span>
+          <span class="tag" style="background:rgba(239,68,68,0.15);color:#f87171">Calculus</span>
+          <span class="tag" style="background:rgba(16,185,129,0.15);color:var(--green)">Genetics ✓</span>
+        </div>
+      </div>
+
+      <!-- 3. Readiness Score -->
+      <div class="bento-item animate-on-scroll" style="text-align:center">
+        <div class="bento-icon bg-violet" style="margin:0 auto 16px">📊</div>
+        <div class="bento-title">Readiness Score Tracker</div>
+        <div class="bento-desc">A dynamic score updated after every test, lesson, and revision session — your live gauge of IAT readiness.</div>
+        <div style="margin-top:20px;display:flex;justify-content:center;gap:12px">
+          <div style="text-align:center">
+            <div style="font-size:2rem;font-weight:800;color:var(--violet-bright)">68%</div>
+            <div style="font-size:0.7rem;color:var(--text-muted)">Current</div>
+          </div>
+          <div style="display:flex;flex-direction:column;justify-content:center;align-items:center;color:var(--green);font-size:0.8rem">→ Target</div>
+          <div style="text-align:center">
+            <div style="font-size:2rem;font-weight:800;color:var(--green)">85%</div>
+            <div style="font-size:0.7rem;color:var(--text-muted)">Goal</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4. Mock Tests -->
+      <div class="bento-item animate-on-scroll">
+        <div class="bento-icon bg-cyan">📝</div>
+        <div class="bento-title">TCS iON-Style Mock Tests</div>
+        <div class="bento-desc">Pixel-perfect IAT exam simulator with real-time timer, question palette, marking scheme, and instant performance reports.</div>
+      </div>
+
+      <!-- 5. Smart Lessons -->
+      <div class="bento-item animate-on-scroll">
+        <div class="bento-icon bg-amber">🧠</div>
+        <div class="bento-title">Interactive Smart Lessons</div>
+        <div class="bento-desc">Visual, formula-rich lessons with diagrams, flowcharts, and embedded checkpoint quizzes that adapt to your learning speed.</div>
+      </div>
+
+      <!-- 6. Analytics -->
+      <div class="bento-item animate-on-scroll">
+        <div class="bento-icon bg-green">📈</div>
+        <div class="bento-title">Performance Analytics Dashboard</div>
+        <div class="bento-desc">Detailed breakdowns of accuracy, time-per-question, subject trends, improvement rate, and rank prediction over time.</div>
+        <div class="bento-visual">
+          <div class="mini-chart">
+            <div class="chart-bar bar-blue" style="height:60%"></div>
+            <div class="chart-bar bar-blue" style="height:45%"></div>
+            <div class="chart-bar bar-violet" style="height:75%"></div>
+            <div class="chart-bar bar-cyan" style="height:55%"></div>
+            <div class="chart-bar bar-green" style="height:80%"></div>
+            <div class="chart-bar bar-mixed" style="height:90%"></div>
+            <div class="chart-bar bar-blue" style="height:85%"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 7. Revision Queue -->
+      <div class="bento-item animate-on-scroll">
+        <div class="bento-icon bg-violet">🔄</div>
+        <div class="bento-title">Smart Revision Queue</div>
+        <div class="bento-desc">Spaced repetition algorithm surfaces the right topics at the right time — so you never forget what you've learned.</div>
+      </div>
+
+      <!-- 8. Daily Tasks -->
+      <div class="bento-item animate-on-scroll">
+        <div class="bento-icon bg-pink">📅</div>
+        <div class="bento-title">Daily Personalized Tasks</div>
+        <div class="bento-desc">Every morning, receive a micro-schedule: 3 lessons, 15 practice questions, and 1 revision module — optimized by AI for peak performance.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =========================================
+     HOW IT WORKS
+========================================= -->
+<section id="how-it-works">
+  <div class="container">
+    <div class="steps-header animate-on-scroll">
+      <div class="section-badge"><span class="dot"></span> Process</div>
+      <h2 class="section-title">From Zero to <span class="gradient-text">IISER-Ready</span></h2>
+      <p class="section-subtitle" style="margin:0 auto">Four intelligent steps that transform any aspirant into a top-tier IAT performer.</p>
+    </div>
+
+    <div class="steps-grid">
+      <div class="steps-connector"></div>
+
+      <div class="step-card animate-on-scroll">
+        <div class="step-number" style="background:rgba(59,130,246,0.12);color:var(--blue-bright)">
+          <span class="step-icon">🎯</span>
+        </div>
+        <h3 class="step-title">Take Assessment</h3>
+        <p class="step-desc">Complete our 45-minute diagnostic test covering all IAT subjects. The AI maps your exact strengths and weaknesses.</p>
+      </div>
+
+      <div class="step-card animate-on-scroll" style="transition-delay:0.1s">
+        <div class="step-number" style="background:rgba(139,92,246,0.12);color:var(--violet-bright)">
+          <span class="step-icon">📊</span>
+        </div>
+        <h3 class="step-title">Get Your Level</h3>
+        <p class="step-desc">Receive a detailed report: Beginner, Intermediate, or Advanced — with topic-wise scores and a comparative rank estimate.</p>
+      </div>
+
+      <div class="step-card animate-on-scroll" style="transition-delay:0.2s">
+        <div class="step-number" style="background:rgba(34,211,238,0.12);color:var(--cyan)">
+          <span class="step-icon">🗺️</span>
+        </div>
+        <h3 class="step-title">Get Your Roadmap</h3>
+        <p class="step-desc">AI generates your personalized day-by-day study plan, prioritizing weak areas and scheduling mock tests strategically.</p>
+      </div>
+
+      <div class="step-card animate-on-scroll" style="transition-delay:0.3s">
+        <div class="step-number" style="background:rgba(16,185,129,0.12);color:var(--green)">
+          <span class="step-icon">🚀</span>
+        </div>
+        <h3 class="step-title">Improve & Track</h3>
+        <p class="step-desc">Study, practice, take mocks. Watch your Readiness Score climb. Get rank predictions updated every week.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =========================================
+     DASHBOARD SHOWCASE
+========================================= -->
+<section id="showcase">
+  <div class="container">
+    <div class="showcase-grid">
+      <!-- Left: Features -->
+      <div class="animate-on-scroll">
+        <div class="section-badge"><span class="dot"></span> Dashboard</div>
+        <h2 class="section-title">Your Command Center for <span class="gradient-text">IAT Victory</span></h2>
+        <p class="section-subtitle" style="margin-bottom:36px">All your analytics, progress, and AI recommendations in one beautifully designed dashboard.</p>
+
+        <div class="showcase-features">
+          <div class="showcase-feature-item">
+            <div class="showcase-feature-icon bg-blue">🤖</div>
+            <div class="showcase-feature-text">
+              <h4>AI Recommendations Engine</h4>
+              <p>Daily personalized study suggestions based on your performance patterns and exam timeline.</p>
+            </div>
+          </div>
+          <div class="showcase-feature-item">
+            <div class="showcase-feature-icon bg-violet">📊</div>
+            <div class="showcase-feature-text">
+              <h4>Live Progress Charts</h4>
+              <p>Real-time accuracy trends, score evolution, and subject mastery visualized beautifully.</p>
+            </div>
+          </div>
+          <div class="showcase-feature-item">
+            <div class="showcase-feature-icon bg-cyan">🏆</div>
+            <div class="showcase-feature-text">
+              <h4>Rank Prediction Engine</h4>
+              <p>Know your expected All-India Rank based on mock scores and historical IAT data.</p>
+            </div>
+          </div>
+          <div class="showcase-feature-item">
+            <div class="showcase-feature-icon bg-green">📅</div>
+            <div class="showcase-feature-text">
+              <h4>Daily Study Planner</h4>
+              <p>Auto-generated daily schedules that adapt as you progress, ensuring optimal preparation pace.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: Big Mockup -->
+      <div class="animate-on-scroll" style="transition-delay:0.2s">
+        <div class="big-mockup">
+          <div class="big-mockup-window">
+            <div class="big-mockup-header">
+              <div class="dot-red"></div>
+              <div class="dot-yellow"></div>
+              <div class="dot-green"></div>
+              <div class="big-mockup-title">SmartPrep Dashboard — Riya Sharma</div>
+              <div class="live-badge"><div class="dot"></div> Live</div>
+            </div>
+            <div class="big-mockup-body">
+              <!-- Metrics -->
+              <div class="metrics-row">
+                <div class="metric-card">
+                  <div class="metric-icon">🎯</div>
+                  <div class="metric-value text-blue">68%</div>
+                  <div class="metric-label">Readiness</div>
+                </div>
+                <div class="metric-card">
+                  <div class="metric-icon">🏅</div>
+                  <div class="metric-value text-amber">#184</div>
+                  <div class="metric-label">Rank Pred.</div>
+                </div>
+                <div class="metric-card">
+                  <div class="metric-icon">🔥</div>
+                  <div class="metric-value text-violet">14</div>
+                  <div class="metric-label">Day Streak</div>
+                </div>
+                <div class="metric-card">
+                  <div class="metric-icon">⏰</div>
+                  <div class="metric-value text-cyan">127d</div>
+                  <div class="metric-label">To Exam</div>
+                </div>
+              </div>
+
+              <!-- Mastery -->
+              <div class="subjects-mastery">
+                <div class="subject-title" style="font-size:0.7rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:12px">Subject Mastery</div>
+                <div class="mastery-row">
+                  <div class="mastery-subject">Physics</div>
+                  <div class="mastery-bar-track"><div class="mastery-bar bar-blue" style="--target-width:72%;width:72%"></div></div>
+                  <div class="mastery-pct text-blue">72%</div>
+                </div>
+                <div class="mastery-row">
+                  <div class="mastery-subject">Chemistry</div>
+                  <div class="mastery-bar-track"><div class="mastery-bar bar-violet" style="--target-width:58%;width:58%"></div></div>
+                  <div class="mastery-pct text-violet">58%</div>
+                </div>
+                <div class="mastery-row">
+                  <div class="mastery-subject">Biology</div>
+                  <div class="mastery-bar-track"><div class="mastery-bar bar-green" style="--target-width:81%;width:81%"></div></div>
+                  <div class="mastery-pct text-green">81%</div>
+                </div>
+                <div class="mastery-row" style="margin-bottom:0">
+                  <div class="mastery-subject">Math</div>
+                  <div class="mastery-bar-track"><div class="mastery-bar bar-amber" style="--target-width:64%;width:64%"></div></div>
+                  <div class="mastery-pct text-amber">64%</div>
+                </div>
+              </div>
+
+              <!-- Performance -->
+              <div class="performance-grid">
+                <div class="perf-card">
+                  <div class="perf-label">Score Trend (7d)</div>
+                  <div class="perf-chart">
+                    <div class="perf-bar bar-blue" style="height:50%"></div>
+                    <div class="perf-bar bar-blue" style="height:60%"></div>
+                    <div class="perf-bar bar-blue" style="height:55%"></div>
+                    <div class="perf-bar bar-violet" style="height:70%"></div>
+                    <div class="perf-bar bar-cyan" style="height:65%"></div>
+                    <div class="perf-bar bar-mixed" style="height:80%"></div>
+                    <div class="perf-bar bar-mixed" style="height:88%"></div>
+                  </div>
+                </div>
+                <div class="perf-card">
+                  <div class="perf-label">Today's Plan</div>
+                  <div style="display:flex;flex-direction:column;gap:5px;margin-top:4px">
+                    <div style="font-size:0.68rem;color:var(--text-secondary);display:flex;align-items:center;gap:6px"><span style="color:var(--green)">✓</span> 2 Smart Lessons</div>
+                    <div style="font-size:0.68rem;color:var(--text-secondary);display:flex;align-items:center;gap:6px"><span style="color:var(--blue)">◉</span> 20 Practice Qs</div>
+                    <div style="font-size:0.68rem;color:var(--text-muted);display:flex;align-items:center;gap:6px"><span style="color:var(--text-muted)">○</span> 1 Revision Module</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =========================================
+     SMART LESSONS
+========================================= -->
+<section id="lessons">
+  <div class="container">
+    <div class="lessons-header animate-on-scroll">
+      <div class="section-badge"><span class="dot"></span> Smart Lessons</div>
+      <h2 class="section-title">Learn Smarter with <span class="gradient-text">Interactive Content</span></h2>
+      <p class="section-subtitle" style="margin:0 auto">Visual-rich lessons across all IAT subjects with embedded quizzes, XP rewards, and adaptive difficulty.</p>
+    </div>
+
+    <div class="lessons-grid">
+      <!-- Biology -->
+      <div class="lesson-card animate-on-scroll">
+        <div class="lesson-header">
+          <div class="lesson-subject-icon bg-green">🧫</div>
+          <div class="lesson-meta">
+            <div class="lesson-subject">Biology</div>
+            <div class="lesson-title">DNA Replication Mechanism</div>
+          </div>
+          <div class="lesson-xp">⚡ +120 XP</div>
+        </div>
+        <div class="lesson-body">
+          <div class="lesson-visual">
+            <span class="comment">// Eukaryotic DNA Replication</span><br>
+            Template: 3'→5' <span class="highlight">antiparallel</span><br>
+            Leading strand: <span class="formula">continuous synthesis</span><br>
+            Lagging strand: <span class="formula">Okazaki fragments</span><br>
+            Enzyme: <span class="highlight">DNA Polymerase III</span><br>
+            <span class="comment">// Proofreading: 3'→5' exonuclease</span>
+          </div>
+          <div class="checkpoint-row">
+            <div class="checkpoint" style="background:var(--green)"></div>
+            <div class="checkpoint" style="background:var(--green)"></div>
+            <div class="checkpoint" style="background:var(--blue)"></div>
+            <div class="checkpoint" style="background:rgba(255,255,255,0.1)"></div>
+            <div class="checkpoint" style="background:rgba(255,255,255,0.1)"></div>
+          </div>
+        </div>
+        <div class="lesson-footer">
+          <div class="lesson-progress"><strong>3/5</strong> checkpoints done</div>
+          <button class="lesson-btn">Continue →</button>
+        </div>
+      </div>
+
+      <!-- Physics -->
+      <div class="lesson-card animate-on-scroll" style="transition-delay:0.1s">
+        <div class="lesson-header">
+          <div class="lesson-subject-icon bg-blue">🔬</div>
+          <div class="lesson-meta">
+            <div class="lesson-subject">Physics</div>
+            <div class="lesson-title">Thermodynamics — Laws & Applications</div>
+          </div>
+          <div class="lesson-xp">⚡ +150 XP</div>
+        </div>
+        <div class="lesson-body">
+          <div class="lesson-visual">
+            <span class="comment">// First Law of Thermodynamics</span><br>
+            <span class="formula">ΔU = Q - W</span><br>
+            <span class="comment">// Carnot Efficiency</span><br>
+            <span class="formula">η = 1 - (T₂/T₁)</span><br>
+            <span class="highlight">Entropy</span>: <span class="formula">ΔS = Q<sub>rev</sub>/T</span><br>
+            <span class="comment">// Gibbs: ΔG = ΔH - TΔS</span>
+          </div>
+          <div class="checkpoint-row">
+            <div class="checkpoint" style="background:var(--green)"></div>
+            <div class="checkpoint" style="background:var(--blue)"></div>
+            <div class="checkpoint" style="background:rgba(255,255,255,0.1)"></div>
+            <div class="checkpoint" style="background:rgba(255,255,255,0.1)"></div>
+            <div class="checkpoint" style="background:rgba(255,255,255,0.1)"></div>
+          </div>
+        </div>
+        <div class="lesson-footer">
+          <div class="lesson-progress"><strong>2/5</strong> checkpoints done</div>
+          <button class="lesson-btn">Continue →</button>
+        </div>
+      </div>
+
+      <!-- Chemistry -->
+      <div class="lesson-card animate-on-scroll" style="transition-delay:0.2s">
+        <div class="lesson-header">
+          <div class="lesson-subject-icon bg-violet">⚗️</div>
+          <div class="lesson-meta">
+            <div class="lesson-subject">Chemistry</div>
+            <div class="lesson-title">Organic Reaction Mechanisms</div>
+          </div>
+          <div class="lesson-xp">⚡ +180 XP</div>
+        </div>
+        <div class="lesson-body">
+          <div class="lesson-visual">
+            <span class="comment">// SN1 vs SN2 Decision Chart</span><br>
+            <span class="highlight">SN1</span>: 3° substrate + polar protic<br>
+            <span class="formula">Rate = k[substrate]</span><br>
+            <span class="highlight">SN2</span>: 1° substrate + polar aprotic<br>
+            <span class="formula">Rate = k[sub][Nu⁻]</span><br>
+            <span class="comment">// Stereochemistry: inversion!</span>
+          </div>
+          <div class="checkpoint-row">
+            <div class="checkpoint" style="background:var(--green)"></div>
+            <div class="checkpoint" style="background:var(--green)"></div>
+            <div class="checkpoint" style="background:var(--green)"></div>
+            <div class="checkpoint" style="background:var(--green)"></div>
+            <div class="checkpoint" style="background:rgba(255,255,255,0.1)"></div>
+          </div>
+        </div>
+        <div class="lesson-footer">
+          <div class="lesson-progress"><strong>4/5</strong> checkpoints done</div>
+          <button class="lesson-btn">Finish Lesson →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =========================================
+     MOCK TEST SECTION
+========================================= -->
+<section id="mock-test">
+  <div class="container">
+    <div class="mock-test-grid">
+      <!-- Exam Simulator -->
+      <div class="animate-on-scroll">
+        <div class="exam-simulator">
+          <div class="exam-header">
+            <div class="exam-title">IAT 2025 — Full Mock Test #12</div>
+            <div class="exam-timer">⏱ 01:24:38</div>
+          </div>
+
+          <div class="exam-body">
+            <div class="exam-question-area">
+              <div class="q-number">Question 23 of 60 • Chemistry — Organic</div>
+              <div class="q-text">Which of the following best describes the mechanism for the reaction of 2-bromo-2-methylpropane with aqueous NaOH at 25°C?</div>
+              <div class="q-options">
+                <div class="q-option answered"><div class="option-letter">A</div>SN2 with inversion of configuration</div>
+                <div class="q-option correct"><div class="option-letter">B</div>SN1 via tertiary carbocation intermediate ✓</div>
+                <div class="q-option"><div class="option-letter">C</div>E2 elimination via anti-periplanar geometry</div>
+                <div class="q-option"><div class="option-letter">D</div>Radical substitution via free radical chain</div>
+              </div>
+            </div>
+
+            <div class="exam-palette">
+              <div class="palette-title">Question Palette</div>
+              <div class="palette-grid">
+                <div class="palette-q answered">1</div><div class="palette-q answered">2</div>
+                <div class="palette-q answered">3</div><div class="palette-q answered">4</div>
+                <div class="palette-q answered">5</div><div class="palette-q marked">6</div>
+                <div class="palette-q answered">7</div><div class="palette-q answered">8</div>
+                <div class="palette-q answered">9</div><div class="palette-q answered">10</div>
+                <div class="palette-q answered">11</div><div class="palette-q unanswered">12</div>
+                <div class="palette-q answered">13</div><div class="palette-q answered">14</div>
+                <div class="palette-q marked">15</div><div class="palette-q answered">16</div>
+                <div class="palette-q answered">17</div><div class="palette-q answered">18</div>
+                <div class="palette-q answered">19</div><div class="palette-q answered">20</div>
+                <div class="palette-q answered">21</div><div class="palette-q answered">22</div>
+                <div class="palette-q current">23</div><div class="palette-q unanswered">24</div>
+              </div>
+              <div style="margin-top:12px;font-size:0.6rem;color:var(--text-muted)">
+                <div style="display:flex;align-items:center;gap:5px;margin-bottom:4px"><div class="palette-q answered" style="width:14px;height:14px;font-size:0;flex-shrink:0"></div> Answered</div>
+                <div style="display:flex;align-items:center;gap:5px;margin-bottom:4px"><div class="palette-q marked" style="width:14px;height:14px;font-size:0;flex-shrink:0"></div> Marked</div>
+                <div style="display:flex;align-items:center;gap:5px"><div class="palette-q unanswered" style="width:14px;height:14px;font-size:0;flex-shrink:0"></div> Not visited</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="exam-footer">
+            <div class="exam-nav">
+              <button class="exam-nav-btn">← Prev</button>
+              <button class="exam-nav-btn">Mark & Next</button>
+            </div>
+            <div class="exam-nav">
+              <button class="exam-nav-btn primary">Next →</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: Features -->
+      <div class="animate-on-scroll" style="transition-delay:0.2s">
+        <div class="section-badge"><span class="dot"></span> Mock Tests</div>
+        <h2 class="section-title">Exam-Day <span class="gradient-text">Confidence</span></h2>
+        <p class="section-subtitle" style="margin-bottom:36px">Experience the real IAT exam environment before the actual test. Zero surprises on exam day.</p>
+
+        <div class="mock-features">
+          <div class="showcase-feature-item">
+            <div class="showcase-feature-icon bg-blue">🖥️</div>
+            <div class="showcase-feature-text">
+              <h4>TCS iON-Style Interface</h4>
+              <p>Pixel-perfect replication of the actual IAT exam interface with question palette, timer, and marking system.</p>
+            </div>
+          </div>
+          <div class="showcase-feature-item">
+            <div class="showcase-feature-icon bg-cyan">⏱️</div>
+            <div class="showcase-feature-text">
+              <h4>Live Timer & Pressure Training</h4>
+              <p>Train under real time pressure. Auto-submit when time expires, just like the actual exam.</p>
+            </div>
+          </div>
+          <div class="showcase-feature-item">
+            <div class="showcase-feature-icon bg-violet">📊</div>
+            <div class="showcase-feature-text">
+              <h4>Instant Performance Reports</h4>
+              <p>Detailed post-test analytics: accuracy by section, time analysis, comparison with toppers, rank estimate.</p>
+            </div>
+          </div>
+          <div class="showcase-feature-item">
+            <div class="showcase-feature-icon bg-amber">🏆</div>
+            <div class="showcase-feature-text">
+              <h4>All-India Rank Prediction</h4>
+              <p>Know your estimated rank after every full mock. Track how you improve over time against other aspirants.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =========================================
+     TESTIMONIALS
+========================================= -->
+<section id="testimonials">
+  <div class="container">
+    <div class="testimonials-header animate-on-scroll">
+      <div class="section-badge"><span class="dot"></span> Success Stories</div>
+      <h2 class="section-title">Students Who <span class="gradient-text">Made It</span></h2>
+      <p class="section-subtitle" style="margin:0 auto">Real stories from aspirants who cracked the IAT using IISER SmartPrep.</p>
+    </div>
+
+    <div class="testimonials-grid">
+      <div class="testimonial-card animate-on-scroll">
+        <div class="testimonial-stars">★★★★★</div>
+        <p class="testimonial-text">"SmartPrep's AI roadmap identified that I was weak in Thermodynamics and Organic Chemistry. After 6 weeks of following the personalized plan, my mock scores went from 55 to 82! I got into IISER Pune. This platform literally changed my life."</p>
+        <div class="testimonial-author">
+          <div class="author-avatar" style="background:linear-gradient(135deg,#3b82f6,#8b5cf6)">RS</div>
+          <div>
+            <div class="author-name">Riya Sharma</div>
+            <div class="author-detail">IISER Pune, BS-MS 2025</div>
+          </div>
+          <div class="author-badge">IISER Pune ✓</div>
+        </div>
+      </div>
+
+      <div class="testimonial-card animate-on-scroll" style="transition-delay:0.1s">
+        <div class="testimonial-stars">★★★★★</div>
+        <p class="testimonial-text">"The mock tests are literally identical to the actual IAT interface. I felt zero nervousness on exam day because I had done 30+ mocks on SmartPrep. The performance analytics showed exactly where I was losing marks. Got AIR 94!"</p>
+        <div class="testimonial-author">
+          <div class="author-avatar" style="background:linear-gradient(135deg,#10b981,#3b82f6)">AK</div>
+          <div>
+            <div class="author-name">Arjun Kumar</div>
+            <div class="author-detail">IISER Kolkata, AIR 94</div>
+          </div>
+          <div class="author-badge">AIR 94 🏆</div>
+        </div>
+      </div>
+
+      <div class="testimonial-card animate-on-scroll" style="transition-delay:0.2s">
+        <div class="testimonial-stars">★★★★★</div>
+        <p class="testimonial-text">"I started 4 months before IAT with zero prep. SmartPrep's diagnostic test gave me a clear picture, and the AI plan broke everything into manageable daily tasks. The streak system kept me consistent. IISER Mohali — dream come true!"</p>
+        <div class="testimonial-author">
+          <div class="author-avatar" style="background:linear-gradient(135deg,#f59e0b,#ef4444)">SM</div>
+          <div>
+            <div class="author-name">Sneha Mehta</div>
+            <div class="author-detail">IISER Mohali, BS-MS 2025</div>
+          </div>
+          <div class="author-badge">IISER Mohali ✓</div>
+        </div>
+      </div>
+
+      <div class="testimonial-card animate-on-scroll" style="transition-delay:0.1s">
+        <div class="testimonial-stars">★★★★★</div>
+        <p class="testimonial-text">"The weak area detection is insane. It told me I was losing 8 marks per test in Calculus and Optics. I focused on those for 3 weeks and gained 12 marks in my next mock. The AI isn't just smart — it's scary accurate."</p>
+        <div class="testimonial-author">
+          <div class="author-avatar" style="background:linear-gradient(135deg,#ec4899,#8b5cf6)">RG</div>
+          <div>
+            <div class="author-name">Rahul Gupta</div>
+            <div class="author-detail">IISER Bhopal, AIR 156</div>
+          </div>
+          <div class="author-badge">AIR 156 🎯</div>
+        </div>
+      </div>
+
+      <div class="testimonial-card animate-on-scroll" style="transition-delay:0.2s">
+        <div class="testimonial-stars">★★★★★</div>
+        <p class="testimonial-text">"As someone who prepped mostly for JEE, IAT Biology was my Achilles heel. SmartPrep's smart lessons with flowcharts and diagrams made it visual and easy. Completed all Biology lessons in 3 weeks. Got 90% accuracy in Biology mocks!"</p>
+        <div class="testimonial-author">
+          <div class="author-avatar" style="background:linear-gradient(135deg,#22d3ee,#3b82f6)">PA</div>
+          <div>
+            <div class="author-name">Priya Agarwal</div>
+            <div class="author-detail">IISER Tirupati, AIR 212</div>
+          </div>
+          <div class="author-badge">IISER Tirupati ✓</div>
+        </div>
+      </div>
+
+      <div class="testimonial-card animate-on-scroll" style="transition-delay:0.3s">
+        <div class="testimonial-stars">★★★★★</div>
+        <p class="testimonial-text">"The revision queue feature is underrated. It brought back topics I had studied 3 weeks ago at just the right time. My retention improved massively. Combined with daily tasks, I was studying 4 hours a day without burnout. Worth every rupee!"</p>
+        <div class="testimonial-author">
+          <div class="author-avatar" style="background:linear-gradient(135deg,#10b981,#22d3ee)">VN</div>
+          <div>
+            <div class="author-name">Vikram Nair</div>
+            <div class="author-detail">IISER Trivandrum, AIR 88</div>
+          </div>
+          <div class="author-badge">AIR 88 🏆</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =========================================
+     PRICING
+========================================= -->
+<section id="pricing">
+  <div class="container">
+    <div class="pricing-header animate-on-scroll">
+      <div class="section-badge"><span class="dot"></span> Pricing</div>
+      <h2 class="section-title">Invest in Your <span class="gradient-text">IISER Dream</span></h2>
+      <p class="section-subtitle" style="margin:0 auto">Flexible plans for every aspirant. Cancel anytime. No hidden fees.</p>
+    </div>
+
+    <div class="pricing-grid animate-on-scroll">
+      <!-- Free -->
+      <div class="pricing-card">
+        <div class="pricing-plan">Free</div>
+        <div class="pricing-price">₹0 <span>/forever</span></div>
+        <div class="pricing-period">No credit card required</div>
+        <div class="pricing-divider"></div>
+        <div class="pricing-features">
+          <div class="pricing-feature"><div class="check-icon yes">✓</div>Diagnostic Assessment</div>
+          <div class="pricing-feature"><div class="check-icon yes">✓</div>5 Mock Tests / month</div>
+          <div class="pricing-feature"><div class="check-icon yes">✓</div>Basic Progress Tracking</div>
+          <div class="pricing-feature"><div class="check-icon yes">✓</div>10 Smart Lessons</div>
+          <div class="pricing-feature"><div class="check-icon no">—</div>AI Roadmap Generator</div>
+          <div class="pricing-feature"><div class="check-icon no">—</div>Weak Area Detection</div>
+          <div class="pricing-feature"><div class="check-icon no">—</div>Rank Prediction</div>
+          <div class="pricing-feature"><div class="check-icon no">—</div>Unlimited Mock Tests</div>
+        </div>
+        <a href="login.html" class="pricing-btn btn btn-outline">Get Started Free</a>
+      </div>
+
+      <!-- Pro (Recommended) -->
+      <div class="pricing-card recommended">
+        <div class="recommended-badge">✨ Most Popular</div>
+        <div class="pricing-plan" style="color:var(--blue-bright)">Pro</div>
+        <div class="pricing-price gradient-text">₹399 <span>/month</span></div>
+        <div class="pricing-period">or ₹999 for 3 months (save 17%)</div>
+        <div class="pricing-divider"></div>
+        <div class="pricing-features">
+          <div class="pricing-feature"><div class="check-icon yes">✓</div>Everything in Free</div>
+          <div class="pricing-feature"><div class="check-icon yes">✓</div>AI Study Roadmap</div>
+          <div class="pricing-feature"><div class="check-icon yes">✓</div>Weak Area Detection</div>
+          <div class="pricing-feature"><div class="check-icon yes">✓</div>Unlimited Mock Tests</div>
+          <div class="pricing-feature"><div class="check-icon yes">✓</div>Full Lesson Library</div>
+          <div class="pricing-feature"><div class="check-icon yes">✓</div>Rank Prediction Engine</div>
+          <div class="pricing-feature"><div class="check-icon yes">✓</div>Performance Analytics</div>
+          <div class="pricing-feature"><div class="check-icon no">—</div>1-on-1 AI Tutoring</div>
+        </div>
+        <a href="login.html" class="pricing-btn btn btn-primary" id="pricing-pro-cta">Start Pro Trial →</a>
+      </div>
+
+      <!-- Premium -->
+      <div class="pricing-card">
+        <div class="pricing-plan" style="color:var(--violet-bright)">Premium</div>
+        <div class="pricing-price" style="color:var(--violet-bright)">₹799 <span>/month</span></div>
+        <div class="pricing-period">or ₹1,999 for 3 months (save 17%)</div>
+        <div class="pricing-divider"></div>
+        <div class="pricing-features">
+          <div class="pricing-feature"><div class="check-icon yes">✓</div>Everything in Pro</div>
+          <div class="pricing-feature"><div class="check-icon yes">✓</div>1-on-1 AI Tutoring</div>
+          <div class="pricing-feature"><div class="check-icon yes">✓</div>Priority Support 24/7</div>
+          <div class="pricing-feature"><div class="check-icon yes">✓</div>College Predictor Tool</div>
+          <div class="pricing-feature"><div class="check-icon yes">✓</div>Exclusive PYQ Bank</div>
+          <div class="pricing-feature"><div class="check-icon yes">✓</div>Expert Doubt Resolution</div>
+          <div class="pricing-feature"><div class="check-icon yes">✓</div>IISER Interview Prep</div>
+          <div class="pricing-feature"><div class="check-icon yes">✓</div>Early Access — New Features</div>
+        </div>
+        <a href="login.html" class="pricing-btn btn" style="background:var(--gradient-violet);color:white;" id="pricing-premium-cta">Get Premium →</a>
+      </div>
+    </div>
+
+    <!-- Guarantee -->
+    <div style="text-align:center;margin-top:40px;padding:24px;background:rgba(16,185,129,0.06);border:1px solid rgba(16,185,129,0.2);border-radius:var(--radius-xl);max-width:600px;margin:40px auto 0" class="animate-on-scroll">
+      <div style="font-size:1.8rem;margin-bottom:8px">🛡️</div>
+      <div style="font-weight:700;font-size:1rem;color:var(--green);margin-bottom:6px">30-Day Money-Back Guarantee</div>
+      <div style="font-size:0.85rem;color:var(--text-muted)">Not satisfied? Get a full refund within 30 days — no questions asked. Your IISER dream is our commitment.</div>
+    </div>
+  </div>
+</section>
+
+<!-- =========================================
+     FINAL CTA
+========================================= -->
+<section id="final-cta">
+  <div class="cta-glow"></div>
+  <div class="container">
+    <div class="section-badge" style="justify-content:center;display:inline-flex;margin-bottom:28px"><span class="dot"></span> Your Journey Starts Here</div>
+    <h2 class="cta-title">
+      Start Your IISER<br>
+      <span class="gradient-text">Journey Today</span>
+    </h2>
+    <p class="cta-subtitle">
+      Join thousands of aspirants who are already using AI to unlock their full potential. Your personalized roadmap is one click away.
+    </p>
+    <div class="cta-actions">
+      <a href="login.html" class="btn btn-cta-main" id="final-cta-btn">
+        🚀 Start Free Assessment
+      </a>
+      <a href="dashboard-react/index.html" class="btn btn-outline btn-xl" id="final-demo-btn">
+        ▶ Try Demo First
+      </a>
+    </div>
+    <p class="cta-note">Free forever plan available • No credit card required • 10,000+ questions ready</p>
+  </div>
+</section>
+
+<!-- =========================================
+     FOOTER
+========================================= -->
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <!-- Brand -->
+      <div class="footer-brand">
+        <a href="#" class="nav-logo">
+          <div class="nav-logo-icon">🧬</div>
+          <span class="nav-logo-text">IISER <span>Smart</span>Prep</span>
+        </a>
+        <p>The AI-powered platform built for serious IISER IAT aspirants. Personalized, intelligent, effective.</p>
+        <div class="footer-social">
+          <a href="#" class="social-link" aria-label="Twitter">𝕏</a>
+          <a href="#" class="social-link" aria-label="Instagram">📷</a>
+          <a href="#" class="social-link" aria-label="YouTube">▶</a>
+          <a href="#" class="social-link" aria-label="Telegram">✈</a>
+        </div>
+      </div>
+
+      <!-- Product -->
+      <div class="footer-col">
+        <h4>Product</h4>
+        <ul>
+          <li><a href="#features">Features</a></li>
+          <li><a href="#mock-test">Mock Tests</a></li>
+          <li><a href="dashboard-react/index.html">Dashboard</a></li>
+          <li><a href="#pricing">Pricing</a></li>
+          <li><a href="iat-planner-pro.html">IAT Planner</a></li>
+        </ul>
+      </div>
+
+      <!-- Resources -->
+      <div class="footer-col">
+        <h4>Resources</h4>
+        <ul>
+          <li><a href="iiser-iat-pyq.html">PYQ Bank</a></li>
+          <li><a href="iiser-iat-college-predictor.html">College Predictor</a></li>
+          <li><a href="features.html">Smart Notes</a></li>
+          <li><a href="ai_tutor.html">AI Tutor</a></li>
+          <li><a href="#">IAT Syllabus</a></li>
+        </ul>
+      </div>
+
+      <!-- Company -->
+      <div class="footer-col">
+        <h4>Company</h4>
+        <ul>
+          <li><a href="contact-us.html">Contact Us</a></li>
+          <li><a href="privacy.html">Privacy Policy</a></li>
+          <li><a href="terms.html">Terms of Service</a></li>
+          <li><a href="#">Refund Policy</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <span>© 2025 IISER SmartPrep. All rights reserved.</span>
+      <div class="footer-bottom-links">
+        <a href="privacy.html">Privacy</a>
+        <a href="terms.html">Terms</a>
+        <a href="contact-us.html">Contact</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- =========================================
+     JAVASCRIPT
+========================================= -->
+<script>
+  /* ---- Navbar scroll ---- */
+  const navbar = document.getElementById('navbar');
+  window.addEventListener('scroll', () => {
+    navbar.classList.toggle('scrolled', window.scrollY > 20);
+  });
+
+  /* ---- Mobile Nav ---- */
+  function openMobileNav() { document.getElementById('mobile-nav').classList.add('open'); document.body.style.overflow='hidden'; }
+  function closeMobileNav() { document.getElementById('mobile-nav').classList.remove('open'); document.body.style.overflow=''; }
+
+  /* ---- Intersection Observer for scroll animations ---- */
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+  document.querySelectorAll('.animate-on-scroll').forEach(el => observer.observe(el));
+
+  /* ---- Particle System ---- */
+  const canvas = document.getElementById('particle-canvas');
+  const ctx = canvas.getContext('2d');
+  let particles = [];
+  let animId;
+
+  function resizeCanvas() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  }
+
+  const COLORS = [
+    'rgba(59,130,246,',
+    'rgba(139,92,246,',
+    'rgba(34,211,238,',
+    'rgba(16,185,129,',
+  ];
+
+  function createParticle() {
+    return {
+      x: Math.random() * canvas.width,
+      y: canvas.height + 10,
+      size: Math.random() * 2 + 0.5,
+      speedY: -(Math.random() * 0.6 + 0.2),
+      speedX: (Math.random() - 0.5) * 0.3,
+      opacity: Math.random() * 0.5 + 0.1,
+      color: COLORS[Math.floor(Math.random() * COLORS.length)],
+      life: 0,
+      maxLife: Math.random() * 300 + 200,
+    };
+  }
+
+  function initParticles() {
+    particles = [];
+    for (let i = 0; i < 80; i++) {
+      const p = createParticle();
+      p.y = Math.random() * canvas.height;
+      p.life = Math.random() * p.maxLife;
+      particles.push(p);
+    }
+  }
+
+  function drawParticles() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    particles.forEach((p, i) => {
+      p.life++;
+      p.x += p.speedX;
+      p.y += p.speedY;
+      const lifeRatio = p.life / p.maxLife;
+      const alpha = lifeRatio < 0.1 ? lifeRatio * 10 * p.opacity : lifeRatio > 0.8 ? (1 - lifeRatio) * 5 * p.opacity : p.opacity;
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+      ctx.fillStyle = p.color + Math.max(0, Math.min(1, alpha)) + ')';
+      ctx.fill();
+      if (p.life >= p.maxLife) particles[i] = createParticle();
+    });
+    animId = requestAnimationFrame(drawParticles);
+  }
+
+  resizeCanvas();
+  initParticles();
+  drawParticles();
+
+  window.addEventListener('resize', () => {
+    resizeCanvas();
+    initParticles();
+  });
+
+  /* ---- Counter animation ---- */
+  function animateCounter(el, target, suffix = '') {
+    let current = 0;
+    const step = target / 60;
+    const timer = setInterval(() => {
+      current = Math.min(current + step, target);
+      el.textContent = Math.floor(current).toLocaleString('en-IN') + suffix;
+      if (current >= target) clearInterval(timer);
+    }, 20);
+  }
+
+  const trustObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const numbers = entry.target.querySelectorAll('.trust-number');
+        numbers.forEach(n => {
+          const text = n.textContent.trim();
+          if (text.includes('10,000')) animateCounter(n, 10000, '+');
+          else if (text.includes('500')) animateCounter(n, 500, '+');
+        });
+        trustObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.5 });
+
+  const trustGrid = document.querySelector('.trust-grid');
+  if (trustGrid) trustObserver.observe(trustGrid);
+
+  /* ---- Smooth button hover ripple ---- */
+  document.querySelectorAll('.btn-gradient, .btn-cta-main, .btn-primary').forEach(btn => {
+    btn.addEventListener('click', function(e) {
+      const ripple = document.createElement('span');
+      ripple.style.cssText = `
+        position:absolute;
+        width:10px;height:10px;
+        background:rgba(255,255,255,0.3);
+        border-radius:50%;
+        transform:scale(0);
+        animation:ripple 0.6s ease-out forwards;
+        left:${e.offsetX-5}px;
+        top:${e.offsetY-5}px;
+        pointer-events:none;
+      `;
+      this.style.position = 'relative';
+      this.style.overflow = 'hidden';
+      this.appendChild(ripple);
+      setTimeout(() => ripple.remove(), 700);
+    });
+  });
+
+  /* ---- Active nav link highlight ---- */
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks = document.querySelectorAll('.nav-links a');
+
+  window.addEventListener('scroll', () => {
+    let current = '';
+    sections.forEach(s => {
+      if (window.scrollY >= s.offsetTop - 120) current = s.id;
+    });
+    navLinks.forEach(link => {
+      link.style.color = link.getAttribute('href') === '#' + current
+        ? 'var(--text-primary)'
+        : '';
+    });
+  });
+
+  /* ---- Stagger bento items ---- */
+  document.querySelectorAll('.bento-item').forEach((item, i) => {
+    item.style.transitionDelay = (i * 0.06) + 's';
+    observer.observe(item);
+    item.classList.add('animate-on-scroll');
+  });
+
+  /* ---- Pricing card hover glow ---- */
+  document.querySelectorAll('.pricing-card').forEach(card => {
+    card.addEventListener('mousemove', e => {
+      const rect = card.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      card.style.background = `radial-gradient(circle at ${x}px ${y}px, rgba(59,130,246,0.06), var(--bg-card) 60%)`;
+    });
+    card.addEventListener('mouseleave', () => {
+      card.style.background = '';
+    });
+  });
+
+  /* ---- Testimonial hover ---- */
+  document.querySelectorAll('.testimonial-card').forEach(card => {
+    card.addEventListener('mousemove', e => {
+      const rect = card.getBoundingClientRect();
+      const x = ((e.clientX - rect.left) / rect.width - 0.5) * 12;
+      const y = ((e.clientY - rect.top) / rect.height - 0.5) * 12;
+      card.style.transform = `perspective(800px) rotateX(${-y * 0.5}deg) rotateY(${x * 0.5}deg) translateY(-4px)`;
+    });
+    card.addEventListener('mouseleave', () => {
+      card.style.transform = '';
+    });
+  });
+
+  /* ---- Feature card tilt ---- */
+  document.querySelectorAll('.bento-item').forEach(card => {
+    card.addEventListener('mousemove', e => {
+      const rect = card.getBoundingClientRect();
+      const x = ((e.clientX - rect.left) / rect.width - 0.5) * 8;
+      const y = ((e.clientY - rect.top) / rect.height - 0.5) * 8;
+      card.style.transform = `perspective(1000px) rotateX(${-y}deg) rotateY(${x}deg) translateY(-4px)`;
+    });
+    card.addEventListener('mouseleave', () => {
+      card.style.transform = '';
+    });
+  });
+
+  /* ---- Exam option click ---- */
+  document.querySelectorAll('.q-option').forEach(opt => {
+    opt.addEventListener('click', function() {
+      document.querySelectorAll('.q-option').forEach(o => {
+        if (!o.classList.contains('correct')) o.classList.remove('selected');
+      });
+      if (!this.classList.contains('correct')) this.classList.toggle('selected');
+    });
+  });
+</script>
+</body>
+</html>

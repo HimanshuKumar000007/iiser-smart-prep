@@ -35,7 +35,7 @@ export function MobileNav({
         )}
       </AnimatePresence>
 
-      <div className="fixed bottom-0 left-0 right-0 z-50 lg:hidden px-4 pb-6 pt-2 pointer-events-none mobile-nav-container">
+      <div className="fixed bottom-0 left-0 right-0 z-50 lg:hidden px-4 pb-6 pt-2 pointer-events-none mobile-nav-container" style={{ transform: 'translate3d(0,0,0)', WebkitTransform: 'translate3d(0,0,0)', backfaceVisibility: 'hidden', WebkitBackfaceVisibility: 'hidden' }}>
         
         {/* Study Menu Popup */}
         <AnimatePresence>
@@ -93,7 +93,7 @@ export function MobileNav({
           )}
         </AnimatePresence>
 
-        <div className="mx-auto max-w-md bg-[#05060F]/90 backdrop-blur-2xl border border-white/10 rounded-full px-1.5 py-1 sm:px-2 sm:py-1.5 flex items-center justify-between shadow-[0_8px_30px_rgba(0,0,0,0.8)] pointer-events-auto relative">
+        <div className="mx-auto max-w-md bg-[#05060F]/90 backdrop-blur-2xl border border-white/10 rounded-full px-1.5 py-1 sm:px-2 sm:py-1.5 flex items-center justify-between shadow-[0_8px_30px_rgba(0,0,0,0.8)] pointer-events-auto relative" style={{ transform: 'translate3d(0,0,0)', WebkitTransform: 'translate3d(0,0,0)', backfaceVisibility: 'hidden', WebkitBackfaceVisibility: 'hidden' }}>
           
           <button 
             onClick={() => onNavigate?.('dashboard')}

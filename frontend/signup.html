@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Redirecting to Sign Up - SmartPrep</title>
+  <script>
+    // Redirect to the unified authentication page, pre-selecting the Sign Up tab
+    const urlParams = new URLSearchParams(window.location.search);
+    const redirect = urlParams.get('redirect') || 'dashboard-react/index.html';
+    window.location.replace("login.html?mode=signup&redirect=" + encodeURIComponent(redirect));
+  </script>
+  <meta http-equiv="refresh" content="0; url=login.html?mode=signup&redirect=dashboard-react/index.html">
+</head>
+<body style="background: #030712; color: #ffffff; font-family: 'Plus Jakarta Sans', -apple-system, sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; padding: 20px; box-sizing: border-box;">
+  <div style="text-align: center; max-width: 360px;">
+    <div style="width: 48px; height: 48px; border-radius: 50%; border: 3px solid rgba(99, 102, 241, 0.1); border-top-color: #6366f1; animation: spin 1s linear infinite; margin: 0 auto 1.5rem;"></div>
+    <h2 style="font-size: 1.25rem; font-weight: 700; margin: 0 0 0.5rem 0; letter-spacing: -0.02em;">Setting up your account profile...</h2>
+    <p style="color: #64748b; font-size: 0.9rem; margin: 0 0 1rem 0; line-height: 1.5;">Redirecting you to our secure signup page.</p>
+    <p style="color: #475569; font-size: 0.8rem; margin: 0;">If you are not redirected, <a href="login.html?mode=signup" style="color: #6366f1; text-decoration: none; font-weight: 600;">click here</a>.</p>
+  </div>
+  
+  <style>
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+  </style>
+</body>
+</html>
