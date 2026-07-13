@@ -53,7 +53,7 @@ export function LockedAISuite({ onNavigate }: Props) {
       className={cn(
         'relative rounded-3xl p-6 lg:p-8 overflow-hidden',
         isLight
-          ? 'bg-white/70 backdrop-blur-[24px] border border-white/80 shadow-[0_8px_40px_rgba(15,23,42,0.09),0_2px_8px_rgba(15,23,42,0.05),inset_0_1px_0_rgba(255,255,255,0.95)]'
+          ? 'bg-white/70 backdrop-blur-[12px] border border-white/80 shadow-[0_8px_40px_rgba(15,23,42,0.09),0_2px_8px_rgba(15,23,42,0.05),inset_0_1px_0_rgba(255,255,255,0.95)]'
           : 'bg-gradient-to-br from-[#0D0F1F] via-[#0A0C18] to-[#0D0F1F] border border-violet-500/25 shadow-[0_0_50px_rgba(139,92,246,0.12)]'
       )}
     >
@@ -83,7 +83,7 @@ export function LockedAISuite({ onNavigate }: Props) {
             return (
               <div
                 key={e.title}
-                className={`p-4 rounded-2xl border text-left flex flex-col justify-between transition-all backdrop-blur-sm ${e.color}`}
+                className={`p-4 rounded-2xl border text-left flex flex-col justify-between transition-all ${e.color}`}
               >
                 <div className="flex items-center justify-between mb-3">
                   <div className="w-8 h-8 rounded-xl bg-white/10 flex items-center justify-center">

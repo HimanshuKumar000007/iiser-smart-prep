@@ -50,7 +50,7 @@ export function MobileNav({
               exit={{ opacity: 0, y: 20, scale: 0.95 }}
               transition={{ type: "spring", bounce: 0.3, duration: 0.5 }}
               className={cn(
-                "absolute bottom-24 left-1/2 -translate-x-1/2 w-[calc(100%-2rem)] max-w-sm backdrop-blur-xl border p-2 rounded-3xl pointer-events-auto overflow-hidden",
+                "absolute bottom-24 left-1/2 -translate-x-1/2 w-[calc(100%-2rem)] max-w-sm backdrop-blur-md border p-2 rounded-3xl pointer-events-auto overflow-hidden",
                 isLight
                   ? 'bg-white/90 border-slate-200/60 shadow-[0_12px_40px_rgba(15,23,42,0.12),0_2px_8px_rgba(15,23,42,0.06)]'
                   : 'bg-[#0A0C16]/95 border-white/10 shadow-[0_0_40px_rgba(0,0,0,0.8)]'
@@ -103,7 +103,7 @@ export function MobileNav({
         </AnimatePresence>
 
         <div className={cn(
-          'mx-auto max-w-md backdrop-blur-2xl border rounded-full px-1.5 py-1 sm:px-2 sm:py-1.5 flex items-center justify-between pointer-events-auto relative',
+          'mx-auto max-w-md backdrop-blur-md border rounded-full px-1.5 py-1 sm:px-2 sm:py-1.5 flex items-center justify-between pointer-events-auto relative',
           isLight
             ? 'bg-white/88 border-slate-200/60 shadow-[0_8px_32px_rgba(15,23,42,0.10),0_2px_8px_rgba(15,23,42,0.06),inset_0_1px_0_rgba(255,255,255,0.95)]'
             : 'bg-[#05060F]/90 border-white/10 shadow-[0_8px_30px_rgba(0,0,0,0.8)]'

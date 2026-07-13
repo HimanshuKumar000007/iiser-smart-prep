@@ -328,7 +328,7 @@ export function Hero({ onNavigate, dashboardData: data, loading, actionPlan: pla
     <div className={cn(
       "rounded-3xl relative overflow-hidden",
       isLight
-        ? "bg-white/70 backdrop-blur-[28px] border border-white/80 shadow-[0_8px_40px_rgba(15,23,42,0.10),0_2px_8px_rgba(15,23,42,0.06),inset_0_1px_0_rgba(255,255,255,0.9)]"
+        ? "bg-white/70 backdrop-blur-[12px] border border-white/80 shadow-[0_8px_40px_rgba(15,23,42,0.10),0_2px_8px_rgba(15,23,42,0.06),inset_0_1px_0_rgba(255,255,255,0.95)]"
         : "bg-gradient-to-br from-[#0A0C16] via-[#06070E] to-[#080A12] border border-white/8 shadow-[0_0_100px_rgba(6,182,212,0.05)]"
     )}>
 
@@ -379,7 +379,7 @@ export function Hero({ onNavigate, dashboardData: data, loading, actionPlan: pla
                 className={cn(
                   'p-3 rounded-2xl border transition-all duration-300 cursor-default',
                   isLight
-                    ? 'bg-white/65 backdrop-blur-sm shadow-[0_2px_12px_rgba(15,23,42,0.07),inset_0_1px_0_rgba(255,255,255,0.9)]'
+                    ? 'bg-white/65 shadow-[0_2px_12px_rgba(15,23,42,0.07),inset_0_1px_0_rgba(255,255,255,0.95)]'
                     : 'bg-white/[0.025]',
                   m.border, m.glow
                 )}
@@ -408,7 +408,7 @@ export function Hero({ onNavigate, dashboardData: data, loading, actionPlan: pla
             className={cn(
               "p-5 rounded-2xl border transition-all duration-300 relative overflow-hidden group cursor-pointer",
               isLight
-                ? "bg-white/60 backdrop-blur-md border-slate-200/80 hover:border-cyan-400/40 shadow-[0_4px_20px_rgba(15,23,42,0.08),inset_0_1px_0_rgba(255,255,255,0.9)]"
+                ? "bg-white/60 border-slate-200/80 hover:border-cyan-400/40 shadow-[0_4px_20px_rgba(15,23,42,0.08),inset_0_1px_0_rgba(255,255,255,0.95)]"
                 : "bg-gradient-to-r from-white/[0.03] to-white/[0.01] border-white/10 hover:border-cyan-500/30 hover:bg-white/[0.04] shadow-[0_8px_32px_0_rgba(0,0,0,0.37)] backdrop-blur-md"
             )}
           >
@@ -511,7 +511,7 @@ export function Hero({ onNavigate, dashboardData: data, loading, actionPlan: pla
                     className={cn(
                       'p-4 rounded-2xl border transition-all duration-300 cursor-pointer group',
                       isLight
-                        ? 'bg-white/60 backdrop-blur-sm border-slate-200/60 hover:border-slate-300/80 shadow-[0_2px_12px_rgba(15,23,42,0.06),inset_0_1px_0_rgba(255,255,255,0.85)] hover:shadow-[0_4px_20px_rgba(15,23,42,0.09)]'
+                        ? 'bg-white/60 border-slate-200/60 hover:border-slate-300/80 shadow-[0_2px_12px_rgba(15,23,42,0.06),inset_0_1px_0_rgba(255,255,255,0.95)] hover:shadow-[0_4px_20px_rgba(15,23,42,0.09)]'
                         : 'bg-white/[0.015] hover:bg-white/[0.03] border-white/6',
                       sub.gradientBorder, sub.glow
                     )}
@@ -580,7 +580,7 @@ export function Hero({ onNavigate, dashboardData: data, loading, actionPlan: pla
                 <div key={stat.label} className={cn(
                   'p-3.5 rounded-2xl flex items-center gap-3',
                   isLight
-                    ? 'bg-white/55 backdrop-blur-sm border border-slate-200/60 shadow-[0_2px_8px_rgba(15,23,42,0.05),inset_0_1px_0_rgba(255,255,255,0.85)]'
+                    ? 'bg-white/55 border border-slate-200/60 shadow-[0_2px_8px_rgba(15,23,42,0.05),inset_0_1px_0_rgba(255,255,255,0.95)]'
                     : 'bg-white/[0.015] border border-white/6'
                 )}>
                   <div className={cn('w-9 h-9 rounded-xl border flex items-center justify-center shrink-0', stat.iconBg)}>
@@ -602,7 +602,7 @@ export function Hero({ onNavigate, dashboardData: data, loading, actionPlan: pla
             className={cn(
               'flex flex-col rounded-2xl overflow-hidden min-h-[350px] relative group/assistant',
               isLight
-                ? 'bg-white/65 backdrop-blur-[20px] border border-white/80 shadow-[0_4px_24px_rgba(15,23,42,0.08),inset_0_1px_0_rgba(255,255,255,0.9)]'
+                ? 'bg-white/65 border border-white/80 shadow-[0_4px_24px_rgba(15,23,42,0.08),inset_0_1px_0_rgba(255,255,255,0.95)]'
                 : 'bg-white/[0.015] border border-white/6'
             )}
           >

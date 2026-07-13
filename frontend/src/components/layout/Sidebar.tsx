@@ -54,7 +54,7 @@ export function Sidebar({
       <aside className={cn(
         "fixed left-0 top-0 h-screen w-64 flex flex-col z-50 transition-transform duration-300",
         theme === 'light'
-          ? "bg-white/85 backdrop-blur-[24px] border-r border-slate-200/80 shadow-[2px_0_20px_rgba(15,23,42,0.05)]"
+          ? "bg-white/85 backdrop-blur-[12px] border-r border-slate-200/80 shadow-[2px_0_20px_rgba(15,23,42,0.05)]"
           : "bg-background border-r border-white/5",
         isOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
       )}>

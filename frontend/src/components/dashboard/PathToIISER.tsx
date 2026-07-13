@@ -525,9 +525,9 @@ export function PathToIISER({ onNavigate, dashboardData, dashboardLoading, actio
 
           <div className="relative flex flex-col justify-center">
             <div className={cn(
-              "p-6 lg:p-8 rounded-3xl border shadow-2xl relative overflow-hidden group backdrop-blur-xl",
+              "p-6 lg:p-8 rounded-3xl border shadow-2xl relative overflow-hidden group backdrop-blur-md",
               theme === 'light'
-                ? "bg-white/70 border-slate-200/80 shadow-[0_8px_32px_rgba(15,23,42,0.08),inset_0_1px_0_rgba(255,255,255,0.9)]"
+                ? "bg-white/70 border-slate-200/80 shadow-[0_8px_32px_rgba(15,23,42,0.08),inset_0_1px_0_rgba(255,255,255,0.95)]"
                 : "bg-[#05060F]/80 border-white/10"
             )}>
               <div className="absolute inset-0 bg-gradient-to-b from-cyan-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
