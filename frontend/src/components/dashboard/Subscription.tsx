@@ -171,9 +171,9 @@ export function Subscription({ returnTo, onNavigate }: SubscriptionProps) {
   };
 
   return (
-    <div className="space-y-8 p-6 max-w-7xl mx-auto">
+    <div className="space-y-8 px-2 py-6 sm:p-6 max-w-7xl mx-auto">
       {/* Header Banner */}
-      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 border border-white/5 p-8 md:p-12 text-center space-y-4">
+      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 border border-white/5 px-4 py-8 md:p-12 text-center space-y-4">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(99,102,241,0.15),transparent_60%)] pointer-events-none" />
         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/30 text-indigo-300 text-xs font-semibold uppercase tracking-wider">
           <Sparkles className="w-3.5 h-3.5" />
@@ -231,7 +231,7 @@ export function Subscription({ returnTo, onNavigate }: SubscriptionProps) {
           return (
             <div
               key={plan.id}
-              className={`relative flex flex-col rounded-2xl border transition-all duration-300 p-6 md:p-8 overflow-hidden bg-slate-900/60 backdrop-blur-sm ${
+              className={`relative flex flex-col rounded-2xl border transition-all duration-300 px-4 py-6 sm:p-6 md:p-8 overflow-hidden bg-slate-900/60 backdrop-blur-sm ${
                 plan.popular
                   ? 'border-indigo-500 shadow-[0_0_30px_rgba(99,102,241,0.15)] scale-100 lg:scale-[1.03]'
                   : 'border-white/5 hover:border-white/10'
