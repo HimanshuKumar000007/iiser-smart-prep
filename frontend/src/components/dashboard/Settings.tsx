@@ -20,6 +20,7 @@ import {
 import { currentUser } from '../../data/mockData';
 import { cn } from '../../lib/utils';
 import { Footer } from '../layout/Footer';
+import { useTheme, Theme } from '../../context/ThemeContext';
 
 function SettingToggle({ label, enabled, onChange }: { label: string, enabled: boolean, onChange?: () => void }) {
   const [isOn, setIsOn] = useState(enabled);
@@ -75,12 +76,7 @@ export function Settings() {
     fetchProfile();
   }, []);
 
-  const [activeTheme, setActiveTheme] = useState(() => {
-    const saved = localStorage.getItem('dashboard_theme') || 'dark_premium';
-    // Apply theme on initial render
-    document.documentElement.setAttribute('data-theme', saved);
-    return saved;
-  });
+  const { theme, setTheme } = useTheme();
   const [showPasswordModal, setShowPasswordModal] = useState(false);
   const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
@@ -140,10 +136,8 @@ export function Settings() {
       setSubmittingPassword(false);
     }
   };
-  const handleThemeChange = (theme: string) => {
-    setActiveTheme(theme);
-    localStorage.setItem('dashboard_theme', theme);
-    document.documentElement.setAttribute('data-theme', theme);
+  const handleThemeChange = (newTheme: string) => {
+    setTheme(newTheme as Theme);
   };
 
   const handleLogout = () => {
@@ -396,41 +390,20 @@ export function Settings() {
             
             <div>
               <label className="block text-sm font-medium text-white/70 mb-3">Themes</label>
-              <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
+              <div className="grid grid-cols-2 max-w-md gap-3">
                  <button 
-                  onClick={() => handleThemeChange('dark_premium')}
-                  className={cn("p-4 rounded-xl border-2 flex flex-col items-center gap-2 group transition-all", activeTheme === 'dark_premium' ? "border-cyan-500 bg-[#0A0C16] text-white" : "border-transparent hover:border-white/10 bg-[#05060F] text-white/50 hover:text-white")}
+                  onClick={() => handleThemeChange('dark')}
+                  className={cn("p-4 rounded-xl border-2 flex flex-col items-center gap-2 group transition-all cursor-pointer", theme === 'dark' ? "border-cyan-500 bg-slate-900 text-white" : "border-transparent hover:border-white/10 bg-slate-950 text-white/50 hover:text-white")}
                  >
-                   <div className="w-8 h-8 rounded-full bg-[#0A0C16] border border-white/20" />
-                   <span className={cn("text-xs", activeTheme === 'dark_premium' ? "font-bold" : "font-medium")}>Dark Premium</span>
+                   <div className="w-8 h-8 rounded-full bg-[#060814] border border-white/20" />
+                   <span className={cn("text-xs", theme === 'dark' ? "font-bold text-white" : "font-medium text-white/50")}>Dark Premium</span>
                  </button>
                  <button 
-                  onClick={() => handleThemeChange('midnight')}
-                  className={cn("p-4 rounded-xl border-2 flex flex-col items-center gap-2 group transition-all", activeTheme === 'midnight' ? "border-cyan-500 bg-[#0A0C16] text-white" : "border-transparent hover:border-white/10 bg-[#05060F] text-white/50 hover:text-white")}
+                  onClick={() => handleThemeChange('light')}
+                  className={cn("p-4 rounded-xl border-2 flex flex-col items-center gap-2 group transition-all cursor-pointer", theme === 'light' ? "border-cyan-500 bg-white text-slate-900 shadow-md" : "border-transparent hover:border-white/10 bg-slate-950 text-white/50 hover:text-white")}
                  >
-                   <div className="w-8 h-8 rounded-full bg-slate-900 border border-white/10" />
-                   <span className={cn("text-xs", activeTheme === 'midnight' ? "font-bold" : "font-medium")}>Midnight</span>
-                 </button>
-                 <button 
-                  onClick={() => handleThemeChange('ocean_cyan')}
-                  className={cn("p-4 rounded-xl border-2 flex flex-col items-center gap-2 group transition-all", activeTheme === 'ocean_cyan' ? "border-cyan-500 bg-[#0A0C16] text-white" : "border-transparent hover:border-white/10 bg-[#05060F] text-white/50 hover:text-white")}
-                 >
-                   <div className="w-8 h-8 rounded-full bg-[#0A192F] border border-white/10" />
-                   <span className={cn("text-xs", activeTheme === 'ocean_cyan' ? "font-bold" : "font-medium")}>Ocean Cyan</span>
-                 </button>
-                 <button 
-                  onClick={() => handleThemeChange('light_homepage')}
-                  className={cn("p-4 rounded-xl border-2 flex flex-col items-center gap-2 group transition-all", activeTheme === 'light_homepage' ? "border-cyan-500 bg-[#0A0C16] text-white" : "border-transparent hover:border-white/10 bg-[#05060F] text-white/50 hover:text-white")}
-                 >
-                   <div className="w-8 h-8 rounded-full bg-[#eef4fb] border border-slate-300" />
-                   <span className={cn("text-xs", activeTheme === 'light_homepage' ? "font-bold" : "font-medium")}>Homepage Classic</span>
-                 </button>
-                 <button 
-                  onClick={() => handleThemeChange('system')}
-                  className={cn("p-4 rounded-xl border-2 flex flex-col items-center gap-2 group transition-all", activeTheme === 'system' ? "border-cyan-500 bg-[#0A0C16] text-white" : "border-transparent hover:border-white/10 bg-[#05060F] text-white/50 hover:text-white")}
-                 >
-                   <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-slate-900 to-white/20 border border-white/10" />
-                   <span className={cn("text-xs", activeTheme === 'system' ? "font-bold" : "font-medium")}>System</span>
+                   <div className="w-8 h-8 rounded-full bg-[#f1f5f9] border border-slate-300" />
+                   <span className={cn("text-xs", theme === 'light' ? "font-bold text-slate-900" : "font-medium text-white/50")}>Light Glass Mode V2</span>
                  </button>
               </div>
             </div>

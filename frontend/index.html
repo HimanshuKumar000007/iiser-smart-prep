@@ -6,6 +6,14 @@
         window.location.replace('dashboard-react/index.html');
       }
     </script>
+    <script>
+      (function() {
+        const theme = localStorage.getItem('theme') || 'dark';
+        document.documentElement.classList.remove('light', 'dark');
+        document.documentElement.classList.add(theme);
+        document.documentElement.setAttribute('data-theme', theme === 'light' ? 'light_homepage' : 'dark_premium');
+      })();
+    </script>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>India's Smartest Preparation Platform for IISER IAT</title>
@@ -35,7 +43,49 @@
             <a href="#mock-tests" onclick="closeMenu()">Mock Tests</a>
             <a href="#pricing" onclick="closeMenu()">Pricing</a>
           </div>
-          <div class="nav-cta">
+          <div class="nav-cta" style="display: flex; align-items: center; gap: 8px;">
+            <button
+              id="themeToggleBtn"
+              style="background: transparent; border: none; color: var(--text); padding: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center;"
+              aria-label="Toggle Theme"
+            >
+              <svg
+                id="themeToggleSun"
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                style="display: none;"
+              >
+                <circle cx="12" cy="12" r="4" />
+                <path d="M12 2v2" />
+                <path d="M12 20v2" />
+                <path d="M4.93 4.93l1.41 1.41" />
+                <path d="M17.66 17.66l1.41 1.41" />
+                <path d="M2 12h2" />
+                <path d="M20 12h2" />
+                <path d="M6.34 17.66l-1.41 1.41" />
+                <path d="M19.07 4.93l-1.41 1.41" />
+              </svg>
+              <svg
+                id="themeToggleMoon"
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                style="display: none;"
+              >
+                <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z" />
+              </svg>
+            </button>
             <a href="login.html" class="btn btn-ghost btn-sm">Log In</a>
             <a href="#pricing" class="btn btn-primary btn-sm">Premium Access</a>
             <button
@@ -1697,5 +1747,36 @@
     </div>
 
     <script type="module" src="assets/js/onboarding.js"></script>
+    <script>
+      (function() {
+        const toggleBtn = document.getElementById('themeToggleBtn');
+        const sunIcon = document.getElementById('themeToggleSun');
+        const moonIcon = document.getElementById('themeToggleMoon');
+
+        function updateIcons(theme) {
+          if (theme === 'light') {
+            sunIcon.style.display = 'none';
+            moonIcon.style.display = 'block';
+          } else {
+            sunIcon.style.display = 'block';
+            moonIcon.style.display = 'none';
+          }
+        }
+
+        const currentTheme = localStorage.getItem('theme') || 'dark';
+        updateIcons(currentTheme);
+
+        if (toggleBtn) {
+          toggleBtn.addEventListener('click', function() {
+            const nextTheme = document.documentElement.classList.contains('light') ? 'dark' : 'light';
+            document.documentElement.classList.remove('light', 'dark');
+            document.documentElement.classList.add(nextTheme);
+            localStorage.setItem('theme', nextTheme);
+            localStorage.setItem('dashboard_theme', nextTheme === 'light' ? 'light_homepage' : 'dark_premium');
+            updateIcons(nextTheme);
+          });
+        }
+      })();
+    </script>
   </body>
 </html>

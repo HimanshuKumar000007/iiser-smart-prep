@@ -4,6 +4,7 @@ import { TrendingUp, Target, BookOpen, Clock, AlertTriangle, Star, Activity, Bar
 import { XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Area, AreaChart } from 'recharts';
 import { cn } from '../../lib/utils';
 import { Footer } from '../layout/Footer';
+import { useTheme } from '../../context/ThemeContext';
 
 const API_BASE =
   (import.meta as any).env?.VITE_API_URL ??
@@ -14,6 +15,8 @@ interface PerformanceInsightsProps {
 }
 
 export function PerformanceInsights({ onNavigate }: PerformanceInsightsProps) {
+  const { theme } = useTheme();
+  const isLight = theme === 'light';
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [data, setData] = useState<any>(null);
@@ -322,12 +325,17 @@ export function PerformanceInsights({ onNavigate }: PerformanceInsightsProps) {
                           <stop offset="95%" stopColor="#6366f1" stopOpacity={0}/>
                         </linearGradient>
                       </defs>
-                      <CartesianGrid strokeDasharray="3 3" stroke="#ffffff10" vertical={false} />
-                      <XAxis dataKey="name" stroke="#ffffff40" fontSize={12} tickLine={false} axisLine={false} />
-                      <YAxis stroke="#ffffff40" fontSize={12} tickLine={false} axisLine={false} domain={[0, 100]} />
+                      <CartesianGrid strokeDasharray="3 3" stroke={isLight ? "rgba(15,23,42,0.06)" : "#ffffff10"} vertical={false} />
+                      <XAxis dataKey="name" stroke={isLight ? "rgba(15,23,42,0.4)" : "#ffffff40"} fontSize={12} tickLine={false} axisLine={false} />
+                      <YAxis stroke={isLight ? "rgba(15,23,42,0.4)" : "#ffffff40"} fontSize={12} tickLine={false} axisLine={false} domain={[0, 100]} />
                       <Tooltip 
-                        contentStyle={{ backgroundColor: '#0A0C16', borderColor: '#ffffff20', borderRadius: '12px' }}
-                        itemStyle={{ color: '#fff' }}
+                        contentStyle={{ 
+                          backgroundColor: isLight ? '#ffffff' : '#0A0C16', 
+                          borderColor: isLight ? 'rgba(15,23,42,0.08)' : '#ffffff20', 
+                          borderRadius: '12px',
+                          color: isLight ? '#0f172a' : '#fff'
+                        }}
+                        itemStyle={{ color: isLight ? '#0f172a' : '#fff' }}
                       />
                       <Area type="monotone" dataKey="accuracy" name="Accuracy %" stroke="#6366f1" strokeWidth={3} fillOpacity={1} fill="url(#colorAcc)" />
                     </AreaChart>

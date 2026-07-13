@@ -33,12 +33,14 @@ import { SmartLessonsHub } from './components/dashboard/SmartLessonsHub';
 import { Settings } from './components/dashboard/Settings';
 import { SupportBar } from './components/layout/SupportBar';
 import { MobileNav } from './components/layout/MobileNav';
-import { Menu, Bell, BrainCircuit } from 'lucide-react';
+import { Menu, Bell, BrainCircuit, Sun, Moon } from 'lucide-react';
 import { useEntitlement } from './hooks/useEntitlement';
 import { Subscription } from './components/dashboard/Subscription';
 import { currentUser } from './data/mockData';
+import { ThemeProvider, useTheme } from './context/ThemeContext';
  
-export default function App() {
+function DashboardApp() {
+  const { theme, toggleTheme } = useTheme();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [showUserMenu, setShowUserMenu] = useState(false);
   const entitlement = useEntitlement();
@@ -90,10 +92,7 @@ export default function App() {
     refresh: refreshActionPlan,
   } = useStudentActionPlan();
 
-  useEffect(() => {
-    const savedTheme = localStorage.getItem('dashboard_theme') || 'dark_premium';
-    document.documentElement.setAttribute('data-theme', savedTheme);
-  }, []);
+  // Legacy useEffect removed since ThemeProvider handles synchronization
 
   const handleNavigateRaw = (view: string) => {
     setCurrentView(view);
@@ -155,6 +154,13 @@ export default function App() {
             </div>
           </div>
           <div className="flex items-center gap-3 relative">
+            <button 
+              onClick={toggleTheme}
+              className="p-2 text-white/60 hover:text-white transition-colors cursor-pointer"
+              aria-label="Toggle Theme"
+            >
+              {theme === 'light' ? <Moon className="w-5 h-5" /> : <Sun className="w-5 h-5" />}
+            </button>
             <button className="relative p-2 text-white/60 hover:text-white transition-colors">
               <Bell className="w-5 h-5" />
               <span className="absolute top-2 right-2 w-2 h-2 bg-indigo-500 rounded-full" />
@@ -359,5 +365,13 @@ export default function App() {
 
       </main>
     </div>
+  );
+}
+
+export default function App() {
+  return (
+    <ThemeProvider>
+      <DashboardApp />
+    </ThemeProvider>
   );
 }

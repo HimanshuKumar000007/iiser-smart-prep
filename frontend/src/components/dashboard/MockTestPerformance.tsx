@@ -17,6 +17,7 @@ import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContai
 import { Activity, TrendingUp, TrendingDown, Minus, ArrowUpRight, FlaskConical, CheckCircle2 } from 'lucide-react';
 import { DashboardData } from '../../hooks/useDashboardData';
 import { cn } from '../../lib/utils';
+import { useTheme } from '../../context/ThemeContext';
 
 interface Props {
   dashboardData?: DashboardData | null;
@@ -46,6 +47,9 @@ export function MockTestPerformance({ dashboardData, loading, onNavigate }: Prop
     date:  m.date,
     score: m.score,
   }));
+
+  const { theme } = useTheme();
+  const isLight = theme === 'light';
 
   return (
     <div className="bg-[#05060F] border border-white/10 rounded-3xl p-6 lg:p-8 relative overflow-hidden shadow-xl group">
@@ -145,17 +149,17 @@ export function MockTestPerformance({ dashboardData, loading, onNavigate }: Prop
                       <stop offset="95%" stopColor={strokeColor} stopOpacity={0.0} />
                     </linearGradient>
                   </defs>
-                  <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="rgba(255,255,255,0.05)" />
+                  <CartesianGrid strokeDasharray="3 3" vertical={false} stroke={isLight ? "rgba(15,23,42,0.06)" : "rgba(255,255,255,0.05)"} />
                   <XAxis
                     dataKey="name"
-                    stroke="rgba(255,255,255,0.3)"
+                    stroke={isLight ? "rgba(15,23,42,0.4)" : "rgba(255,255,255,0.3)"}
                     fontSize={11}
                     tickLine={false}
-                    axisLine={{ stroke: 'rgba(255,255,255,0.1)' }}
+                    axisLine={{ stroke: isLight ? 'rgba(15,23,42,0.1)' : 'rgba(255,255,255,0.1)' }}
                   />
                   <YAxis
                     domain={[0, 100]}
-                    stroke="rgba(255,255,255,0.3)"
+                    stroke={isLight ? "rgba(15,23,42,0.4)" : "rgba(255,255,255,0.3)"}
                     fontSize={11}
                     tickLine={false}
                     axisLine={false}
@@ -165,8 +169,8 @@ export function MockTestPerformance({ dashboardData, loading, onNavigate }: Prop
                       if (!active || !payload?.length) return null;
                       const d = payload[0].payload;
                       return (
-                        <div className="bg-[#0A0C18] border border-white/15 p-3 rounded-xl shadow-2xl text-xs">
-                          <p className="font-bold text-white mb-0.5">{d.name} <span className="text-white/40 font-normal">({d.date || 'Attempt'})</span></p>
+                        <div className="bg-panel border border-panel-border p-3 rounded-xl shadow-2xl text-xs">
+                          <p className="font-bold text-foreground mb-0.5">{d.name} <span className="text-foreground/40 font-normal">({d.date || 'Attempt'})</span></p>
                           <p className="text-cyan-400 font-black text-sm">Score: {d.score}%</p>
                         </div>
                       );

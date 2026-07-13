@@ -9,10 +9,13 @@ import {
   BarChart2,
   Settings,
   Sparkles,
-  LogOut
+  LogOut,
+  Sun,
+  Moon
 } from 'lucide-react';
 import { cn } from '../../lib/utils';
 import { currentUser } from '../../data/mockData';
+import { useTheme } from '../../context/ThemeContext';
 
 const navItems = [
   { id: 'dashboard', icon: LayoutDashboard, label: 'Dashboard' },
@@ -36,6 +39,7 @@ export function Sidebar({
   currentView?: string;
   onNavigate?: (view: any) => void;
 }) {
+  const { theme, toggleTheme } = useTheme();
   return (
     <>
       {/* Mobile Backdrop */}
@@ -133,18 +137,27 @@ export function Sidebar({
                 <p className="text-[11px] text-white/45 truncate">Student Profile</p>
               </div>
             </div>
-            <button 
-              onClick={() => {
-                localStorage.removeItem('currentUser');
-                localStorage.removeItem('onboarding_completed');
-                localStorage.removeItem('IAT_TOKEN');
-                window.location.href = 'index.html';
-              }}
-              className="p-2 text-white/40 hover:text-white/80 hover:bg-white/5 rounded-lg transition-all shrink-0"
-              title="Logout"
-            >
-              <LogOut className="w-4 h-4" />
-            </button>
+            <div className="flex items-center gap-1 shrink-0">
+              <button 
+                onClick={toggleTheme}
+                className="p-2 text-white/40 hover:text-white/80 hover:bg-white/5 rounded-lg transition-all cursor-pointer"
+                title="Toggle Theme"
+              >
+                {theme === 'light' ? <Moon className="w-4 h-4" /> : <Sun className="w-4 h-4" />}
+              </button>
+              <button 
+                onClick={() => {
+                  localStorage.removeItem('currentUser');
+                  localStorage.removeItem('onboarding_completed');
+                  localStorage.removeItem('IAT_TOKEN');
+                  window.location.href = 'index.html';
+                }}
+                className="p-2 text-white/40 hover:text-white/80 hover:bg-white/5 rounded-lg transition-all cursor-pointer"
+                title="Logout"
+              >
+                <LogOut className="w-4 h-4" />
+              </button>
+            </div>
           </div>
         </div>
       </aside>

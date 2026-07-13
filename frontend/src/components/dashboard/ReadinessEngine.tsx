@@ -5,6 +5,7 @@ import { Target } from 'lucide-react';
 import { DashboardData } from '../../hooks/useDashboardData';
 import { LESSONS_DATA } from '../../data/lessons';
 import { cn } from '../../lib/utils';
+import { useTheme } from '../../context/ThemeContext';
 
 function Skeleton({ className }: { className?: string }) {
   return <div className={cn('animate-pulse rounded-lg bg-white/8', className)} />;
@@ -24,6 +25,8 @@ const SUBJECT_CONFIGS = [
 ] as const;
 
 export function ReadinessEngine({ dashboardData, loading, onNavigate }: Props) {
+  const { theme } = useTheme();
+  const isLight = theme === 'light';
   const overallScore   = dashboardData?.overallReadiness ?? 0;
   const subjectMap     = dashboardData?.subjectMap ?? {};
   const hasData        = (dashboardData?.total_attempts ?? 0) > 0 || (dashboardData?.completed_lessons_count ?? 0) > 0;
@@ -146,13 +149,19 @@ export function ReadinessEngine({ dashboardData, loading, onNavigate }: Props) {
             >
               <PolarAngleAxis type="number" domain={[0, 100]} angleAxisId={0} tick={false} />
               <RadialBar
-                background={{ fill: 'rgba(255,255,255,0.05)' }}
+                background={{ fill: isLight ? 'rgba(15,23,42,0.04)' : 'rgba(255,255,255,0.05)' }}
                 dataKey="value"
                 cornerRadius={8}
               />
               <Tooltip
                 cursor={false}
-                contentStyle={{ backgroundColor: '#0D0F1F', borderColor: '#ffffff20', borderRadius: '10px', color: '#fff', fontSize: '12px' }}
+                contentStyle={{ 
+                  backgroundColor: isLight ? '#ffffff' : '#0D0F1F', 
+                  borderColor: isLight ? 'rgba(15,23,42,0.08)' : '#ffffff20', 
+                  borderRadius: '10px', 
+                  color: isLight ? '#0f172a' : '#fff', 
+                  fontSize: '12px' 
+                }}
                 formatter={(value: number, name: string) => {
                   const studied = isSubjectStudied(name);
                   return [studied ? `${value}%` : 'No attempts yet', name];
