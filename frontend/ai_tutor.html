@@ -828,6 +828,33 @@
 
         // ── State ────────────────────────────────────────────
         let messages = [{ role: 'system', content: AI_CONFIG.systemPrompt }];
+
+        // ── URL parameter parsing for context-awareness ──
+        window.addEventListener('DOMContentLoaded', () => {
+            const params = new URLSearchParams(window.location.search);
+            const query = params.get('query');
+            const mode = params.get('mode');
+            const subject = params.get('subject');
+            const chapter = params.get('chapter');
+
+            const input = document.getElementById('userInput');
+            if (!input) return;
+
+            if (query) {
+                input.value = decodeURIComponent(query);
+                autoResize(input);
+                // Delay sending slightly so the page assets are fully ready
+                setTimeout(sendMessage, 300);
+            } else if (mode === 'EXPLAIN_CONCEPT' && subject && chapter) {
+                const formattedChapter = decodeURIComponent(chapter).replace(/_/g, ' ');
+                input.value = `Please explain the concept of "${formattedChapter}" in ${decodeURIComponent(subject)} step-by-step.`;
+                autoResize(input);
+            } else if (subject && chapter) {
+                const formattedChapter = decodeURIComponent(chapter).replace(/_/g, ' ');
+                input.value = `I have a doubt in ${decodeURIComponent(subject)} - Chapter: "${formattedChapter}". `;
+                autoResize(input);
+            }
+        });
         let isStreaming = false;
         let dailyRemaining = 30;
 

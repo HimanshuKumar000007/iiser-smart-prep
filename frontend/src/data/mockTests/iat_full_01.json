@@ -1,0 +1,1094 @@
+{
+    "testId": "IAT_FULL_01",
+    "duration": 180,
+    "totalMarks": 240,
+    "questions": [
+        {
+            "id": 1,
+            "subject": "Physics",
+            "section": "A",
+            "chapterId": "phy_motion_straight",
+            "topicId": "instantaneous-velocity",
+            "question": "A particle moves along a straight line such that its position is given by x(t) = 2t³ − 9t² + 12t + 5 meters, where t is in seconds. At what time(s) does the particle momentarily come to rest?",
+            "options": [
+                "t = 1 s only",
+                "t = 2 s only",
+                "t = 1 s and t = 2 s",
+                "t = 3 s only"
+            ],
+            "correct": 2,
+            "explanation": "The particle comes to rest when velocity v = 0.<br>v(t) = dx/dt = d(2t³ − 9t² + 12t + 5)/dt = 6t² − 18t + 12<br>Setting v = 0: 6t² − 18t + 12 = 0<br>Divide by 6: t² − 3t + 2 = 0<br>Factoring: (t − 1)(t − 2) = 0<br>Therefore t = 1 s and t = 2 s<br>Options A and B give only one time each (incomplete). Option D gives t = 3 s which doesn't satisfy the equation.",
+            "difficulty": "Medium",
+            "imagePrompt": null
+        },
+        {
+            "id": 2,
+            "subject": "Physics",
+            "section": "A",
+            "chapterId": "phy_rotation",
+            "topicId": "incline-rolling-race",
+            "question": "A solid sphere and a hollow sphere of the same mass and radius roll down an inclined plane from the same height without slipping. Which statement is correct?",
+            "options": [
+                "Both reach the bottom simultaneously",
+                "The solid sphere reaches first",
+                "The hollow sphere reaches first",
+                "The one with greater coefficient of friction reaches first"
+            ],
+            "correct": 1,
+            "explanation": "For rolling without slipping, the acceleration down the incline is a = (g sin θ)/(1 + I/MR²)<br>For solid sphere: I = (2/5)MR², so a_solid = (g sin θ)/(1 + 2/5) = (5g sin θ)/7<br>For hollow sphere: I = (2/3)MR², so a_hollow = (g sin θ)/(1 + 2/3) = (3g sin θ)/5<br>Since (5/7) > (3/5), the solid sphere has greater acceleration and reaches first.<br>Option A is wrong because they have different accelerations. Option C reverses the correct answer. Option D is irrelevant since both roll without slipping.",
+            "difficulty": "Easy",
+            "imagePrompt": null
+        },
+        {
+            "id": 3,
+            "subject": "Physics",
+            "section": "A",
+            "chapterId": "phy_oscillations",
+            "topicId": "shm-energy-ke-pe-equality",
+            "question": "A spring-mass system oscillates with amplitude A. At what displacement from the mean position is the kinetic energy equal to the potential energy?",
+            "options": [
+                "A/√2",
+                "A/2",
+                "A/√3",
+                "2A/3"
+            ],
+            "correct": 0,
+            "explanation": "Total energy E = (1/2)kA²<br>At displacement x: PE = (1/2)kx² and KE = E − PE = (1/2)k(A² − x²)<br>When KE = PE: (1/2)k(A² − x²) = (1/2)kx²<br>A² − x² = x²<br>A² = 2x²<br>x = A/√2<br>Option B would give KE = 3PE. Options C and D don't satisfy the energy balance.",
+            "difficulty": "Medium",
+            "imagePrompt": null
+        },
+        {
+            "id": 4,
+            "subject": "Physics",
+            "section": "A",
+            "chapterId": "phy_electrostatics",
+            "topicId": "electric-dipole-field",
+            "question": "Two point charges +Q and −Q are placed at coordinates (a, 0) and (−a, 0) respectively. What is the magnitude of the electric field at point (0, a) on the y-axis?",
+            "options": [
+                "kQ/(2a²)",
+                "kQ√2/a²",
+                "2kQ/a²",
+                "kQ/(a²√2)"
+            ],
+            "correct": 1,
+            "explanation": "Distance from each charge to (0, a) is r = √(a² + a²) = a√2<br>Electric field due to +Q at (a, 0): E₁ = kQ/(2a²) directed from (a, 0) to (0, a)<br>Electric field due to −Q at (−a, 0): E₂ = kQ/(2a²) directed from (0, a) to (−a, 0)<br>By symmetry, the x-components cancel and y-components add.<br>E₁ has components: E₁ₓ = −E₁ cos(45°) = −kQ/(2a²) × (1/√2), E₁ᵧ = E₁ sin(45°) = kQ/(2a²) × (1/√2)<br>E₂ has components: E₂ₓ = +kQ/(2a²) × (1/√2), E₂ᵧ = kQ/(2a²) × (1/√2)<br>Net E_y = 2 × kQ/(2a²) × (1/√2) = kQ/(a²√2) × √2 = kQ√2/a²<br>Options A and D have incorrect magnitudes. Option C is double the correct value.",
+            "difficulty": "Medium",
+            "imagePrompt": null
+        },
+        {
+            "id": 5,
+            "subject": "Physics",
+            "section": "A",
+            "chapterId": "phy_potential_cap",
+            "topicId": "capacitor-series-parallel",
+            "question": "A parallel plate capacitor with plate area A and separation d is filled with two dielectric materials, each occupying half the volume. One dielectric has constant K₁ and the other K₂. If the dielectrics are arranged as two slabs parallel to the plates, what is the equivalent capacitance?",
+            "options": [
+                "(ε₀A/d) × (K₁ + K₂)/2",
+                "(ε₀A/d) × 2K₁K₂/(K₁ + K₂)",
+                "(ε₀A/2d) × (K₁ + K₂)",
+                "(ε₀A/d) × K₁K₂"
+            ],
+            "correct": 1,
+            "explanation": "When dielectrics are arranged as two slabs PARALLEL TO THE PLATES (i.e., one slab on top of the other between the plates), each slab covers the full plate area A and has thickness d/2.<br>This makes them act as two capacitors in SERIES:<br>C₁ = K₁ε₀A/(d/2) = 2K₁ε₀A/d<br>C₂ = K₂ε₀A/(d/2) = 2K₂ε₀A/d<br>For series: 1/C_eq = 1/C₁ + 1/C₂ = d/(2K₁ε₀A) + d/(2K₂ε₀A) = d(K₁+K₂)/(2K₁K₂ε₀A)<br>C_eq = 2K₁K₂ε₀A/[d(K₁+K₂)] = (ε₀A/d) × 2K₁K₂/(K₁+K₂)<br>This is Option B. Options A, C, D give incorrect forms for this geometry.",
+            "difficulty": "Hard",
+            "imagePrompt": null
+        },
+        {
+            "id": 6,
+            "subject": "Physics",
+            "section": "A",
+            "chapterId": "phy_motion_straight",
+            "topicId": "velocity-time-graph",
+            "question": "A particle moves such that its velocity varies linearly with time and becomes zero at t = T. Which of the following statements must be true?",
+            "options": [
+                "The particle changes direction at t = T",
+                "The acceleration is zero at t = T",
+                "The displacement is maximum at t = T",
+                "The kinetic energy is zero at t = T"
+            ],
+            "correct": 3,
+            "explanation": "Velocity becomes zero at t = T, so kinetic energy (KE = 1/2 mv^2) is zero at that instant. A change in direction is not guaranteed because velocity may not change sign. Since velocity varies linearly, acceleration is constant (not zero). Also, displacement is not necessarily maximum at that point.",
+            "difficulty": "Medium",
+            "imagePrompt": null
+        },
+        {
+            "id": 7,
+            "subject": "Physics",
+            "section": "A",
+            "chapterId": "phy_work_energy",
+            "topicId": "mechanical-energy-conservation",
+            "question": "Which of the following always remains conserved?",
+            "options": [
+                "Momentum",
+                "Energy",
+                "Kinetic energy",
+                "Potential energy"
+            ],
+            "correct": 1,
+            "explanation": "Total energy is always conserved in an isolated system (law of conservation of energy). Momentum is conserved only in the absence of external forces. Kinetic and potential energies individually may change, but their sum (total energy) remains constant.",
+            "difficulty": "Medium",
+            "imagePrompt": null
+        },
+        {
+            "id": 8,
+            "subject": "Physics",
+            "section": "A",
+            "chapterId": "phy_mechanics",
+            "topicId": "inclined-plane-friction",
+            "question": "A block slides down a rough incline. If the angle is increased, which of the following quantities will definitely increase?",
+            "options": [
+                "Normal reaction",
+                "Friction force",
+                "Acceleration",
+                "Time taken to reach bottom"
+            ],
+            "correct": 2,
+            "explanation": "As the angle increases, the component of gravitational force along the incline (mg sinθ) increases, which increases acceleration. The normal reaction (mg cosθ) decreases with angle, so friction (μN) may decrease. Time taken to reach the bottom decreases due to higher acceleration. Hence, only acceleration definitely increases.",
+            "difficulty": "Medium",
+            "imagePrompt": null
+        },
+        {
+            "id": 9,
+            "subject": "Physics",
+            "section": "A",
+            "chapterId": "phy_thermo",
+            "topicId": "adiabatic-process",
+            "question": "An ideal gas undergoes an adiabatic expansion. Which of the following statements is TRUE?",
+            "options": [
+                "The internal energy remains constant",
+                "Heat is absorbed by the system",
+                "The temperature decreases",
+                "Work done by the gas is zero"
+            ],
+            "correct": 2,
+            "explanation": "In an adiabatic process, Q = 0 (no heat exchange).<br>From first law: ΔU = Q − W = 0 − W = −W<br>During expansion, W > 0 (work done by gas), so ΔU < 0.<br>Since ΔU = nC_vΔT, a decrease in U means temperature decreases.<br>Option A is wrong (U decreases). Option B is wrong (Q = 0). Option D is wrong (W > 0 for expansion).",
+            "difficulty": "Easy",
+            "imagePrompt": null
+        },
+        {
+            "id": 10,
+            "subject": "Physics",
+            "section": "A",
+            "chapterId": "phy_oscillations",
+            "topicId": "simple-pendulum-period",
+            "question": "A pendulum clock that keeps correct time at sea level is taken to a mountain top where g is 1% less than at sea level. How many seconds will it lose per day?",
+            "options": [
+                "432 s",
+                "864 s",
+                "216 s",
+                "648 s"
+            ],
+            "correct": 0,
+            "explanation": "Time period T = 2π√(L/g), so T ∝ 1/√g<br>If g decreases by 1%, new g' = 0.99g<br>T' = T/√0.99 = T/√(1 − 0.01) ≈ T(1 + 0.005) using binomial approximation<br>T' ≈ 1.005T<br>The clock runs slower by factor 1.005.<br>In 1 day = 86400 s at sea level, the mountain clock shows 86400/1.005 s elapsed.<br>Time lost = 86400 − 86400/1.005 = 86400(1 − 1/1.005) = 86400 × 0.005/1.005 ≈ 86400 × 0.00498 ≈ 430 s ≈ 432 s<br>More precisely: 86400 × 0.005 = 432 s (using the first-order approximation).<br>Options B, C, D give wrong multiples.",
+            "difficulty": "Hard",
+            "imagePrompt": null
+        },
+        {
+            "id": 11,
+            "subject": "Physics",
+            "section": "A",
+            "chapterId": "phy_rotation",
+            "topicId": "moment-of-inertia-standard",
+            "question": "**Passage:** A uniform rod of length L and mass M is pivoted at one end and can rotate freely in a vertical plane. The rod is released from rest when it is horizontal. What is the angular velocity of the rod when it passes through the vertical position?",
+            "options": [
+                "√(3g/L)",
+                "√(2g/L)",
+                "√(g/L)",
+                "√(6g/L)"
+            ],
+            "correct": 0,
+            "explanation": "Using energy conservation. Initial PE (taking pivot as reference): U_i = Mg(L/2) (center of mass at L/2)<br>Final PE when vertical: U_f = 0 (center of mass directly below pivot)<br>Initial KE = 0, Final KE = (1/2)Iω²<br>For rod about end: I = (1/3)ML²<br>Mg(L/2) = (1/2) × (1/3)ML² × ω²<br>MgL/2 = ML²ω²/6<br>ω² = 3g/L<br>ω = √(3g/L)<br>Options B, C, D use wrong moment of inertia or energy balance.",
+            "difficulty": "Medium",
+            "imagePrompt": null
+        },
+        {
+            "id": 12,
+            "subject": "Physics",
+            "section": "A",
+            "chapterId": "phy_rotation",
+            "topicId": "torque-angular-acceleration",
+            "question": "**Passage:** (Same as Q11) What is the angular acceleration of the rod at the instant it is released from the horizontal position?",
+            "options": [
+                "3g/(2L)",
+                "g/L",
+                "2g/L",
+                "g/(2L)"
+            ],
+            "correct": 0,
+            "explanation": "Torque about pivot: τ = Mg(L/2) (perpendicular distance from pivot to center of mass)<br>Angular acceleration α = τ/I = Mg(L/2)/[(1/3)ML²] = (MgL/2) × (3/ML²) = 3g/(2L)<br>Options B, C, D use wrong formulas or moment of inertia values.",
+            "difficulty": "Medium",
+            "imagePrompt": null
+        },
+        {
+            "id": 13,
+            "subject": "Physics",
+            "section": "A",
+            "chapterId": "phy_dual_nature",
+            "topicId": "de-broglie-wavelength",
+            "question": "A proton and an alpha particle are accelerated through the same potential difference. What is the ratio of their de Broglie wavelengths (λₚ/λₐ)?",
+            "options": [
+                "1:2",
+                "2:1",
+                "2√2:1",
+                "1:√2"
+            ],
+            "correct": 2,
+            "explanation": "de Broglie wavelength λ = h/p = h/√(2mK), where K is kinetic energy.<br>When accelerated through potential V: K = qV<br>For proton: m_p, q_p = e, so K_p = eV<br>For alpha: m_α = 4m_p, q_α = 2e, so K_α = 2eV<br>λ_p = h/√(2m_p × eV)<br>λ_α = h/√(2 × 4m_p × 2eV) = h/√(16m_p × eV)<br>λ_p/λ_α = √(16m_p × eV)/√(2m_p × eV) = √(16/2) = √8 = 2√2<br>Options A, B, D give incorrect ratios from wrong mass or charge considerations.",
+            "difficulty": "Hard",
+            "imagePrompt": null
+        },
+        {
+            "id": 14,
+            "subject": "Physics",
+            "section": "A",
+            "chapterId": "phy_kinetic_theory",
+            "topicId": "ficks-law-diffusion",
+            "question": "Oxygen diffusion in human lungs follows Fick’s law. If the thickness of the membrane doubles due to disease, what happens to oxygen transfer rate?",
+            "options": [
+                "Doubles",
+                "Halves",
+                "Remains same",
+                "Becomes zero"
+            ],
+            "correct": 1,
+            "explanation": "According to Fick’s law, the rate of diffusion is inversely proportional to the thickness of the membrane (Rate ∝ 1/thickness). If the thickness doubles, the diffusion rate becomes half. Therefore, oxygen transfer rate decreases to half.",
+            "difficulty": "Medium",
+            "imagePrompt": null
+        },
+        {
+            "id": 15,
+            "subject": "Physics",
+            "section": "A",
+            "chapterId": "phy_thermo",
+            "topicId": "carnot-efficiency",
+            "question": "A heat engine operates between temperatures 600 K and 300 K. If it absorbs 1000 J of heat from the hot reservoir in each cycle, what is the maximum possible work it can perform per cycle?",
+            "options": [
+                "300 J",
+                "500 J",
+                "600 J",
+                "700 J"
+            ],
+            "correct": 1,
+            "explanation": "Maximum efficiency (Carnot): η = 1 − T_C/T_H = 1 − 300/600 = 1 − 0.5 = 0.5 = 50%<br>Work = η × Q_H = 0.5 × 1000 = 500 J<br>Options A, C, D use wrong efficiency calculations.",
+            "difficulty": "Easy",
+            "imagePrompt": null
+        },
+        {
+            "id": 16,
+            "subject": "Chemistry",
+            "section": "B",
+            "chapterId": "chem_bonding",
+            "topicId": "hybridization-sf6",
+            "question": "What is the hybridization of the central atom in SF₆?",
+            "options": [
+                "sp³",
+                "sp³d",
+                "sp³d²",
+                "sp³d³"
+            ],
+            "correct": 2,
+            "explanation": "SF₆ has 6 bonding pairs around sulfur, no lone pairs.<br>Steric number = 6, geometry is octahedral.<br>Hybridization for 6 orbitals: sp³d² (one s, three p, two d orbitals)<br>Options A (4 orbitals), B (5 orbitals), D (7 orbitals) don't match.",
+            "difficulty": "Easy",
+            "imagePrompt": null
+        },
+        {
+            "id": 17,
+            "subject": "Chemistry",
+            "section": "B",
+            "chapterId": "chem_periodic",
+            "topicId": "first-ionization-energy",
+            "question": "Which of the following has the highest first ionization energy?",
+            "options": [
+                "Nitrogen",
+                "Oxygen",
+                "Fluorine",
+                "Neon"
+            ],
+            "correct": 3,
+            "explanation": "Ionization energy increases across a period and decreases down a group.<br>Among the given elements (all in period 2), Neon is a noble gas with completely filled electronic configuration (1s² 2s² 2p⁶), making it extremely stable and requiring the most energy to remove an electron.<br>Order: Ne > F > N > O (oxygen has slight anomaly due to electron pairing in p⁴)<br>Options A, B, C have lower ionization energies than neon.",
+            "difficulty": "Medium",
+            "imagePrompt": null
+        },
+        {
+            "id": 18,
+            "subject": "Chemistry",
+            "section": "B",
+            "chapterId": "chem_kinetics",
+            "topicId": "rate-of-appearance-and-disappearance",
+            "question": "In the reaction: 2A + B → 3C, if the rate of disappearance of A is 0.06 mol L⁻¹ s⁻¹, what is the rate of appearance of C?",
+            "options": [
+                "0.02 mol L⁻¹ s⁻¹",
+                "0.04 mol L⁻¹ s⁻¹",
+                "0.09 mol L⁻¹ s⁻¹",
+                "0.18 mol L⁻¹ s⁻¹"
+            ],
+            "correct": 2,
+            "explanation": "From stoichiometry: −(1/2)(d[A]/dt) = +(1/3)(d[C]/dt)<br>Given: d[A]/dt = −0.06 mol L⁻¹ s⁻¹<br>(1/2) × 0.06 = (1/3) × d[C]/dt<br>0.03 = (1/3) × d[C]/dt<br>d[C]/dt = 0.09 mol L⁻¹ s⁻¹<br>Options A, B, D use incorrect stoichiometric ratios.",
+            "difficulty": "Easy",
+            "imagePrompt": null
+        },
+        {
+            "id": 19,
+            "subject": "Chemistry",
+            "section": "B",
+            "chapterId": "chem_kinetics",
+            "topicId": "enzyme-catalysis-activation-energy",
+            "question": "Which statement is TRUE for an enzyme-catalyzed reaction?",
+            "options": [
+                "Enzyme increases equilibrium constant",
+                "Enzyme lowers activation energy",
+                "Enzyme increases product stability",
+                "Enzyme changes reaction pathway only at high temperature"
+            ],
+            "correct": 1,
+            "explanation": "Enzymes act as biological catalysts by lowering the activation energy of a reaction, thereby increasing the reaction rate. They do not change the equilibrium constant or the stability of products. Enzymes provide an alternative reaction pathway regardless of temperature, not only at high temperatures.",
+            "difficulty": "Medium",
+            "imagePrompt": null
+        },
+        {
+            "id": 20,
+            "subject": "Chemistry",
+            "section": "B",
+            "chapterId": "chem_redox",
+            "topicId": "redox-reaction-identification",
+            "question": "Which of the following reactions represents a redox process?",
+            "options": [
+                "NaCl + AgNO₃ → AgCl + NaNO₃",
+                "2KClO₃ → 2KCl + 3O₂",
+                "HCl + NaOH → NaCl + H₂O",
+                "BaCl₂ + H₂SO₄ → BaSO₄ + 2HCl"
+            ],
+            "correct": 1,
+            "explanation": "In option B: Chlorine in KClO₃ has oxidation state +5, in KCl it's −1 (reduction).<br>Oxygen in KClO₃ is −2, in O₂ it's 0 (oxidation).<br>This involves change in oxidation states, so it's a redox reaction.<br>Option A is double displacement (no oxidation state change).<br>Option C is acid-base neutralization (no oxidation state change).<br>Option D is double displacement/precipitation (no oxidation state change).",
+            "difficulty": "Easy",
+            "imagePrompt": null
+        },
+        {
+            "id": 21,
+            "subject": "Chemistry",
+            "section": "B",
+            "chapterId": "chem_eq",
+            "topicId": "ocean-acidification-equilibrium",
+            "question": "Increased CO₂ levels in oceans lead to decreased pH. Which equilibrium is directly affected?",
+            "options": [
+                "CO₂ + H₂O ⇌ H₂CO₃",
+                "H₂CO₃ ⇌ H⁺ + HCO₃⁻",
+                "HCO₃⁻ ⇌ H⁺ + CO₃²⁻",
+                "All of the above"
+            ],
+            "correct": 3,
+            "explanation": "When CO₂ levels increase, more CO₂ dissolves in water forming carbonic acid (CO₂ + H₂O ⇌ H₂CO₃). This carbonic acid further dissociates into H⁺ and HCO₃⁻, and bicarbonate can further dissociate into H⁺ and CO₃²⁻. All these equilibria are interconnected and shift due to increased CO₂, leading to increased H⁺ concentration and decreased pH. Therefore, all equilibria are affected.",
+            "difficulty": "Medium",
+            "imagePrompt": null
+        },
+        {
+            "id": 22,
+            "subject": "Chemistry",
+            "section": "B",
+            "chapterId": "chem_hydrocarbons",
+            "topicId": "electrophilic-aromatic-substitution",
+            "question": "When benzene reacts with chlorine in the presence of FeCl₃ catalyst, the product is:",
+            "options": [
+                "Chlorobenzene",
+                "Benzyl chloride",
+                "Hexachlorobenzene",
+                "Benzal chloride"
+            ],
+            "correct": 0,
+            "explanation": "FeCl₃ is a Lewis acid catalyst that facilitates electrophilic aromatic substitution.<br>Cl₂ + FeCl₃ → Cl⁺ (electrophile) + FeCl₄⁻<br>Benzene undergoes mono-chlorination to form chlorobenzene (C₆H₅Cl).<br>Option B (C₆H₅CH₂Cl) requires side-chain chlorination. Option C requires excess Cl₂ and harsh conditions. Option D (C₆H₅CHCl₂) doesn't form under these conditions.",
+            "difficulty": "Easy",
+            "imagePrompt": null
+        },
+        {
+            "id": 23,
+            "subject": "Chemistry",
+            "section": "B",
+            "chapterId": "chem_org_basics",
+            "topicId": "geometrical-isomerism-alkenes",
+            "question": "Which of the following compounds exhibits geometrical isomerism?",
+            "options": [
+                "CH₃CH₂CH=CH₂",
+                "CH₃CH=CHCH₃",
+                "CH₂=CH₂",
+                "CH₃CH=CH₂"
+            ],
+            "correct": 1,
+            "explanation": "Geometrical isomerism requires: (1) C=C double bond, (2) different groups on each carbon of the double bond.<br>Option B: CH₃CH=CHCH₃ (but-2-ene) has CH₃ and H on each carbon of the double bond, giving cis/trans isomers.<br>Option A has two H on one carbon (no isomerism).<br>Option C has two H on each carbon (no isomerism).<br>Option D has two H on one carbon (no isomerism).",
+            "difficulty": "Medium",
+            "imagePrompt": null
+        },
+        {
+            "id": 24,
+            "subject": "Chemistry",
+            "section": "B",
+            "chapterId": "chem_coord",
+            "topicId": "coordination-number-calculation",
+            "question": "The coordination number of a metal ion in the complex [Co(NH₃)₄Cl₂]⁺ is:",
+            "options": [
+                "4",
+                "5",
+                "6",
+                "2"
+            ],
+            "correct": 2,
+            "explanation": "Coordination number = number of ligand atoms directly bonded to central metal<br>4 NH₃ molecules (each contributes 1 donor atom) = 4<br>2 Cl⁻ ions (each contributes 1 donor atom) = 2<br>Total coordination number = 4 + 2 = 6<br>Options A, B, D count ligands incorrectly.",
+            "difficulty": "Easy",
+            "imagePrompt": null
+        },
+        {
+            "id": 25,
+            "subject": "Chemistry",
+            "section": "B",
+            "chapterId": "chem_periodic",
+            "topicId": "alkali-metal-melting-points",
+            "question": "Which of the following alkali metals has the lowest melting point?",
+            "options": [
+                "Lithium",
+                "Sodium",
+                "Potassium",
+                "Cesium"
+            ],
+            "correct": 3,
+            "explanation": "In alkali metals, melting point decreases down the group due to increasing atomic size and weaker metallic bonding.<br>Order: Li > Na > K > Rb > Cs<br>Cesium has the lowest melting point (28.5°C).<br>Options A, B, C have higher melting points than cesium.",
+            "difficulty": "Medium",
+            "imagePrompt": null
+        },
+        {
+            "id": 26,
+            "subject": "Chemistry",
+            "section": "B",
+            "chapterId": "chem_eq",
+            "topicId": "buffer-solution-ph",
+            "question": "**Passage:** A buffer solution contains 0.1 M acetic acid (Ka = 1.8 × 10⁻⁵) and 0.1 M sodium acetate. What is the pH of this buffer solution?",
+            "options": [
+                "4.74",
+                "5.74",
+                "3.74",
+                "6.74"
+            ],
+            "correct": 0,
+            "explanation": "Using Henderson-Hasselbalch equation: pH = pKa + log([salt]/[acid])<br>pKa = −log(1.8 × 10⁻⁵) = −log(1.8) − log(10⁻⁵) = −0.255 + 5 = 4.745 ≈ 4.74<br>Since [salt] = [acid] = 0.1 M, log(0.1/0.1) = log(1) = 0<br>pH = 4.74 + 0 = 4.74<br>Options B, C, D use incorrect pKa values or calculations.",
+            "difficulty": "Medium",
+            "imagePrompt": null
+        },
+        {
+            "id": 27,
+            "subject": "Chemistry",
+            "section": "B",
+            "chapterId": "chem_eq",
+            "topicId": "buffer-action-capacity",
+            "question": "**Passage:** (Same as Q26) If 10 mL of 0.1 M HCl is added to 90 mL of this buffer, what will be the approximate change in pH?",
+            "options": [
+                "Decreases by 0.09",
+                "Decreases by 0.9",
+                "Increases by 0.09",
+                "No significant change"
+            ],
+            "correct": 0,
+            "explanation": "Initial buffer: 90 mL × 0.1 M = 9 mmol each of CH₃COOH and CH₃COONa<br>HCl added: 10 mL × 0.1 M = 1 mmol<br>After addition: CH₃COO⁻ + H⁺ → CH₃COOH<br>New [CH₃COOH] = (9 + 1)/100 = 0.1 M<br>New [CH₃COO⁻] = (9 − 1)/100 = 0.08 M<br>pH_new = 4.74 + log(0.08/0.1) = 4.74 + log(0.8) = 4.74 − 0.097 ≈ 4.64<br>ΔpH = 4.64 − 4.74 = −0.10 ≈ −0.09<br>Options B, C, D give incorrect magnitudes or directions.",
+            "difficulty": "Hard",
+            "imagePrompt": null
+        },
+        {
+            "id": 28,
+            "subject": "Chemistry",
+            "section": "B",
+            "chapterId": "chem_eq",
+            "topicId": "titration-indicator-selection",
+            "question": "A student performs titration and observes no color change even after adding excess indicator. The most likely reason is:",
+            "options": [
+                "Wrong indicator used",
+                "Weak acid used",
+                "Strong base used",
+                "Temperature too low"
+            ],
+            "correct": 0,
+            "explanation": "Indicators change color only within a specific pH range. If an inappropriate (wrong) indicator is used, its color change range may not coincide with the equivalence point of the titration, resulting in no visible color change even after adding excess indicator.",
+            "difficulty": "Medium",
+            "imagePrompt": null
+        },
+        {
+            "id": 29,
+            "subject": "Chemistry",
+            "section": "B",
+            "chapterId": "chem_atom_struct",
+            "topicId": "quantum-numbers-orbital-shape",
+            "question": "Which quantum number determines the shape of an atomic orbital?",
+            "options": [
+                "Principal quantum number (n)",
+                "Azimuthal quantum number (l)",
+                "Magnetic quantum number (m)",
+                "Spin quantum number (s)"
+            ],
+            "correct": 1,
+            "explanation": "The azimuthal (angular momentum) quantum number l determines the shape of the orbital:<br>l = 0 → s orbital (spherical)<br>l = 1 → p orbital (dumbbell)<br>l = 2 → d orbital (cloverleaf)<br>l = 3 → f orbital (complex)<br>Option A (n) determines size/energy. Option C (m) determines orientation. Option D (s) determines electron spin.",
+            "difficulty": "Easy",
+            "imagePrompt": null
+        },
+        {
+            "id": 30,
+            "subject": "Chemistry",
+            "section": "B",
+            "chapterId": "chem_thermo",
+            "topicId": "enthalpy-of-combustion",
+            "question": "The enthalpy of combustion of methane is −890 kJ/mol. How much heat is released when 8 g of methane is completely burned?",
+            "options": [
+                "222.5 kJ",
+                "445 kJ",
+                "890 kJ",
+                "111.25 kJ"
+            ],
+            "correct": 1,
+            "explanation": "Molar mass of CH₄ = 12 + 4(1) = 16 g/mol<br>Moles of CH₄ in 8 g = 8/16 = 0.5 mol<br>Heat released = 0.5 mol × 890 kJ/mol = 445 kJ<br>Options A, C, D use incorrect molar calculations.",
+            "difficulty": "Easy",
+            "imagePrompt": null
+        },
+        {
+            "id": 31,
+            "subject": "Mathematics",
+            "section": "C",
+            "chapterId": "math_matrices",
+            "topicId": "trace-determinant-adjugate",
+            "question": "Let A be a 3x3 real matrix with det(A)=−2 and trace(A)=0. If A satisfies A³ − 3A + 2I = 0, then the trace of adj(A) equals:",
+            "options": [
+                "−3",
+                "0",
+                "3",
+                "6"
+            ],
+            "correct": 0,
+            "explanation": "Given A³ − 3A + 2I = 0, the minimal polynomial divides x³ − 3x + 2 = (x−1)²(x+2).\nThe eigenvalues of A must be roots of this polynomial. For trace(A) = 0 and det(A) = −2, the eigenvalues are 1, 1, and -2.\nThe eigenvalues of adj(A) are det(A)/λ_i, which gives -2, -2, and 1. Alternatively, the trace of adj(A) is the sum of the principal minors, or sum of the products of eigenvalues taken two at a time: (1)(1) + (1)(-2) + (1)(-2) = -3.",
+            "difficulty": "Hard",
+            "imagePrompt": null
+        },
+        {
+            "id": 32,
+            "subject": "Mathematics",
+            "section": "C",
+            "chapterId": "math_integ_basics",
+            "topicId": "limit-of-riemann-sum",
+            "question": "The value of lim(n→∞) ∑(k=1 to n) [n / (n² + k²)] equals:",
+            "options": [
+                "π/4",
+                "π/2",
+                "ln2",
+                "1"
+            ],
+            "correct": 0,
+            "explanation": "Rewrite the sum as: lim(n→∞) (1/n) ∑(k=1 to n) [1 / (1 + (k/n)²)].\nThis is a Riemann sum for the integral of 1/(1+x²) from 0 to 1.\n∫₀¹ dx/(1+x²) = [arctan(x)]₀¹ = π/4.",
+            "difficulty": "Medium",
+            "imagePrompt": null
+        },
+        {
+            "id": 33,
+            "subject": "Mathematics",
+            "section": "C",
+            "chapterId": "math_diff",
+            "topicId": "polynomial-derivatives-roots",
+            "question": "Let p(x) = x⁴ + ax³ + bx² + cx + d be a polynomial with real coefficients. If p(1)=10, p(2)=20, p(3)=30, and p'(2)=0, then p(0)+p(4) equals:",
+            "options": [
+                "40",
+                "48",
+                "64",
+                "72"
+            ],
+            "correct": 2,
+            "explanation": "Let q(x) = p(x) − 10x. Then q(1)=q(2)=q(3)=0, so q(x) = (x−1)(x−2)(x−3)(x−k).\nSince p'(2)=0, we have q'(2) = p'(2) - 10 = -10.\nq'(x) = (x−2)(x−3)(x−k) + (x−1)(x−3)(x−k) + (x−1)(x−2)(x−k) + (x−1)(x−2)(x−3).\nAt x=2, q'(2) = (1)(−1)(2−k) = k−2. Setting k−2 = -10 gives k = -8.\nSo q(x) = (x−1)(x−2)(x−3)(x+8).\np(0) = q(0) + 0 = (−1)(−2)(−3)(8) = -48.\np(4) = q(4) + 40 = (3)(2)(1)(12) + 40 = 112.\np(0) + p(4) = -48 + 112 = 64.",
+            "difficulty": "Hard",
+            "imagePrompt": null
+        },
+        {
+            "id": 34,
+            "subject": "Mathematics",
+            "section": "C",
+            "chapterId": "math_diff",
+            "topicId": "inverse-trig-differentiation",
+            "question": "If f(x) = tan⁻¹( (√(1+x²) − 1) / x ) for x ≠ 0, and f(0)=0, then f'(0) equals:",
+            "options": [
+                "0",
+                "1/2",
+                "1",
+                "1/4"
+            ],
+            "correct": 1,
+            "explanation": "Using substitution x = tan θ. Then √(1+x²) = sec θ.\nThe expression inside the arc tangent becomes (sec θ - 1) / tan θ = (1 - cos θ) / sin θ = tan(θ/2).\nTherefore, f(x) = tan⁻¹(tan(θ/2)) = θ/2 = (1/2) tan⁻¹ x.\nDifferentiating f(x) gives f'(x) = 1 / (2(1+x²)). Evaluating at x=0 yields f'(0) = 1/2.",
+            "difficulty": "Medium",
+            "imagePrompt": null
+        },
+        {
+            "id": 35,
+            "subject": "Mathematics",
+            "section": "C",
+            "chapterId": "math_diff_eq",
+            "topicId": "logistic-growth-model",
+            "question": "A graph shows population growth leveling off after a certain time. Which model best describes this?",
+            "options": [
+                "Exponential growth",
+                "Logistic growth",
+                "Linear growth",
+                "Oscillatory growth"
+            ],
+            "correct": 1,
+            "explanation": "A population graph that levels off indicates the presence of a carrying capacity. This behavior is modeled by the logistic growth function, where growth is initially rapid but slows down as limiting factors come into play, eventually stabilizing. Exponential growth does not level off, linear growth increases at a constant rate, and oscillatory growth shows repeated fluctuations.",
+            "difficulty": "Medium",
+            "imagePrompt": null
+        },
+        {
+            "id": 36,
+            "subject": "Mathematics",
+            "section": "C",
+            "chapterId": "math_integ",
+            "topicId": "area-between-curves",
+            "question": "The area of the region bounded by the curves y = x² and y = 2x is:",
+            "options": [
+                "2/3",
+                "4/3",
+                "8/3",
+                "5/3"
+            ],
+            "correct": 1,
+            "explanation": "Find intersection points: x² = 2x implies x = 0 or x = 2.\nThe curve y = 2x is above y = x² in the interval [0, 2].\nArea = ∫₀² (2x - x²) dx = [x² - x³/3]₀² = 4 - 8/3 = 12/3 - 8/3 = 4/3.",
+            "difficulty": "Medium",
+            "imagePrompt": null
+        },
+        {
+            "id": 37,
+            "subject": "Mathematics",
+            "section": "C",
+            "chapterId": "math_seq_series",
+            "topicId": "telescoping-series-limit",
+            "question": "Let (a_n) be a sequence defined by a_1 = 1 and a_{n+1} = (1 + 2a_n) / a_n for n ≥ 1. If S_n = ∑(k=1 to n) a_k a_{k+1}, then lim(n→∞) S_n equals:",
+            "options": [
+                "1/2",
+                "1",
+                "3/2",
+                "2"
+            ],
+            "correct": 0,
+            "explanation": "Let b_n = 1/a_n. Then the recurrence becomes b_{n+1} = b_n + 2. Thus b_n = 1 + 2(n-1) = 2n-1, so a_n = 1/(2n-1).\nThen a_n * a_{n+1} = 1 / ((2n-1)(2n+1)) = (1/2) * (1/(2n-1) - 1/(2n+1)).\nS_n = (1/2) * (1 - 1/(2n+1)). As n→∞, S_n → 1/2.",
+            "difficulty": "Hard",
+            "imagePrompt": null
+        },
+        {
+            "id": 38,
+            "subject": "Mathematics",
+            "section": "C",
+            "chapterId": "math_prob",
+            "topicId": "ap-probability-selection",
+            "question": "Three distinct numbers are selected at random from the set {1, 2, …, 10}. The probability that they form an arithmetic progression is:",
+            "options": [
+                "1/6",
+                "2/15",
+                "1/12",
+                "1/15"
+            ],
+            "correct": 0,
+            "explanation": "Total number of ways = 10C3 = 120.\nThree numbers a<b<c form an AP if 2b = a + c, i.e., a+c is even, so a,c are both odd or both even.\nOdds in {1..10}: 5 elements. Pairs with a<c: 5C2 = 10. For each, b=(a+c)/2 is an integer in the set.\nEvens in {1..10}: 5 elements. Similarly 10 APs.\nTotal APs = 20. Probability = 20/120 = 1/6.",
+            "difficulty": "Medium",
+            "imagePrompt": null
+        },
+        {
+            "id": 39,
+            "subject": "Mathematics",
+            "section": "C",
+            "chapterId": "math_straight_lines",
+            "topicId": "circle-tangent-normal",
+            "question": "A circle passes through the point (1, 2) and touches the line x + y = 1 at the point (2, −1). The radius of this circle is:",
+            "options": [
+                "√2",
+                "2√2",
+                "5 / √2",
+                "√10"
+            ],
+            "correct": 2,
+            "explanation": "The center lies on the normal to x+y=1 through (2,-1). Normal slope is 1, so its equation is y = x - 3.\nLet the center be (h, h-3). Distance to (2,-1) equals distance to (1,2).\nDistance to (2,-1): (h-2)² + (h-3 - (-1))² = (h-2)² + (h-2)².\nDistance to (1,2): (h-1)² + (h-3 - 2)² = (h-1)² + (h-5)².\nSetting 2(h-2)² = (h-1)² + (h-5)² => 2h² - 8h + 8 = 2h² - 12h + 26 => 4h = 18 => h = 4.5. The center is (4.5, 1.5).\nRadius r = √[(4.5 - 2)² + (1.5 - (-1))²] = √(2.5² + 2.5²) = √(12.5) = √50 / 2 = 5 / √2.",
+            "difficulty": "Medium",
+            "imagePrompt": null
+        },
+        {
+            "id": 40,
+            "subject": "Mathematics",
+            "section": "C",
+            "chapterId": "math_complex",
+            "topicId": "triangle-inequality-complex-locus",
+            "question": "The minimum value of |z - 1| + |z - 5i| for a complex number z is:",
+            "options": [
+                "√24",
+                "4",
+                "√26",
+                "6"
+            ],
+            "correct": 2,
+            "explanation": "By the triangle inequality, |z - 1| + |z - 5i| = |1 - z| + |z - 5i| ≥ |(1 - z) + (z - 5i)| = |1 - 5i|.\nThe distance |1 - 5i| = √(1² + (-5)²) = √26.\nThis minimum is achieved when z lies on the line segment connecting 1 and 5i.",
+            "difficulty": "Medium",
+            "imagePrompt": null
+        },
+        {
+            "id": 41,
+            "subject": "Mathematics",
+            "section": "C",
+            "chapterId": "math_limits",
+            "topicId": "rational-function-discontinuity",
+            "question": "Passage: Let f(x) = x³ − 3x + 2 and g(x) = 1/f(x).\n\nThe number of points where g(x) is discontinuous is:",
+            "options": [
+                "0",
+                "1",
+                "2",
+                "3"
+            ],
+            "correct": 2,
+            "explanation": "f(x) = x³ - 3x + 2 = (x - 1)²(x + 2). Roots are at x = 1 (double) and x = -2.\ng(x) = 1/f(x) is discontinuous where f(x) = 0, i.e., at x = 1 and x = -2.\nNumber of discontinuity points: 2.",
+            "difficulty": "Easy",
+            "imagePrompt": null
+        },
+        {
+            "id": 42,
+            "subject": "Mathematics",
+            "section": "C",
+            "chapterId": "math_straight_lines",
+            "topicId": "ellipse-equation",
+            "question": "What is the equation of the ellipse shown in the figure, given its center is at the origin?",
+            "options": [
+                "x²/25 + y²/9 = 1",
+                "x²/10 + y²/6 = 1",
+                "x²/100 + y²/36 = 1",
+                "x²/5 + y²/3 = 1"
+            ],
+            "correct": 0,
+            "explanation": "The figure shows an ellipse with a major axis of 10 along the x-axis (a=5) and a minor axis of 6 along the y-axis (b=3). The equation is x²/a² + y²/b² = 1 => x²/25 + y²/9 = 1.",
+            "difficulty": "Easy",
+            "image": "https://res.cloudinary.com/dhb8qmnxt/image/upload/v1775744218/801f9bb2-580e-43ee-8239-49ebeb42f9ed_yechbl.png",
+            "imagePrompt": "A graph of an ellipse centered at the origin. The ellipse extends from x=-5 to x=5 on the major axis and from y=-3 to y=3 on the minor axis."
+        },
+        {
+            "id": 43,
+            "subject": "Mathematics",
+            "section": "C",
+            "chapterId": "math_complex",
+            "topicId": "complex-inequalities-shaded-region",
+            "question": "Identify the shaded region in the complex plane shown below.",
+            "options": [
+                "|z| > 1 and |z-2i| < 2",
+                "|z| < 1 and |z-2i| > 2",
+                "|z| > 1 and |z-2i| > 2",
+                "1 < |z| < 2"
+            ],
+            "correct": 0,
+            "explanation": "The region is outside the unit circle centered at the origin (|z| > 1) and inside the circle of radius 2 centered at 2i (|z-2i| < 2).",
+            "difficulty": "Medium",
+            "image": "https://res.cloudinary.com/dhb8qmnxt/image/upload/v1775744420/c33c0f91-544c-4b82-b01e-f75c699ee5a8_xhaten.png",
+            "imagePrompt": "A shaded circular region in the complex plane that lies outside the circle |z| = 1 and inside the circle |z-2i| = 2."
+        },
+        {
+            "id": 44,
+            "subject": "Mathematics",
+            "section": "C",
+            "chapterId": "math_vec",
+            "topicId": "direction-cosines-vector",
+            "question": "The figure shows a vector a in 3D space. What are its direction cosines if it makes equal angles with all three coordinate axes?",
+            "options": [
+                "1/√3, 1/√3, 1/√3",
+                "1/3, 1/3, 1/3",
+                "1/√2, 1/√2, 0",
+                "1, 1, 1"
+            ],
+            "correct": 0,
+            "explanation": "Let the angle be α. Then cos²α + cos²α + cos²α = 1, so 3cos²α = 1 => cos α = 1/√3. The direction cosines are all 1/√3.",
+            "difficulty": "Easy",
+            "image": "https://res.cloudinary.com/dhb8qmnxt/image/upload/v1775744469/e8da5091-c9d9-47df-8883-6f86751d5bc5_qh9tzu.png",
+            "imagePrompt": "A 3D coordinate system (x,y,z axes) with a vector 'a' originating from the origin and extending into the first octant, clearly showing equal angles with all three axes."
+        },
+        {
+            "id": 45,
+            "subject": "Mathematics",
+            "section": "C",
+            "chapterId": "math_algebra",
+            "topicId": "quadratic-equations",
+            "question": "For the quadratic function f(x) = x^2 - 6x + 8, what are the x-intercepts?",
+            "options": [
+                "2 and 4",
+                "-2 and -4",
+                "1 and 8",
+                "4 and 6"
+            ],
+            "correct": 0,
+            "explanation": "Solve x^2 - 6x + 8 = 0. Factoring gives (x-2)(x-4)=0, so the roots are x=2 and x=4.",
+            "difficulty": "Easy",
+            "imagePrompt": null
+        },
+        {
+            "id": 46,
+            "subject": "Biology",
+            "section": "D",
+            "chapterId": "bio_genetics",
+            "topicId": "dna-replication-okazaki-fragments",
+            "question": "During DNA replication, the enzyme DNA polymerase III adds nucleotides exclusively in the 5' to 3' direction. This constraint directly necessitates which of the following mechanisms on the lagging strand?",
+            "options": [
+                "Use of RNA primers at multiple origins",
+                "Synthesis of Okazaki fragments",
+                "Proofreading by 3' to 5' exonuclease activity",
+                "Strand displacement by helicase"
+            ],
+            "correct": 1,
+            "explanation": "DNA polymerase III can only add nucleotides to the 3'-OH end, requiring a free 3' end. Since the two strands are antiparallel and replication forks move unidirectionally, one strand (leading) can be synthesized continuously 5'→3', but the other (lagging) must be synthesized discontinuously in short fragments (Okazaki fragments) that are later joined.",
+            "difficulty": "Medium",
+            "imagePrompt": null
+        },
+        {
+            "id": 47,
+            "subject": "Biology",
+            "section": "D",
+            "chapterId": "bio_genetics",
+            "topicId": "dihybrid-cross-conditional-probability",
+            "question": "In a plant species, flower color is determined by two genes: A/a and B/b. The presence of at least one dominant allele at each locus (A_B_) produces purple flowers; all other genotypes produce white flowers. If two dihybrid plants (AaBb) are crossed, what is the probability that a purple-flowered offspring is homozygous at both loci?",
+            "options": [
+                "1/9",
+                "1/3",
+                "4/9",
+                "1/16"
+            ],
+            "correct": 0,
+            "explanation": "Probability of purple phenotype P(A_B_) = (3/4) × (3/4) = 9/16.\nProbability of AABB = (1/4) × (1/4) = 1/16.\nConditional probability P(AABB|A_B_) = (1/16) / (9/16) = 1/9.",
+            "difficulty": "Medium",
+            "imagePrompt": null
+        },
+        {
+            "id": 48,
+            "subject": "Biology",
+            "section": "D",
+            "chapterId": "bio_plant_physio",
+            "topicId": "cellular-respiration-mitochondrial-matrix",
+            "question": "Which of the following metabolic conversions occurs primarily in the mitochondrial matrix during cellular respiration?",
+            "options": [
+                "Glucose → Glucose-6-phosphate",
+                "Pyruvate → Acetyl-CoA",
+                "Fructose-1,6-bisphosphate → Glyceraldehyde-3-phosphate",
+                "Phosphoenolpyruvate → Pyruvate"
+            ],
+            "correct": 1,
+            "explanation": "Pyruvate dehydrogenase complex happens in the mitochondrial matrix (link reaction). Options A, C, and D are glycolysis reactions in the cytosol.",
+            "difficulty": "Easy",
+            "imagePrompt": null
+        },
+        {
+            "id": 49,
+            "subject": "Biology",
+            "section": "D",
+            "chapterId": "bio_plant_physio",
+            "topicId": "photosynthesis-chemiosmosis-atp-synthesis",
+            "question": "In the light reactions of photosynthesis, the chemiosmotic synthesis of ATP is directly driven by:",
+            "options": [
+                "The reduction of NADP⁺ to NADPH",
+                "The proton gradient across the thylakoid membrane",
+                "The oxidation of water at Photosystem II",
+                "The flow of electrons from plastoquinone to cytochrome b6f"
+            ],
+            "correct": 1,
+            "explanation": "Chemiosmosis (Mitchell's theory) states that proton motive force (proton gradient) drives ATP synthesis via ATP synthase.",
+            "difficulty": "Easy",
+            "imagePrompt": null
+        },
+        {
+            "id": 50,
+            "subject": "Biology",
+            "section": "D",
+            "chapterId": "bio_genetics",
+            "topicId": "translation-ribozyme-peptidyl-transferase",
+            "question": "During translation elongation in prokaryotes, the formation of peptide bonds is catalyzed by:",
+            "options": [
+                "The 16S rRNA component of the small ribosomal subunit",
+                "The 23S rRNA component of the large ribosomal subunit",
+                "The protein EF-Tu",
+                "The Shine-Dalgarno sequence"
+            ],
+            "correct": 1,
+            "explanation": "Peptidyl transferase activity, which forms peptide bonds, is a ribozyme function of 23S rRNA in the large (50S) subunit. This is a classic example of RNA catalysis.",
+            "difficulty": "Medium",
+            "imagePrompt": null
+        },
+        {
+            "id": 51,
+            "subject": "Biology",
+            "section": "D",
+            "chapterId": "bio_human_physio",
+            "topicId": "cardiac-cycle-heart-sounds",
+            "question": "In a normal cardiac cycle, the 'lub' (first heart sound) is produced by the closure of which valves, and during which phase of the cardiac cycle does this occur?",
+            "options": [
+                "Semilunar valves; beginning of systole",
+                "Atrioventricular valves; beginning of systole",
+                "Semilunar valves; beginning of diastole",
+                "Atrioventricular valves; beginning of diastole"
+            ],
+            "correct": 1,
+            "explanation": "The 'lub' (S1) sound is produced by closure of the atrioventricular (mitral and tricuspid) valves at the beginning of ventricular systole, preventing backflow into atria.",
+            "difficulty": "Easy",
+            "imagePrompt": null
+        },
+        {
+            "id": 52,
+            "subject": "Biology",
+            "section": "D",
+            "chapterId": "bio_genetics",
+            "topicId": "hardy-weinberg-equilibrium-calculation",
+            "question": "In a population in Hardy-Weinberg equilibrium, the frequency of the recessive phenotype is 0.16. What is the frequency of heterozygous carriers?",
+            "options": [
+                "0.24",
+                "0.32",
+                "0.48",
+                "0.64"
+            ],
+            "correct": 2,
+            "explanation": "Recessive phenotype frequency = q² = 0.16, so q = 0.4.\nThen p = 1 - 0.4 = 0.6.\nHeterozygote frequency is 2pq = 2 × 0.6 × 0.4 = 0.48.",
+            "difficulty": "Medium",
+            "imagePrompt": null
+        },
+        {
+            "id": 53,
+            "subject": "Biology",
+            "section": "D",
+            "chapterId": "bio_plant_physio",
+            "topicId": "gravitropism-auxin-redistribution",
+            "question": "A plant seedling growing vertically is placed horizontally. After 24 hours, the shoot curves upward while the root curves downward. This differential response is primarily due to:",
+            "options": [
+                "Unequal distribution of auxin causing stimulation of cell elongation in shoots but inhibition in roots",
+                "Gravitropic sensing by statoliths in root caps only",
+                "Different photoreceptor systems in shoots and roots",
+                "Variation in cytokinin concentration between upper and lower sides"
+            ],
+            "correct": 0,
+            "explanation": "The Cholodny-Went model explains gravitropism: auxin redistributes to the lower side, promoting cell elongation in shoots but inhibiting elongation in roots. Roots are more sensitive to auxin, so same concentration inhibits rather than promotes.",
+            "difficulty": "Medium",
+            "imagePrompt": null
+        },
+        {
+            "id": 54,
+            "subject": "Biology",
+            "section": "D",
+            "chapterId": "bio_human_physio",
+            "topicId": "action-potential-depolarization-na-influx",
+            "question": "During the propagation of an action potential along an unmyelinated axon, the depolarization phase is directly caused by:",
+            "options": [
+                "Influx of K⁺ ions through voltage-gated channels",
+                "Efflux of Na⁺ ions through voltage-gated channels",
+                "Influx of Na⁺ ions through voltage-gated channels",
+                "Activation of the Na⁺/K⁺-ATPase pump"
+            ],
+            "correct": 2,
+            "explanation": "Depolarization (rising phase): Voltage-gated Na⁺ channels open, Na⁺ rushes in (down electrochemical gradient), making inside positive.",
+            "difficulty": "Easy",
+            "imagePrompt": null
+        },
+        {
+            "id": 55,
+            "subject": "Biology",
+            "section": "D",
+            "chapterId": "bio_plant_physio",
+            "topicId": "glycolysis-cytosol",
+            "question": "Which of the following processes occurs in the cytosol of a eukaryotic cell?",
+            "options": [
+                "Oxidative phosphorylation",
+                "Citric acid cycle",
+                "Glycolysis",
+                "Beta-oxidation of fatty acids"
+            ],
+            "correct": 2,
+            "explanation": "Glycolysis happens in the cytosol. The other processed occur in the mitochondria.",
+            "difficulty": "Easy",
+            "imagePrompt": null
+        },
+        {
+            "id": 56,
+            "subject": "Biology",
+            "section": "D",
+            "chapterId": "bio_ecology",
+            "topicId": "ecological-efficiency-energy-flow",
+            "question": "Passage: In a marine ecosystem, the net primary productivity (NPP) of phytoplankton is 1000 kJ/m²/year. Zooplankton consume 400 kJ/m²/year of this NPP, but lose 320 kJ/m²/year to respiration and waste. Small fish consume the zooplankton, and large fish consume the small fish.\n\nThe ecological efficiency of energy transfer from phytoplankton to zooplankton is approximately:",
+            "options": [
+                "4%",
+                "8%",
+                "40%",
+                "80%"
+            ],
+            "correct": 1,
+            "explanation": "Production of consumer = 400 - 320 = 80.\nEcological efficiency = Production of consumer / Production of prey = 80 / 1000 = 8%.",
+            "difficulty": "Hard",
+            "imagePrompt": null
+        },
+        {
+            "id": 57,
+            "subject": "Biology",
+            "section": "D",
+            "chapterId": "bio_human_physio",
+            "topicId": "nephron-structure-bowmans-capsule",
+            "question": "Identify the structure marked 'X' in the diagram of a human nephron provided below.",
+            "options": [
+                "Bowman's capsule",
+                "Glomerulus",
+                "Loop of Henle",
+                "Collecting duct"
+            ],
+            "correct": 0,
+            "explanation": "The cup-like structure at the beginning of the nephron that encloses the glomerulus is the Bowman's capsule.",
+            "difficulty": "Easy",
+            "image": "https://res.cloudinary.com/dhb8qmnxt/image/upload/v1775744573/f9bb1467-1469-43d2-9e5a-95a5f40bae06_neel7q.png",
+            "imagePrompt": "A detailed diagram of a human nephron. The cup-shaped structure at the beginning of the tubular component (Bowman's capsule) is clearly marked with a large 'X'."
+        },
+        {
+            "id": 58,
+            "subject": "Biology",
+            "section": "D",
+            "chapterId": "bio_genetics",
+            "topicId": "pedigree-analysis-inheritance-mode",
+            "question": "The pedigree chart below tracks a genetic trait. What is the most likely mode of inheritance?",
+            "options": [
+                "Autosomal recessive",
+                "Autosomal dominant",
+                "X-linked recessive",
+                "X-linked dominant"
+            ],
+            "correct": 0,
+            "explanation": "Two unaffected parents have an affected daughter. This immediately rules out dominant traits. It also rules out X-linked recessive because an affected daughter would need an affected father. Therefore, it must be autosomal recessive.",
+            "difficulty": "Medium",
+            "image": "https://res.cloudinary.com/dhb8qmnxt/image/upload/v1775744672/e59b4d76-ba0a-445e-a75d-e0484f881063_dqt5yd.png",
+            "imagePrompt": "A classic pedigree chart showing two unaffected parents (a square and a circle, both empty) who have an affected daughter (a filled circle)."
+        },
+        {
+            "id": 59,
+            "subject": "Biology",
+            "section": "D",
+            "chapterId": "bio_cell",
+            "topicId": "enzyme-kinetics-michaelis-constant",
+            "question": "The graph shows the effect of substrate concentration on enzyme activity. What does the point 'Vmax/2' correspond to on the x-axis?",
+            "options": [
+                "Km (Michaelis constant)",
+                "Vmax",
+                "Activation energy",
+                "Optimum temperature"
+            ],
+            "correct": 0,
+            "explanation": "In Michaelis-Menten kinetics, the substrate concentration at which the reaction velocity is half of its maximum (Vmax/2) is defined as the Michaelis constant (Km).",
+            "difficulty": "Medium",
+            "image": "https://res.cloudinary.com/dhb8qmnxt/image/upload/v1775744741/4f83cf94-6ca2-4339-b616-ae89be147d4e_ilqmpf.png",
+            "imagePrompt": "A Michaelis-Menten enzyme kinetics graph plotting velocity on the y-axis vs substrate concentration on the x-axis. A dotted line from Vmax/2 on the y-axis points down to the x-axis."
+        },
+        {
+            "id": 60,
+            "subject": "Biology",
+            "section": "D",
+            "chapterId": "bio_cell",
+            "topicId": "cell-cycle-s-phase",
+            "question": "Based on the provided diagram of the cell cycle, which phase represents DNA synthesis?",
+            "options": [
+                "S phase",
+                "G1 phase",
+                "G2 phase",
+                "M phase"
+            ],
+            "correct": 0,
+            "explanation": "The S (synthesis) phase is the part of the cell cycle in which DNA is replicated.",
+            "difficulty": "Easy",
+            "image": "https://res.cloudinary.com/dhb8qmnxt/image/upload/v1775744812/424c8eb2-3ef4-4b56-98ea-cf66d9d0ca9d_pc2qvc.png",
+            "imagePrompt": "A circular diagram of the cell cycle divided into G1, S, G2, and M phases. The phases are clearly labeled."
+        }
+    ]
+}

@@ -1,0 +1,1877 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script>
+    if (localStorage.getItem('IAT_TOKEN')) {
+      window.location.replace('dashboard-react/index.html');
+    }
+  </script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Personalized Study Roadmap Onboarding - SmartPrep</title>
+
+  <style>
+    /* ========================================================
+       DESIGN TOKENS — IISER SmartPrep brand (light indigo SaaS)
+       ======================================================== */
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&family=Fira+Code:wght@400;500;600&display=swap');
+
+    :root {
+      --ink: #1e2433;
+      --ink-soft: #6b7280;
+      --paper: #f3f5fb;
+      --paper-raised: #ffffff;
+      --paper-line: #e6e9f2;
+      --paper-line-strong: #d6dbe9;
+      --navy: #f3f5fb;
+      --navy-raised: #ffffff;
+      --navy-line: #e6e9f2;
+      --brand-1: #6366f1;
+      --brand-2: #06b6d4;
+      --brand-grad: linear-gradient(135deg, #6366f1 0%, #06b6d4 100%);
+      --brand-soft: rgba(99, 102, 241, 0.08);
+      --signal: #16a34a;
+      --signal-soft: rgba(22, 163, 74, 0.10);
+      --clay: #ef4444;
+      --clay-soft: rgba(239, 68, 68, 0.08);
+      --sky: #06b6d4;
+      --sky-soft: rgba(6, 182, 212, 0.10);
+      --paper-text: #1e2433;
+      --paper-muted: #94a3b8;
+      --navy-text: #1e2433;
+      --navy-muted: #94a3b8;
+      --ease: cubic-bezier(0.16, 1, 0.3, 1);
+      --serif: 'Plus Jakarta Sans', sans-serif;
+      --sans: 'Inter', sans-serif;
+      --mono: 'Fira Code', monospace;
+    }
+
+    * { box-sizing: border-box; }
+    body { margin: 0; }
+
+    /* Portal Container & Grid */
+    .ob-modal-overlay {
+      position: fixed;
+      top: 0; left: 0; width: 100vw; height: 100vh;
+      background: var(--navy);
+      z-index: 99999;
+      display: flex;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.5s var(--ease);
+      font-family: var(--sans);
+      color: var(--navy-text);
+      overflow: hidden;
+    }
+
+    .ob-modal-overlay.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .ob-portal-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      width: 100%;
+      height: 100%;
+    }
+
+    @media (min-width: 1024px) {
+      .ob-portal-grid {
+        grid-template-columns: 40% 60%;
+      }
+    }
+
+    /* ============ LEFT PANEL: Light brand preview ============ */
+    .ob-preview-panel {
+      display: none;
+      background: var(--navy);
+      background-image:
+        radial-gradient(circle at 10% 0%, rgba(99,102,241,0.10) 0%, transparent 50%),
+        radial-gradient(circle at 95% 90%, rgba(6,182,212,0.10) 0%, transparent 50%);
+      border-right: 1px solid var(--navy-line);
+      position: relative;
+      padding: 3rem 2.75rem;
+      flex-direction: column;
+      justify-content: space-between;
+      overflow-y: auto;
+    }
+
+    @media (min-width: 1024px) {
+      .ob-preview-panel { display: flex; }
+    }
+
+    .ob-preview-panel::-webkit-scrollbar { width: 5px; }
+    .ob-preview-panel::-webkit-scrollbar-thumb {
+      background: var(--paper-line-strong);
+      border-radius: 4px;
+    }
+
+    .ob-preview-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      position: relative;
+      z-index: 2;
+    }
+
+    .ob-logo-mark {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .ob-logo-icon {
+      width: 34px; height: 34px;
+      border-radius: 10px;
+      background: var(--brand-grad);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-weight: 800;
+      font-size: 0.85rem;
+      font-family: var(--serif);
+      flex-shrink: 0;
+    }
+
+    .ob-logo-text {
+      font-family: var(--serif);
+      font-weight: 800;
+      font-size: 1.05rem;
+      letter-spacing: -0.01em;
+      color: var(--navy-text);
+    }
+
+    .ob-logo-sub {
+      font-family: var(--sans);
+      font-size: 0.72rem;
+      letter-spacing: 0.04em;
+      color: var(--navy-muted);
+      font-weight: 500;
+      margin-top: 1px;
+    }
+
+    .ob-badge {
+      padding: 7px 14px;
+      background: var(--paper-raised);
+      border: 1px solid var(--navy-line);
+      border-radius: 100px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--navy-muted);
+      font-family: var(--sans);
+      transition: all 0.35s var(--ease);
+      white-space: nowrap;
+    }
+
+    .ob-badge.active-both {
+      border-color: transparent;
+      background: var(--brand-grad);
+      color: #fff;
+    }
+    .ob-badge.active-iiser {
+      border-color: var(--brand-1);
+      background: var(--brand-soft);
+      color: var(--brand-1);
+    }
+    .ob-badge.active-nest {
+      border-color: var(--sky);
+      background: var(--sky-soft);
+      color: #0891b2;
+    }
+
+    .ob-preview-content {
+      margin: auto 0;
+      z-index: 2;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      padding: 2.5rem 0;
+    }
+
+    /* Signature element: readiness dial card */
+    .ob-dial-box {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      background: var(--paper-raised);
+      border: 1px solid var(--navy-line);
+      border-radius: 20px;
+      padding: 1.75rem;
+      box-shadow: 0 8px 24px -12px rgba(99,102,241,0.18);
+    }
+
+    .ob-dial-ring {
+      position: relative;
+      width: 150px;
+      height: 150px;
+    }
+
+    .ob-svg-ring {
+      width: 100%;
+      height: 100%;
+      transform: rotate(-90deg);
+    }
+
+    .ob-svg-ring circle {
+      fill: none;
+    }
+
+    .ob-svg-ring .ring-bg {
+      stroke: var(--paper-line);
+      stroke-width: 7;
+    }
+
+    .ob-svg-ring .ring-ticks {
+      display: none;
+    }
+
+    .ob-svg-ring .ring-fill {
+      stroke: var(--brand-1);
+      stroke-width: 7;
+      stroke-dasharray: 251.2;
+      stroke-dashoffset: 251.2;
+      stroke-linecap: round;
+      transition: stroke-dashoffset 0.9s var(--ease);
+      filter: drop-shadow(0 0 6px rgba(99,102,241,0.35));
+    }
+
+    .ob-dial-text {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .ob-dial-num {
+      font-family: var(--serif);
+      font-size: 2.4rem;
+      font-weight: 800;
+      color: var(--navy-text);
+      line-height: 1;
+      background: var(--brand-grad);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .ob-dial-label {
+      font-family: var(--sans);
+      font-size: 0.7rem;
+      color: var(--navy-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      margin-top: 6px;
+      font-weight: 600;
+    }
+
+    /* Metrics Stack */
+    .ob-metrics-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 0.7rem;
+    }
+
+    .ob-metric-item {
+      background: var(--paper-raised);
+      border: 1px solid var(--navy-line);
+      border-radius: 14px;
+      padding: 12px 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+    }
+
+    .ob-metric-item:first-child {
+      border-top: 1px solid var(--navy-line);
+    }
+
+    .ob-m-label {
+      font-size: 0.82rem;
+      color: var(--navy-muted);
+      font-family: var(--sans);
+      font-weight: 500;
+    }
+
+    .ob-m-val {
+      font-size: 0.9rem;
+      color: var(--navy-text);
+      font-weight: 700;
+      font-family: var(--sans);
+      text-align: right;
+    }
+
+    /* Live Milestones Preview */
+    .ob-milestones-box {
+      background: var(--paper-raised);
+      border: 1px solid var(--navy-line);
+      border-radius: 18px;
+      padding: 1.4rem 1.5rem;
+    }
+
+    .ob-box-title {
+      font-family: var(--sans);
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--navy-muted);
+      margin: 0 0 1rem 0;
+      font-weight: 700;
+    }
+
+    .ob-placeholder-text {
+      color: var(--navy-muted);
+      font-size: 0.85rem;
+      padding: 0.25rem 0;
+      margin: 0;
+      line-height: 1.5;
+      font-family: var(--sans);
+    }
+
+    .ob-milestone-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.9rem;
+    }
+
+    .ob-preview-milestone {
+      display: flex;
+      align-items: baseline;
+      gap: 12px;
+      font-size: 0.85rem;
+      color: var(--ink-soft);
+      line-height: 1.5;
+      animation: slideIn 0.4s var(--ease) forwards;
+    }
+
+    .ob-preview-milestone .ms-num {
+      font-family: var(--sans);
+      font-size: 0.75rem;
+      font-weight: 800;
+      color: var(--brand-1);
+      flex-shrink: 0;
+      padding-top: 1px;
+    }
+
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateX(-8px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+
+    /* ============ RIGHT PANEL: Paper wizard ============ */
+    .ob-wizard-panel {
+      background: var(--paper);
+      padding: 2.5rem 1.75rem;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow-y: auto;
+      color: var(--paper-text);
+    }
+
+    @media (min-width: 640px) {
+      .ob-wizard-panel { padding: 3.5rem 3.25rem; }
+    }
+
+    .ob-wizard-panel::-webkit-scrollbar { width: 5px; }
+    .ob-wizard-panel::-webkit-scrollbar-thumb {
+      background: var(--paper-line-strong);
+      border-radius: 4px;
+    }
+
+    .ob-close-btn {
+      position: absolute;
+      top: 1.5rem; right: 1.5rem;
+      background: var(--paper-raised);
+      border: 1px solid var(--paper-line);
+      color: var(--paper-muted);
+      font-size: 1.3rem;
+      width: 40px; height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 100;
+      transition: all 0.3s var(--ease);
+      line-height: 1;
+    }
+
+    .ob-close-btn:hover {
+      background: var(--ink);
+      color: #fff;
+      border-color: var(--ink);
+      transform: rotate(90deg);
+    }
+
+    .ob-wizard-header { margin-bottom: 2.5rem; }
+
+    /* Stepper */
+    .ob-progress-steps {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 460px;
+      position: relative;
+    }
+
+    .ob-p-step {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+      z-index: 2;
+      gap: 0.5rem;
+    }
+
+    .ob-p-step .step-num {
+      width: 32px; height: 32px;
+      border-radius: 50%;
+      background: var(--paper-raised);
+      border: 1.5px solid var(--paper-line-strong);
+      color: var(--paper-muted);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.8rem;
+      font-weight: 700;
+      font-family: var(--sans);
+      transition: all 0.4s var(--ease);
+    }
+
+    .ob-p-step .step-lbl {
+      font-size: 0.68rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--paper-muted);
+      font-weight: 700;
+      font-family: var(--sans);
+      transition: all 0.4s var(--ease);
+    }
+
+    .ob-p-step-line {
+      flex-grow: 1;
+      height: 1px;
+      background: var(--paper-line-strong);
+      margin: 0 -8px;
+      position: relative;
+      top: -12px;
+      z-index: 1;
+      transition: all 0.4s var(--ease);
+    }
+
+    .ob-p-step.active .step-num {
+      background: var(--brand-grad);
+      border-color: transparent;
+      color: #fff;
+    }
+    .ob-p-step.active .step-lbl { color: var(--brand-1); }
+
+    .ob-p-step.completed .step-num {
+      background: var(--signal);
+      border-color: var(--signal);
+      color: #fff;
+    }
+    .ob-p-step.completed .step-lbl { color: var(--signal); }
+
+    .ob-p-step-line.completed { background: var(--signal); }
+
+    /* Wizard Body Steps */
+    .ob-body { flex-grow: 1; display: flex; flex-direction: column; }
+
+    .ob-step { display: none; animation: stepFadeIn 0.55s var(--ease) forwards; }
+    .ob-step.active { display: block; }
+
+    @keyframes stepFadeIn {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .ob-eyebrow {
+      font-family: var(--sans);
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--brand-1);
+      font-weight: 700;
+      margin: 0 0 0.9rem 0;
+    }
+
+    .ob-title {
+      font-family: var(--serif);
+      font-size: 2rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      line-height: 1.15;
+      margin: 0 0 0.6rem 0;
+      color: var(--ink);
+    }
+
+    @media (min-width: 640px) {
+      .ob-title { font-size: 2.5rem; }
+    }
+
+    .ob-subtitle {
+      color: var(--ink-soft);
+      font-size: 1rem;
+      margin: 0 0 2.25rem 0;
+      line-height: 1.6;
+      max-width: 36ch;
+    }
+
+    .ob-cards-container {
+      display: flex;
+      flex-direction: column;
+      gap: 0.85rem;
+    }
+
+    .ob-card {
+      background: var(--paper-raised);
+      border: 1.5px solid var(--paper-line);
+      border-radius: 16px;
+      padding: 1.2rem 1.4rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      transition: all 0.3s var(--ease);
+      position: relative;
+    }
+
+    .ob-card:hover {
+      border-color: var(--brand-1);
+      transform: translateY(-2px);
+      box-shadow: 0 10px 25px -12px rgba(99,102,241,0.25);
+    }
+
+    .ob-card.selected {
+      background: var(--brand-soft);
+      border-color: var(--brand-1);
+      box-shadow: 0 0 0 1px var(--brand-1), 0 10px 25px -12px rgba(99,102,241,0.3);
+    }
+
+    .ob-card-icon {
+      font-family: var(--serif);
+      font-size: 0.8rem;
+      font-weight: 800;
+      margin-right: 1.3rem;
+      width: 42px; height: 42px;
+      min-width: 42px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--paper);
+      border: 1.5px solid var(--paper-line);
+      border-radius: 8px;
+      color: var(--paper-muted);
+      transition: all 0.3s var(--ease);
+    }
+
+    .ob-card.selected .ob-card-icon {
+      background: var(--ink);
+      border-color: var(--ink);
+      color: var(--paper);
+    }
+
+    .ob-card-content { flex-grow: 1; }
+
+    .ob-card-content h4 {
+      margin: 0 0 0.25rem 0;
+      font-size: 1.05rem;
+      font-weight: 700;
+      font-family: var(--sans);
+      color: var(--ink);
+    }
+
+    .ob-card-content p {
+      margin: 0;
+      font-size: 0.85rem;
+      color: var(--ink-soft);
+      line-height: 1.45;
+    }
+
+    .ob-radio {
+      width: 18px; height: 18px;
+      border-radius: 50%;
+      border: 1.5px solid var(--paper-line-strong);
+      margin-left: 1rem;
+      position: relative;
+      transition: all 0.25s ease;
+      flex-shrink: 0;
+    }
+
+    .ob-card.selected .ob-radio { border-color: var(--brand-1); }
+
+    .ob-card.selected .ob-radio::after {
+      content: '';
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--brand-grad);
+    }
+
+    /* Form Setup */
+    .ob-form-section { display: flex; flex-direction: column; }
+
+    .ob-slider-group {
+      background: var(--paper-raised);
+      border: 1.5px solid var(--paper-line);
+      padding: 1.3rem 1.5rem;
+      border-radius: 16px;
+    }
+
+    .ob-slider-label-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+
+    .ob-label {
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--ink);
+      font-family: var(--sans);
+      letter-spacing: 0.02em;
+    }
+
+    .ob-slider-val {
+      font-size: 1rem;
+      font-weight: 800;
+      color: var(--brand-1);
+      font-family: var(--serif);
+    }
+
+    .ob-slider {
+      -webkit-appearance: none;
+      width: 100%;
+      height: 4px;
+      background: var(--paper-line-strong);
+      border-radius: 10px;
+      outline: none;
+    }
+
+    .ob-slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 20px; height: 20px;
+      border-radius: 50%;
+      background: var(--brand-grad);
+      border: 3px solid var(--paper-raised);
+      box-shadow: 0 0 0 1px var(--paper-line-strong), 0 2px 8px rgba(99,102,241,0.35);
+      cursor: pointer;
+      transition: transform 0.2s var(--ease);
+    }
+
+    .ob-slider::-moz-range-thumb {
+      width: 20px; height: 20px;
+      border-radius: 50%;
+      background: var(--brand-1);
+      border: 3px solid var(--paper-raised);
+      box-shadow: 0 0 0 1px var(--paper-line-strong);
+      cursor: pointer;
+    }
+
+    .ob-slider::-webkit-slider-thumb:hover { transform: scale(1.15); }
+
+    .ob-pill-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.55rem;
+      margin-top: 0.65rem;
+    }
+
+    .ob-pill {
+      padding: 8px 16px;
+      background: var(--paper-raised);
+      border: 1.5px solid var(--paper-line);
+      color: var(--ink-soft);
+      border-radius: 100px;
+      font-size: 0.84rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.25s var(--ease);
+      font-family: var(--sans);
+    }
+
+    .ob-pill:hover {
+      border-color: var(--brand-1);
+      color: var(--brand-1);
+    }
+
+    .ob-pill.active-strong {
+      background: var(--signal-soft);
+      border-color: var(--signal);
+      color: var(--signal);
+    }
+
+    .ob-pill.active-weak {
+      background: var(--clay-soft);
+      border-color: var(--clay);
+      color: var(--clay);
+    }
+
+    /* Footer Buttons */
+    .ob-footer {
+      margin-top: auto;
+      padding-top: 2.5rem;
+      display: flex;
+      justify-content: flex-end;
+      gap: 0.75rem;
+    }
+
+    .ob-btn {
+      padding: 13px 26px;
+      border-radius: 100px;
+      font-size: 0.92rem;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: var(--sans);
+      transition: all 0.3s var(--ease);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      border: 1.5px solid transparent;
+    }
+
+    .ob-btn-primary {
+      background: var(--ink);
+      color: #fff;
+      border-color: var(--ink);
+    }
+    .ob-btn-primary:hover {
+      background: #333c52;
+      transform: translateY(-2px);
+    }
+
+    .ob-btn-secondary {
+      background: transparent;
+      border-color: var(--paper-line-strong);
+      color: var(--ink-soft);
+    }
+    .ob-btn-secondary:hover {
+      border-color: var(--ink);
+      color: var(--ink);
+    }
+
+    .ob-btn-accent {
+      background: var(--brand-grad);
+      color: #fff;
+      border-color: transparent;
+    }
+    .ob-btn-accent:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(99,102,241,0.35);
+    }
+
+    /* Loading sequence */
+    .ob-loading-container {
+      text-align: center;
+      padding: 1rem 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .ob-radar-loader {
+      position: relative;
+      width: 130px; height: 130px;
+      border-radius: 50%;
+      background: var(--paper-raised);
+      border: 1.5px solid var(--paper-line);
+      margin-bottom: 2.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .ob-radar-sweep {
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: conic-gradient(from 0deg, rgba(99,102,241,0.18) 0deg, transparent 90deg);
+      border-radius: 50%;
+      animation: radarSweep 1.8s linear infinite;
+    }
+
+    .ob-radar-grid {
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background-image:
+        linear-gradient(var(--paper-line) 1px, transparent 1px),
+        linear-gradient(90deg, var(--paper-line) 1px, transparent 1px);
+      background-size: 14px 14px;
+      background-position: center;
+      opacity: 0.6;
+    }
+
+    .ob-radar-rings span {
+      position: absolute;
+      top: 50%; left: 50%;
+      border: 1px solid var(--paper-line-strong);
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      animation: ringPulse 2s ease-out infinite;
+    }
+
+    .ob-radar-rings span:nth-child(1) { width: 38px; height: 38px; }
+    .ob-radar-rings span:nth-child(2) { width: 80px; height: 80px; animation-delay: 0.6s; }
+    .ob-radar-rings span:nth-child(3) { width: 112px; height: 112px; animation-delay: 1.2s; }
+
+    .ob-loader-percentage {
+      font-size: 1.5rem;
+      font-weight: 800;
+      font-family: var(--serif);
+      z-index: 2;
+      background: var(--brand-grad);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .ob-loading-text {
+      font-family: var(--serif);
+      font-size: 1.35rem;
+      font-weight: 800;
+      margin-bottom: 2rem;
+      color: var(--ink);
+    }
+
+    /* Terminal Console */
+    .ob-terminal-box {
+      background: #161b29;
+      border: 1px solid #2a3146;
+      border-radius: 14px;
+      width: 100%;
+      max-width: 400px;
+      font-family: var(--mono);
+      text-align: left;
+      overflow: hidden;
+    }
+
+    .ob-terminal-header {
+      background: rgba(255,255,255,0.03);
+      padding: 10px 14px;
+      border-bottom: 1px solid #2a3146;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .terminal-dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
+    .terminal-dot.red { background: var(--clay); }
+    .terminal-dot.yellow { background: #f59e0b; }
+    .terminal-dot.green { background: var(--signal); }
+
+    .terminal-title {
+      font-size: 0.7rem;
+      color: #6b7591;
+      margin-left: 6px;
+      font-weight: 500;
+    }
+
+    .ob-terminal-logs {
+      padding: 14px;
+      min-height: 110px;
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+      overflow-y: auto;
+    }
+
+    .terminal-line {
+      font-size: 0.78rem;
+      color: #6b7591;
+      line-height: 1.4;
+      opacity: 0.5;
+      transition: opacity 0.3s;
+    }
+
+    .terminal-line.active { color: #67e8f9; opacity: 1; }
+    .terminal-line.done { color: #6ee7b7; opacity: 0.9; }
+    .terminal-line.done::before { content: '✓ '; }
+
+    /* Result styles */
+    .ob-result-header {
+      text-align: center;
+      margin-bottom: 1.8rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .ob-success-badge {
+      position: relative;
+      width: 52px; height: 52px;
+      background: var(--brand-grad);
+      border: none;
+      color: #fff;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.3rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      box-shadow: 0 8px 20px -6px rgba(99,102,241,0.5);
+    }
+
+    .ob-result-dashboard {
+      background: var(--paper-raised);
+      border: 1.5px solid var(--paper-line);
+      border-radius: 18px;
+      padding: 1.5rem;
+    }
+
+    .ob-dashboard-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    .ob-dash-card {
+      background: var(--paper);
+      border: 1.5px solid var(--paper-line);
+      padding: 1.25rem 1rem;
+      border-radius: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .text-center { text-align: center; }
+
+    .ob-dash-card-label {
+      font-size: 0.7rem;
+      color: var(--paper-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      font-weight: 700;
+      font-family: var(--sans);
+    }
+
+    .ob-dash-card-value {
+      font-size: 1.9rem;
+      font-weight: 800;
+      line-height: 1.2;
+      font-family: var(--serif);
+    }
+
+    .ob-dash-card-value.text-green { color: var(--signal); }
+    .ob-dash-card-value.text-cyan {
+      background: var(--brand-grad);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .ob-result-section { display: flex; flex-direction: column; }
+
+    .ob-section-title {
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--paper-muted);
+      margin-bottom: 1rem;
+      font-family: var(--sans);
+    }
+
+    .ob-result-timeline {
+      border-left: 2px solid var(--paper-line);
+      padding-left: 1.5rem;
+      margin-left: 8px;
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+    }
+
+    .ob-timeline-node { position: relative; }
+
+    .ob-timeline-node::before {
+      content: '';
+      position: absolute;
+      left: calc(-1.5rem - 6px);
+      top: 4px;
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      background: var(--brand-1);
+      border: 2px solid var(--paper-raised);
+    }
+
+    .ob-timeline-node.accent::before { background: var(--sky); }
+
+    .ob-timeline-week {
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--paper-muted);
+      display: block;
+      font-family: var(--sans);
+    }
+
+    .ob-timeline-topic {
+      font-size: 0.94rem;
+      font-weight: 500;
+      color: var(--ink);
+      margin-top: 3px;
+      line-height: 1.45;
+    }
+
+    .ob-result-summary-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+    }
+
+    .ob-summary-tag {
+      font-size: 0.78rem;
+      color: var(--paper-muted);
+      padding: 7px 14px;
+      border-radius: 100px;
+      background: var(--paper);
+      border: 1.5px solid var(--paper-line);
+      font-family: var(--sans);
+    }
+
+    .ob-summary-tag strong { color: var(--ink); }
+
+    .ob-final-cta-container {
+      margin-top: 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .ob-final-cta-btn {
+      background: var(--brand-grad);
+      color: #fff;
+      border: none;
+      border-radius: 100px;
+      padding: 16px;
+      font-size: 1.02rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.35s var(--ease);
+      font-family: var(--sans);
+      box-shadow: 0 8px 24px -8px rgba(99,102,241,0.45);
+    }
+
+    .ob-final-cta-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 28px -8px rgba(99,102,241,0.55);
+    }
+
+    .ob-final-benefits {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1.2rem;
+      font-size: 0.8rem;
+      color: var(--paper-muted);
+    }
+
+    .ob-final-benefits span { display: flex; align-items: center; gap: 0.35rem; }
+    .ob-final-benefits i { color: var(--signal); font-style: normal; font-weight: 700; }
+
+    /* ========================================================
+       MOCK LANDING PAGE BACKGROUND
+       ======================================================== */
+    .mock-bg-container {
+      background: var(--paper);
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      font-family: var(--sans);
+      color: var(--ink);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      padding: 2rem;
+    }
+
+    .mock-bg-glow {
+      position: absolute;
+      width: 700px; height: 500px;
+      background: radial-gradient(circle, rgba(99,102,241,0.10) 0%, transparent 60%);
+      top: 25%; left: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+    }
+
+    .mock-pill-toggle {
+      display: inline-flex;
+      background: var(--paper-line);
+      border-radius: 100px;
+      padding: 4px;
+      margin-bottom: 1.75rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .mock-pill-toggle span {
+      padding: 9px 22px;
+      border-radius: 100px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--ink-soft);
+    }
+
+    .mock-pill-toggle span.active {
+      background: var(--paper-raised);
+      color: var(--ink);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    }
+
+    .mock-h1 {
+      font-family: var(--serif);
+      font-size: 3rem;
+      font-weight: 800;
+      margin: 0 0 1rem 0;
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+      color: var(--ink);
+      position: relative;
+      z-index: 1;
+    }
+
+    .mock-h1 span.active-mode {
+      background: var(--brand-grad);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .mock-p {
+      color: var(--ink-soft);
+      font-size: 1.1rem;
+      margin: 0 0 2.5rem 0;
+      max-width: 560px;
+      line-height: 1.65;
+      position: relative;
+      z-index: 1;
+    }
+
+    .mock-cta {
+      padding: 16px 36px;
+      background: var(--brand-grad);
+      border: none;
+      border-radius: 100px;
+      color: #fff;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.3s var(--ease);
+      position: relative;
+      z-index: 1;
+      font-family: var(--sans);
+      box-shadow: 0 8px 24px -8px rgba(99,102,241,0.4);
+    }
+
+    .mock-cta:hover { transform: translateY(-2px); box-shadow: 0 12px 28px -8px rgba(99,102,241,0.5); }
+
+
+    @keyframes radarSweep { to { transform: rotate(360deg); } }
+    @keyframes ringPulse {
+      0% { transform: translate(-50%, -50%) scale(0.9); opacity: 0.7; }
+      100% { transform: translate(-50%, -50%) scale(1.15); opacity: 0; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- MOCK BACKGROUND LANDING PAGE -->
+  <div class="mock-bg-container">
+    <div class="mock-bg-glow"></div>
+    <div class="mock-pill-toggle">
+      <span class="active">IISER IAT</span>
+      <span>NEST</span>
+    </div>
+    <h1 class="mock-h1">Higher chances of cracking <span class="active-mode" id="mock-exam-title">IISER IAT &amp; NEST</span> with personalized AI roadmaps</h1>
+    <p class="mock-p">Adaptive study plans, smart mock tests, weak-area detection, readiness scores, and daily roadmaps designed specifically for IISER and NEST aspirants.</p>
+    <button class="mock-cta" onclick="openOnboardingWizard()">Get my study roadmap &rarr;</button>
+  </div>
+
+  <!-- ONBOARDING PORTAL OVERLAY -->
+  <div id="onboarding-modal" class="ob-modal-overlay">
+    <div class="ob-portal-grid">
+
+      <!-- LEFT PANEL: Live brand preview (Desktop only) -->
+      <div class="ob-preview-panel">
+
+        <div class="ob-preview-header">
+          <div class="ob-logo-mark">
+            <div class="ob-logo-icon">IS</div>
+            <div>
+              <div class="ob-logo-text">IISER SmartPrep</div>
+              <div class="ob-logo-sub">Readiness Engine</div>
+            </div>
+          </div>
+          <span class="ob-badge" id="preview-exam-badge">Awaiting exam</span>
+        </div>
+
+
+        <div class="ob-preview-content">
+          <!-- Dynamic Compass Dial -->
+          <div class="ob-dial-box">
+            <div class="ob-dial-ring">
+              <svg class="ob-svg-ring" viewBox="0 0 100 100">
+                <circle class="ring-bg" cx="50" cy="50" r="40"></circle>
+                <circle class="ring-ticks" cx="50" cy="50" r="40"></circle>
+                <circle class="ring-fill" id="preview-ring-fill" cx="50" cy="50" r="40" stroke-dasharray="251.2" stroke-dashoffset="251.2"></circle>
+              </svg>
+              <div class="ob-dial-text">
+                <span class="ob-dial-num" id="preview-readiness-val">0%</span>
+                <span class="ob-dial-label">Readiness</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Live Status Stack -->
+          <div class="ob-metrics-stack">
+            <div class="ob-metric-item">
+              <span class="ob-m-label">Syllabus match</span>
+              <strong class="ob-m-val" id="preview-match-val">—</strong>
+            </div>
+            <div class="ob-metric-item">
+              <span class="ob-m-label">Weekly load</span>
+              <strong class="ob-m-val" id="preview-intensity-val">Not set</strong>
+            </div>
+            <div class="ob-metric-item">
+              <span class="ob-m-label">Priority focus</span>
+              <strong class="ob-m-val" id="preview-focus-val">Balanced syllabus</strong>
+            </div>
+          </div>
+
+          <!-- Live Roadmap Milestones Draft -->
+          <div class="ob-milestones-box">
+            <h4 class="ob-box-title">Draft roadmap</h4>
+            <div class="ob-milestone-list" id="preview-milestone-list">
+              <p class="ob-placeholder-text">Your three-week plan will sketch itself out here as you answer.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT PANEL: Wizard Form Steps -->
+      <div class="ob-wizard-panel">
+        <button class="ob-close-btn" onclick="closeOnboardingWizard()">&times;</button>
+
+        <div class="ob-wizard-header">
+          <div class="ob-progress-steps">
+            <div class="ob-p-step active" id="p-step-1">
+              <span class="step-num">1</span>
+              <span class="step-lbl">Exam</span>
+            </div>
+            <div class="ob-p-step-line"></div>
+            <div class="ob-p-step" id="p-step-2">
+              <span class="step-num">2</span>
+              <span class="step-lbl">Routine</span>
+            </div>
+            <div class="ob-p-step-line"></div>
+            <div class="ob-p-step" id="p-step-3">
+              <span class="step-num">3</span>
+              <span class="step-lbl">Roadmap</span>
+            </div>
+            <div class="ob-p-step-line"></div>
+            <div class="ob-p-step" id="p-step-4">
+              <span class="step-num">4</span>
+              <span class="step-lbl">Ready</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="ob-body">
+          <!-- Step 1: Exam -->
+          <div id="ob-step-1" class="ob-step active">
+            <p class="ob-eyebrow">Step 1 of 2</p>
+            <h2 class="ob-title">Which exam are you aiming for?</h2>
+            <p class="ob-subtitle">We'll shape your syllabus coverage and mock schedule around it.</p>
+
+            <div class="ob-cards-container">
+              <div class="ob-card" onclick="selectExam('iiser', this)">
+                <div class="ob-card-icon">IAT</div>
+                <div class="ob-card-content">
+                  <h4>IISER IAT only</h4>
+                  <p>Full focus on the IISER Aptitude Test syllabus and mock format.</p>
+                </div>
+                <div class="ob-radio"></div>
+              </div>
+
+              <div class="ob-card" onclick="selectExam('nest', this)">
+                <div class="ob-card-icon">NEST</div>
+                <div class="ob-card-content">
+                  <h4>NEST only (Coming Soon - Do Not Select)</h4>
+                  <p>Built for the National Entrance Screening Test (NISER / CEBS).</p>
+                </div>
+                <div class="ob-radio"></div>
+              </div>
+            </div>
+
+            <div class="ob-footer">
+              <button class="ob-btn ob-btn-primary" onclick="nextStep(1)">Continue &rarr;</button>
+            </div>
+          </div>
+
+          <!-- Step 2: Preferences -->
+          <div id="ob-step-3" class="ob-step">
+            <p class="ob-eyebrow">Step 2 of 2</p>
+            <h2 class="ob-title">Set your study rhythm</h2>
+            <p class="ob-subtitle">Tell us your weekly commitment and where you need extra reps.</p>
+
+            <div class="ob-form-section">
+              <div class="ob-slider-group">
+                <div class="ob-slider-label-row">
+                  <span class="ob-label">Study days / week</span>
+                  <span class="ob-slider-val" id="ob-days-val">5 days</span>
+                </div>
+                <input type="range" min="1" max="7" value="5" class="ob-slider" id="ob-days">
+              </div>
+
+              <div class="ob-slider-group" style="margin-top:1.25rem;">
+                <div class="ob-slider-label-row">
+                  <span class="ob-label">Study hours / day</span>
+                  <span class="ob-slider-val" id="ob-hours-val">3 hrs</span>
+                </div>
+                <input type="range" min="1" max="12" value="3" class="ob-slider" id="ob-hours">
+              </div>
+
+              <div class="ob-subject-selector" style="margin-top:1.75rem;">
+                <span class="ob-label">Strong subjects <span style="color: var(--paper-muted); text-transform: none; font-weight: 500;">— pick all that fit</span></span>
+                <div class="ob-pill-group">
+                  <div class="ob-pill" onclick="toggleSubject('strong', 'Physics', this)">Physics</div>
+                  <div class="ob-pill" onclick="toggleSubject('strong', 'Chemistry', this)">Chemistry</div>
+                  <div class="ob-pill" onclick="toggleSubject('strong', 'Mathematics', this)">Mathematics</div>
+                  <div class="ob-pill" onclick="toggleSubject('strong', 'Biology', this)">Biology</div>
+                </div>
+              </div>
+
+              <div class="ob-subject-selector" style="margin-top:1.5rem;">
+                <span class="ob-label">Weak subjects <span style="color: var(--paper-muted); text-transform: none; font-weight: 500;">— gets extra focus modules</span></span>
+                <div class="ob-pill-group">
+                  <div class="ob-pill" onclick="toggleSubject('weak', 'Physics', this)">Physics</div>
+                  <div class="ob-pill" onclick="toggleSubject('weak', 'Chemistry', this)">Chemistry</div>
+                  <div class="ob-pill" onclick="toggleSubject('weak', 'Mathematics', this)">Mathematics</div>
+                  <div class="ob-pill" onclick="toggleSubject('weak', 'Biology', this)">Biology</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="ob-footer" style="margin-top:2.5rem;">
+              <button class="ob-btn ob-btn-secondary" onclick="showStep(0)">&larr; Back</button>
+              <button class="ob-btn ob-btn-accent" onclick="nextStep(2)">Build my roadmap &rarr;</button>
+            </div>
+          </div>
+
+          <!-- Step Loading -->
+          <div id="ob-step-loading" class="ob-step">
+            <div class="ob-loading-container">
+              <div class="ob-radar-loader">
+                <div class="ob-radar-sweep"></div>
+                <div class="ob-radar-grid"></div>
+                <div class="ob-radar-rings">
+                  <span></span><span></span><span></span>
+                </div>
+                <div class="ob-loader-percentage" id="ob-loader-percent">0%</div>
+              </div>
+
+              <div class="ob-loading-text">Drafting your study roadmap…</div>
+
+              <div class="ob-terminal-box">
+                <div class="ob-terminal-header">
+                  <span class="terminal-dot red"></span>
+                  <span class="terminal-dot yellow"></span>
+                  <span class="terminal-dot green"></span>
+                  <span class="terminal-title">readiness-engine.log</span>
+                </div>
+                <div class="ob-terminal-logs" id="ob-terminal-logs">
+                  <div class="terminal-line active">Reading syllabus map…</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Step Result -->
+          <div id="ob-step-result" class="ob-step">
+            <div class="ob-result-header">
+              <div class="ob-success-badge">
+                <span class="checkmark">&#10003;</span>
+              </div>
+              <h2 class="ob-title" style="font-size:1.7rem; margin-bottom:0.35rem;">Roadmap ready</h2>
+              <p class="ob-subtitle" style="font-size:0.95rem; margin-bottom:0; text-align:center;">Here's your personalized roadmap based on your exam goal and routine.</p>
+            </div>
+
+            <!-- Both Exams Optimizer Banner -->
+            <div id="res-intelligence"></div>
+
+            <div class="ob-result-dashboard">
+              <div class="ob-dashboard-row">
+                <div class="ob-dash-card text-center">
+                  <span class="ob-dash-card-label">Starting readiness</span>
+                  <strong class="ob-dash-card-value text-green" id="res-readiness">0%</strong>
+                </div>
+                <div class="ob-dash-card text-center">
+                  <span class="ob-dash-card-label">Target percentile</span>
+                  <strong class="ob-dash-card-value text-cyan" id="res-projection">—</strong>
+                </div>
+              </div>
+
+              <div class="ob-result-section" style="margin-top:1.5rem;">
+                <span class="ob-section-title">First three weeks</span>
+                <div class="ob-result-timeline" id="res-timeline-list"></div>
+              </div>
+
+              <div class="ob-result-summary-tags" style="margin-top:1.5rem;">
+                <div class="ob-summary-tag">Target: <strong id="res-exam">IISER IAT</strong></div>
+                <div class="ob-summary-tag">Routine: <strong id="res-schedule-summary">5 days/wk (3h/day)</strong></div>
+              </div>
+            </div>
+
+            <div class="ob-final-cta-container">
+              <button class="ob-final-cta-btn" onclick="unlockDashboard()">
+                Open my dashboard
+              </button>
+              <div class="ob-final-benefits">
+                <span><i>✓</i> Save &amp; print roadmap</span>
+                <span><i>✓</i> Start mock challenges</span>
+                <span><i>✓</i> Adaptive weekly updates</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ONBOARDING CONTROLLER -->
+  <script>
+    const obState = {
+      exam: null,
+      days: 5,
+      hours: 3,
+      strong: [],
+      weak: []
+    };
+
+    const obModal = document.getElementById('onboarding-modal');
+    const stepEls = [
+      document.getElementById('ob-step-1'),
+      document.getElementById('ob-step-3'),
+      document.getElementById('ob-step-loading'),
+      document.getElementById('ob-step-result')
+    ];
+
+    const stepIndicatorEls = [
+      document.getElementById('p-step-1'),
+      document.getElementById('p-step-2'),
+      document.getElementById('p-step-3'),
+      document.getElementById('p-step-4')
+    ];
+
+    let currentStepIndex = 0;
+
+    function openOnboardingWizard() {
+      obModal.classList.add('active');
+      document.body.style.overflow = 'hidden';
+      resetOnboardingState();
+      showStep(0);
+    }
+
+    function closeOnboardingWizard() {
+      obModal.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+
+    function resetOnboardingState() {
+      obState.exam = null;
+      obState.days = 5;
+      obState.hours = 3;
+      obState.strong = [];
+      obState.weak = [];
+
+      document.querySelectorAll('#onboarding-modal .ob-card').forEach(c => c.classList.remove('selected'));
+      document.querySelectorAll('#onboarding-modal .ob-pill').forEach(p => {
+        p.classList.remove('active-strong');
+        p.classList.remove('active-weak');
+      });
+
+      const daysSlider = document.getElementById('ob-days');
+      const hoursSlider = document.getElementById('ob-hours');
+      if (daysSlider) daysSlider.value = 5;
+      if (hoursSlider) hoursSlider.value = 3;
+
+      const daysVal = document.getElementById('ob-days-val');
+      const hoursVal = document.getElementById('ob-hours-val');
+      if (daysVal) daysVal.innerText = '5 days';
+      if (hoursVal) hoursVal.innerText = '3 hrs';
+
+      updateLivePreview();
+    }
+
+    function showStep(index) {
+      stepEls.forEach(el => { if (el) el.classList.remove('active'); });
+      if (stepEls[index]) stepEls[index].classList.add('active');
+      currentStepIndex = index;
+
+      stepIndicatorEls.forEach((el, idx) => {
+        if (!el) return;
+        el.classList.remove('active', 'completed');
+
+        const lineEl = el.nextElementSibling;
+        if (lineEl && lineEl.classList.contains('ob-p-step-line')) {
+          lineEl.classList.remove('completed');
+        }
+
+        if (idx === index) {
+          el.classList.add('active');
+        } else if (idx < index) {
+          el.classList.add('completed');
+          if (lineEl && lineEl.classList.contains('ob-p-step-line')) {
+            lineEl.classList.add('completed');
+          }
+        }
+      });
+    }
+
+    function nextStep(step) {
+      if (step === 1) {
+        if (!obState.exam) return alert('Please select your exam goal to continue.');
+        showStep(1);
+      } else if (step === 2) {
+        startLoadingSequence();
+      }
+    }
+
+    function selectExam(exam, el) {
+      if (exam === 'nest') {
+        alert('NEST Only is coming soon! Please select IISER IAT Only to proceed.');
+        return;
+      }
+      obState.exam = exam;
+      document.querySelectorAll('#ob-step-1 .ob-card').forEach(c => c.classList.remove('selected'));
+      el.classList.add('selected');
+      updateLivePreview();
+    }
+
+    document.getElementById('ob-days')?.addEventListener('input', (e) => {
+      obState.days = parseInt(e.target.value);
+      document.getElementById('ob-days-val').innerText = obState.days + (obState.days === 1 ? ' day' : ' days');
+      updateLivePreview();
+    });
+
+    document.getElementById('ob-hours')?.addEventListener('input', (e) => {
+      obState.hours = parseInt(e.target.value);
+      document.getElementById('ob-hours-val').innerText = obState.hours + (obState.hours === 1 ? ' hr' : ' hrs');
+      updateLivePreview();
+    });
+
+    function toggleSubject(type, subject, el) {
+      if (type === 'strong') {
+        const idx = obState.strong.indexOf(subject);
+        if (idx > -1) {
+          obState.strong.splice(idx, 1);
+          el.classList.remove('active-strong');
+        } else {
+          const weakIdx = obState.weak.indexOf(subject);
+          if (weakIdx > -1) {
+            obState.weak.splice(weakIdx, 1);
+            const weakPills = document.querySelectorAll('#ob-step-3 .ob-subject-selector:last-of-type .ob-pill');
+            weakPills.forEach(wp => { if (wp.innerText === subject) wp.classList.remove('active-weak'); });
+          }
+          obState.strong.push(subject);
+          el.classList.add('active-strong');
+        }
+      } else if (type === 'weak') {
+        const idx = obState.weak.indexOf(subject);
+        if (idx > -1) {
+          obState.weak.splice(idx, 1);
+          el.classList.remove('active-weak');
+        } else {
+          const strongIdx = obState.strong.indexOf(subject);
+          if (strongIdx > -1) {
+            obState.strong.splice(strongIdx, 1);
+            const strongPills = document.querySelectorAll('#ob-step-3 .ob-subject-selector:first-of-type .ob-pill');
+            strongPills.forEach(sp => { if (sp.innerText === subject) sp.classList.remove('active-strong'); });
+          }
+          obState.weak.push(subject);
+          el.classList.add('active-weak');
+        }
+      }
+      updateLivePreview();
+    }
+
+    function updateLivePreview() {
+      const badge = document.getElementById('preview-exam-badge');
+      const matchVal = document.getElementById('preview-match-val');
+
+      if (badge) {
+        badge.className = 'ob-badge';
+        if (obState.exam === 'both') {
+          badge.innerText = 'IAT + NEST';
+          badge.classList.add('active-both');
+          if (matchVal) matchVal.innerText = '92% shared syllabus';
+        } else if (obState.exam === 'iiser') {
+          badge.innerText = 'IISER IAT';
+          badge.classList.add('active-iiser');
+          if (matchVal) matchVal.innerText = '100% IAT-focused';
+        } else if (obState.exam === 'nest') {
+          badge.innerText = 'NEST';
+          badge.classList.add('active-nest');
+          if (matchVal) matchVal.innerText = '100% NEST-focused';
+        } else {
+          badge.innerText = 'Awaiting exam';
+          if (matchVal) matchVal.innerText = '—';
+        }
+      }
+
+      const readiness = obState.exam ? 62 : 0;
+
+      const readinessVal = document.getElementById('preview-readiness-val');
+      if (readinessVal) readinessVal.innerText = readiness + '%';
+
+      const ringFill = document.getElementById('preview-ring-fill');
+      if (ringFill) {
+        const circumference = 251.2;
+        const offset = circumference - (readiness / 100) * circumference;
+        ringFill.style.strokeDashoffset = offset;
+      }
+
+      const intensityVal = document.getElementById('preview-intensity-val');
+      if (intensityVal) {
+        const weeklyHours = obState.days * obState.hours;
+        let label = 'Light pace';
+        if (weeklyHours > 8 && weeklyHours <= 20) label = 'Balanced · ' + weeklyHours + 'h/wk';
+        if (weeklyHours > 20 && weeklyHours <= 40) label = 'Intensive · ' + weeklyHours + 'h/wk';
+        if (weeklyHours > 40) label = 'Extreme · ' + weeklyHours + 'h/wk';
+        intensityVal.innerText = label;
+      }
+
+      const focusVal = document.getElementById('preview-focus-val');
+      if (focusVal) {
+        if (obState.weak.length > 0) {
+          focusVal.innerText = obState.weak.join(', ');
+        } else {
+          focusVal.innerText = 'Balanced syllabus';
+        }
+      }
+
+      const milestoneList = document.getElementById('preview-milestone-list');
+      if (milestoneList) {
+        if (!obState.exam) {
+          milestoneList.innerHTML = `<p class="ob-placeholder-text">Your three-week plan will sketch itself out here as you answer.</p>`;
+        } else {
+          const subjectFocus = obState.weak.length > 0 ? obState.weak[0] : (obState.strong.length > 0 ? obState.strong[0] : 'core syllabus');
+          let planHTML = '';
+          if (obState.exam === 'both') {
+            planHTML += `<div class="ob-preview-milestone"><span class="ms-num">01</span><span>Shared physics &amp; chemistry foundations across IAT and NEST</span></div>`;
+            planHTML += `<div class="ob-preview-milestone"><span class="ms-num">02</span><span>Targeted diagnostics in ${subjectFocus}</span></div>`;
+            planHTML += `<div class="ob-preview-milestone"><span class="ms-num">03</span><span>Combined IAT + NEST mock sprint</span></div>`;
+          } else {
+            const examLabel = obState.exam === 'iiser' ? 'IAT' : 'NEST';
+            planHTML += `<div class="ob-preview-milestone"><span class="ms-num">01</span><span>${examLabel} foundations &amp; formula mapping</span></div>`;
+            planHTML += `<div class="ob-preview-milestone"><span class="ms-num">02</span><span>Focus module: ${subjectFocus} drilldown</span></div>`;
+            planHTML += `<div class="ob-preview-milestone"><span class="ms-num">03</span><span>Full-length ${examLabel} simulated mock</span></div>`;
+          }
+          milestoneList.innerHTML = planHTML;
+        }
+      }
+    }
+
+    function startLoadingSequence() {
+      showStep(2);
+
+      const loaderPercent = document.getElementById('ob-loader-percent');
+      const logsContainer = document.getElementById('ob-terminal-logs');
+
+      if (logsContainer) {
+        logsContainer.innerHTML = `<div class="terminal-line active">Reading syllabus map…</div>`;
+      }
+
+      let progress = 0;
+      const intervalTime = 40;
+
+      const timer = setInterval(() => {
+        progress += 1;
+        if (loaderPercent) loaderPercent.innerText = progress + '%';
+
+        if (progress === 20) {
+          appendTerminalLine('Mapping exam overlap and weightage…', 'active');
+        }
+        if (progress === 35) {
+          markPreviousLogsDone();
+          appendTerminalLine('Exam track set: ' + (obState.exam === 'both' ? 'unified IAT + NEST' : obState.exam.toUpperCase() + '-focused'), 'done');
+        }
+        if (progress === 50) {
+          appendTerminalLine('Personalizing study plan…', 'active');
+        }
+        if (progress === 65) {
+          markPreviousLogsDone();
+          appendTerminalLine('Routine set: ' + obState.days + ' days / ' + obState.hours + ' hrs', 'done');
+        }
+        if (progress === 75) {
+          appendTerminalLine('Allocating ' + (obState.days * obState.hours) + ' hrs/wk across topics…', 'active');
+        }
+        if (progress === 90) {
+          markPreviousLogsDone();
+          appendTerminalLine('Priority focus: ' + (obState.weak.join(', ') || 'core subjects'), 'done');
+        }
+        if (progress >= 100) {
+          clearInterval(timer);
+          appendTerminalLine('Roadmap ready.', 'done');
+          setTimeout(() => {
+            renderResults();
+            showStep(3);
+          }, 500);
+        }
+      }, intervalTime);
+    }
+
+    function appendTerminalLine(text, statusClass) {
+      const container = document.getElementById('ob-terminal-logs');
+      if (!container) return;
+
+      const line = document.createElement('div');
+      line.className = 'terminal-line ' + statusClass;
+      line.innerText = text;
+      container.appendChild(line);
+
+      container.scrollTop = container.scrollHeight;
+    }
+
+    function markPreviousLogsDone() {
+      const container = document.getElementById('ob-terminal-logs');
+      if (!container) return;
+      const activeLines = container.querySelectorAll('.terminal-line.active');
+      activeLines.forEach(line => {
+        line.classList.remove('active');
+        line.classList.add('done');
+      });
+    }
+
+    function renderResults() {
+      const readiness = obState.exam ? 62 : 0;
+      let percentile = 'Top 12%';
+      if (obState.exam === 'both') {
+        percentile = 'Top 10%';
+      } else if (obState.exam === 'iiser') {
+        percentile = 'Top 15%';
+      } else if (obState.exam === 'nest') {
+        percentile = 'Top 18%';
+      }
+
+      const resReadiness = document.getElementById('res-readiness');
+      const resProjection = document.getElementById('res-projection');
+      if (resReadiness) resReadiness.innerText = readiness + '%';
+      if (resProjection) resProjection.innerText = percentile;
+
+      const resExam = document.getElementById('res-exam');
+      const resSchedule = document.getElementById('res-schedule-summary');
+
+      if (resExam) {
+        resExam.innerText = obState.exam === 'both' ? 'IISER IAT & NEST' : (obState.exam === 'iiser' ? 'IISER IAT' : 'NEST');
+      }
+      if (resSchedule) {
+        resSchedule.innerText = obState.days + ' days/wk (' + obState.hours + 'h/day)';
+      }
+
+      const resIntelligence = document.getElementById('res-intelligence');
+      if (resIntelligence) {
+        if (obState.exam === 'both') {
+          resIntelligence.innerHTML = `
+            <div style="background: var(--sky-soft); border:1.5px solid var(--sky); border-radius:12px; padding:1.1rem 1.25rem; margin-bottom:1.5rem; display:flex; align-items:flex-start; gap:12px;">
+              <div style="font-family: var(--mono); font-size:0.75rem; font-weight:700; color: var(--sky); border: 1.5px solid var(--sky); border-radius: 6px; padding: 4px 8px; flex-shrink: 0;">92%</div>
+              <div>
+                <h4 style="color: var(--sky); margin:0 0 0.25rem 0; font-size:0.92rem; font-weight:700;">Combined-track mode is on</h4>
+                <p style="color: var(--ink-soft); margin:0; font-size:0.85rem; line-height:1.5;">IAT and NEST overlap on most core topics, so each week's study covers both syllabi at once — no repeated work.</p>
+              </div>
+            </div>
+          `;
+        } else {
+          resIntelligence.innerHTML = '';
+        }
+      }
+
+      const resTimelineList = document.getElementById('res-timeline-list');
+      if (resTimelineList) {
+        const focusSub = obState.weak.length > 0 ? obState.weak[0] : (obState.strong.length > 0 ? obState.strong[0] : 'core syllabus');
+        let timelineHTML = '';
+
+        if (obState.exam === 'both') {
+          timelineHTML += `
+            <div class="ob-timeline-node">
+              <span class="ob-timeline-week">Week 1 — Shared foundations</span>
+              <p class="ob-timeline-topic">Align core physics mechanics and chemistry fundamentals across both syllabi.</p>
+            </div>
+            <div class="ob-timeline-node accent">
+              <span class="ob-timeline-week">Week 2 — Diagnostic focus</span>
+              <p class="ob-timeline-topic">Targeted revision and topic quizzes in ${focusSub}.</p>
+            </div>
+            <div class="ob-timeline-node">
+              <span class="ob-timeline-week">Week 3 — Combined sprint</span>
+              <p class="ob-timeline-topic">First unified IAT + NEST mock with a performance breakdown.</p>
+            </div>
+          `;
+        } else {
+          const examName = obState.exam === 'iiser' ? 'IISER IAT' : 'NEST';
+          timelineHTML += `
+            <div class="ob-timeline-node">
+              <span class="ob-timeline-week">Week 1 — Fundamentals</span>
+              <p class="ob-timeline-topic">Drill the high-weightage chapters for ${examName} and map core formulas.</p>
+            </div>
+            <div class="ob-timeline-node accent">
+              <span class="ob-timeline-week">Week 2 — Topic boosters</span>
+              <p class="ob-timeline-topic">Focused problem-solving in ${focusSub} to close prep gaps.</p>
+            </div>
+            <div class="ob-timeline-node">
+              <span class="ob-timeline-week">Week 3 — Mock diagnostic</span>
+              <p class="ob-timeline-topic">Full-syllabus mock on the actual ${examName} interface.</p>
+            </div>
+          `;
+        }
+        resTimelineList.innerHTML = timelineHTML;
+      }
+    }
+
+    function switchDashboardData(exam) {
+      const titleLabel = document.getElementById('mock-exam-title');
+      if (titleLabel) {
+        if (exam === 'iiser') {
+          titleLabel.innerText = "IISER IAT (Focused)";
+        } else if (exam === 'nest') {
+          titleLabel.innerText = "NEST (Focused)";
+        } else {
+          titleLabel.innerText = "IISER IAT & NEST";
+        }
+      }
+    }
+
+    function unlockDashboard() {
+      closeOnboardingWizard();
+      
+      // Persist onboarding profile choices for the dashboard
+      localStorage.setItem('onboarding_exam', obState.exam);
+      localStorage.setItem('onboarding_days', obState.days);
+      localStorage.setItem('onboarding_hours', obState.hours);
+      localStorage.setItem('onboarding_strong', JSON.stringify(obState.strong));
+      localStorage.setItem('onboarding_weak', JSON.stringify(obState.weak));
+      localStorage.setItem('onboarding_completed', 'true');
+
+      // Redirect to signup page
+      window.location.href = 'signup.html';
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      openOnboardingWizard();
+    });
+  </script>
+</body>
+</html>

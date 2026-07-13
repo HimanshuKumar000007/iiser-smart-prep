@@ -950,8 +950,8 @@
                 const urlParams = new URLSearchParams(window.location.search);
                 const year = urlParams.get('year') || '2024'; // Default to 2024
 
-                // Fetch Data from pyq-mock folder
-                const response = await fetch(`pyq-mock/mock-${year}.json`);
+                // Fetch Data from pyqs folder
+                const response = await fetch(`../src/data/pyqs/mock-${year}.json`);
                 if (!response.ok) throw new Error(`Failed to load question data for year ${year}`);
 
                 const data = await response.json();

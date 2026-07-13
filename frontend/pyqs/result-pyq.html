@@ -698,7 +698,7 @@
                 const year = resultData.mockId || '2024'; // Year stored as mockId
 
                 try {
-                    const response = await fetch(`pyq-mock/mock-${year}.json`);
+                    const response = await fetch(`../src/data/pyqs/mock-${year}.json`);
                     if (!response.ok) throw new Error("JSON Missing");
                     const json = await response.json();
                     originalQuestions = json.questions;
