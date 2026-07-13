@@ -1,5 +1,6 @@
 import { Lightbulb, BrainCircuit, Zap, Trophy, ArrowRight } from 'lucide-react';
 import { cn } from '../../lib/utils';
+import { useTheme } from '../../context/ThemeContext';
 
 interface Props {
   onNavigate?: (view: string) => void;
@@ -57,6 +58,8 @@ const quickAccessItems = [
 ];
 
 export function QuickAccess({ onNavigate }: Props) {
+  const { theme } = useTheme();
+  const isLight = theme === 'light';
   const handleClick = (id: string) => {
     if (id === 'doubt') {
       window.location.href = '/ai_tutor.html';
@@ -78,7 +81,10 @@ export function QuickAccess({ onNavigate }: Props) {
             key={item.id}
             onClick={() => handleClick(item.id)}
             className={cn(
-              "group relative flex items-center gap-3 bg-[#0A0C16] border border-white/5 rounded-[20px] p-3.5 md:p-4 overflow-hidden transition-all duration-300 transform hover:-translate-y-1 w-full text-left cursor-pointer",
+              "group relative flex items-center gap-3 border rounded-[20px] p-3.5 md:p-4 overflow-hidden transition-all duration-300 transform hover:-translate-y-1 w-full text-left cursor-pointer",
+              isLight
+                ? 'bg-white/65 backdrop-blur-sm border-white/80 shadow-[0_3px_16px_rgba(15,23,42,0.07),inset_0_1px_0_rgba(255,255,255,0.9)] hover:shadow-[0_6px_24px_rgba(15,23,42,0.10)]'
+                : 'bg-[#0A0C16] border-white/5',
               item.borderColor,
               item.glowColor
             )}

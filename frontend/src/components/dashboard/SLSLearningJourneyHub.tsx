@@ -15,6 +15,7 @@ import React from 'react';
 import { motion } from 'motion/react';
 import { Atom, FlaskConical, Calculator, Dna, ArrowRight, BookOpen, Sparkles } from 'lucide-react';
 import { cn } from '../../lib/utils';
+import { useTheme } from '../../context/ThemeContext';
 
 const SUBJECT_ENTRIES = [
   {
@@ -80,12 +81,20 @@ export function SLSLearningJourneyHub({ onNavigate }: Props) {
     onNavigate?.(`/smart-lessons/${chapterId}`);
   }
 
+  const { theme } = useTheme();
+  const isLight = theme === 'light';
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4 }}
-      className="relative bg-gradient-to-br from-[#0D0F1F] via-[#0A0C18] to-[#0D0F1F] border border-white/10 rounded-3xl p-6 lg:p-8 overflow-hidden"
+      className={cn(
+        'relative rounded-3xl p-6 lg:p-8 overflow-hidden',
+        isLight
+          ? 'bg-white/70 backdrop-blur-[24px] border border-white/80 shadow-[0_8px_40px_rgba(15,23,42,0.09),0_2px_8px_rgba(15,23,42,0.05),inset_0_1px_0_rgba(255,255,255,0.95)]'
+          : 'bg-gradient-to-br from-[#0D0F1F] via-[#0A0C18] to-[#0D0F1F] border border-white/10'
+      )}
     >
       {/* Ambient glow */}
       <div className="absolute -top-40 left-1/2 -translate-x-1/2 w-96 h-96 bg-cyan-500/6 blur-[140px] rounded-full pointer-events-none" />

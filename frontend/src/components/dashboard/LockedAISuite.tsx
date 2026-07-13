@@ -8,12 +8,16 @@
 import React from 'react';
 import { motion } from 'motion/react';
 import { BrainCircuit, Lock, ArrowUpRight, Target, ClipboardList, Sparkles, Activity } from 'lucide-react';
+import { useTheme } from '../../context/ThemeContext';
+import { cn } from '../../lib/utils';
 
 interface Props {
   onNavigate?: (view: string) => void;
 }
 
 export function LockedAISuite({ onNavigate }: Props) {
+  const { theme } = useTheme();
+  const isLight = theme === 'light';
   const engines = [
     {
       icon: Target,
@@ -46,7 +50,12 @@ export function LockedAISuite({ onNavigate }: Props) {
       initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4 }}
-      className="relative bg-gradient-to-br from-[#0D0F1F] via-[#0A0C18] to-[#0D0F1F] border border-violet-500/25 rounded-3xl p-6 lg:p-8 overflow-hidden shadow-[0_0_50px_rgba(139,92,246,0.12)]"
+      className={cn(
+        'relative rounded-3xl p-6 lg:p-8 overflow-hidden',
+        isLight
+          ? 'bg-white/70 backdrop-blur-[24px] border border-white/80 shadow-[0_8px_40px_rgba(15,23,42,0.09),0_2px_8px_rgba(15,23,42,0.05),inset_0_1px_0_rgba(255,255,255,0.95)]'
+          : 'bg-gradient-to-br from-[#0D0F1F] via-[#0A0C18] to-[#0D0F1F] border border-violet-500/25 shadow-[0_0_50px_rgba(139,92,246,0.12)]'
+      )}
     >
       {/* Glow background */}
       <div className="absolute -top-40 left-1/2 -translate-x-1/2 w-96 h-96 bg-violet-500/10 blur-[140px] rounded-full pointer-events-none" />

@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Home, BookOpen, Zap, FileText, Trophy, BookMarked, Target, PlayCircle, Map } from 'lucide-react';
 import { cn } from '../../lib/utils';
 import { motion, AnimatePresence } from 'motion/react';
+import { useTheme } from '../../context/ThemeContext';
 
 const navItems = [
   { id: 'dashboard', icon: Home, label: 'Home' },
@@ -19,6 +20,9 @@ export function MobileNav({
   onNavigate?: (view: any) => void;
 }) {
   const [isStudyMenuOpen, setIsStudyMenuOpen] = useState(false);
+  const { theme } = useTheme();
+  const isLight = theme === 'light';
+  const inactiveColor = isLight ? 'text-slate-400' : 'text-white/40';
 
   return (
     <>
@@ -45,7 +49,12 @@ export function MobileNav({
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: 20, scale: 0.95 }}
               transition={{ type: "spring", bounce: 0.3, duration: 0.5 }}
-              className="absolute bottom-24 left-1/2 -translate-x-1/2 w-[calc(100%-2rem)] max-w-sm bg-[#0A0C16]/95 backdrop-blur-xl border border-white/10 p-2 rounded-3xl shadow-[0_0_40px_rgba(0,0,0,0.8)] pointer-events-auto overflow-hidden"
+              className={cn(
+                "absolute bottom-24 left-1/2 -translate-x-1/2 w-[calc(100%-2rem)] max-w-sm backdrop-blur-xl border p-2 rounded-3xl pointer-events-auto overflow-hidden",
+                isLight
+                  ? 'bg-white/90 border-slate-200/60 shadow-[0_12px_40px_rgba(15,23,42,0.12),0_2px_8px_rgba(15,23,42,0.06)]'
+                  : 'bg-[#0A0C16]/95 border-white/10 shadow-[0_0_40px_rgba(0,0,0,0.8)]'
+              )}
             >
               <div className="absolute inset-0 bg-gradient-to-b from-cyan-500/10 to-transparent opacity-50 pointer-events-none" />
               
@@ -93,15 +102,20 @@ export function MobileNav({
           )}
         </AnimatePresence>
 
-        <div className="mx-auto max-w-md bg-[#05060F]/90 backdrop-blur-2xl border border-white/10 rounded-full px-1.5 py-1 sm:px-2 sm:py-1.5 flex items-center justify-between shadow-[0_8px_30px_rgba(0,0,0,0.8)] pointer-events-auto relative" style={{ transform: 'translate3d(0,0,0)', WebkitTransform: 'translate3d(0,0,0)', backfaceVisibility: 'hidden', WebkitBackfaceVisibility: 'hidden' }}>
+        <div className={cn(
+          'mx-auto max-w-md backdrop-blur-2xl border rounded-full px-1.5 py-1 sm:px-2 sm:py-1.5 flex items-center justify-between pointer-events-auto relative',
+          isLight
+            ? 'bg-white/88 border-slate-200/60 shadow-[0_8px_32px_rgba(15,23,42,0.10),0_2px_8px_rgba(15,23,42,0.06),inset_0_1px_0_rgba(255,255,255,0.95)]'
+            : 'bg-[#05060F]/90 border-white/10 shadow-[0_8px_30px_rgba(0,0,0,0.8)]'
+        )} style={{ transform: 'translate3d(0,0,0)', WebkitTransform: 'translate3d(0,0,0)', backfaceVisibility: 'hidden', WebkitBackfaceVisibility: 'hidden' }}>
           
           <button 
             onClick={() => onNavigate?.('dashboard')}
             className="flex-[1.2] flex justify-center py-2 relative"
           >
             <div className="relative z-10 flex flex-col items-center gap-0.5 sm:gap-1 mt-0.5">
-              <Home className={cn("w-5 h-5 transition-colors", currentView === 'dashboard' ? "text-cyan-400" : "text-white/40")} />
-              <span className={cn("text-[9px] sm:text-[10px] font-medium transition-colors", currentView === 'dashboard' ? "text-cyan-400" : "text-white/40")}>Home</span>
+              <Home className={cn("w-5 h-5 transition-colors", currentView === 'dashboard' ? "text-cyan-400" : inactiveColor)} />
+              <span className={cn("text-[9px] sm:text-[10px] font-medium transition-colors", currentView === 'dashboard' ? "text-cyan-400" : inactiveColor)}>Home</span>
             </div>
             {currentView === 'dashboard' && (
               <motion.div layoutId="nav-pill" className="absolute inset-0 bg-cyan-400/10 rounded-full" />
@@ -113,8 +127,8 @@ export function MobileNav({
             className="flex-[1.2] flex justify-center py-2 relative"
           >
             <div className="relative z-10 flex flex-col items-center gap-0.5 sm:gap-1 mt-0.5">
-              <Map className={cn("w-5 h-5 transition-colors", currentView === 'path' ? "text-cyan-400" : "text-white/40")} />
-              <span className={cn("text-[9px] sm:text-[10px] font-medium transition-colors whitespace-nowrap", currentView === 'path' ? "text-cyan-400" : "text-white/40")}>My Path</span>
+              <Map className={cn("w-5 h-5 transition-colors", currentView === 'path' ? "text-cyan-400" : inactiveColor)} />
+              <span className={cn("text-[9px] sm:text-[10px] font-medium transition-colors whitespace-nowrap", currentView === 'path' ? "text-cyan-400" : inactiveColor)}>My Path</span>
             </div>
             {currentView === 'path' && (
               <motion.div layoutId="nav-pill" className="absolute inset-0 bg-cyan-400/10 rounded-full" />
@@ -126,8 +140,8 @@ export function MobileNav({
             className="flex-[1.2] flex justify-center py-2 relative"
           >
             <div className="relative z-10 flex flex-col items-center gap-0.5 sm:gap-1 mt-0.5">
-              <BookOpen className={cn("w-5 h-5 transition-colors", currentView.startsWith('smart_lessons') ? "text-cyan-400" : "text-white/40")} />
-              <span className={cn("text-[9px] sm:text-[10px] font-medium transition-colors whitespace-nowrap", currentView.startsWith('smart_lessons') ? "text-cyan-400" : "text-white/40")}>Lessons</span>
+              <BookOpen className={cn("w-5 h-5 transition-colors", currentView.startsWith('smart_lessons') ? "text-cyan-400" : inactiveColor)} />
+              <span className={cn("text-[9px] sm:text-[10px] font-medium transition-colors whitespace-nowrap", currentView.startsWith('smart_lessons') ? "text-cyan-400" : inactiveColor)}>Lessons</span>
             </div>
             {currentView.startsWith('smart_lessons') && (
               <motion.div layoutId="nav-pill" className="absolute inset-0 bg-cyan-400/10 rounded-full" />
@@ -153,8 +167,8 @@ export function MobileNav({
             className="flex-[1.2] flex justify-center py-2 relative"
           >
             <div className="relative z-10 flex flex-col items-center gap-0.5 sm:gap-1 mt-0.5">
-              <FileText className={cn("w-5 h-5 transition-colors", currentView === 'pyqs' ? "text-cyan-400" : "text-white/40")} />
-              <span className={cn("text-[9px] sm:text-[10px] font-medium transition-colors whitespace-nowrap", currentView === 'pyqs' ? "text-cyan-400" : "text-white/40")}>PYQs</span>
+              <FileText className={cn("w-5 h-5 transition-colors", currentView === 'pyqs' ? "text-cyan-400" : inactiveColor)} />
+              <span className={cn("text-[9px] sm:text-[10px] font-medium transition-colors whitespace-nowrap", currentView === 'pyqs' ? "text-cyan-400" : inactiveColor)}>PYQs</span>
             </div>
             {currentView === 'pyqs' && (
               <motion.div layoutId="nav-pill" className="absolute inset-0 bg-cyan-400/10 rounded-full" />
@@ -166,8 +180,8 @@ export function MobileNav({
             className="flex-[1.2] flex justify-center py-2 relative"
           >
             <div className="relative z-10 flex flex-col items-center gap-0.5 sm:gap-1 mt-0.5">
-              <Trophy className={cn("w-5 h-5 transition-colors", currentView === 'mock_tests' ? "text-cyan-400" : "text-white/40")} />
-              <span className={cn("text-[9px] sm:text-[10px] font-medium transition-colors whitespace-nowrap", currentView === 'mock_tests' ? "text-cyan-400" : "text-white/40")}>Mocks</span>
+              <Trophy className={cn("w-5 h-5 transition-colors", currentView === 'mock_tests' ? "text-cyan-400" : inactiveColor)} />
+              <span className={cn("text-[9px] sm:text-[10px] font-medium transition-colors whitespace-nowrap", currentView === 'mock_tests' ? "text-cyan-400" : inactiveColor)}>Mocks</span>
             </div>
             {currentView === 'mock_tests' && (
                <motion.div layoutId="nav-pill" className="absolute inset-0 bg-cyan-400/10 rounded-full" />

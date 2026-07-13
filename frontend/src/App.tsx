@@ -144,9 +144,18 @@ function DashboardApp() {
 
       <main className="flex-1 lg:ml-64 min-h-screen flex flex-col overflow-x-hidden">
         {/* Mobile Header */}
-        <div className="lg:hidden flex items-center justify-between p-4 border-b border-white/5 bg-background/80 backdrop-blur-md sticky top-0 z-30">
+        <div className={`lg:hidden flex items-center justify-between p-4 border-b sticky top-0 z-30 transition-colors duration-300 ${
+          theme === 'light'
+            ? 'bg-white/80 border-slate-200/80 shadow-[0_1px_12px_rgba(15,23,42,0.06)] backdrop-blur-md'
+            : 'border-white/5 bg-background/80 backdrop-blur-md'
+        }`}>
           <div className="flex items-center gap-3">
-            <button onClick={() => setIsSidebarOpen(true)} className="p-2 -ml-2 text-white/70 hover:text-white transition-colors">
+            <button 
+              onClick={() => setIsSidebarOpen(true)} 
+              className={`p-2 -ml-2 transition-colors ${
+                theme === 'light' ? 'text-slate-600 hover:text-slate-900' : 'text-white/70 hover:text-white'
+              }`}
+            >
               <Menu className="w-6 h-6" />
             </button>
             <div className="w-8 h-8 rounded-lg bg-gradient-to-tr from-indigo-500 to-cyan-400 flex items-center justify-center shadow-[0_0_15px_rgba(6,182,212,0.5)]">
@@ -156,12 +165,16 @@ function DashboardApp() {
           <div className="flex items-center gap-3 relative">
             <button 
               onClick={toggleTheme}
-              className="p-2 text-white/60 hover:text-white transition-colors cursor-pointer"
+              className={`p-2 transition-colors cursor-pointer ${
+                theme === 'light' ? 'text-slate-500 hover:text-slate-800' : 'text-white/60 hover:text-white'
+              }`}
               aria-label="Toggle Theme"
             >
               {theme === 'light' ? <Moon className="w-5 h-5" /> : <Sun className="w-5 h-5" />}
             </button>
-            <button className="relative p-2 text-white/60 hover:text-white transition-colors">
+            <button className={`relative p-2 transition-colors ${
+              theme === 'light' ? 'text-slate-500 hover:text-slate-800' : 'text-white/60 hover:text-white'
+            }`}>
               <Bell className="w-5 h-5" />
               <span className="absolute top-2 right-2 w-2 h-2 bg-indigo-500 rounded-full" />
             </button>
@@ -172,8 +185,14 @@ function DashboardApp() {
               {currentUser.name ? currentUser.name.charAt(0).toUpperCase() : 'U'}
             </button>
             {showUserMenu && (
-              <div className="absolute right-0 top-10 w-48 bg-[#0b0c16]/95 border border-white/10 rounded-xl p-2 shadow-2xl z-50 backdrop-blur-md">
-                <p className="text-[11px] text-white/40 px-3 py-1.5 border-b border-white/5 font-medium truncate">Logged in as {currentUser.name}</p>
+              <div className={`absolute right-0 top-10 w-48 border rounded-xl p-2 shadow-2xl z-50 backdrop-blur-md ${
+                theme === 'light'
+                  ? 'bg-white/95 border-slate-200/80 shadow-[0_8px_32px_rgba(15,23,42,0.12)]'
+                  : 'bg-[#0b0c16]/95 border-white/10'
+              }`}>
+                <p className={`text-[11px] px-3 py-1.5 border-b font-medium truncate ${
+                  theme === 'light' ? 'text-slate-500 border-slate-100' : 'text-white/40 border-white/5'
+                }`}>Logged in as {currentUser.name}</p>
                 <button
                   onClick={() => {
                     localStorage.removeItem('currentUser');
@@ -181,7 +200,9 @@ function DashboardApp() {
                     localStorage.removeItem('IAT_TOKEN');
                     window.location.href = 'index.html';
                   }}
-                  className="w-full text-left text-xs text-rose-400 hover:bg-white/5 px-3 py-2 rounded-lg mt-1 font-semibold transition-all cursor-pointer"
+                  className={`w-full text-left text-xs px-3 py-2 rounded-lg mt-1 font-semibold transition-all cursor-pointer ${
+                    theme === 'light' ? 'text-rose-600 hover:bg-slate-50' : 'text-rose-400 hover:bg-white/5'
+                  }`}
                 >
                   Log Out
                 </button>

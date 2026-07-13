@@ -1,6 +1,7 @@
 import { motion } from 'motion/react';
 import { BrainCircuit, BookOpen, Target, Trophy, Clock, ArrowRight, ClipboardList, BookOpenCheck, ShieldAlert, Sparkles, Compass } from 'lucide-react';
 import { cn } from '../../lib/utils';
+import { useTheme } from '../../context/ThemeContext';
 
 interface Props {
   dashboardData: any;
@@ -90,17 +91,24 @@ export function StudyCoach({ dashboardData, loading, onNavigate, actionPlan, err
     }
   };
 
-  // Resolve visual status theme
+  const { theme } = useTheme();
+  const isLight = theme === 'light';
+
   const statusKey = (coachData?.coachSummary?.status || 'GETTING_STARTED') as keyof typeof STATUS_THEMES;
-  const theme = STATUS_THEMES[statusKey] || STATUS_THEMES.GETTING_STARTED;
+  const statusTheme = STATUS_THEMES[statusKey] || STATUS_THEMES.GETTING_STARTED;
 
   // Decide if profile is personalized or building evidence
   const isPersonalized = coachData?.evidence?.level === 'STRONG' || coachData?.evidence?.level === 'SUFFICIENT';
 
   return (
-    <div className="bg-[#05060F] border border-white/10 rounded-3xl p-6 lg:p-8 flex flex-col h-full shadow-xl relative overflow-hidden group">
+    <div className={cn(
+      'border rounded-3xl p-6 lg:p-8 flex flex-col h-full shadow-xl relative overflow-hidden group',
+      isLight
+        ? 'bg-white/72 backdrop-blur-[24px] border-white/80 shadow-[0_8px_32px_rgba(15,23,42,0.08),0_2px_8px_rgba(15,23,42,0.04),inset_0_1px_0_rgba(255,255,255,0.9)]'
+        : 'bg-[#05060F] border-white/10'
+    )}>
       {/* Background glow */}
-      <div className={`absolute -top-32 -right-32 w-96 h-96 ${theme.glow} blur-[140px] rounded-full pointer-events-none transition-opacity duration-700 opacity-40 group-hover:opacity-80`} />
+      <div className={`absolute -top-32 -right-32 w-96 h-96 ${statusTheme.glow} blur-[140px] rounded-full pointer-events-none transition-opacity duration-700 opacity-40 group-hover:opacity-80`} />
 
       {/* Header */}
       <div className="flex items-center justify-between mb-6 z-10 relative">
@@ -214,19 +222,19 @@ export function StudyCoach({ dashboardData, loading, onNavigate, actionPlan, err
             {coachData.coachSummary && (
               <div className={cn(
                 "p-4 rounded-2xl border flex items-start gap-3 relative overflow-hidden backdrop-blur-sm",
-                theme.border
+                statusTheme.border
               )}>
                 {/* Subtle visual glow inside card */}
                 <div className={cn(
                   "absolute -bottom-8 -right-8 w-24 h-24 blur-[24px] rounded-full pointer-events-none opacity-30",
-                  theme.glow
+                  statusTheme.glow
                 )} />
 
                 <div className="text-xl flex-shrink-0 mt-0.5 leading-none">
-                  {theme.emoji}
+                  {statusTheme.emoji}
                 </div>
                 <div className="space-y-1">
-                  <span className={cn("text-[9px] font-black uppercase tracking-widest block", theme.eyebrow)}>
+                  <span className={cn("text-[9px] font-black uppercase tracking-widest block", statusTheme.eyebrow)}>
                     {coachData.coachSummary.status.replace('_', ' ')}
                   </span>
                   <h4 className="text-xs font-bold text-white leading-normal">

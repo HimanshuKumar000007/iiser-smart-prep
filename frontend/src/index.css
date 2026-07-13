@@ -224,47 +224,96 @@
 }
 
 /* ========================================================
-   LIGHT HOMEPAGE THEME OVERRIDES
+   LIGHT GLASS V2 — PREMIUM iOS-INSPIRED THEME SYSTEM
    ======================================================== */
+
+/* ── Design tokens ─────────────────────────────────────── */
 .light {
-  --color-background: #eef4fb;
+  --color-background: #f0f4fa;
   --color-foreground: #0f172a;
-  --color-panel: #ffffff;
-  --color-panel-hover: #f8fafc;
-  --color-panel-border: rgba(15, 23, 42, 0.08);
+  --color-panel: rgba(255, 255, 255, 0.78);
+  --color-panel-hover: rgba(255, 255, 255, 0.88);
+  --color-panel-border: rgba(15, 23, 42, 0.07);
+
+  /* Glass surfaces */
+  --glass-primary: rgba(255, 255, 255, 0.75);
+  --glass-secondary: rgba(255, 255, 255, 0.55);
+  --glass-inset: rgba(255, 255, 255, 0.40);
+  --glass-blur-primary: 28px;
+  --glass-blur-secondary: 16px;
+
+  /* Shadows */
+  --shadow-sm: 0 2px 12px rgba(15, 23, 42, 0.06), 0 1px 3px rgba(15, 23, 42, 0.04);
+  --shadow-md: 0 8px 32px rgba(15, 23, 42, 0.08), 0 2px 8px rgba(15, 23, 42, 0.04);
+  --shadow-lg: 0 20px 60px rgba(15, 23, 42, 0.10), 0 4px 16px rgba(15, 23, 42, 0.06);
+  --shadow-card: 0 4px 24px rgba(15, 23, 42, 0.07), 0 1px 4px rgba(15, 23, 42, 0.04), inset 0 1px 0 rgba(255,255,255,0.9);
+
+  /* Borders */
+  --border-primary: rgba(15, 23, 42, 0.07);
+  --border-medium: rgba(15, 23, 42, 0.10);
+  --border-strong: rgba(15, 23, 42, 0.14);
+  --border-cyan: rgba(6, 182, 212, 0.25);
+  --border-indigo: rgba(99, 102, 241, 0.2);
 }
 
+/* ── Page background — layered ambient gradients ───────── */
 .light body {
-  background-color: #eef4fb;
+  background-color: transparent;
+  background-image:
+    radial-gradient(ellipse 80% 50% at 20% 10%, rgba(6, 182, 212, 0.09) 0%, transparent 60%),
+    radial-gradient(ellipse 70% 45% at 85% 85%, rgba(99, 102, 241, 0.08) 0%, transparent 55%),
+    radial-gradient(ellipse 60% 40% at 50% 40%, rgba(139, 92, 246, 0.05) 0%, transparent 50%),
+    linear-gradient(160deg, #eef6fb 0%, #f3f6fc 40%, #eff3fa 70%, #edf3fb 100%);
   color: #0f172a;
+  min-height: 100vh;
 }
 
-/* Ambient glow colors */
-.light .bg-indigo-500\/10 {
-  background-color: rgba(79, 124, 255, 0.06) !important;
+/* ── Utility glass classes (used in component cn() calls) ─ */
+.light .glass-card {
+  background: var(--glass-primary) !important;
+  backdrop-filter: blur(var(--glass-blur-primary)) !important;
+  -webkit-backdrop-filter: blur(var(--glass-blur-primary)) !important;
+  border: 1px solid var(--border-primary) !important;
+  box-shadow: var(--shadow-card) !important;
 }
 
-.light .bg-cyan-500\/10 {
-  background-color: rgba(34, 211, 238, 0.06) !important;
+.light .glass-card-secondary {
+  background: var(--glass-secondary) !important;
+  backdrop-filter: blur(var(--glass-blur-secondary)) !important;
+  -webkit-backdrop-filter: blur(var(--glass-blur-secondary)) !important;
+  border: 1px solid var(--border-primary) !important;
+  box-shadow: var(--shadow-sm) !important;
 }
 
-/* Sidebar overrides */
+.light .glass-inset {
+  background: var(--glass-inset) !important;
+  border: 1px solid var(--border-primary) !important;
+}
+
+/* ── Sidebar ───────────────────────────────────────────── */
 .light aside {
-  background-color: #ffffff !important;
-  border-right: 1px solid rgba(15, 23, 42, 0.08) !important;
+  background: rgba(255, 255, 255, 0.88) !important;
+  backdrop-filter: blur(24px) !important;
+  -webkit-backdrop-filter: blur(24px) !important;
+  border-right: 1px solid rgba(15, 23, 42, 0.07) !important;
+  box-shadow: 2px 0 20px rgba(15, 23, 42, 0.05) !important;
+}
+
+.light aside h1 {
+  color: #0f172a !important;
 }
 
 .light aside .text-white\/60 {
-  color: rgba(15, 23, 42, 0.6) !important;
+  color: rgba(15, 23, 42, 0.55) !important;
 }
 
 .light aside .text-white\/60:hover {
   color: #0f172a !important;
-  background-color: rgba(15, 23, 42, 0.04) !important;
+  background-color: rgba(15, 23, 42, 0.05) !important;
 }
 
 .light aside .bg-white\/10 {
-  background-color: rgba(15, 23, 42, 0.06) !important;
+  background-color: rgba(6, 182, 212, 0.1) !important;
 }
 
 .light aside .bg-white\/5 {
@@ -275,169 +324,265 @@
   color: #0f172a !important;
 }
 
-/* Card overrides */
-.light .bg-panel {
-  background-color: #ffffff !important;
-  border-color: rgba(15, 23, 42, 0.08) !important;
-}
-
-.light .border-panel-border {
-  border-color: rgba(15, 23, 42, 0.08) !important;
-}
-
-.light .bg-\[\#0A0C16\] {
-  background-color: #ffffff !important;
-  border-color: rgba(15, 23, 42, 0.08) !important;
-}
-
-.light .bg-\[\#05060F\] {
-  background-color: #ffffff !important;
-  border-color: rgba(15, 23, 42, 0.08) !important;
-}
-
-/* Card gradients to light glassy look */
-.light .bg-gradient-to-br.from-\[\#0A0C16\].via-\[\#06070E\].to-\[\#080A12\] {
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.75), rgba(248, 250, 252, 0.75), rgba(241, 245, 249, 0.75)) !important;
-  backdrop-filter: blur(20px) !important;
-  border-color: rgba(15, 23, 42, 0.08) !important;
-  box-shadow: 0 10px 30px -10px rgba(15, 23, 42, 0.04) !important;
-}
-
-.light .bg-gradient-to-br.from-\[\#0D0F1F\].via-\[\#0A0C18\].to-\[\#0D0F1F\] {
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.75), rgba(248, 250, 252, 0.75), rgba(241, 245, 249, 0.75)) !important;
-  backdrop-filter: blur(20px) !important;
-  border-color: rgba(15, 23, 42, 0.08) !important;
-  box-shadow: 0 10px 30px -10px rgba(15, 23, 42, 0.04) !important;
-}
-
-.light .border-white\/5 {
-  border-color: rgba(15, 23, 42, 0.05) !important;
-}
-
-.light .border-white\/6 {
+.light aside .border-white\/5 {
   border-color: rgba(15, 23, 42, 0.06) !important;
 }
 
-.light .border-white\/8 {
-  border-color: rgba(15, 23, 42, 0.07) !important;
+/* ── Token-based card class ───────────────────────────── */
+.light .bg-panel {
+  background: var(--glass-primary) !important;
+  backdrop-filter: blur(24px) !important;
+  -webkit-backdrop-filter: blur(24px) !important;
+  border-color: var(--border-primary) !important;
+  box-shadow: var(--shadow-card) !important;
 }
 
-.light .border-white\/10 {
+.light .border-panel-border {
+  border-color: var(--border-primary) !important;
+}
+
+/* ── Hardcoded dark backgrounds → glass ───────────────── */
+.light .bg-\[\#0A0C16\],
+.light .bg-\[\#05060F\],
+.light .bg-\[\#06070E\],
+.light .bg-\[\#0D0F1F\],
+.light .bg-\[\#0A0C18\],
+.light .bg-\[\#0b0c16\] {
+  background: var(--glass-primary) !important;
+  backdrop-filter: blur(24px) !important;
+  -webkit-backdrop-filter: blur(24px) !important;
+}
+
+/* Hero outer container gradient */
+.light .from-\[\#0A0C16\] {
+  --tw-gradient-from: rgba(255, 255, 255, 0.6) !important;
+}
+.light .via-\[\#06070E\] {
+  --tw-gradient-via: rgba(248, 250, 252, 0.55) !important;
+}
+.light .to-\[\#080A12\] {
+  --tw-gradient-to: rgba(241, 245, 249, 0.6) !important;
+}
+
+/* LockedAISuite / SLSLearningJourneyHub */
+.light .from-\[\#0D0F1F\] {
+  --tw-gradient-from: rgba(255, 255, 255, 0.65) !important;
+}
+.light .via-\[\#0A0C18\] {
+  --tw-gradient-via: rgba(248, 250, 252, 0.6) !important;
+}
+.light .to-\[\#0D0F1F\] {
+  --tw-gradient-to: rgba(241, 245, 249, 0.65) !important;
+}
+
+/* Any gradient-to-br using those stops */
+.light .bg-gradient-to-br {
+  backdrop-filter: blur(20px) !important;
+  -webkit-backdrop-filter: blur(20px) !important;
+}
+
+/* ── Border overrides ─────────────────────────────────── */
+.light .border-white\/5  { border-color: rgba(15, 23, 42, 0.05) !important; }
+.light .border-white\/6  { border-color: rgba(15, 23, 42, 0.06) !important; }
+.light .border-white\/8  { border-color: rgba(15, 23, 42, 0.07) !important; }
+.light .border-white\/10 { border-color: rgba(15, 23, 42, 0.08) !important; }
+.light .border-white\/15 { border-color: rgba(15, 23, 42, 0.10) !important; }
+.light .border-white\/20 { border-color: rgba(15, 23, 42, 0.12) !important; }
+.light .border-white\/30 { border-color: rgba(15, 23, 42, 0.16) !important; }
+
+/* ── Inset / nested backgrounds ──────────────────────── */
+.light .bg-white\/\[0\.015\] { background: rgba(255,255,255,0.55) !important; }
+.light .bg-white\/\[0\.02\]  { background: rgba(255,255,255,0.6) !important; }
+.light .bg-white\/\[0\.025\] { background: rgba(255,255,255,0.65) !important; }
+.light .bg-white\/\[0\.03\]  { background: rgba(255,255,255,0.7) !important; }
+.light .bg-white\/\[0\.04\]  { background: rgba(255,255,255,0.75) !important; }
+.light .bg-white\/\[0\.05\]  { background: rgba(255,255,255,0.78) !important; }
+.light .bg-white\/5  { background: rgba(15, 23, 42, 0.03) !important; }
+.light .bg-white\/10 { background: rgba(15, 23, 42, 0.055) !important; }
+
+.light .bg-black\/40 {
+  background: rgba(255, 255, 255, 0.75) !important;
   border-color: rgba(15, 23, 42, 0.08) !important;
 }
 
-.light .border-white\/20 {
-  border-color: rgba(15, 23, 42, 0.12) !important;
-}
+/* ── Ambient glow overlays — visible in light ──────────── */
+.light .bg-indigo-600\/6  { background-color: rgba(99, 102, 241, 0.12) !important; }
+.light .bg-cyan-500\/5    { background-color: rgba(6, 182, 212, 0.11) !important; }
+.light .bg-indigo-500\/3  { background-color: rgba(99, 102, 241, 0.08) !important; }
+.light .bg-indigo-500\/10 { background-color: rgba(99, 102, 241, 0.08) !important; }
+.light .bg-cyan-500\/10   { background-color: rgba(6, 182, 212, 0.08) !important; }
+.light .bg-purple-500\/5  { background-color: rgba(168, 85, 247, 0.10) !important; }
+.light .bg-violet-500\/10 { background-color: rgba(139, 92, 246, 0.10) !important; }
+.light .bg-amber-500\/5   { background-color: rgba(245, 158, 11, 0.10) !important; }
 
-/* Ensure buttons keep text-white readable on dark backgrounds */
-.light button.text-white,
-.light a.text-white,
-.light button .text-white,
-.light a .text-white,
-.light .btn-primary,
-.light .ob-btn-accent,
-.light .ob-final-cta-btn {
+/* ── Text overrides — proper contrast hierarchy ─────── */
+.light .text-white        { color: #0f172a !important; }
+.light .text-white\/90    { color: rgba(15, 23, 42, 0.90) !important; }
+.light .text-white\/70    { color: rgba(15, 23, 42, 0.70) !important; }
+.light .text-white\/60    { color: rgba(15, 23, 42, 0.62) !important; }
+.light .text-white\/50    { color: rgba(15, 23, 42, 0.55) !important; }
+.light .text-white\/45    { color: rgba(15, 23, 42, 0.50) !important; }
+.light .text-white\/40    { color: rgba(15, 23, 42, 0.44) !important; }
+.light .text-white\/35    { color: rgba(15, 23, 42, 0.40) !important; }
+.light .text-white\/30    { color: rgba(15, 23, 42, 0.36) !important; }
+.light .text-white\/25    { color: rgba(15, 23, 42, 0.30) !important; }
+.light .text-white\/20    { color: rgba(15, 23, 42, 0.24) !important; }
+
+/* ── Buttons and CTAs — preserve white text on dark backgrounds ── */
+/* Gradient buttons always keep white text regardless of theme */
+.light .bg-gradient-to-r  > * { color: inherit; }
+
+.light button[class*="bg-gradient-to-r"],
+.light button[class*="bg-gradient-to-tr"],
+.light button[class*="bg-gradient-to-br"],
+.light a[class*="bg-gradient-to-r"],
+.light a[class*="bg-gradient-to-tr"],
+.light a[class*="bg-gradient-to-br"] {
   color: #ffffff !important;
 }
 
-/* Text overrides */
-.light .text-white {
+.light button[class*="bg-gradient-to-r"] *,
+.light button[class*="bg-gradient-to-tr"] *,
+.light button[class*="bg-gradient-to-br"] *,
+.light a[class*="bg-gradient-to-r"] *,
+.light a[class*="bg-gradient-to-tr"] *,
+.light a[class*="bg-gradient-to-br"] * {
+  color: inherit !important;
+}
+
+/* Explicit cyan solid button */
+.light button[class*="bg-cyan-5"],
+.light button[class*="bg-violet-"],
+.light button[class*="bg-indigo-"] {
+  color: #ffffff !important;
+}
+
+/* Dot grid — visible in light mode */
+.light [style*="radial-gradient(circle, rgba(255,255,255"] {
+  opacity: 0.12 !important;
+}
+
+/* ── Accent colors — saturated for light mode ──────── */
+.light .text-cyan-400   { color: #0891b2 !important; }
+.light .text-indigo-400 { color: #4f46e5 !important; }
+.light .text-purple-400 { color: #7c3aed !important; }
+.light .text-violet-400 { color: #7c3aed !important; }
+.light .text-amber-400  { color: #d97706 !important; }
+.light .text-emerald-400 { color: #059669 !important; }
+.light .text-rose-400   { color: #e11d48 !important; }
+.light .text-pink-400   { color: #db2777 !important; }
+.light .text-orange-400 { color: #ea580c !important; }
+.light .text-blue-400   { color: #2563eb !important; }
+.light .text-purple-300 { color: #7c3aed !important; }
+.light .text-cyan-300   { color: #0e7490 !important; }
+.light .text-indigo-300 { color: #4338ca !important; }
+.light .text-cyan-200   { color: #0284c7 !important; }
+
+/* ── Accent tinted backgrounds ─────────────────────── */
+.light .bg-cyan-500\/8     { background-color: rgba(6, 182, 212, 0.10) !important; }
+.light .bg-cyan-400\/10    { background-color: rgba(6, 182, 212, 0.10) !important; }
+.light .bg-indigo-400\/10  { background-color: rgba(99, 102, 241, 0.10) !important; }
+.light .bg-purple-500\/10  { background-color: rgba(168, 85, 247, 0.10) !important; }
+.light .bg-purple-400\/10  { background-color: rgba(168, 85, 247, 0.10) !important; }
+.light .bg-violet-500\/10  { background-color: rgba(139, 92, 246, 0.10) !important; }
+.light .bg-amber-500\/10   { background-color: rgba(245, 158, 11, 0.10) !important; }
+.light .bg-amber-400\/10   { background-color: rgba(245, 158, 11, 0.10) !important; }
+.light .bg-emerald-400\/10 { background-color: rgba(16, 185, 129, 0.10) !important; }
+.light .bg-rose-500\/10    { background-color: rgba(244, 63, 94, 0.10) !important; }
+.light .bg-rose-400\/10    { background-color: rgba(244, 63, 94, 0.10) !important; }
+.light .bg-orange-500\/15  { background-color: rgba(249, 115, 22, 0.12) !important; }
+.light .bg-rose-500\/15    { background-color: rgba(244, 63, 94, 0.12) !important; }
+.light .bg-blue-500\/15    { background-color: rgba(59, 130, 246, 0.12) !important; }
+.light .bg-cyan-500\/15    { background-color: rgba(6, 182, 212, 0.12) !important; }
+
+/* Accent borders in light */
+.light .border-cyan-500\/20  { border-color: rgba(6, 182, 212, 0.28) !important; }
+.light .border-cyan-500\/30  { border-color: rgba(6, 182, 212, 0.35) !important; }
+.light .border-cyan-400\/20  { border-color: rgba(6, 182, 212, 0.28) !important; }
+.light .border-indigo-500\/20 { border-color: rgba(99, 102, 241, 0.22) !important; }
+.light .border-purple-500\/20 { border-color: rgba(168, 85, 247, 0.22) !important; }
+.light .border-violet-500\/25 { border-color: rgba(139, 92, 246, 0.22) !important; }
+.light .border-amber-500\/20  { border-color: rgba(245, 158, 11, 0.22) !important; }
+.light .border-emerald-500\/20 { border-color: rgba(16, 185, 129, 0.22) !important; }
+.light .border-rose-500\/20   { border-color: rgba(244, 63, 94, 0.22) !important; }
+
+/* ── Subject gradient card overrides ───────────────── */
+.light .from-\[\#111322\]\/80 { --tw-gradient-from: #ffffff !important; }
+.light .to-\[\#0A0C16\]\/95   { --tw-gradient-to: #f1f5f9 !important; }
+.light .bg-\[\#111322\]\/80   { background-color: #ffffff !important; }
+.light .bg-\[\#0A0C16\]\/95   { background-color: #f8fafc !important; }
+.light .bg-\[\#05060F\]\/50   { background-color: rgba(15, 23, 42, 0.02) !important; }
+
+/* ── Mobile header ─────────────────────────────────── */
+.light .bg-background\/80 {
+  background-color: rgba(255, 255, 255, 0.85) !important;
+  backdrop-filter: blur(20px) !important;
+  -webkit-backdrop-filter: blur(20px) !important;
+  border-bottom-color: rgba(15, 23, 42, 0.07) !important;
+  box-shadow: 0 1px 12px rgba(15, 23, 42, 0.06) !important;
+}
+
+/* ── User menu popup ───────────────────────────────── */
+.light .bg-\[\#0b0c16\]\/95 {
+  background: rgba(255, 255, 255, 0.92) !important;
+  backdrop-filter: blur(20px) !important;
+  border-color: rgba(15, 23, 42, 0.08) !important;
+  box-shadow: 0 8px 32px rgba(15, 23, 42, 0.12) !important;
+}
+
+/* Mobile bottom nav pill */
+.light .bg-\[\#05060F\]\/90 {
+  background: rgba(255, 255, 255, 0.88) !important;
+  backdrop-filter: blur(28px) !important;
+  -webkit-backdrop-filter: blur(28px) !important;
+  border-color: rgba(15, 23, 42, 0.09) !important;
+  box-shadow: 0 8px 32px rgba(15, 23, 42, 0.10), 0 2px 8px rgba(15, 23, 42, 0.06) !important;
+}
+
+/* Mobile study menu popup */
+.light .bg-\[\#0A0C16\]\/95 {
+  background: rgba(255, 255, 255, 0.90) !important;
+  backdrop-filter: blur(28px) !important;
+  -webkit-backdrop-filter: blur(28px) !important;
+  border-color: rgba(15, 23, 42, 0.09) !important;
+  box-shadow: 0 12px 40px rgba(15, 23, 42, 0.12), 0 2px 8px rgba(15, 23, 42, 0.06) !important;
+}
+
+/* ── Scrollbar — light mode ─────────────────────────── */
+.light ::-webkit-scrollbar-track {
+  background: rgba(15, 23, 42, 0.03);
+}
+.light ::-webkit-scrollbar-thumb {
+  background: rgba(15, 23, 42, 0.12);
+}
+.light ::-webkit-scrollbar-thumb:hover {
+  background: rgba(15, 23, 42, 0.2);
+}
+
+/* ── Input fields ──────────────────────────────────── */
+.light input[type="text"],
+.light input[type="email"],
+.light input[type="password"],
+.light textarea {
+  background: rgba(255, 255, 255, 0.7) !important;
+  border-color: rgba(15, 23, 42, 0.12) !important;
   color: #0f172a !important;
 }
-
-.light .text-white\/70 {
-  color: rgba(15, 23, 42, 0.7) !important;
+.light input::placeholder,
+.light textarea::placeholder {
+  color: rgba(15, 23, 42, 0.35) !important;
 }
 
-.light .text-white\/60 {
-  color: rgba(15, 23, 42, 0.65) !important;
-}
-
-.light .text-white\/50 {
-  color: rgba(15, 23, 42, 0.55) !important;
-}
-
-.light .text-white\/40 {
-  color: rgba(15, 23, 42, 0.45) !important;
-}
-
-.light .text-white\/30 {
-  color: rgba(15, 23, 42, 0.3) !important;
-}
-
-.light .text-white\/20 {
-  color: rgba(15, 23, 42, 0.2) !important;
-}
-
-/* Specific component elements overrides */
-.light .bg-white\/5 {
-  background-color: rgba(15, 23, 42, 0.03) !important;
-}
-
-.light .bg-white\/10 {
-  background-color: rgba(15, 23, 42, 0.06) !important;
-}
-
-.light .bg-black\/40 {
-  background-color: rgba(255, 255, 255, 0.7) !important;
-  border-color: rgba(15, 23, 42, 0.08) !important;
-}
-
-.light .bg-\[\#05060F\]\/50 {
-  background-color: rgba(15, 23, 42, 0.03) !important;
-}
-
-/* Override subject gradient cards */
-.light .from-\[\#111322\]\/80 {
-  --tw-gradient-from: #ffffff !important;
-}
-
-.light .to-\[\#0A0C16\]\/95 {
-  --tw-gradient-to: #f1f5f9 !important;
-}
-
-.light .bg-\[\#111322\]\/80 {
-  background-color: #ffffff !important;
-}
-
-.light .bg-\[\#0A0C16\]\/95 {
-  background-color: #f8fafc !important;
-}
-
-/* Override custom outer borders */
+/* ── From-white gradient stops ──────────────────────── */
 .light .from-white\/10 {
-  --tw-gradient-from: rgba(15, 23, 42, 0.08) !important;
+  --tw-gradient-from: rgba(15, 23, 42, 0.07) !important;
 }
 
-/* Visibility colors for status text and badges */
-.light .text-indigo-400 {
-  color: #4f46e5 !important;
-}
-
-.light .text-cyan-400 {
-  color: #0891b2 !important;
-}
-
-.light .text-amber-400 {
-  color: #d97706 !important;
-}
-
-.light .text-emerald-400 {
-  color: #059669 !important;
-}
-
-.light .text-rose-400 {
-  color: #e11d48 !important;
-}
-
-.light .text-pink-400 {
-  color: #db2777 !important;
-}
-
-.light .bg-gradient-to-br.from-indigo-500\/10.to-transparent {
-  background: linear-gradient(135deg, rgba(79, 124, 255, 0.05), rgba(255, 255, 255, 0)) !important;
-  border-color: rgba(79, 124, 255, 0.15) !important;
+/* ── Gradient text — keep vibrant ───────────────────── */
+.light .text-transparent.bg-clip-text,
+.light .bg-clip-text {
+  color: transparent !important;
+  -webkit-text-fill-color: transparent !important;
 }
 
 /* ========================================================

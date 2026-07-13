@@ -79,7 +79,12 @@ export function ReadinessEngine({ dashboardData, loading, onNavigate }: Props) {
   // Full visual empty state if there is no user data at all
   if (!loading && !hasData) {
     return (
-      <div className="bg-panel border border-panel-border rounded-3xl p-6 flex flex-col items-center justify-center min-h-[340px] text-center h-full relative overflow-hidden group">
+      <div className={cn(
+        'border rounded-3xl p-6 flex flex-col items-center justify-center min-h-[340px] text-center h-full relative overflow-hidden group',
+        isLight
+          ? 'bg-white/72 backdrop-blur-[24px] border-white/80 shadow-[0_8px_32px_rgba(15,23,42,0.08),0_2px_8px_rgba(15,23,42,0.04),inset_0_1px_0_rgba(255,255,255,0.9)]'
+          : 'bg-panel border-panel-border'
+      )}>
         {/* Decorative background rings */}
         <div className="absolute w-44 h-44 rounded-full border border-white/5 flex items-center justify-center pointer-events-none">
           <div className="w-28 h-28 rounded-full border border-white/5" />
@@ -107,7 +112,12 @@ export function ReadinessEngine({ dashboardData, loading, onNavigate }: Props) {
 
   return (
     <div 
-      className="bg-panel border border-panel-border rounded-3xl p-6 relative flex flex-col h-full"
+      className={cn(
+        'border rounded-3xl p-6 relative flex flex-col h-full',
+        isLight
+          ? 'bg-white/72 backdrop-blur-[24px] border-white/80 shadow-[0_8px_32px_rgba(15,23,42,0.08),0_2px_8px_rgba(15,23,42,0.04),inset_0_1px_0_rgba(255,255,255,0.9)]'
+          : 'bg-panel border-panel-border'
+      )}
       aria-label="Concentric rings chart showing subject readiness: Biology, Chemistry, Physics, and Mathematics."
     >
       <h3 className="text-white font-display font-semibold text-lg mb-1">Readiness Engine</h3>

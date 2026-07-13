@@ -25,6 +25,7 @@ import { DashboardData, TodayTask } from '../../hooks/useDashboardData';
 import { CanonicalStudentAction } from '../../hooks/useStudentActionPlan';
 import { currentUser } from '../../data/mockData';
 import { LESSONS_DATA } from '../../data/lessons';
+import { useTheme } from '../../context/ThemeContext';
 
 // ── Exam label from onboarding localStorage ──────────────────────────
 function getExamLabel(): string {
@@ -159,7 +160,7 @@ const SUBJECTS = [
   },
 ] as const;
 
-interface HeroProps {
+interface Props {
   onNavigate?: (view: string) => void;
   dashboardData: DashboardData | null;
   loading: boolean;
@@ -169,7 +170,10 @@ interface HeroProps {
 
 const fadeUp = { hidden: { opacity: 0, y: 14 }, show: { opacity: 1, y: 0 } };
 
-export function Hero({ onNavigate, dashboardData: data, loading, actionPlan: plan }: HeroProps) {
+export function Hero({ onNavigate, dashboardData: data, loading, actionPlan: plan, actionPlanLoading }: Props) {
+  const { theme } = useTheme();
+  const isLight = theme === 'light';
+  
   const markMissionCompleted = (actionId: string) => {
     const list = localStorage.getItem('completed_missions') || '';
     const arr = list ? list.split(',') : [];
@@ -321,16 +325,21 @@ export function Hero({ onNavigate, dashboardData: data, loading, actionPlan: pla
   ];
 
   return (
-    <div className="bg-gradient-to-br from-[#0A0C16] via-[#06070E] to-[#080A12] border border-white/8 rounded-3xl relative overflow-hidden shadow-[0_0_100px_rgba(6,182,212,0.05)]">
+    <div className={cn(
+      "rounded-3xl relative overflow-hidden",
+      isLight
+        ? "bg-white/70 backdrop-blur-[28px] border border-white/80 shadow-[0_8px_40px_rgba(15,23,42,0.10),0_2px_8px_rgba(15,23,42,0.06),inset_0_1px_0_rgba(255,255,255,0.9)]"
+        : "bg-gradient-to-br from-[#0A0C16] via-[#06070E] to-[#080A12] border border-white/8 shadow-[0_0_100px_rgba(6,182,212,0.05)]"
+    )}>
 
       {/* ── Ambient glows ──────────────────────────────────────────────── */}
-      <div className="absolute top-[-80px] right-[-60px] w-[480px] h-[480px] bg-indigo-600/6 blur-[130px] rounded-full pointer-events-none" />
-      <div className="absolute bottom-[-60px] left-[-40px] w-[420px] h-[420px] bg-cyan-500/5 blur-[120px] rounded-full pointer-events-none" />
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[200px] bg-indigo-500/3 blur-[100px] rounded-full pointer-events-none" />
+      <div className={cn("absolute top-[-80px] right-[-60px] w-[480px] h-[480px] blur-[130px] rounded-full pointer-events-none", isLight ? "bg-indigo-600/12" : "bg-indigo-600/6")} />
+      <div className={cn("absolute bottom-[-60px] left-[-40px] w-[420px] h-[420px] blur-[120px] rounded-full pointer-events-none", isLight ? "bg-cyan-500/11" : "bg-cyan-500/5")} />
+      <div className={cn("absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[200px] blur-[100px] rounded-full pointer-events-none", isLight ? "bg-indigo-500/8" : "bg-indigo-500/3")} />
 
       {/* Subtle dot grid */}
-      <div className="absolute inset-0 opacity-[0.018] pointer-events-none"
-        style={{ backgroundImage: 'radial-gradient(circle, rgba(255,255,255,0.6) 1px, transparent 1px)', backgroundSize: '28px 28px' }} />
+      <div className={cn("absolute inset-0 pointer-events-none", isLight ? "opacity-[0.07]" : "opacity-[0.018]")}
+        style={{ backgroundImage: 'radial-gradient(circle, rgba(15,23,42,0.5) 1px, transparent 1px)', backgroundSize: '28px 28px' }} />
 
       <div className="relative z-10 p-6 md:p-8 space-y-6">
 
@@ -368,7 +377,10 @@ export function Hero({ onNavigate, dashboardData: data, loading, actionPlan: pla
                 variants={fadeUp} initial="hidden" animate="show"
                 transition={{ duration: 0.4, delay: 0.05 * i, ease: 'easeOut' }}
                 className={cn(
-                  'p-3 rounded-2xl bg-white/[0.025] border transition-all duration-300 cursor-default',
+                  'p-3 rounded-2xl border transition-all duration-300 cursor-default',
+                  isLight
+                    ? 'bg-white/65 backdrop-blur-sm shadow-[0_2px_12px_rgba(15,23,42,0.07),inset_0_1px_0_rgba(255,255,255,0.9)]'
+                    : 'bg-white/[0.025]',
                   m.border, m.glow
                 )}
               >
@@ -376,7 +388,7 @@ export function Hero({ onNavigate, dashboardData: data, loading, actionPlan: pla
                   <div className={cn('w-6 h-6 rounded-lg flex items-center justify-center', m.iconBg)}>
                     <m.icon className={cn('w-3.5 h-3.5', m.iconColor)} />
                   </div>
-                  <span className="text-[9px] font-bold text-white/30 uppercase tracking-widest">{m.label}</span>
+                  <span className={cn('text-[9px] font-bold uppercase tracking-widest', isLight ? 'text-slate-400' : 'text-white/30')}>{m.label}</span>
                 </div>
                 <span className={cn('text-[0.85rem] font-black block leading-tight', m.valueColor)}>{m.value}</span>
                 <span className={cn('text-[10px] font-medium block mt-0.5', m.subColor)}>{m.sub}</span>
@@ -395,9 +407,9 @@ export function Hero({ onNavigate, dashboardData: data, loading, actionPlan: pla
             onClick={() => handleCta(plan.primaryAction)}
             className={cn(
               "p-5 rounded-2xl border transition-all duration-300 relative overflow-hidden group cursor-pointer",
-              "bg-gradient-to-r from-white/[0.03] to-white/[0.01]",
-              "border-white/10 hover:border-cyan-500/30 hover:bg-white/[0.04]",
-              "shadow-[0_8px_32px_0_rgba(0,0,0,0.37)] backdrop-blur-md"
+              isLight
+                ? "bg-white/60 backdrop-blur-md border-slate-200/80 hover:border-cyan-400/40 shadow-[0_4px_20px_rgba(15,23,42,0.08),inset_0_1px_0_rgba(255,255,255,0.9)]"
+                : "bg-gradient-to-r from-white/[0.03] to-white/[0.01] border-white/10 hover:border-cyan-500/30 hover:bg-white/[0.04] shadow-[0_8px_32px_0_rgba(0,0,0,0.37)] backdrop-blur-md"
             )}
           >
             {/* Subtle glow behind the card */}
@@ -497,8 +509,10 @@ export function Hero({ onNavigate, dashboardData: data, loading, actionPlan: pla
                     transition={{ duration: 0.35, delay: 0.22 + idx * 0.06, ease: 'easeOut' }}
                     onClick={() => onNavigate?.(`smart_lessons:${sub.name}`)}
                     className={cn(
-                      'p-4 rounded-2xl border border-white/6 transition-all duration-300 cursor-pointer group',
-                      'bg-white/[0.015] hover:bg-white/[0.03]',
+                      'p-4 rounded-2xl border transition-all duration-300 cursor-pointer group',
+                      isLight
+                        ? 'bg-white/60 backdrop-blur-sm border-slate-200/60 hover:border-slate-300/80 shadow-[0_2px_12px_rgba(15,23,42,0.06),inset_0_1px_0_rgba(255,255,255,0.85)] hover:shadow-[0_4px_20px_rgba(15,23,42,0.09)]'
+                        : 'bg-white/[0.015] hover:bg-white/[0.03] border-white/6',
                       sub.gradientBorder, sub.glow
                     )}
                   >
@@ -563,7 +577,12 @@ export function Hero({ onNavigate, dashboardData: data, loading, actionPlan: pla
                   valueColor: 'text-emerald-300',
                 },
               ].map((stat) => (
-                <div key={stat.label} className="p-3.5 rounded-2xl bg-white/[0.015] border border-white/6 flex items-center gap-3">
+                <div key={stat.label} className={cn(
+                  'p-3.5 rounded-2xl flex items-center gap-3',
+                  isLight
+                    ? 'bg-white/55 backdrop-blur-sm border border-slate-200/60 shadow-[0_2px_8px_rgba(15,23,42,0.05),inset_0_1px_0_rgba(255,255,255,0.85)]'
+                    : 'bg-white/[0.015] border border-white/6'
+                )}>
                   <div className={cn('w-9 h-9 rounded-xl border flex items-center justify-center shrink-0', stat.iconBg)}>
                     <stat.icon className={cn('w-4.5 h-4.5', stat.iconColor)} />
                   </div>
@@ -580,13 +599,21 @@ export function Hero({ onNavigate, dashboardData: data, loading, actionPlan: pla
           <motion.div
             variants={fadeUp} initial="hidden" animate="show"
             transition={{ duration: 0.4, delay: 0.28, ease: 'easeOut' }}
-            className="flex flex-col bg-white/[0.015] border border-white/6 rounded-2xl overflow-hidden min-h-[350px] relative group/assistant"
+            className={cn(
+              'flex flex-col rounded-2xl overflow-hidden min-h-[350px] relative group/assistant',
+              isLight
+                ? 'bg-white/65 backdrop-blur-[20px] border border-white/80 shadow-[0_4px_24px_rgba(15,23,42,0.08),inset_0_1px_0_rgba(255,255,255,0.9)]'
+                : 'bg-white/[0.015] border border-white/6'
+            )}
           >
             {/* Ambient subtle glow inside card */}
             <div className="absolute top-[-30px] right-[-30px] w-48 h-48 bg-purple-500/5 blur-[40px] rounded-full pointer-events-none transition-opacity duration-300 group-hover/assistant:opacity-80" />
 
             {/* Header */}
-            <div className="flex items-center justify-between px-5 pt-5 pb-4 border-b border-white/5 relative z-10">
+            <div className={cn(
+              'flex items-center justify-between px-5 pt-5 pb-4 border-b relative z-10',
+              isLight ? 'border-slate-200/60' : 'border-white/5'
+            )}>
               <div className="flex items-center gap-2.5">
                 <div className="w-9 h-9 rounded-xl bg-purple-500/10 border border-purple-500/20 flex items-center justify-center text-purple-400">
                   <Sparkles className="w-4.5 h-4.5" />
@@ -609,7 +636,12 @@ export function Hero({ onNavigate, dashboardData: data, loading, actionPlan: pla
                 onClick={() => {
                   window.location.href = getAiTutorUrl();
                 }}
-                className="group/btn p-3.5 rounded-xl border border-white/5 bg-white/[0.025] hover:bg-white/[0.05] hover:border-purple-500/20 transition-all duration-200 cursor-pointer flex items-center justify-between gap-4"
+                className={cn(
+                  'group/btn p-3.5 rounded-xl border transition-all duration-200 cursor-pointer flex items-center justify-between gap-4',
+                  isLight
+                    ? 'bg-white/50 border-slate-200/60 hover:bg-white/70 hover:border-purple-400/30 shadow-[0_1px_6px_rgba(15,23,42,0.05)]'
+                    : 'border-white/5 bg-white/[0.025] hover:bg-white/[0.05] hover:border-purple-500/20'
+                )}
               >
                 <div className="min-w-0">
                   <h4 className="text-xs font-bold text-white group-hover/btn:text-purple-300 transition-colors">Ask a Doubt</h4>
@@ -628,7 +660,12 @@ export function Hero({ onNavigate, dashboardData: data, loading, actionPlan: pla
                   onClick={() => {
                     window.location.href = getAiTutorUrl('EXPLAIN_CONCEPT');
                   }}
-                  className="group/btn2 p-3 rounded-xl border border-white/5 bg-white/[0.015] hover:bg-white/[0.03] hover:border-purple-500/10 transition-all duration-200 cursor-pointer flex flex-col justify-between min-h-[90px]"
+                  className={cn(
+                    'group/btn2 p-3 rounded-xl border transition-all duration-200 cursor-pointer flex flex-col justify-between min-h-[90px]',
+                    isLight
+                      ? 'bg-white/50 border-slate-200/60 hover:bg-white/65 hover:border-purple-400/25'
+                      : 'border-white/5 bg-white/[0.015] hover:bg-white/[0.03] hover:border-purple-500/10'
+                  )}
                 >
                   <h4 className="text-[11px] font-bold text-white group-hover/btn2:text-purple-300 transition-colors">Explain a Concept</h4>
                   <p className="text-[9.5px] text-white/35 mt-1 leading-normal">
@@ -641,7 +678,12 @@ export function Hero({ onNavigate, dashboardData: data, loading, actionPlan: pla
                   onClick={() => {
                     onNavigate?.(practiceRoute);
                   }}
-                  className="group/btn3 p-3 rounded-xl border border-white/5 bg-white/[0.015] hover:bg-white/[0.03] hover:border-indigo-500/10 transition-all duration-200 cursor-pointer flex flex-col justify-between min-h-[90px]"
+                  className={cn(
+                    'group/btn3 p-3 rounded-xl border transition-all duration-200 cursor-pointer flex flex-col justify-between min-h-[90px]',
+                    isLight
+                      ? 'bg-white/50 border-slate-200/60 hover:bg-white/65 hover:border-indigo-400/25'
+                      : 'border-white/5 bg-white/[0.015] hover:bg-white/[0.03] hover:border-indigo-500/10'
+                  )}
                 >
                   <h4 className="text-[11px] font-bold text-white group-hover/btn3:text-indigo-300 transition-colors truncate">
                     {practiceLabel}
@@ -654,7 +696,10 @@ export function Hero({ onNavigate, dashboardData: data, loading, actionPlan: pla
             </div>
 
             {/* AI Input Form */}
-            <div className="relative border-t border-white/5 bg-white/[0.008] p-4 z-10">
+            <div className={cn(
+              'relative border-t p-4 z-10',
+              isLight ? 'border-slate-200/50 bg-white/30' : 'border-white/5 bg-white/[0.008]'
+            )}>
               <form 
                 onSubmit={(e) => {
                   e.preventDefault();
@@ -670,9 +715,14 @@ export function Hero({ onNavigate, dashboardData: data, loading, actionPlan: pla
                   type="text" 
                   name="doubtQuery"
                   placeholder="Ask SmartPrep anything..."
-                  className="w-full bg-[#05060F] border border-white/8 rounded-xl py-2.5 pl-4 pr-10 text-xs text-white placeholder-white/25 outline-none focus:border-purple-500/30 transition-colors"
+                  className={cn(
+                    'w-full border rounded-xl py-2.5 pl-4 pr-10 text-xs outline-none transition-colors',
+                    isLight
+                      ? 'bg-white/70 border-slate-200/70 text-slate-800 placeholder-slate-400 focus:border-purple-400/50'
+                      : 'bg-[#05060F] border-white/8 text-white placeholder-white/25 focus:border-purple-500/30'
+                  )}
                 />
-                <button type="submit" className="absolute right-2 p-1.5 text-white/30 hover:text-white transition-colors">
+                <button type="submit" className={cn('absolute right-2 p-1.5 transition-colors', isLight ? 'text-slate-400 hover:text-slate-700' : 'text-white/30 hover:text-white')}>
                   <ArrowRight className="w-3.5 h-3.5" />
                 </button>
               </form>
