@@ -27,13 +27,13 @@ export function SupportBar({ onNavigate }: { onNavigate?: (view: string) => void
 
         {/* Feedback Link */}
         <span className="flex items-center">
-          <a
-            href="#"
-            className="flex items-center gap-1.5 text-[12px] font-medium text-white/30 hover:text-white/70 transition-colors px-3 py-1 rounded-lg hover:bg-white/5"
+          <button
+            onClick={() => onNavigate?.('feedback')}
+            className="flex items-center gap-1.5 text-[12px] font-medium text-white/30 hover:text-white/70 transition-colors px-3 py-1 rounded-lg hover:bg-white/5 cursor-pointer"
           >
             <ThumbsUp className="w-3.5 h-3.5" />
             Feedback
-          </a>
+          </button>
           <span className="w-px h-3 bg-white/10 mx-0.5" />
         </span>
 
