@@ -8,31 +8,45 @@ import { MessageCircle, ThumbsUp, HelpCircle } from 'lucide-react';
 
 const VERSION = '1.0.4';
 
-const LINKS = [
-  { label: 'Support',  icon: HelpCircle,     href: '#' },
-  { label: 'Feedback', icon: ThumbsUp,        href: '#' },
-  { label: 'Discord',  icon: MessageCircle,   href: '#' },
-];
-
-export function SupportBar() {
+export function SupportBar({ onNavigate }: { onNavigate?: (view: string) => void }) {
   return (
     <div className="flex flex-col sm:flex-row items-center justify-between gap-3 px-5 py-3.5 rounded-2xl border border-white/5 bg-white/[0.02]">
       {/* Links */}
       <div className="flex items-center gap-1">
-        {LINKS.map((link, i) => (
-          <span key={link.label} className="flex items-center">
-            <a
-              href={link.href}
-              className="flex items-center gap-1.5 text-[12px] font-medium text-white/30 hover:text-white/70 transition-colors px-3 py-1 rounded-lg hover:bg-white/5"
-            >
-              <link.icon className="w-3.5 h-3.5" />
-              {link.label}
-            </a>
-            {i < LINKS.length - 1 && (
-              <span className="w-px h-3 bg-white/10 mx-0.5" />
-            )}
-          </span>
-        ))}
+        {/* Support Tab Trigger */}
+        <span className="flex items-center">
+          <button
+            onClick={() => onNavigate?.('support')}
+            className="flex items-center gap-1.5 text-[12px] font-medium text-white/30 hover:text-white/70 transition-colors px-3 py-1 rounded-lg hover:bg-white/5 cursor-pointer"
+          >
+            <HelpCircle className="w-3.5 h-3.5" />
+            Support
+          </button>
+          <span className="w-px h-3 bg-white/10 mx-0.5" />
+        </span>
+
+        {/* Feedback Link */}
+        <span className="flex items-center">
+          <a
+            href="#"
+            className="flex items-center gap-1.5 text-[12px] font-medium text-white/30 hover:text-white/70 transition-colors px-3 py-1 rounded-lg hover:bg-white/5"
+          >
+            <ThumbsUp className="w-3.5 h-3.5" />
+            Feedback
+          </a>
+          <span className="w-px h-3 bg-white/10 mx-0.5" />
+        </span>
+
+        {/* Discord Link */}
+        <span className="flex items-center">
+          <a
+            href="#"
+            className="flex items-center gap-1.5 text-[12px] font-medium text-white/30 hover:text-white/70 transition-colors px-3 py-1 rounded-lg hover:bg-white/5"
+          >
+            <MessageCircle className="w-3.5 h-3.5" />
+            Discord
+          </a>
+        </span>
       </div>
 
       {/* Version */}

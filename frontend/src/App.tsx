@@ -31,6 +31,7 @@ import { PerformanceInsights } from './components/dashboard/PerformanceInsights'
 import { SmartLesson } from './components/dashboard/SmartLesson';
 import { SmartLessonsHub } from './components/dashboard/SmartLessonsHub';
 import { Settings } from './components/dashboard/Settings';
+import { Support } from './components/dashboard/Support';
 import { SupportBar } from './components/layout/SupportBar';
 import { MobileNav } from './components/layout/MobileNav';
 import { Menu, Bell, BrainCircuit, Sun, Moon } from 'lucide-react';
@@ -52,7 +53,7 @@ function DashboardApp() {
     const params = new URLSearchParams(window.location.search);
     const returnToParam = params.get('returnTo');
     if (returnToParam && !entitlement.loading) {
-      const allowedViews = ['dashboard', 'path', 'smart_lessons', 'mock_tests', 'pyqs', 'analytics', 'settings'];
+      const allowedViews = ['dashboard', 'path', 'smart_lessons', 'mock_tests', 'pyqs', 'analytics', 'settings', 'support'];
       const isValid = allowedViews.some(v => returnToParam === v || returnToParam.startsWith(v + ':') || returnToParam.startsWith(v + '/'));
       
       if (isValid) {
@@ -285,6 +286,8 @@ function DashboardApp() {
             );
           })() : currentView === 'settings' ? (
             <Settings />
+          ) : currentView === 'support' ? (
+            <Support onNavigate={handleNavigate} />
           ) : (
             <div className="max-w-6xl mx-auto w-full space-y-6 flex-1 mt-2 lg:mt-4 pb-32 lg:pb-0">
               <Hero 
@@ -376,7 +379,7 @@ function DashboardApp() {
                 <QuickAccess onNavigate={handleNavigate} />
               </div>
 
-              <SupportBar />
+              <SupportBar onNavigate={handleNavigate} />
             </div>
           )}
         </div>

@@ -11,7 +11,8 @@ import {
   Sparkles,
   LogOut,
   Sun,
-  Moon
+  Moon,
+  HelpCircle
 } from 'lucide-react';
 import { cn } from '../../lib/utils';
 import { currentUser } from '../../data/mockData';
@@ -26,6 +27,7 @@ const navItems = [
   { id: 'pyqs', icon: History, label: 'PYQs' },
   { id: 'analytics', icon: BarChart2, label: 'Performance Insights' },
   { id: 'settings', icon: Settings, label: 'Settings' },
+  { id: 'support', icon: HelpCircle, label: 'Support & Help' },
 ];
 
 export function Sidebar({ 
@@ -76,7 +78,7 @@ export function Sidebar({
                 <button
                   key={item.label}
                   onClick={() => {
-                    if (['dashboard', 'path', 'mock_tests', 'pyqs', 'analytics', 'smart_lessons', 'settings'].includes(item.id)) {
+                    if (['dashboard', 'path', 'mock_tests', 'pyqs', 'analytics', 'smart_lessons', 'settings', 'support'].includes(item.id)) {
                       onNavigate?.(item.id);
                     }
                     onClose?.();
