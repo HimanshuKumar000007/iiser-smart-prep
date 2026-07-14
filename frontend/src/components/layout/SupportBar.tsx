@@ -4,7 +4,7 @@
  * Minimal: version, quick links, no copyright clutter.
  */
 
-import { MessageCircle, ThumbsUp, HelpCircle, Mail, FileText, FileLock2 } from 'lucide-react';
+import { ThumbsUp, HelpCircle, Mail, FileText, FileLock2 } from 'lucide-react';
 
 const VERSION = '1.0.4';
 
@@ -33,18 +33,6 @@ export function SupportBar({ onNavigate }: { onNavigate?: (view: string) => void
           >
             <ThumbsUp className="w-3.5 h-3.5" />
             Feedback
-          </button>
-          <span className="w-px h-3 bg-white/10 mx-0.5" />
-        </span>
-
-        {/* Discord Link */}
-        <span className="flex items-center">
-          <button
-            onClick={() => onNavigate?.('discord')}
-            className="flex items-center gap-1.5 text-[11px] font-medium text-white/30 hover:text-white/70 transition-colors px-2 py-1 rounded-lg hover:bg-white/5 cursor-pointer"
-          >
-            <MessageCircle className="w-3.5 h-3.5" />
-            Discord
           </button>
           <span className="w-px h-3 bg-white/10 mx-0.5" />
         </span>

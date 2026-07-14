@@ -33,7 +33,6 @@ import { SmartLessonsHub } from './components/dashboard/SmartLessonsHub';
 import { Settings } from './components/dashboard/Settings';
 import { Support } from './components/dashboard/Support';
 import { Feedback } from './components/dashboard/Feedback';
-import { Discord } from './components/dashboard/Discord';
 import { Contact } from './components/dashboard/Contact';
 import { Terms } from './components/dashboard/Terms';
 import { Privacy } from './components/dashboard/Privacy';
@@ -58,7 +57,7 @@ function DashboardApp() {
     const params = new URLSearchParams(window.location.search);
     const returnToParam = params.get('returnTo');
     if (returnToParam && !entitlement.loading) {
-      const allowedViews = ['dashboard', 'path', 'smart_lessons', 'mock_tests', 'pyqs', 'analytics', 'settings', 'support', 'feedback', 'discord', 'contact', 'terms', 'privacy'];
+      const allowedViews = ['dashboard', 'path', 'smart_lessons', 'mock_tests', 'pyqs', 'analytics', 'settings', 'support', 'feedback', 'contact', 'terms', 'privacy'];
       const isValid = allowedViews.some(v => returnToParam === v || returnToParam.startsWith(v + ':') || returnToParam.startsWith(v + '/'));
       
       if (isValid) {
@@ -296,8 +295,6 @@ function DashboardApp() {
             <Support onNavigate={handleNavigate} />
           ) : currentView === 'feedback' ? (
             <Feedback onNavigate={handleNavigate} />
-          ) : currentView === 'discord' ? (
-            <Discord onNavigate={handleNavigate} />
           ) : currentView === 'contact' ? (
             <Contact onNavigate={handleNavigate} />
           ) : currentView === 'terms' ? (

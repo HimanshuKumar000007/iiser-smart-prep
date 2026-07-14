@@ -3,7 +3,6 @@ import {
   Map,
   BookOpen,
   BrainCircuit,
-  Target,
   FileCheck,
   History,
   BarChart2,
@@ -13,8 +12,7 @@ import {
   Sun,
   Moon,
   HelpCircle,
-  ThumbsUp,
-  MessageSquare
+  ThumbsUp
 } from 'lucide-react';
 import { cn } from '../../lib/utils';
 import { currentUser } from '../../data/mockData';
@@ -24,14 +22,12 @@ const navItems = [
   { id: 'dashboard', icon: LayoutDashboard, label: 'Dashboard' },
   { id: 'path', icon: Map, label: 'My Path to IISER' },
   { id: 'smart_lessons', icon: BrainCircuit, label: 'Smart Lessons' },
-  { id: 'practice', icon: Target, label: 'Practice' },
   { id: 'mock_tests', icon: FileCheck, label: 'Mock Tests' },
   { id: 'pyqs', icon: History, label: 'PYQs' },
   { id: 'analytics', icon: BarChart2, label: 'Performance Insights' },
   { id: 'settings', icon: Settings, label: 'Settings' },
   { id: 'support', icon: HelpCircle, label: 'Support & Help' },
   { id: 'feedback', icon: ThumbsUp, label: 'Send Feedback' },
-  { id: 'discord', icon: MessageSquare, label: 'Discord Community' },
 ];
 
 export function Sidebar({ 
@@ -82,7 +78,7 @@ export function Sidebar({
                 <button
                   key={item.label}
                   onClick={() => {
-                    if (['dashboard', 'path', 'mock_tests', 'pyqs', 'analytics', 'smart_lessons', 'settings', 'support', 'feedback', 'discord'].includes(item.id)) {
+                    if (['dashboard', 'path', 'mock_tests', 'pyqs', 'analytics', 'smart_lessons', 'settings', 'support', 'feedback'].includes(item.id)) {
                       onNavigate?.(item.id);
                     }
                     onClose?.();
