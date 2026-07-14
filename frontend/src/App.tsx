@@ -33,6 +33,10 @@ import { SmartLessonsHub } from './components/dashboard/SmartLessonsHub';
 import { Settings } from './components/dashboard/Settings';
 import { Support } from './components/dashboard/Support';
 import { Feedback } from './components/dashboard/Feedback';
+import { Discord } from './components/dashboard/Discord';
+import { Contact } from './components/dashboard/Contact';
+import { Terms } from './components/dashboard/Terms';
+import { Privacy } from './components/dashboard/Privacy';
 import { SupportBar } from './components/layout/SupportBar';
 import { MobileNav } from './components/layout/MobileNav';
 import { Menu, Bell, BrainCircuit, Sun, Moon } from 'lucide-react';
@@ -54,7 +58,7 @@ function DashboardApp() {
     const params = new URLSearchParams(window.location.search);
     const returnToParam = params.get('returnTo');
     if (returnToParam && !entitlement.loading) {
-      const allowedViews = ['dashboard', 'path', 'smart_lessons', 'mock_tests', 'pyqs', 'analytics', 'settings', 'support', 'feedback'];
+      const allowedViews = ['dashboard', 'path', 'smart_lessons', 'mock_tests', 'pyqs', 'analytics', 'settings', 'support', 'feedback', 'discord', 'contact', 'terms', 'privacy'];
       const isValid = allowedViews.some(v => returnToParam === v || returnToParam.startsWith(v + ':') || returnToParam.startsWith(v + '/'));
       
       if (isValid) {
@@ -232,8 +236,9 @@ function DashboardApp() {
             </div>
           );
         })() : (
-        <div className="p-4 lg:p-8 overflow-y-auto w-full flex-1 flex flex-col">
-          {currentView === 'path' ? (
+        <div className="p-4 lg:p-8 overflow-y-auto w-full flex-1 flex flex-col justify-between">
+          <div className="flex-1 w-full">
+            {currentView === 'path' ? (
             <PathToIISER 
               onNavigate={handleNavigate} 
               dashboardData={dashboardData}
@@ -291,6 +296,14 @@ function DashboardApp() {
             <Support onNavigate={handleNavigate} />
           ) : currentView === 'feedback' ? (
             <Feedback onNavigate={handleNavigate} />
+          ) : currentView === 'discord' ? (
+            <Discord onNavigate={handleNavigate} />
+          ) : currentView === 'contact' ? (
+            <Contact onNavigate={handleNavigate} />
+          ) : currentView === 'terms' ? (
+            <Terms onNavigate={handleNavigate} />
+          ) : currentView === 'privacy' ? (
+            <Privacy onNavigate={handleNavigate} />
           ) : (
             <div className="max-w-6xl mx-auto w-full space-y-6 flex-1 mt-2 lg:mt-4 pb-32 lg:pb-0">
               <Hero 
@@ -381,10 +394,13 @@ function DashboardApp() {
               <div className="w-full pt-4 pb-8">
                 <QuickAccess onNavigate={handleNavigate} />
               </div>
-
-              <SupportBar onNavigate={handleNavigate} />
             </div>
           )}
+          </div>
+          
+          <div className="w-full max-w-6xl mx-auto mt-12 shrink-0">
+            <SupportBar onNavigate={handleNavigate} />
+          </div>
         </div>
         )}
         

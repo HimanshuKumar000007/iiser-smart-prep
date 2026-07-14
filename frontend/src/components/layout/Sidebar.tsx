@@ -12,7 +12,9 @@ import {
   LogOut,
   Sun,
   Moon,
-  HelpCircle
+  HelpCircle,
+  ThumbsUp,
+  MessageSquare
 } from 'lucide-react';
 import { cn } from '../../lib/utils';
 import { currentUser } from '../../data/mockData';
@@ -28,6 +30,8 @@ const navItems = [
   { id: 'analytics', icon: BarChart2, label: 'Performance Insights' },
   { id: 'settings', icon: Settings, label: 'Settings' },
   { id: 'support', icon: HelpCircle, label: 'Support & Help' },
+  { id: 'feedback', icon: ThumbsUp, label: 'Send Feedback' },
+  { id: 'discord', icon: MessageSquare, label: 'Discord Community' },
 ];
 
 export function Sidebar({ 
@@ -78,7 +82,7 @@ export function Sidebar({
                 <button
                   key={item.label}
                   onClick={() => {
-                    if (['dashboard', 'path', 'mock_tests', 'pyqs', 'analytics', 'smart_lessons', 'settings', 'support'].includes(item.id)) {
+                    if (['dashboard', 'path', 'mock_tests', 'pyqs', 'analytics', 'smart_lessons', 'settings', 'support', 'feedback', 'discord'].includes(item.id)) {
                       onNavigate?.(item.id);
                     }
                     onClose?.();
