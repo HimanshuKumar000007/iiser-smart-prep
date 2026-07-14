@@ -57,7 +57,7 @@ export function Support({ onNavigate }: { onNavigate?: (view: string) => void })
     setTimeout(() => setCopied(false), 2000);
   };
 
-  const handleFormSubmit = (e: React.FormEvent) => {
+  const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMsg('');
 
@@ -72,16 +72,39 @@ export function Support({ onNavigate }: { onNavigate?: (view: string) => void })
     }
 
     setIsSubmitting(true);
-    // Mock API submission lag
-    setTimeout(() => {
-      setIsSubmitting(false);
+    try {
+      const API_BASE =
+        (import.meta as any).env?.VITE_API_URL ??
+        ((import.meta as any).env?.DEV ? 'http://localhost:5000' : 'https://api.iisersmartprep.space');
+
+      const fullMessage = `[Category: ${issueType.toUpperCase()}]
+[Subject: ${subject}]
+
+Message:
+${message}`;
+
+      const res = await fetch(`${API_BASE}/api/contact`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, email, message: fullMessage })
+      });
+
+      const data = await res.json();
+      if (!res.ok) {
+        throw new Error(data.error || 'Failed to send message.');
+      }
+
       setIsSubmitted(true);
-      // Reset form fields
       setName('');
       setEmail('');
       setSubject('');
       setMessage('');
-    }, 1500);
+    } catch (err: any) {
+      console.error('Support ticket submission error:', err);
+      setErrorMsg(err.message || 'Server error. Please try again.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
