@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="light">
+<html lang="en" data-theme="dark">
 
 <head>
   <meta charset="UTF-8" />
@@ -1551,6 +1551,7 @@
 
     tbody tr {
       border-bottom: 1px solid var(--border);
+      background: var(--surface);
       transition: background var(--transition);
       cursor: pointer;
     }
@@ -2334,7 +2335,7 @@
       token = localStorage.getItem('IAT_TOKEN');
       if (!token) { window.location.href = '/login.html'; return; }
 
-      const savedTheme = localStorage.getItem('iat_theme') || 'light';
+      const savedTheme = localStorage.getItem('iat_theme') || 'dark';
       setTheme(savedTheme);
 
       document.getElementById('logout-btn').addEventListener('click', e => {
