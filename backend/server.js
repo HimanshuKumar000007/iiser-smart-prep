@@ -127,8 +127,8 @@ function authMiddleware(req, res, next) {
 
 const PLANS = {
   monthly: { amount: 399, durationDays: 30, description: "Pro Plan — 1 Month" },
-  six_month: { amount: 1299, durationDays: 180, description: "Pro Plan — 6 Months" },
-  annual: { amount: 2000, durationDays: 365, description: "Pro Plan — 1 Year" }
+  six_month: { amount: 499, durationDays: 180, description: "Pro Plan — 6 Months" },
+  annual: { amount: 899, durationDays: 365, description: "Pro Plan — 1 Year" }
 };
 
 async function requirePro(req, res, next) {
