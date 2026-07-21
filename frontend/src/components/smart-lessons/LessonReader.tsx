@@ -876,7 +876,7 @@ export function LessonReader({ lessonId, onNavigate, startAtQuiz = false }: Prop
   }
 
   return (
-    <div ref={containerRef} className="max-w-4xl mx-auto w-full space-y-6 mt-2 pb-32 lg:pb-8 px-2 sm:px-4 lg:px-0">
+    <div ref={containerRef} className="lesson-reader-container max-w-4xl mx-auto w-full space-y-6 mt-2 pb-32 lg:pb-8 px-2 sm:px-4 lg:px-0">
       
       {/* ── Lazy chapter detail (Suspense shows skeleton while chunk downloads) ── */}
       <Suspense fallback={<ChapterSkeleton />}>
