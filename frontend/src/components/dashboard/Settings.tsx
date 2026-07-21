@@ -3,14 +3,7 @@ import { motion } from 'motion/react';
 import { 
   Settings as SettingsIcon,
   User,
-  Target,
-  BookOpen,
-  Calendar,
-  Bell,
   Palette,
-  Bot,
-  Shield,
-  Database,
   Diamond,
   HelpCircle,
   AlertTriangle,
@@ -21,34 +14,6 @@ import { currentUser } from '../../data/mockData';
 import { cn } from '../../lib/utils';
 import { Footer } from '../layout/Footer';
 import { useTheme, Theme } from '../../context/ThemeContext';
-
-function SettingToggle({ label, enabled, onChange, isLight }: { label: string, enabled: boolean, onChange?: () => void, isLight?: boolean }) {
-  const [isOn, setIsOn] = useState(enabled);
-  
-  return (
-    <div className="flex items-center justify-between py-3 group">
-      <span className={cn(
-        "text-sm font-medium transition-colors",
-        isLight ? "text-slate-700 group-hover:text-slate-900" : "text-white/80 group-hover:text-white"
-      )}>{label}</span>
-      <button 
-        onClick={() => {
-          setIsOn(!isOn);
-          onChange?.();
-        }}
-        className={cn(
-          "w-11 h-6 rounded-full transition-colors relative cursor-pointer",
-          isOn ? "bg-cyan-500" : isLight ? "bg-slate-200" : "bg-white/10"
-        )}
-      >
-         <div className={cn(
-           "w-4 h-4 rounded-full bg-white absolute top-1 transition-transform shadow-sm",
-           isOn ? "translate-x-6" : "translate-x-1"
-         )} />
-      </button>
-    </div>
-  );
-}
 
 export function Settings() {
   const [profile, setProfile] = useState<any>(null);
@@ -231,190 +196,7 @@ export function Settings() {
             </div>
           </section>
 
-          {/* SECTION 2: EXAM TARGETS */}
-          <section className={cn(
-            "p-6 rounded-3xl border space-y-6 transition-colors",
-            isLight
-              ? "bg-gradient-to-br from-indigo-50/80 via-white to-indigo-50/40 border-slate-200/80 shadow-[0_8px_30px_rgba(15,23,42,0.03)]"
-              : "bg-gradient-to-br from-indigo-500/5 to-[#0A0C16] border-indigo-500/20"
-          )}>
-            <h2 className={cn("text-base font-bold flex items-center gap-2 border-b pb-4", isLight ? "text-slate-900 border-slate-100" : "text-white border-white/5")}>
-              <Target className="w-5 h-5 text-indigo-400" /> Exam Goals
-            </h2>
-            
-            <div className="space-y-5">
-              <div>
-                <label className={cn("block text-sm font-medium mb-3", isLight ? "text-slate-600" : "text-white/70")}>Current Target Exam</label>
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                  <button className="p-3 rounded-xl bg-indigo-500 border border-indigo-500/50 text-white font-bold text-sm shadow-[0_0_15px_rgba(99,102,241,0.2)] cursor-pointer">IISER IAT</button>
-                  <button className={cn("p-3 rounded-xl border font-medium text-sm transition-all cursor-pointer", isLight ? "bg-white border-slate-200 text-slate-700 hover:text-slate-900 hover:border-slate-300" : "bg-[#05060F] border-white/10 text-white/70 hover:text-white hover:border-white/20")}>NEST</button>
-                  <button className={cn("p-3 rounded-xl border font-medium text-sm transition-all cursor-pointer", isLight ? "bg-white border-slate-200 text-slate-700 hover:text-slate-900 hover:border-slate-300" : "bg-[#05060F] border-white/10 text-white/70 hover:text-white hover:border-white/20")}>IISER IAT + NEST</button>
-                </div>
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                 <div>
-                    <label className={cn("block text-sm font-medium mb-2", isLight ? "text-slate-600" : "text-white/70")}>Target Institute</label>
-                    <select className={cn("w-full border rounded-xl p-3 text-sm outline-none appearance-none transition-colors", isLight ? "bg-white border-slate-200 text-slate-800 focus:border-indigo-500" : "bg-[#05060F] border-white/10 text-white focus:border-indigo-500/50")}>
-                       <option>IISER Pune</option>
-                       <option>IISER Kolkata</option>
-                       <option>IISER Mohali</option>
-                       <option>IISER Bhopal</option>
-                       <option>IISER Thiruvananthapuram</option>
-                       <option>IISER Tirupati</option>
-                       <option>IISER Berhampur</option>
-                       <option>NISER Bhubaneswar</option>
-                       <option>UM-DAE CEBS</option>
-                    </select>
-                 </div>
-                 <div>
-                    <label className={cn("block text-sm font-medium mb-2", isLight ? "text-slate-600" : "text-white/70")}>Target Year</label>
-                    <select className={cn("w-full border rounded-xl p-3 text-sm outline-none appearance-none transition-colors", isLight ? "bg-white border-slate-200 text-slate-800 focus:border-indigo-500" : "bg-[#05060F] border-white/10 text-white focus:border-indigo-500/50")}>
-                       <option>2025</option>
-                       <option>2026</option>
-                       <option>2027</option>
-                       <option>2028</option>
-                    </select>
-                 </div>
-              </div>
-            </div>
-          </section>
-
-          {/* SECTION 3: STUDY PREFERENCES */}
-          <section className={cn(
-            "p-6 rounded-3xl border space-y-6 transition-colors",
-            isLight
-              ? "bg-white/80 border-slate-200/80 shadow-[0_8px_30px_rgba(15,23,42,0.03)]"
-              : "bg-[#0A0C16] border-white/5"
-          )}>
-            <h2 className={cn("text-base font-bold flex items-center gap-2 border-b pb-4", isLight ? "text-slate-900 border-slate-100" : "text-white border-white/5")}>
-              <BookOpen className="w-5 h-5 text-emerald-400" /> Study Preferences
-            </h2>
-            
-            <div className="space-y-6">
-              <div>
-                <label className={cn("block text-sm font-medium mb-3", isLight ? "text-slate-600" : "text-white/70")}>Current Level</label>
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                  <button className="flex items-center justify-center gap-2 p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-500 font-bold text-sm cursor-pointer">
-                    🌱 Beginner
-                  </button>
-                  <button className={cn("flex items-center justify-center gap-2 p-3 rounded-xl border font-medium text-sm transition-all cursor-pointer", isLight ? "bg-white border-slate-200 text-slate-700 hover:text-slate-900 hover:border-slate-300" : "bg-[#05060F] border-white/10 text-white/70 hover:text-white hover:border-white/20")}>
-                    🌿 Intermediate
-                  </button>
-                  <button className={cn("flex items-center justify-center gap-2 p-3 rounded-xl border font-medium text-sm transition-all cursor-pointer", isLight ? "bg-white border-slate-200 text-slate-700 hover:text-slate-900 hover:border-slate-300" : "bg-[#05060F] border-white/10 text-white/70 hover:text-white hover:border-white/20")}>
-                    🏆 Advanced
-                  </button>
-                </div>
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                 <div>
-                    <label className={cn("block text-sm font-medium mb-3", isLight ? "text-slate-600" : "text-white/70")}>Preferred Subjects</label>
-                    <div className="space-y-2">
-                       {['Physics', 'Chemistry', 'Mathematics', 'Biology'].map(sub => (
-                         <label key={sub} className={cn("flex items-center gap-3 p-2 rounded-lg cursor-pointer transition-colors group", isLight ? "hover:bg-slate-100/70" : "hover:bg-white/5")}>
-                           <div className={cn("w-5 h-5 rounded border flex items-center justify-center transition-colors", ['Physics','Chemistry'].includes(sub) ? "bg-cyan-500 border-cyan-500" : isLight ? "border-slate-300 group-hover:border-slate-400" : "border-white/20 group-hover:border-white/40")}>
-                             {['Physics','Chemistry'].includes(sub) && <div className="w-2 h-2 bg-black rounded-sm" />}
-                           </div>
-                           <span className={cn("text-sm font-medium", isLight ? "text-slate-700" : "text-white/80")}>{sub}</span>
-                         </label>
-                       ))}
-                    </div>
-                 </div>
-                 <div>
-                    <label className={cn("block text-sm font-medium mb-3", isLight ? "text-slate-600" : "text-white/70")}>Weak Subjects (Focus Areas)</label>
-                    <div className="space-y-2">
-                       {['Physics', 'Chemistry', 'Mathematics', 'Biology'].map(sub => (
-                         <label key={sub} className={cn("flex items-center gap-3 p-2 rounded-lg cursor-pointer transition-colors group", isLight ? "hover:bg-slate-100/70" : "hover:bg-white/5")}>
-                           <div className={cn("w-5 h-5 rounded border flex items-center justify-center transition-colors", ['Mathematics', 'Biology'].includes(sub) ? "bg-rose-500 border-rose-500" : isLight ? "border-slate-300 group-hover:border-slate-400" : "border-white/20 group-hover:border-white/40")}>
-                             {['Mathematics', 'Biology'].includes(sub) && <div className="w-2 h-2 bg-black rounded-sm" />}
-                           </div>
-                           <span className={cn("text-sm font-medium", isLight ? "text-slate-700" : "text-white/80")}>{sub}</span>
-                         </label>
-                       ))}
-                    </div>
-                 </div>
-              </div>
-            </div>
-          </section>
-
-          {/* SECTION 4: DAILY GOALS */}
-          <section className={cn(
-            "p-6 rounded-3xl border space-y-6 transition-colors",
-            isLight
-              ? "bg-white/80 border-slate-200/80 shadow-[0_8px_30px_rgba(15,23,42,0.03)]"
-              : "bg-[#0A0C16] border-white/5"
-          )}>
-            <h2 className={cn("text-base font-bold flex items-center gap-2 border-b pb-4", isLight ? "text-slate-900 border-slate-100" : "text-white border-white/5")}>
-              <Calendar className="w-5 h-5 text-amber-400" /> Daily Goals
-            </h2>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
-               <div className={cn("p-4 rounded-2xl border transition-colors", isLight ? "bg-slate-50 border-slate-200/70" : "bg-white/5 border-white/5")}>
-                 <p className={cn("text-xs font-bold uppercase tracking-widest mb-4", isLight ? "text-slate-400" : "text-white/40")}>Lessons / Day</p>
-                 <div className="flex items-center justify-between">
-                    <button className={cn("w-8 h-8 rounded-lg flex items-center justify-center font-bold transition-colors cursor-pointer", isLight ? "bg-slate-200/70 text-slate-700 hover:bg-slate-200" : "bg-white/10 text-white/60 hover:text-white hover:bg-white/20")}>-</button>
-                    <span className={cn("text-2xl font-bold", isLight ? "text-slate-900" : "text-white")}>2</span>
-                    <button className={cn("w-8 h-8 rounded-lg flex items-center justify-center font-bold transition-colors cursor-pointer", isLight ? "bg-slate-200/70 text-slate-700 hover:bg-slate-200" : "bg-white/10 text-white/60 hover:text-white hover:bg-white/20")}>+</button>
-                 </div>
-               </div>
-               <div className={cn("p-4 rounded-2xl border transition-colors", isLight ? "bg-slate-50 border-slate-200/70" : "bg-white/5 border-white/5")}>
-                 <p className={cn("text-xs font-bold uppercase tracking-widest mb-4", isLight ? "text-slate-400" : "text-white/40")}>Study Time</p>
-                 <div className="flex items-center justify-between">
-                    <button className={cn("w-8 h-8 rounded-lg flex items-center justify-center font-bold transition-colors cursor-pointer", isLight ? "bg-slate-200/70 text-slate-700 hover:bg-slate-200" : "bg-white/10 text-white/60 hover:text-white hover:bg-white/20")}>-</button>
-                    <span className={cn("text-2xl font-bold flex items-baseline gap-1", isLight ? "text-slate-900" : "text-white")}>2<span className={cn("text-xs", isLight ? "text-slate-400" : "text-white/40")}>h</span></span>
-                    <button className={cn("w-8 h-8 rounded-lg flex items-center justify-center font-bold transition-colors cursor-pointer", isLight ? "bg-slate-200/70 text-slate-700 hover:bg-slate-200" : "bg-white/10 text-white/60 hover:text-white hover:bg-white/20")}>+</button>
-                 </div>
-               </div>
-               <div className={cn("p-4 rounded-2xl border transition-colors", isLight ? "bg-slate-50 border-slate-200/70" : "bg-white/5 border-white/5")}>
-                 <p className={cn("text-xs font-bold uppercase tracking-widest mb-4", isLight ? "text-slate-400" : "text-white/40")}>Mocks / Wk</p>
-                 <div className="flex items-center justify-between">
-                    <button className={cn("w-8 h-8 rounded-lg flex items-center justify-center font-bold transition-colors cursor-pointer", isLight ? "bg-slate-200/70 text-slate-700 hover:bg-slate-200" : "bg-white/10 text-white/60 hover:text-white hover:bg-white/20")}>-</button>
-                    <span className={cn("text-2xl font-bold", isLight ? "text-slate-900" : "text-white")}>1</span>
-                    <button className={cn("w-8 h-8 rounded-lg flex items-center justify-center font-bold transition-colors cursor-pointer", isLight ? "bg-slate-200/70 text-slate-700 hover:bg-slate-200" : "bg-white/10 text-white/60 hover:text-white hover:bg-white/20")}>+</button>
-                 </div>
-               </div>
-            </div>
-          </section>
-
-          {/* SECTION 5: NOTIFICATIONS */}
-          <section className={cn(
-            "p-6 rounded-3xl border space-y-4 transition-colors",
-            isLight
-              ? "bg-white/80 border-slate-200/80 shadow-[0_8px_30px_rgba(15,23,42,0.03)]"
-              : "bg-[#0A0C16] border-white/5"
-          )}>
-            <h2 className={cn("text-base font-bold flex items-center gap-2 border-b pb-4 mb-2", isLight ? "text-slate-900 border-slate-100" : "text-white border-white/5")}>
-              <Bell className="w-5 h-5 text-rose-400" /> Notifications
-            </h2>
-            <div className={cn("divide-y", isLight ? "divide-slate-100" : "divide-white/5")}>
-              <SettingToggle label="Daily Study Reminder" enabled={true} isLight={isLight} />
-              <SettingToggle label="Revision Reminder" enabled={true} isLight={isLight} />
-              <SettingToggle label="Mock Test Reminder" enabled={true} isLight={isLight} />
-              <SettingToggle label="Weekly Progress Report" enabled={false} isLight={isLight} />
-              <SettingToggle label="Exam Countdown Alerts" enabled={true} isLight={isLight} />
-            </div>
-          </section>
-
-          {/* SECTION 6: AI PERSONALIZATION */}
-          <section className={cn(
-            "p-6 rounded-3xl border space-y-4 transition-colors",
-            isLight
-              ? "bg-gradient-to-br from-purple-50/80 via-white to-purple-50/40 border-slate-200/80 shadow-[0_8px_30px_rgba(15,23,42,0.03)]"
-              : "bg-gradient-to-br from-purple-500/5 to-[#0A0C16] border-purple-500/20"
-          )}>
-            <h2 className={cn("text-base font-bold flex items-center gap-2 border-b pb-4 mb-2", isLight ? "text-slate-900 border-slate-100" : "text-white border-white/5")}>
-              <Bot className="w-5 h-5 text-purple-400" /> AI Preferences
-            </h2>
-            <div className={cn("divide-y", isLight ? "divide-slate-100" : "divide-white/5")}>
-              <SettingToggle label="Enable Smart Recommendations" enabled={true} isLight={isLight} />
-              <SettingToggle label="Enable Weak Area Detection" enabled={true} isLight={isLight} />
-              <SettingToggle label="Enable Daily Study Plans" enabled={true} isLight={isLight} />
-              <SettingToggle label="Enable AI Revision Queue" enabled={true} isLight={isLight} />
-              <SettingToggle label="Enable Personalized Insights" enabled={true} isLight={isLight} />
-            </div>
-          </section>
-
-          {/* SECTION 7: APPEARANCE */}
+          {/* SECTION 2: APPEARANCE */}
           <section className={cn(
             "p-6 rounded-3xl border space-y-6 transition-colors",
             isLight
@@ -444,53 +226,9 @@ export function Settings() {
                  </button>
               </div>
             </div>
-
-            <div className={cn("divide-y pt-2", isLight ? "divide-slate-100 border-slate-100" : "divide-white/5 border-white/5")}>
-              <SettingToggle label="Animations & Transitions" enabled={true} isLight={isLight} />
-              <SettingToggle label="Reduced Motion" enabled={false} isLight={isLight} />
-              <SettingToggle label="Compact Mode" enabled={false} isLight={isLight} />
-            </div>
           </section>
 
-          {/* SECTION 8: DATA & PROGRESS */}
-          <section className={cn(
-            "p-6 rounded-3xl border space-y-6 transition-colors",
-            isLight
-              ? "bg-white/80 border-slate-200/80 shadow-[0_8px_30px_rgba(15,23,42,0.03)]"
-              : "bg-[#0A0C16] border-white/5"
-          )}>
-            <h2 className={cn("text-base font-bold flex items-center gap-2 border-b pb-4", isLight ? "text-slate-900 border-slate-100" : "text-white border-white/5")}>
-              <Database className="w-5 h-5 text-blue-400" /> Study Data
-            </h2>
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-               <div className={cn("p-4 rounded-2xl text-center border transition-colors", isLight ? "bg-slate-50 border-slate-200/70" : "bg-white/5 border-white/5")}>
-                 <p className={cn("text-2xl font-bold mb-1", isLight ? "text-slate-900" : "text-white")}>1,248</p>
-                 <p className={cn("text-[10px] font-bold uppercase tracking-widest", isLight ? "text-slate-400" : "text-white/40")}>Questions</p>
-               </div>
-               <div className={cn("p-4 rounded-2xl text-center border transition-colors", isLight ? "bg-slate-50 border-slate-200/70" : "bg-white/5 border-white/5")}>
-                 <p className={cn("text-2xl font-bold mb-1", isLight ? "text-slate-900" : "text-white")}>14</p>
-                 <p className={cn("text-[10px] font-bold uppercase tracking-widest", isLight ? "text-slate-400" : "text-white/40")}>Mocks</p>
-               </div>
-               <div className={cn("p-4 rounded-2xl text-center border transition-colors", isLight ? "bg-slate-50 border-slate-200/70" : "bg-white/5 border-white/5")}>
-                 <p className={cn("text-2xl font-bold mb-1", isLight ? "text-slate-900" : "text-white")}>42</p>
-                 <p className={cn("text-[10px] font-bold uppercase tracking-widest", isLight ? "text-slate-400" : "text-white/40")}>Lessons</p>
-               </div>
-               <div className={cn("p-4 rounded-2xl text-center border transition-colors", isLight ? "bg-slate-50 border-slate-200/70" : "bg-white/5 border-white/5")}>
-                 <p className={cn("text-2xl font-bold mb-1", isLight ? "text-slate-900" : "text-white")}>530</p>
-                 <p className={cn("text-[10px] font-bold uppercase tracking-widest", isLight ? "text-slate-400" : "text-white/40")}>PYQs</p>
-               </div>
-            </div>
-            <div className="flex gap-4">
-               <button className={cn("px-5 py-2.5 rounded-xl border font-medium text-sm transition-colors cursor-pointer", isLight ? "bg-slate-100 hover:bg-slate-200 border-slate-200 text-slate-800" : "bg-white/5 hover:bg-white/10 border-white/10 text-white")}>
-                 Export Progress
-               </button>
-               <button className={cn("px-5 py-2.5 rounded-xl border font-medium text-sm transition-colors cursor-pointer", isLight ? "bg-slate-100 hover:bg-slate-200 border-slate-200 text-slate-800" : "bg-white/5 hover:bg-white/10 border-white/10 text-white")}>
-                 Download Report
-               </button>
-            </div>
-          </section>
-
-          {/* SECTION 9: SUBSCRIPTION */}
+          {/* SECTION 3: SUBSCRIPTION */}
           <section className={cn(
             "p-6 rounded-3xl border space-y-6 relative overflow-hidden group transition-colors",
             isLight
@@ -517,37 +255,7 @@ export function Settings() {
             </div>
           </section>
 
-          {/* SECTION 10: PRIVACY & SECURITY */}
-          <section className={cn(
-            "p-6 rounded-3xl border space-y-4 transition-colors",
-            isLight
-              ? "bg-white/80 border-slate-200/80 shadow-[0_8px_30px_rgba(15,23,42,0.03)]"
-              : "bg-[#0A0C16] border-white/5"
-          )}>
-            <h2 className={cn("text-base font-bold flex items-center gap-2 border-b pb-4 mb-2", isLight ? "text-slate-900 border-slate-100" : "text-white border-white/5")}>
-              <Shield className="w-5 h-5 text-emerald-500" /> Security
-            </h2>
-            <div className={cn("divide-y", isLight ? "divide-slate-100" : "divide-white/5")}>
-              <SettingToggle label="Two Factor Authentication" enabled={false} isLight={isLight} />
-              <button className="w-full flex items-center justify-between py-4 group cursor-pointer">
-                 <span className={cn("text-sm font-medium transition-colors", isLight ? "text-slate-700 group-hover:text-slate-900" : "text-white/80 group-hover:text-white")}>Login History</span>
-                 <ChevronRight className={cn("w-4 h-4 transition-colors", isLight ? "text-slate-400 group-hover:text-slate-600" : "text-white/30 group-hover:text-white/60")} />
-              </button>
-              <button className="w-full flex items-center justify-between py-4 group cursor-pointer">
-                 <span className={cn("text-sm font-medium transition-colors", isLight ? "text-slate-700 group-hover:text-slate-900" : "text-white/80 group-hover:text-white")}>Active Sessions</span>
-                 <ChevronRight className={cn("w-4 h-4 transition-colors", isLight ? "text-slate-400 group-hover:text-slate-600" : "text-white/30 group-hover:text-white/60")} />
-              </button>
-              <button 
-                onClick={handleLogout}
-                className="w-full text-left py-4 group flex items-center justify-between transition-colors cursor-pointer"
-              >
-                 <span className={cn("text-sm font-medium transition-colors", isLight ? "text-slate-600 group-hover:text-slate-900" : "text-white/60 group-hover:text-white")}>Logout From All Devices</span>
-                 <LogOut className={cn("w-4 h-4 transition-colors", isLight ? "text-slate-400 group-hover:text-slate-600" : "text-white/30 group-hover:text-white/60")} />
-              </button>
-            </div>
-          </section>
-
-          {/* SECTION 11: DANGER ZONE */}
+          {/* SECTION 4: DANGER ZONE & ACCOUNT ACTIONS */}
           <section className={cn(
             "p-6 rounded-3xl border space-y-4 transition-colors",
             isLight
@@ -604,17 +312,6 @@ export function Settings() {
                <div>
                  <p className={cn("text-xs uppercase tracking-widest font-bold mb-1", isLight ? "text-slate-400" : "text-white/40")}>Days Remaining</p>
                  <p className="text-2xl font-display font-bold text-cyan-500">127</p>
-               </div>
-               <div>
-                 <p className={cn("text-xs uppercase tracking-widest font-bold mb-1", isLight ? "text-slate-400" : "text-white/40")}>Current Level</p>
-                 <p className="text-sm font-medium text-emerald-500 flex items-center gap-1.5">
-                   🌱 Beginner
-                 </p>
-               </div>
-               <div className={cn("pt-4 border-t", isLight ? "border-slate-100" : "border-white/5")}>
-                 <button className={cn("w-full py-2.5 rounded-xl text-sm font-medium transition-colors cursor-pointer", isLight ? "bg-slate-100 hover:bg-slate-200 text-slate-800" : "bg-white/5 hover:bg-white/10 text-white")}>
-                   Quick Edit
-                 </button>
                </div>
             </div>
 
