@@ -17,6 +17,7 @@ import {
 import { cn } from '../../lib/utils';
 import { currentUser } from '../../data/mockData';
 import { useTheme } from '../../context/ThemeContext';
+import { useEntitlement } from '../../hooks/useEntitlement';
 
 const navItems = [
   { id: 'dashboard', icon: LayoutDashboard, label: 'Dashboard' },
@@ -42,6 +43,7 @@ export function Sidebar({
   onNavigate?: (view: any) => void;
 }) {
   const { theme, toggleTheme } = useTheme();
+  const { isPro } = useEntitlement();
   return (
     <>
       {/* Mobile Backdrop */}
@@ -120,24 +122,26 @@ export function Sidebar({
           </div>
 
           {/* Premium Upgrade */}
-          <button 
-            onClick={() => onNavigate?.('subscription')}
-            className={cn(
-              "w-full relative group overflow-hidden rounded-xl p-4 transition-all",
-              theme === 'light'
-                ? "bg-gradient-to-b from-indigo-500/10 to-purple-500/5 border border-indigo-500/20 hover:border-indigo-500/40 shadow-sm"
-                : "bg-gradient-to-b from-indigo-500/20 to-purple-500/10 border border-indigo-500/30 hover:border-indigo-400/50"
-            )}
-          >
-            <div className="absolute inset-0 bg-gradient-to-r from-indigo-500/0 via-white/5 to-purple-500/0 opacity-0 group-hover:opacity-100 transition-opacity -translate-x-full group-hover:animate-[shimmer_1.5s_infinite]" />
-            <div className="flex items-start gap-3 relative z-10">
-              <Sparkles className="w-5 h-5 text-indigo-500 mt-0.5" />
-              <div className="text-left">
-                <p className={cn("text-sm font-semibold", theme === 'light' ? "text-indigo-950" : "text-white")}>Upgrade to Pro</p>
-                <p className={cn("text-xs mt-0.5", theme === 'light' ? "text-indigo-600/80" : "text-indigo-200/70")}>Unlock predicted ranks & deep analytics.</p>
+          {!isPro && (
+            <button 
+              onClick={() => onNavigate?.('subscription')}
+              className={cn(
+                "w-full relative group overflow-hidden rounded-xl p-4 transition-all",
+                theme === 'light'
+                  ? "bg-gradient-to-b from-indigo-500/10 to-purple-500/5 border border-indigo-500/20 hover:border-indigo-500/40 shadow-sm"
+                  : "bg-gradient-to-b from-indigo-500/20 to-purple-500/10 border border-indigo-500/30 hover:border-indigo-400/50"
+              )}
+            >
+              <div className="absolute inset-0 bg-gradient-to-r from-indigo-500/0 via-white/5 to-purple-500/0 opacity-0 group-hover:opacity-100 transition-opacity -translate-x-full group-hover:animate-[shimmer_1.5s_infinite]" />
+              <div className="flex items-start gap-3 relative z-10">
+                <Sparkles className="w-5 h-5 text-indigo-500 mt-0.5" />
+                <div className="text-left">
+                  <p className={cn("text-sm font-semibold", theme === 'light' ? "text-indigo-950" : "text-white")}>Upgrade to Pro</p>
+                  <p className={cn("text-xs mt-0.5", theme === 'light' ? "text-indigo-600/80" : "text-indigo-200/70")}>Unlock predicted ranks & deep analytics.</p>
+                </div>
               </div>
-            </div>
-          </button>
+            </button>
+          )}
 
           {/* User Profile & Logout */}
           <div className={cn("pt-4 border-t flex items-center justify-between gap-3", theme === 'light' ? "border-slate-200/80" : "border-white/5")}>
