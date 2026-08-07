@@ -159,7 +159,7 @@ export function ReadinessEngine({ dashboardData, loading, onNavigate }: Props) {
             >
               <PolarAngleAxis type="number" domain={[0, 100]} angleAxisId={0} tick={false} />
               <RadialBar
-                background={{ fill: isLight ? 'rgba(15,23,42,0.04)' : 'rgba(255,255,255,0.05)' }}
+                background={{ fill: isLight ? '#e2e8f0' : 'rgba(255,255,255,0.05)' }}
                 dataKey="value"
                 cornerRadius={8}
               />
