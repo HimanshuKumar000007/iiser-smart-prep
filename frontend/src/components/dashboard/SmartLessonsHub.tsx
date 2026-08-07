@@ -3,13 +3,14 @@ import { motion, AnimatePresence } from 'motion/react';
 import {
   BookOpen, Target, Clock, Zap, PlayCircle,
   AlertTriangle, ChevronRight, CheckCircle2, ChevronDown, Compass,
-  TrendingUp, RotateCcw, Brain,
+  TrendingUp, RotateCcw, Brain, Lock,
 } from 'lucide-react';
 import { LESSONS_DATA } from '../../data/lessons';
 import { SearchBar } from '../smart-lessons/SearchBar';
 import { cn } from '../../lib/utils';
 import { Footer } from '../layout/Footer';
 import type { SlsDashboardData, SlsMasteryChapter } from '../../types/sls';
+import { useEntitlement } from '../../hooks/useEntitlement';
 
 interface Props {
   onNavigate?: (view: string) => void;
@@ -69,11 +70,24 @@ const SUBJECT_THEMES: Record<string, {
 };
 
 export function SmartLessonsHub({ onNavigate, initialSubject, dashboardData, slsData, slsLoading }: Props) {
+  const { isPro } = useEntitlement();
   const [searchQuery, setSearchQuery] = useState('');
   const [activeSubject, setActiveSubject] = useState<string>(
     initialSubject && initialSubject !== 'All' ? initialSubject : 'Physics'
   );
   const [statuses, setStatuses] = useState<Record<string, 'not_started' | 'in_progress' | 'completed'>>({});
+
+  // 1st lesson per subject is FREE for non-Pro users
+  const freeLessonIds = useMemo(() => {
+    const freeSet = new Set<string>();
+    ['Physics', 'Chemistry', 'Biology', 'Mathematics'].forEach(sub => {
+      const firstSubjLesson = LESSONS_DATA.find(l => l.subject === sub);
+      if (firstSubjLesson) {
+        freeSet.add(firstSubjLesson.id);
+      }
+    });
+    return freeSet;
+  }, []);
 
   // Sync with initialSubject when parameter changes
   useEffect(() => {
@@ -655,26 +669,38 @@ export function SmartLessonsHub({ onNavigate, initialSubject, dashboardData, sls
                       masteryState === 'LEARNING'  ? 'bg-indigo-400' :
                       chap.status === 'in_progress' ? theme.progressBar : 'bg-transparent';
 
+                    const isLessonLocked = !isPro && !freeLessonIds.has(chap.id);
+
                     // ── Status icon colour ──
-                    const iconColor =
+                    const iconColor = isLessonLocked ? 'text-amber-400' : (
                       masteryState === 'MASTERED' || masteryState === 'STRONG' ? 'text-emerald-400' :
                       masteryState === 'IMPROVING' || masteryState === 'LEARNING' ? 'text-cyan-400' :
                       masteryState === 'WEAK' ? 'text-amber-400 animate-pulse' :
                       chap.status === 'in_progress' ? 'text-cyan-400 animate-pulse' :
-                      'text-white/20 group-hover:text-white/40';
+                      'text-white/20 group-hover:text-white/40'
+                    );
 
-                    const StatusIcon =
+                    const StatusIcon = isLessonLocked ? Lock : (
                       masteryState === 'MASTERED' || masteryState === 'STRONG' ? CheckCircle2 :
                       masteryState === 'WEAK' ? AlertTriangle :
-                      PlayCircle;
+                      PlayCircle
+                    );
 
                     return (
                       <div
                         key={chap.id}
-                        onClick={() => onNavigate?.(`/smart-lessons/${chap.id}`)}
+                        onClick={() => {
+                          if (isLessonLocked) {
+                            onNavigate?.('subscription:smart_lessons');
+                          } else {
+                            onNavigate?.(`/smart-lessons/${chap.id}`);
+                          }
+                        }}
                         className={cn(
                           "group relative flex flex-col justify-between p-5 rounded-2xl border transition-all duration-300 cursor-pointer shadow-sm hover:shadow-lg hover:-translate-y-0.5",
-                          "bg-gradient-to-br from-[#090B13] via-[#090B13] to-white/[0.01] border-white/5 hover:border-white/10 hover:bg-white/[0.02]",
+                          isLessonLocked
+                            ? "bg-gradient-to-br from-[#090B13] via-[#090B13] to-amber-500/[0.02] border-amber-500/20 hover:border-amber-500/40"
+                            : "bg-gradient-to-br from-[#090B13] via-[#090B13] to-white/[0.01] border-white/5 hover:border-white/10 hover:bg-white/[0.02]",
                           masteryState === 'WEAK' ? 'border-amber-500/15' : '',
                           theme.glow
                         )}
@@ -695,9 +721,13 @@ export function SmartLessonsHub({ onNavigate, initialSubject, dashboardData, sls
                             </div>
 
                             <div className="flex items-center gap-1.5">
-                              {chap.ncertEnough === 'Yes' && (
-                                <span className="text-[8px] font-black text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2 py-0.5 rounded-full tracking-wide leading-none uppercase">
-                                  NCERT
+                              {isLessonLocked ? (
+                                <span className="text-[8px] font-black text-amber-400 bg-amber-500/10 border border-amber-500/25 px-2 py-0.5 rounded-full tracking-wider uppercase leading-none flex items-center gap-1">
+                                  <Lock className="w-2.5 h-2.5" /> PRO LOCK
+                                </span>
+                              ) : (
+                                <span className="text-[8px] font-black text-cyan-400 bg-cyan-500/10 border border-cyan-500/25 px-2 py-0.5 rounded-full tracking-wider uppercase leading-none">
+                                  FREE
                                 </span>
                               )}
                               <span className={cn(
@@ -720,7 +750,7 @@ export function SmartLessonsHub({ onNavigate, initialSubject, dashboardData, sls
                           {/* Mastery progress bar — real masteryScore from API */}
                           <div className="h-1 w-full bg-white/5 rounded-full overflow-hidden mb-3.5 mt-2">
                             <div
-                              className={cn('h-full rounded-full transition-all duration-300', barColor)}
+                              className={cn('h-full rounded-full transition-all duration-300', isLessonLocked ? 'bg-amber-500/40' : barColor)}
                               style={{ width: `${masteryProgress}%` }}
                             />
                           </div>
@@ -733,11 +763,12 @@ export function SmartLessonsHub({ onNavigate, initialSubject, dashboardData, sls
                               <StatusIcon className={cn('w-3.5 h-3.5 shrink-0', iconColor)} />
                               <span className={cn(
                                 'text-[10px] font-bold transition-colors',
+                                isLessonLocked ? 'text-amber-300' :
                                 masteryState === 'WEAK' ? 'text-amber-400' :
                                 masteryState === 'MASTERED' || masteryState === 'STRONG' ? 'text-emerald-400' :
                                 'text-white/50 group-hover:text-white/70'
                               )}>
-                                {masteryLabel}
+                                {isLessonLocked ? 'Unlock with Pro' : masteryLabel}
                               </span>
                             </div>
                             <div className="flex items-center gap-1.5 text-[9px] text-white/35 font-semibold">
@@ -747,7 +778,7 @@ export function SmartLessonsHub({ onNavigate, initialSubject, dashboardData, sls
                           </div>
 
                           {/* Mastery detail line — only shown when real SLS data exists */}
-                          {cm && cm.attemptCount > 0 && (
+                          {!isLessonLocked && cm && cm.attemptCount > 0 && (
                             <p className="text-[9px] text-white/30 leading-none pl-5">
                               Mastery {cm.masteryScore}%
                               {cm.latestAttemptAccuracy != null && ` · Latest Quiz ${Math.round(cm.latestAttemptAccuracy)}%`}

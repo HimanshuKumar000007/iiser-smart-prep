@@ -57,7 +57,7 @@ function DashboardApp() {
     const params = new URLSearchParams(window.location.search);
     const returnToParam = params.get('returnTo');
     if (returnToParam && !entitlement.loading) {
-      const allowedViews = ['dashboard', 'path', 'smart_lessons', 'mock_tests', 'pyqs', 'analytics', 'settings', 'support', 'feedback', 'contact', 'terms', 'privacy'];
+      const allowedViews = ['dashboard', 'path', 'smart_lessons', 'mock_tests', 'pyqs', 'analytics', 'subscription', 'settings', 'support', 'feedback', 'contact', 'terms', 'privacy'];
       const isValid = allowedViews.some(v => returnToParam === v || returnToParam.startsWith(v + ':') || returnToParam.startsWith(v + '/'));
       
       if (isValid) {
@@ -65,14 +65,7 @@ function DashboardApp() {
         url.searchParams.delete('returnTo');
         window.history.replaceState({}, '', url.toString());
 
-        const premiumViews = ['mock_tests', 'pyqs', 'analytics', 'smart_lessons'];
-        const isPremium = premiumViews.some(v => returnToParam === v || returnToParam.startsWith(v + ':') || returnToParam.startsWith(v + '/'));
-        
-        if (isPremium && !entitlement.isPro) {
-          setCurrentView(`subscription:${returnToParam}`);
-        } else {
-          setCurrentView(returnToParam);
-        }
+        setCurrentView(returnToParam);
       }
     }
   }, [entitlement.isPro, entitlement.loading]);
@@ -117,22 +110,11 @@ function DashboardApp() {
   };
 
   const handleNavigate = (view: string) => {
-    const premiumViews = ['mock_tests', 'pyqs', 'analytics', 'smart_lessons'];
-    const isPremium = premiumViews.some(v => view === v || view.startsWith(v + ':') || view.startsWith(v + '/'));
-
-    if (isPremium) {
-      const token = localStorage.getItem('IAT_TOKEN');
-      if (!token) {
-        const loginUrl = `login.html?redirect=${encodeURIComponent(window.location.origin + '/dashboard-react.html?returnTo=' + view)}`;
-        window.location.href = loginUrl;
-        return;
-      }
-
-      if (!entitlement.isPro) {
-        setCurrentView(`subscription:${view}`);
-        localStorage.setItem('dashboard_current_view', `subscription:${view}`);
-        return;
-      }
+    const token = localStorage.getItem('IAT_TOKEN');
+    if (!token) {
+      const loginUrl = `login.html?redirect=${encodeURIComponent(window.location.origin + '/dashboard-react.html?returnTo=' + view)}`;
+      window.location.href = loginUrl;
+      return;
     }
 
     handleNavigateRaw(view);

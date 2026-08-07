@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { History, Target, CheckCircle2, BookOpen, Flame, AlertTriangle, ArrowRight, BarChart, Calendar, Play, Clock, Sparkles } from 'lucide-react';
+import { History, Target, CheckCircle2, BookOpen, Flame, AlertTriangle, ArrowRight, BarChart, Calendar, Play, Clock, Sparkles, Lock } from 'lucide-react';
 import { cn } from '../../lib/utils';
 import { Footer } from '../layout/Footer';
 import { LESSONS_DATA } from '../../data/lessons';
 import { PYQPlayer } from './PYQPlayer';
 import { PYQResults } from './PYQResults';
+import { useEntitlement } from '../../hooks/useEntitlement';
 
 interface PYQHubProps {
   onNavigate?: (view: string) => void;
@@ -14,7 +15,8 @@ interface PYQHubProps {
   initialResultId?: string;
 }
 
-export function PYQHub({ onNavigate, initialTab, initialSessionId, initialResultId }: PYQHubProps) {
+export function PYQHub({ onNavigate, initialTab, initialResultId, initialMockId }: PYQHubProps & { initialMockId?: string }) {
+  const { isPro } = useEntitlement();
   // Main view state: 'hub' | 'player' | 'results'
   const [view, setView] = useState<'hub' | 'player' | 'results'>(
     initialTab === 'results' ? 'results' : 'hub'
@@ -338,22 +340,43 @@ export function PYQHub({ onNavigate, initialTab, initialSessionId, initialResult
                         { name: 'Chemistry', icon: '🧪', color: 'border-rose-500/20 text-rose-400 bg-rose-500/5' },
                         { name: 'Biology', icon: '🌿', color: 'border-emerald-500/20 text-emerald-400 bg-emerald-500/5' },
                         { name: 'Mathematics', icon: '📐', color: 'border-amber-500/20 text-amber-400 bg-amber-500/5' }
-                      ].map((subj) => (
-                        <div key={subj.name} className="p-5 rounded-2xl bg-[#0A0C16] border border-white/5 flex items-center justify-between group hover:border-white/10 transition-colors">
-                          <div className="flex items-center gap-3">
-                            <div className={cn("w-10 h-10 rounded-xl border flex items-center justify-center text-lg", subj.color)}>
-                              {subj.icon}
+                      ].map((subj, i) => {
+                        const isSubjLocked = !isPro && i > 0;
+                        return (
+                          <div key={subj.name} className="p-5 rounded-2xl bg-[#0A0C16] border border-white/5 flex items-center justify-between group hover:border-white/10 transition-colors">
+                            <div className="flex items-center gap-3">
+                              <div className={cn("w-10 h-10 rounded-xl border flex items-center justify-center text-lg", subj.color)}>
+                                {subj.icon}
+                              </div>
+                              <div>
+                                <h4 className="font-bold text-white text-sm">{subj.name}</h4>
+                                {isSubjLocked && (
+                                  <span className="text-[9px] font-bold px-1.5 py-0.5 rounded bg-amber-500/10 text-amber-400 border border-amber-500/20 flex items-center gap-1 mt-0.5 w-fit">
+                                    <Lock className="w-2.5 h-2.5" /> PRO
+                                  </span>
+                                )}
+                              </div>
                             </div>
-                            <h4 className="font-bold text-white">{subj.name}</h4>
+                            <button 
+                              onClick={() => {
+                                if (isSubjLocked) {
+                                  onNavigate?.('subscription:pyqs');
+                                } else {
+                                  handleOpenConfig('subject', subj.name);
+                                }
+                              }}
+                              className={cn(
+                                "px-3.5 py-2 rounded-xl border text-[10px] font-bold transition-all flex items-center gap-1",
+                                isSubjLocked
+                                  ? "bg-amber-500/10 hover:bg-amber-500/20 border-amber-500/30 text-amber-300"
+                                  : "bg-white/5 hover:bg-white/10 border-white/5 text-white"
+                              )}
+                            >
+                              {isSubjLocked ? <Lock className="w-3 h-3 text-amber-400" /> : 'Start'} {!isSubjLocked && <Play className="w-3 h-3 text-purple-400" />}
+                            </button>
                           </div>
-                          <button 
-                            onClick={() => handleOpenConfig('subject', subj.name)}
-                            className="px-3.5 py-2 rounded-xl bg-white/5 hover:bg-white/10 border border-white/5 text-[10px] font-bold text-white transition-all flex items-center gap-1"
-                          >
-                            Start <Play className="w-3 h-3 text-purple-400" />
-                          </button>
-                        </div>
-                      ))}
+                        );
+                      })}
                     </div>
                   </section>
 
@@ -387,10 +410,16 @@ export function PYQHub({ onNavigate, initialTab, initialSessionId, initialResult
                         </select>
                         <button
                           disabled={!selectedChapterId}
-                          onClick={() => handleOpenConfig('chapter', selectedChapterId)}
+                          onClick={() => {
+                            if (!isPro) {
+                              onNavigate?.('subscription:pyqs');
+                            } else {
+                              handleOpenConfig('chapter', selectedChapterId);
+                            }
+                          }}
                           className="w-full sm:w-auto shrink-0 px-6 py-3 rounded-xl bg-purple-500 hover:bg-purple-400 disabled:bg-purple-500/20 disabled:text-white/40 disabled:border-purple-500/10 text-white font-bold text-xs transition-all flex items-center justify-center gap-1.5"
                         >
-                          Start Chapter Practice <Play className="w-3.5 h-3.5" />
+                          Start Chapter Practice {!isPro ? <Lock className="w-3.5 h-3.5 text-amber-400" /> : <Play className="w-3.5 h-3.5" />}
                         </button>
                       </div>
                     </div>
@@ -411,20 +440,43 @@ export function PYQHub({ onNavigate, initialTab, initialSessionId, initialResult
                         { year: '2019', count: 60 },
                         { year: '2018', count: 60 },
                         { year: '2017', count: 60 }
-                      ].map((paper) => (
-                        <div key={paper.year} className="p-4 rounded-xl bg-[#0A0C16] border border-white/5 flex items-center justify-between hover:border-white/10 transition-all">
-                          <div>
-                            <h4 className="font-bold text-white text-sm">{selectedExam} {paper.year}</h4>
-                            <span className="text-[10px] text-white/40 block mt-0.5">{paper.count} Questions Available</span>
+                      ].map((paper, i) => {
+                        const isYearLocked = !isPro && i > 0;
+                        return (
+                          <div key={paper.year} className="p-4 rounded-xl bg-[#0A0C16] border border-white/5 flex items-center justify-between hover:border-white/10 transition-all">
+                            <div>
+                              <div className="flex items-center gap-2">
+                                <h4 className="font-bold text-white text-sm">{selectedExam} {paper.year}</h4>
+                                {isYearLocked ? (
+                                  <span className="text-[9px] font-bold px-1.5 py-0.5 rounded bg-amber-500/10 text-amber-400 border border-amber-500/20 flex items-center gap-1">
+                                    <Lock className="w-2.5 h-2.5" /> PRO
+                                  </span>
+                                ) : (
+                                  <span className="text-[9px] font-bold px-1.5 py-0.5 rounded bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 uppercase">FREE</span>
+                                )}
+                              </div>
+                              <span className="text-[10px] text-white/40 block mt-0.5">{paper.count} Questions Available</span>
+                            </div>
+                            <button 
+                              onClick={() => {
+                                if (isYearLocked) {
+                                  onNavigate?.('subscription:pyqs');
+                                } else {
+                                  handleOpenConfig('year', paper.year);
+                                }
+                              }}
+                              className={cn(
+                                "px-3.5 py-2 rounded-xl border text-[10px] font-bold transition-colors flex items-center gap-1",
+                                isYearLocked
+                                  ? "bg-amber-500/10 hover:bg-amber-500/20 border-amber-500/30 text-amber-300"
+                                  : "bg-white/5 hover:bg-white/10 border-white/5 text-purple-400"
+                              )}
+                            >
+                              {isYearLocked ? <Lock className="w-3 h-3 text-amber-400" /> : null} Solve
+                            </button>
                           </div>
-                          <button 
-                            onClick={() => handleOpenConfig('year', paper.year)}
-                            className="px-3.5 py-2 rounded-xl bg-white/5 hover:bg-white/10 border border-white/5 text-[10px] font-bold text-purple-400 transition-colors"
-                          >
-                            Solve
-                          </button>
-                        </div>
-                      ))}
+                        );
+                      })}
                     </div>
                   </section>
 

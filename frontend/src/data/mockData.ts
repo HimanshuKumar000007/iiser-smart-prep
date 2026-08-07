@@ -47,8 +47,11 @@ const getDynamicCurrentUser = (): UserProfile => {
   const subjects = getDynamicSubjectReadinessData();
   const overallReadiness = Math.round(subjects.reduce((sum, item) => sum + item.score, 0) / subjects.length);
 
+  const email = localStorage.getItem('currentUser_email') || '';
+
   return {
     name,
+    email,
     exam,
     daysUntilExam,
     overallReadiness,

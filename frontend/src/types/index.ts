@@ -1,5 +1,6 @@
 export interface UserProfile {
   name: string;
+  email?: string;
   exam: string;
   daysUntilExam: number;
   overallReadiness: number;

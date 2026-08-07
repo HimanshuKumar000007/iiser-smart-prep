@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Trophy, Clock, X, ArrowRight, TrendingUp, CheckCircle2, AlertTriangle, ChevronRight, Zap, Target, LineChart, FileText, Star, BrainCircuit, RotateCcw, BarChart, History, Check } from 'lucide-react';
+import { Trophy, Clock, X, ArrowRight, TrendingUp, CheckCircle2, AlertTriangle, ChevronRight, Zap, Target, LineChart, FileText, Star, BrainCircuit, RotateCcw, BarChart, History, Check, Lock } from 'lucide-react';
 import { cn } from '../../lib/utils';
 import { Footer } from '../layout/Footer';
 import { MOCK_TESTS } from '../../data/mockTests';
@@ -11,6 +11,7 @@ import { MockAnalytics } from './MockAnalytics';
 import { QuickMockModal } from './QuickMockModal';
 import { QuickMockPlayer } from './QuickMockPlayer';
 import { QuickMockResults } from './QuickMockResults';
+import { useEntitlement } from '../../hooks/useEntitlement';
 
 const API_BASE =
   (import.meta as any).env?.VITE_API_URL ??
@@ -24,6 +25,7 @@ interface MockTestCenterProps {
 }
 
 export function MockTestCenter({ onNavigate, initialTab, initialResultId, initialMockId }: MockTestCenterProps) {
+  const { isPro } = useEntitlement();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedMock, setSelectedMock] = useState<any>(null);
   const [mockLimit, setMockLimit] = useState(10);
@@ -149,13 +151,18 @@ export function MockTestCenter({ onNavigate, initialTab, initialResultId, initia
       time: realMock?.duration || 180,
       attempts: attemptsCount,
       best: bestScoreForMock,
-      isReal: !!realMock
+      isReal: !!realMock,
+      isLocked: !isPro && i > 0 // 1st mock test is FREE, rest locked for non-Pro
     };
   });
 
   const visibleMocks = allMocks.slice(0, mockLimit);
 
   const handleStartMock = (mock: any) => {
+    if (mock.isLocked) {
+      onNavigate?.('subscription:mock_tests');
+      return;
+    }
     setSelectedMock(mock);
     setIsModalOpen(true);
   };
@@ -609,24 +616,45 @@ export function MockTestCenter({ onNavigate, initialTab, initialResultId, initia
                 { subject: 'Chemistry', color: 'rose', questions: 10, time: 15 },
                 { subject: 'Biology', color: 'emerald', questions: 10, time: 15 },
                 { subject: 'Mathematics', color: 'amber', questions: 10, time: 15 },
-              ].map((mock, i) => (
-                <div 
-                  key={i} 
-                  onClick={() => setSelectedQuickMockSubject(mock.subject)}
-                  className="p-4 rounded-2xl bg-[#0A0C16] border border-white/5 hover:border-white/20 transition-all flex items-center justify-between group cursor-pointer hover:scale-[1.01]"
-                >
-                  <div>
-                    <h4 className="font-bold text-white mb-1 group-hover:text-cyan-100 transition-colors">{mock.subject} Quick Mock</h4>
-                    <div className="flex items-center gap-3 text-xs text-white/50">
-                      <span className="flex items-center gap-1"><FileText className="w-3 h-3" /> {mock.questions} Qs</span>
-                      <span className="flex items-center gap-1"><Clock className="w-3 h-3" /> {mock.time} Min</span>
+              ].map((mock, i) => {
+                const isQuickMockLocked = !isPro && i > 0;
+                return (
+                  <div 
+                    key={i} 
+                    onClick={() => {
+                      if (isQuickMockLocked) {
+                        onNavigate?.('subscription:mock_tests');
+                      } else {
+                        setSelectedQuickMockSubject(mock.subject);
+                      }
+                    }}
+                    className="p-4 rounded-2xl bg-[#0A0C16] border border-white/5 hover:border-white/20 transition-all flex items-center justify-between group cursor-pointer hover:scale-[1.01]"
+                  >
+                    <div>
+                      <div className="flex items-center gap-2 mb-1">
+                        <h4 className="font-bold text-white group-hover:text-cyan-100 transition-colors">{mock.subject} Quick Mock</h4>
+                        {isQuickMockLocked && (
+                          <span className="text-[9px] font-bold px-1.5 py-0.5 rounded bg-amber-500/10 text-amber-400 border border-amber-500/20 flex items-center gap-1">
+                            <Lock className="w-2.5 h-2.5" /> PRO
+                          </span>
+                        )}
+                      </div>
+                      <div className="flex items-center gap-3 text-xs text-white/50">
+                        <span className="flex items-center gap-1"><FileText className="w-3 h-3" /> {mock.questions} Qs</span>
+                        <span className="flex items-center gap-1"><Clock className="w-3 h-3" /> {mock.time} Min</span>
+                      </div>
                     </div>
+                    <button className={cn(
+                      "w-8 h-8 rounded-full flex items-center justify-center transition-all",
+                      isQuickMockLocked
+                        ? "bg-amber-500/10 text-amber-400 group-hover:bg-amber-500 group-hover:text-black"
+                        : "bg-white/5 text-white/50 group-hover:bg-cyan-500 group-hover:text-[#0A0C16]"
+                    )}>
+                      {isQuickMockLocked ? <Lock className="w-4 h-4" /> : <ArrowRight className="w-4 h-4" />}
+                    </button>
                   </div>
-                  <button className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center text-white/50 group-hover:bg-cyan-500 group-hover:text-[#0A0C16] transition-all">
-                    <ArrowRight className="w-4 h-4" />
-                  </button>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </section>
 
@@ -649,7 +677,15 @@ export function MockTestCenter({ onNavigate, initialTab, initialResultId, initia
                   <div className="flex-1">
                     <div className="flex items-center gap-3 mb-1.5">
                       <h4 className="font-bold text-white text-base">{mock.title}</h4>
-                      {mock.attempts > 0 && <span className="text-[10px] px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 font-bold border border-emerald-500/20 tracking-wide uppercase">Attempted • {mock.attempts}x</span>}
+                      {mock.isLocked ? (
+                        <span className="text-[10px] px-2 py-0.5 rounded bg-amber-500/10 text-amber-400 font-bold border border-amber-500/20 tracking-wide uppercase flex items-center gap-1">
+                          <Lock className="w-3 h-3" /> PRO LOCK
+                        </span>
+                      ) : mock.attempts > 0 ? (
+                        <span className="text-[10px] px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 font-bold border border-emerald-500/20 tracking-wide uppercase">Attempted • {mock.attempts}x</span>
+                      ) : (
+                        <span className="text-[10px] px-2 py-0.5 rounded bg-cyan-500/10 text-cyan-400 font-bold border border-cyan-500/20 tracking-wide uppercase">FREE</span>
+                      )}
                     </div>
                     <div className="flex flex-wrap items-center gap-4 text-xs text-white/50">
                       <span className="flex items-center gap-1"><Target className="w-3.5 h-3.5" /> {mock.diff}</span>
@@ -660,9 +696,20 @@ export function MockTestCenter({ onNavigate, initialTab, initialResultId, initia
                   </div>
                   <button 
                     onClick={() => handleStartMock(mock)}
-                    className="w-full md:w-auto px-5 py-2.5 bg-white/5 hover:bg-white/10 border border-white/5 text-white text-sm font-semibold rounded-xl transition-all"
+                    className={cn(
+                      "w-full md:w-auto px-5 py-2.5 text-sm font-semibold rounded-xl transition-all flex items-center justify-center gap-2",
+                      mock.isLocked
+                        ? "bg-amber-500/10 hover:bg-amber-500/20 border border-amber-500/30 text-amber-300 shadow-sm"
+                        : "bg-white/5 hover:bg-white/10 border border-white/5 text-white"
+                    )}
                   >
-                    Attempt Mock
+                    {mock.isLocked ? (
+                      <>
+                        <Lock className="w-4 h-4 text-amber-400" /> Unlock with Pro
+                      </>
+                    ) : (
+                      'Attempt Mock'
+                    )}
                   </button>
                 </div>
               ))}
@@ -686,17 +733,39 @@ export function MockTestCenter({ onNavigate, initialTab, initialResultId, initia
                 {[
                   { title: 'IAT 2025', year: 2025, tag: 'NEW' },
                   { title: 'IAT 2024', year: 2024 },
-                ].map((mock, i) => (
-                  <div key={i} className="p-4 rounded-xl bg-[#0A0C16] border border-white/5 flex justify-between items-center group cursor-pointer hover:bg-white/5 transition-colors">
-                    <div className="flex items-center gap-2">
-                       <h4 className="font-bold text-white/90 text-sm">{mock.title}</h4>
-                       {mock.tag && <span className="text-[9px] font-bold px-1.5 py-0.5 rounded bg-rose-500/20 text-rose-400 border border-rose-500/20">{mock.tag}</span>}
+                ].map((mock, i) => {
+                  const isPyqLocked = !isPro && i > 0;
+                  return (
+                    <div 
+                      key={i} 
+                      onClick={() => {
+                        if (isPyqLocked) {
+                          onNavigate?.('subscription:pyqs');
+                        } else {
+                          onNavigate?.('pyqs');
+                        }
+                      }}
+                      className="p-4 rounded-xl bg-[#0A0C16] border border-white/5 flex justify-between items-center group cursor-pointer hover:bg-white/5 transition-colors"
+                    >
+                      <div className="flex items-center gap-2">
+                        <h4 className="font-bold text-white/90 text-sm">{mock.title}</h4>
+                        {isPyqLocked ? (
+                          <span className="text-[9px] font-bold px-1.5 py-0.5 rounded bg-amber-500/10 text-amber-400 border border-amber-500/20 flex items-center gap-1">
+                            <Lock className="w-2.5 h-2.5" /> PRO
+                          </span>
+                        ) : mock.tag ? (
+                          <span className="text-[9px] font-bold px-1.5 py-0.5 rounded bg-rose-500/20 text-rose-400 border border-rose-500/20">{mock.tag}</span>
+                        ) : null}
+                      </div>
+                      <button className={cn(
+                        "text-xs font-semibold flex items-center gap-1 transition-opacity",
+                        isPyqLocked ? "text-amber-400" : "text-cyan-400 opacity-0 group-hover:opacity-100"
+                      )}>
+                        {isPyqLocked ? <Lock className="w-3.5 h-3.5" /> : 'Attempt'}
+                      </button>
                     </div>
-                    <button className="text-xs font-semibold text-cyan-400 opacity-0 group-hover:opacity-100 transition-opacity">
-                      Attempt
-                    </button>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             </section>
           </div>

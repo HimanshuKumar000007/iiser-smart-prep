@@ -26,6 +26,7 @@ const navItems = [
   { id: 'mock_tests', icon: FileCheck, label: 'Mock Tests' },
   { id: 'pyqs', icon: History, label: 'PYQs' },
   { id: 'analytics', icon: BarChart2, label: 'Performance Insights' },
+  { id: 'subscription', icon: Sparkles, label: 'Pricing Plans' },
   { id: 'settings', icon: Settings, label: 'Settings' },
   { id: 'support', icon: HelpCircle, label: 'Support & Help' },
   { id: 'feedback', icon: ThumbsUp, label: 'Send Feedback' },
@@ -75,12 +76,14 @@ export function Sidebar({
           <nav className="space-y-1">
             {navItems.map((item) => {
               const Icon = item.icon;
-              const isActive = item.id === currentView || (item.id === 'smart_lessons' && currentView.startsWith('smart_lessons'));
+              const isActive = item.id === currentView || 
+                (item.id === 'smart_lessons' && currentView.startsWith('smart_lessons')) ||
+                (item.id === 'subscription' && currentView.startsWith('subscription'));
               return (
                 <button
                   key={item.label}
                   onClick={() => {
-                    if (['dashboard', 'path', 'mock_tests', 'pyqs', 'analytics', 'smart_lessons', 'settings', 'support', 'feedback'].includes(item.id)) {
+                    if (['dashboard', 'path', 'mock_tests', 'pyqs', 'analytics', 'smart_lessons', 'subscription', 'settings', 'support', 'feedback'].includes(item.id)) {
                       onNavigate?.(item.id);
                     }
                     onClose?.();
@@ -92,8 +95,13 @@ export function Sidebar({
                       : (theme === 'light' ? "text-slate-600 hover:text-slate-900 hover:bg-slate-100/60" : "text-white/60 hover:text-white hover:bg-white/5")
                   )}
                 >
-                  <Icon className={cn("w-4 h-4", isActive ? (theme === 'light' ? "text-cyan-600" : "text-cyan-400") : "")} />
+                  <Icon className={cn("w-4 h-4", isActive ? (theme === 'light' ? "text-cyan-600" : "text-cyan-400") : (item.id === 'subscription' ? "text-amber-400" : ""))} />
                   {item.label}
+                  {item.id === 'subscription' && !isPro && (
+                    <span className="ml-auto text-[10px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded bg-gradient-to-r from-amber-500 to-indigo-500 text-white">
+                      PRO
+                    </span>
+                  )}
                 </button>
               );
             })}
