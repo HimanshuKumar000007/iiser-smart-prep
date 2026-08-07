@@ -59,11 +59,22 @@ export function useEntitlement() {
           loading: false
         });
       } else {
-        setEntitlement(prev => ({ ...prev, loading: false }));
+        if (res.status === 401) {
+          localStorage.removeItem('IAT_TOKEN');
+        }
+        setEntitlement({
+          isPro: false,
+          status: 'FREE',
+          planId: null,
+          startedAt: null,
+          expiresAt: null,
+          daysRemaining: 0,
+          loading: false
+        });
       }
     } catch (err) {
       console.warn("Failed to fetch entitlement status:", err);
-      setEntitlement(prev => ({ ...prev, loading: false }));
+      setEntitlement(prev => ({ ...prev, isPro: false, status: 'FREE', loading: false }));
     }
   }, []);
 

@@ -55,26 +55,33 @@ export function PYQHub({ onNavigate, initialTab, initialResultId, initialMockId 
     setLoading(true);
     setError(null);
     const token = localStorage.getItem('IAT_TOKEN');
-    if (!token) return;
+    if (!token) {
+      setSummaryData({ questionsSolved: 0, accuracy: '0%', yearsAttempted: 0, strongestSubject: 'Not Started' });
+      setLoading(false);
+      return;
+    }
 
     try {
       const res = await fetch(`${API_BASE}/api/student/pyq-summary`, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
 
-      if (!res.ok) {
-        throw new Error('Failed to retrieve statistics.');
-      }
-
-      const data = await res.json();
-      if (data.success) {
-        setSummaryData(data.summary);
-        setRecentSessions(data.recentSessions || []);
-        setHighFreqTopics(data.highFrequencyTopics || []);
+      if (res.ok) {
+        const data = await res.json();
+        if (data.success) {
+          setSummaryData(data.summary);
+          setRecentSessions(data.recentSessions || []);
+          setHighFreqTopics(data.highFrequencyTopics || []);
+        }
+      } else {
+        if (res.status === 401) {
+          localStorage.removeItem('IAT_TOKEN');
+        }
+        setSummaryData({ questionsSolved: 0, accuracy: '0%', yearsAttempted: 0, strongestSubject: 'Not Started' });
       }
     } catch (err: any) {
-      console.error("PYQ summary loading error:", err);
-      setError("We couldn't load your PYQ summary. Please check your connection and try again.");
+      console.warn("PYQ summary loading error:", err);
+      setSummaryData({ questionsSolved: 0, accuracy: '0%', yearsAttempted: 0, strongestSubject: 'Not Started' });
     } finally {
       setLoading(false);
     }

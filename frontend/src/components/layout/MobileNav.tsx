@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Home, BookOpen, Zap, FileText, Trophy, BookMarked, Target, PlayCircle, Map } from 'lucide-react';
+import { Home, BookOpen, Zap, FileText, Trophy, BookMarked, Target, PlayCircle, Map, Sparkles } from 'lucide-react';
 import { cn } from '../../lib/utils';
 import { motion, AnimatePresence } from 'motion/react';
 import { useTheme } from '../../context/ThemeContext';
@@ -59,6 +59,19 @@ export function MobileNav({
               <div className="absolute inset-0 bg-gradient-to-b from-cyan-500/10 to-transparent opacity-50 pointer-events-none" />
               
               <div className="relative z-10 flex flex-col gap-1">
+                <button
+                  onClick={() => { onNavigate?.('subscription'); setIsStudyMenuOpen(false); }}
+                  className="flex items-center gap-4 w-full p-4 rounded-2xl hover:bg-white/5 active:bg-white/10 transition-colors text-left group bg-gradient-to-r from-amber-500/10 to-indigo-500/10 border border-amber-500/20"
+                >
+                  <div className="w-10 h-10 rounded-xl bg-amber-500/20 flex items-center justify-center border border-amber-500/30 group-hover:scale-110 transition-transform">
+                    <Sparkles className="w-5 h-5 text-amber-400" />
+                  </div>
+                  <div>
+                    <p className="text-white font-bold flex items-center gap-2">Pricing Plans <span className="text-[9px] bg-amber-500 text-black font-extrabold px-1.5 py-0.5 rounded">PRO</span></p>
+                    <p className="text-white/50 text-xs">Unlock all mocks, PYQs & lessons</p>
+                  </div>
+                </button>
+
                 <button
                   onClick={() => { onNavigate?.('/smart-lessons/bio_cell'); setIsStudyMenuOpen(false); }}
                   className="flex items-center gap-4 w-full p-4 rounded-2xl hover:bg-white/5 active:bg-white/10 transition-colors text-left group"
