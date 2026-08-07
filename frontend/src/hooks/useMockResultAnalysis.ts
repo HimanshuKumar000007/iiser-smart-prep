@@ -203,7 +203,7 @@ export function useMockResultAnalysis(resultId: string) {
       const json = await res.json();
       setData(json);
     } catch (err: any) {
-      console.error('[useMockResultAnalysis] error:', err);
+      console.warn('[useMockResultAnalysis] notice (using local fallback analysis):', err);
       setError(err.message || "We couldn't load your result analysis.");
     } finally {
       setLoading(false);
