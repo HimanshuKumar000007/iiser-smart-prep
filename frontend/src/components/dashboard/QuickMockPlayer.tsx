@@ -188,15 +188,25 @@ export function QuickMockPlayer({ quickMockId, chapterTitle, onClose, onSubmitSu
     let correctCount = 0;
     let wrongCount = 0;
     let unansweredCount = 0;
-    questions.forEach(q => {
+
+    const formattedResults = questions.map(q => {
       const ans = selectedAnswers[q.id];
-      if (ans === undefined || ans === -1) {
-        unansweredCount++;
-      } else if (ans === q.correct) {
-        correctCount++;
-      } else {
-        wrongCount++;
-      }
+      const isSkipped = ans === undefined || ans === -1;
+      const isCorrect = ans === q.correct;
+      if (isSkipped) unansweredCount++;
+      else if (isCorrect) correctCount++;
+      else wrongCount++;
+
+      return {
+        id: String(q.id),
+        question: q.question,
+        options: q.options || [],
+        studentAnswer: ans !== undefined ? ans : -1,
+        correctAnswer: q.correct,
+        explanation: q.explanation || 'Review concept formulas and rules.',
+        isCorrect,
+        isSkipped
+      };
     });
 
     const totalQs = questions.length;
@@ -209,12 +219,17 @@ export function QuickMockPlayer({ quickMockId, chapterTitle, onClose, onSubmitSu
       chapterTitle,
       score,
       totalQuestions: totalQs,
+      questionCount: totalQs,
+      correct: correctCount,
+      wrong: wrongCount,
+      skipped: unansweredCount,
       correctCount,
       wrongCount,
       unansweredCount,
       accuracy,
       totalTimeSeconds: timeTaken,
       timeTaken,
+      results: formattedResults,
       submittedAt: new Date().toISOString()
     };
 

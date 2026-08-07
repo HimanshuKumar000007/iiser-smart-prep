@@ -34,14 +34,19 @@ interface QuickMockResultsProps {
 
 export function QuickMockResults({ resultsPayload, onRetry, onChooseAnother, onExit }: QuickMockResultsProps) {
   const {
-    correct,
-    wrong,
-    skipped,
+    correct = 0,
+    wrong = 0,
+    skipped = 0,
     accuracy,
     chapterTitle,
     timeTaken = 0,
     results
   } = resultsPayload;
+
+  const safeResults = Array.isArray(results) ? results : [];
+  const totalQuestionsCount = safeResults.length > 0 
+    ? safeResults.length 
+    : ((resultsPayload as any).totalQuestions || (resultsPayload as any).questionCount || (correct + wrong + skipped) || 16);
 
   const [activeQuestionIndex, setActiveQuestionIndex] = useState(0);
 
@@ -198,7 +203,7 @@ export function QuickMockResults({ resultsPayload, onRetry, onChooseAnother, onE
           <p className="text-[10px] uppercase font-bold text-white/40 tracking-wider mb-1">Score (Correct)</p>
           <div className="flex items-baseline gap-1.5 mt-1">
             <span className="text-3xl font-display font-extrabold text-emerald-400">{correct}</span>
-            <span className="text-xs text-white/40">/ {results.length} Correct</span>
+            <span className="text-xs text-white/40">/ {totalQuestionsCount} Correct</span>
           </div>
           <span className="text-[9px] text-emerald-500/50 block mt-1.5 font-medium flex items-center gap-1">
             <TrendingUp className="w-3 h-3" /> +{correct * 4} Marks (IAT Scale)
@@ -245,149 +250,151 @@ export function QuickMockResults({ resultsPayload, onRetry, onChooseAnother, onE
       </div>
 
       {/* QUESTION REVIEW BLOCK */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-stretch">
-        
-        {/* NAV SELECTION */}
-        <div className="lg:col-span-1 p-5 rounded-2xl bg-[#0A0C16] border border-white/5 flex flex-col gap-4 max-h-[450px]">
-          <h3 className="text-xs font-bold text-white/40 uppercase tracking-wider">Mistake Analysis</h3>
-          <div className="grid grid-cols-5 gap-2 overflow-y-auto pr-1">
-            {results.map((r, idx) => {
-              const active = idx === activeQuestionIndex;
-              
+      {safeResults.length > 0 && (
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-stretch">
+          
+          {/* NAV SELECTION */}
+          <div className="lg:col-span-1 p-5 rounded-2xl bg-[#0A0C16] border border-white/5 flex flex-col gap-4 max-h-[450px]">
+            <h3 className="text-xs font-bold text-white/40 uppercase tracking-wider">Mistake Analysis</h3>
+            <div className="grid grid-cols-5 gap-2 overflow-y-auto pr-1">
+              {safeResults.map((r, idx) => {
+                const active = idx === activeQuestionIndex;
+                
+                return (
+                  <button
+                    key={r.id}
+                    onClick={() => setActiveQuestionIndex(idx)}
+                    className={cn(
+                      "aspect-square rounded-lg flex items-center justify-center text-xs font-bold border transition-all",
+                      active
+                        ? "bg-purple-500 border-purple-400 text-white"
+                        : r.isSkipped
+                        ? "bg-white/5 border-white/5 text-white/40 hover:border-white/10"
+                        : r.isCorrect
+                        ? "bg-emerald-500/10 border-emerald-500/20 text-emerald-400 hover:border-emerald-500/30"
+                        : "bg-rose-500/10 border-rose-500/20 text-rose-400 hover:border-rose-500/30"
+                    )}
+                  >
+                    {idx + 1}
+                  </button>
+                );
+              })}
+            </div>
+            <div className="mt-auto space-y-1.5 pt-4 border-t border-white/5 text-[10px] text-white/40">
+              <div className="flex items-center gap-2"><div className="w-2.5 h-2.5 rounded bg-emerald-500/10 border border-emerald-500/20" /> Correct Response</div>
+              <div className="flex items-center gap-2"><div className="w-2.5 h-2.5 rounded bg-rose-500/10 border border-rose-500/20" /> Incorrect Response</div>
+              <div className="flex items-center gap-2"><div className="w-2.5 h-2.5 rounded bg-white/5 border border-white/5" /> Skipped</div>
+            </div>
+          </div>
+
+          {/* ACTIVE QUESTION DETAIL */}
+          <div className="lg:col-span-2 p-6 rounded-2xl bg-[#0A0C16] border border-white/5 space-y-5">
+            {(() => {
+              const activeResult = safeResults[activeQuestionIndex];
+              if (!activeResult) return null;
+
               return (
-                <button
-                  key={r.id}
-                  onClick={() => setActiveQuestionIndex(idx)}
-                  className={cn(
-                    "aspect-square rounded-lg flex items-center justify-center text-xs font-bold border transition-all",
-                    active
-                      ? "bg-purple-500 border-purple-400 text-white"
-                      : r.isSkipped
-                      ? "bg-white/5 border-white/5 text-white/40 hover:border-white/10"
-                      : r.isCorrect
-                      ? "bg-emerald-500/10 border-emerald-500/20 text-emerald-400 hover:border-emerald-500/30"
-                      : "bg-rose-500/10 border-rose-500/20 text-rose-400 hover:border-rose-500/30"
-                  )}
-                >
-                  {idx + 1}
-                </button>
-              );
-            })}
-          </div>
-          <div className="mt-auto space-y-1.5 pt-4 border-t border-white/5 text-[10px] text-white/40">
-            <div className="flex items-center gap-2"><div className="w-2.5 h-2.5 rounded bg-emerald-500/10 border border-emerald-500/20" /> Correct Response</div>
-            <div className="flex items-center gap-2"><div className="w-2.5 h-2.5 rounded bg-rose-500/10 border border-rose-500/20" /> Incorrect Response</div>
-            <div className="flex items-center gap-2"><div className="w-2.5 h-2.5 rounded bg-white/5 border border-white/5" /> Skipped</div>
-          </div>
-        </div>
-
-        {/* ACTIVE QUESTION DETAIL */}
-        <div className="lg:col-span-2 p-6 rounded-2xl bg-[#0A0C16] border border-white/5 space-y-5">
-          {(() => {
-            const activeResult = results[activeQuestionIndex];
-            if (!activeResult) return null;
-
-            return (
-              <>
-                <div className="flex items-center justify-between border-b border-white/5 pb-3">
-                  <span className="text-xs font-semibold text-white/60">
-                    Question Review #{activeQuestionIndex + 1}
-                  </span>
-                  {activeResult.isSkipped ? (
-                    <span className="text-xs font-bold text-white/40 flex items-center gap-1">
-                      <HelpCircle className="w-3.5 h-3.5" /> Skipped
+                <>
+                  <div className="flex items-center justify-between border-b border-white/5 pb-3">
+                    <span className="text-xs font-semibold text-white/60">
+                      Question Review #{activeQuestionIndex + 1}
                     </span>
-                  ) : activeResult.isCorrect ? (
-                    <span className="text-xs font-bold text-emerald-400 flex items-center gap-1">
-                      <CheckCircle2 className="w-3.5 h-3.5" /> Correct
-                    </span>
-                  ) : (
-                    <span className="text-xs font-bold text-rose-400 flex items-center gap-1">
-                      <AlertCircle className="w-3.5 h-3.5" /> Incorrect
-                    </span>
-                  )}
-                </div>
+                    {activeResult.isSkipped ? (
+                      <span className="text-xs font-bold text-white/40 flex items-center gap-1">
+                        <HelpCircle className="w-3.5 h-3.5" /> Skipped
+                      </span>
+                    ) : activeResult.isCorrect ? (
+                      <span className="text-xs font-bold text-emerald-400 flex items-center gap-1">
+                        <CheckCircle2 className="w-3.5 h-3.5" /> Correct
+                      </span>
+                    ) : (
+                      <span className="text-xs font-bold text-rose-400 flex items-center gap-1">
+                        <AlertCircle className="w-3.5 h-3.5" /> Incorrect
+                      </span>
+                    )}
+                  </div>
 
-                {/* Question */}
-                <div className="text-sm md:text-base text-white/90 leading-relaxed font-medium">
-                  {activeResult.question?.includes('<img') || activeResult.question?.includes('<br') ? (
-                    <div dangerouslySetInnerHTML={{ __html: activeResult.question }} />
-                  ) : (
-                    <p>{activeResult.question}</p>
-                  )}
-                </div>
+                  {/* Question */}
+                  <div className="text-sm md:text-base text-white/90 leading-relaxed font-medium">
+                    {activeResult.question?.includes('<img') || activeResult.question?.includes('<br') ? (
+                      <div dangerouslySetInnerHTML={{ __html: activeResult.question }} />
+                    ) : (
+                      <p>{activeResult.question}</p>
+                    )}
+                  </div>
 
-                {/* Options Review */}
-                <div className="space-y-2.5">
-                  {activeResult.options.map((opt, optIdx) => {
-                    const isCorrectOption = optIdx === activeResult.correctAnswer;
-                    const isStudentOption = optIdx === activeResult.studentAnswer;
-                    const alphabet = String.fromCharCode(65 + optIdx);
+                  {/* Options Review */}
+                  <div className="space-y-2.5">
+                    {activeResult.options.map((opt, optIdx) => {
+                      const isCorrectOption = optIdx === activeResult.correctAnswer;
+                      const isStudentOption = optIdx === activeResult.studentAnswer;
+                      const alphabet = String.fromCharCode(65 + optIdx);
 
-                    return (
-                      <div
-                        key={optIdx}
-                        className={cn(
-                          "p-3.5 rounded-xl border text-left flex items-start gap-4 transition-all text-xs leading-normal select-none",
-                          isCorrectOption
-                            ? "bg-emerald-500/5 border-emerald-500/20 text-emerald-300"
-                            : isStudentOption
-                            ? "bg-rose-500/5 border-rose-500/20 text-rose-300"
-                            : "bg-black/20 border-white/5 text-white/60"
-                        )}
-                      >
-                        <span className={cn(
-                          "w-5 h-5 rounded flex items-center justify-center text-[10px] font-bold border shrink-0",
-                          isCorrectOption
-                            ? "bg-emerald-500 border-emerald-400 text-white"
-                            : isStudentOption
-                            ? "bg-rose-500 border-rose-400 text-white"
-                            : "bg-white/5 border-white/10 text-white/40"
-                        )}>
-                          {alphabet}
-                        </span>
-                        
-                        {opt.includes('<img') ? (
-                          <span className="font-medium" dangerouslySetInnerHTML={{ __html: opt }} />
+                      return (
+                        <div
+                          key={optIdx}
+                          className={cn(
+                            "p-3.5 rounded-xl border text-left flex items-start gap-4 transition-all text-xs leading-normal select-none",
+                            isCorrectOption
+                              ? "bg-emerald-500/5 border-emerald-500/20 text-emerald-300"
+                              : isStudentOption
+                              ? "bg-rose-500/5 border-rose-500/20 text-rose-300"
+                              : "bg-black/20 border-white/5 text-white/60"
+                          )}
+                        >
+                          <span className={cn(
+                            "w-5 h-5 rounded flex items-center justify-center text-[10px] font-bold border shrink-0",
+                            isCorrectOption
+                              ? "bg-emerald-500 border-emerald-400 text-white"
+                              : isStudentOption
+                              ? "bg-rose-500 border-rose-400 text-white"
+                              : "bg-white/5 border-white/10 text-white/40"
+                          )}>
+                            {alphabet}
+                          </span>
+                          
+                          {opt.includes('<img') ? (
+                            <span className="font-medium" dangerouslySetInnerHTML={{ __html: opt }} />
+                          ) : (
+                            <span className="font-medium">{opt}</span>
+                          )}
+
+                          {isCorrectOption && (
+                            <span className="ml-auto text-[9px] font-bold uppercase tracking-wider text-emerald-400 font-mono bg-emerald-500/10 px-1.5 py-0.5 rounded border border-emerald-500/15 shrink-0">
+                              Correct Answer
+                            </span>
+                          )}
+                          {isStudentOption && !isCorrectOption && (
+                            <span className="ml-auto text-[9px] font-bold uppercase tracking-wider text-rose-400 font-mono bg-rose-500/10 px-1.5 py-0.5 rounded border border-rose-500/15 shrink-0">
+                              Your Choice
+                            </span>
+                          )}
+                        </div>
+                      );
+                    })}
+                  </div>
+
+                  {/* Explanation */}
+                  {activeResult.explanation && (
+                    <div className="p-4 rounded-xl bg-purple-500/5 border border-purple-500/10 space-y-2">
+                      <h4 className="text-[10px] font-bold uppercase tracking-wider text-purple-400">
+                        Answer Explanation
+                      </h4>
+                      <div className="text-xs text-white/70 leading-relaxed font-medium">
+                        {activeResult.explanation.includes('<img') || activeResult.explanation.includes('<br') ? (
+                          <div dangerouslySetInnerHTML={{ __html: activeResult.explanation }} />
                         ) : (
-                          <span className="font-medium">{opt}</span>
-                        )}
-
-                        {isCorrectOption && (
-                          <span className="ml-auto text-[9px] font-bold uppercase tracking-wider text-emerald-400 font-mono bg-emerald-500/10 px-1.5 py-0.5 rounded border border-emerald-500/15 shrink-0">
-                            Correct Answer
-                          </span>
-                        )}
-                        {isStudentOption && !isCorrectOption && (
-                          <span className="ml-auto text-[9px] font-bold uppercase tracking-wider text-rose-400 font-mono bg-rose-500/10 px-1.5 py-0.5 rounded border border-rose-500/15 shrink-0">
-                            Your Choice
-                          </span>
+                          <p>{activeResult.explanation}</p>
                         )}
                       </div>
-                    );
-                  })}
-                </div>
-
-                {/* Explanation */}
-                {activeResult.explanation && (
-                  <div className="p-4 rounded-xl bg-purple-500/5 border border-purple-500/10 space-y-2">
-                    <h4 className="text-[10px] font-bold uppercase tracking-wider text-purple-400">
-                      Answer Explanation
-                    </h4>
-                    <div className="text-xs text-white/70 leading-relaxed font-medium">
-                      {activeResult.explanation.includes('<img') || activeResult.explanation.includes('<br') ? (
-                        <div dangerouslySetInnerHTML={{ __html: activeResult.explanation }} />
-                      ) : (
-                        <p>{activeResult.explanation}</p>
-                      )}
                     </div>
-                  </div>
-                )}
-              </>
-            );
-          })()}
+                  )}
+                </>
+              );
+            })()}
+          </div>
         </div>
-      </div>
+      )}
 
       {/* FOOTER NAVIGATION ACTIONS */}
       <div className="flex flex-col sm:flex-row items-center justify-between gap-4 p-5 rounded-2xl bg-[#0A0C16] border border-white/5">
