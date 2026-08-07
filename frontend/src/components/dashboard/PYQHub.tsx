@@ -458,9 +458,9 @@ export function PYQHub({ onNavigate, initialTab, initialResultId, initialMockId 
                                   <span className="text-[9px] font-bold px-1.5 py-0.5 rounded bg-amber-500/10 text-amber-400 border border-amber-500/20 flex items-center gap-1">
                                     <Lock className="w-2.5 h-2.5" /> PRO
                                   </span>
-                                ) : (
+                                ) : !isPro ? (
                                   <span className="text-[9px] font-bold px-1.5 py-0.5 rounded bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 uppercase">FREE</span>
-                                )}
+                                ) : null}
                               </div>
                               <span className="text-[10px] text-white/40 block mt-0.5">{paper.count} Questions Available</span>
                             </div>

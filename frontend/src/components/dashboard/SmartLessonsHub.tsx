@@ -725,11 +725,11 @@ export function SmartLessonsHub({ onNavigate, initialSubject, dashboardData, sls
                                 <span className="text-[8px] font-black text-amber-400 bg-amber-500/10 border border-amber-500/25 px-2 py-0.5 rounded-full tracking-wider uppercase leading-none flex items-center gap-1">
                                   <Lock className="w-2.5 h-2.5" /> PRO LOCK
                                 </span>
-                              ) : (
+                              ) : !isPro ? (
                                 <span className="text-[8px] font-black text-cyan-400 bg-cyan-500/10 border border-cyan-500/25 px-2 py-0.5 rounded-full tracking-wider uppercase leading-none">
                                   FREE
                                 </span>
-                              )}
+                              ) : null}
                               <span className={cn(
                                 "text-[8px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full border leading-none",
                                 chap.weightage === 'Very High' ? 'text-rose-400 border-rose-500/25 bg-rose-500/5' :

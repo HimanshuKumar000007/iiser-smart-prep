@@ -706,9 +706,9 @@ export function MockTestCenter({ onNavigate, initialTab, initialResultId, initia
                         </span>
                       ) : mock.attempts > 0 ? (
                         <span className="text-[10px] px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 font-bold border border-emerald-500/20 tracking-wide uppercase">Attempted • {mock.attempts}x</span>
-                      ) : (
+                      ) : !isPro ? (
                         <span className="text-[10px] px-2 py-0.5 rounded bg-cyan-500/10 text-cyan-400 font-bold border border-cyan-500/20 tracking-wide uppercase">FREE</span>
-                      )}
+                      ) : null}
                     </div>
                     <div className="flex flex-wrap items-center gap-4 text-xs text-white/50">
                       <span className="flex items-center gap-1"><Target className="w-3.5 h-3.5" /> {mock.diff}</span>
