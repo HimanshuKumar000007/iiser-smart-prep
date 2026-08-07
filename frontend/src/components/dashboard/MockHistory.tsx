@@ -22,31 +22,52 @@ export function MockHistory({ onReviewMock, onClose, onStartNewMock }: MockHisto
     setLoading(true);
     setError(null);
     const token = localStorage.getItem('IAT_TOKEN');
-    if (!token) {
-      setError("User authentication token not found. Please log in again.");
-      setLoading(false);
-      return;
-    }
 
+    let localAttempts: any[] = [];
     try {
-      const res = await fetch(`${API_BASE}/api/mock/history`, {
-        method: 'GET',
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
-      });
-
-      if (res.ok) {
-        const data = await res.json();
-        setHistoryData(data);
-        return;
+      const localStr = localStorage.getItem('iiser_mock_attempts_history');
+      if (localStr) {
+        localAttempts = JSON.parse(localStr);
+        if (!Array.isArray(localAttempts)) localAttempts = [];
       }
-    } catch (err: any) {
-      console.warn('[MockHistory] fetch notice:', err);
+    } catch (e) {}
+
+    let serverAttempts: any[] = [];
+    if (token) {
+      try {
+        const res = await fetch(`${API_BASE}/api/mock/history`, {
+          method: 'GET',
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+
+        if (res.ok) {
+          const data = await res.json();
+          if (data.attempts && Array.isArray(data.attempts)) {
+            serverAttempts = data.attempts;
+          }
+        }
+      } catch (err: any) {
+        console.warn('[MockHistory] fetch notice:', err);
+      }
     }
-    
-    // Serve empty history on 403, 401, or offline network error
-    setHistoryData({ success: true, attempts: [] });
+
+    const mergedMap = new Map<string, any>();
+    localAttempts.forEach(att => {
+      const id = att.resultId || att.id;
+      if (id) mergedMap.set(id, att);
+    });
+    serverAttempts.forEach(att => {
+      const id = att.resultId || att.id;
+      if (id) mergedMap.set(id, att);
+    });
+
+    const combinedAttempts = Array.from(mergedMap.values()).sort((a, b) => {
+      return new Date(b.completedAt || 0).getTime() - new Date(a.completedAt || 0).getTime();
+    });
+
+    setHistoryData({ success: true, attempts: combinedAttempts });
     setError(null);
     setLoading(false);
   };
@@ -57,6 +78,23 @@ export function MockHistory({ onReviewMock, onClose, onStartNewMock }: MockHisto
 
   const handleReviewClick = async (resultId: string, mockId: string) => {
     setFetchingReviewId(resultId);
+
+    // Check local storage for instant offline review data
+    try {
+      const localStr = localStorage.getItem('iiser_mock_attempts_history');
+      if (localStr) {
+        const list = JSON.parse(localStr);
+        if (Array.isArray(list)) {
+          const found = list.find((a: any) => (a.resultId === resultId || a.id === resultId));
+          if (found && found.selectedAnswers) {
+            onReviewMock(found.mockId || mockId, found.selectedAnswers, found.questionTimes || {}, found.resultId || resultId);
+            setFetchingReviewId(null);
+            return;
+          }
+        }
+      }
+    } catch (e) {}
+
     const token = localStorage.getItem('IAT_TOKEN');
     if (!token) {
       setFetchingReviewId(null);
@@ -79,8 +117,8 @@ export function MockHistory({ onReviewMock, onClose, onStartNewMock }: MockHisto
       const data = await res.json();
       onReviewMock(mockId, data.selectedAnswers, data.questionTimes, resultId);
     } catch (err) {
-      console.error(err);
-      alert("Failed to load attempt review data. Please try again.");
+      console.warn("Server attempt load notice:", err);
+      alert("Attempt details unavailable for review.");
     } finally {
       setFetchingReviewId(null);
     }

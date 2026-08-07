@@ -24,40 +24,75 @@ export function MockAnalytics({ onReviewMock, onClose, onStartNewMock, onNavigat
     setLoading(true);
     setError(null);
     const token = localStorage.getItem('IAT_TOKEN');
-    if (!token) {
-      setError("User authentication token not found. Please log in again.");
+
+    let serverData: any = null;
+    if (token) {
+      try {
+        const res = await fetch(`${API_BASE}/api/mock/analytics`, {
+          method: 'GET',
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+
+        if (res.ok) {
+          serverData = await res.json();
+        }
+      } catch (err: any) {
+        console.warn('[MockAnalytics] fetch notice:', err);
+      }
+    }
+
+    if (serverData && serverData.stats && serverData.stats.totalMocksAttempted > 0) {
+      setAnalyticsData(serverData);
       setLoading(false);
       return;
     }
 
+    // Compute analytics from local storage attempt history
+    let localAttempts: any[] = [];
     try {
-      const res = await fetch(`${API_BASE}/api/mock/analytics`, {
-        method: 'GET',
-        headers: {
-          'Authorization': `Bearer ${token}`
+      const localStr = localStorage.getItem('iiser_mock_attempts_history');
+      if (localStr) {
+        localAttempts = JSON.parse(localStr);
+        if (!Array.isArray(localAttempts)) localAttempts = [];
+      }
+    } catch (e) {}
+
+    if (localAttempts.length > 0) {
+      const totalMocksAttempted = localAttempts.length;
+      const totalScore = localAttempts.reduce((acc, a) => acc + (a.score || 0), 0);
+      const averageScore = Math.round(totalScore / totalMocksAttempted);
+      const totalAcc = localAttempts.reduce((acc, a) => acc + (a.accuracy || 0), 0);
+      const averageAccuracy = Math.round(totalAcc / totalMocksAttempted);
+      const highestScore = Math.max(...localAttempts.map(a => a.score || 0));
+      const totalTimeSpentSeconds = localAttempts.reduce((acc, a) => acc + (a.totalTimeSeconds || 0), 0);
+
+      setAnalyticsData({
+        success: true,
+        stats: {
+          totalMocksAttempted,
+          averageScore,
+          averageAccuracy,
+          totalTimeSpentSeconds,
+          highestScore,
+          recentAttempts: localAttempts
         }
       });
-
-      if (res.ok) {
-        const data = await res.json();
-        setAnalyticsData(data);
-        return;
-      }
-    } catch (err: any) {
-      console.warn('[MockAnalytics] fetch notice:', err);
+    } else {
+      setAnalyticsData({
+        success: true,
+        stats: {
+          totalMocksAttempted: 0,
+          averageScore: 0,
+          averageAccuracy: 0,
+          totalTimeSpentSeconds: 0,
+          highestScore: 0,
+          recentAttempts: []
+        }
+      });
     }
 
-    setAnalyticsData({
-      success: true,
-      stats: {
-        totalMocksAttempted: 0,
-        averageScore: 0,
-        averageAccuracy: 0,
-        totalTimeSpentSeconds: 0,
-        highestScore: 0,
-        recentAttempts: []
-      }
-    });
     setError(null);
     setLoading(false);
   };

@@ -260,6 +260,32 @@ export function QuickMockPlayer({ quickMockId, chapterTitle, onClose, onSubmitSu
       console.warn("Quick Mock submission API notice, using local calculated result:", err);
     }
 
+    // Persist quick mock attempt locally
+    try {
+      const existingHistoryStr = localStorage.getItem('iiser_mock_attempts_history') || '[]';
+      let existingHistory = JSON.parse(existingHistoryStr);
+      if (!Array.isArray(existingHistory)) existingHistory = [];
+      const attemptRecord = {
+        resultId: fallbackPayload.quickMockId || `local_qm_${Date.now()}`,
+        mockId: quickMockId,
+        mockTitle: chapterTitle ? `Quick Mock - ${chapterTitle}` : 'Quick Mock',
+        score,
+        totalQuestions: totalQs,
+        accuracy,
+        correct: correctCount,
+        wrong: wrongCount,
+        skipped: unansweredCount,
+        totalTimeSeconds: timeTaken,
+        completedAt: new Date().toISOString(),
+        selectedAnswers,
+        questionTimes: {}
+      };
+      existingHistory = [attemptRecord, ...existingHistory.filter((a: any) => a.resultId !== attemptRecord.resultId)];
+      localStorage.setItem('iiser_mock_attempts_history', JSON.stringify(existingHistory));
+    } catch (e) {
+      console.warn("Failed to persist quick mock attempt history locally:", e);
+    }
+
     // Always succeed using local result calculation if API network or DB fails
     onSubmitSuccess(fallbackPayload);
   };

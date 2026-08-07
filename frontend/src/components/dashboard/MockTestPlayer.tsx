@@ -380,6 +380,32 @@ export function MockTestPlayer({
       // Clear saved attempt only after a confirmed or fallback submission
       localStorage.removeItem(storageKey);
 
+      // Persist attempt to local history for offline/instant review and analytics
+      try {
+        const existingHistoryStr = localStorage.getItem('iiser_mock_attempts_history') || '[]';
+        let existingHistory = JSON.parse(existingHistoryStr);
+        if (!Array.isArray(existingHistory)) existingHistory = [];
+        const attemptRecord = {
+          resultId: data.mockResultId || `local_${Date.now()}`,
+          mockId: mockTest.id,
+          mockTitle: mockTest.title,
+          score: data.score,
+          totalQuestions: data.totalQuestions || questions.length,
+          accuracy: data.accuracy,
+          correct: data.correct,
+          wrong: data.wrong,
+          skipped: data.skipped,
+          totalTimeSeconds: data.totalTimeSeconds || elapsed,
+          completedAt: data.submittedAt || new Date().toISOString(),
+          selectedAnswers: frozenAnswers,
+          questionTimes: frozenTimes
+        };
+        existingHistory = [attemptRecord, ...existingHistory.filter((a: any) => a.resultId !== attemptRecord.resultId)];
+        localStorage.setItem('iiser_mock_attempts_history', JSON.stringify(existingHistory));
+      } catch (e) {
+        console.warn("Failed to save attempt history locally:", e);
+      }
+
       // Pass the frozen snapshot to results screen — NOT mutable state refs
       onFinish?.(data, frozenAnswers, frozenTimes);
     } catch (err: any) {
