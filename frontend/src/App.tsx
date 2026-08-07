@@ -16,6 +16,7 @@ import { PredictedPerformance } from './components/dashboard/PredictedPerformanc
 import { SmartRevision } from './components/dashboard/SmartRevision';
 import { StudyCoach } from './components/dashboard/StudyCoach';
 import { LockedAISuite } from './components/dashboard/LockedAISuite';
+import { ProLockedCard } from './components/dashboard/ProLockedCard';
 
 // SLS Step 9 — Smart Dashboard
 import { SLSIntelligencePanel } from './components/dashboard/SLSIntelligencePanel';
@@ -298,18 +299,38 @@ function DashboardApp() {
                   <ReadinessEngine dashboardData={dashboardData} loading={dashboardLoading} onNavigate={handleNavigate} />
                 </div>
                 <div className="col-span-1 flex flex-col h-full">
-                  <StudyCoach
-                    dashboardData={dashboardData}
-                    loading={dashboardLoading || actionPlanLoading}
-                    onNavigate={handleNavigate}
-                    actionPlan={actionPlan}
-                    error={actionPlanError}
-                    onRetry={refreshActionPlan}
-                  />
+                  {entitlement.isPro ? (
+                    <StudyCoach
+                      dashboardData={dashboardData}
+                      loading={dashboardLoading || actionPlanLoading}
+                      onNavigate={handleNavigate}
+                      actionPlan={actionPlan}
+                      error={actionPlanError}
+                      onRetry={refreshActionPlan}
+                    />
+                  ) : (
+                    <ProLockedCard
+                      featureName="Smart Coach"
+                      featureDesc="Get your personalised AI-powered morning, afternoon & evening study schedule based on your weak areas."
+                      featureIcon="🧠"
+                      accent="violet"
+                      onNavigate={handleNavigate}
+                      className="h-full min-h-[260px]"
+                    />
+                  )}
                 </div>
                 {/* SLS Weak Areas Panel (real data) — falls back to legacy WeakAreas if no SLS data */}
                 <div className="col-span-1 flex flex-col h-full">
-                  {slsHasNoData
+                  {!entitlement.isPro ? (
+                    <ProLockedCard
+                      featureName="Weak Area Engine"
+                      featureDesc="AI-powered detection of your weak chapters and topics from quiz & mock performance."
+                      featureIcon="🎯"
+                      accent="amber"
+                      onNavigate={handleNavigate}
+                      className="h-full min-h-[260px]"
+                    />
+                  ) : slsHasNoData
                     ? <WeakAreas dashboardData={dashboardData} loading={dashboardLoading} onNavigate={handleNavigate} />
                     : <SLSWeakAreasPanel
                         weaknesses={slsData.weaknesses}
@@ -321,7 +342,16 @@ function DashboardApp() {
               </div>
 
               {/* SLS Intelligence Suite — shown when SLS has data; LockedAISuite / Journey Hub when zero-data */}
-              {slsLoading || !slsHasNoData ? (
+              {!entitlement.isPro ? (
+                <ProLockedCard
+                  featureName="SLS Intelligence Suite"
+                  featureDesc="Smart Learning System — personalized revision queue, mastery tracking, chapter recommendations & spaced repetition powered by your real quiz data."
+                  featureIcon="✦"
+                  accent="cyan"
+                  onNavigate={handleNavigate}
+                  className="w-full min-h-[200px]"
+                />
+              ) : slsLoading || !slsHasNoData ? (
                 <>
                   {/* SLS Intelligence Panel (recommendation + mastery + revision queue) */}
                   <div className="w-full">
