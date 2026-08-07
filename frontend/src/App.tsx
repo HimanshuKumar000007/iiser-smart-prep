@@ -113,7 +113,7 @@ function DashboardApp() {
   const handleNavigate = (view: string) => {
     const token = localStorage.getItem('IAT_TOKEN');
     if (!token) {
-      const loginUrl = `login.html?redirect=${encodeURIComponent(window.location.origin + '/dashboard-react.html?returnTo=' + view)}`;
+      const loginUrl = `/login.html?redirect=${encodeURIComponent(window.location.origin + '/dashboard-react.html?returnTo=' + view)}`;
       window.location.href = loginUrl;
       return;
     }
