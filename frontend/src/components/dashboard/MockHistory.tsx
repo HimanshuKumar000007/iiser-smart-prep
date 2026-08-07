@@ -44,8 +44,10 @@ export function MockHistory({ onReviewMock, onClose, onStartNewMock }: MockHisto
 
         if (res.ok) {
           const data = await res.json();
-          if (data.attempts && Array.isArray(data.attempts)) {
-            serverAttempts = data.attempts;
+          // Backend returns `history` key (not `attempts`)
+          const serverHistory = data.history || data.attempts || [];
+          if (Array.isArray(serverHistory)) {
+            serverAttempts = serverHistory;
           }
         }
       } catch (err: any) {
@@ -67,7 +69,18 @@ export function MockHistory({ onReviewMock, onClose, onStartNewMock }: MockHisto
       return new Date(b.completedAt || 0).getTime() - new Date(a.completedAt || 0).getTime();
     });
 
-    setHistoryData({ success: true, attempts: combinedAttempts });
+    // Rendering destructures `history` and `hasData` — must use those exact keys
+    setHistoryData({
+      success: true,
+      hasData: combinedAttempts.length > 0,
+      history: combinedAttempts,
+      summary: {
+        totalMocks: combinedAttempts.length,
+        bestScore: combinedAttempts.length > 0 ? Math.max(...combinedAttempts.map((a: any) => a.score || 0)) : 0,
+        averageScore: combinedAttempts.length > 0 ? Math.round(combinedAttempts.reduce((acc: number, a: any) => acc + (a.score || 0), 0) / combinedAttempts.length) : 0,
+        latestScore: combinedAttempts.length > 0 ? (combinedAttempts[0].score || 0) : 0
+      }
+    });
     setError(null);
     setLoading(false);
   };
