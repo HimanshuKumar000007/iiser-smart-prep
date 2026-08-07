@@ -69,8 +69,8 @@ function buildFallbackAnalysisData(
       questionNumber: idx + 1,
       status,
       subject: q.subject || 'General',
-      chapterId: q.chapterId || 'general',
-      chapterTitle: q.chapterTitle || q.subject || 'General',
+      chapterId: (q as any).chapterId || 'general',
+      chapterTitle: (q as any).chapterTitle || q.subject || 'General',
       difficulty: q.difficulty || 'medium',
       timeTakenSeconds: questionTimes[q.id] || averageAnsweredTimeSeconds || 60,
       estimatedTimeSeconds: 120,
@@ -141,8 +141,8 @@ function buildFallbackAnalysisData(
 
   const chapterMap: Record<string, { chapterId: string; chapterTitle: string; subject: string; answered: number; correct: number; wrong: number }> = {};
   questions.forEach(q => {
-    const cid = q.chapterId || 'general';
-    const ctitle = q.chapterTitle || q.subject || 'General';
+    const cid = (q as any).chapterId || 'general';
+    const ctitle = (q as any).chapterTitle || q.subject || 'General';
     const subj = q.subject || 'General';
     if (!chapterMap[cid]) {
       chapterMap[cid] = { chapterId: cid, chapterTitle: ctitle, subject: subj, answered: 0, correct: 0, wrong: 0 };
@@ -479,16 +479,16 @@ export function MockTestResults({
                 
                 {recommendedAction.actionType === 'REVISE_CHAPTER' && (
                   <div className="mt-3 p-2.5 rounded-xl bg-white/5 border border-white/5 text-[10px] text-white/60 space-y-1 font-sans">
-                    <div className="flex justify-between"><span>Subject</span><span className="text-white font-medium">{recommendedAction.subject}</span></div>
-                    <div className="flex justify-between"><span>Accuracy</span><span className="text-cyan-400 font-medium">{recommendedAction.accuracy}%</span></div>
-                    <div className="flex justify-between"><span>Questions</span><span className="text-white font-medium">{recommendedAction.answeredQuestions} answered</span></div>
+                    <div className="flex justify-between"><span>Subject</span><span className="text-white font-medium">{(recommendedAction as any).subject}</span></div>
+                    <div className="flex justify-between"><span>Accuracy</span><span className="text-cyan-400 font-medium">{(recommendedAction as any).accuracy}%</span></div>
+                    <div className="flex justify-between"><span>Questions</span><span className="text-white font-medium">{(recommendedAction as any).answeredQuestions} answered</span></div>
                   </div>
                 )}
               </div>
 
               {recommendedAction.actionType === 'REVISE_CHAPTER' ? (
                 <button
-                  onClick={() => onNavigate?.(`/smart-lessons/${recommendedAction.chapterId}`)}
+                  onClick={() => onNavigate?.(`/smart-lessons/${(recommendedAction as any).chapterId}`)}
                   className="w-full py-2.5 rounded-xl bg-indigo-500 hover:bg-indigo-400 text-white font-bold text-xs transition-colors flex items-center justify-center gap-1.5 shadow-[0_0_15px_rgba(99,102,241,0.2)]"
                 >
                   Start Revision <ArrowRight className="w-3.5 h-3.5" />
