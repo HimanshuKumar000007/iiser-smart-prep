@@ -107,7 +107,13 @@ router.get('/api/quick-mocks/catalog', authMiddleware, async (req, res) => {
 });
 
 // 2. POST /api/quick-mock/session/start
-router.post('/api/quick-mock/session/start', authMiddleware, requirePro, async (req, res) => {
+router.post('/api/quick-mock/session/start', authMiddleware, async (req, res, next) => {
+  const { quickMockId } = req.body || {};
+  if (quickMockId && (quickMockId.startsWith('qm_phy_units') || quickMockId === 'qm_phy_units_01')) {
+    return next();
+  }
+  return requirePro(req, res, next);
+}, async (req, res) => {
   try {
     const { quickMockId } = req.body;
     if (!quickMockId) {
