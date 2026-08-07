@@ -50,8 +50,30 @@ export function MockTestCenter({ onNavigate, initialTab, initialResultId, initia
   const [isLoadingLatestAnalysis, setIsLoadingLatestAnalysis] = useState(false);
 
   const fetchStats = async () => {
-    if (!isPro) return;
     const token = localStorage.getItem('IAT_TOKEN');
+
+    // First load from local storage immediately so user sees something instantly
+    try {
+      const localStr = localStorage.getItem('iiser_mock_attempts_history');
+      if (localStr) {
+        const localAttempts = JSON.parse(localStr);
+        if (Array.isArray(localAttempts) && localAttempts.length > 0) {
+          const totalMocksLocal = localAttempts.length;
+          const avgScoreLocal = Math.round(localAttempts.reduce((acc, a) => acc + (a.score || 0), 0) / totalMocksLocal);
+          const bestScoreLocal = Math.max(...localAttempts.map(a => a.score || 0));
+          setAnalyticsData({
+            overall: {
+              totalMocks: totalMocksLocal,
+              averageScore: avgScoreLocal,
+              bestScore: bestScoreLocal
+            },
+            progress: { scoreChange: 0 }
+          });
+          setHistory(localAttempts);
+        }
+      }
+    } catch (e) {}
+
     if (!token) return;
     try {
       const [analyticsRes, historyRes] = await Promise.all([
@@ -71,12 +93,12 @@ export function MockTestCenter({ onNavigate, initialTab, initialResultId, initia
       }
       if (historyRes.ok) {
         const data = await historyRes.json();
-        if (data?.success && data?.history) {
+        if (data?.success && data?.history && data.history.length > 0) {
           setHistory(data.history);
         }
       }
     } catch (err) {
-      console.error("Failed to fetch mock stats in MockTestCenter:", err);
+      console.warn("Failed to fetch mock stats from server, using local data:", err);
     }
   };
 

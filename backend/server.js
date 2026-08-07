@@ -1360,7 +1360,7 @@ app.post("/api/mock/submit", authMiddleware, mockAccessMiddleware, async (req, r
 });
 
 // SUBMITTED MOCK TESTS HISTORY (PROTECTED)
-app.get("/api/mock/history", authMiddleware, requirePro, async (req, res) => {
+app.get("/api/mock/history", authMiddleware, async (req, res) => {
   try {
     const userId = req.user.id || req.user.userId;
     if (!userId) {
@@ -1379,7 +1379,7 @@ app.get("/api/mock/history", authMiddleware, requirePro, async (req, res) => {
 });
 
 // HISTORICAL MOCK ATTEMPT QUESTIONS DETAILS (PROTECTED)
-app.get("/api/mock/attempts/:resultId", authMiddleware, requirePro, async (req, res) => {
+app.get("/api/mock/attempts/:resultId", authMiddleware, async (req, res) => {
   try {
     const userId = req.user.id || req.user.userId;
     if (!userId) {
@@ -1398,7 +1398,7 @@ app.get("/api/mock/attempts/:resultId", authMiddleware, requirePro, async (req, 
 });
 
 // MOCK PERFORMANCE ANALYTICS (PROTECTED)
-app.get("/api/mock/analytics", authMiddleware, requirePro, async (req, res) => {
+app.get("/api/mock/analytics", authMiddleware, async (req, res) => {
   try {
     const userId = req.user.id || req.user.userId;
     if (!userId) {
