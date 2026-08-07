@@ -6,6 +6,7 @@
  * upgrade prompt on top.
  */
 
+import React from 'react';
 import { Lock, Sparkles, ArrowUpRight } from 'lucide-react';
 import { motion } from 'motion/react';
 import { cn } from '../../lib/utils';
