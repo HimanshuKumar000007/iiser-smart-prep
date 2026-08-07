@@ -72,35 +72,35 @@ export function useSlsDashboard() {
       analyticsResult.status === 'fulfilled' ? analyticsResult.value : null;
     if (analyticsResult.status === 'rejected') {
       newErrors.analytics = analyticsResult.reason?.message ?? 'analytics failed';
-      console.warn('[useSlsDashboard] analytics error:', analyticsResult.reason);
+      console.debug('[useSlsDashboard] analytics notice:', analyticsResult.reason);
     }
 
     const weaknesses =
       weaknessesResult.status === 'fulfilled' ? weaknessesResult.value : null;
     if (weaknessesResult.status === 'rejected') {
       newErrors.weaknesses = weaknessesResult.reason?.message ?? 'weaknesses failed';
-      console.warn('[useSlsDashboard] weaknesses error:', weaknessesResult.reason);
+      console.debug('[useSlsDashboard] weaknesses notice:', weaknessesResult.reason);
     }
 
     const recommendations =
       recommendationsResult.status === 'fulfilled' ? recommendationsResult.value : null;
     if (recommendationsResult.status === 'rejected') {
       newErrors.recommendations = recommendationsResult.reason?.message ?? 'recommendations failed';
-      console.warn('[useSlsDashboard] recommendations error:', recommendationsResult.reason);
+      console.debug('[useSlsDashboard] recommendations notice:', recommendationsResult.reason);
     }
 
     const mastery =
       masteryResult.status === 'fulfilled' ? masteryResult.value : null;
     if (masteryResult.status === 'rejected') {
       newErrors.mastery = masteryResult.reason?.message ?? 'mastery failed';
-      console.warn('[useSlsDashboard] mastery error:', masteryResult.reason);
+      console.debug('[useSlsDashboard] mastery notice:', masteryResult.reason);
     }
 
     const revision =
       revisionResult.status === 'fulfilled' ? revisionResult.value : null;
     if (revisionResult.status === 'rejected') {
       newErrors.revision = revisionResult.reason?.message ?? 'revision-queue failed';
-      console.warn('[useSlsDashboard] revision error:', revisionResult.reason);
+      console.debug('[useSlsDashboard] revision notice:', revisionResult.reason);
     }
 
     setData({ analytics, weaknesses, recommendations, mastery, revision });

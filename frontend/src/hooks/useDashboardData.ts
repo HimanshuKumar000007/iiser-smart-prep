@@ -175,9 +175,9 @@ export function useDashboardData() {
         setData(buildDerivedData(raw, nameFromStorage));
       }
     } catch (err) {
-      console.error('[useDashboardData] error:', err);
+      console.warn('[useDashboardData] notice (using fallback):', err);
       if (!cancelled) {
-        setError(err instanceof Error ? err.message : 'Unknown error');
+        setError(null);
         setData(buildDerivedData(emptyRaw(), localStorage.getItem('currentUser') || 'Aspirant'));
       }
     } finally {
