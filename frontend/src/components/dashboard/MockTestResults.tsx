@@ -243,6 +243,18 @@ function buildFallbackAnalysisData(
       trend: 'insufficient_history' as any
     },
     prepReadiness: accuracy >= 75 ? 'Ready' : 'Developing',
+    iiserReadiness: {
+      readinessLevel: accuracy >= 75 ? 'TARGET_BENCHMARK_REACHED' : 'DEVELOPING_FOUNDATION',
+      readinessScore: accuracy,
+      confidence: (answered >= 20 ? 'STRONG' : 'MODERATE') as any,
+      factors: [
+        { factor: 'SCORE' as any, status: (score >= 100 ? 'STRONG' : 'DEVELOPING') as any, message: `Current score is ${score} marks.` },
+        { factor: 'ACCURACY' as any, status: (accuracy >= 70 ? 'STRONG' : 'DEVELOPING') as any, message: `${accuracy}% response accuracy.` },
+        { factor: 'PACE' as any, status: 'STRONG' as any, message: `Averaging ${averageAnsweredTimeSeconds}s per question.` }
+      ],
+      summary: `Baseline evaluation completed with ${accuracy}% accuracy across ${answered} questions.`,
+      nextMilestone: 'Attempt next full-length mock to build higher confidence.'
+    },
     dynamicSummary: `Scored ${score} / ${total * 4} marks (${accuracy}% accuracy) across ${answered} attempted questions.`
   };
 }
