@@ -1453,7 +1453,7 @@ app.get("/api/mock/learning-actions", authMiddleware, requirePro, async (req, re
 });
 
 // GET MOCK RESULT ANALYSIS V2 (PROTECTED)
-app.get("/api/mock/results/:resultId/analysis", authMiddleware, requirePro, async (req, res) => {
+app.get("/api/mock/results/:resultId/analysis", authMiddleware, async (req, res) => {
   try {
     const userId = req.user.id || req.user.userId;
     const { resultId } = req.params;
