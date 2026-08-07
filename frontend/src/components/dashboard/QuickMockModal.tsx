@@ -22,6 +22,8 @@ interface ChapterCatalogItem {
 
 interface QuickMockModalProps {
   subject: string;
+  isPro?: boolean;
+  onNavigate?: (view: any) => void;
   onClose: () => void;
   onStartMock: (quickMockId: string, chapterTitle: string, questions: any[]) => void;
 }
@@ -30,7 +32,7 @@ const API_BASE =
   (import.meta as any).env?.VITE_API_URL ??
   ((import.meta as any).env?.DEV ? 'http://localhost:5000' : 'https://api.iisersmartprep.space');
 
-export function QuickMockModal({ subject, onClose, onStartMock }: QuickMockModalProps) {
+export function QuickMockModal({ subject, isPro, onNavigate, onClose, onStartMock }: QuickMockModalProps) {
   const [chapters, setChapters] = useState<ChapterCatalogItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -130,6 +132,13 @@ export function QuickMockModal({ subject, onClose, onStartMock }: QuickMockModal
 
   const handleStart = async () => {
     if (!selectedChapterId || !selectedVariant || starting) return;
+
+    if (!isPro) {
+      onClose();
+      onNavigate?.('subscription:quick_mock');
+      return;
+    }
+
     setStarting(true);
     setStartError(null);
     const token = localStorage.getItem('IAT_TOKEN');
@@ -145,6 +154,11 @@ export function QuickMockModal({ subject, onClose, onStartMock }: QuickMockModal
         body: JSON.stringify({ quickMockId })
       });
       if (!res.ok) {
+        if (res.status === 403) {
+          onClose();
+          onNavigate?.('subscription:quick_mock');
+          return;
+        }
         const errData = await res.json().catch(() => ({}));
         throw new Error(errData.error || 'Failed to start Quick Mock session.');
       }

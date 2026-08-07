@@ -50,6 +50,7 @@ export function MockTestCenter({ onNavigate, initialTab, initialResultId, initia
   const [isLoadingLatestAnalysis, setIsLoadingLatestAnalysis] = useState(false);
 
   const fetchStats = async () => {
+    if (!isPro) return;
     const token = localStorage.getItem('IAT_TOKEN');
     if (!token) return;
     try {
@@ -1023,6 +1024,8 @@ export function MockTestCenter({ onNavigate, initialTab, initialResultId, initia
       {selectedQuickMockSubject && (
         <QuickMockModal
           subject={selectedQuickMockSubject}
+          isPro={isPro}
+          onNavigate={onNavigate}
           onClose={() => setSelectedQuickMockSubject(null)}
           onStartMock={(quickMockId, chapterTitle, questions) => {
             setActiveQuickMockId(quickMockId);
