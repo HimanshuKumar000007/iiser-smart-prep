@@ -277,24 +277,24 @@ export function Hero({ onNavigate, dashboardData: data, loading, actionPlan: pla
       value: examLabel,
       sub: `${daysUntilExam} Days Left`,
       icon: Calendar,
-      valueColor: isLight ? 'text-[#0F0E17]' : 'text-white',
-      subColor: 'text-[#DC2626]',
-      iconBg: isLight ? 'bg-[#F1EDFB]' : 'bg-rose-500/10',
-      iconColor: isLight ? 'text-[#5B21B6]' : 'text-rose-400',
-      border: isLight ? 'border-[#E9E7F2]' : 'border-rose-500/15 hover:border-rose-500/30',
-      glow: 'hover:shadow-[0_4px_16px_rgba(91,33,182,0.1)]',
+      valueColor: 'text-white',
+      subColor: 'text-rose-400',
+      iconBg: 'bg-rose-500/10',
+      iconColor: 'text-rose-400',
+      border: 'border-rose-500/15 hover:border-rose-500/30',
+      glow: 'hover:shadow-[0_0_20px_rgba(244,63,94,0.08)]',
     },
     {
       label: 'Prep Index',
       value: hasData ? `${preparation}%` : 'Getting Started',
       sub: hasData ? levelLabel : 'No Evidence Yet',
       icon: BarChart3,
-      valueColor: isLight ? 'text-[#5B21B6]' : 'text-cyan-400',
-      subColor: isLight ? 'text-[#16A34A]' : 'text-emerald-400',
-      iconBg: isLight ? 'bg-[#F1EDFB]' : 'bg-cyan-500/10',
-      iconColor: isLight ? 'text-[#5B21B6]' : 'text-cyan-400',
-      border: isLight ? 'border-[#E9E7F2]' : 'border-cyan-500/15 hover:border-cyan-500/30',
-      glow: 'hover:shadow-[0_4px_16px_rgba(91,33,182,0.1)]',
+      valueColor: 'text-cyan-400',
+      subColor: 'text-emerald-400',
+      iconBg: 'bg-cyan-500/10',
+      iconColor: 'text-cyan-400',
+      border: 'border-cyan-500/15 hover:border-cyan-500/30',
+      glow: 'hover:shadow-[0_0_20px_rgba(6,182,212,0.08)]',
     },
     {
       label: 'Impact Potential',
@@ -303,24 +303,24 @@ export function Hero({ onNavigate, dashboardData: data, loading, actionPlan: pla
         : 'Baseline Stage',
       sub: 'Growth Stage',
       icon: TrendingUp,
-      valueColor: isLight ? 'text-[#16A34A]' : 'text-emerald-400',
-      subColor: isLight ? 'text-[#6B6779]' : 'text-white/40',
-      iconBg: isLight ? 'bg-[#F1EDFB]' : 'bg-emerald-500/10',
-      iconColor: isLight ? 'text-[#5B21B6]' : 'text-emerald-400',
-      border: isLight ? 'border-[#E9E7F2]' : 'border-emerald-500/15 hover:border-emerald-500/30',
-      glow: 'hover:shadow-[0_4px_16px_rgba(91,33,182,0.1)]',
+      valueColor: 'text-emerald-400',
+      subColor: 'text-white/40',
+      iconBg: 'bg-emerald-500/10',
+      iconColor: 'text-emerald-400',
+      border: 'border-emerald-500/15 hover:border-emerald-500/30',
+      glow: 'hover:shadow-[0_0_20px_rgba(16,185,129,0.08)]',
     },
     {
       label: 'XP Earned',
       value: `${xpScore} XP`,
       sub: `${streakDays} Day Streak 🔥`,
       icon: Zap,
-      valueColor: isLight ? 'text-[#D97706]' : 'text-amber-400',
-      subColor: isLight ? 'text-[#6B6779]' : 'text-white/40',
-      iconBg: isLight ? 'bg-amber-500/10' : 'bg-amber-500/10',
-      iconColor: isLight ? 'text-[#D97706]' : 'text-amber-400',
-      border: isLight ? 'border-[#E9E7F2]' : 'border-amber-500/15 hover:border-amber-500/30',
-      glow: 'hover:shadow-[0_4px_16px_rgba(217,119,6,0.1)]',
+      valueColor: 'text-amber-400',
+      subColor: 'text-white/40',
+      iconBg: 'bg-amber-500/10',
+      iconColor: 'text-amber-400',
+      border: 'border-amber-500/15 hover:border-amber-500/30',
+      glow: 'hover:shadow-[0_0_20px_rgba(245,158,11,0.08)]',
     },
   ];
 
@@ -328,13 +328,18 @@ export function Hero({ onNavigate, dashboardData: data, loading, actionPlan: pla
     <div className={cn(
       "rounded-3xl relative overflow-hidden",
       isLight
-        ? "bg-[#FAFAFC] border border-[#E9E7F2]"
+        ? "bg-white/70 backdrop-blur-[12px] border border-white/80 shadow-[0_8px_40px_rgba(15,23,42,0.10),0_2px_8px_rgba(15,23,42,0.06),inset_0_1px_0_rgba(255,255,255,0.95)]"
         : "bg-gradient-to-br from-[#0A0C16] via-[#06070E] to-[#080A12] border border-white/8 shadow-[0_0_100px_rgba(6,182,212,0.05)]"
     )}>
 
       {/* ── Ambient glows ──────────────────────────────────────────────── */}
-      <div className={cn("absolute top-[-80px] right-[-60px] w-[480px] h-[480px] blur-[130px] rounded-full pointer-events-none", isLight ? "bg-purple-600/8" : "bg-indigo-600/6")} />
-      <div className={cn("absolute bottom-[-60px] left-[-40px] w-[420px] h-[420px] blur-[120px] rounded-full pointer-events-none", isLight ? "bg-violet-500/8" : "bg-cyan-500/5")} />
+      <div className={cn("absolute top-[-80px] right-[-60px] w-[480px] h-[480px] blur-[130px] rounded-full pointer-events-none", isLight ? "bg-indigo-600/12" : "bg-indigo-600/6")} />
+      <div className={cn("absolute bottom-[-60px] left-[-40px] w-[420px] h-[420px] blur-[120px] rounded-full pointer-events-none", isLight ? "bg-cyan-500/11" : "bg-cyan-500/5")} />
+      <div className={cn("absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[200px] blur-[100px] rounded-full pointer-events-none", isLight ? "bg-indigo-500/8" : "bg-indigo-500/3")} />
+
+      {/* Subtle dot grid */}
+      <div className={cn("absolute inset-0 pointer-events-none", isLight ? "opacity-[0.07]" : "opacity-[0.018]")}
+        style={{ backgroundImage: 'radial-gradient(circle, rgba(15,23,42,0.5) 1px, transparent 1px)', backgroundSize: '28px 28px' }} />
 
       <div className="relative z-10 p-6 md:p-8 space-y-6">
 
@@ -346,23 +351,20 @@ export function Hero({ onNavigate, dashboardData: data, loading, actionPlan: pla
         >
           {/* Left — Greeting */}
           <div className="space-y-2.5">
-            <div className={cn(
-              "inline-flex items-center gap-2 px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-widest",
-              isLight ? "bg-[#F1EDFB] border border-[#E9E7F2] text-[#5B21B6]" : "bg-cyan-500/8 border border-cyan-500/20 text-cyan-400"
-            )}>
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-500/8 border border-cyan-500/20 text-cyan-400 text-[11px] font-bold uppercase tracking-widest">
               <Sparkles className="w-3 h-3" />
               <span>Personalized Command Center</span>
             </div>
 
-            <h1 className={cn("text-[1.75rem] sm:text-[2.1rem] font-display font-black tracking-tight leading-[1.1]", isLight ? "text-[#0F0E17]" : "text-white")}>
+            <h1 className="text-[1.75rem] sm:text-[2.1rem] font-display font-black text-white tracking-tight leading-[1.1]">
               {getGreeting()},{' '}
-              <span className={cn("text-transparent bg-clip-text", isLight ? "bg-gradient-to-r from-[#1E1B4B] via-[#4C1D95] to-[#7C3AED]" : "bg-gradient-to-r from-cyan-300 via-indigo-400 to-purple-400")}>
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 via-indigo-400 to-purple-400">
                 {firstName(displayName)}
               </span>
-              <span> 👋</span>
+              <span className="text-white"> 👋</span>
             </h1>
 
-            <p className={cn("text-[0.8125rem] leading-relaxed max-w-[420px]", isLight ? "text-[#6B6779]" : "text-white/45")}>
+            <p className="text-[0.8125rem] text-white/45 leading-relaxed max-w-[420px]">
               Your personalized study space is active. Access smart lessons, simulated mocks, or get instant help below.
             </p>
           </div>
@@ -377,16 +379,16 @@ export function Hero({ onNavigate, dashboardData: data, loading, actionPlan: pla
                 className={cn(
                   'p-3 rounded-2xl border transition-all duration-300 cursor-default',
                   isLight
-                    ? 'bg-white shadow-sm border-[#E9E7F2]'
-                    : 'bg-white/[0.025] border-white/10',
-                  m.glow
+                    ? 'bg-white/65 shadow-[0_2px_12px_rgba(15,23,42,0.07),inset_0_1px_0_rgba(255,255,255,0.95)]'
+                    : 'bg-white/[0.025]',
+                  m.border, m.glow
                 )}
               >
                 <div className="flex items-center gap-2 mb-2">
                   <div className={cn('w-6 h-6 rounded-lg flex items-center justify-center', m.iconBg)}>
                     <m.icon className={cn('w-3.5 h-3.5', m.iconColor)} />
                   </div>
-                  <span className={cn('text-[9px] font-bold uppercase tracking-widest', isLight ? 'text-[#6B6779]' : 'text-white/30')}>{m.label}</span>
+                  <span className={cn('text-[9px] font-bold uppercase tracking-widest', isLight ? 'text-slate-400' : 'text-white/30')}>{m.label}</span>
                 </div>
                 <span className={cn('text-[0.85rem] font-black block leading-tight', m.valueColor)}>{m.value}</span>
                 <span className={cn('text-[10px] font-medium block mt-0.5', m.subColor)}>{m.sub}</span>
@@ -406,50 +408,46 @@ export function Hero({ onNavigate, dashboardData: data, loading, actionPlan: pla
             className={cn(
               "p-5 rounded-2xl border transition-all duration-300 relative overflow-hidden group cursor-pointer",
               isLight
-                ? "bg-gradient-to-r from-[#F8F6FD] to-[#F1EDFB] border-[#E9E7F2] shadow-sm hover:shadow-md"
+                ? "bg-white/60 border-slate-200/80 hover:border-cyan-400/40 shadow-[0_4px_20px_rgba(15,23,42,0.08),inset_0_1px_0_rgba(255,255,255,0.95)]"
                 : "bg-gradient-to-r from-white/[0.03] to-white/[0.01] border-white/10 hover:border-cyan-500/30 hover:bg-white/[0.04] shadow-[0_8px_32px_0_rgba(0,0,0,0.37)] backdrop-blur-md"
             )}
           >
+            {/* Subtle glow behind the card */}
+            <div className="absolute top-[-50px] right-[-50px] w-[180px] h-[180px] bg-cyan-500/5 blur-[40px] rounded-full pointer-events-none transition-transform group-hover:scale-110" />
+
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 relative z-10">
               <div className="flex items-start gap-4">
                 {/* Icon box */}
-                <div className={cn(
-                  "w-12 h-12 rounded-xl flex items-center justify-center shrink-0 mt-0.5",
-                  isLight ? "bg-[#F1EDFB] border border-[#E9E7F2] text-[#5B21B6]" : "bg-cyan-500/10 border border-cyan-500/20 text-cyan-400"
-                )}>
+                <div className="w-12 h-12 rounded-xl bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center shrink-0 mt-0.5 text-cyan-400">
                   <SubjectIcon subject={plan.primaryAction.subject} className="w-6 h-6" />
                 </div>
                 <div>
                   <div className="flex items-center gap-2 flex-wrap">
-                    <span className={cn(
-                      "text-[10px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded",
-                      isLight ? "bg-[#5B21B6] text-white" : "text-cyan-400 bg-cyan-500/10 border border-cyan-500/20"
-                    )}>
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-cyan-400 bg-cyan-500/10 px-2.5 py-0.5 rounded border border-cyan-500/20">
                       Next Best Action
                     </span>
                     <span className={cn(
-                      "text-[10px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded",
-                      isLight ? "bg-[#D97706] text-white" :
-                      plan.primaryAction.priorityBand === 'CRITICAL' ? "text-rose-400 bg-rose-500/15 border border-rose-500/20" :
-                      plan.primaryAction.priorityBand === 'HIGH' ? "text-orange-400 bg-orange-500/15 border border-orange-500/20" :
-                      "text-blue-400 bg-blue-500/15 border border-blue-500/20"
+                      "text-[10px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded border",
+                      plan.primaryAction.priorityBand === 'CRITICAL' ? "text-rose-400 bg-rose-500/15 border-rose-500/20" :
+                      plan.primaryAction.priorityBand === 'HIGH' ? "text-orange-400 bg-orange-500/15 border-orange-500/20" :
+                      "text-blue-400 bg-blue-500/15 border-blue-500/20"
                     )}>
                       {plan.primaryAction.priorityBand} Priority
                     </span>
-                    <span className={cn("text-[10px] font-medium", isLight ? "text-[#6B6779]" : "text-white/40")}>
+                    <span className="text-[10px] font-medium text-white/40">
                       Confidence: {plan.primaryAction.evidenceLevel}
                     </span>
                   </div>
-                  <h2 className={cn("text-[1.125rem] font-bold mt-2 transition-colors", isLight ? "text-[#0F0E17] group-hover:text-[#5B21B6]" : "text-white group-hover:text-cyan-200")}>
+                  <h2 className="text-[1.125rem] font-bold text-white mt-2 group-hover:text-cyan-200 transition-colors">
                     {plan.primaryAction.title}
                   </h2>
-                  <p className={cn("text-xs mt-1 leading-relaxed", isLight ? "text-[#6B6779]" : "text-white/50")}>
+                  <p className="text-xs text-white/50 mt-1 leading-relaxed">
                     {plan.primaryAction.description}
                   </p>
                   <div className="mt-3 flex flex-col gap-1.5">
                     {plan.primaryAction.reasons.map((r, i) => (
-                      <div key={i} className={cn("flex items-start gap-2 text-[11px] leading-relaxed", isLight ? "text-[#6B6779]" : "text-white/40")}>
-                        <span className={cn("mt-0.5 shrink-0", isLight ? "text-[#5B21B6]" : "text-cyan-400")}>✦</span>
+                      <div key={i} className="flex items-start gap-2 text-[11px] text-white/40 leading-relaxed">
+                        <span className="text-cyan-400 mt-0.5 shrink-0">✦</span>
                         <span>{r}</span>
                       </div>
                     ))}
@@ -462,12 +460,7 @@ export function Hero({ onNavigate, dashboardData: data, loading, actionPlan: pla
                     e.stopPropagation();
                     handleCta(plan.primaryAction);
                   }}
-                  className={cn(
-                    "px-5 py-2.5 rounded-xl text-xs font-bold transition-all duration-150 flex items-center gap-1.5 transform group-hover:translate-x-0.5",
-                    isLight
-                      ? "bg-gradient-to-r from-[#1E1B4B] via-[#4C1D95] to-[#7C3AED] text-white shadow-[0_4px_12px_rgba(91,33,182,0.25)]"
-                      : "bg-gradient-to-r from-cyan-400 to-indigo-500 hover:from-cyan-300 hover:to-indigo-400 text-black shadow-lg shadow-cyan-500/10"
-                  )}
+                  className="px-5 py-2.5 rounded-xl text-xs font-bold bg-gradient-to-r from-cyan-400 to-indigo-500 hover:from-cyan-300 hover:to-indigo-400 text-black shadow-lg shadow-cyan-500/10 transition-all duration-150 flex items-center gap-1.5 transform group-hover:translate-x-0.5"
                 >
                   <span>{plan.primaryAction.ctaLabel}</span>
                   <ArrowRight className="w-3.5 h-3.5" />
@@ -476,6 +469,8 @@ export function Hero({ onNavigate, dashboardData: data, loading, actionPlan: pla
             </div>
           </motion.div>
         )}
+
+
 
         {/* ══ SECTION 3: Body Grid — Subjects + Mission ══════════════════ */}
         <div className="grid grid-cols-1 lg:grid-cols-[7fr_5fr] gap-5">
@@ -489,12 +484,12 @@ export function Hero({ onNavigate, dashboardData: data, loading, actionPlan: pla
             {/* Section Header */}
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <Compass className={cn("w-4 h-4", isLight ? "text-[#5B21B6]" : "text-cyan-400")} />
-                <h3 className={cn("text-[0.85rem] font-bold uppercase tracking-wider", isLight ? "text-[#0F0E17]" : "text-white")}>Continue Revision</h3>
+                <Compass className="w-4 h-4 text-cyan-400" />
+                <h3 className="text-[0.85rem] font-bold uppercase tracking-wider text-white">Continue Revision</h3>
               </div>
               <button
                 onClick={() => onNavigate?.('smart_lessons')}
-                className={cn("text-[10.5px] font-bold transition-colors uppercase tracking-wider flex items-center gap-1 group", isLight ? "text-[#5B21B6] hover:text-[#6D28D9]" : "text-cyan-400 hover:text-cyan-300")}
+                className="text-[10.5px] font-bold text-cyan-400 hover:text-cyan-300 transition-colors uppercase tracking-wider flex items-center gap-1 group"
               >
                 <span>View Library</span>
                 <ArrowRight className="w-3 h-3 group-hover:translate-x-0.5 transition-transform" />
@@ -507,13 +502,6 @@ export function Hero({ onNavigate, dashboardData: data, loading, actionPlan: pla
                 const progressScore = data?.lessonProgressMap?.[sub.name] ?? 0;
                 const recText       = getSubjectRecommendation(sub.name, data?.completed_lessons || []);
 
-                // Functional progress bar color coding: green ≥70%, amber 40-69%, violet/gray <40%
-                const barFillClass = progressScore >= 70
-                  ? 'bg-[#16A34A]'
-                  : progressScore >= 40
-                    ? 'bg-[#D97706]'
-                    : isLight ? 'bg-[#5B21B6]' : sub.barColor;
-
                 return (
                   <motion.div
                     key={sub.name}
@@ -523,25 +511,25 @@ export function Hero({ onNavigate, dashboardData: data, loading, actionPlan: pla
                     className={cn(
                       'p-4 rounded-2xl border transition-all duration-300 cursor-pointer group',
                       isLight
-                        ? 'bg-white border-[#E9E7F2] shadow-sm hover:shadow-md'
+                        ? 'bg-white/60 border-slate-200/60 hover:border-slate-300/80 shadow-[0_2px_12px_rgba(15,23,42,0.06),inset_0_1px_0_rgba(255,255,255,0.95)] hover:shadow-[0_4px_20px_rgba(15,23,42,0.09)]'
                         : 'bg-white/[0.015] hover:bg-white/[0.03] border-white/6',
-                      !isLight && sub.gradientBorder, !isLight && sub.glow
+                      sub.gradientBorder, sub.glow
                     )}
                   >
                     <div className="flex items-center justify-between gap-3 mb-3">
                       <div className="flex items-center gap-3">
-                        {/* Consistent soft violet circle background for ALL 4 subject icons */}
+                        {/* Larger icon box */}
                         <div className={cn(
-                          'w-10 h-10 rounded-xl flex items-center justify-center border transition-all duration-300 group-hover:scale-105',
-                          isLight ? 'bg-[#F1EDFB] border-[#E9E7F2] text-[#5B21B6]' : sub.bg
+                          'w-10 h-10 rounded-xl flex items-center justify-center border border-white/8 transition-all duration-300 group-hover:scale-105',
+                          sub.bg
                         )}>
-                          <sub.icon className={cn('w-5 h-5', isLight ? 'text-[#5B21B6]' : sub.iconColor)} />
+                          <sub.icon className={cn('w-5 h-5', sub.iconColor)} />
                         </div>
                         <div>
-                          <h4 className={cn("text-[0.875rem] font-bold transition-colors", isLight ? "text-[#0F0E17] group-hover:text-[#5B21B6]" : "text-white group-hover:text-cyan-200")}>
+                          <h4 className="text-[0.875rem] font-bold text-white group-hover:text-cyan-200 transition-colors">
                             {sub.name}
                           </h4>
-                          <p className={cn("text-[10px] mt-0.5 max-w-[140px] truncate", isLight ? "text-[#6B6779]" : "text-white/35")}>
+                          <p className="text-[10px] text-white/35 mt-0.5 max-w-[140px] truncate">
                             {recText}
                           </p>
                         </div>
@@ -549,10 +537,9 @@ export function Hero({ onNavigate, dashboardData: data, loading, actionPlan: pla
 
                       {/* Play button */}
                       <div className={cn(
-                        'w-7 h-7 rounded-xl border flex items-center justify-center shrink-0 transition-all duration-200',
-                        isLight
-                          ? 'bg-[#F3F2F9] border-[#E9E7F2] text-[#6B6779] group-hover:bg-[#5B21B6] group-hover:text-white'
-                          : 'bg-white/5 border-white/10 text-white/30 group-hover:bg-cyan-500 group-hover:border-cyan-400 group-hover:text-black'
+                        'w-7 h-7 rounded-xl border border-white/10 flex items-center justify-center shrink-0',
+                        'bg-white/5 text-white/30 group-hover:bg-cyan-500 group-hover:border-cyan-400 group-hover:text-black',
+                        'transition-all duration-200'
                       )}>
                         <PlayCircle className="w-4 h-4 ml-0.5" />
                       </div>
@@ -561,12 +548,12 @@ export function Hero({ onNavigate, dashboardData: data, loading, actionPlan: pla
                     {/* Progress */}
                     <div>
                       <div className="flex justify-between items-center mb-1.5">
-                        <span className={cn("text-[9px] font-bold uppercase tracking-wider", isLight ? "text-[#6B6779]" : "text-white/25")}>Syllabus Progress</span>
-                        <span className={cn("text-[10px] font-bold", isLight ? "text-[#0F0E17]" : "text-white/60")}>{progressScore}%</span>
+                        <span className="text-[9px] font-bold text-white/25 uppercase tracking-wider">Syllabus Progress</span>
+                        <span className="text-[10px] font-bold text-white/60">{progressScore}%</span>
                       </div>
-                      <div className={cn("w-full h-[4px] rounded-full overflow-hidden", isLight ? "bg-[#F3F2F9]" : "bg-white/5")}>
+                      <div className="w-full h-[3px] bg-white/5 rounded-full overflow-hidden">
                         <div
-                          className={cn('h-full rounded-full transition-all duration-700', barFillClass)}
+                          className={cn('h-full rounded-full transition-all duration-700', sub.barColor)}
                           style={{ width: `${Math.max(progressScore, 3)}%` }}
                         />
                       </div>
@@ -581,26 +568,26 @@ export function Hero({ onNavigate, dashboardData: data, loading, actionPlan: pla
               {[
                 {
                   icon: Zap, label: 'Revision Streak', value: `${streakDays} Days`,
-                  iconBg: isLight ? 'bg-amber-500/10 border-amber-500/15' : 'bg-amber-500/10 border-amber-500/15', iconColor: 'text-[#D97706]',
-                  valueColor: isLight ? 'text-[#D97706]' : 'text-amber-300',
+                  iconBg: 'bg-amber-500/10 border-amber-500/15', iconColor: 'text-amber-400',
+                  valueColor: 'text-amber-300',
                 },
                 {
                   icon: Target, label: 'Avg Accuracy', value: hasData ? `${accuracy.toFixed(1)}%` : 'Not Evaluated',
-                  iconBg: isLight ? 'bg-emerald-500/10 border-emerald-500/15' : 'bg-emerald-500/10 border-emerald-500/15', iconColor: 'text-[#16A34A]',
-                  valueColor: isLight ? 'text-[#16A34A]' : 'text-emerald-300',
+                  iconBg: 'bg-emerald-500/10 border-emerald-500/15', iconColor: 'text-emerald-400',
+                  valueColor: 'text-emerald-300',
                 },
               ].map((stat) => (
                 <div key={stat.label} className={cn(
                   'p-3.5 rounded-2xl flex items-center gap-3',
                   isLight
-                    ? 'bg-white border border-[#E9E7F2] shadow-sm'
+                    ? 'bg-white/55 border border-slate-200/60 shadow-[0_2px_8px_rgba(15,23,42,0.05),inset_0_1px_0_rgba(255,255,255,0.95)]'
                     : 'bg-white/[0.015] border border-white/6'
                 )}>
                   <div className={cn('w-9 h-9 rounded-xl border flex items-center justify-center shrink-0', stat.iconBg)}>
                     <stat.icon className={cn('w-4.5 h-4.5', stat.iconColor)} />
                   </div>
                   <div>
-                    <span className={cn("text-[9px] font-bold block uppercase tracking-widest", isLight ? "text-[#6B6779]" : "text-white/30")}>{stat.label}</span>
+                    <span className="text-[9px] font-bold text-white/30 block uppercase tracking-widest">{stat.label}</span>
                     <span className={cn('text-[1.05rem] font-display font-black', stat.valueColor)}>{stat.value}</span>
                   </div>
                 </div>
@@ -608,36 +595,36 @@ export function Hero({ onNavigate, dashboardData: data, loading, actionPlan: pla
             </div>
           </motion.div>
 
-          {/* ── Right: Smart Study Assistant (AI Feature) ────────────────── */}
+          {/* ── Right: Smart Study Assistant ────────────────────────────── */}
           <motion.div
             variants={fadeUp} initial="hidden" animate="show"
             transition={{ duration: 0.4, delay: 0.28, ease: 'easeOut' }}
             className={cn(
               'flex flex-col rounded-2xl overflow-hidden min-h-[350px] relative group/assistant',
               isLight
-                ? 'bg-[#F1EDFB] border border-[#E9E7F2] shadow-sm'
+                ? 'bg-white/65 border border-white/80 shadow-[0_4px_24px_rgba(15,23,42,0.08),inset_0_1px_0_rgba(255,255,255,0.95)]'
                 : 'bg-white/[0.015] border border-white/6'
             )}
           >
+            {/* Ambient subtle glow inside card */}
+            <div className="absolute top-[-30px] right-[-30px] w-48 h-48 bg-purple-500/5 blur-[40px] rounded-full pointer-events-none transition-opacity duration-300 group-hover/assistant:opacity-80" />
+
             {/* Header */}
             <div className={cn(
               'flex items-center justify-between px-5 pt-5 pb-4 border-b relative z-10',
-              isLight ? 'border-[#E9E7F2]' : 'border-white/5'
+              isLight ? 'border-slate-200/60' : 'border-white/5'
             )}>
               <div className="flex items-center gap-2.5">
-                <div className={cn("w-9 h-9 rounded-xl flex items-center justify-center", isLight ? "bg-white text-[#5B21B6] shadow-sm border border-[#E9E7F2]" : "bg-purple-500/10 border border-purple-500/20 text-purple-400")}>
+                <div className="w-9 h-9 rounded-xl bg-purple-500/10 border border-purple-500/20 flex items-center justify-center text-purple-400">
                   <Sparkles className="w-4.5 h-4.5" />
                 </div>
                 <div>
-                  <h3 className={cn("text-[0.8rem] font-bold uppercase tracking-wider", isLight ? "text-[#0F0E17]" : "text-white")}>Smart Study Assistant</h3>
-                  <p className={cn("text-[9.5px] mt-0.5", isLight ? "text-[#6B6779]" : "text-white/35")}>Learn, practice, or get help instantly</p>
+                  <h3 className="text-[0.8rem] font-bold text-white uppercase tracking-wider">Smart Study Assistant</h3>
+                  <p className="text-[9.5px] text-white/35 mt-0.5">Learn, practice, or get help instantly</p>
                 </div>
               </div>
 
-              <span className={cn(
-                "text-[9px] font-black px-2.5 py-1 rounded-full uppercase tracking-wider",
-                isLight ? "bg-[#5B21B6] text-white" : "border border-purple-500/20 bg-purple-500/10 text-purple-300"
-              )}>
+              <span className="text-[9px] font-black px-2.5 py-1 rounded-full border border-purple-500/20 bg-purple-500/10 text-purple-300 uppercase tracking-wider">
                 AI Active
               </span>
             </div>
@@ -652,20 +639,17 @@ export function Hero({ onNavigate, dashboardData: data, loading, actionPlan: pla
                 className={cn(
                   'group/btn p-3.5 rounded-xl border transition-all duration-200 cursor-pointer flex items-center justify-between gap-4',
                   isLight
-                    ? 'bg-white border-[#E9E7F2] hover:border-[#5B21B6] shadow-sm'
+                    ? 'bg-white/50 border-slate-200/60 hover:bg-white/70 hover:border-purple-400/30 shadow-[0_1px_6px_rgba(15,23,42,0.05)]'
                     : 'border-white/5 bg-white/[0.025] hover:bg-white/[0.05] hover:border-purple-500/20'
                 )}
               >
                 <div className="min-w-0">
-                  <h4 className={cn("text-xs font-bold transition-colors", isLight ? "text-[#0F0E17] group-hover/btn:text-[#5B21B6]" : "text-white group-hover/btn:text-purple-300")}>Ask a Doubt</h4>
-                  <p className={cn("text-[10px] mt-0.5 leading-relaxed", isLight ? "text-[#6B6779]" : "text-white/40")}>
+                  <h4 className="text-xs font-bold text-white group-hover/btn:text-purple-300 transition-colors">Ask a Doubt</h4>
+                  <p className="text-[10px] text-white/40 mt-0.5 leading-relaxed">
                     Get help with any Physics, Chemistry, Mathematics, or Biology question.
                   </p>
                 </div>
-                <button className={cn(
-                  "flex items-center justify-center w-8 h-8 rounded-lg border transition-all shrink-0",
-                  isLight ? "bg-[#F3F2F9] border-[#E9E7F2] text-[#5B21B6] group-hover/btn:bg-[#5B21B6] group-hover/btn:text-white" : "bg-white/5 border-white/10 text-white/40 group-hover/btn:bg-purple-500 group-hover/btn:text-black"
-                )}>
+                <button className="flex items-center justify-center w-8 h-8 rounded-lg bg-white/5 border border-white/10 text-white/40 group-hover/btn:bg-purple-500 group-hover/btn:border-purple-400 group-hover/btn:text-black transition-all shrink-0">
                   <ArrowRight className="w-4 h-4" />
                 </button>
               </div>
@@ -679,12 +663,12 @@ export function Hero({ onNavigate, dashboardData: data, loading, actionPlan: pla
                   className={cn(
                     'group/btn2 p-3 rounded-xl border transition-all duration-200 cursor-pointer flex flex-col justify-between min-h-[90px]',
                     isLight
-                      ? 'bg-white border-[#E9E7F2] hover:border-[#5B21B6] shadow-sm'
+                      ? 'bg-white/50 border-slate-200/60 hover:bg-white/65 hover:border-purple-400/25'
                       : 'border-white/5 bg-white/[0.015] hover:bg-white/[0.03] hover:border-purple-500/10'
                   )}
                 >
-                  <h4 className={cn("text-[11px] font-bold transition-colors", isLight ? "text-[#0F0E17] group-hover/btn2:text-[#5B21B6]" : "text-white group-hover/btn2:text-purple-300")}>Explain a Concept</h4>
-                  <p className={cn("text-[9.5px] mt-1 leading-normal", isLight ? "text-[#6B6779]" : "text-white/35")}>
+                  <h4 className="text-[11px] font-bold text-white group-hover/btn2:text-purple-300 transition-colors">Explain a Concept</h4>
+                  <p className="text-[9.5px] text-white/35 mt-1 leading-normal">
                     Learn difficult topics with step-by-step explanations.
                   </p>
                 </div>
@@ -697,14 +681,14 @@ export function Hero({ onNavigate, dashboardData: data, loading, actionPlan: pla
                   className={cn(
                     'group/btn3 p-3 rounded-xl border transition-all duration-200 cursor-pointer flex flex-col justify-between min-h-[90px]',
                     isLight
-                      ? 'bg-white border-[#E9E7F2] hover:border-[#5B21B6] shadow-sm'
+                      ? 'bg-white/50 border-slate-200/60 hover:bg-white/65 hover:border-indigo-400/25'
                       : 'border-white/5 bg-white/[0.015] hover:bg-white/[0.03] hover:border-indigo-500/10'
                   )}
                 >
-                  <h4 className={cn("text-[11px] font-bold truncate transition-colors", isLight ? "text-[#0F0E17] group-hover/btn3:text-[#5B21B6]" : "text-white group-hover/btn3:text-indigo-300")}>
+                  <h4 className="text-[11px] font-bold text-white group-hover/btn3:text-indigo-300 transition-colors truncate">
                     {practiceLabel}
                   </h4>
-                  <p className={cn("text-[9.5px] mt-1 leading-normal", isLight ? "text-[#6B6779]" : "text-white/35")}>
+                  <p className="text-[9.5px] text-white/35 mt-1 leading-normal">
                     {practiceSub}
                   </p>
                 </div>
@@ -714,7 +698,7 @@ export function Hero({ onNavigate, dashboardData: data, loading, actionPlan: pla
             {/* AI Input Form */}
             <div className={cn(
               'relative border-t p-4 z-10',
-              isLight ? 'border-[#E9E7F2] bg-[#F3F2F9]' : 'border-white/5 bg-white/[0.008]'
+              isLight ? 'border-slate-200/50 bg-white/30' : 'border-white/5 bg-white/[0.008]'
             )}>
               <form 
                 onSubmit={(e) => {
@@ -734,11 +718,11 @@ export function Hero({ onNavigate, dashboardData: data, loading, actionPlan: pla
                   className={cn(
                     'w-full border rounded-xl py-2.5 pl-4 pr-10 text-xs outline-none transition-colors',
                     isLight
-                      ? 'bg-white border-[#E9E7F2] text-[#0F0E17] placeholder-[#A5A1B5] focus:border-[#5B21B6]'
+                      ? 'bg-white/70 border-slate-200/70 text-slate-800 placeholder-slate-400 focus:border-purple-400/50'
                       : 'bg-[#05060F] border-white/8 text-white placeholder-white/25 focus:border-purple-500/30'
                   )}
                 />
-                <button type="submit" className={cn('absolute right-2 p-1.5 transition-colors', isLight ? 'text-[#6B6779] hover:text-[#5B21B6]' : 'text-white/30 hover:text-white')}>
+                <button type="submit" className={cn('absolute right-2 p-1.5 transition-colors', isLight ? 'text-slate-400 hover:text-slate-700' : 'text-white/30 hover:text-white')}>
                   <ArrowRight className="w-3.5 h-3.5" />
                 </button>
               </form>
