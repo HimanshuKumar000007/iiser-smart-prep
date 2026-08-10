@@ -4,165 +4,198 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Platform Features | IISER Smart Prep</title>
+    <title>Platform Features & AI Tools | IISER SmartPrep</title>
     <meta name="description"
-        content="Explore the comprehensive features of IISER Smart Prep - AI Tutor, Mock Tests, Analytics, and more.">
+        content="Explore the complete feature suite of IISER SmartPrep - 24/7 AI Tutor, 45+ TCS iON Mock Tests, Chapter-Wise PYQs with step-by-step solutions, and Rank Analytics.">
+    <link rel="canonical" href="https://iisersmartprep.space/features.html">
 
-    <!-- Favicon Setup -->
+    <!-- Favicons -->
     <link rel="icon" href="/favicon.ico">
     <link rel="icon" href="/favicon-96x96.png" type="image/png">
     <link rel="icon" href="/favicon.svg" type="image/svg+xml">
     <link rel="apple-touch-icon" href="/apple-touch-icon.png">
     <link rel="manifest" href="/site.webmanifest">
 
-    <!-- SEO Logo -->
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "Organization",
-      "name": "IISER Smart Prep",
-      "url": "https://iisersmartprep.space",
-      "logo": "https://iisersmartprep.space/web-app-manifest-512x512.png"
-    }
-    </script>
-
-    <!-- Open Graph -->
-    <meta property="og:image" content="https://iisersmartprep.space/web-app-manifest-512x512.png">
-    <meta property="og:title" content="Platform Features | IISER Smart Prep">
-    <meta property="og:description" content="AI Powered IISER IAT Preparation Platform">
-    <meta name="theme-color" content="#000000">
-
-    <!-- Google Fonts: Plus Jakarta Sans -->
-
+    <!-- Fonts & Icons -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap"
-        rel="stylesheet">
-
-    <!-- Font Awesome -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Outfit:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
-        /* =========================================
-           1. CORE STYLES & VARIABLES
-           ========================================= */
         :root {
-            --primary: #6366f1;
-            --primary-light: #818cf8;
-            --primary-dark: #4f46e5;
-            --primary-soft: #e0e7ff;
-            --accent: #8b5cf6;
+            --primary: #3b82f6;
+            --primary-dark: #1d4ed8;
+            --primary-soft: #eff6ff;
+            --primary-glow: rgba(59, 130, 246, 0.2);
             --secondary: #0f172a;
+            --secondary-light: #1e293b;
+            --accent-teal: #14b8a6;
+            --accent-teal-soft: #ccfbf1;
+            --accent-purple: #8b5cf6;
+            --accent-amber: #f59e0b;
+            --accent-rose: #f43f5e;
             --text-main: #0f172a;
             --text-muted: #475569;
-            --text-light: #94a3b8;
-            --bg-white: #ffffff;
+            --text-light: #64748b;
             --bg-wash: #f8fafc;
+            --bg-white: #ffffff;
             --border: #e2e8f0;
-            --ai-cyan: #06b6d4;
+            --border-hover: #cbd5e1;
+
+            --radius-sm: 10px;
             --radius-md: 16px;
-            --radius-pill: 100px;
-            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-            --container-width: 1200px;
+            --radius-lg: 24px;
+            --radius-pill: 9999px;
+
+            --shadow-xs: 0 1px 2px 0 rgba(0, 0, 0, 0.04);
+            --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 10px 25px -5px rgba(0, 0, 0, 0.08);
+            --shadow-lg: 0 20px 35px -10px rgba(0, 0, 0, 0.12);
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            font-size: 16px;
         }
 
         body {
-            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
             color: var(--text-main);
             background: var(--bg-wash);
             line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
             overflow-x: hidden;
         }
 
         a {
             text-decoration: none;
             color: inherit;
+            transition: all 0.2s ease;
         }
 
-        ul {
-            list-style: none;
+        /* Reading Progress Bar */
+        .reading-progress-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: transparent;
+            z-index: 10001;
+        }
+
+        .reading-progress-bar {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, var(--primary), var(--accent-teal), var(--accent-purple));
+            border-radius: 0 2px 2px 0;
+            transition: width 0.1s ease-out;
+        }
+
+        /* Top Announcement Bar */
+        .top-announcement {
+            background: linear-gradient(90deg, #1e1b4b, #312e81, #1e1b4b);
+            color: #e0e7ff;
+            text-align: center;
+            padding: 0.45rem 0.75rem;
+            font-size: 0.82rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+            z-index: 1002;
+            line-height: 1.35;
+        }
+
+        .top-announcement a {
+            color: #38bdf8;
+            text-decoration: underline;
+            white-space: nowrap;
         }
 
         .container {
-            width: 90%;
-            max-width: var(--container-width);
+            width: 92%;
+            max-width: 1240px;
             margin: 0 auto;
         }
 
-        /* Navigation */
+        /* Header Navigation */
         header {
-            position: fixed;
-            top: 20px;
-            left: 0;
-            right: 0;
+            position: sticky;
+            top: 8px;
             z-index: 1000;
             display: flex;
             justify-content: center;
+            margin-top: 6px;
             pointer-events: none;
-            transition: top 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        header.scrolled {
-            top: 0;
         }
 
         .nav-container {
             pointer-events: auto;
-            background: rgba(255, 255, 255, 0.9);
+            background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.5);
-            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.08);
-            padding: 0.75rem 1.5rem;
-            border-radius: 100px;
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(226, 232, 240, 0.9);
+            box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.08);
+            padding: 0.6rem 1.5rem;
+            border-radius: var(--radius-pill);
             display: flex;
             align-items: center;
             justify-content: space-between;
-            width: 90%;
-            max-width: var(--container-width);
-            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        header.scrolled .nav-container {
-            width: 100%;
-            max-width: 100%;
-            border-radius: 0;
-            border-top: 0;
-            border-left: 0;
-            border-right: 0;
-            background: rgba(255, 255, 255, 0.95);
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-            padding: 1rem 2rem;
+            width: 92%;
+            max-width: 1240px;
         }
 
         .logo {
-            font-size: 1.25rem;
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.2rem;
             font-weight: 800;
             color: var(--secondary);
             display: flex;
             align-items: center;
             gap: 0.5rem;
+            white-space: nowrap;
+        }
+
+        .logo-icon {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, var(--primary), var(--accent-teal));
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 800;
+            font-size: 0.9rem;
+            box-shadow: 0 4px 10px var(--primary-glow);
+            flex-shrink: 0;
         }
 
         .nav-links {
             display: flex;
-            gap: 2rem;
+            gap: 1.75rem;
             align-items: center;
         }
 
         .nav-links a {
             font-size: 0.9rem;
-            font-weight: 500;
+            font-weight: 600;
             color: var(--text-muted);
-            transition: color 0.2s;
         }
 
-        .nav-links a:hover {
+        .nav-links a:hover, .nav-links a.active {
             color: var(--primary);
         }
 
@@ -170,416 +203,648 @@
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            padding: 0.5rem 1.2rem;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
             border-radius: var(--radius-pill);
-            font-weight: 600;
+            font-weight: 700;
             font-size: 0.9rem;
             cursor: pointer;
-            transition: all 0.2s ease;
+            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+            border: none;
+            white-space: nowrap;
         }
 
         .btn-primary {
-            background: var(--primary);
-            color: white;
-            border: 1px solid var(--primary);
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: #fff;
+            box-shadow: 0 4px 14px var(--primary-glow);
         }
 
         .btn-primary:hover {
-            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(59, 130, 246, 0.35);
         }
 
-        /* Mobile Menu Button */
-        .mobile-menu-btn {
-            display: none;
-            background: none;
-            border: none;
-            cursor: pointer;
-            z-index: 1002;
-            padding: 0.5rem;
-        }
-
-        .hamburger-line {
-            display: block;
-            width: 24px;
-            height: 2px;
-            background-color: var(--secondary);
-            margin: 5px 0;
-            transition: all 0.3s ease;
-            border-radius: 2px;
-        }
-
-        .hamburger-line.active:nth-child(1) {
-            transform: rotate(45deg) translate(5px, 5px);
-        }
-
-        .hamburger-line.active:nth-child(2) {
-            opacity: 0;
-        }
-
-        .hamburger-line.active:nth-child(3) {
-            transform: rotate(-45deg) translate(5px, -5px);
-        }
-
-        /* =========================================
-           2. FEATURES PAGE STYLES
-           ========================================= */
-        main {
-            padding-top: 8rem;
-            padding-bottom: 6rem;
-        }
-
-        .header-section {
-            text-align: center;
-            max-width: 800px;
-            margin: 0 auto 5rem;
-        }
-
-        h1 {
-            font-size: 3rem;
-            font-weight: 800;
+        .btn-outline {
+            background: #fff;
             color: var(--secondary);
-            margin-bottom: 1rem;
-            letter-spacing: -0.03em;
+            border: 1px solid var(--border);
         }
 
-        .subtitle {
-            font-size: 1.2rem;
+        .btn-outline:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+            background: var(--primary-soft);
+        }
+
+        /* Hero Section */
+        .hero-section {
+            padding: 2.5rem 0 3.5rem;
+            background: linear-gradient(180deg, #eff6ff 0%, #f8fafc 100%);
+            border-bottom: 1px solid var(--border);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .pulse-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.4rem 1.1rem;
+            background: #dbeafe;
+            color: var(--primary-dark);
+            border-radius: var(--radius-pill);
+            font-size: 0.8rem;
+            font-weight: 800;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin-bottom: 1.25rem;
+        }
+
+        .pulse-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--primary);
+            border-radius: 50%;
+            box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.7);
+            animation: pulse 1.8s infinite;
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.7); }
+            70% { box-shadow: 0 0 0 8px rgba(59, 130, 246, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0); }
+        }
+
+        .hero-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: clamp(2.1rem, 4.8vw, 3.6rem);
+            font-weight: 800;
+            line-height: 1.15;
+            color: var(--secondary);
+            margin: 0 auto 1.25rem;
+            max-width: 980px;
+        }
+
+        .text-gradient {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--accent-teal) 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-lead {
+            font-size: 1.15rem;
             color: var(--text-muted);
             line-height: 1.7;
+            max-width: 820px;
+            margin: 0 auto 2.25rem;
+            font-weight: 500;
+        }
+
+        /* Filter Tabs */
+        .filter-section {
+            padding: 1.5rem 0;
+            background: #fff;
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 65px;
+            z-index: 100;
+            box-shadow: var(--shadow-xs);
+        }
+
+        .chip-tabs {
+            display: flex;
+            gap: 0.6rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .chip-btn {
+            padding: 0.55rem 1.2rem;
+            border-radius: var(--radius-pill);
+            border: 1px solid var(--border);
+            background: var(--bg-wash);
+            color: var(--text-muted);
+            font-size: 0.88rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        .chip-btn:hover, .chip-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+            box-shadow: 0 4px 12px var(--primary-glow);
+        }
+
+        /* Features Grid */
+        .features-section {
+            padding: 4rem 0 5rem;
         }
 
         .features-grid {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 2rem;
+            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+            gap: 1.75rem;
         }
 
         .feature-card {
-            background: white;
-            padding: 2.5rem;
-            border-radius: var(--radius-md);
+            background: #fff;
             border: 1px solid var(--border);
-            box-shadow: var(--shadow-md);
-            transition: transform 0.3s ease, border-color 0.3s ease;
-            position: relative;
-            overflow: hidden;
+            border-radius: var(--radius-lg);
+            padding: 2.25rem;
+            box-shadow: var(--shadow-xs);
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
             display: flex;
             flex-direction: column;
-            gap: 1rem;
+            position: relative;
         }
 
         .feature-card:hover {
             transform: translateY(-5px);
-            border-color: var(--primary-light);
+            border-color: var(--primary);
+            box-shadow: var(--shadow-md);
         }
 
-        .emoji-icon {
-            font-size: 2.5rem;
-            margin-bottom: 0.5rem;
-            display: block;
+        .card-icon-box {
+            width: 52px;
+            height: 52px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin-bottom: 1.25rem;
+            box-shadow: var(--shadow-xs);
         }
 
-        .feature-title {
-            font-size: 1.25rem;
-            font-weight: 700;
+        .card-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.35rem;
+            font-weight: 800;
             color: var(--secondary);
+            margin-bottom: 0.6rem;
         }
 
-        .feature-desc {
+        .card-desc {
+            font-size: 0.95rem;
             color: var(--text-muted);
-            font-size: 1rem;
-            line-height: 1.6;
+            line-height: 1.65;
+            margin-bottom: 1.25rem;
         }
 
-        /* Responsive */
-        @media (max-width: 1024px) {
-            .features-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
+        .feature-tag-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            padding: 0.25rem 0.75rem;
+            border-radius: var(--radius-pill);
+            font-size: 0.75rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            margin-top: auto;
+            width: fit-content;
         }
 
-        @media (max-width: 768px) {
-            .nav-container {
-                width: 95%;
-                padding: 0.75rem 1.25rem;
-            }
+        /* Comparison Section */
+        .comparison-section {
+            padding: 4.5rem 0;
+            background: #fff;
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+        }
 
-            .mobile-menu-btn {
-                display: block;
-            }
+        .comp-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2rem;
+            margin-top: 2.5rem;
+        }
 
-            .nav-links {
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100vh;
-                background: white;
-                flex-direction: column;
-                justify-content: center;
-                align-items: center;
-                gap: 2rem;
-                transform: translateX(100%);
-                transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-                z-index: 999;
-                box-shadow: -10px 0 30px rgba(0, 0, 0, 0.1);
-            }
+        .comp-card {
+            border-radius: var(--radius-lg);
+            padding: 2.25rem;
+            border: 1px solid var(--border);
+        }
 
-            .nav-links.active {
-                transform: translateX(0);
-            }
+        .comp-bad {
+            background: #fff1f2;
+            border-color: #fecdd3;
+        }
 
-            .nav-links a {
-                font-size: 1.25rem;
-            }
+        .comp-good {
+            background: #f0fdf4;
+            border-color: #bbf7d0;
+            box-shadow: var(--shadow-md);
+        }
 
-            main {
-                padding-top: 6rem;
-                padding-bottom: 4rem;
-            }
+        /* Bottom CTA Banner */
+        .bottom-cta-banner {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            border-radius: var(--radius-lg);
+            padding: 3.5rem 2.25rem;
+            text-align: center;
+            color: white;
+            margin: 4rem 0 2rem;
+            box-shadow: 0 15px 35px var(--primary-glow);
+        }
 
-            .header-section {
-                margin-bottom: 3rem;
-                padding: 0 1rem;
-            }
+        .bottom-cta-banner h2 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 2.25rem;
+            font-weight: 800;
+            color: white !important;
+            margin-bottom: 0.75rem;
+        }
 
-            h1 {
-                font-size: 2rem;
-            }
-
-            .features-grid {
-                grid-template-columns: 1fr;
-                gap: 1.5rem;
-            }
-
-            .feature-card {
-                padding: 1.5rem;
-            }
+        .bottom-cta-banner p {
+            color: #dbeafe;
+            font-size: 1.1rem;
+            max-width: 680px;
+            margin: 0 auto 2rem;
         }
 
         /* Footer */
         footer {
-            background: white;
+            background: #fff;
             border-top: 1px solid var(--border);
-            padding: 4rem 0 2rem;
-            margin-top: auto;
+            padding: 4.5rem 0 2rem;
+        }
+
+        /* Mobile Breakpoints */
+        @media (max-width: 768px) {
+            .top-announcement {
+                font-size: 0.74rem;
+                padding: 0.35rem 0.5rem;
+                flex-direction: column;
+                gap: 0.15rem;
+            }
+            header {
+                top: 6px;
+                position: sticky;
+            }
+            .nav-container {
+                width: 95%;
+                padding: 0.45rem 0.85rem;
+            }
+            .nav-links {
+                display: none;
+            }
+            .btn-nav-login {
+                display: none !important;
+            }
+            .btn-nav-primary {
+                padding: 0.4rem 0.85rem !important;
+                font-size: 0.8rem !important;
+            }
+            .hero-section {
+                padding: 1.75rem 0 2.25rem;
+            }
+            .hero-title {
+                font-size: 1.75rem;
+            }
+            .chip-tabs {
+                justify-content: flex-start;
+                flex-wrap: nowrap;
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+                padding-bottom: 0.35rem;
+                scrollbar-width: none;
+            }
+            .chip-tabs::-webkit-scrollbar {
+                display: none;
+            }
+            .features-grid, .comp-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 400px) {
+            .logo-text-full {
+                display: none;
+            }
+            .logo::after {
+                content: "SmartPrep";
+            }
         }
     </style>
-    <!-- Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-WHHM4FTNHG"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag() { dataLayer.push(arguments); }
-        gtag('js', new Date());
-        gtag('config', 'G-WHHM4FTNHG');
-    </script>
 </head>
 
 <body>
+    <!-- Reading Progress Bar -->
+    <div class="reading-progress-container">
+        <div class="reading-progress-bar" id="readingProgress"></div>
+    </div>
 
-    <!-- NAVIGATION -->
+    <!-- Top Announcement Bar -->
+    <div class="top-announcement">
+        <span>⚡ <strong>IISER IAT 2027 Engine Active:</strong> AI Tutor, 45+ TCS iON Mocks &amp; Verified Solutions.</span>
+        <a href="/onboarding.html">Start Free Account &rarr;</a>
+    </div>
+
+    <!-- Header Navigation -->
     <header>
         <div class="nav-container">
             <a href="/index.html" class="logo">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
-                    stroke-linecap="round" stroke-linejoin="round">
-                    <path
-                        d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z">
-                    </path>
-                </svg>
-                IISER Smart Prep
+                <div class="logo-icon">I</div>
+                <span class="logo-text-full">IISER SmartPrep</span>
             </a>
-
-            <button class="mobile-menu-btn" onclick="toggleMenu()" aria-label="Toggle menu">
-                <span class="hamburger-line"></span>
-                <span class="hamburger-line"></span>
-                <span class="hamburger-line"></span>
-            </button>
-
-            <nav class="nav-links" id="nav-links">
-                <a href="/index.html">Home</a>
-                <a href="/features.html" style="color: var(--primary); font-weight: 600;">Features</a>
-                <a href="/#pricing">Pricing</a>
-                <a href="/login.html?mode=signup" class="btn btn-primary" style="color: white;">Get Started</a>
+            <nav class="nav-links">
+                <a href="/ai_tutor.html">AI Tutor</a>
+                <a href="/pyqs/pyq.html">PYQ Hub</a>
+                <a href="/mock_test/full_mock_test_homepage.html">Mock Tests</a>
+                <a href="/features.html" class="active">Features</a>
+                <a href="/news/iiser-iat-2027-preparation-strategy.html">Guides</a>
             </nav>
+            <div id="auth-buttons-container" style="display:flex;gap:0.5rem;align-items:center;">
+                <a href="/login.html" class="btn btn-outline btn-nav-login" style="padding:0.45rem 1rem;font-size:0.85rem;">Log In</a>
+                <a href="/onboarding.html" class="btn btn-primary btn-nav-primary" style="padding:0.45rem 1.1rem;font-size:0.85rem;">Get Started</a>
+            </div>
         </div>
     </header>
 
-    <!-- MAIN CONTENT -->
-    <main>
+    <!-- Hero Section -->
+    <section class="hero-section">
         <div class="container">
-            <div class="header-section">
-                <h1>🚀 Platform Features</h1>
-                <p class="subtitle">
-                    Everything You Need to Crack IAT — Built for Serious Aspirants.<br>
-                    A focused, exam-first preparation ecosystem combining real exam simulation, AI guidance, and
-                    structured practice.
-                </p>
+            <div class="pulse-badge">
+                <div class="pulse-dot"></div>
+                Engineered Exclusively for IISER Aspirants
             </div>
 
-            <div class="features-grid">
+            <h1 class="hero-title">
+                The Complete IISER IAT Preparation Suite <br>
+                <span class="text-gradient">Powered by Real-Time AI &amp; TCS iON Simulation</span>
+            </h1>
 
-                <!-- 1. Weekly Mocks -->
-                <div class="feature-card">
-                    <span class="emoji-icon">🧪</span>
-                    <h3 class="feature-title">Weekly Guided Full-Length Mocks</h3>
-                    <p class="feature-desc">Real exam interface. Unlimited access. Weekly roadmap with AI Rank
-                        Predictor.</p>
-                </div>
+            <p class="hero-lead">
+                Built from the ground up for serious science candidates. Combining 45+ TCS iON simulated mocks, 2017–2025 verified PYQs, instant AI step-by-step doubt resolution, and All-India Rank analytics.
+            </p>
 
-                <!-- 2. AI Tutor -->
-                <div class="feature-card">
-                    <span class="emoji-icon">🤖</span>
-                    <h3 class="feature-title">AI Tutor</h3>
-                    <p class="feature-desc">Instant doubts clearing for PCMB. Short, exam-focused solutions.</p>
-                </div>
-
-                <!-- 3. AI Generated Mocks -->
-                <div class="feature-card">
-                    <span class="emoji-icon">⚙️</span>
-                    <h3 class="feature-title">AI-Generated Mock Tests</h3>
-                    <p class="feature-desc">Personalized full-length mocks based on weak areas & time.</p>
-                </div>
-
-                <!-- 4. PYQ Vault -->
-                <div class="feature-card">
-                    <span class="emoji-icon">📚</span>
-                    <h3 class="feature-title">PYQ Vault + Exam-Mode Solutions</h3>
-                    <p class="feature-desc">All PYQs with exam-mode solutions. Practice like the real test.</p>
-                </div>
-
-                <!-- 5. Interactive PYQ -->
-                <div class="feature-card">
-                    <span class="emoji-icon">⏱️</span>
-                    <h3 class="feature-title">Interactive PYQ Test Sessions</h3>
-                    <p class="feature-desc">Live/automated timed PYQ attempts with instant benchmarking.</p>
-                </div>
-
-                <!-- 6. Quick Mock -->
-                <div class="feature-card">
-                    <span class="emoji-icon">⚡</span>
-                    <h3 class="feature-title">Quick Mock — Every 2 Days</h3>
-                    <p class="feature-desc">30-min diagnostic every 2 days to fix weak areas fast.</p>
-                </div>
-
-                <!-- 7. Question of the Day -->
-                <div class="feature-card">
-                    <span class="emoji-icon">🧩</span>
-                    <h3 class="feature-title">Question of the Day</h3>
-                    <p class="feature-desc">Daily high-signal micro-question to keep you exam-ready.</p>
-                </div>
-
-                <!-- 8. AI Analysis -->
-                <div class="feature-card">
-                    <span class="emoji-icon">📊</span>
-                    <h3 class="feature-title">AI Mock Result Analyzer</h3>
-                    <p class="feature-desc">Deep insights on timing, accuracy, and detailed study plans.</p>
-                </div>
-
-                <!-- 9. Rank Predictor -->
-                <div class="feature-card">
-                    <span class="emoji-icon">🎯</span>
-                    <h3 class="feature-title">Rank Predictor & Progress Roadmap</h3>
-                    <p class="feature-desc">Estimate percentile & rank range with a personalized roadmap.</p>
-                </div>
-
-                <!-- 10. Smart Notes -->
-                <div class="feature-card">
-                    <span class="emoji-icon">🧠</span>
-                    <h3 class="feature-title">High-Quality Smart Notes</h3>
-                    <p class="feature-desc">Concise, exam-focused notes. No fluff, just high-yield content.</p>
-                </div>
-
-                <!-- 11. Doubt Resolution -->
-                <div class="feature-card">
-                    <span class="emoji-icon">🛠️</span>
-                    <h3 class="feature-title">24/7 Doubt Resolution</h3>
-                    <p class="feature-desc">24/7 hybrid system: Instant AI + Mentor support.</p>
-                </div>
-
+            <div style="display:flex;justify-content:center;gap:1rem;flex-wrap:wrap;margin-bottom:2.5rem;">
+                <a href="/onboarding.html" class="btn btn-primary" style="padding:0.9rem 2.25rem;font-size:1rem;">
+                    🚀 Start Free Account (Takes 10 Seconds)
+                </a>
+                <a href="#features" class="btn btn-outline" style="padding:0.9rem 2rem;font-size:0.95rem;">
+                    ⚡ Explore Feature Suite
+                </a>
             </div>
         </div>
-    </main>
+    </section>
 
-    <!-- FOOTER -->
-    <footer style="background: white; border-top: 1px solid var(--border); padding: 5rem 0 2rem;">
+    <!-- Filter Bar -->
+    <section class="filter-section">
         <div class="container">
-            <div
-                style="display: flex; flex-wrap: wrap; gap: 3rem; justify-content: space-between; margin-bottom: 3rem;">
-                <div style="max-width: 320px;">
-                    <a href="#" class="logo" style="margin-bottom: 1rem;">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                            <path
-                                d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z">
-                            </path>
-                        </svg>
-                        IISER Smart Prep
-                    </a>
-                    <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 1rem;">Empowering scientific
-                        minds to reach India's premier research institutes through data and strategy.</p>
+            <div class="chip-tabs">
+                <button class="chip-btn active" onclick="filterFeatures('all', this)">All Features</button>
+                <button class="chip-btn" onclick="filterFeatures('ai', this)">AI Guidance &amp; Tutor 🤖</button>
+                <button class="chip-btn" onclick="filterFeatures('cbt', this)">CBT Mock Engine 💻</button>
+                <button class="chip-btn" onclick="filterFeatures('pyq', this)">PYQ Vault &amp; Solutions 📚</button>
+                <button class="chip-btn" onclick="filterFeatures('analytics', this)">Analytics &amp; Rank 📊</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features-section" id="features">
+        <div class="container">
+            <div class="features-grid">
+
+                <!-- 1. AI Tutor V2 -->
+                <div class="feature-card" data-cat="ai">
+                    <div class="card-icon-box" style="background:#eff6ff;color:#3b82f6;">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <h3 class="card-title">24/7 AI Smart Coach V2</h3>
+                    <p class="card-desc">
+                        Instant doubt-clearing engine trained specifically on IISER IAT Physics, Chemistry, Math, and Biology syllabus with step-by-step derivations.
+                    </p>
+                    <span class="feature-tag-pill" style="background:#eff6ff;color:#1d4ed8;">AI Powered</span>
                 </div>
 
-                <div style="display: flex; gap: 4rem; flex-wrap: wrap;">
-                    <div>
-                        <h4 style="margin-bottom: 1rem; font-size: 0.9rem; font-weight: 700; color: var(--secondary);">
-                            Platform</h4>
-                        <ul style="display: flex; flex-direction: column; gap: 0.75rem;">
-                            <li><a href="/ai_tutor.html" style="color: var(--text-muted); font-size: 0.9rem;">AI
-                                    Tutor</a></li>
-                            <li><a href="/mock_test/full_mock_test_homepage.html"
-                                    style="color: var(--text-muted); font-size: 0.9rem;">Mock Tests</a></li>
-                            <li><a href="#" style="color: var(--text-muted); font-size: 0.9rem;">Pricing</a></li>
+                <!-- 2. TCS iON Exam Engine -->
+                <div class="feature-card" data-cat="cbt">
+                    <div class="card-icon-box" style="background:#ccfbf1;color:#14b8a6;">
+                        <i class="fas fa-desktop"></i>
+                    </div>
+                    <h3 class="card-title">Exact TCS iON CBT Interface</h3>
+                    <p class="card-desc">
+                        Attempt tests on an exact replica of the computer screen used on exam day. Features official palette, section timer, and formula sheet controls.
+                    </p>
+                    <span class="feature-tag-pill" style="background:#ccfbf1;color:#0f766e;">Exam Replica</span>
+                </div>
+
+                <!-- 3. Chapter-Wise PYQ Engine -->
+                <div class="feature-card" data-cat="pyq">
+                    <div class="card-icon-box" style="background:#f3e8ff;color:#8b5cf6;">
+                        <i class="fas fa-layer-group"></i>
+                    </div>
+                    <h3 class="card-title">Chapter-Wise PYQs &amp; Step-by-Step Solutions</h3>
+                    <p class="card-desc">
+                        All official IAT papers (2017–2025) categorized by chapter (Rotational Motion, Organic Reaction Mechanisms, Calculus, Genetics) with full derivations.
+                    </p>
+                    <span class="feature-tag-pill" style="background:#f3e8ff;color:#6b21a8;">Targeted Practice</span>
+                </div>
+
+                <!-- 4. 45+ Full Length Mocks -->
+                <div class="feature-card" data-cat="cbt">
+                    <div class="card-icon-box" style="background:#fef3c7;color:#f59e0b;">
+                        <i class="fas fa-file-alt"></i>
+                    </div>
+                    <h3 class="card-title">45+ Full Pattern Mock Series</h3>
+                    <p class="card-desc">
+                        60-question 180-minute full-length mocks structured strictly according to the latest IAT weightage &amp; difficulty curves.
+                    </p>
+                    <span class="feature-tag-pill" style="background:#fef3c7;color:#b45309;">Full Length</span>
+                </div>
+
+                <!-- 5. Weak Area Diagnostic -->
+                <div class="feature-card" data-cat="analytics">
+                    <div class="card-icon-box" style="background:#ffe4e6;color:#f43f5e;">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3 class="card-title">Automated Weak-Area Diagnostic</h3>
+                    <p class="card-desc">
+                        Advanced algorithmic breakdown after every test identifying exact chapters, time leaks, and silly mistakes losing you negative marks.
+                    </p>
+                    <span class="feature-tag-pill" style="background:#ffe4e6;color:#be123c;">Smart Analytics</span>
+                </div>
+
+                <!-- 6. All-India Rank Predictor -->
+                <div class="feature-card" data-cat="analytics">
+                    <div class="card-icon-box" style="background:#dcfce7;color:#15803d;">
+                        <i class="fas fa-trophy"></i>
+                    </div>
+                    <h3 class="card-title">All-India Rank &amp; College Predictor</h3>
+                    <p class="card-desc">
+                        Real-time rank estimation and seat admission probability across IISER Pune, Kolkata, Mohali, Bhopal, Thiruvananthapuram, Tirupati &amp; Berhampur.
+                    </p>
+                    <span class="feature-tag-pill" style="background:#dcfce7;color:#15803d;">Rank Predictor</span>
+                </div>
+
+                <!-- 7. High-Yield Smart Notes -->
+                <div class="feature-card" data-cat="pyq">
+                    <div class="card-icon-box" style="background:#eff6ff;color:#3b82f6;">
+                        <i class="fas fa-book-open"></i>
+                    </div>
+                    <h3 class="card-title">High-Yield Smart Concept Notes</h3>
+                    <p class="card-desc">
+                        Concise, exam-first revision notes highlighting high-weightage formulas, key reactions, and frequent IAT trick questions.
+                    </p>
+                    <span class="feature-tag-pill" style="background:#eff6ff;color:#1d4ed8;">High Yield</span>
+                </div>
+
+                <!-- 8. Spaced Revision Planner -->
+                <div class="feature-card" data-cat="ai">
+                    <div class="card-icon-box" style="background:#f3e8ff;color:#8b5cf6;">
+                        <i class="fas fa-calendar-check"></i>
+                    </div>
+                    <h3 class="card-title">Adaptive Spaced Revision Planner</h3>
+                    <p class="card-desc">
+                        Intelligent scheduler that automatically prompts you to review weak topics at optimal memory retention intervals before exam day.
+                    </p>
+                    <span class="feature-tag-pill" style="background:#f3e8ff;color:#6b21a8;">Retention Engine</span>
+                </div>
+
+                <!-- 9. Quick 30-Min Diagnostics -->
+                <div class="feature-card" data-cat="cbt">
+                    <div class="card-icon-box" style="background:#ccfbf1;color:#14b8a6;">
+                        <i class="fas fa-bolt"></i>
+                    </div>
+                    <h3 class="card-title">30-Min Rapid Quick Mocks</h3>
+                    <p class="card-desc">
+                        Short diagnostic micro-tests generated every 2 days to test your speed and accuracy without requiring 3 full hours.
+                    </p>
+                    <span class="feature-tag-pill" style="background:#ccfbf1;color:#0f766e;">Rapid Test</span>
+                </div>
+
+            </div>
+
+            <!-- Comparison Table Section -->
+            <div class="comparison-section">
+                <div style="text-align:center;max-width:700px;margin:0 auto 2.5rem;">
+                    <h2 style="font-family:'Outfit',sans-serif;font-size:2rem;font-weight:800;color:var(--secondary);">
+                        Why IISER SmartPrep Beats Offline Coaching &amp; PDFs
+                    </h2>
+                    <p style="color:var(--text-muted);font-size:1.02rem;">
+                        Standard coaching institutes treat IAT as an afterthought next to JEE/NEET. We are built 100% exclusively for IISER admissions.
+                    </p>
+                </div>
+
+                <div class="comp-grid">
+                    <div class="comp-card comp-bad">
+                        <h3 style="font-family:'Outfit',sans-serif;font-size:1.3rem;font-weight:800;color:#be123c;margin-bottom:1.25rem;">
+                            ❌ General Coaching / Paper PDFs
+                        </h3>
+                        <ul style="list-style:none;display:flex;flex-direction:column;gap:0.75rem;font-size:0.92rem;color:var(--text-muted);">
+                            <li>❌ Paper PDFs with unverified answer keys and missing steps</li>
+                            <li>❌ No screen timer simulation (unprepared for TCS computer exam)</li>
+                            <li>❌ No feedback on chapter weak areas or negative marks</li>
+                            <li>❌ High fee (₹20,000 – ₹45,000) for general JEE/NEET content</li>
                         </ul>
                     </div>
-                    <div>
-                        <h4 style="margin-bottom: 1rem; font-size: 0.9rem; font-weight: 700; color: var(--secondary);">
-                            Support</h4>
-                        <ul style="display: flex; flex-direction: column; gap: 0.75rem;">
-                            <li><a href="#faq" style="color: var(--text-muted); font-size: 0.9rem;">FAQ</a></li>
-                            <li><a href="/contact-us.html"
-                                    style="color: var(--text-muted); font-size: 0.9rem;">Contact</a></li>
-                            <li><a href="/privacy.html" style="color: var(--text-muted); font-size: 0.9rem;">Privacy
-                                    Policy</a></li>
-                            <li><a href="/terms.html" style="color: var(--text-muted); font-size: 0.9rem;">Terms &
-                                    Conditions</a></li>
+
+                    <div class="comp-card comp-good">
+                        <h3 style="font-family:'Outfit',sans-serif;font-size:1.3rem;font-weight:800;color:#15803d;margin-bottom:1.25rem;">
+                            🚀 The IISER SmartPrep Platform
+                        </h3>
+                        <ul style="list-style:none;display:flex;flex-direction:column;gap:0.75rem;font-size:0.92rem;color:var(--text-main);">
+                            <li>✓ 100% verified step-by-step AI derivations for every single question</li>
+                            <li>✓ Exact TCS iON computer screen layout, palette &amp; timer</li>
+                            <li>✓ Instant All-India Rank &amp; college admission probability</li>
+                            <li>✓ Free tier available &bull; Pro plans starting at ₹399/mo or ₹499 (6 Months)</li>
                         </ul>
                     </div>
                 </div>
             </div>
-            <div
-                style="text-align: center; border-top: 1px solid var(--border); padding-top: 2rem; color: var(--text-light); font-size: 0.85rem;">
-                &copy; 2026 IISER Smart Prep. All rights reserved. Not affiliated with IISERs Joint Admissions
-                Committee.
+
+            <!-- Bottom CTA Banner -->
+            <div class="bottom-cta-banner">
+                <h2>Ready to Start Your IISER Journey?</h2>
+                <p>Join 15,000+ aspirants using IISER SmartPrep to master official PYQs, full mocks, and AI doubt clearing.</p>
+                <a href="/onboarding.html" class="btn" style="background:#fff;color:var(--primary-dark);padding:0.95rem 2.5rem;font-size:1.05rem;">
+                    Create Free Account &rarr;
+                </a>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div style="display:flex;flex-wrap:wrap;gap:3rem;justify-content:space-between;margin-bottom:3rem;">
+                <div style="max-width:340px;">
+                    <a href="/index.html" class="logo" style="margin-bottom:1rem;">
+                        <div class="logo-icon">I</div>
+                        IISER SmartPrep
+                    </a>
+                    <p style="color:var(--text-muted);font-size:0.9rem;">Empowering scientific minds to reach India's premier research institutes through data-driven strategy and targeted practice.</p>
+                </div>
+                <div style="display:flex;gap:4rem;flex-wrap:wrap;">
+                    <div>
+                        <h4 style="margin-bottom:1rem;font-size:0.9rem;font-weight:700;color:var(--secondary);text-transform:uppercase;letter-spacing:0.05em;">Platform</h4>
+                        <ul style="display:flex;flex-direction:column;gap:0.65rem;list-style:none;">
+                            <li><a href="/ai_tutor.html" style="color:var(--text-muted);font-size:0.9rem;">AI Tutor</a></li>
+                            <li><a href="/mock_test/full_mock_test_homepage.html" style="color:var(--text-muted);font-size:0.9rem;">Mock Tests</a></li>
+                            <li><a href="/pyqs/pyq.html" style="color:var(--text-muted);font-size:0.9rem;">PYQ Hub</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 style="margin-bottom:1rem;font-size:0.9rem;font-weight:700;color:var(--secondary);text-transform:uppercase;letter-spacing:0.05em;">Guides</h4>
+                        <ul style="display:flex;flex-direction:column;gap:0.65rem;list-style:none;">
+                            <li><a href="/news/iiser-iat-2027-preparation-strategy.html" style="color:var(--text-muted);font-size:0.9rem;">IAT 2027 Strategy</a></li>
+                            <li><a href="/news/iiser-iat-syllabus-2026.html" style="color:var(--text-muted);font-size:0.9rem;">Syllabus Checklist</a></li>
+                            <li><a href="/news/iiser-iat-vs-jee-the-complete-guide.html" style="color:var(--text-muted);font-size:0.9rem;">IAT vs JEE Guide</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div style="text-align:center;border-top:1px solid var(--border);padding-top:2rem;color:var(--text-light);font-size:0.85rem;">
+                &copy; 2026 IISER SmartPrep. All rights reserved. Not officially affiliated with IISERs Joint Admissions Committee.
             </div>
         </div>
     </footer>
 
+    <!-- Interactive Scripts -->
     <script>
-        // --- Scroll Header Transformation ---
-        const header = document.querySelector('header');
+        // Reading Progress Bar
         window.addEventListener('scroll', () => {
-            if (window.scrollY > 20) {
-                header.classList.add('scrolled');
-            } else {
-                header.classList.remove('scrolled');
-            }
-        }, { passive: true });
+            const progressBar = document.getElementById('readingProgress');
+            if (!progressBar) return;
+            const totalHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const progress = (window.scrollY / totalHeight) * 100;
+            progressBar.style.width = progress + '%';
+        });
 
-        // --- Mobile Menu Logic ---
-        function toggleMenu() {
-            const navLinks = document.getElementById('nav-links');
-            const lines = document.querySelectorAll('.hamburger-line');
-            navLinks.classList.toggle('active');
+        // Filter Features Logic
+        function filterFeatures(cat, btnEl) {
+            document.querySelectorAll('.chip-btn').forEach(b => b.classList.remove('active'));
+            btnEl.classList.add('active');
 
-            lines.forEach(line => line.classList.toggle('active'));
-
-            if (navLinks.classList.contains('active')) {
-                document.body.style.overflow = 'hidden';
-            } else {
-                document.body.style.overflow = 'auto';
-            }
+            const cards = document.querySelectorAll('.feature-card');
+            cards.forEach(card => {
+                if (cat === 'all' || card.getAttribute('data-cat') === cat) {
+                    card.style.display = 'flex';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
         }
+
+        // Auto Check Login State
+        try {
+            const token = localStorage.getItem("IAT_TOKEN");
+            const authContainer = document.getElementById("auth-buttons-container");
+            if (authContainer && token) {
+                authContainer.innerHTML = '<a href="/dashboard-react/index.html" class="btn btn-primary" style="padding:0.45rem 1.1rem;font-size:0.85rem;">Dashboard &rarr;</a>';
+            }
+        } catch (e) {}
     </script>
 </body>
 

@@ -4,48 +4,54 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IISER IAT Previous Year Questions (PYQ) with Solutions | IISER Smart Prep</title>
+    <title>IISER IAT Previous Year Questions (PYQ) with AI Solutions | IISER SmartPrep</title>
     <meta name="description"
-        content="Practice IISER IAT PYQ with interactive tests or download IISER previous year question papers with solutions. Complete IISER IAT previous year papers from 2017–2024, with AI performance analysis and chapter-wise practice.">
+        content="Master official IISER IAT previous year questions (2017–2025) in real TCS iON exam mode with step-by-step AI solutions, topic breakdowns, and instant doubt assistance.">
     <link rel="canonical" href="https://iisersmartprep.space/iiser-iat-pyq.html">
 
+    <!-- Fonts & Icons -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Outfit:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 
     <style>
         :root {
-            --primary: #4f46e5;
-            --primary-dark: #4338ca;
-            --primary-soft: #e0e7ff;
+            --primary: #3b82f6;
+            --primary-dark: #1d4ed8;
+            --primary-soft: #eff6ff;
+            --primary-glow: rgba(59, 130, 246, 0.2);
             --secondary: #0f172a;
-            --text-main: #1e293b;
-            --text-muted: #64748b;
-            --text-light: #94a3b8;
-            --bg-white: #ffffff;
+            --secondary-light: #1e293b;
+            --accent-teal: #14b8a6;
+            --accent-teal-soft: #ccfbf1;
+            --accent-purple: #8b5cf6;
+            --accent-amber: #f59e0b;
+            --accent-rose: #f43f5e;
+            --text-main: #0f172a;
+            --text-muted: #475569;
+            --text-light: #64748b;
             --bg-wash: #f8fafc;
+            --bg-white: #ffffff;
             --border: #e2e8f0;
-            --success: #10b981;
-            --warning: #f59e0b;
+            --border-hover: #cbd5e1;
 
-            --radius-sm: 8px;
-            --radius-md: 12px;
+            --radius-sm: 10px;
+            --radius-md: 16px;
             --radius-lg: 24px;
-            --radius-pill: 100px;
+            --radius-pill: 9999px;
 
-            --shadow-xs: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-            --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-            --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
-            --shadow-xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            --shadow-xs: 0 1px 2px 0 rgba(0, 0, 0, 0.04);
+            --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 10px 25px -5px rgba(0, 0, 0, 0.08);
+            --shadow-lg: 0 20px 35px -10px rgba(0, 0, 0, 0.12);
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            outline: none;
             -webkit-tap-highlight-color: transparent;
         }
 
@@ -55,74 +61,149 @@
         }
 
         body {
-            font-family: 'Inter', sans-serif;
+            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
             color: var(--text-main);
-            background: var(--bg-white);
+            background: var(--bg-wash);
             line-height: 1.6;
             -webkit-font-smoothing: antialiased;
         }
 
+        a {
+            text-decoration: none;
+            color: inherit;
+            transition: all 0.2s ease;
+        }
+
+        /* Top Announcement Bar */
+        .top-announcement {
+            background: linear-gradient(90deg, #1e1b4b, #312e81, #1e1b4b);
+            color: #e0e7ff;
+            text-align: center;
+            padding: 0.5rem 0.75rem;
+            font-size: 0.82rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+            z-index: 1002;
+            line-height: 1.3;
+        }
+
+        .top-announcement a {
+            color: #38bdf8;
+            text-decoration: underline;
+            white-space: nowrap;
+        }
+
+        /* Container */
         .container {
-            width: 90%;
-            max-width: 1200px;
+            width: 92%;
+            max-width: 1240px;
             margin: 0 auto;
         }
 
-        /* Animations */
-        .fade-in-up {
-            opacity: 0;
-            transform: translateY(30px);
-            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        /* Header Navigation - STICKY to avoid collisions with top bar */
+        header {
+            position: sticky;
+            top: 10px;
+            z-index: 1000;
+            display: flex;
+            justify-content: center;
+            margin-top: 8px;
+            margin-bottom: 0;
+            pointer-events: none;
         }
 
-        .fade-in-up.visible {
-            opacity: 1;
-            transform: translateY(0);
+        .nav-container {
+            pointer-events: auto;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(226, 232, 240, 0.9);
+            box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.08);
+            padding: 0.6rem 1.5rem;
+            border-radius: var(--radius-pill);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 92%;
+            max-width: 1240px;
         }
 
-        /* Buttons */
+        .logo {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.2rem;
+            font-weight: 800;
+            color: var(--secondary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            white-space: nowrap;
+        }
+
+        .logo-icon {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, var(--primary), var(--accent-teal));
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 800;
+            font-size: 0.9rem;
+            box-shadow: 0 4px 10px var(--primary-glow);
+            flex-shrink: 0;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 1.75rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-muted);
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            color: var(--primary);
+        }
+
         .btn {
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            padding: 0.75rem 1.5rem;
+            gap: 0.5rem;
+            padding: 0.7rem 1.5rem;
             border-radius: var(--radius-pill);
-            font-weight: 600;
+            font-weight: 700;
             font-size: 0.9rem;
             cursor: pointer;
-            transition: all 0.2s ease;
-            gap: 0.5rem;
+            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
             border: none;
             white-space: nowrap;
         }
 
         .btn-primary {
-            background: var(--primary);
-            color: white;
-            box-shadow: 0 4px 6px rgba(79, 70, 229, 0.2);
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: #fff;
+            box-shadow: 0 4px 14px var(--primary-glow);
         }
 
         .btn-primary:hover {
-            background: var(--primary-dark);
             transform: translateY(-2px);
-            box-shadow: 0 10px 20px -5px rgba(79, 70, 229, 0.4);
-        }
-
-        .btn-secondary {
-            background: var(--bg-wash);
-            color: var(--text-main);
-            border: 1px solid var(--border);
-        }
-
-        .btn-secondary:hover {
-            background: var(--bg-white);
-            border-color: var(--primary);
-            color: var(--primary);
+            box-shadow: 0 8px 20px rgba(59, 130, 246, 0.35);
         }
 
         .btn-outline {
-            background: transparent;
-            color: var(--text-muted);
+            background: #fff;
+            color: var(--secondary);
             border: 1px solid var(--border);
         }
 
@@ -132,466 +213,389 @@
             background: var(--primary-soft);
         }
 
-        .btn-success {
-            background: var(--success);
-            color: white;
-        }
-
-        .btn-success:hover {
-            background: #059669;
-            transform: translateY(-2px);
-        }
-
-        .btn-full {
-            width: 100%;
-        }
-
-        /* Navigation */
-        header {
-            position: fixed;
-            top: 20px;
-            left: 0;
-            right: 0;
-            z-index: 1000;
-            display: flex;
-            justify-content: center;
-            pointer-events: none;
-            transition: top 0.3s ease;
-        }
-
-        header.scrolled {
-            top: 0;
-        }
-
-        .nav-container {
-            pointer-events: auto;
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.5);
-            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.08);
-            padding: 0.75rem 1.5rem;
-            border-radius: 100px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            width: 90%;
-            max-width: 1200px;
-            transition: all 0.3s;
-        }
-
-        header.scrolled .nav-container {
-            width: 100%;
-            border-radius: 0;
-            background: rgba(255, 255, 255, 0.95);
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-            padding: 1rem 2rem;
-        }
-
-        .logo {
-            font-size: 1.25rem;
-            font-weight: 800;
-            color: var(--secondary);
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            text-decoration: none;
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 2rem;
-            align-items: center;
-        }
-
-        .nav-links a {
-            font-size: 0.9rem;
-            font-weight: 500;
-            color: var(--text-muted);
-            text-decoration: none;
-            position: relative;
-        }
-
-        .nav-links a:hover {
-            color: var(--primary);
-        }
-
-        .mobile-menu-btn {
-            display: none;
-            background: none;
-            border: none;
-            cursor: pointer;
-            z-index: 1002;
-        }
-
-        .hamburger-line {
-            display: block;
-            width: 24px;
-            height: 2px;
-            background-color: var(--secondary);
-            margin: 5px 0;
-            transition: all 0.3s;
-        }
-
-        /* Hero */
-        .hero-pyq {
-            padding: 10rem 0 4rem;
-            text-align: center;
-            background: linear-gradient(180deg, var(--bg-white) 0%, var(--bg-wash) 100%);
+        /* Hero Section - Clean padding without large empty gap */
+        .hero-section {
+            padding: 2.5rem 0 3.5rem;
+            background: linear-gradient(180deg, #eff6ff 0%, #f8fafc 100%);
+            border-bottom: 1px solid var(--border);
             position: relative;
             overflow: hidden;
+            text-align: center;
         }
 
-        .hero-pyq::before {
-            content: '';
+        .hero-backdrop-glow {
             position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle at 50% 50%, rgba(79, 70, 229, 0.06) 0%, transparent 50%);
+            top: -100px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(59, 130, 246, 0.14) 0%, rgba(20, 184, 166, 0) 70%);
+            border-radius: 50%;
             pointer-events: none;
         }
 
-        .hero-content {
-            position: relative;
-            z-index: 1;
-        }
-
-        .breadcrumb {
+        .rating-badge {
             display: inline-flex;
             align-items: center;
-            gap: 0.5rem;
-            margin-bottom: 1.5rem;
-            color: var(--text-muted);
-            font-size: 0.875rem;
-            font-weight: 500;
-        }
-
-        .breadcrumb a:hover {
-            color: var(--primary);
-        }
-
-        .hero-pyq h1,
-        .hero-pyq .hero-heading {
-            font-size: clamp(2rem, 5vw, 3.5rem);
-            font-weight: 800;
+            justify-content: center;
+            gap: 0.4rem;
+            padding: 0.4rem 1.1rem;
+            background: #fff;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-pill);
+            font-size: 0.82rem;
+            font-weight: 700;
             color: var(--secondary);
-            letter-spacing: -0.03em;
-            margin-bottom: 1rem;
+            box-shadow: var(--shadow-xs);
+            margin-bottom: 1.25rem;
+            max-width: 100%;
+            flex-wrap: wrap;
         }
 
-        .hero-pyq h1 span,
-        .hero-pyq .hero-heading span {
-            background: linear-gradient(135deg, var(--primary), #818cf8);
+        .stars { color: #f59e0b; }
+
+        .hero-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: clamp(1.85rem, 4.5vw, 3.5rem);
+            font-weight: 800;
+            line-height: 1.18;
+            letter-spacing: -0.03em;
+            color: var(--secondary);
+            margin: 0 auto 1.25rem;
+            max-width: 960px;
+        }
+
+        .text-gradient {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--accent-teal) 100%);
             -webkit-background-clip: text;
             background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
-        .hero-pyq p {
+        .hero-lead {
+            font-size: 1.1rem;
             color: var(--text-muted);
-            font-size: 1.125rem;
-            max-width: 600px;
-            margin: 0 auto;
+            line-height: 1.65;
+            max-width: 820px;
+            margin: 0 auto 2rem;
+            font-weight: 500;
         }
 
-        .quick-stats {
+        .cta-group {
             display: flex;
+            align-items: center;
             justify-content: center;
-            gap: 3rem;
-            margin-top: 3rem;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-bottom: 2.25rem;
         }
 
-        .stat-box {
+        .trust-guarantee-bar {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-light);
+        }
+
+        .trust-guarantee-bar span {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        /* Stats Counter Bar */
+        .stats-strip {
+            padding: 2rem 0;
+            background: #fff;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 1.25rem;
             text-align: center;
-            padding: 1.5rem 2rem;
-            background: rgba(255, 255, 255, 0.8);
-            border-radius: var(--radius-lg);
-            border: 1px solid var(--border);
-            backdrop-filter: blur(10px);
         }
 
-        .stat-value {
+        .stat-val {
+            font-family: 'Outfit', sans-serif;
             font-size: 2rem;
             font-weight: 800;
             color: var(--primary);
-            display: block;
+            line-height: 1.1;
         }
 
-        .stat-label {
-            font-size: 0.75rem;
-            color: var(--text-muted);
+        .stat-lbl {
+            font-size: 0.78rem;
+            font-weight: 700;
+            color: var(--text-light);
             text-transform: uppercase;
             letter-spacing: 0.05em;
-            font-weight: 600;
+            margin-top: 0.25rem;
         }
 
-        /* Filter */
-        .filter-bar {
-            background: var(--bg-white);
-            border-bottom: 1px solid var(--border);
-            padding: 1.5rem 0;
-            position: sticky;
-            top: 80px;
-            z-index: 100;
-            backdrop-filter: blur(10px);
-        }
-
-        .filter-tabs {
-            display: flex;
-            gap: 0.5rem;
-            overflow-x: auto;
-            padding-bottom: 0.5rem;
-        }
-
-        .filter-tab {
-            padding: 0.5rem 1.25rem;
-            border: 1px solid var(--border);
-            background: var(--bg-white);
-            border-radius: var(--radius-pill);
-            font-size: 0.875rem;
-            font-weight: 600;
-            color: var(--text-muted);
-            cursor: pointer;
-            white-space: nowrap;
-            transition: all 0.2s;
-        }
-
-        .filter-tab:hover,
-        .filter-tab.active {
-            background: var(--primary);
-            color: white;
-            border-color: var(--primary);
-        }
-
-        /* Grid */
-        .section-wash {
-            padding: 4rem 0 6rem;
+        /* Interactive Teaser Question Demo */
+        .demo-section {
+            padding: 3.5rem 0;
             background: var(--bg-wash);
+        }
+
+        .demo-box {
+            background: #fff;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 2rem;
+            box-shadow: var(--shadow-md);
+            max-width: 900px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .demo-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            padding: 0.3rem 0.8rem;
+            background: #dbeafe;
+            color: var(--primary-dark);
+            border-radius: var(--radius-pill);
+            font-size: 0.75rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            margin-bottom: 1rem;
+        }
+
+        .demo-q-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: var(--secondary);
+            margin-bottom: 1rem;
+            line-height: 1.5;
+        }
+
+        .options-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .option-btn {
+            padding: 0.85rem 1.1rem;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border);
+            background: var(--bg-wash);
+            text-align: left;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--secondary);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .option-btn:hover {
+            border-color: var(--primary);
+            background: #fff;
+        }
+
+        .option-btn.selected-correct {
+            background: #dcfce7;
+            border-color: #22c55e;
+            color: #15803d;
+        }
+
+        .option-btn.selected-wrong {
+            background: #ffe4e6;
+            border-color: #f43f5e;
+            color: #be123c;
+        }
+
+        /* Locked Solution Blur Box */
+        .solution-teaser-box {
+            position: relative;
+            background: #f8fafc;
+            border: 1px dashed var(--border-hover);
+            border-radius: var(--radius-md);
+            padding: 1.5rem;
+            overflow: hidden;
+            margin-top: 1rem;
+        }
+
+        .blur-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(255, 255, 255, 0.88);
+            backdrop-filter: blur(8px);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            padding: 1.25rem;
+            text-align: center;
+            z-index: 10;
+        }
+
+        /* Comparison Section */
+        .comparison-section {
+            padding: 3.5rem 0;
+            background: #fff;
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .comp-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .comp-card {
+            border-radius: var(--radius-lg);
+            padding: 1.75rem;
+            border: 1px solid var(--border);
+        }
+
+        .comp-bad {
+            background: #fff1f2;
+            border-color: #fecdd3;
+        }
+
+        .comp-good {
+            background: #f0fdf4;
+            border-color: #bbf7d0;
+            box-shadow: var(--shadow-md);
+        }
+
+        .comp-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.25rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .comp-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            font-size: 0.9rem;
+        }
+
+        .comp-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.5rem;
+            line-height: 1.45;
+        }
+
+        /* Paper Vault Cards */
+        .vault-section {
+            padding: 3.5rem 0;
         }
 
         .pyq-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
             gap: 1.5rem;
+            margin-top: 1.75rem;
         }
 
-        /* PYQ Card - Dual Action */
-        .pyq-card {
-            background: white;
+        .vault-card {
+            background: #fff;
             border: 1px solid var(--border);
-            border-radius: var(--radius-md);
-            overflow: hidden;
-            transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+            box-shadow: var(--shadow-xs);
+            transition: all 0.3s ease;
+            position: relative;
             display: flex;
             flex-direction: column;
+            cursor: pointer;
         }
 
-        .pyq-card:hover {
-            transform: translateY(-5px);
-            box-shadow: var(--shadow-lg);
-            border-color: var(--primary-soft);
+        .vault-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--primary);
+            box-shadow: var(--shadow-md);
         }
 
-        .card-header {
-            padding: 2rem 2rem 1rem;
-            position: relative;
-        }
-
-        .year-badge {
+        .vault-header {
             display: flex;
             align-items: center;
-            gap: 1rem;
-            margin-bottom: 1rem;
+            justify-content: space-between;
+            margin-bottom: 0.85rem;
         }
 
-        .year-icon {
-            width: 48px;
-            height: 48px;
-            background: var(--primary-soft);
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-        }
-
-        .year-text {
-            font-size: 1.5rem;
+        .vault-year {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.4rem;
             font-weight: 800;
             color: var(--secondary);
         }
 
-        .difficulty-badge {
-            position: absolute;
-            top: 2rem;
-            right: 2rem;
-            padding: 0.25rem 0.75rem;
+        .lock-badge {
+            padding: 0.2rem 0.65rem;
             border-radius: var(--radius-pill);
-            font-size: 0.75rem;
-            font-weight: 700;
-            text-transform: uppercase;
+            font-size: 0.72rem;
+            font-weight: 800;
+            background: #eff6ff;
+            color: var(--primary-dark);
+            border: 1px solid #bfdbfe;
         }
 
-        .difficulty-easy {
-            background: #dcfce7;
-            color: #166534;
-        }
-
-        .difficulty-medium {
-            background: #fef3c7;
-            color: #92400e;
-        }
-
-        .difficulty-hard {
-            background: #fee2e2;
-            color: #991b1b;
-        }
-
-        .paper-info {
-            display: flex;
-            gap: 1rem;
-            margin-bottom: 1rem;
-        }
-
-        .info-tag {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            font-size: 0.875rem;
-            color: var(--text-muted);
-            font-weight: 500;
-        }
-
-        .paper-description {
-            color: var(--text-muted);
-            font-size: 0.9375rem;
-            line-height: 1.6;
-            margin-bottom: 1.5rem;
-        }
-
-        .subject-bars {
-            display: flex;
-            gap: 0.5rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .subj-segment {
-            height: 4px;
-            border-radius: 100px;
-            flex: 1;
-        }
-
-        .subj-phy {
-            background: #4f46e5;
-        }
-
-        .subj-chem {
-            background: #10b981;
-        }
-
-        .subj-math {
-            background: #f59e0b;
-        }
-
-        .subj-bio {
-            background: #ef4444;
-        }
-
-        .subj-labels {
-            display: flex;
-            justify-content: space-between;
-            font-size: 0.75rem;
-            color: var(--text-light);
-            font-weight: 600;
-        }
-
-        /* Dual Action Footer */
-        .card-actions {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            border-top: 1px solid var(--border);
-            margin-top: auto;
-        }
-
-        .action-btn {
-            padding: 1rem;
-            border: none;
-            background: transparent;
-            font-weight: 600;
-            font-size: 0.9rem;
-            cursor: pointer;
-            transition: all 0.2s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
-            color: var(--text-muted);
-        }
-
-        .action-btn:first-child {
-            border-right: 1px solid var(--border);
-        }
-
-        .action-btn:hover {
-            background: var(--bg-wash);
-            color: var(--primary);
-        }
-
-        .action-btn.primary {
-            color: var(--primary);
-        }
-
-        .action-btn.primary:hover {
-            background: var(--primary-soft);
-        }
-
-        .action-btn.success {
-            color: var(--success);
-        }
-
-        .action-btn.success:hover {
-            background: #dcfce7;
-        }
-
-        /* Locked State */
-        .pyq-card.locked {
-            opacity: 0.8;
-        }
-
-        .pyq-card.locked .year-icon {
-            opacity: 0.5;
-            background: var(--bg-wash);
-        }
-
-        .lock-strip {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            background: linear-gradient(90deg, var(--warning), #fbbf24);
-            color: white;
+        /* Bottom Conversion CTA Banner */
+        .bottom-cta-banner {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            border-radius: var(--radius-lg);
+            padding: 3rem 1.75rem;
             text-align: center;
-            padding: 0.5rem;
-            font-size: 0.75rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
+            color: white;
+            margin: 3.5rem 0 2rem;
+            box-shadow: 0 15px 35px var(--primary-glow);
         }
 
-        /* Modal */
+        .bottom-cta-banner h2 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.85rem;
+            font-weight: 800;
+            color: white !important;
+            margin-bottom: 0.75rem;
+        }
+
+        .bottom-cta-banner p {
+            color: #dbeafe;
+            font-size: 1rem;
+            max-width: 640px;
+            margin: 0 auto 1.75rem;
+        }
+
+        /* Modal Overlay */
         .modal-overlay {
             position: fixed;
             inset: 0;
-            background: rgba(15, 23, 42, 0.6);
-            backdrop-filter: blur(4px);
+            background: rgba(15, 23, 42, 0.65);
+            backdrop-filter: blur(8px);
             z-index: 2000;
             display: flex;
             align-items: center;
             justify-content: center;
             opacity: 0;
             visibility: hidden;
-            transition: all 0.3s;
+            transition: all 0.3s ease;
             padding: 1rem;
         }
 
@@ -600,1651 +604,704 @@
             visibility: visible;
         }
 
-        .modal-content {
-            background: white;
-            width: 100%;
-            max-width: 600px;
+        .modal-card {
+            background: #fff;
             border-radius: var(--radius-lg);
-            box-shadow: var(--shadow-xl);
-            transform: scale(0.95) translateY(20px);
-            transition: all 0.3s;
-            max-height: 90vh;
-            overflow-y: auto;
+            width: 100%;
+            max-width: 440px;
+            padding: 2rem 1.75rem;
+            box-shadow: var(--shadow-lg);
+            position: relative;
+            transform: translateY(20px);
+            transition: transform 0.3s ease;
+            text-align: center;
         }
 
-        .modal-overlay.active .modal-content {
-            transform: scale(1) translateY(0);
-        }
-
-        .modal-header {
-            padding: 2rem;
-            border-bottom: 1px solid var(--border);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .modal-title {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--secondary);
+        .modal-overlay.active .modal-card {
+            transform: translateY(0);
         }
 
         .close-btn {
-            width: 36px;
-            height: 36px;
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            width: 32px;
+            height: 32px;
             border-radius: 50%;
-            border: none;
             background: var(--bg-wash);
-            color: var(--text-muted);
-            cursor: pointer;
-            font-size: 1.25rem;
+            border: 1px solid var(--border);
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: all 0.2s;
-        }
-
-        .close-btn:hover {
-            background: #fee2e2;
-            color: #ef4444;
-        }
-
-        .modal-body {
-            padding: 2rem;
-        }
-
-        .action-grid {
-            display: grid;
-            gap: 1rem;
-            margin-top: 1.5rem;
-        }
-
-        .action-card {
-            padding: 1.5rem;
-            border: 2px solid var(--border);
-            border-radius: var(--radius-md);
             cursor: pointer;
-            transition: all 0.2s;
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-
-        .action-card:hover {
-            border-color: var(--primary);
-            background: var(--primary-soft);
-            transform: translateX(5px);
-        }
-
-        .action-icon {
-            width: 48px;
-            height: 48px;
-            border-radius: 12px;
-            background: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.25rem;
-            box-shadow: var(--shadow-sm);
-        }
-
-        .action-details h4 {
-            font-size: 1.125rem;
-            font-weight: 700;
-            color: var(--secondary);
-            margin-bottom: 0.25rem;
-        }
-
-        .action-details p {
-            font-size: 0.875rem;
             color: var(--text-muted);
-        }
-
-        .file-meta {
-            display: flex;
-            gap: 1rem;
-            margin-top: 1.5rem;
-            padding: 1rem;
-            background: var(--bg-wash);
-            border-radius: var(--radius-sm);
-            font-size: 0.875rem;
-            color: var(--text-muted);
-        }
-
-        .meta-item {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
+            font-size: 1rem;
         }
 
         /* Toast Notification */
-        .toast {
+        .toast-notification {
             position: fixed;
-            bottom: 2rem;
-            right: 2rem;
+            bottom: 1.5rem;
+            right: 1.5rem;
+            left: 1.5rem;
+            max-width: 420px;
+            margin: 0 auto;
             background: var(--secondary);
-            color: white;
-            padding: 1rem 1.5rem;
-            border-radius: var(--radius-md);
-            box-shadow: var(--shadow-xl);
+            color: #fff;
+            padding: 0.85rem 1.25rem;
+            border-radius: var(--radius-pill);
+            box-shadow: var(--shadow-lg);
+            font-weight: 600;
+            font-size: 0.88rem;
             display: flex;
             align-items: center;
-            gap: 0.75rem;
+            gap: 0.6rem;
+            z-index: 3000;
             transform: translateY(100px);
             opacity: 0;
-            transition: all 0.3s;
-            z-index: 3000;
+            transition: all 0.3s ease;
         }
 
-        .toast.show {
+        .toast-notification.show {
             transform: translateY(0);
             opacity: 1;
         }
 
-        /* Responsive */
+        /* Footer */
+        footer {
+            background: #fff;
+            border-top: 1px solid var(--border);
+            padding: 3.5rem 0 2rem;
+        }
+
+        /* ==========================================================================
+           MOBILE RESPONSIVE BREAKPOINTS (FIXES SCREEN OVERFLOW & COLLISION)
+           ========================================================================== */
         @media (max-width: 768px) {
+            .top-announcement {
+                font-size: 0.75rem;
+                padding: 0.4rem 0.5rem;
+                flex-direction: column;
+                gap: 0.2rem;
+            }
+
+            header {
+                top: 8px;
+            }
+
+            .nav-container {
+                width: 95%;
+                padding: 0.5rem 1rem;
+            }
+
             .nav-links {
                 display: none;
-                position: fixed;
-                top: 0;
-                left: 0;
+            }
+
+            .logo-text-full {
+                display: inline;
+            }
+
+            .btn-nav-login {
+                display: none !important;
+            }
+
+            .btn-nav-primary {
+                padding: 0.45rem 1rem !important;
+                font-size: 0.82rem !important;
+            }
+
+            .hero-section {
+                padding: 2rem 0 2.5rem;
+            }
+
+            .hero-title {
+                font-size: 1.85rem;
+            }
+
+            .hero-lead {
+                font-size: 0.95rem;
+                margin-bottom: 1.5rem;
+            }
+
+            .cta-group {
+                flex-direction: column;
                 width: 100%;
-                height: 100vh;
-                background: white;
+                gap: 0.75rem;
+            }
+
+            .cta-group .btn {
+                width: 100%;
+                font-size: 0.92rem;
+                padding: 0.85rem 1.25rem;
+            }
+
+            .trust-guarantee-bar {
                 flex-direction: column;
-                justify-content: center;
-                align-items: center;
-                gap: 2rem;
+                gap: 0.4rem;
+                font-size: 0.78rem;
             }
 
-            .nav-links.active {
-                display: flex;
-            }
-
-            .mobile-menu-btn {
-                display: block;
-            }
-
-            .pyq-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .quick-stats {
-                flex-direction: column;
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
                 gap: 1rem;
-                padding: 0 2rem;
             }
 
-            .card-actions {
+            .stat-val {
+                font-size: 1.65rem;
+            }
+
+            .demo-box {
+                padding: 1.35rem;
+            }
+
+            .comp-grid, .pyq-grid {
                 grid-template-columns: 1fr;
             }
+        }
 
-            .action-btn:first-child {
-                border-right: none;
-                border-bottom: 1px solid var(--border);
+        @media (max-width: 420px) {
+            .logo-text-full {
+                display: none;
             }
-        }
-
-        /* ============================
-           SEO Content Section
-        ============================ */
-        .seo-content-section {
-            padding: 5rem 0;
-            background: var(--bg-white);
-        }
-
-        .seo-content-section h1 {
-            font-size: clamp(1.6rem, 3.5vw, 2.4rem);
-            font-weight: 800;
-            color: var(--secondary);
-            letter-spacing: -0.025em;
-            margin-bottom: 1.25rem;
-            padding-bottom: 1rem;
-            border-bottom: 2px solid var(--primary-soft);
-        }
-
-        .seo-intro-text {
-            font-size: 1.0625rem;
-            color: var(--text-muted);
-            line-height: 1.8;
-            max-width: 780px;
-            margin-bottom: 3rem;
-        }
-
-        .seo-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-            margin-bottom: 3rem;
-        }
-
-        .seo-card {
-            background: var(--bg-wash);
-            border: 1px solid var(--border);
-            border-radius: var(--radius-md);
-            padding: 2rem;
-            transition: box-shadow 0.2s ease;
-        }
-
-        .seo-card:hover {
-            box-shadow: var(--shadow-sm);
-        }
-
-        .seo-card h2 {
-            font-size: 1.125rem;
-            font-weight: 700;
-            color: var(--secondary);
-            margin-bottom: 1rem;
-            display: flex;
-            align-items: center;
-            gap: 0.6rem;
-        }
-
-        .seo-card h2 .seo-icon {
-            width: 32px;
-            height: 32px;
-            border-radius: 8px;
-            background: var(--primary-soft);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-            font-size: 0.875rem;
-            color: var(--primary);
-        }
-
-        .seo-card p {
-            font-size: 0.9375rem;
-            color: var(--text-muted);
-            line-height: 1.75;
-        }
-
-        .how-to-steps {
-            counter-reset: step-counter;
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-        }
-
-        .how-to-step {
-            display: flex;
-            align-items: flex-start;
-            gap: 1rem;
-            padding: 1rem;
-            background: white;
-            border-radius: var(--radius-sm);
-            border: 1px solid var(--border);
-        }
-
-        .step-num {
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            background: var(--primary);
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 800;
-            font-size: 0.85rem;
-            flex-shrink: 0;
-        }
-
-        .step-text strong {
-            display: block;
-            font-size: 0.9rem;
-            font-weight: 700;
-            color: var(--secondary);
-            margin-bottom: 0.2rem;
-        }
-
-        .step-text span {
-            font-size: 0.85rem;
-            color: var(--text-muted);
-        }
-
-        .seo-internal-link {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            margin-top: 2rem;
-            padding: 0.85rem 1.75rem;
-            background: var(--primary);
-            color: white;
-            border-radius: var(--radius-pill);
-            font-weight: 600;
-            font-size: 0.9375rem;
-            text-decoration: none;
-            transition: all 0.2s ease;
-            box-shadow: 0 4px 6px rgba(79, 70, 229, 0.2);
-        }
-
-        .seo-internal-link:hover {
-            background: var(--primary-dark);
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px -5px rgba(79, 70, 229, 0.4);
-        }
-
-        /* ============================
-           FAQ Section
-        ============================ */
-        .faq-section {
-            padding: 5rem 0;
-            background: var(--bg-wash);
-        }
-
-        .faq-section-header {
-            text-align: center;
-            margin-bottom: 3rem;
-        }
-
-        .faq-section-header h2 {
-            font-size: clamp(1.5rem, 3vw, 2rem);
-            font-weight: 800;
-            color: var(--secondary);
-            letter-spacing: -0.02em;
-            margin-bottom: 0.75rem;
-        }
-
-        .faq-section-header p {
-            color: var(--text-muted);
-            font-size: 1rem;
-        }
-
-        .faq-list {
-            max-width: 820px;
-            margin: 0 auto;
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-        }
-
-        .faq-item {
-            background: white;
-            border: 1px solid var(--border);
-            border-radius: var(--radius-md);
-            overflow: hidden;
-            transition: box-shadow 0.2s ease;
-        }
-
-        .faq-item:hover {
-            box-shadow: var(--shadow-sm);
-        }
-
-        .faq-question {
-            width: 100%;
-            background: none;
-            border: none;
-            padding: 1.5rem 1.75rem;
-            text-align: left;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 1rem;
-            cursor: pointer;
-            font-family: 'Inter', sans-serif;
-            font-size: 1rem;
-            font-weight: 600;
-            color: var(--secondary);
-            transition: background 0.2s ease;
-        }
-
-        .faq-question:hover {
-            background: var(--bg-wash);
-        }
-
-        .faq-question .faq-icon {
-            width: 28px;
-            height: 28px;
-            border-radius: 50%;
-            background: var(--primary-soft);
-            color: var(--primary);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-            transition: transform 0.3s ease, background 0.2s ease;
-        }
-
-        .faq-item.open .faq-question .faq-icon {
-            transform: rotate(45deg);
-            background: var(--primary);
-            color: white;
-        }
-
-        .faq-answer {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.35s ease, padding 0.2s ease;
-        }
-
-        .faq-item.open .faq-answer {
-            max-height: 300px;
-        }
-
-        .faq-answer-inner {
-            padding: 0 1.75rem 1.5rem;
-            font-size: 0.9375rem;
-            color: var(--text-muted);
-            line-height: 1.8;
-            border-top: 1px solid var(--border);
-            padding-top: 1.25rem;
+            .logo::after {
+                content: "SmartPrep";
+            }
         }
     </style>
-    <!-- Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-WHHM4FTNHG"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag() { dataLayer.push(arguments); }
-        gtag('js', new Date());
-        gtag('config', 'G-WHHM4FTNHG');
-    </script>
-
-    <!-- BreadcrumbList Schema -->
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "BreadcrumbList",
-      "itemListElement": [
-        {
-          "@type": "ListItem",
-          "position": 1,
-          "name": "Home",
-          "item": "https://iisersmartprep.space/"
-        },
-        {
-          "@type": "ListItem",
-          "position": 2,
-          "name": "IISER IAT PYQ",
-          "item": "https://iisersmartprep.space/iiser-iat-pyq.html"
-        }
-      ]
-    }
-    </script>
-
-    <!-- FAQPage Schema -->
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "FAQPage",
-      "mainEntity": [
-        {
-          "@type": "Question",
-          "name": "Are IISER PYQs enough for preparation?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "IISER PYQs (Previous Year Questions) are essential but not entirely sufficient on their own. Solving IISER IAT PYQ papers helps you understand the exam pattern, learn which topics are frequently tested, and manage time effectively. However, to score well in IISER IAT, you should combine PYQ practice with thorough NCERT revision, subject-wise mock tests, and chapter-specific practice. IISER Smart Prep offers all of these tools in one platform."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "How many questions are asked in IISER IAT?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "The IISER IAT (Aptitude Test) consists of 60 multiple-choice questions divided equally across four subjects: Physics, Chemistry, Mathematics, and Biology — 15 questions each. Each correct answer carries +3 marks and each incorrect answer carries -1 mark (negative marking). The total exam duration is 3 hours (180 minutes), and the maximum score is 180 marks."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "Where can I practice IISER PYQs online?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "You can practice IISER PYQs online for free on IISER Smart Prep (iisersmartprep.space). Our platform provides a real exam interface with timed tests, instant scoring, AI-powered performance analysis, and detailed solutions for all IISER IAT previous year papers from 2017 to 2024. Unlike static PDFs, the interactive test environment helps you simulate real exam conditions and identify weak areas faster."
-          }
-        }
-      ]
-    }
-    </script>
 </head>
 
 <body>
+    <!-- Top Announcement Bar -->
+    <div class="top-announcement">
+        <span>⚡ <strong>IISER IAT 2027 Prep Cycle Active:</strong> Practice 2017–2025 official papers in real TCS iON mode.</span>
+        <a href="#" onclick="openAuthSheet()">Claim Free Account &rarr;</a>
+    </div>
 
+    <!-- Header Navigation -->
     <header>
         <div class="nav-container">
             <a href="/index.html" class="logo">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
-                    stroke-linecap="round" stroke-linejoin="round">
-                    <path
-                        d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z">
-                    </path>
-                </svg>
-                IISER Smart Prep
+                <div class="logo-icon">I</div>
+                <span class="logo-text-full">IISER SmartPrep</span>
             </a>
-
             <nav class="nav-links">
-                <a href="/index.html">Home</a>
+                <a href="/ai_tutor.html">AI Tutor</a>
+                <a href="/pyqs/pyq.html" class="active">PYQ Hub</a>
+                <a href="/mock_test/full_mock_test_homepage.html">Mock Tests</a>
                 <a href="/features.html">Features</a>
-                <a href="/#pricing">Pricing</a>
-                <a href="/pyqs/dashboard.html" class="btn btn-primary"
-                    style="padding: 0.5rem 1rem; font-size: 0.85rem; color: white;">Dashboard</a>
+                <a href="/news/iiser-iat-2027-preparation-strategy.html">Guides</a>
             </nav>
-
-            <button class="mobile-menu-btn" onclick="toggleMenu()">
-                <span class="hamburger-line"></span>
-                <span class="hamburger-line"></span>
-                <span class="hamburger-line"></span>
-            </button>
+            <div id="auth-buttons-container" style="display:flex;gap:0.5rem;align-items:center;">
+                <button class="btn btn-outline btn-nav-login" onclick="redirectToAuth('login')" style="padding:0.45rem 1rem;font-size:0.85rem;">Log In</button>
+                <button class="btn btn-primary btn-nav-primary" onclick="openAuthSheet()" style="padding:0.45rem 1.1rem;font-size:0.85rem;">Start Free Practice</button>
+            </div>
         </div>
     </header>
 
-    <section class="hero-pyq">
-        <div class="container hero-content fade-in-up">
-            <nav class="breadcrumb" aria-label="Breadcrumb">
-                <a href="/index.html">Home</a>
-                <i class="fas fa-chevron-right" style="font-size: 0.75rem;"></i>
-                <span>IISER IAT PYQ</span>
-            </nav>
-
-            <h2 class="hero-heading">Master the <span>Pattern</span></h2>
-            <p>Practice with interactive tests or download PDFs with detailed solutions. Every IAT paper from 2017-2024,
-                meticulously curated.</p>
-
-            <div class="quick-stats fade-in-up">
-                <div class="stat-box">
-                    <span class="stat-value">8</span>
-                    <div class="stat-label">Years</div>
-                </div>
-                <div class="stat-box">
-                    <span class="stat-value">540+</span>
-                    <div class="stat-label">Questions</div>
-                </div>
-                <div class="stat-box">
-                    <span class="stat-value">100%</span>
-                    <div class="stat-label">Solved</div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <div class="filter-bar">
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="hero-backdrop-glow"></div>
         <div class="container">
-            <div class="filter-tabs fade-in-up">
-                <button class="filter-tab active" onclick="filterPapers('all', this)">All Papers</button>
-                <button class="filter-tab" onclick="filterPapers('recent', this)">2022-2024</button>
-                <button class="filter-tab" onclick="filterPapers('legacy', this)">2017-2021</button>
+            <div class="rating-badge">
+                <span class="stars">★★★★★</span> 4.9/5 Rating &bull; Trusted by 14,000+ IAT Aspirants
             </div>
-        </div>
-    </div>
 
-    <section class="section-wash">
-        <div class="container">
-            <div class="pyq-grid" id="pyqGrid">
+            <h1 class="hero-title">
+                Don't Just Read Solutions. <br>
+                <span class="text-gradient">Master Official IAT PYQs Chapter-by-Chapter</span>
+            </h1>
 
-
-                <!-- 2024 Paper -->
-                <article class="pyq-card fade-in-up" data-year="2024" data-category="recent">
-                    <div class="card-header">
-
-                        <div class="year-badge">
-                            <div class="year-icon">📋</div>
-                            <div class="year-text">IAT 2024</div>
-                        </div>
-                        <div class="paper-info">
-                            <span class="info-tag"><i class="fas fa-clock"></i> 180 min</span>
-                            <span class="info-tag"><i class="fas fa-edit" style="color: var(--primary);"></i>
-                                Newest</span>
-                        </div>
-                        <p class="paper-description">
-                            Balanced difficulty with conceptual focus. Biology application-based questions dominated.
-                        </p>
-                        <div class="subject-bars">
-                            <div class="subj-segment subj-phy" style="flex: 1;"></div>
-                            <div class="subj-segment subj-chem" style="flex: 1;"></div>
-                            <div class="subj-segment subj-math" style="flex: 1;"></div>
-                            <div class="subj-segment subj-bio" style="flex: 1;"></div>
-                        </div>
-                        <div class="subj-labels">
-                            <span>Balanced</span>
-                            <span>NCERT Based</span>
-                        </div>
-                    </div>
-                    <div class="card-actions">
-                        <button class="action-btn primary" onclick="handlePaperClick('2024')">
-                            <i class="fas fa-play"></i> Start Test
-                        </button>
-                        <button class="action-btn success" onclick="handlePaperClick('2024')">
-                            <i class="fas fa-download"></i> PDF + Sol
-                        </button>
-                    </div>
-                </article>
-
-                <!-- 2023 Paper -->
-                <article class="pyq-card locked fade-in-up" data-year="2023" data-category="recent">
-                    <div class="lock-strip"><i class="fas fa-lock"></i> Premium Access Required</div>
-                    <div class="card-header" style="padding-top: 3rem;">
-
-                        <div class="year-badge">
-                            <div class="year-icon" style="background: var(--bg-wash); opacity: 0.5;">📊</div>
-                            <div class="year-text" style="color: var(--text-muted);">IAT 2023</div>
-                        </div>
-                        <div class="paper-info">
-                            <span class="info-tag"><i class="fas fa-clock"></i> 180 min</span>
-                            <span class="info-tag"><i class="fas fa-lock"></i> Locked</span>
-                        </div>
-                        <p class="paper-description" style="color: var(--text-light);">
-                            First NTA conduct year. Physics was calculation intensive with 12 numericals. Mathematics
-                            featured advanced calculus.
-                        </p>
-                        <div class="subject-bars">
-                            <div class="subj-segment subj-phy" style="flex: 1.4;"></div>
-                            <div class="subj-segment subj-chem" style="flex: 1;"></div>
-                            <div class="subj-segment subj-math" style="flex: 1.3;"></div>
-                            <div class="subj-segment subj-bio" style="flex: 0.9;"></div>
-                        </div>
-                        <div class="subj-labels">
-                            <span>Calc Heavy</span>
-                            <span>Physics Focus</span>
-                        </div>
-                    </div>
-                    <div class="card-actions">
-                        <button class="action-btn" style="grid-column: 1 / -1;" onclick="handlePaperClick('2023')">
-                            <i class="fas fa-unlock"></i> Unlock Access
-                        </button>
-                    </div>
-                </article>
-
-                <!-- 2022 Paper -->
-                <article class="pyq-card locked fade-in-up" data-year="2022" data-category="recent">
-                    <div class="lock-strip"><i class="fas fa-lock"></i> Premium Access Required</div>
-                    <div class="card-header" style="padding-top: 3rem;">
-
-                        <div class="year-badge">
-                            <div class="year-icon" style="background: var(--bg-wash); opacity: 0.5;">📝</div>
-                            <div class="year-text" style="color: var(--text-muted);">IAT 2022</div>
-                        </div>
-                        <div class="paper-info">
-                            <span class="info-tag"><i class="fas fa-clock"></i> 180 min</span>
-                            <span class="info-tag"><i class="fas fa-lock"></i> Locked</span>
-                        </div>
-                        <p class="paper-description" style="color: var(--text-light);">
-                            Post-pandemic pattern shift. Direct line-by-line NCERT questions in Biology. Good for
-                            confidence building.
-                        </p>
-                        <div class="subject-bars">
-                            <div class="subj-segment subj-phy" style="flex: 0.9;"></div>
-                            <div class="subj-segment subj-chem" style="flex: 1;"></div>
-                            <div class="subj-segment subj-math" style="flex: 0.9;"></div>
-                            <div class="subj-segment subj-bio" style="flex: 1.4;"></div>
-                        </div>
-                        <div class="subj-labels">
-                            <span>Theory Based</span>
-                            <span>High Scoring</span>
-                        </div>
-                    </div>
-                    <div class="card-actions">
-                        <button class="action-btn" style="grid-column: 1 / -1;" onclick="handlePaperClick('2022')">
-                            <i class="fas fa-unlock"></i> Unlock Access
-                        </button>
-                    </div>
-                </article>
-
-                <!-- 2021 Paper (Legacy/Locked) -->
-                <article class="pyq-card locked fade-in-up" data-year="2021" data-category="legacy">
-                    <div class="lock-strip"><i class="fas fa-lock"></i> Premium Access Required</div>
-                    <div class="card-header" style="padding-top: 3rem;">
-                        <div class="year-badge">
-                            <div class="year-icon" style="background: var(--bg-wash); opacity: 0.5;">📚</div>
-                            <div class="year-text" style="color: var(--text-muted);">IAT 2021</div>
-                        </div>
-                        <div class="paper-info">
-                            <span class="info-tag"><i class="fas fa-clock"></i> 180 min</span>
-                            <span class="info-tag"><i class="fas fa-lock"></i> Locked</span>
-                        </div>
-                        <p class="paper-description" style="color: var(--text-light);">
-                            IISER entrance before NTA takeover. Different marking scheme. Includes detailed video
-                            solutions.
-                        </p>
-                    </div>
-                    <div class="card-actions">
-                        <button class="action-btn" style="grid-column: 1 / -1;" onclick="handlePaperClick('2021')">
-                            <i class="fas fa-unlock"></i> Unlock Access
-                        </button>
-                    </div>
-                </article>
-
-                <!-- 2020 Paper (Legacy/Locked) -->
-                <article class="pyq-card locked fade-in-up" data-year="2020" data-category="legacy">
-                    <div class="lock-strip"><i class="fas fa-lock"></i> Premium Access Required</div>
-                    <div class="card-header" style="padding-top: 3rem;">
-                        <div class="year-badge">
-                            <div class="year-icon" style="background: var(--bg-wash); opacity: 0.5;">📚</div>
-                            <div class="year-text" style="color: var(--text-muted);">IAT 2020</div>
-                        </div>
-                        <div class="paper-info">
-                            <span class="info-tag"><i class="fas fa-clock"></i> 180 min</span>
-                            <span class="info-tag"><i class="fas fa-lock"></i> Locked</span>
-                        </div>
-                        <p class="paper-description" style="color: var(--text-light);">
-                            Online proctored format due to pandemic. Aptitude section included. Complete solution set
-                            available.
-                        </p>
-                    </div>
-                    <div class="card-actions">
-                        <button class="action-btn" style="grid-column: 1 / -1;" onclick="handlePaperClick('2020')">
-                            <i class="fas fa-unlock"></i> Unlock Access
-                        </button>
-                    </div>
-                </article>
-
-                <!-- 2019 Paper (Legacy/Locked) -->
-                <article class="pyq-card locked fade-in-up" data-year="2019" data-category="legacy">
-                    <div class="lock-strip"><i class="fas fa-lock"></i> Premium Access Required</div>
-                    <div class="card-header" style="padding-top: 3rem;">
-                        <div class="year-badge">
-                            <div class="year-icon" style="background: var(--bg-wash); opacity: 0.5;">📚</div>
-                            <div class="year-text" style="color: var(--text-muted);">IAT 2019</div>
-                        </div>
-                        <div class="paper-info">
-                            <span class="info-tag"><i class="fas fa-clock"></i> 180 min</span>
-                            <span class="info-tag"><i class="fas fa-lock"></i> Locked</span>
-                        </div>
-                        <p class="paper-description" style="color: var(--text-light);">
-                            Standard offline format. Balanced difficulty with good conceptual questions.
-                        </p>
-                    </div>
-                    <div class="card-actions">
-                        <button class="action-btn" style="grid-column: 1 / -1;" onclick="handlePaperClick('2019')">
-                            <i class="fas fa-unlock"></i> Unlock Access
-                        </button>
-                    </div>
-                </article>
-
-                <!-- 2018 Paper (New Addition) -->
-                <article class="pyq-card locked fade-in-up" data-year="2018" data-category="legacy">
-                    <div class="lock-strip"><i class="fas fa-lock"></i> Premium Access Required</div>
-                    <div class="card-header" style="padding-top: 3rem;">
-                        <div class="year-badge">
-                            <div class="year-icon" style="background: var(--bg-wash); opacity: 0.5;">📚</div>
-                            <div class="year-text" style="color: var(--text-muted);">IAT 2018</div>
-                        </div>
-                        <div class="paper-info">
-                            <span class="info-tag"><i class="fas fa-clock"></i> 180 min</span>
-                            <span class="info-tag"><i class="fas fa-lock"></i> Locked</span>
-                        </div>
-                        <p class="paper-description" style="color: var(--text-light);">
-                            Comprehensive paper covering diverse topics. Excellent for testing core concept application.
-                        </p>
-                    </div>
-                    <div class="card-actions">
-                        <button class="action-btn" style="grid-column: 1 / -1;" onclick="handlePaperClick('2018')">
-                            <i class="fas fa-unlock"></i> Unlock Access
-                        </button>
-                    </div>
-                </article>
-
-                <!-- 2017 Paper (New Addition) -->
-                <article class="pyq-card locked fade-in-up" data-year="2017" data-category="legacy">
-                    <div class="lock-strip"><i class="fas fa-lock"></i> Premium Access Required</div>
-                    <div class="card-header" style="padding-top: 3rem;">
-                        <div class="year-badge">
-                            <div class="year-icon" style="background: var(--bg-wash); opacity: 0.5;">📚</div>
-                            <div class="year-text" style="color: var(--text-muted);">IAT 2017</div>
-                        </div>
-                        <div class="paper-info">
-                            <span class="info-tag"><i class="fas fa-clock"></i> 180 min</span>
-                            <span class="info-tag"><i class="fas fa-lock"></i> Locked</span>
-                        </div>
-                        <p class="paper-description" style="color: var(--text-light);">
-                            The very first IAT paper. Essential for understanding the origins of the exam pattern.
-                        </p>
-                    </div>
-                    <div class="card-actions">
-                        <button class="action-btn" style="grid-column: 1 / -1;" onclick="handlePaperClick('2017')">
-                            <i class="fas fa-unlock"></i> Unlock Access
-                        </button>
-                    </div>
-                </article>
-
-                <!-- 2017-2019 Bundle -->
-                <article class="pyq-card locked fade-in-up" data-year="legacy" data-category="legacy">
-                    <div class="lock-strip" style="background: linear-gradient(90deg, #8b5cf6, #a78bfa);">
-                        <i class="fas fa-archive"></i> Legacy Bundle (2017-2024)
-                    </div>
-                    <div class="card-header" style="padding-top: 3rem;">
-                        <div class="year-badge">
-                            <div class="year-icon" style="background: #ede9fe; opacity: 0.8;">🏛️</div>
-                            <div class="year-text" style="color: var(--text-muted);">2017-2024</div>
-                        </div>
-                        <div class="paper-info">
-                            <span class="info-tag"><i class="fas fa-layer-group"></i> 6 Papers</span>
-                            <span class="info-tag"><i class="fas fa-file-pdf"></i> PDF Only</span>
-                        </div>
-                        <p class="paper-description" style="color: var(--text-light);">
-                            Classic IAT pattern. Essential for understanding the evolution of the exam. Bundle includes
-                            all papers + detailed solutions.
-                        </p>
-                    </div>
-                    <div class="card-actions">
-                        <button class="action-btn"
-                            style="grid-column: 1 / -1; background: linear-gradient(90deg, #8b5cf6, #a78bfa); color: white;"
-                            onclick="handlePaperClick('bundle')">
-                            <i class="fas fa-download"></i> Get Bundle (₹399)
-                        </button>
-                    </div>
-                </article>
-
-            </div>
-        </div>
-    </section>
-
-    <!-- ============================
-         SEO CONTENT SECTION
-    ============================= -->
-    <section class="seo-content-section fade-in-up" aria-label="About IISER IAT PYQ">
-        <div class="container">
-
-            <h1>IISER IAT Previous Year Questions (PYQ) with Solutions</h1>
-            <p class="seo-intro-text">
-                IISER Smart Prep is India's most comprehensive platform for <strong>IISER IAT PYQ</strong> practice. We
-                provide the complete archive of <strong>IISER IAT previous year papers</strong> from 2017 to 2024 — with
-                an interactive test interface, AI-powered performance analytics, and verified solutions. Whether you're
-                looking for <strong>IISER PYQ PDF</strong> downloads or a real exam simulation, you're in the right
-                place.
+            <p class="hero-lead">
+                Practice 2017–2025 official papers <strong>or target specific high-weightage chapters</strong> with 100% verified step-by-step AI solutions, topic breakdowns, and real TCS iON exam simulation.
             </p>
 
-            <div class="seo-grid">
+            <div class="cta-group">
+                <button class="btn btn-primary" onclick="openAuthSheet()">
+                    🚀 Unlock All 600+ PYQs Free (1-Click Sign Up)
+                </button>
+                <a href="#demo" class="btn btn-outline">
+                    ⚡ Try Sample Question Demo
+                </a>
+            </div>
 
-                <!-- Card 1: What is IISER IAT -->
-                <div class="seo-card">
-                    <h2>
-                        <span class="seo-icon"><i class="fas fa-info-circle"></i></span>
-                        What is IISER IAT Exam?
-                    </h2>
-                    <p>
-                        The <strong>IISER IAT (Integrated Aptitude Test)</strong> is the national-level entrance exam
-                        conducted by IISERs for admission to BS-MS Dual Degree programmes. The exam consists of
-                        <strong>60 multiple-choice questions</strong> spread equally across four subjects — Physics,
-                        Chemistry, Mathematics, and Biology (15 questions each). The marking scheme awards <strong>+3
-                            marks</strong> for every correct answer and deducts <strong>−1 mark</strong> for incorrect
-                        ones, with a total duration of 3 hours and a maximum score of 180 marks. Solving <strong>IISER
-                            IAT previous year papers</strong> is one of the most reliable ways to understand what the
-                        real exam looks and feels like.
-                    </p>
-                </div>
-
-                <!-- Card 2: Why PYQs are important -->
-                <div class="seo-card">
-                    <h2>
-                        <span class="seo-icon"><i class="fas fa-chart-line"></i></span>
-                        Why Solving IISER PYQs is Important
-                    </h2>
-                    <p>
-                        Practising <strong>IISER PYQ</strong> papers is essential for every serious aspirant. First,
-                        they help you <strong>understand the exact exam pattern</strong> — the type of questions,
-                        difficulty distribution, and subject weightage that repeats year after year. Second, they reveal
-                        the <strong>most important topics</strong> in each subject so you can prioritise your revision.
-                        Third, timed practice on real <strong>IAT PYQ</strong> papers dramatically <strong>improves your
-                            speed and accuracy</strong> under exam conditions. The more past papers you solve, the more
-                        confident and exam-ready you become.
-                    </p>
-                </div>
-
-                <!-- Card 3: Platform features -->
-                <div class="seo-card">
-                    <h2>
-                        <span class="seo-icon"><i class="fas fa-laptop-code"></i></span>
-                        IISER IAT Previous Year Papers (2017–2024)
-                    </h2>
-                    <p>
-                        Our platform hosts the <strong>complete IISER IAT previous year papers</strong> from 2017 to
-                        2024 with full solutions. Unlike plain <strong>IISER PYQ PDF</strong> downloads, IISER Smart
-                        Prep gives you a <strong>real exam interface</strong> with a countdown timer, auto-scoring, and
-                        subject-wise breakdowns. After each test, our <strong>AI analysis engine</strong> identifies
-                        your weak areas across Physics, Chemistry, Mathematics, and Biology. You can also drill down
-                        with <strong>chapter-wise practice</strong> to target exactly the topics where you need
-                        improvement.
-                    </p>
-                </div>
-
-                <!-- Card 4: How to use -->
-                <div class="seo-card">
-                    <h2>
-                        <span class="seo-icon"><i class="fas fa-rocket"></i></span>
-                        How to Use IISER Smart Prep PYQ Platform
-                    </h2>
-                    <div class="how-to-steps">
-                        <div class="how-to-step">
-                            <div class="step-num">1</div>
-                            <div class="step-text">
-                                <strong>Select a Year</strong>
-                                Choose any <strong>IISER IAT previous year paper</strong> from 2017–2024 on this
-                                    page.</span>
-                            </div>
-                        </div>
-                        <div class="how-to-step">
-                            <div class="step-num">2</div>
-                            <div class="step-text">
-                                <strong>Start the Test</strong>
-                                <span>Take the timed test in a real exam interface — exactly like the actual <strong>IAT
-                                        PYQ</strong> experience.</span>
-                            </div>
-                        </div>
-                        <div class="how-to-step">
-                            <div class="step-num">3</div>
-                            <div class="step-text">
-                                <strong>Get AI Performance Analysis</strong>
-                                <span>Receive a detailed score report with subject-wise insights and improvement
-                                    recommendations.</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-            </div><!-- /.seo-grid -->
-
-            <a href="/mock_test/full_mock_test_homepage.html" class="seo-internal-link">
-                <i class="fas fa-flask"></i>
-                Try our IISER IAT Mock Tests
-                <i class="fas fa-arrow-right"></i>
-            </a>
-
+            <div class="trust-guarantee-bar">
+                <span><i class="fas fa-check-circle" style="color:var(--accent-teal);"></i> 100% Verified Answer Keys</span>
+                <span><i class="fas fa-check-circle" style="color:var(--accent-teal);"></i> Real TCS iON CBT Interface</span>
+                <span><i class="fas fa-check-circle" style="color:var(--accent-teal);"></i> Free Account &bull; No Credit Card Needed</span>
+            </div>
         </div>
     </section>
 
-    <!-- ============================
-         FAQ SECTION
-    ============================= -->
-    <section class="faq-section fade-in-up" id="faq-pyq" aria-label="Frequently Asked Questions">
+    <!-- Live Social Proof Stats Strip -->
+    <section class="stats-strip">
         <div class="container">
-            <div class="faq-section-header">
-                <h2>Frequently Asked Questions</h2>
-                <p>Everything you need to know about IISER IAT PYQ and how to use this platform.</p>
+            <div class="stats-grid">
+                <div>
+                    <div class="stat-val">600+</div>
+                    <div class="stat-lbl">Verified Official PYQs</div>
+                </div>
+                <div>
+                    <div class="stat-val">2017–2025</div>
+                    <div class="stat-lbl">Complete Archive</div>
+                </div>
+                <div>
+                    <div class="stat-val">94.2%</div>
+                    <div class="stat-lbl">Avg Topper Practice Score</div>
+                </div>
+                <div>
+                    <div class="stat-val">14,200+</div>
+                    <div class="stat-lbl">Active Students</div>
+                </div>
             </div>
-
-            <div class="faq-list" id="faqList">
-
-                <div class="faq-item" id="faq-1">
-                    <button class="faq-question" onclick="toggleFaq('faq-1')" aria-expanded="false">
-                        <span>Are IISER PYQs enough for preparation?</span>
-                        <span class="faq-icon"><i class="fas fa-plus"></i></span>
-                    </button>
-                    <div class="faq-answer" role="region">
-                        <div class="faq-answer-inner">
-                            <strong>IISER PYQs are essential but should be part of a broader strategy.</strong> Solving
-                            IISER IAT PYQ papers gives you a deep understanding of the exam pattern, helps identify
-                            high-frequency topics, and builds your time management skills. However, to score well in
-                            IISER IAT, you should combine PYQ practice with thorough NCERT revision, subject-wise mock
-                            tests, and chapter-specific practice sets. IISER Smart Prep provides all of these tools —
-                            making it the only platform you need for complete IISER IAT preparation.
-                        </div>
-                    </div>
-                </div>
-
-                <div class="faq-item" id="faq-2">
-                    <button class="faq-question" onclick="toggleFaq('faq-2')" aria-expanded="false">
-                        <span>How many questions are asked in IISER IAT?</span>
-                        <span class="faq-icon"><i class="fas fa-plus"></i></span>
-                    </button>
-                    <div class="faq-answer" role="region">
-                        <div class="faq-answer-inner">
-                            The <strong>IISER IAT consists of 60 multiple-choice questions</strong>, divided equally
-                            across four subjects: <strong>Physics (15), Chemistry (15), Mathematics (15), and Biology
-                                (15)</strong>. Each correct answer earns <strong>+3 marks</strong>, and each wrong
-                            answer incurs a penalty of <strong>−1 mark</strong>. The exam lasts <strong>3 hours (180
-                                minutes)</strong> with a maximum score of 180. Unattempted questions carry no penalty.
-                            Familiarity with this structure through <strong>IISER previous year questions</strong> is
-                            key to performing well on exam day.
-                        </div>
-                    </div>
-                </div>
-
-                <div class="faq-item" id="faq-3">
-                    <button class="faq-question" onclick="toggleFaq('faq-3')" aria-expanded="false">
-                        <span>Where can I practice IISER PYQs online?</span>
-                        <span class="faq-icon"><i class="fas fa-plus"></i></span>
-                    </button>
-                    <div class="faq-answer" role="region">
-                        <div class="faq-answer-inner">
-                            You can practice <strong>IISER PYQs online</strong> right here on <strong>IISER Smart
-                                Prep</strong> (iisersmartprep.space). We provide interactive, timed tests for all
-                            <strong>IISER IAT previous year papers</strong> from 2017 to 2024 — completely free for the
-                            2024 paper. Unlike static <strong>IISER PYQ PDF</strong> files you find online,
-                            our platform gives you instant scoring, AI analysis of your performance, detailed solutions,
-                            and chapter-wise practice — all in one place. Sign up free and start practising today.
-                        </div>
-                    </div>
-                </div>
-
-            </div><!-- /.faq-list -->
         </div>
     </section>
 
-    <!-- Action Selection Modal -->
-    <div id="actionModal" class="modal-overlay" onclick="closeModal(event)">
-        <div class="modal-content" onclick="event.stopPropagation()">
-            <div class="modal-header">
-                <h3 class="modal-title" id="modalYearTitle">IAT 2024</h3>
-                <button class="close-btn" onclick="closeModal()">&times;</button>
+    <!-- Interactive Teaser Demo (Curiosity Hook) -->
+    <section class="demo-section" id="demo">
+        <div class="container">
+            <div style="text-align:center;margin-bottom:2rem;">
+                <h2 style="font-family:'Outfit',sans-serif;font-size:1.85rem;font-weight:800;color:var(--secondary);">
+                    Try an Official IAT Question Right Now
+                </h2>
+                <p style="color:var(--text-muted);font-size:0.98rem;">Test your logic below to see how our instant AI explanation breakdown works.</p>
             </div>
-            <div class="modal-body">
-                <p style="color: var(--text-muted); margin-bottom: 1.5rem;">Choose how you want to practice this paper:
+
+            <div class="demo-box">
+                <div class="demo-badge">IAT 2024 Physics &bull; Rotational Dynamics</div>
+                <div class="demo-q-title">
+                    Q: A uniform solid sphere of mass M and radius R rolls without slipping down an inclined plane of inclination &theta;. What is the linear acceleration of the center of mass of the sphere?
+                </div>
+
+                <div class="options-list">
+                    <button class="option-btn" onclick="checkDemoAnswer(this, false)">
+                        <span>A) g sin(&theta;)</span>
+                        <i class="far fa-circle"></i>
+                    </button>
+                    <button class="option-btn" onclick="checkDemoAnswer(this, true)">
+                        <span>B) (5/7) g sin(&theta;)</span>
+                        <i class="far fa-circle"></i>
+                    </button>
+                    <button class="option-btn" onclick="checkDemoAnswer(this, false)">
+                        <span>C) (2/5) g sin(&theta;)</span>
+                        <i class="far fa-circle"></i>
+                    </button>
+                    <button class="option-btn" onclick="checkDemoAnswer(this, false)">
+                        <span>D) (3/5) g sin(&theta;)</span>
+                        <i class="far fa-circle"></i>
+                    </button>
+                </div>
+
+                <!-- Teaser Solution Box -->
+                <div class="solution-teaser-box">
+                    <div class="blur-overlay" id="demoBlurOverlay">
+                        <div style="font-size:1.5rem;">🔒</div>
+                        <h4 style="font-family:'Outfit',sans-serif;font-weight:800;font-size:1.1rem;color:var(--secondary);">
+                            Unlock 600+ Step-by-Step AI Solutions &amp; TCS iON CBT Mode
+                        </h4>
+                        <p style="font-size:0.85rem;color:var(--text-muted);max-width:440px;">
+                            Create your free IISER SmartPrep account in 10 seconds to get full access to verified answer keys, detailed explanations, and performance metrics.
+                        </p>
+                        <button class="btn btn-primary" onclick="openAuthSheet()">Create Free Account &rarr;</button>
+                    </div>
+                    <p style="font-weight:700;margin-bottom:0.5rem;">Detailed AI Solution Logic:</p>
+                    <p style="color:var(--text-muted);font-size:0.9rem;">For a rolling body without slipping, linear acceleration is given by a = (g sin &theta;) / (1 + I/MR²). For a solid sphere, I = (2/5) MR², hence a = (5/7) g sin &theta;.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Comparison Section: Old Way vs SmartPrep -->
+    <section class="comparison-section">
+        <div class="container">
+            <div style="text-align:center;max-width:680px;margin:0 auto 2rem;">
+                <h2 style="font-family:'Outfit',sans-serif;font-size:1.85rem;font-weight:800;color:var(--secondary);">
+                    Why Static PDFs Waste 30% of Your Marks
+                </h2>
+                <p style="color:var(--text-muted);font-size:0.98rem;">IAT is an online computer-based test (CBT). Practicing on paper doesn't prepare your brain for screen timer pressure.</p>
+            </div>
+
+            <div class="comp-grid">
+                <div class="comp-card comp-bad">
+                    <div class="comp-title" style="color:#be123c;">
+                        <span>❌ The Old Way (Static PDFs)</span>
+                    </div>
+                    <ul class="comp-list">
+                        <li><span>❌</span> Unverified keys with frequent calculation errors</li>
+                        <li><span>❌</span> No real time tracking or section countdown pressure</li>
+                        <li><span>❌</span> Staring at paper instead of practicing on TCS iON screen layout</li>
+                        <li><span>❌</span> No feedback on weak chapters or silly mistakes</li>
+                    </ul>
+                </div>
+
+                <div class="comp-card comp-good">
+                    <div class="comp-title" style="color:#15803d;">
+                        <span>🚀 The IISER SmartPrep PYQ Engine</span>
+                    </div>
+                    <ul class="comp-list">
+                        <li><span>✓</span> 100% verified step-by-step AI solutions for all 600+ questions</li>
+                        <li><span>✓</span> Real TCS iON interface simulation with palette &amp; timer</li>
+                        <li><span>✓</span> Automated weak-area breakdown (Physics, Chem, Math, Bio)</li>
+                        <li><span>✓</span> 24/7 AI Tutor to clear doubts on any question instantly</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Chapter-Wise PYQ Practice Hub Section -->
+    <section style="padding:4rem 0;background:#f8fafc;border-bottom:1px solid var(--border);">
+        <div class="container">
+            <div style="text-align:center;max-width:760px;margin:0 auto 2.5rem;">
+                <div style="display:inline-flex;align-items:center;gap:0.4rem;padding:0.35rem 1rem;background:#dbeafe;color:var(--primary-dark);border-radius:var(--radius-pill);font-size:0.78rem;font-weight:800;text-transform:uppercase;margin-bottom:1rem;">
+                    🎯 Chapter-Wise PYQ Engine
+                </div>
+                <h2 style="font-family:'Outfit',sans-serif;font-size:2rem;font-weight:800;color:var(--secondary);margin-bottom:0.75rem;">
+                    Chapter-Wise PYQs with Detailed AI Step-by-Step Solutions
+                </h2>
+                <p style="color:var(--text-muted);font-size:1.02rem;">
+                    Don't want to solve full papers yet? Master official IAT questions chapter by chapter with 100% verified step-by-step derivations and AI doubt help.
                 </p>
+            </div>
 
-                <div class="action-grid">
-                    <div class="action-card" onclick="startTest()">
-                        <div class="action-icon" style="color: var(--primary);">
-                            <i class="fas fa-laptop"></i>
+            <!-- Subject Cards Grid -->
+            <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(260px, 1fr));gap:1.5rem;">
+                <!-- Physics Chapters Card -->
+                <div style="background:#fff;border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.75rem;box-shadow:var(--shadow-sm);display:flex;flex-direction:column;">
+                    <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:1.25rem;">
+                        <div style="width:42px;height:42px;border-radius:12px;background:#eff6ff;color:var(--primary);display:flex;align-items:center;justify-content:center;font-size:1.25rem;font-weight:800;">⚛️</div>
+                        <div>
+                            <h3 style="font-family:'Outfit',sans-serif;font-size:1.25rem;font-weight:800;color:var(--secondary);">Physics Chapters</h3>
+                            <span style="font-size:0.8rem;color:var(--text-light);font-weight:600;">150+ Verified PYQs</span>
                         </div>
-                        <div class="action-details">
-                            <h4>Interactive Test</h4>
-                            <p>Timed simulation with instant scoring and analytics</p>
-                        </div>
-                        <i class="fas fa-arrow-right" style="color: var(--primary); margin-left: auto;"></i>
                     </div>
-
-                    <a href="#" class="action-card" id="downloadLink" onclick="handleDownload(event)"
-                        style="text-decoration: none; color: inherit;">
-                        <div class="action-icon" style="color: var(--success);">
-                            <i class="fas fa-file-pdf"></i>
-                        </div>
-                        <div class="action-details">
-                            <h4>Download Question Paper</h4>
-                            <p>Download question paper with solution</p>
-                        </div>
-                        <i class="fas fa-download" style="color: var(--success); margin-left: auto;"></i>
-                    </a>
+                    <ul style="list-style:none;display:flex;flex-direction:column;gap:0.65rem;margin-bottom:1.5rem;font-size:0.9rem;color:var(--text-muted);">
+                        <li style="display:flex;justify-content:space-between;padding-bottom:0.4rem;border-bottom:1px dashed var(--border);">
+                            <span>Rotational Dynamics</span>
+                            <strong style="color:var(--primary);">42 PYQs</strong>
+                        </li>
+                        <li style="display:flex;justify-content:space-between;padding-bottom:0.4rem;border-bottom:1px dashed var(--border);">
+                            <span>Electrostatics &amp; Magnetism</span>
+                            <strong style="color:var(--primary);">38 PYQs</strong>
+                        </li>
+                        <li style="display:flex;justify-content:space-between;padding-bottom:0.4rem;border-bottom:1px dashed var(--border);">
+                            <span>Modern Physics &amp; Optics</span>
+                            <strong style="color:var(--primary);">45 PYQs</strong>
+                        </li>
+                        <li style="display:flex;justify-content:space-between;">
+                            <span>Thermodynamics &amp; SHM</span>
+                            <strong style="color:var(--primary);">35 PYQs</strong>
+                        </li>
+                    </ul>
+                    <button class="btn btn-outline" onclick="openAuthSheet()" style="width:100%;margin-top:auto;font-size:0.88rem;">
+                        <i class="fas fa-lock" style="font-size:0.75rem;"></i> Practice Physics PYQs &rarr;
+                    </button>
                 </div>
 
-                <div class="file-meta">
-                    <div class="meta-item">
-                        <i class="fas fa-file-alt"></i>
-                        <span>PDF size: ~2.4 MB</span>
+                <!-- Chemistry Chapters Card -->
+                <div style="background:#fff;border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.75rem;box-shadow:var(--shadow-sm);display:flex;flex-direction:column;">
+                    <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:1.25rem;">
+                        <div style="width:42px;height:42px;border-radius:12px;background:#f3e8ff;color:var(--accent-purple);display:flex;align-items:center;justify-content:center;font-size:1.25rem;font-weight:800;">🧪</div>
+                        <div>
+                            <h3 style="font-family:'Outfit',sans-serif;font-size:1.25rem;font-weight:800;color:var(--secondary);">Chemistry Chapters</h3>
+                            <span style="font-size:0.8rem;color:var(--text-light);font-weight:600;">150+ Verified PYQs</span>
+                        </div>
                     </div>
-                    <div class="meta-item">
-                        <i class="fas fa-clock"></i>
-                        <span>Last updated: Jan 2026</span>
+                    <ul style="list-style:none;display:flex;flex-direction:column;gap:0.65rem;margin-bottom:1.5rem;font-size:0.9rem;color:var(--text-muted);">
+                        <li style="display:flex;justify-content:space-between;padding-bottom:0.4rem;border-bottom:1px dashed var(--border);">
+                            <span>Chemical Bonding &amp; Structure</span>
+                            <strong style="color:var(--accent-purple);">40 PYQs</strong>
+                        </li>
+                        <li style="display:flex;justify-content:space-between;padding-bottom:0.4rem;border-bottom:1px dashed var(--border);">
+                            <span>Organic Reaction Mechanisms</span>
+                            <strong style="color:var(--accent-purple);">52 PYQs</strong>
+                        </li>
+                        <li style="display:flex;justify-content:space-between;padding-bottom:0.4rem;border-bottom:1px dashed var(--border);">
+                            <span>Electrochemistry &amp; Kinetics</span>
+                            <strong style="color:var(--accent-purple);">36 PYQs</strong>
+                        </li>
+                        <li style="display:flex;justify-content:space-between;">
+                            <span>Coordination &amp; d-Block</span>
+                            <strong style="color:var(--accent-purple);">30 PYQs</strong>
+                        </li>
+                    </ul>
+                    <button class="btn btn-outline" onclick="openAuthSheet()" style="width:100%;margin-top:auto;font-size:0.88rem;">
+                        <i class="fas fa-lock" style="font-size:0.75rem;"></i> Practice Chemistry PYQs &rarr;
+                    </button>
+                </div>
+
+                <!-- Mathematics Chapters Card -->
+                <div style="background:#fff;border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.75rem;box-shadow:var(--shadow-sm);display:flex;flex-direction:column;">
+                    <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:1.25rem;">
+                        <div style="width:42px;height:42px;border-radius:12px;background:#fef3c7;color:var(--accent-amber);display:flex;align-items:center;justify-content:center;font-size:1.25rem;font-weight:800;">📐</div>
+                        <div>
+                            <h3 style="font-family:'Outfit',sans-serif;font-size:1.25rem;font-weight:800;color:var(--secondary);">Mathematics Chapters</h3>
+                            <span style="font-size:0.8rem;color:var(--text-light);font-weight:600;">150+ Verified PYQs</span>
+                        </div>
                     </div>
-                    <div class="meta-item">
-                        <i class="fas fa-check-circle"></i>
-                        <span>Verified by IISER Alumni</span>
+                    <ul style="list-style:none;display:flex;flex-direction:column;gap:0.65rem;margin-bottom:1.5rem;font-size:0.9rem;color:var(--text-muted);">
+                        <li style="display:flex;justify-content:space-between;padding-bottom:0.4rem;border-bottom:1px dashed var(--border);">
+                            <span>Calculus (Limits &amp; Integrals)</span>
+                            <strong style="color:var(--accent-amber);">48 PYQs</strong>
+                        </li>
+                        <li style="display:flex;justify-content:space-between;padding-bottom:0.4rem;border-bottom:1px dashed var(--border);">
+                            <span>Algebra &amp; Complex Numbers</span>
+                            <strong style="color:var(--accent-amber);">35 PYQs</strong>
+                        </li>
+                        <li style="display:flex;justify-content:space-between;padding-bottom:0.4rem;border-bottom:1px dashed var(--border);">
+                            <span>Vectors &amp; 3D Geometry</span>
+                            <strong style="color:var(--accent-amber);">32 PYQs</strong>
+                        </li>
+                        <li style="display:flex;justify-content:space-between;">
+                            <span>Trigonometry &amp; Probability</span>
+                            <strong style="color:var(--accent-amber);">28 PYQs</strong>
+                        </li>
+                    </ul>
+                    <button class="btn btn-outline" onclick="openAuthSheet()" style="width:100%;margin-top:auto;font-size:0.88rem;">
+                        <i class="fas fa-lock" style="font-size:0.75rem;"></i> Practice Math PYQs &rarr;
+                    </button>
+                </div>
+
+                <!-- Biology Chapters Card -->
+                <div style="background:#fff;border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.75rem;box-shadow:var(--shadow-sm);display:flex;flex-direction:column;">
+                    <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:1.25rem;">
+                        <div style="width:42px;height:42px;border-radius:12px;background:#ccfbf1;color:var(--accent-teal);display:flex;align-items:center;justify-content:center;font-size:1.25rem;font-weight:800;">🧬</div>
+                        <div>
+                            <h3 style="font-family:'Outfit',sans-serif;font-size:1.25rem;font-weight:800;color:var(--secondary);">Biology Chapters</h3>
+                            <span style="font-size:0.8rem;color:var(--text-light);font-weight:600;">150+ Verified PYQs</span>
+                        </div>
                     </div>
+                    <ul style="list-style:none;display:flex;flex-direction:column;gap:0.65rem;margin-bottom:1.5rem;font-size:0.9rem;color:var(--text-muted);">
+                        <li style="display:flex;justify-content:space-between;padding-bottom:0.4rem;border-bottom:1px dashed var(--border);">
+                            <span>Genetics &amp; Molecular Basis</span>
+                            <strong style="color:var(--accent-teal);">50 PYQs</strong>
+                        </li>
+                        <li style="display:flex;justify-content:space-between;padding-bottom:0.4rem;border-bottom:1px dashed var(--border);">
+                            <span>Cell Biology &amp; Division</span>
+                            <strong style="color:var(--accent-teal);">44 PYQs</strong>
+                        </li>
+                        <li style="display:flex;justify-content:space-between;padding-bottom:0.4rem;border-bottom:1px dashed var(--border);">
+                            <span>Human Physiology</span>
+                            <strong style="color:var(--accent-teal);">40 PYQs</strong>
+                        </li>
+                        <li style="display:flex;justify-content:space-between;">
+                            <span>Plant Physiology &amp; Ecology</span>
+                            <strong style="color:var(--accent-teal);">38 PYQs</strong>
+                        </li>
+                    </ul>
+                    <button class="btn btn-outline" onclick="openAuthSheet()" style="width:100%;margin-top:auto;font-size:0.88rem;">
+                        <i class="fas fa-lock" style="font-size:0.75rem;"></i> Practice Biology PYQs &rarr;
+                    </button>
                 </div>
             </div>
         </div>
-    </div>
+    </section>
 
-    <!-- AUTH SHEET (Login Prompt) - Bottom Sheet Style -->
-    <div id="auth-sheet-overlay" class="modal-overlay" onclick="closeAuthSheet()" style="align-items: flex-end;">
-        <div class="modal-content"
-            style="margin: 0; border-radius: 24px 24px 0 0; width: 100%; max-width: 600px; transform: translateY(100%); transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1); padding: 2rem; text-align: center;">
-            <div style="width: 40px; height: 5px; background: #e2e8f0; border-radius: 10px; margin: 0 auto 1.5rem;">
-            </div>
-            <h3 class="modal-title" style="margin-bottom: 0.5rem; color: var(--secondary);">Authentication Required</h3>
-            <p style="color: var(--text-muted); margin-bottom: 2rem;">Please log in to attempt mock tests and download
-                PDFs.</p>
-            <div style="display: flex; gap: 1rem;">
-                <button onclick="redirectToAuth('login')" class="btn btn-primary btn-full" style="padding: 0.8rem;">Log
-                    In</button>
-                <button onclick="redirectToAuth('signup')" class="btn btn-outline btn-full"
-                    style="padding: 0.8rem;">Sign Up</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Premium Modal -->
-    <div id="premiumModal" class="modal-overlay pro-hidden" onclick="closeModal(event)">
-        <div class="modal-content" style="text-align: center; max-width: 450px;" onclick="event.stopPropagation()">
-            <div
-                style="width: 64px; height: 64px; background: var(--primary-soft); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem; color: var(--primary); font-size: 1.5rem;">
-                <i class="fas fa-crown"></i>
-            </div>
-            <h3 class="modal-title" style="margin-bottom: 0.5rem;">Unlock Complete Archive</h3>
-            <p style="color: var(--text-muted); margin-bottom: 1.5rem;">Get access to all PYQs from 2017-2021 with HD
-                solutions and video explanations.</p>
-
-            <div
-                style="background: var(--bg-wash); padding: 1.5rem; border-radius: var(--radius-md); margin-bottom: 1.5rem; border: 2px solid var(--primary-soft);">
-                <div style="font-size: 2.5rem; font-weight: 800; color: var(--primary);">₹399</div>
-                <div
-                    style="color: var(--text-muted); font-size: 0.875rem; text-decoration: line-through; margin-bottom: 0.5rem;">
-                    ₹999</div>
-                <div id="countdown-line" style="font-size: 0.875rem; color: #ef4444; font-weight: 700; margin-bottom: 0.5rem;">Offer ends in 4 days ⏳</div>
-                <div style="font-size: 0.875rem; color: var(--success); font-weight: 600;">40% off • Limited time</div>
-            </div>
-
-            <button class="btn btn-primary btn-upgrade-now" style="width: 100%; margin-bottom: 0.75rem;"
-                onclick="buyPro()">
-                Unlock Now
-            </button>
-            <button class="btn btn-outline" style="width: 100%;" onclick="closeModal()">
-                Maybe Later
-            </button>
-        </div>
-    </div>
-
-    <!-- Toast Notification -->
-    <div class="toast" id="toast">
-        <i class="fas fa-info-circle"></i>
-        <span id="toastMessage">Notification</span>
-    </div>
-
-    <!-- Razorpay SDK -->
-    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
-    </div>
-
-    <!-- Toast Notification -->
-    <div id="toast" class="toast">
-        <i class="fas fa-circle-check"></i>
-        <span id="toastMessage">Downloading PDF...</span>
-    </div>
-
-    <!-- FOOTER -->
-    <footer style="background: white; border-top: 1px solid var(--border); padding: 5rem 0 2rem;">
+    <!-- Year-by-Year Official PYQ Vault Cards -->
+    <section class="vault-section">
         <div class="container">
-            <div
-                style="display: flex; flex-wrap: wrap; gap: 3rem; justify-content: space-between; margin-bottom: 3rem;">
-                <div style="max-width: 320px;">
-                    <a href="/index.html" class="logo" style="margin-bottom: 1rem;">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                            <path
-                                d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z">
-                            </path>
-                        </svg>
-                        IISER Smart Prep
-                    </a>
-                    <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 1rem;">Empowering scientific
-                        minds to reach India's premier research institutes through data and strategy.</p>
+            <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;margin-bottom:1.5rem;">
+                <div>
+                    <h2 style="font-family:'Outfit',sans-serif;font-size:1.85rem;font-weight:800;color:var(--secondary);">
+                        Official IAT Paper Archive (2017 – 2025)
+                    </h2>
+                    <p style="color:var(--text-muted);font-size:0.95rem;">Select any year paper below to start free practice.</p>
+                </div>
+                <button class="btn btn-primary" onclick="openAuthSheet()">Unlock Full Archive Free &rarr;</button>
+            </div>
+
+            <div class="pyq-grid">
+                <!-- 2025 Paper Card -->
+                <div class="vault-card" onclick="openAuthSheet()">
+                    <div class="vault-header">
+                        <div class="vault-year">IAT 2025 Paper</div>
+                        <span class="lock-badge">🔒 Free Sign In</span>
+                    </div>
+                    <p style="font-size:0.9rem;color:var(--text-muted);margin-bottom:1.25rem;">Official 60-question paper. Advanced problem set in Physical Chemistry &amp; Electrostatics.</p>
+                    <button class="btn btn-outline" style="width:100%;margin-top:auto;">Launch TCS iON Test Mode &rarr;</button>
                 </div>
 
-                <div style="display: flex; gap: 4rem; flex-wrap: wrap;">
+                <!-- 2024 Paper Card -->
+                <div class="vault-card" onclick="openAuthSheet()">
+                    <div class="vault-header">
+                        <div class="vault-year">IAT 2024 Paper</div>
+                        <span class="lock-badge">🔒 Free Sign In</span>
+                    </div>
+                    <p style="font-size:0.9rem;color:var(--text-muted);margin-bottom:1.25rem;">Moderate difficulty paper with high weightage in Rotational Dynamics &amp; Organic Mechanisms.</p>
+                    <button class="btn btn-outline" style="width:100%;margin-top:auto;">Launch TCS iON Test Mode &rarr;</button>
+                </div>
+
+                <!-- 2023 Paper Card -->
+                <div class="vault-card" onclick="openAuthSheet()">
+                    <div class="vault-header">
+                        <div class="vault-year">IAT 2023 Paper</div>
+                        <span class="lock-badge">🔒 Free Sign In</span>
+                    </div>
+                    <p style="font-size:0.9rem;color:var(--text-muted);margin-bottom:1.25rem;">Standard difficulty paper ideal for baseline diagnostic assessment across PCM+B.</p>
+                    <button class="btn btn-outline" style="width:100%;margin-top:auto;">Launch TCS iON Test Mode &rarr;</button>
+                </div>
+
+                <!-- 2022 Paper Card -->
+                <div class="vault-card" onclick="openAuthSheet()">
+                    <div class="vault-header">
+                        <div class="vault-year">IAT 2022 Paper</div>
+                        <span class="lock-badge">🔒 Free Sign In</span>
+                    </div>
+                    <p style="font-size:0.9rem;color:var(--text-muted);margin-bottom:1.25rem;">Focuses on core NCERT concepts with direct application questions in Biology.</p>
+                    <button class="btn btn-outline" style="width:100%;margin-top:auto;">Launch TCS iON Test Mode &rarr;</button>
+                </div>
+
+                <!-- 2021 Paper Card -->
+                <div class="vault-card" onclick="openAuthSheet()">
+                    <div class="vault-header">
+                        <div class="vault-year">IAT 2021 Paper</div>
+                        <span class="lock-badge">🔒 Free Sign In</span>
+                    </div>
+                    <p style="font-size:0.9rem;color:var(--text-muted);margin-bottom:1.25rem;">Great paper for practicing time management and eliminating silly calculation errors.</p>
+                    <button class="btn btn-outline" style="width:100%;margin-top:auto;">Launch TCS iON Test Mode &rarr;</button>
+                </div>
+
+                <!-- 2020 Paper Card -->
+                <div class="vault-card" onclick="openAuthSheet()">
+                    <div class="vault-header">
+                        <div class="vault-year">IAT 2020 Paper</div>
+                        <span class="lock-badge">🔒 Free Sign In</span>
+                    </div>
+                    <p style="font-size:0.9rem;color:var(--text-muted);margin-bottom:1.25rem;">Balanced foundational paper for early-stage preparation and concept building.</p>
+                    <button class="btn btn-outline" style="width:100%;margin-top:auto;">Launch TCS iON Test Mode &rarr;</button>
+                </div>
+            </div>
+
+            <!-- Bottom High Conversion Banner -->
+            <div class="bottom-cta-banner">
+                <h2>Ready to Crack IISER IAT 2027?</h2>
+                <p>Join 14,000+ science aspirants practicing official PYQs with AI step-by-step solutions and real exam simulation.</p>
+                <button class="btn" onclick="openAuthSheet()" style="background:#fff;color:var(--primary-dark);padding:0.9rem 2.25rem;font-size:1rem;">
+                    Start Free PYQ Practice Now &rarr;
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Frictionless Auth Sheet Modal -->
+    <div class="modal-overlay" id="authSheet">
+        <div class="modal-card">
+            <button class="close-btn" onclick="closeAuthSheet()">&times;</button>
+            <div style="width:44px;height:44px;background:var(--primary-soft);color:var(--primary);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.3rem;margin:0 auto 1rem;">
+                <i class="fas fa-lock"></i>
+            </div>
+            <h3 style="font-family:'Outfit',sans-serif;font-size:1.5rem;font-weight:800;color:var(--secondary);margin-bottom:0.4rem;">
+                Unlock Free PYQ Practice
+            </h3>
+            <p style="color:var(--text-muted);font-size:0.88rem;margin-bottom:1.5rem;">
+                Get instant 100% free access to all 600+ verified solutions, TCS iON CBT mode, and AI Tutor assistance.
+            </p>
+
+            <div style="display:flex;flex-direction:column;gap:0.75rem;">
+                <button class="btn btn-primary" onclick="redirectToAuth('signup')" style="width:100%;padding:0.85rem;">
+                    🚀 Sign Up Free with 1-Click
+                </button>
+                <button class="btn btn-outline" onclick="redirectToAuth('login')" style="width:100%;padding:0.85rem;">
+                    Already have an account? Log In
+                </button>
+            </div>
+
+            <p style="font-size:0.75rem;color:var(--text-light);margin-top:1.1rem;">
+                🔒 No credit card required &bull; Takes less than 10 seconds
+            </p>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast-notification" id="toast">
+        <i class="fas fa-info-circle" style="color:var(--primary);"></i>
+        <span id="toastMessage">Action completed successfully</span>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div style="display:flex;flex-wrap:wrap;gap:3rem;justify-content:space-between;margin-bottom:3rem;">
+                <div style="max-width:340px;">
+                    <a href="/index.html" class="logo" style="margin-bottom:1rem;">
+                        <div class="logo-icon">I</div>
+                        IISER SmartPrep
+                    </a>
+                    <p style="color:var(--text-muted);font-size:0.9rem;">Empowering scientific minds to reach India's premier research institutes through data-driven strategy and targeted practice.</p>
+                </div>
+                <div style="display:flex;gap:4rem;flex-wrap:wrap;">
                     <div>
-                        <h4 style="margin-bottom: 1rem; font-size: 0.9rem; font-weight: 700; color: var(--secondary);">
-                            Platform</h4>
-                        <ul style="display: flex; flex-direction: column; gap: 0.75rem;">
-                            <li><a href="/ai_tutor.html" style="color: var(--text-muted); font-size: 0.9rem;">AI
-                                    Tutor</a></li>
-                            <li><a href="/mock_test/full_mock_test_homepage.html"
-                                    style="color: var(--text-muted); font-size: 0.9rem;">Mock Tests</a></li>
-                            <li><a href="/#pricing" style="color: var(--text-muted); font-size: 0.9rem;">Pricing</a>
-                            </li>
+                        <h4 style="margin-bottom:1rem;font-size:0.9rem;font-weight:700;color:var(--secondary);text-transform:uppercase;letter-spacing:0.05em;">Platform</h4>
+                        <ul style="display:flex;flex-direction:column;gap:0.65rem;list-style:none;">
+                            <li><a href="/ai_tutor.html" style="color:var(--text-muted);font-size:0.9rem;">AI Tutor</a></li>
+                            <li><a href="/mock_test/full_mock_test_homepage.html" style="color:var(--text-muted);font-size:0.9rem;">Mock Tests</a></li>
+                            <li><a href="/pyqs/pyq.html" style="color:var(--text-muted);font-size:0.9rem;">PYQ Hub</a></li>
                         </ul>
                     </div>
                     <div>
-                        <h4 style="margin-bottom: 1rem; font-size: 0.9rem; font-weight: 700; color: var(--secondary);">
-                            Support</h4>
-                        <ul style="display: flex; flex-direction: column; gap: 0.75rem;">
-                            <li><a href="/#faq" style="color: var(--text-muted); font-size: 0.9rem;">FAQ</a>
-                            </li>
-                            <li><a href="/content.html" style="color: var(--text-muted); font-size: 0.9rem;">Contact</a>
-                            </li>
-                            <li><a href="/privacy.html" style="color: var(--text-muted); font-size: 0.9rem;">Privacy
-                                    Policy</a></li>
-                            <li><a href="/terms.html" style="color: var(--text-muted); font-size: 0.9rem;">Terms &
-                                    Conditions</a></li>
+                        <h4 style="margin-bottom:1rem;font-size:0.9rem;font-weight:700;color:var(--secondary);text-transform:uppercase;letter-spacing:0.05em;">Guides</h4>
+                        <ul style="display:flex;flex-direction:column;gap:0.65rem;list-style:none;">
+                            <li><a href="/news/iiser-iat-2027-preparation-strategy.html" style="color:var(--text-muted);font-size:0.9rem;">IAT 2027 Strategy</a></li>
+                            <li><a href="/news/iiser-iat-syllabus-2026.html" style="color:var(--text-muted);font-size:0.9rem;">Syllabus Checklist</a></li>
+                            <li><a href="/news/iiser-iat-vs-jee-the-complete-guide.html" style="color:var(--text-muted);font-size:0.9rem;">IAT vs JEE Guide</a></li>
                         </ul>
                     </div>
                 </div>
             </div>
-            <div
-                style="text-align: center; border-top: 1px solid var(--border); padding-top: 2rem; color: var(--text-light); font-size: 0.85rem;">
-                &copy; 2026 IISER Smart Prep. All rights reserved. Not affiliated with IISERs Joint Admissions
-                Committee.
+            <div style="text-align:center;border-top:1px solid var(--border);padding-top:2rem;color:var(--text-light);font-size:0.85rem;">
+                &copy; 2026 IISER SmartPrep. All rights reserved. Not officially affiliated with IISERs Joint Admissions Committee.
             </div>
         </div>
     </footer>
 
-    <script src="/config.js"></script>
+    <!-- Interactive Conversion Scripts -->
     <script>
-        let currentYear = '';
-
-        // --- AUTH & PLAN STATE MANAGEMENT ---
-        const token = localStorage.getItem("IAT_TOKEN");
-
-        // 🔒 ALWAYS START LOCKED (Happens by HTML default)
-
-        // 🔄 THEN SYNC FROM BACKEND
-        syncPlanFromBackend();
-
-        async function syncPlanFromBackend() {
-            if (!token) return;
-
-            try {
-                const res = await fetch("https://api.iisersmartprep.space/api/me", {
-                    headers: { "Authorization": "Bearer " + token }
-                });
-
-                if (!res.ok) return;
-
-                const user = await res.json();
-                localStorage.setItem("IAT_PLAN", user.plan);
-
-                if (user.plan === "PRO") {
-                    unlockUI();
-                }
-            } catch (e) {
-                console.error("Plan sync failed", e);
-            }
-        }
-
-        function unlockUI() {
-            const lockedCards = document.querySelectorAll('.pyq-card.locked');
-
-            lockedCards.forEach(card => {
-                const year = card.getAttribute('data-year');
-
-                // 1. Remove structure locks
-                card.classList.remove('locked');
-                const lockStrip = card.querySelector('.lock-strip');
-                if (lockStrip) lockStrip.remove();
-
-                // 2. Fix visuals
-                const yearIcon = card.querySelector('.year-icon');
-                if (yearIcon) {
-                    yearIcon.style.background = 'var(--primary-soft)';
-                    yearIcon.style.opacity = '1';
-                }
-
-                const yearText = card.querySelector('.year-text');
-                if (yearText) yearText.style.color = 'var(--secondary)';
-
-                const paperInfo = card.querySelector('.paper-info');
-                // Replace locked icon with clock if needed, or just remove lock text
-                // Simpler: Just refresh the innerHTML of paper-info for consistency if possible, 
-                // but modifying valid elements is safer.
-                // Let's just find the lock tag and remove/replace it.
-                if (paperInfo) {
-                    const lockTag = paperInfo.querySelector('.fa-lock');
-                    if (lockTag && lockTag.parentElement) {
-                        // Replace "Locked" with "Full Access" or valid time
-                        lockTag.parentElement.innerHTML = '<i class="fas fa-check-circle" style="color: var(--success);"></i> Unlocked';
-                    }
-                }
-
-                // 3. Replace Action Buttons
-                const actionContainer = card.querySelector('.card-actions');
-
-                if (year === 'legacy') {
-                    // Bundle
-                    actionContainer.innerHTML = `
-                        <button class="action-btn success" style="grid-column: 1 / -1;" onclick="openActionModal('bundle')">
-                            <i class="fas fa-download"></i> Download Bundle PDF
-                        </button>
-                    `;
-                } else {
-                    // 2021, 2020 etc
-                    actionContainer.innerHTML = `
-                        <button class="action-btn primary" onclick="openActionModal('${year}')">
-                            <i class="fas fa-play"></i> Start Test
-                        </button>
-                        <button class="action-btn success" onclick="openActionModal('${year}')">
-                            <i class="fas fa-download"></i> PDF + Sol
-                        </button>
-                    `;
-                }
-            });
-        }
-
-
-        // Intersection Observer for animations
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                }
-            });
-        }, { threshold: 0.1 });
-
-        document.querySelectorAll('.fade-in-up').forEach(el => observer.observe(el));
-
-        // Header scroll
-        window.addEventListener('scroll', () => {
-            const header = document.querySelector('header');
-            if (window.scrollY > 20) {
-                header.classList.add('scrolled');
-            } else {
-                header.classList.remove('scrolled');
-            }
-        });
-
-        // Mobile menu
-        function toggleMenu() {
-            const nav = document.querySelector('.nav-links');
-            nav.classList.toggle('active');
-        }
-
-        // Filter papers
-        function filterPapers(category, btn) {
-            document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
-            btn.classList.add('active');
-
-            const cards = document.querySelectorAll('.pyq-card');
-            cards.forEach(card => {
-                if (category === 'all') {
-                    card.style.display = 'flex';
-                } else {
-                    const cardCategory = card.getAttribute('data-category');
-                    if (cardCategory && cardCategory.includes(category)) {
-                        card.style.display = 'flex';
-                    } else {
-                        card.style.display = 'none';
-                    }
-                }
-            });
-        }
-
-        // Handle Paper Click (Smart Access)
-        async function handlePaperClick(year) {
-            // 1. Auth Guard
-            const token = localStorage.getItem("IAT_TOKEN");
-            if (!token) {
-                openAuthSheet();
-                return;
-            }
-
-            // 2. Free Papers (2024 Only)
-            // If logic relies on year not being in locked set
-            const lockedYears = ['2023', '2022', '2021', '2020', '2019', '2018', '2017', 'bundle'];
-            if (!lockedYears.includes(year)) {
-                openActionModal(year);
-                return;
-            }
-
-            // 3. Locked Papers -> Live Check
-            // If already visually unlocked (e.g. from previous check), just open
-            // But unlockUI removes .locked class. We can check that?
-            // Safer to just check plan or re-verify. Live check is what was requested.
-
-            // Optimization: If local storage says PRO, maybe just open? 
-            // The request said "follow logic of full mock test" which implies checking logic.
-            // Full mock check does: startMock -> check token -> (if locked) -> fetch /api/me -> if PRO -> unlock & go.
-
-            showToast("Verifying Access...");
-
-            try {
-                const res = await fetch("https://api.iisersmartprep.space/api/me", {
-                    headers: { "Authorization": "Bearer " + token }
-                });
-
-                if (res.ok) {
-                    const user = await res.json();
-                    // Update Local Source of Truth
-                    localStorage.setItem("IAT_PLAN", user.plan);
-
-                    if (user.plan === 'PRO') {
-                        unlockUI(); // Unlock everything for convenience
-                        if (year === 'bundle') {
-                            openActionModal('bundle');
-                        } else {
-                            openActionModal(year);
-                        }
-                    } else {
-                        window.location.href = '/#pricing';
-                    }
-                } else {
-                    // Auth failed or server error
-                    window.location.href = '/#pricing';
-                }
-            } catch (e) {
-                console.error("Access Verification Failed", e);
-                window.location.href = '/#pricing';
-            }
-        }
-
-        // Open Action Modal
-        function openActionModal(year) {
-            currentYear = year;
-
-            if (year === 'bundle') {
-                // Bundle specific logic
-                document.getElementById('modalYearTitle').textContent = `Legacy Bundle (2017-2024)`;
-                // Maybe hide "Interactive Test" option for bundle if it's PDF only?
-                // For now, let's just point download link to a bundle file
-                const downloadLink = document.getElementById('downloadLink');
-                downloadLink.href = `https://collection.cloudinary.com/dhb8qmnxt/33f1a9d8e663061ea22eafae17c24140`; // Cloudinary Bundle Link
-
-                // Hide start test button for bundle if needed, or keep it if we have tests
-                // Assuming PDF only for bundle based on UI "PDF Only" tag
-                // We can hide the first child of action-grid
-                document.querySelector('.action-grid .action-card:first-child').style.display = 'none';
-            } else {
-                document.getElementById('modalYearTitle').textContent = `IAT ${year}`;
-                const downloadLink = document.getElementById('downloadLink');
-                downloadLink.href = `pyq-${year}.html`;
-
-                // Ensure start test is visible
-                document.querySelector('.action-grid .action-card:first-child').style.display = 'flex';
-            }
-
-
-            document.getElementById('actionModal').classList.add('active');
-            document.body.style.overflow = 'hidden';
-        }
-
-        // Show Premium Modal
-        function showPremiumModal() {
-            document.getElementById('premiumModal').classList.add('active');
-            document.body.style.overflow = 'hidden';
-        }
-
-        // Close Modal
-        function closeModal(e) {
-            if (!e || e.target.classList.contains('modal-overlay') || e.target.classList.contains('close-btn') || e.target.getAttribute('onclick') === 'closeModal()') {
-                document.querySelectorAll('.modal-overlay').forEach(m => m.classList.remove('active'));
-                document.body.style.overflow = 'auto';
-            }
-        }
-
-        // --- Auth Sheet Logic ---
+        // Modal Control
         function openAuthSheet() {
-            const sheet = document.getElementById('auth-sheet-overlay');
-            sheet.classList.add('active');
-            // Note: .active handles opacity/visibility from CSS
-            // We need to animate the card up.
-            setTimeout(() => {
-                sheet.querySelector('.modal-content').style.transform = 'translateY(0)';
-            }, 10);
+            document.getElementById('authSheet').classList.add('active');
         }
 
         function closeAuthSheet() {
-            const sheet = document.getElementById('auth-sheet-overlay');
-            sheet.querySelector('.modal-content').style.transform = 'translateY(100%)';
-            setTimeout(() => {
-                sheet.classList.remove('active');
-            }, 300);
+            document.getElementById('authSheet').classList.remove('active');
         }
 
         function redirectToAuth(mode) {
-            const currentUrl = encodeURIComponent(window.location.href);
-            // Assuming login.html is one level up from pyqs/pyq.html -> ../login.html
-            window.location.href = `../login.html?mode=${mode}&redirect=${currentUrl}`;
+            const currentUrl = encodeURIComponent('/dashboard-react/index.html');
+            window.location.href = `/login.html?mode=${mode}&redirect=${currentUrl}`;
         }
 
+        // Demo Question Interaction
+        function checkDemoAnswer(btn, isCorrect) {
+            document.querySelectorAll('.option-btn').forEach(b => {
+                b.classList.remove('selected-correct', 'selected-wrong');
+            });
 
-        // Start Test
-        function startTest() {
-            if (currentYear === 'bundle') return; // No test for bundle
-
-            // GUARD: Check Auth
-            const token = localStorage.getItem("IAT_TOKEN");
-            if (!token) {
-                // Close the action modal first if it's open, or just open auth sheet on top?
-                // Better to close action modal to avoid clutter, or stack them.
-                // Closing action modal feels cleaner.
-                document.getElementById('actionModal').classList.remove('active');
-                openAuthSheet();
-                return;
-            }
-
-            showToast(`Loading IAT ${currentYear} Test Environment...`);
-            setTimeout(() => {
-                window.location.href = `start-test-pyq.html?year=${currentYear}`;
-            }, 1000);
-        }
-
-        // 4. RAZORPAY PAYMENT LOGIC
-        async function buyPro() {
-            const token = localStorage.getItem("IAT_TOKEN");
-            if (!token) { closeModal(); openAuthSheet(); return; }
-
-            const btn = document.querySelector('.btn-upgrade-now');
-            const originalText = btn.innerHTML;
-            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
-            btn.disabled = true;
-
-            try {
-                // Create Order
-                const res = await fetch("https://api.iisersmartprep.space/api/create-order", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                        "Authorization": `Bearer ${token}`
-                    }
-                });
-                const data = await res.json();
-                console.log("ORDER DATA:", data);
-
-                if (data.error) throw new Error(data.error);
-
-                // Initialize Razorpay
-                const options = {
-                    key: data.key,
-                    amount: data.amount,
-                    currency: data.currency,
-                    order_id: data.order_id,
-                    name: "IISER Smart Prep",
-                    description: "Pro Plan Upgrade",
-                    handler: function (response) { verifyPayment(response, btn, originalText); },
-                    theme: { color: "#4f46e5" },
-                    modal: {
-                        ondismiss: function () {
-                            btn.innerHTML = originalText;
-                            btn.disabled = false;
-                        }
-                    }
-                };
-                const rzp = new Razorpay(options);
-                rzp.open();
-
-            } catch (err) {
-                alert("Payment Init Failed: " + err.message);
-                btn.innerHTML = originalText;
-                btn.disabled = false;
+            if (isCorrect) {
+                btn.classList.add('selected-correct');
+                showToast("Correct! Option B is right 🎉 Click below for AI step-by-step logic.");
+            } else {
+                btn.classList.add('selected-wrong');
+                showToast("Option is incorrect. Check the AI explanation!");
             }
         }
 
-        async function verifyPayment(response, btn, originalText) {
-            const token = localStorage.getItem("IAT_TOKEN");
-            try {
-                const res = await fetch("https://api.iisersmartprep.space/api/verify-payment", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                        "Authorization": `Bearer ${token}`
-                    },
-                    body: JSON.stringify(response)
-                });
-                const verifyData = await res.json();
-                if (verifyData.success) {
-                    localStorage.setItem("IAT_PLAN", "PRO");
-                    closeModal(); // Close premium modal
-                    unlockUI();   // Unlock content
-                    showToast("🎉 Welcome to Pro! All tests unlocked.");
-                } else {
-                    alert("Payment verification failed.");
-                    btn.innerHTML = originalText;
-                    btn.disabled = false;
-                }
-            } catch (e) {
-                console.error(e);
-                alert("Error verifying payment.");
-                btn.innerHTML = originalText;
-                btn.disabled = false;
-            }
-        }
-
-        // Handle Download
-        function handleDownload(e) {
-            e.preventDefault(); // Stop default link behavior
-
-            const token = localStorage.getItem("IAT_TOKEN");
-            if (!token) {
-                document.getElementById('actionModal').classList.remove('active');
-                openAuthSheet();
-                return;
-            }
-
-            // Proceed with download
-            // We need to get the href from the element or from logic
-            const link = document.getElementById('downloadLink');
-            const href = link.href;
-
-            showToast("Starting Download...");
-            // Simulate download or redirect
-            setTimeout(() => {
-                window.location.href = href;
-            }, 500);
-        }
-
-        // Toast Notification
         function showToast(message) {
             const toast = document.getElementById('toast');
             document.getElementById('toastMessage').textContent = message;
             toast.classList.add('show');
-
-            setTimeout(() => {
-                toast.classList.remove('show');
-            }, 3000);
+            setTimeout(() => toast.classList.remove('show'), 3200);
         }
 
-        // Keyboard shortcuts
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') {
-                closeModal();
-                closeAuthSheet();
-            }
-        });
-
-        // FAQ Accordion
-        function toggleFaq(id) {
-            const item = document.getElementById(id);
-            const btn = item.querySelector('.faq-question');
-            const isOpen = item.classList.contains('open');
-
-            // Close all other items
-            document.querySelectorAll('.faq-item.open').forEach(el => {
-                if (el.id !== id) {
-                    el.classList.remove('open');
-                    el.querySelector('.faq-question').setAttribute('aria-expanded', 'false');
-                }
-            });
-
-            // Toggle current
-            item.classList.toggle('open', !isOpen);
-            btn.setAttribute('aria-expanded', String(!isOpen));
-        }
-    </script>
-    <script>
-        (function() {
-            const countdownElement = document.getElementById('countdown-line');
-            let expiry = localStorage.getItem('IAT_SALE_EXPIRY_4DAY');
-            if (!expiry) {
-                expiry = Date.now() + (4 * 24 * 60 * 60 * 1000);
-                localStorage.setItem('IAT_SALE_EXPIRY_4DAY', expiry);
-            } else {
-                expiry = parseInt(expiry);
-            }
-            function updateCountdown() {
-                const now = Date.now();
-                const diff = expiry - now;
-                if (diff <= 0) {
-                    if (countdownElement) {
-                        countdownElement.innerHTML = "Extended for limited time 🔥";
-                    }
-                    return;
-                }
-                const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-                const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-                const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-                if (countdownElement) {
-                    countdownElement.innerHTML = `Offer ends in ${days}d ${hours}h ${minutes}m ${seconds}s ⏳`;
+        // Auto Redirect Logged-In Users directly to Dashboard PYQ section
+        try {
+            const token = localStorage.getItem("IAT_TOKEN");
+            if (token) {
+                const authContainer = document.getElementById("auth-buttons-container");
+                if (authContainer) {
+                    authContainer.innerHTML = '<a href="/dashboard.html" class="btn btn-primary btn-nav-primary" style="padding:0.45rem 1.1rem;font-size:0.85rem;">Dashboard &rarr;</a>';
                 }
             }
-            setInterval(updateCountdown, 1000);
-            updateCountdown();
-        })();
+        } catch (e) {}
     </script>
 </body>
 

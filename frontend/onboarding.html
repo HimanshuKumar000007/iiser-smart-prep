@@ -47,7 +47,7 @@
     }
 
     * { box-sizing: border-box; }
-    body { margin: 0; }
+    body { margin: 0; background: var(--navy); }
 
     /* Portal Container & Grid */
     .ob-modal-overlay {
@@ -56,8 +56,8 @@
       background: var(--navy);
       z-index: 99999;
       display: flex;
-      opacity: 0;
-      pointer-events: none;
+      opacity: 1;
+      pointer-events: auto;
       transition: opacity 0.5s var(--ease);
       font-family: var(--sans);
       color: var(--navy-text);
@@ -1865,8 +1865,8 @@
       localStorage.setItem('onboarding_weak', JSON.stringify(obState.weak));
       localStorage.setItem('onboarding_completed', 'true');
 
-      // Redirect to signup page
-      window.location.href = 'signup.html';
+      // Redirect directly to login/signup page
+      window.location.href = 'login.html?mode=signup&redirect=dashboard-react/index.html';
     }
 
     window.addEventListener('DOMContentLoaded', () => {
