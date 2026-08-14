@@ -1,9 +1,8 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState } from 'react';
 import { useEntitlement } from '../../hooks/useEntitlement';
 import { Sparkles, Check, ShieldCheck, AlertCircle, Calendar, CreditCard, Loader2 } from 'lucide-react';
 import { cn } from '../../lib/utils';
 import { useTheme } from '../../context/ThemeContext';
-import { trackEvent } from '../../lib/posthog';
 
 interface SubscriptionProps {
   returnTo?: string;
@@ -17,23 +16,6 @@ export function Subscription({ returnTo, onNavigate }: SubscriptionProps) {
   const [loadingPlan, setLoadingPlan] = useState<string | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [selectedMobilePlan, setSelectedMobilePlan] = useState<'monthly' | 'six_month' | 'annual'>('six_month');
-
-  const hasTrackedViewRef = useRef(false);
-
-  // Track upgrade_page_viewed once
-  useEffect(() => {
-    if (!hasTrackedViewRef.current) {
-      hasTrackedViewRef.current = true;
-      try {
-        trackEvent('upgrade_page_viewed', {
-          current_plan: planId || 'FREE',
-          is_pro: isPro,
-          return_to: returnTo || null,
-        });
-      } catch (_) {}
-    }
-  }, [planId, isPro, returnTo]);
-
 
   const PLANS = [
     {
@@ -111,14 +93,6 @@ export function Subscription({ returnTo, onNavigate }: SubscriptionProps) {
     setErrorMessage(null);
     const token = localStorage.getItem('IAT_TOKEN');
 
-    // Track upgrade_clicked
-    try {
-      trackEvent('upgrade_clicked', {
-        selected_plan: selectedPlanId,
-        current_plan: planId || 'FREE',
-      });
-    } catch (_) {}
-
     if (!token) {
       setErrorMessage("Authentication session missing. Please log out and log back in.");
       setLoadingPlan(null);
@@ -171,15 +145,6 @@ export function Subscription({ returnTo, onNavigate }: SubscriptionProps) {
             const verifyData = await verifyRes.json();
 
             if (verifyData.success) {
-              // Track payment_completed only AFTER verified success
-              try {
-                trackEvent('payment_completed', {
-                  plan_id: selectedPlanId,
-                  amount: orderData.amount,
-                  currency: orderData.currency,
-                });
-              } catch (_) {}
-
               await refresh();
               // Redirect back to intended page if one was saved
               if (returnTo && onNavigate) {
@@ -207,16 +172,6 @@ export function Subscription({ returnTo, onNavigate }: SubscriptionProps) {
       };
 
       const rzp = new (window as any).Razorpay(options);
-
-      // Track payment_started when checkout opens
-      try {
-        trackEvent('payment_started', {
-          plan_id: selectedPlanId,
-          amount: orderData.amount,
-          currency: orderData.currency,
-        });
-      } catch (_) {}
-
       rzp.open();
 
     } catch (err: any) {

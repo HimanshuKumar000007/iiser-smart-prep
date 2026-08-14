@@ -44,7 +44,6 @@ import { useEntitlement } from './hooks/useEntitlement';
 import { Subscription } from './components/dashboard/Subscription';
 import { currentUser } from './data/mockData';
 import { ThemeProvider, useTheme } from './context/ThemeContext';
-import { identifyUser, resetAnalytics, trackEvent } from './lib/posthog';
  
 function DashboardApp() {
   const { theme, toggleTheme } = useTheme();
@@ -54,46 +53,6 @@ function DashboardApp() {
   const [currentView, setCurrentView] = useState<string>(() => {
     return localStorage.getItem('dashboard_current_view') || 'dashboard';
   });
-
-  // PostHog Authenticated User Identification & Pending Auth Event Tracking
-  useEffect(() => {
-    try {
-      const token = localStorage.getItem('IAT_TOKEN');
-      if (!token) return;
-
-      const parts = token.split('.');
-      if (parts.length < 2) return;
-
-      const payload = JSON.parse(atob(parts[1]));
-      const userId = payload.id || payload.userId;
-      if (!userId) return;
-
-      const rawExam = localStorage.getItem('onboarding_exam') || 'iiser';
-      const examPreference = rawExam === 'nest' ? 'NEST' : rawExam === 'both' ? 'Both' : 'IAT';
-      const plan = entitlement.planId || localStorage.getItem('IAT_PLAN') || payload.plan || 'FREE';
-
-      identifyUser(userId, {
-        plan: plan,
-        is_pro: entitlement.isPro,
-        exam_preference: examPreference,
-      });
-
-      // Check if user just completed login or signup from login.html
-      const pendingAuthEvent = sessionStorage.getItem('pending_auth_event');
-      if (pendingAuthEvent) {
-        sessionStorage.removeItem('pending_auth_event');
-        trackEvent(pendingAuthEvent, {
-          plan: plan,
-          is_pro: entitlement.isPro,
-          exam_preference: examPreference,
-        });
-      }
-    } catch (err) {
-      console.warn('PostHog user identification/auth event failed silently:', err);
-    }
-  }, [entitlement.isPro, entitlement.planId, entitlement.loading]);
-
-
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -224,9 +183,6 @@ function DashboardApp() {
                 }`}>Logged in as {currentUser.name}</p>
                 <button
                   onClick={() => {
-                    try {
-                      resetAnalytics();
-                    } catch (_) {}
                     localStorage.removeItem('currentUser');
                     localStorage.removeItem('onboarding_completed');
                     localStorage.removeItem('IAT_TOKEN');

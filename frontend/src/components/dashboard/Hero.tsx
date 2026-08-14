@@ -26,8 +26,6 @@ import { CanonicalStudentAction } from '../../hooks/useStudentActionPlan';
 import { currentUser } from '../../data/mockData';
 import { LESSONS_DATA } from '../../data/lessons';
 import { useTheme } from '../../context/ThemeContext';
-import { trackEvent } from '../../lib/posthog';
-
 
 // ── Exam label from onboarding localStorage ──────────────────────────
 function getExamLabel(): string {
@@ -207,28 +205,8 @@ export function Hero({ onNavigate, dashboardData: data, loading, actionPlan: pla
   }));
 
   const handleCta = (action: CanonicalStudentAction) => {
-    try {
-      trackEvent('daily_mission_started', {
-        mission_id: action.id,
-        title: action.title,
-        type: action.type,
-        subject: action.subject,
-        chapter: action.chapterTitle || action.chapterId,
-        route: action.route,
-      });
-    } catch (_) {}
-
     if (action.id) {
       markMissionCompleted(action.id);
-      try {
-        trackEvent('daily_mission_completed', {
-          mission_id: action.id,
-          title: action.title,
-          type: action.type,
-          completed_count: completedTasks + 1,
-          total_missions: totalTasks,
-        });
-      } catch (_) {}
     }
     if (action.route) {
       onNavigate?.(action.route);

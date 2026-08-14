@@ -2,7 +2,6 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { Clock, CheckCircle2, ChevronLeft, ChevronRight, Bookmark, ArrowRight, RotateCcw, AlertCircle, Loader, LayoutGrid } from 'lucide-react';
 import { cn } from '../../lib/utils';
 import { MockTestIndex, MockQuestion } from '../../data/mockTests';
-import { trackEvent } from '../../lib/posthog';
 
 const API_BASE =
   (import.meta as any).env?.VITE_API_URL ??
@@ -37,23 +36,6 @@ export function MockTestPlayer({
   const storageKey = `mock_attempt_${userId}_${mockTest.id}`;
 
   const { questions } = mockTest.data;
-
-  const hasTrackedStartRef = useRef(false);
-
-  // Track mock_started once
-  useEffect(() => {
-    if (!isReviewMode && !hasTrackedStartRef.current && mockTest.id) {
-      hasTrackedStartRef.current = true;
-      try {
-        trackEvent('mock_started', {
-          mock_id: mockTest.id,
-          mock_title: mockTest.title,
-          total_questions: questions.length,
-          exam: (mockTest as any).exam || 'IAT',
-        });
-      } catch (_) {}
-    }
-  }, [isReviewMode, mockTest.id, mockTest.title, questions.length]);
 
   // ─── All hooks must be called unconditionally before any early return ───────
 
@@ -423,21 +405,6 @@ export function MockTestPlayer({
       } catch (e) {
         console.warn("Failed to save attempt history locally:", e);
       }
-
-      // Safe PostHog Event Tracking
-      try {
-        trackEvent('mock_completed', {
-          mock_id: mockTest.id,
-          mock_title: mockTest.title,
-          score: data.score,
-          total_questions: data.totalQuestions || questions.length,
-          correct: data.correct,
-          wrong: data.wrong,
-          skipped: data.skipped,
-          accuracy: data.accuracy,
-          time_taken_seconds: data.totalTimeSeconds || elapsed,
-        });
-      } catch (_) {}
 
       // Pass the frozen snapshot to results screen — NOT mutable state refs
       onFinish?.(data, frozenAnswers, frozenTimes);

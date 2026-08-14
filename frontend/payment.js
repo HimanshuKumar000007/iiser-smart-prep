@@ -64,16 +64,6 @@ async function buyPro() {
                     const verifyData = await verifyRes.json();
 
                     if (verifyData.success) {
-                        try {
-                            if (window.posthog && typeof window.posthog.capture === 'function') {
-                                window.posthog.capture('payment_completed', {
-                                    plan_id: 'PRO',
-                                    amount: data.amount,
-                                    currency: data.currency,
-                                });
-                            }
-                        } catch (_) {}
-
                         // Re-sync plan from DB using the canonical auth.js function
                         if (typeof refreshPlanFromServer === "function") {
                             await refreshPlanFromServer();
@@ -109,16 +99,6 @@ async function buyPro() {
 
         // 4️⃣ Open Razorpay checkout
         const rzp = new Razorpay(options);
-
-        try {
-            if (window.posthog && typeof window.posthog.capture === 'function') {
-                window.posthog.capture('payment_started', {
-                    plan_id: 'PRO',
-                    amount: data.amount,
-                    currency: data.currency
-                });
-            }
-        } catch (_) {}
 
         rzp.on("payment.failed", function (response) {
             console.error("Payment failed:", response.error);
