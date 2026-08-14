@@ -27,12 +27,21 @@ const stepIndicatorEls = [
 
 let currentStepIndex = 0;
 
+function safeTrack(event, properties) {
+  try {
+    if (window.posthog && typeof window.posthog.capture === 'function') {
+      window.posthog.capture(event, properties);
+    }
+  } catch (_) {}
+}
+
 // Open Wizard Portal
 function openOnboardingWizard() {
   obModal.classList.add('active');
   document.body.style.overflow = 'hidden'; // Prevent page scroll
   resetOnboardingState();
   showStep(0);
+  safeTrack('assessment_started', {});
 }
 
 // Close Wizard Portal
@@ -469,6 +478,15 @@ function unlockDashboard() {
   localStorage.setItem('onboarding_strong', JSON.stringify(obState.strong));
   localStorage.setItem('onboarding_weak', JSON.stringify(obState.weak));
   localStorage.setItem('onboarding_completed', 'true');
+
+  safeTrack('assessment_completed', {
+    exam: obState.exam,
+    level: obState.level,
+    days: obState.days,
+    hours: obState.hours,
+    strong: obState.strong,
+    weak: obState.weak
+  });
 
   // Redirect to signup page
   window.location.href = 'signup.html';

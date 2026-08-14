@@ -18,6 +18,8 @@ import { cn } from '../../lib/utils';
 import { currentUser } from '../../data/mockData';
 import { useTheme } from '../../context/ThemeContext';
 import { useEntitlement } from '../../hooks/useEntitlement';
+import { resetAnalytics } from '../../lib/posthog';
+
 
 const navItems = [
   { id: 'dashboard', icon: LayoutDashboard, label: 'Dashboard' },
@@ -177,6 +179,9 @@ export function Sidebar({
               </button>
               <button 
                 onClick={() => {
+                  try {
+                    resetAnalytics();
+                  } catch (_) {}
                   localStorage.removeItem('currentUser');
                   localStorage.removeItem('onboarding_completed');
                   localStorage.removeItem('IAT_TOKEN');

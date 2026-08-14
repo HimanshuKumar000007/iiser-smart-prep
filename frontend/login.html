@@ -662,6 +662,7 @@
         if (!res.ok) throw new Error(data.error || 'Login failed');
         clearOldProgressData();
         localStorage.setItem('IAT_TOKEN', data.token);
+        sessionStorage.setItem('pending_auth_event', 'login_completed');
         
         try {
           const profileRes = await fetch(`${API_BASE}/me`, {
@@ -724,6 +725,7 @@
         if (!res.ok) throw new Error(data.error || 'Signup failed');
         clearOldProgressData();
         localStorage.setItem('IAT_TOKEN', data.token);
+        sessionStorage.setItem('pending_auth_event', 'signup_completed');
         if (name) localStorage.setItem('currentUser', name);
         const plan = (data.user?.plan || 'FREE').toUpperCase();
         localStorage.setItem('IAT_PLAN', plan);

@@ -14,6 +14,7 @@ import { currentUser } from '../../data/mockData';
 import { cn } from '../../lib/utils';
 import { Footer } from '../layout/Footer';
 import { useTheme, Theme } from '../../context/ThemeContext';
+import { resetAnalytics } from '../../lib/posthog';
 
 export function Settings() {
   const [profile, setProfile] = useState<any>(null);
@@ -110,6 +111,9 @@ export function Settings() {
   };
 
   const handleLogout = () => {
+    try {
+      resetAnalytics();
+    } catch (_) {}
     localStorage.removeItem('IAT_TOKEN');
     localStorage.removeItem('currentUser');
     localStorage.removeItem('dashboard_current_view');

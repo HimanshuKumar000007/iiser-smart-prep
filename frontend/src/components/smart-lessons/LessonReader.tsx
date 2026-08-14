@@ -26,6 +26,7 @@ import { ImportantPoints } from './ImportantPoints';
 import { CommonMistakes } from './CommonMistakes';
 import { QuizResultsScreen } from './QuizResultsScreen';
 import { cn } from '../../lib/utils';
+import { trackEvent } from '../../lib/posthog';
 
 // ── Lazy-loaded lesson detail components (one chunk per chapter) ──────────────
 const UnitsLessonDetail            = lazy(() => import('./UnitsLessonDetail').then(m => ({ default: m.UnitsLessonDetail })));
@@ -234,6 +235,22 @@ export function LessonReader({ lessonId, onNavigate, startAtQuiz = false }: Prop
   // Calculate estimated minutes dynamically from question metadata
   const totalEstimatedSeconds = questions.reduce((sum, q) => sum + (q.estimatedTimeSeconds || 0), 0);
   const quizEstimatedMinutes = Math.max(1, Math.round(totalEstimatedSeconds / 60));
+
+  const hasTrackedStartRef = useRef<string | null>(null);
+
+  // Track lesson_started exactly once per chapter view
+  useEffect(() => {
+    if (lesson.id && hasTrackedStartRef.current !== lesson.id) {
+      hasTrackedStartRef.current = lesson.id;
+      try {
+        trackEvent('lesson_started', {
+          subject: lesson.subject,
+          chapter: lesson.title,
+          chapter_id: lesson.id,
+        });
+      } catch (_) {}
+    }
+  }, [lesson.id, lesson.subject, lesson.title]);
 
   // Set to in_progress initially and hook scroll tracking
   useEffect(() => {
@@ -592,6 +609,21 @@ export function LessonReader({ lessonId, onNavigate, startAtQuiz = false }: Prop
         localStorage.setItem(`lesson_${lesson.id}`, 'completed');
         setQuizFinished(true);
         setRefreshTrigger(prev => prev + 1);
+
+        // Safe PostHog Event Tracking
+        try {
+          const correctCount = questions.reduce((acc, q, idx) => {
+            return acc + (selectedAnswersRef.current[idx] === q.correctAnswerIndex ? 1 : 0);
+          }, 0);
+          trackEvent('lesson_completed', {
+            subject: lesson.subject,
+            chapter: lesson.title,
+            chapter_id: lesson.id,
+            total_questions: questions.length,
+            correct: correctCount,
+            score: Math.round((correctCount / (questions.length || 1)) * 100),
+          });
+        } catch (_) {}
       } else {
         const errData = await res.json().catch(() => ({}));
         throw new Error(errData.error || `Server returned status ${res.status}`);

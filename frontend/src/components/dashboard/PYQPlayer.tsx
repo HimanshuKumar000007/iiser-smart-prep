@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion } from 'motion/react';
 import { Clock, X, ArrowLeft, ArrowRight, CheckCircle2, Bookmark, BookmarkCheck, AlertTriangle } from 'lucide-react';
 import { cn } from '../../lib/utils';
+import { trackEvent } from '../../lib/posthog';
 
 interface PYQPlayerProps {
   questions: any[];
@@ -33,6 +34,24 @@ export function PYQPlayer({
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showSubmitModal, setShowSubmitModal] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
+
+  const hasTrackedStartRef = useRef(false);
+
+  // Track pyq_started once
+  useEffect(() => {
+    if (!hasTrackedStartRef.current) {
+      hasTrackedStartRef.current = true;
+      try {
+        trackEvent('pyq_started', {
+          mock_id: mockId,
+          mock_title: mockTitle,
+          practice_mode: practiceMode,
+          total_questions: questions.length,
+        });
+      } catch (_) {}
+    }
+  }, [mockId, mockTitle, practiceMode, questions.length]);
+
 
   // Active question timer
   useEffect(() => {
@@ -132,6 +151,16 @@ export function PYQPlayer({
 
       const data = await res.json();
       if (data.success && data.mockResultId) {
+        try {
+          trackEvent('pyq_completed', {
+            mock_id: mockId,
+            mock_title: mockTitle,
+            practice_mode: practiceMode,
+            total_questions: questions.length,
+            answered: formattedAnswers.filter(a => a.selectedAnswer !== -1).length,
+            result_id: data.mockResultId,
+          });
+        } catch (_) {}
         onSubmitSuccess(data.mockResultId);
       } else {
         throw new Error(data.error || 'Submission failed');

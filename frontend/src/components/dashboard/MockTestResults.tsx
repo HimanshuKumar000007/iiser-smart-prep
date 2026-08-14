@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect, useRef } from 'react';
 import { 
   Clock, BookOpen, RotateCcw, Zap, ArrowRight, AlertCircle, Award, Target, 
   Layers, BarChart2, CheckCircle2, XCircle, HelpCircle, ChevronDown, ChevronUp, RefreshCw
@@ -6,6 +6,8 @@ import {
 import { cn } from '../../lib/utils';
 import { MockTestIndex } from '../../data/mockTests';
 import { useMockResultAnalysis } from '../../hooks/useMockResultAnalysis';
+import { trackEvent } from '../../lib/posthog';
+
 
 interface MockTestResultsProps {
   mockTest: MockTestIndex;
@@ -273,8 +275,31 @@ export function MockTestResults({
   const resultId = submissionResult.mockResultId || '';
   const { data: serverData, loading } = useMockResultAnalysis(resultId);
 
+  const hasTrackedViewRef = useRef(false);
+
+  // Track results_viewed once per result session
+  useEffect(() => {
+    if (!hasTrackedViewRef.current && (submissionResult || mockTest.id)) {
+      hasTrackedViewRef.current = true;
+      try {
+        trackEvent('results_viewed', {
+          result_type: 'mock',
+          mock_id: mockTest.id,
+          mock_title: mockTest.title,
+          score: submissionResult.score,
+          accuracy: submissionResult.accuracy,
+          total_questions: submissionResult.totalQuestions,
+          correct: submissionResult.correct,
+          wrong: submissionResult.wrong,
+          skipped: submissionResult.skipped,
+        });
+      } catch (_) {}
+    }
+  }, [mockTest.id, mockTest.title, submissionResult]);
+
   // Tab State
   const [activeTab, setActiveTab] = useState<'overview' | 'performance' | 'pace' | 'solutions' | 'progress'>('overview');
+
 
   // Chapter list toggling
   const [showAllChapters, setShowAllChapters] = useState(false);

@@ -16,6 +16,7 @@ import {
   FileText
 } from 'lucide-react';
 import { cn } from '../../lib/utils';
+import { trackEvent } from '../../lib/posthog';
 
 interface PYQResultsProps {
   resultId: string;
@@ -60,6 +61,20 @@ export function PYQResults({ resultId, onNavigate }: PYQResultsProps) {
 
         const details = await detailsRes.json();
         setResultData(details);
+
+        try {
+          trackEvent('results_viewed', {
+            result_type: 'pyq',
+            mock_id: details.mockId,
+            mock_title: details.mockTitle,
+            score: details.score,
+            accuracy: details.accuracy,
+            total_questions: details.totalQuestions,
+            correct: details.correct,
+            wrong: details.wrong,
+            skipped: details.skipped,
+          });
+        } catch (_) {}
 
         if (planRes.ok) {
           const plan = await planRes.json();
