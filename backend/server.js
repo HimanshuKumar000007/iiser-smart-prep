@@ -131,6 +131,46 @@ const PLANS = {
   annual: { amount: 899, durationDays: 365, description: "Pro Plan — 1 Year" }
 };
 
+const SALE_CONFIG = {
+  id: "independence_day_2026",
+  name: "Independence Day Special Sale",
+  badge: "🇮🇳 Independence Day Sale — ₹200 OFF",
+  discountAmount: 200,
+  targetPlanId: "annual",
+  salePrice: 699,
+  originalPrice: 899,
+  // 4-day sale window: Aug 15, 2026 00:00:00 IST to Aug 19, 2026 23:59:59 IST
+  startTime: new Date("2026-08-15T00:00:00+05:30").getTime(),
+  endTime: new Date("2026-08-19T23:59:59+05:30").getTime()
+};
+
+function isSaleActive(sale = SALE_CONFIG) {
+  const now = Date.now();
+  return now >= sale.startTime && now <= sale.endTime;
+}
+
+function getEffectivePlan(planId) {
+  const basePlan = PLANS[planId];
+  if (!basePlan) return null;
+
+  if (planId === SALE_CONFIG.targetPlanId && isSaleActive()) {
+    return {
+      ...basePlan,
+      amount: SALE_CONFIG.salePrice,
+      originalAmount: SALE_CONFIG.originalPrice,
+      discount: SALE_CONFIG.discountAmount,
+      isSale: true,
+      saleName: SALE_CONFIG.name
+    };
+  }
+
+  return {
+    ...basePlan,
+    originalAmount: basePlan.amount,
+    isSale: false
+  };
+}
+
 async function requirePro(req, res, next) {
   try {
     const userId = req.user.id || req.user.userId;
@@ -345,8 +385,27 @@ app.post("/api/signup", async (req, res) => {
 });
 
 // =======================
-// 💸 PAYMENT API
+// 💸 PAYMENT & SALE API
 // =======================
+app.get("/api/sale-status", (req, res) => {
+  const active = isSaleActive();
+  const now = Date.now();
+  res.json({
+    saleActive: active,
+    saleId: SALE_CONFIG.id,
+    saleName: SALE_CONFIG.name,
+    badge: SALE_CONFIG.badge,
+    targetPlanId: SALE_CONFIG.targetPlanId,
+    salePrice: SALE_CONFIG.salePrice,
+    originalPrice: SALE_CONFIG.originalPrice,
+    discount: SALE_CONFIG.discountAmount,
+    startTime: new Date(SALE_CONFIG.startTime).toISOString(),
+    endTime: new Date(SALE_CONFIG.endTime).toISOString(),
+    serverTime: new Date(now).toISOString(),
+    remainingSeconds: active ? Math.max(0, Math.floor((SALE_CONFIG.endTime - now) / 1000)) : 0
+  });
+});
+
 app.post("/api/create-order", authMiddleware, async (req, res) => {
   try {
     const userId = req.user.id;
@@ -357,32 +416,35 @@ app.post("/api/create-order", authMiddleware, async (req, res) => {
       return res.status(400).json({ error: "User identity missing from token. Please log out and log back in." });
     }
 
-    const plan = PLANS[planId];
+    const plan = getEffectivePlan(planId);
     if (!plan) {
       return res.status(400).json({ error: "Invalid planId selected" });
     }
 
     const options = {
-      amount: plan.amount * 100, // paise
+      amount: plan.amount * 100, // paise (e.g. 69900 paise during sale for annual)
       currency: "INR",
       receipt: "receipt_" + Date.now(),
       notes: {
         user_id: userId,
         email: userEmail,
-        planId: planId
+        planId: planId,
+        isSale: plan.isSale ? "true" : "false"
       }
     };
 
     const order = await razorpay.orders.create(options);
 
-    console.log(`Order created: ${order.id} for user ${userEmail} (${userId}), plan=${planId}`);
+    console.log(`Order created: ${order.id} for user ${userEmail} (${userId}), plan=${planId}, amount=₹${plan.amount}${plan.isSale ? ' (SALE APPLIED)' : ''}`);
 
     // Return all fields for Razorpay SDK
     res.json({
       key: process.env.RAZORPAY_KEY_ID,
       order_id: order.id,
       amount: order.amount,
-      currency: order.currency
+      currency: order.currency,
+      plan_amount_inr: plan.amount,
+      is_sale: plan.isSale
     });
 
   } catch (err) {

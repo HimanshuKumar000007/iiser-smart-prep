@@ -15,17 +15,48 @@ export function Subscription({ returnTo, onNavigate }: SubscriptionProps) {
   const isLight = theme === 'light';
   const [loadingPlan, setLoadingPlan] = useState<string | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
-  const [selectedMobilePlan, setSelectedMobilePlan] = useState<'monthly' | 'six_month' | 'annual'>('six_month');
+  const [selectedMobilePlan, setSelectedMobilePlan] = useState<'monthly' | 'six_month' | 'annual'>('annual');
+
+  // Independence Day Sale Window: Aug 15 to Aug 19, 2026 23:59:59 IST
+  const SALE_END_MS = new Date('2026-08-19T23:59:59+05:30').getTime();
+  const [saleTimeRemaining, setSaleTimeRemaining] = useState<string>('');
+  const [isSaleActive, setIsSaleActive] = useState<boolean>(() => {
+    const now = Date.now();
+    return now <= SALE_END_MS && now >= new Date('2026-08-15T00:00:00+05:30').getTime();
+  });
+
+  React.useEffect(() => {
+    const updateCountdown = () => {
+      const now = Date.now();
+      const distance = SALE_END_MS - now;
+      if (distance <= 0) {
+        setIsSaleActive(false);
+        setSaleTimeRemaining('');
+      } else {
+        setIsSaleActive(true);
+        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+        setSaleTimeRemaining(`${String(days).padStart(2, '0')}d ${String(hours).padStart(2, '0')}h ${String(minutes).padStart(2, '0')}m ${String(seconds).padStart(2, '0')}s`);
+      }
+    };
+    updateCountdown();
+    const interval = setInterval(updateCountdown, 1000);
+    return () => clearInterval(interval);
+  }, [SALE_END_MS]);
 
   const PLANS = [
     {
       id: 'monthly',
       name: 'Pro Monthly',
       price: 399,
+      originalPrice: null,
       period: 'month',
       savings: null,
       savingsText: '',
       popular: false,
+      isSale: false,
       ctaLabel: 'Get 1 Month Pro',
       description: 'Flexible access for focused preparation.',
       features: [
@@ -43,12 +74,14 @@ export function Subscription({ returnTo, onNavigate }: SubscriptionProps) {
       id: 'six_month',
       name: 'Pro Premium',
       price: 499,
+      originalPrice: null,
       period: '6 months',
-      savings: 'MOST POPULAR',
+      savings: isSaleActive ? null : 'MOST POPULAR',
       savingsText: 'Save ₹1,895 vs monthly',
-      popular: true,
+      popular: !isSaleActive,
+      isSale: false,
       ctaLabel: 'Start 6 Month Pro',
-      description: 'Most popular choice for complete IISER IAT syllabus prep.',
+      description: 'Popular choice for semester-long syllabus prep.',
       features: [
         '45+ Full-Length IAT Pattern Mocks',
         'Unlimited Chapter-wise Quick Mocks',
@@ -65,12 +98,14 @@ export function Subscription({ returnTo, onNavigate }: SubscriptionProps) {
     {
       id: 'annual',
       name: 'Pro Annual',
-      price: 899,
+      price: isSaleActive ? 699 : 899,
+      originalPrice: isSaleActive ? 899 : null,
       period: '1 year',
-      savings: 'BEST VALUE',
-      savingsText: 'Save ₹3,889 vs monthly',
-      popular: false,
-      ctaLabel: 'Get Annual Pro',
+      savings: isSaleActive ? '🇮🇳 ₹200 OFF' : 'BEST VALUE',
+      savingsText: isSaleActive ? '🎉 Independence Day Offer: Save ₹200 extra!' : 'Save ₹3,889 vs monthly',
+      popular: isSaleActive || true,
+      isSale: isSaleActive,
+      ctaLabel: isSaleActive ? 'Claim ₹699 Pro Annual' : 'Get Annual Pro',
       description: 'Complete peace of mind for the entire admission cycle.',
       features: [
         '45+ Full-Length IAT Pattern Mocks',
@@ -235,16 +270,26 @@ export function Subscription({ returnTo, onNavigate }: SubscriptionProps) {
       <div
         className={cn(
           "relative flex flex-col rounded-2xl border transition-all duration-300 p-5 sm:p-8 overflow-hidden backdrop-blur-sm",
-          isLight
-            ? plan.popular
-              ? 'bg-white border-indigo-500 shadow-[0_10px_30px_rgba(99,102,241,0.08)]'
-              : 'bg-white/80 border-slate-200/80 hover:border-slate-300 shadow-[0_4px_20px_rgba(15,23,42,0.02)]'
-            : plan.popular
-              ? 'bg-slate-900/60 border-indigo-500 shadow-[0_0_30px_rgba(99,102,241,0.15)]'
-              : 'bg-slate-900/60 border-white/5 hover:border-white/10'
+          plan.isSale
+            ? isLight
+              ? 'bg-white border-amber-500 shadow-[0_10px_35px_rgba(245,158,11,0.12)]'
+              : 'bg-slate-900/70 border-amber-500 shadow-[0_0_30px_rgba(245,158,11,0.15)]'
+            : isLight
+              ? plan.popular
+                ? 'bg-white border-indigo-500 shadow-[0_10px_30px_rgba(99,102,241,0.08)]'
+                : 'bg-white/80 border-slate-200/80 hover:border-slate-300 shadow-[0_4px_20px_rgba(15,23,42,0.02)]'
+              : plan.popular
+                ? 'bg-slate-900/60 border-indigo-500 shadow-[0_0_30px_rgba(99,102,241,0.15)]'
+                : 'bg-slate-900/60 border-white/5 hover:border-white/10'
         )}
       >
-        {plan.popular && (
+        {plan.isSale ? (
+          <div className="absolute top-0 right-0">
+            <span className="inline-block bg-gradient-to-r from-amber-500 to-rose-500 text-white text-[10px] uppercase font-extrabold tracking-wider px-3 py-1 rounded-bl-xl shadow-sm">
+              🇮🇳 Sale: ₹200 OFF
+            </span>
+          </div>
+        ) : plan.popular && (
           <div className="absolute top-0 right-0">
             <span className="inline-block bg-indigo-500 text-white text-[10px] uppercase font-bold tracking-wider px-3 py-1 rounded-bl-xl">
               Most Popular
@@ -256,18 +301,37 @@ export function Subscription({ returnTo, onNavigate }: SubscriptionProps) {
           <div className="flex items-center justify-between gap-2">
             <h3 className={cn("text-xl sm:text-2xl font-bold font-display", isLight ? "text-slate-900" : "text-white")}>{plan.name}</h3>
             {plan.savings && (
-              <span className="px-2 py-0.5 rounded-md bg-indigo-500/20 text-indigo-300 text-[10px] font-bold uppercase tracking-wider border border-indigo-500/30 whitespace-nowrap">
+              <span className={cn(
+                "px-2 py-0.5 rounded-md text-[10px] font-bold uppercase tracking-wider border whitespace-nowrap",
+                plan.isSale
+                  ? 'bg-amber-500/20 text-amber-400 border-amber-500/30'
+                  : 'bg-indigo-500/20 text-indigo-300 border-indigo-500/30'
+              )}>
                 {plan.savings}
               </span>
             )}
           </div>
           <p className={cn("text-xs min-h-[32px]", isLight ? "text-slate-500" : "text-slate-400")}>{plan.description}</p>
           <div className="flex items-baseline gap-1.5">
-            <span className={cn("text-4xl sm:text-5xl font-extrabold tracking-tight", isLight ? "text-slate-900" : "text-white")}>₹{plan.price}</span>
+            {plan.originalPrice && (
+              <span className="text-xl line-through text-slate-500 opacity-70">₹{plan.originalPrice}</span>
+            )}
+            <span className={cn(
+              "text-4xl sm:text-5xl font-extrabold tracking-tight",
+              plan.isSale ? 'text-amber-500' : isLight ? "text-slate-900" : "text-white"
+            )}>
+              ₹{plan.price}
+            </span>
             <span className={cn("text-xs", isLight ? "text-slate-500" : "text-slate-400")}>/ {plan.period}</span>
           </div>
           {plan.savingsText && (
             <p className={cn("text-xs font-semibold", isLight ? "text-emerald-600" : "text-emerald-400")}>{plan.savingsText}</p>
+          )}
+          {plan.isSale && saleTimeRemaining && (
+            <div className="p-2 rounded-lg bg-amber-500/10 border border-amber-500/20 text-amber-400 text-[11px] font-semibold flex items-center gap-1.5">
+              <span>⏳ Offer ends in:</span>
+              <span className="font-mono font-bold text-amber-300">{saleTimeRemaining}</span>
+            </div>
           )}
         </div>
 
@@ -294,6 +358,37 @@ export function Subscription({ returnTo, onNavigate }: SubscriptionProps) {
 
   return (
     <div className="space-y-8 px-4 py-6 sm:p-6 max-w-7xl mx-auto pb-36 lg:pb-8 w-full box-sizing-border-box overflow-x-hidden min-w-0">
+      {/* Independence Day Sale Notice Banner */}
+      {isSaleActive && (
+        <div className={cn(
+          "relative overflow-hidden rounded-2xl border p-4 sm:p-5 flex flex-col sm:flex-row items-center justify-between gap-4 transition-all",
+          isLight
+            ? "bg-gradient-to-r from-amber-50 via-orange-50 to-amber-50 border-amber-200 text-slate-800 shadow-[0_4px_20px_rgba(245,158,11,0.08)]"
+            : "bg-gradient-to-r from-slate-900 via-amber-950/30 to-slate-900 border-amber-500/30 text-white shadow-[0_0_30px_rgba(245,158,11,0.1)]"
+        )}>
+          <div className="flex items-center gap-3">
+            <span className="text-2xl">🇮🇳</span>
+            <div>
+              <div className="flex items-center gap-2">
+                <span className="text-xs font-bold uppercase tracking-wider text-amber-500 bg-amber-500/10 px-2 py-0.5 rounded border border-amber-500/20">
+                  Independence Day Special
+                </span>
+                <span className="text-xs font-bold text-emerald-600 dark:text-emerald-400">Flat ₹200 OFF</span>
+              </div>
+              <p className="text-xs text-slate-600 dark:text-slate-300 mt-1">
+                Get full 1-Year Pro access for just <strong>₹699</strong> (regular ₹899). Price automatically reverts after 4 days.
+              </p>
+            </div>
+          </div>
+          {saleTimeRemaining && (
+            <div className="shrink-0 flex items-center gap-2 bg-black/40 border border-white/10 px-3.5 py-2 rounded-xl text-xs font-mono font-bold text-yellow-300">
+              <span className="text-white/70">Ends in:</span>
+              <span>{saleTimeRemaining}</span>
+            </div>
+          )}
+        </div>
+      )}
+
       {/* Header Banner */}
       <div className={cn(
         "relative overflow-hidden rounded-2xl border px-4 py-8 md:p-12 text-center space-y-4 transition-colors",

@@ -28,6 +28,16 @@
     <link rel="stylesheet" href="assets/css/onboarding.css" />
   </head>
   <body>
+    <!-- ============ INDEPENDENCE DAY SALE BANNER ============ -->
+    <div id="independenceSaleBanner" class="sale-top-banner">
+      <div class="sale-banner-inner">
+        <span class="sale-badge-pill">🇮🇳 Special Offer</span>
+        <span>Independence Day Sale: <strong class="sale-text-highlight">Flat ₹200 OFF</strong> on 1-Year Pro Plan (<span style="color:#fde047; font-weight:800;">₹699 only</span>)</span>
+        <span class="sale-countdown-clock">⏳ Ends in: <span id="saleBannerTimer">04d 00h 00m 00s</span></span>
+        <a href="#pricing" class="sale-banner-cta">Claim ₹699 Deal &rarr;</a>
+      </div>
+    </div>
+
     <!-- ============ NAV ============ -->
     <header>
       <div class="container">
@@ -1262,15 +1272,21 @@
           </div>
 
           <!-- PRO ANNUAL -->
-          <div class="price-card">
+          <div class="price-card sale-annual-active" id="annualPriceCard">
+            <div class="price-sale-tag" id="annualSaleBadge">🇮🇳 ₹200 OFF — 4 Days Only</div>
             <div class="price-name">Pro Annual</div>
             <p class="price-desc">
               Complete peace of mind for the entire admission cycle.
             </p>
-            <div class="price-amount">
-              <span class="cur">₹</span><strong>899</strong><span class="per">/ 1 year</span>
+            <div class="price-amount" id="annualPriceContainer">
+              <span class="original-price-strike" id="annualOriginalPrice">₹899</span>
+              <span class="cur">₹</span><strong class="sale-live-price" id="annualCurrentPrice">699</strong><span class="per">/ 1 year</span>
             </div>
-            <ul class="price-features">
+            <div id="annualSaleCallout" class="sale-savings-callout">🎉 Independence Day Special: Save ₹200!</div>
+            <div id="annualCountdownWrap" style="margin-top: 0.5rem; font-size: 0.75rem; color: #fbbf24; font-weight: 600;">
+              ⏳ Price reverts to ₹899 in: <span id="annualCardTimer" style="font-family: 'JetBrains Mono', monospace;">04d 00h 00m 00s</span>
+            </div>
+            <ul class="price-features" style="margin-top: 1rem;">
               <li><span class="chk">✓</span> 45+ Full-Length IAT Pattern Mocks</li>
               <li><span class="chk">✓</span> Unlimited Chapter-wise Quick Mocks</li>
               <li><span class="chk">✓</span> Premium Concept Notes with Advanced Questions</li>
@@ -1283,8 +1299,53 @@
               <li><span class="chk">✓</span> Adaptive Spaced Revision planner</li>
               <li><span class="chk">✓</span> Personal study schedule audit &amp; plan</li>
             </ul>
-            <a href="login.html?mode=signup" class="btn btn-ghost btn-block">Get Annual</a>
+            <a href="login.html?mode=signup" class="btn btn-primary btn-block" id="annualCtaBtn">Claim ₹699 Annual Access</a>
           </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ LATEST FROM BLOG & ANNOUNCEMENTS ============ -->
+    <section class="blog-home-section" id="blog-announcements">
+      <div class="container">
+        <div class="section-head reveal">
+          <span class="eyebrow">Announcements &amp; Strategy</span>
+          <h2>Latest Guides &amp; Exclusive Updates</h2>
+          <p>
+            Insights, preparation frameworks, and special announcements from the IISER SmartPrep team.
+          </p>
+        </div>
+
+        <div class="blog-home-grid reveal">
+          <!-- Card 1: Independence Day Sale Announcement -->
+          <article class="blog-home-card" style="border: 2px solid rgba(245, 158, 11, 0.4); background: linear-gradient(180deg, var(--panel), var(--bg-soft));">
+            <div>
+              <span class="blog-home-tag sale">🇮🇳 Special Announcement · 4-Day Offer</span>
+              <h3>Independence Day Special: Empowering Your IISER IAT 2027 Journey with Pro Access (Flat ₹200 OFF)</h3>
+              <p>
+                Celebrate Independence Day with an exclusive ₹200 discount on the 1-Year Pro Plan. Get unlimited access to 45+ mocks, notes, AI coach, and PYQs for just ₹699.
+              </p>
+            </div>
+            <div class="blog-home-footer">
+              <span style="color: #fbbf24; font-weight: 700;">₹699 Limited Deal</span>
+              <a href="/news/independence-day-special-sale-iat-2027.html" style="font-weight: 700; display: inline-flex; align-items: center; gap: 4px;">Read Announcement &rarr;</a>
+            </div>
+          </article>
+
+          <!-- Card 2: Strategy Guide -->
+          <article class="blog-home-card">
+            <div>
+              <span class="blog-home-tag guide">Comprehensive Guide</span>
+              <h3>IISER IAT 2027: Complete Preparation Strategy &amp; 1-Year Study Plan</h3>
+              <p>
+                A step-by-step master roadmap covering subject-wise prioritization for Physics, Chemistry, Mathematics, and Biology to crack top IISER campuses.
+              </p>
+            </div>
+            <div class="blog-home-footer">
+              <span>12 min read</span>
+              <a href="/news/iiser-iat-2027-preparation-strategy.html" style="display: inline-flex; align-items: center; gap: 4px;">Read Guide &rarr;</a>
+            </div>
+          </article>
         </div>
       </div>
     </section>
@@ -1776,6 +1837,63 @@
             localStorage.setItem('dashboard_theme', nextTheme === 'light' ? 'light_homepage' : 'dark_premium');
             updateIcons(nextTheme);
           });
+      // ============ INDEPENDENCE DAY SALE COUNTDOWN SCRIPT ============
+      (function() {
+        const SALE_END_MS = new Date("2026-08-19T23:59:59+05:30").getTime();
+        const bannerEl = document.getElementById("independenceSaleBanner");
+        const bannerTimerEl = document.getElementById("saleBannerTimer");
+        const cardTimerEl = document.getElementById("annualCardTimer");
+        const annualCardEl = document.getElementById("annualPriceCard");
+        const annualSaleBadgeEl = document.getElementById("annualSaleBadge");
+        const annualOriginalPriceEl = document.getElementById("annualOriginalPrice");
+        const annualCurrentPriceEl = document.getElementById("annualCurrentPrice");
+        const annualSaleCalloutEl = document.getElementById("annualSaleCallout");
+        const annualCountdownWrapEl = document.getElementById("annualCountdownWrap");
+        const annualCtaBtnEl = document.getElementById("annualCtaBtn");
+
+        function updateSaleState() {
+          const now = Date.now();
+          const distance = SALE_END_MS - now;
+
+          if (distance <= 0) {
+            // Sale has ended — revert UI seamlessly
+            if (bannerEl) bannerEl.style.display = "none";
+            if (annualCardEl) annualCardEl.classList.remove("sale-annual-active");
+            if (annualSaleBadgeEl) annualSaleBadgeEl.style.display = "none";
+            if (annualOriginalPriceEl) annualOriginalPriceEl.style.display = "none";
+            if (annualSaleCalloutEl) annualSaleCalloutEl.style.display = "none";
+            if (annualCountdownWrapEl) annualCountdownWrapEl.style.display = "none";
+            if (annualCurrentPriceEl) {
+              annualCurrentPriceEl.textContent = "899";
+              annualCurrentPriceEl.classList.remove("sale-live-price");
+            }
+            if (annualCtaBtnEl) {
+              annualCtaBtnEl.textContent = "Get Annual";
+              annualCtaBtnEl.className = "btn btn-ghost btn-block";
+            }
+            return false;
+          }
+
+          const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+          const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+          const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+          const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+          const formatted = `${String(days).padStart(2, '0')}d ${String(hours).padStart(2, '0')}h ${String(minutes).padStart(2, '0')}m ${String(seconds).padStart(2, '0')}s`;
+
+          if (bannerTimerEl) bannerTimerEl.textContent = formatted;
+          if (cardTimerEl) cardTimerEl.textContent = formatted;
+          if (bannerEl) bannerEl.style.display = "block";
+
+          return true;
+        }
+
+        if (updateSaleState()) {
+          const timerInterval = setInterval(function() {
+            if (!updateSaleState()) {
+              clearInterval(timerInterval);
+            }
+          }, 1000);
         }
       })();
     </script>
