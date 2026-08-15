@@ -79,34 +79,27 @@
     <div id="independenceModalOverlay" class="independence-modal-overlay" role="dialog" aria-modal="true" aria-labelledby="freedomModalTitle">
       <div class="independence-modal-wrapper">
         <div class="independence-modal-card">
+
           <!-- Close Button -->
           <button type="button" class="modal-close-btn" id="closeFreedomModalBtn" aria-label="Close Modal">&times;</button>
 
-          <!-- Scenic Header & Tricolor Silk Wave SVG Background -->
-          <div class="modal-card-banner">
-            <!-- Tricolor Silk Ribbon Top Left -->
-            <svg class="modal-bg-tricolor-wave" viewBox="0 0 400 240" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
-              <path d="M-20 0C60 0 100 70 80 140C60 210 140 220 200 200L180 240C100 250 20 220 40 140C60 60 10 30 -20 30V0Z" fill="#FF671F" fill-opacity="0.95"/>
-              <path d="M-20 25C50 25 80 80 65 140C50 200 110 210 160 195L140 230C80 240 15 210 30 140C45 70 5 45 -20 45V25Z" fill="#FFFFFF" fill-opacity="0.95"/>
-              <path d="M-20 40C40 40 65 90 50 140C35 190 85 200 120 190L100 220C60 230 10 200 20 140C30 80 0 60 -20 60V40Z" fill="#046A38" fill-opacity="0.95"/>
-            </svg>
-
-            <!-- Floating White Dove / Peace Bird & Confetti -->
-            <div class="modal-dove-icon">🕊️</div>
-            <div class="modal-confetti-particle c1"></div>
-            <div class="modal-confetti-particle c2"></div>
-            <div class="modal-confetti-particle c3"></div>
-            <div class="modal-confetti-particle c4"></div>
-
-            <!-- Brand Logo Header -->
-            <div class="modal-brand-header">
-              <div class="modal-logo-badge">
-                <span class="modal-logo-sq">IS</span>
-                <span class="modal-brand-name">IISER SmartPrep</span>
-              </div>
+          <!-- ===== TOP PATRIOTIC HEADER (CSS-only — no SVG) ===== -->
+          <div class="modal-header-zone">
+            <!-- Tricolor 3-stripe bar at very top -->
+            <div class="modal-tricolor-bar">
+              <span class="tc-saffron"></span>
+              <span class="tc-white"></span>
+              <span class="tc-green"></span>
             </div>
 
-            <!-- 3D Bold FREEDOM SALE Title -->
+            <!-- Brand Row -->
+            <div class="modal-brand-row">
+              <span class="modal-logo-sq">IS</span>
+              <span class="modal-brand-name">IISER SmartPrep</span>
+              <span class="modal-dove">🕊️</span>
+            </div>
+
+            <!-- FREEDOM SALE Headline -->
             <div class="modal-freedom-title-wrap">
               <h2 class="modal-title-freedom" id="freedomModalTitle">
                 <span class="word-freedom">FREEDOM</span>
@@ -115,7 +108,7 @@
             </div>
           </div>
 
-          <!-- White Floating Discount Card -->
+          <!-- ===== WHITE DISCOUNT CARD ===== -->
           <div class="modal-inner-card">
             <div class="modal-deal-row">
               <div class="modal-deal-left">
@@ -130,61 +123,54 @@
                 <div class="modal-grad-circle">🎓</div>
                 <div class="modal-plan-desc">
                   <strong>On 1-Year Pro Plan</strong>
-                  <span>(Complete IAT 2027 Prep)</span>
+                  <span>Sale price: <b style="color:#16a34a;">₹699 Only</b></span>
                 </div>
               </div>
             </div>
 
-            <!-- Coupon Box -->
+            <!-- Coupon Row -->
             <div class="modal-coupon-row">
               <div class="modal-coupon-left">
-                <span class="coupon-icon">🎟️</span>
-                <span>Coupon Code: <strong style="color:#0f172a; font-family:'JetBrains Mono',monospace;">FREEDOM200</strong></span>
+                <span>🎟️</span>
+                <span>Code: <strong style="font-family:'JetBrains Mono',monospace; color:#0f172a; letter-spacing:0.04em;">FREEDOM200</strong></span>
               </div>
               <span class="modal-applied-pill">APPLIED</span>
             </div>
 
-            <!-- Big CTA Button -->
+            <!-- CTA Button -->
             <button type="button" class="modal-main-cta-btn" id="claimFreedomDealBtn">
               Claim ₹699 Pro Deal &rarr;
             </button>
           </div>
 
-          <!-- Bottom Monument & Nature Scene -->
+          <!-- ===== BOTTOM SCENE ===== -->
           <div class="modal-bottom-scene">
-            <p class="modal-career-slogan">Your Science Career Starts Here</p>
+            <p class="modal-career-slogan">✨ Your Science Career Starts Here</p>
             <div class="modal-institutes-badge">
               Prepare For IISERs | NISER | IAT 2027 | NEST
             </div>
 
-            <!-- Footer Ends Notice & Live Timer -->
             <div class="modal-countdown-footer">
-              <div class="modal-flag-bar">
-                <span class="flag-stripe saffron"></span>
-                <span class="flag-stripe white"></span>
-                <span class="flag-stripe green"></span>
-              </div>
-              <span class="modal-ends-txt">OFFER ENDS <strong class="date-hl">AUGUST 19</strong> (4 DAYS ONLY)</span>
-              <div class="modal-flag-bar">
-                <span class="flag-stripe saffron"></span>
-                <span class="flag-stripe white"></span>
-                <span class="flag-stripe green"></span>
-              </div>
+              <span class="flag-mini">🇮🇳</span>
+              <span class="modal-ends-txt">OFFER ENDS <strong class="date-hl">AUGUST 19</strong> — 4 DAYS ONLY</span>
+              <span class="flag-mini">🇮🇳</span>
             </div>
 
             <div class="modal-live-timer-container">
               <span class="modal-live-timer-pill" id="modalCountdownTimer">⏳ Ends in: 04d 00h 00m 00s</span>
             </div>
           </div>
+
         </div>
 
-        <!-- Bottom Community Button (Matching Reference) -->
+        <!-- Community CTA Button below card -->
         <a href="https://whatsapp.com/channel/0029Va9R1lK1iUxQ8YhZg30X" target="_blank" rel="noopener" class="modal-whatsapp-community-btn">
-          <span class="wa-icon">💬</span>
-          <span>Join India's Top IISER Community &rarr;</span>
+          <span>💬</span>
+          <span>Join India's Top IISER Prep Community &rarr;</span>
         </a>
       </div>
     </div>
+
 
     <!-- ============ NAV ============ -->
     <header>
