@@ -4,11 +4,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🇮🇳 Independence Day Special Sale: ₹200 OFF on 1-Year Pro Plan (₹699) | IISER SmartPrep</title>
+    <title>🇮🇳 Independence Day Special: Flat ₹200 OFF on 1-Year Pro Plan (₹699) | IISER SmartPrep</title>
     <meta name="description"
         content="Celebrate Independence Day with flat ₹200 OFF on the IISER SmartPrep 1-Year Pro Plan. Get unlimited access to 45+ full-length IAT mocks, concept notes, PYQs, and AI study coach for only ₹699.">
     <meta name="keywords"
-        content="IISER IAT independence day sale, IISER IAT discount, IISER IAT 2027 preparation, IISER mock test offer, IISER SmartPrep coupon, IAT 2027 study material discount, IISER coaching offer">
+        content="IISER IAT independence day sale, IISER IAT discount, IISER IAT 2027 preparation, IISER mock test offer, IISER SmartPrep coupon, IAT 2027 study material discount, IISER coaching offer, IISER Pro Plan sale">
     <link rel="canonical" href="https://iisersmartprep.space/news/independence-day-special-sale-iat-2027.html">
     <meta name="robots" content="index, follow, max-image-preview:large">
 
@@ -122,548 +122,1400 @@
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Outfit:wght@500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
 
-    <!-- Styling -->
     <style>
         :root {
-            --primary: #4f7cff;
-            --primary-dark: #3b62db;
-            --primary-light: #eef2ff;
-            --accent-saffron: #f59e0b;
-            --accent-green: #10b981;
+            --primary: #3b82f6;
+            --primary-dark: #1d4ed8;
+            --primary-soft: #eff6ff;
+            --primary-glow: rgba(59, 130, 246, 0.15);
+            --secondary: #0f172a;
+            --secondary-light: #1e293b;
+            --accent-saffron: #ea580c;
+            --accent-saffron-soft: #fff7ed;
+            --accent-green: #16a34a;
+            --accent-green-soft: #f0fdf4;
+            --accent-teal: #14b8a6;
+            --accent-purple: #8b5cf6;
+            --accent-amber: #f59e0b;
+            --accent-rose: #f43f5e;
             --text-main: #0f172a;
             --text-muted: #475569;
             --text-light: #64748b;
             --bg-wash: #f8fafc;
             --bg-white: #ffffff;
             --border: #e2e8f0;
+            --border-hover: #cbd5e1;
+
+            --radius-sm: 10px;
             --radius-md: 16px;
             --radius-lg: 24px;
-            --shadow-md: 0 10px 25px -5px rgba(0, 0, 0, 0.08);
+            --radius-pill: 9999px;
+
+            --shadow-xs: 0 1px 2px 0 rgba(0, 0, 0, 0.04);
+            --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+            --shadow-md: 0 10px 25px -5px rgba(0, 0, 0, 0.08), 0 8px 10px -6px rgba(0, 0, 0, 0.04);
+            --shadow-lg: 0 20px 30px -10px rgba(0, 0, 0, 0.12);
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            font-size: 16px;
         }
 
         body {
-            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
             color: var(--text-main);
             background: var(--bg-wash);
-            line-height: 1.75;
+            line-height: 1.7;
+            -webkit-font-smoothing: antialiased;
         }
 
         a {
             text-decoration: none;
             color: inherit;
+            transition: all 0.2s ease;
         }
 
+        /* Reading Progress Bar */
+        .reading-progress-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: transparent;
+            z-index: 10001;
+        }
+
+        .reading-progress-bar {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #ff671f, #f59e0b, #16a34a);
+            border-radius: 0 2px 2px 0;
+            transition: width 0.1s ease-out;
+        }
+
+        /* Container */
         .container {
             width: 92%;
-            max-width: 900px;
+            max-width: 1240px;
             margin: 0 auto;
         }
 
-        /* Top Header */
+        /* Header Navigation */
         header {
-            background: #ffffff;
-            border-bottom: 1px solid var(--border);
-            padding: 1rem 0;
             position: sticky;
-            top: 0;
-            z-index: 100;
+            top: 10px;
+            z-index: 1000;
+            display: flex;
+            justify-content: center;
+            margin-top: 8px;
+            pointer-events: none;
         }
 
-        .nav-inner {
+        .nav-container {
+            pointer-events: auto;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(226, 232, 240, 0.8);
+            box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.08);
+            padding: 0.6rem 1.5rem;
+            border-radius: var(--radius-pill);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 92%;
+            max-width: 1240px;
+        }
+
+        .logo {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.25rem;
+            font-weight: 800;
+            color: var(--secondary);
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+
+        .logo-icon {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, #ff671f, #16a34a);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 800;
+            font-size: 0.9rem;
+            box-shadow: 0 4px 10px rgba(255, 103, 31, 0.3);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            font-size: 0.92rem;
+            font-weight: 600;
+            color: var(--text-muted);
+        }
+
+        .nav-links a:hover {
+            color: #ea580c;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.75rem;
+            border-radius: var(--radius-pill);
+            font-weight: 700;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+            border: none;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #ff671f, #ea580c);
+            color: #fff;
+            box-shadow: 0 4px 14px rgba(234, 88, 12, 0.35);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(234, 88, 12, 0.45);
+        }
+
+        .btn-outline {
+            background: #fff;
+            color: var(--secondary);
+            border: 1px solid var(--border);
+        }
+
+        .btn-outline:hover {
+            border-color: #ea580c;
+            color: #ea580c;
+            background: #fff7ed;
+        }
+
+        /* Hero Header Section */
+        .article-hero {
+            padding: 3rem 0 3rem;
+            background: linear-gradient(180deg, #fff7ed 0%, #f8fafc 100%);
+            border-bottom: 1px solid var(--border);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-backdrop-glow {
+            position: absolute;
+            top: -100px;
+            right: -100px;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(255, 103, 31, 0.15) 0%, rgba(22, 163, 74, 0) 70%);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        .breadcrumbs {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-light);
+            margin-bottom: 1.25rem;
+        }
+
+        .breadcrumbs a:hover {
+            color: #ea580c;
+        }
+
+        .breadcrumbs span {
+            color: var(--border-hover);
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            padding: 0.4rem 1rem;
+            background: #ffedd5;
+            color: #c2410c;
+            border-radius: var(--radius-pill);
+            font-size: 0.8rem;
+            font-weight: 800;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin-bottom: 1.5rem;
+            border: 1px solid #fed7aa;
+        }
+
+        .pulse-dot {
+            width: 8px;
+            height: 8px;
+            background: #ea580c;
+            border-radius: 50%;
+            box-shadow: 0 0 0 0 rgba(234, 88, 12, 0.7);
+            animation: pulse 1.8s infinite;
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(234, 88, 12, 0.7); }
+            70% { box-shadow: 0 0 0 8px rgba(234, 88, 12, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(234, 88, 12, 0); }
+        }
+
+        .article-hero h1 {
+            font-family: 'Outfit', sans-serif;
+            font-size: clamp(2.25rem, 4.5vw, 3.4rem);
+            font-weight: 800;
+            line-height: 1.15;
+            letter-spacing: -0.03em;
+            color: var(--secondary);
+            margin-bottom: 1.25rem;
+            max-width: 960px;
+        }
+
+        .text-gradient {
+            background: linear-gradient(135deg, #ff671f 0%, #16a34a 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-lead {
+            font-size: 1.2rem;
+            color: var(--text-muted);
+            line-height: 1.7;
+            max-width: 880px;
+            margin-bottom: 2rem;
+            font-weight: 500;
+        }
+
+        .meta-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 1.25rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(226, 232, 240, 0.8);
+        }
+
+        .author-info {
+            display: flex;
+            align-items: center;
+            gap: 0.85rem;
+        }
+
+        .author-avatar {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #ff671f, #16a34a);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 1rem;
+            box-shadow: 0 4px 10px rgba(255, 103, 31, 0.25);
+        }
+
+        .author-meta {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .author-name {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: var(--secondary);
+        }
+
+        .post-details {
+            font-size: 0.82rem;
+            color: var(--text-light);
+            display: flex;
+            gap: 0.75rem;
+        }
+
+        .share-buttons {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .share-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: #fff;
+            border: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .share-btn:hover {
+            border-color: #ea580c;
+            color: #ea580c;
+            transform: translateY(-2px);
+        }
+
+        /* Banner Image Wrapper */
+        .featured-banner-wrapper {
+            margin-top: 2.5rem;
+            position: relative;
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border);
+            background: #fff;
+        }
+
+        .featured-banner-wrapper img {
+            width: 100%;
+            height: auto;
+            display: block;
+            object-fit: cover;
+            max-height: 540px;
+        }
+
+        .banner-caption {
+            padding: 0.85rem 1.25rem;
+            background: #fff;
+            font-size: 0.85rem;
+            color: var(--text-light);
+            border-top: 1px solid var(--border);
             display: flex;
             align-items: center;
             justify-content: space-between;
         }
 
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-weight: 800;
-            font-size: 1.1rem;
-            color: #0f172a;
-        }
-
-        .logo-badge {
-            background: #4f7cff;
-            color: #ffffff;
-            padding: 4px 8px;
-            border-radius: 8px;
-            font-size: 0.85rem;
-        }
-
-        .nav-btn {
-            background: #4f7cff;
-            color: #ffffff;
-            padding: 8px 18px;
-            border-radius: 100px;
-            font-size: 0.85rem;
-            font-weight: 700;
-            transition: all 0.2s ease;
-        }
-
-        .nav-btn:hover {
-            background: #3b62db;
-            transform: translateY(-1px);
-        }
-
-        /* Article Wrapper */
-        .article-wrap {
+        /* Main Content Grid */
+        .page-content {
+            padding: 3.5rem 0 5rem;
             background: var(--bg-white);
-            border: 1px solid var(--border);
-            border-radius: var(--radius-lg);
-            padding: 3rem 2.5rem;
-            margin: 2.5rem auto 4rem auto;
-            box-shadow: var(--shadow-md);
         }
 
-        @media (max-width: 640px) {
-            .article-wrap {
-                padding: 1.75rem 1.25rem;
-                margin: 1.5rem auto 3rem auto;
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1fr 320px;
+            gap: 3.5rem;
+            align-items: start;
+        }
+
+        @media (max-width: 1024px) {
+            .content-grid {
+                grid-template-columns: 1fr;
             }
         }
 
-        /* Category Badge */
-        .badge-row {
+        /* Article Main Typography */
+        .article-main {
+            font-size: 1.05rem;
+            line-height: 1.85;
+            color: var(--text-main);
+        }
+
+        .article-main h2 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.85rem;
+            font-weight: 800;
+            color: var(--secondary);
+            margin: 3.25rem 0 1.25rem;
+            letter-spacing: -0.02em;
             display: flex;
             align-items: center;
-            gap: 8px;
-            margin-bottom: 1.25rem;
+            gap: 0.85rem;
+            scroll-margin-top: 100px;
+        }
+
+        .article-main h2::before {
+            content: '';
+            width: 5px;
+            height: 32px;
+            background: linear-gradient(180deg, #ff671f, #16a34a);
+            border-radius: 4px;
+            display: inline-block;
+        }
+
+        .article-main h3 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.35rem;
+            font-weight: 700;
+            color: var(--secondary);
+            margin: 2.25rem 0 1rem;
+            scroll-margin-top: 100px;
+        }
+
+        .article-main p {
+            color: var(--text-muted);
+            margin-bottom: 1.35rem;
+        }
+
+        .article-main p strong {
+            color: var(--secondary);
+            font-weight: 700;
+        }
+
+        .article-main ul, .article-main ol {
+            margin: 1.25rem 0 1.75rem 1.5rem;
+            color: var(--text-muted);
+        }
+
+        .article-main li {
+            margin-bottom: 0.65rem;
+        }
+
+        .article-main li strong {
+            color: var(--secondary);
+        }
+
+        /* Highlights & Callout Boxes */
+        .callout-box {
+            background: #eff6ff;
+            border-left: 4px solid var(--primary);
+            padding: 1.5rem 1.75rem;
+            border-radius: 0 var(--radius-md) var(--radius-md) 0;
+            margin: 2rem 0;
+            box-shadow: var(--shadow-xs);
+        }
+
+        .callout-box strong {
+            color: var(--primary-dark);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.4rem;
+            font-size: 1.05rem;
+        }
+
+        .callout-box p {
+            margin: 0;
+            color: var(--secondary-light);
+            font-size: 0.98rem;
+        }
+
+        .callout-sale {
+            background: linear-gradient(135deg, #fff7ed 0%, #f0fdf4 100%);
+            border-left: 4px solid #ff671f;
+            border: 1px solid #fed7aa;
+            border-left-width: 4px;
+            border-radius: var(--radius-md);
+            padding: 1.75rem;
+            margin: 2.25rem 0;
+            box-shadow: 0 10px 30px rgba(255, 103, 31, 0.08);
+        }
+
+        .callout-sale strong {
+            color: #c2410c;
+            font-size: 1.15rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.6rem;
+        }
+
+        .callout-sale p {
+            color: #334155;
+            margin: 0;
+        }
+
+        /* Countdown Live Timer Card */
+        .sale-timer-hero-box {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: #ffffff;
+            border-radius: var(--radius-lg);
+            padding: 2rem;
+            margin: 2.5rem 0;
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(15, 23, 42, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .sale-timer-hero-box::after {
+            content: '🇮🇳';
+            position: absolute;
+            right: 20px;
+            bottom: -15px;
+            font-size: 100px;
+            opacity: 0.08;
+            pointer-events: none;
+        }
+
+        .timer-header-tag {
+            display: inline-block;
+            background: rgba(249, 115, 22, 0.2);
+            color: #fb923c;
+            border: 1px solid rgba(249, 115, 22, 0.4);
+            font-size: 0.8rem;
+            font-weight: 800;
+            padding: 0.3rem 0.9rem;
+            border-radius: 100px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.8rem;
+        }
+
+        .timer-digits-display {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 900;
+            color: #fde047;
+            letter-spacing: 0.02em;
+            margin: 0.5rem 0;
+            text-shadow: 0 0 25px rgba(253, 224, 71, 0.4);
+        }
+
+        .timer-cta-row {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 1.25rem;
             flex-wrap: wrap;
         }
 
-        .pill-tag {
+        /* Custom Tables */
+        .table-responsive {
+            width: 100%;
+            overflow-x: auto;
+            margin: 2rem 0;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow-sm);
+            background: #fff;
+        }
+
+        .custom-table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            font-size: 0.95rem;
+        }
+
+        .custom-table th {
+            background: #f8fafc;
+            color: var(--secondary);
+            font-weight: 700;
+            padding: 1rem 1.25rem;
+            border-bottom: 2px solid var(--border);
+            font-family: 'Outfit', sans-serif;
+        }
+
+        .custom-table td {
+            padding: 1rem 1.25rem;
+            border-bottom: 1px solid var(--border);
+            color: var(--text-muted);
+            vertical-align: middle;
+        }
+
+        .custom-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .custom-table tr:hover td {
+            background: #f8fafc;
+        }
+
+        /* Color Badges */
+        .badge-pill {
             display: inline-flex;
             align-items: center;
-            gap: 6px;
-            background: linear-gradient(135deg, rgba(245, 158, 11, 0.15), rgba(16, 185, 129, 0.15));
-            border: 1px solid rgba(245, 158, 11, 0.4);
-            color: #b45309;
+            gap: 0.4rem;
+            padding: 0.25rem 0.75rem;
+            border-radius: var(--radius-pill);
+            font-size: 0.85rem;
             font-weight: 700;
-            font-size: 0.8rem;
-            padding: 4px 12px;
-            border-radius: 100px;
-            text-transform: uppercase;
-            letter-spacing: 0.04em;
         }
 
-        .date-pill {
-            font-size: 0.8rem;
-            color: var(--text-light);
-            font-weight: 600;
-        }
-
-        h1 {
-            font-size: clamp(1.85rem, 4vw, 2.75rem);
-            font-weight: 800;
-            line-height: 1.25;
-            color: #0f172a;
-            margin-bottom: 1.25rem;
-        }
-
-        .lead-text {
-            font-size: 1.15rem;
-            color: var(--text-muted);
-            line-height: 1.65;
-            margin-bottom: 2rem;
-            border-left: 4px solid var(--accent-saffron);
-            padding-left: 1.25rem;
-        }
-
-        /* Sale Callout Card */
-        .sale-promo-box {
-            background: linear-gradient(135deg, #1e1b4b 0%, #0f172a 100%);
-            border: 2px solid rgba(245, 158, 11, 0.5);
-            border-radius: var(--radius-md);
-            padding: 2rem;
-            color: #ffffff;
-            margin: 2.5rem 0;
-            text-align: center;
-            box-shadow: 0 15px 35px rgba(30, 27, 75, 0.25);
-        }
-
-        .sale-promo-box h2 {
-            font-size: 1.6rem;
-            color: #fef08a;
-            margin-bottom: 0.5rem;
-        }
-
-        .price-compare {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 12px;
-            margin: 1.25rem 0;
-        }
-
-        .original-strike {
-            font-size: 1.4rem;
-            text-decoration: line-through;
-            opacity: 0.5;
-            color: #cbd5e1;
-        }
-
-        .deal-price {
-            font-size: 2.8rem;
-            font-weight: 800;
-            color: #f59e0b;
-        }
-
-        .deal-per {
-            font-size: 0.95rem;
-            color: #94a3b8;
-        }
-
-        .countdown-pill {
-            display: inline-block;
-            background: rgba(0, 0, 0, 0.5);
-            border: 1px solid rgba(251, 191, 36, 0.4);
-            color: #fde047;
-            font-family: 'JetBrains Mono', monospace;
-            font-weight: 700;
-            font-size: 1.1rem;
-            padding: 6px 18px;
-            border-radius: 100px;
-            margin: 1rem 0;
-            letter-spacing: 0.05em;
-        }
-
-        .cta-button-gold {
-            display: inline-block;
-            background: linear-gradient(135deg, #f59e0b, #e11d48);
-            color: #ffffff;
-            font-weight: 800;
-            font-size: 1.05rem;
-            padding: 14px 32px;
-            border-radius: 100px;
-            box-shadow: 0 8px 25px rgba(225, 29, 72, 0.4);
-            transition: all 0.2s ease;
-            margin-top: 0.75rem;
-        }
-
-        .cta-button-gold:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 12px 30px rgba(225, 29, 72, 0.5);
-            color: #ffffff;
-        }
-
-        /* Typography within Article */
-        h2 {
-            font-size: 1.5rem;
-            font-weight: 800;
-            color: #0f172a;
-            margin: 2.25rem 0 1rem 0;
-        }
-
-        h3 {
-            font-size: 1.2rem;
-            font-weight: 700;
-            color: #1e293b;
-            margin: 1.75rem 0 0.75rem 0;
-        }
-
-        p {
-            margin-bottom: 1.25rem;
-            color: var(--text-muted);
-        }
-
-        ul, ol {
-            margin: 1rem 0 1.5rem 1.5rem;
-            color: var(--text-muted);
-        }
-
-        li {
-            margin-bottom: 0.5rem;
-        }
+        .badge-green { background: #dcfce7; color: #15803d; }
+        .badge-orange { background: #ffedd5; color: #c2410c; }
+        .badge-gray { background: #f1f5f9; color: #475569; }
 
         /* Feature Cards Grid */
-        .features-list-grid {
+        .feature-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-            gap: 1.25rem;
+            gap: 1.5rem;
             margin: 2rem 0;
         }
 
-        .feat-item {
-            background: var(--bg-wash);
+        .feature-card-item {
+            background: #fff;
             border: 1px solid var(--border);
             border-radius: var(--radius-md);
-            padding: 1.25rem;
+            padding: 1.5rem;
+            box-shadow: var(--shadow-xs);
+            transition: all 0.25s ease;
+            position: relative;
         }
 
-        .feat-item h4 {
-            font-size: 1rem;
+        .feature-card-item:hover {
+            transform: translateY(-4px);
+            border-color: #ea580c;
+            box-shadow: var(--shadow-md);
+        }
+
+        .feature-card-icon {
+            font-size: 2rem;
+            margin-bottom: 0.75rem;
+            display: block;
+        }
+
+        .feature-card-item h4 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.15rem;
             font-weight: 700;
-            color: var(--text-main);
+            color: var(--secondary);
             margin-bottom: 0.4rem;
-            display: flex;
-            align-items: center;
-            gap: 8px;
         }
 
-        .feat-item p {
-            font-size: 0.85rem;
-            margin-bottom: 0;
+        .feature-card-item p {
+            font-size: 0.92rem;
             color: var(--text-muted);
+            margin: 0;
+            line-height: 1.6;
         }
 
-        /* Steps */
-        .step-num-circle {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 28px;
-            height: 28px;
-            background: #4f7cff;
-            color: #ffffff;
-            border-radius: 50%;
-            font-weight: 700;
-            font-size: 0.85rem;
-            margin-right: 8px;
+        /* Accordion FAQ */
+        .faq-accordion {
+            margin: 2rem 0;
         }
 
-        /* FAQ Box */
         .faq-item {
             border: 1px solid var(--border);
             border-radius: var(--radius-md);
-            padding: 1.25rem;
             margin-bottom: 1rem;
-            background: #ffffff;
+            background: #fff;
+            overflow: hidden;
+            transition: all 0.2s ease;
         }
 
-        .faq-item h4 {
-            font-size: 1.05rem;
+        .faq-item:hover {
+            border-color: var(--border-hover);
+        }
+
+        .faq-question {
+            padding: 1.25rem 1.5rem;
             font-weight: 700;
-            color: #0f172a;
-            margin-bottom: 0.5rem;
+            font-size: 1.05rem;
+            color: var(--secondary);
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            user-select: none;
+            background: #fff;
         }
 
-        .faq-item p {
-            margin-bottom: 0;
-            font-size: 0.95rem;
+        .faq-question span {
+            font-size: 1.25rem;
+            font-weight: 800;
+            color: #ea580c;
+            transition: transform 0.25s ease;
+        }
+
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.35s cubic-bezier(0, 1, 0, 1), padding 0.25s ease;
+            padding: 0 1.5rem;
+            background: #f8fafc;
+            color: var(--text-muted);
+            font-size: 0.98rem;
+            line-height: 1.7;
+        }
+
+        .faq-item.active {
+            border-color: #ea580c;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .faq-item.active .faq-answer {
+            max-height: 500px;
+            padding: 1.25rem 1.5rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .faq-item.active .faq-question span {
+            transform: rotate(180deg);
+            color: #c2410c;
+        }
+
+        /* High Impact CTA Block */
+        .cta-banner {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            border-radius: var(--radius-lg);
+            padding: 3rem 2.5rem;
+            text-align: center;
+            color: white;
+            margin: 3.5rem 0 1.5rem;
+            box-shadow: 0 20px 45px rgba(0, 0, 0, 0.2);
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(255, 103, 31, 0.3);
+        }
+
+        .cta-banner h3 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 2.1rem;
+            font-weight: 800;
+            color: white !important;
+            margin-bottom: 0.75rem;
+        }
+
+        .cta-banner p {
+            color: #cbd5e1 !important;
+            font-size: 1.1rem;
+            max-width: 680px;
+            margin: 0 auto 2rem;
+        }
+
+        .cta-banner .btn-cta {
+            background: linear-gradient(135deg, #ff671f, #16a34a);
+            color: #ffffff;
+            font-size: 1.1rem;
+            padding: 0.95rem 2.5rem;
+            box-shadow: 0 8px 25px rgba(255, 103, 31, 0.4);
+            font-weight: 800;
+        }
+
+        .cta-banner .btn-cta:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 30px rgba(255, 103, 31, 0.55);
+            color: #ffffff;
+        }
+
+        /* Sidebar Styling */
+        .article-sidebar {
+            position: sticky;
+            top: 100px;
+            display: flex;
+            flex-direction: column;
+            gap: 1.75rem;
+        }
+
+        .sidebar-card {
+            background: #fff;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+            box-shadow: var(--shadow-xs);
+        }
+
+        .sidebar-offer-card {
+            background: linear-gradient(180deg, #fff7ed 0%, #ffffff 100%);
+            border: 2px solid #fed7aa;
+            border-radius: var(--radius-lg);
+            padding: 1.6rem;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(255, 103, 31, 0.12);
+        }
+
+        .sidebar-offer-badge {
+            background: linear-gradient(135deg, #ff671f, #ea580c);
+            color: #fff;
+            font-size: 0.72rem;
+            font-weight: 800;
+            padding: 0.25rem 0.75rem;
+            border-radius: 100px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            display: inline-block;
+            margin-bottom: 0.8rem;
+        }
+
+        .sidebar-price-block {
+            margin: 0.8rem 0;
+        }
+
+        .sidebar-old-price {
+            text-decoration: line-through;
+            color: #94a3b8;
+            font-size: 1rem;
+            font-weight: 700;
+            margin-right: 0.4rem;
+        }
+
+        .sidebar-new-price {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 2.4rem;
+            font-weight: 900;
+            color: #ea580c;
+        }
+
+        .sidebar-timer-badge {
+            background: rgba(234, 88, 12, 0.1);
+            color: #c2410c;
+            border: 1px solid rgba(234, 88, 12, 0.25);
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 0.3rem 0.6rem;
+            border-radius: 8px;
+            margin-bottom: 1.2rem;
+            display: inline-block;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .sidebar-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--secondary);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .toc-list {
+            list-style: none;
+            margin: 0 !important;
+            padding: 0 !important;
+        }
+
+        .toc-list li {
+            margin-bottom: 0.5rem !important;
+        }
+
+        .toc-list a {
+            font-size: 0.88rem;
+            color: var(--text-muted);
+            display: block;
+            padding: 0.35rem 0.6rem;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+        }
+
+        .toc-list a:hover, .toc-list a.active {
+            color: #ea580c;
+            background: #fff7ed;
+            font-weight: 700;
+        }
+
+        .sidebar-link-item {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            padding: 0.65rem 0.85rem;
+            border-radius: var(--radius-sm);
+            color: var(--secondary);
+            font-weight: 600;
+            font-size: 0.9rem;
+            background: var(--bg-wash);
+            border: 1px solid var(--border);
+            margin-bottom: 0.6rem;
+        }
+
+        .sidebar-link-item:hover {
+            border-color: #ea580c;
+            color: #ea580c;
+            background: #fff;
+            transform: translateX(3px);
         }
 
         /* Footer */
         footer {
+            background: #fff;
             border-top: 1px solid var(--border);
-            padding: 2.5rem 0;
-            text-align: center;
-            color: var(--text-light);
-            font-size: 0.85rem;
-            background: #ffffff;
+            padding: 4.5rem 0 2rem;
+            margin-top: 3rem;
+        }
+
+        /* Responsive Breakpoints */
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .meta-bar { flex-direction: column; align-items: flex-start; }
+            .feature-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
 
 <body>
-    <!-- Top Nav -->
+    <!-- Reading Progress Bar -->
+    <div class="reading-progress-container">
+        <div class="reading-progress-bar" id="readingProgress"></div>
+    </div>
+
+    <!-- Header Navigation -->
     <header>
-        <div class="container nav-inner">
-            <a href="/" class="logo">
-                <span class="logo-badge">IS</span>
+        <div class="nav-container">
+            <a href="/index.html" class="logo">
+                <div class="logo-icon">IS</div>
                 IISER SmartPrep
             </a>
-            <div style="display: flex; align-items: center; gap: 12px;">
-                <a href="/#pricing" class="nav-btn">View All Plans</a>
+            <nav class="nav-links">
+                <a href="/ai_tutor.html">AI Tutor</a>
+                <a href="/pyqs/pyq.html">PYQ Hub</a>
+                <a href="/mock_test/full_mock_test_homepage.html">Mock Tests</a>
+                <a href="/features.html">Features</a>
+                <a href="/news/iiser-iat-2027-preparation-strategy.html" style="color:var(--primary);">Guides</a>
+            </nav>
+            <div id="auth-buttons-container" style="display:flex;gap:0.75rem;align-items:center;">
+                <a href="/login.html" class="btn btn-outline" style="padding:0.5rem 1.25rem;font-size:0.88rem;">Log In</a>
+                <a href="/login.html?mode=signup" class="btn btn-primary" style="padding:0.5rem 1.25rem;font-size:0.88rem;">Get Pro (₹699)</a>
             </div>
         </div>
     </header>
 
-    <!-- Main Article Content -->
-    <main class="container">
-        <article class="article-wrap">
-            <div class="badge-row">
-                <span class="pill-tag">🇮🇳 Special Announcement · 4-Day Offer</span>
-                <span class="date-pill">Published: August 15, 2026</span>
-                <span class="date-pill">· 5 Min Read</span>
+    <!-- Hero Header -->
+    <section class="article-hero">
+        <div class="hero-backdrop-glow"></div>
+        <div class="container">
+            <div class="breadcrumbs">
+                <a href="/index.html">Home</a> <span>/</span>
+                <a href="/news/iiser-iat-2027-preparation-strategy.html">News &amp; Announcements</a> <span>/</span>
+                <span style="color:var(--text-main);">Independence Day Special Sale</span>
             </div>
 
-            <h1>Independence Day Special: Empowering Your IISER IAT 2027 Journey with Pro Access (Flat ₹200 OFF)</h1>
+            <div class="hero-badge">
+                <div class="pulse-dot"></div>
+                🇮🇳 Independence Day Freedom Sale &bull; Flat ₹200 OFF
+            </div>
 
-            <p class="lead-text">
-                To celebrate India's 80th Independence Day, IISER SmartPrep is launching a 4-day exclusive offer: Get complete 1-Year Pro access for just <strong>₹699</strong> (reduced from ₹899). Prepare with 45+ full-length mocks, concept notes, PYQ simulations, and AI-driven weakness tracking.
+            <h1>Independence Day Special: Empowering Your IISER IAT 2027 Journey with Pro Access (<span class="text-gradient">Flat ₹200 OFF</span>)</h1>
+
+            <p class="hero-lead">
+                Celebrate India's 79th Independence Day with unmatched academic freedom. For the next 4 days only, unlock the complete <strong>1-Year IISER SmartPrep Pro Plan</strong> for just <strong>₹699</strong> (regular ₹899) and secure your admission path into India's premier science institutes.
             </p>
 
-            <!-- PROMO BOX WITH LIVE COUNTDOWN -->
-            <div class="sale-promo-box">
-                <span style="font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.1em; color: #fbbf24; font-weight: 700;">🇮🇳 Limited 4-Day Celebration Deal</span>
-                <h2>IISER IAT Pro Annual Pass</h2>
-                <p style="color: #cbd5e1; font-size: 0.95rem; max-width: 600px; margin: 0 auto;">
-                    Unlimited preparation power for the entire IISER IAT &amp; NEST 2027 admission cycle.
-                </p>
-
-                <div class="price-compare">
-                    <span class="original-strike">₹899</span>
-                    <div>
-                        <span class="deal-price">₹699</span>
-                        <span class="deal-per">/ 1 Full Year</span>
+            <div class="meta-bar">
+                <div class="author-info">
+                    <div class="author-avatar">IS</div>
+                    <div class="author-meta">
+                        <span class="author-name">IISER SmartPrep Academic Team</span>
+                        <div class="post-details">
+                            <span>📅 Published Aug 15, 2026</span>
+                            <span>&bull;</span>
+                            <span>⏱️ 6 min read</span>
+                            <span>&bull;</span>
+                            <span>🎯 Special Announcement</span>
+                        </div>
                     </div>
                 </div>
 
-                <div>
-                    <span class="countdown-pill" id="articleCountdown">⏳ Offer Ends In: 04d 00h 00m 00s</span>
-                </div>
-
-                <div>
-                    <a href="/#pricing" class="cta-button-gold">Claim ₹699 Annual Pro Pass &rarr;</a>
-                </div>
-                <p style="font-size: 0.75rem; color: #94a3b8; margin-top: 0.75rem; margin-bottom: 0;">
-                    🔒 Instant activation · Secure Razorpay payment · Price automatically reverts after 4 days
-                </p>
-            </div>
-
-            <h2>Why Early Preparation Matters for IISER IAT 2027</h2>
-            <p>
-                Cracking the IISER Aptitude Test (IAT) is distinctly different from conventional entrance exams like JEE or NEET. The IAT evaluates deep interdisciplinary conceptual problem solving across all four core sciences: <strong>Physics, Chemistry, Mathematics, and Biology</strong>.
-            </p>
-            <p>
-                Aspirants who succeed at top IISER campuses (such as IISER Pune, Kolkata, Mohali, Bhopal, and Thiruvananthapuram) begin with a structured, data-driven preparation roadmap early. Starting now gives you enough runway to:
-            </p>
-            <ul>
-                <li>Master non-core subjects (e.g., Biology for PCM students, or Mathematics for PCB students).</li>
-                <li>Attempt comprehensive mock tests with realistic time constraints in official TCS iON format.</li>
-                <li>Identify specific chapter-level accuracy dips before they compromise your overall score.</li>
-                <li>Execute multiple spaced revision cycles without last-minute stress.</li>
-            </ul>
-
-            <h2>What is Included in the 1-Year Pro Plan?</h2>
-            <p>
-                The 1-Year Pro Plan unlocks every advanced tool and learning module built into the IISER SmartPrep platform:
-            </p>
-
-            <div class="features-list-grid">
-                <div class="feat-item">
-                    <h4><span>🎯</span> 45+ Full-Length IAT Mocks</h4>
-                    <p>Accurate TCS iON exam simulation with section timers, question palettes, and negative marking.</p>
-                </div>
-                <div class="feat-item">
-                    <h4><span>⚡</span> Unlimited Chapter Quick Mocks</h4>
-                    <p>Targeted 16-question / 30-minute drills to build mastery on single chapters systematically.</p>
-                </div>
-                <div class="feat-item">
-                    <h4><span>📚</span> Visual Concept Notes</h4>
-                    <p>Formula cheat-sheets, reaction flowcharts, and integrated checkpoint quizzes for every chapter.</p>
-                </div>
-                <div class="feat-item">
-                    <h4><span>🏛️</span> Official PYQ Simulation Vault</h4>
-                    <p>Real previous year papers with step-by-step verified explanations and difficulty breakdowns.</p>
-                </div>
-                <div class="feat-item">
-                    <h4><span>🤖</span> Smart Coach AI V2</h4>
-                    <p>Personalized daily study recommendations tailored dynamically to your latest mock results.</p>
-                </div>
-                <div class="feat-item">
-                    <h4><span>📊</span> Weakness Engine Analytics</h4>
-                    <p>Live readiness score, chapter accuracy heatmaps, and automatic revision queue scheduling.</p>
+                <div class="share-buttons">
+                    <button class="share-btn" onclick="shareOnTwitter()" title="Share on Twitter">🐦</button>
+                    <button class="share-btn" onclick="shareOnWhatsApp()" title="Share on WhatsApp">💬</button>
+                    <button class="share-btn" onclick="copyArticleLink()" title="Copy Link">🔗</button>
                 </div>
             </div>
 
-            <h2>How Does the 4-Day Sale Work?</h2>
-            <p>
-                The Independence Day Special Offer runs for exactly <strong>4 Days</strong>, starting <strong>August 15, 2026 at 00:00:00 IST</strong> and concluding on <strong>August 19, 2026 at 23:59:59 IST</strong>.
-            </p>
-            <p>
-                During this window, the backend pricing automatically charges <strong>₹699</strong> (a direct flat saving of ₹200) for the 1-Year Pro membership. Once the 4-day timer expires, the plan automatically returns to its regular ₹899 rate.
-            </p>
-
-            <h2>How to Claim Your ₹699 Pro Access (3 Simple Steps)</h2>
-            <ol>
-                <li>
-                    <strong>Step 1:</strong> Visit the <a href="/#pricing" style="color: var(--primary); font-weight: 700;">Pricing Section</a> on the homepage or open the Subscription tab in your dashboard.
-                </li>
-                <li>
-                    <strong>Step 2:</strong> Select the <strong>Pro Annual (1 Year)</strong> plan showing the ₹699 Independence Day deal.
-                </li>
-                <li>
-                    <strong>Step 3:</strong> Click <strong>"Claim ₹699 Annual Access"</strong> to complete your secure payment via Razorpay. Your Pro membership activates immediately!
-                </li>
-            </ol>
-
-            <h2>Frequently Asked Questions (FAQs)</h2>
-
-            <div class="faq-item">
-                <h4>1. Is any promo code required to get the ₹200 discount?</h4>
-                <p>No promo code or coupon is required. The discounted price of ₹699 is automatically pre-applied on the checkout system during the 4-day sale.</p>
+            <!-- Featured Banner Image -->
+            <div class="featured-banner-wrapper">
+                <img src="/assets/iiser_iat_2027_prep.jpg" alt="IISER IAT 2027 Independence Day Special Freedom Sale banner featuring student preparation desk" width="1200" height="675">
+                <div class="banner-caption">
+                    <span><strong>Featured Event:</strong> IISER SmartPrep 4-Day Independence Day Freedom Campaign (August 15 – August 19, 2026).</span>
+                    <span>Offer Ends Aug 19</span>
+                </div>
             </div>
+        </div>
+    </section>
 
-            <div class="faq-item">
-                <h4>2. If I am already an existing user, can I extend my membership?</h4>
-                <p>Yes! If you already have an active plan, purchasing the 1-Year Pro Plan will automatically append 365 days to your current expiry date.</p>
-            </div>
+    <!-- Main Content Section -->
+    <section class="page-content">
+        <div class="container">
+            <div class="content-grid">
+                
+                <!-- Main Article Column -->
+                <article class="article-main">
+                    
+                    <p>
+                        Every year, thousands of brilliant science aspirants across India take the <strong>IISER Aptitude Test (IAT)</strong> with a singular dream: to conduct cutting-edge scientific research at the <strong>IISERs, IISc Bangalore, and IIT Madras</strong>.
+                    </p>
+                    <p>
+                        To celebrate this Independence Day and honor the next generation of Indian scientists, researchers, and innovators, we are launching our biggest discount event of the season: <strong>Flat ₹200 OFF on the 1-Year Pro Annual Plan</strong>, reducing the price from ₹899 to just <strong>₹699</strong>.
+                    </p>
 
-            <div class="faq-item">
-                <h4>3. What payment methods are supported?</h4>
-                <p>We support all major payment modes via Razorpay, including UPI (Google Pay, PhonePe, Paytm), Credit/Debit Cards, Net Banking, and Wallets.</p>
-            </div>
+                    <!-- Live Timer Box -->
+                    <div class="sale-timer-hero-box">
+                        <span class="timer-header-tag">⏳ Limited 4-Day Event &bull; Ends August 19, 2026</span>
+                        <div class="timer-digits-display" id="blogArticleSaleTimer">04d 00h 00m 00s</div>
+                        <p style="color: #cbd5e1; font-size: 0.95rem; margin-bottom: 0;">Save ₹200 instantly &bull; Auto-applied discount at checkout &bull; Full admission cycle coverage</p>
+                        <div class="timer-cta-row">
+                            <a href="/login.html?mode=signup" class="btn btn-primary" style="background: linear-gradient(135deg, #ff671f, #16a34a); padding: 0.85rem 2rem; font-size: 1.05rem;">Claim ₹699 Pro Deal &rarr;</a>
+                            <a href="#plan-comparison" class="btn btn-outline" style="background: transparent; color: #ffffff; border-color: rgba(255,255,255,0.3);">View Plan Features</a>
+                        </div>
+                    </div>
 
-            <div class="faq-item">
-                <h4>4. What happens when the 4 days are over?</h4>
-                <p>The offer ends precisely on August 19, 2026 at 23:59:59 IST. The platform and database will automatically revert to the standard ₹899 pricing.</p>
-            </div>
+                    <!-- Callout Box -->
+                    <div class="callout-sale">
+                        <strong>🇮🇳 Why We Are Doing This</strong>
+                        <p>
+                            High-quality scientific entrance preparation should never be locked behind exorbitant ₹50,000+ coaching paywalls. By offering a full year of TCS iON-grade mock tests, AI mentorship, and structured chapter revision for ₹699, we want every deserving student from every corner of India to have an equal shot at top IISER ranks.
+                        </p>
+                    </div>
 
-            <!-- FINAL CALL TO ACTION -->
-            <div style="background: var(--bg-wash); border: 2px solid var(--border); border-radius: var(--radius-md); padding: 2rem; text-align: center; margin-top: 3rem;">
-                <h3 style="font-size: 1.4rem; margin-top: 0; margin-bottom: 0.5rem;">Take the Leap into Top Tier Research Institutes</h3>
-                <p style="max-width: 550px; margin: 0 auto 1.5rem auto;">
-                    Equip your preparation with India's most advanced learning platform for IISER IAT. Claim the Independence Day offer today before the timer runs out!
-                </p>
-                <a href="/#pricing" class="cta-button-gold">Unlock 1-Year Pro at ₹699 Now &rarr;</a>
+                    <!-- Section 1 -->
+                    <h2 id="what-is-included">What Does the 1-Year Pro Plan Include?</h2>
+                    <p>
+                        The 1-Year Pro Plan is our comprehensive, all-in-one preparation package engineered specifically around the unique format of the IISER Aptitude Test (IAT) and NEST.
+                    </p>
+
+                    <div class="feature-grid">
+                        <div class="feature-card-item">
+                            <span class="feature-card-icon">🎯</span>
+                            <h4>45+ Full-Length TCS iON Mocks</h4>
+                            <p>Authentic 60-question 180-minute simulations mirroring the exact interface, timer, and question-palette of the official exam.</p>
+                        </div>
+                        <div class="feature-card-item">
+                            <span class="feature-card-icon">⚡</span>
+                            <h4>Unlimited Chapter-wise Quick Mocks</h4>
+                            <p>Targeted 16-question / 30-minute drills across all Physics, Chemistry, Math, and Biology chapters to isolate weak topics.</p>
+                        </div>
+                        <div class="feature-card-item">
+                            <span class="feature-card-icon">🤖</span>
+                            <h4>Personalized Smart Coach V2</h4>
+                            <p>24/7 AI-driven mentor that diagnoses root-cause conceptual misunderstandings and generates customized daily action roadmaps.</p>
+                        </div>
+                        <div class="feature-card-item">
+                            <span class="feature-card-icon">📚</span>
+                            <h4>Full Official PYQ Suite (2017–2025)</h4>
+                            <p>Complete historical past papers with step-by-step verified video-grade solutions and key concept takeaways.</p>
+                        </div>
+                        <div class="feature-card-item">
+                            <span class="feature-card-icon">🧬</span>
+                            <h4>High-Yield Concept Notes &amp; Formulas</h4>
+                            <p>Concise, highly structured NCERT-aligned revision sheets covering Class 11 and 12 PCMB with zero fluff.</p>
+                        </div>
+                        <div class="feature-card-item">
+                            <span class="feature-card-icon">📊</span>
+                            <h4>Adaptive Readiness Diagnostics</h4>
+                            <p>Deep analytics mapping your subject balance, speed vs accuracy ratios, and predicted percentile range.</p>
+                        </div>
+                    </div>
+
+                    <!-- Section 2 -->
+                    <h2 id="plan-comparison">Plan Comparison: Free vs Pro Annual</h2>
+                    <p>
+                        Here is an honest breakdown of what you get with free access versus the 1-Year Pro Annual Plan during the Independence Day Freedom Sale:
+                    </p>
+
+                    <div class="table-responsive">
+                        <table class="custom-table">
+                            <thead>
+                                <tr>
+                                    <th style="width: 45%;">Feature</th>
+                                    <th style="width: 25%;">Free Plan</th>
+                                    <th style="width: 30%; color: #ea580c;">Pro Annual (₹699 Sale)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>Full-Length IAT Mocks</strong></td>
+                                    <td>1 Diagnostic Mock</td>
+                                    <td><span class="badge-pill badge-green">✓ Unlimited (45+ Mocks)</span></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Chapter-wise Quick Mocks</strong></td>
+                                    <td>Limited Preview</td>
+                                    <td><span class="badge-pill badge-green">✓ Unlimited (All Chapters)</span></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Official PYQ Solutions (2017–2025)</strong></td>
+                                    <td>Questions Only</td>
+                                    <td><span class="badge-pill badge-green">✓ Full Solutions &amp; Analysis</span></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Personalized AI Study Coach V2</strong></td>
+                                    <td>5 Prompts / Day</td>
+                                    <td><span class="badge-pill badge-green">✓ Unlimited 24/7 Mentorship</span></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>High-Yield Concept &amp; Formula Notes</strong></td>
+                                    <td>Sample Chapters</td>
+                                    <td><span class="badge-pill badge-green">✓ Complete 4-Subject Syllabus</span></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Personalized Daily Action Plans</strong></td>
+                                    <td><span class="badge-pill badge-gray">✗ Not Included</span></td>
+                                    <td><span class="badge-pill badge-green">✓ Daily Adaptive Priority Tasks</span></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Spaced Revision Scheduler</strong></td>
+                                    <td><span class="badge-pill badge-gray">✗ Not Included</span></td>
+                                    <td><span class="badge-pill badge-green">✓ Automatic Memory Refresh</span></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Validity Period</strong></td>
+                                    <td>Lifetime Free</td>
+                                    <td><strong>365 Days (Full 2027 Cycle)</strong></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Section 3 -->
+                    <h2 id="why-annual-plan">Why the 1-Year Plan is the Smartest Choice for IAT 2027</h2>
+                    <p>
+                        Unlike monthly subscriptions where you worry about recurring fees, the <strong>1-Year Pro Plan</strong> covers your entire journey:
+                    </p>
+                    <ul>
+                        <li><strong>Complete 12-Month Coverage:</strong> Covers your initial concept building, mid-year mock drilling, board exam revision overlap, and intensive final sprint before IAT 2027.</li>
+                        <li><strong>Lowest Effective Cost:</strong> At <strong>₹699</strong>, you are paying less than <strong>₹58 per month</strong> for a premier full-stack scientific entrance system.</li>
+                        <li><strong>No Automatic Recurring Charges:</strong> One single payment. No hidden auto-debits or surprises.</li>
+                    </ul>
+
+                    <!-- Section 4 -->
+                    <h2 id="how-to-claim">How to Claim the ₹200 Discount</h2>
+                    <p>
+                        Claiming the Independence Day Special discount takes less than 60 seconds:
+                    </p>
+                    <ol>
+                        <li>Click on the <strong><a href="/login.html?mode=signup" style="color:#ea580c; font-weight:700;">Claim ₹699 Pro Deal</a></strong> button below.</li>
+                        <li>Create a free account or sign in with your email.</li>
+                        <li>Select the <strong>1-Year Pro Annual Plan</strong> — the <strong>₹200 discount is automatically applied</strong> (price shows ₹699 instead of ₹899).</li>
+                        <li>Complete the secure checkout via UPI, Google Pay, PhonePe, Paytm, Debit/Credit Card, or Net Banking.</li>
+                        <li>Your Pro features, full mock test library, and AI study coach unlock immediately!</li>
+                    </ol>
+
+                    <!-- High Impact CTA Banner -->
+                    <div class="cta-banner">
+                        <h3>Celebrate Freedom. Master IISER IAT 2027.</h3>
+                        <p>Join hundreds of future IISERites already training with intelligent adaptive mock tests and AI weakness diagnostics.</p>
+                        <a href="/login.html?mode=signup" class="btn btn-cta">Claim 1-Year Pro Access for ₹699 &rarr;</a>
+                    </div>
+
+                    <!-- FAQ Section -->
+                    <h2 id="faq">Frequently Asked Questions</h2>
+                    <div class="faq-accordion">
+                        <div class="faq-item">
+                            <div class="faq-question" onclick="toggleFaq(this)">
+                                What is the validity of the Independence Day Special offer?
+                                <span>▼</span>
+                            </div>
+                            <div class="faq-answer">
+                                The offer is live for exactly 4 days starting August 15, 2026, and will expire on August 19, 2026 at 23:59:59 IST. After this date, the price will automatically return to the standard ₹899 price.
+                            </div>
+                        </div>
+                        <div class="faq-item">
+                            <div class="faq-question" onclick="toggleFaq(this)">
+                                Do I need to enter a coupon code?
+                                <span>▼</span>
+                            </div>
+                            <div class="faq-answer">
+                                No promo code is required! The ₹200 discount is hardcoded and automatically applied for all users purchasing the 1-Year Pro Plan during the 4-day sale period.
+                            </div>
+                        </div>
+                        <div class="faq-item">
+                            <div class="faq-question" onclick="toggleFaq(this)">
+                                What payment methods are accepted?
+                                <span>▼</span>
+                            </div>
+                            <div class="faq-answer">
+                                We accept all Indian payment methods including UPI (Google Pay, PhonePe, Paytm, BHIM), Debit/Credit Cards (Visa, MasterCard, RuPay), and Net Banking via Razorpay's 100% secure payment gateway.
+                            </div>
+                        </div>
+                        <div class="faq-item">
+                            <div class="faq-question" onclick="toggleFaq(this)">
+                                Will this plan cover the NEST exam as well?
+                                <span>▼</span>
+                            </div>
+                            <div class="faq-answer">
+                                Yes! The PCMB conceptual depth, formula notes, and advanced mock test questions thoroughly prepare you for both the IISER Aptitude Test (IAT) and the National Entrance Screening Test (NEST for NISER / CEBS).
+                            </div>
+                        </div>
+                    </div>
+
+                </article>
+
+                <!-- Sticky Sidebar Column -->
+                <aside class="article-sidebar">
+                    
+                    <!-- Freedom Sale Offer Widget -->
+                    <div class="sidebar-offer-card">
+                        <span class="sidebar-offer-badge">🇮🇳 FREEDOM SALE</span>
+                        <h3 style="font-family:'Outfit',sans-serif; font-size:1.25rem; font-weight:800; color:#0f172a; margin-bottom:0.25rem;">1-Year Pro Plan</h3>
+                        <p style="font-size:0.85rem; color:#64748b; margin-bottom:0.5rem;">Complete IAT 2027 Access</p>
+                        
+                        <div class="sidebar-price-block">
+                            <span class="sidebar-old-price">₹899</span>
+                            <span class="sidebar-new-price">₹699</span>
+                        </div>
+
+                        <div class="sidebar-timer-badge" id="sidebarSaleTimer">
+                            ⏳ 04d 00h 00m 00s
+                        </div>
+
+                        <a href="/login.html?mode=signup" class="btn btn-primary" style="width:100%; padding:0.75rem 1rem; font-size:0.92rem; background:linear-gradient(135deg, #ff671f, #16a34a);">Claim ₹699 Deal &rarr;</a>
+                    </div>
+
+                    <!-- Table of Contents Widget -->
+                    <div class="sidebar-card">
+                        <div class="sidebar-title">
+                            <span>📑</span>
+                            <span>Table of Contents</span>
+                        </div>
+                        <ul class="toc-list">
+                            <li><a href="#what-is-included">1. What's in the Pro Plan?</a></li>
+                            <li><a href="#plan-comparison">2. Free vs Pro Comparison</a></li>
+                            <li><a href="#why-annual-plan">3. Why 1-Year Plan is Best</a></li>
+                            <li><a href="#how-to-claim">4. How to Claim Discount</a></li>
+                            <li><a href="#faq">5. Frequently Asked Questions</a></li>
+                        </ul>
+                    </div>
+
+                    <!-- Related Guides Widget -->
+                    <div class="sidebar-card">
+                        <div class="sidebar-title">
+                            <span>📚</span>
+                            <span>Recommended Guides</span>
+                        </div>
+                        <a href="/news/iiser-iat-2027-preparation-strategy.html" class="sidebar-link-item">
+                            <span>🎯</span>
+                            <span>IISER IAT 2027 Complete Strategy</span>
+                        </a>
+                        <a href="/news/IAT-vs-NEST-which-exam-to-target.html" class="sidebar-link-item">
+                            <span>⚖️</span>
+                            <span>IAT vs NEST: Which to Target?</span>
+                        </a>
+                        <a href="/news/best-book-for-physics--for-iat.html" class="sidebar-link-item">
+                            <span>📖</span>
+                            <span>Best Books for IAT Physics</span>
+                        </a>
+                        <a href="/news/how-to-crack-iat-in-3-months.html" class="sidebar-link-item">
+                            <span>⏱️</span>
+                            <span>How to Crack IAT in 3 Months</span>
+                        </a>
+                    </div>
+
+                    <!-- Community WhatsApp Widget -->
+                    <div class="sidebar-card" style="background: linear-gradient(180deg, #f0fdf4 0%, #ffffff 100%); border-color: #bbf7d0;">
+                        <div class="sidebar-title" style="color: #15803d;">
+                            <span>💬</span>
+                            <span>Aspirants Community</span>
+                        </div>
+                        <p style="font-size: 0.85rem; color: #475569; margin-bottom: 1rem;">Join 1,200+ science aspirants preparing for IISER IAT 2027.</p>
+                        <a href="https://whatsapp.com/channel/0029Va9R1lK1iUxQ8YhZg30X" target="_blank" rel="noopener" class="btn btn-outline" style="width: 100%; border-color: #22c55e; color: #15803d; font-size: 0.88rem; padding: 0.6rem 1rem;">Join WhatsApp Channel &rarr;</a>
+                    </div>
+
+                </aside>
+
             </div>
-        </article>
-    </main>
+        </div>
+    </section>
 
     <!-- Footer -->
     <footer>
         <div class="container">
-            <p>&copy; 2026 IISER SmartPrep. All rights reserved.</p>
-            <p style="margin-top: 4px; font-size: 0.75rem;">Not affiliated with the IISER Joint Admissions Committee.</p>
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1.5rem; padding-bottom: 2rem; border-bottom: 1px solid var(--border);">
+                <a href="/index.html" class="logo">
+                    <div class="logo-icon">IS</div>
+                    IISER SmartPrep
+                </a>
+                <div style="display: flex; gap: 1.5rem; font-size: 0.9rem; color: var(--text-muted);">
+                    <a href="/features.html">Features</a>
+                    <a href="/mock_test/full_mock_test_homepage.html">Mocks</a>
+                    <a href="/pyqs/pyq.html">PYQs</a>
+                    <a href="/news/iiser-iat-2027-preparation-strategy.html">Blog</a>
+                    <a href="/privacy.html">Privacy</a>
+                    <a href="/terms.html">Terms</a>
+                </div>
+            </div>
+            <div style="text-align: center; font-size: 0.85rem; color: var(--text-light); margin-top: 2rem;">
+                &copy; 2026 IISER SmartPrep. All rights reserved. Designed with dedication for India's future scientists.
+            </div>
         </div>
     </footer>
 
-    <!-- Countdown Timer Script -->
+    <!-- Interactive Scripts -->
     <script>
+        // Reading Progress Bar
+        window.addEventListener('scroll', () => {
+            const winScroll = document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            const bar = document.getElementById('readingProgress');
+            if (bar) bar.style.width = scrolled + '%';
+        });
+
+        // FAQ Toggle
+        function toggleFaq(el) {
+            const item = el.parentElement;
+            item.classList.toggle('active');
+        }
+
+        // Live Countdown Timer
         (function() {
             const SALE_END_MS = new Date("2026-08-19T23:59:59+05:30").getTime();
-            const countdownEl = document.getElementById("articleCountdown");
+            const timerEl1 = document.getElementById("blogArticleSaleTimer");
+            const timerEl2 = document.getElementById("sidebarSaleTimer");
 
             function updateTimer() {
                 const now = Date.now();
-                const diff = SALE_END_MS - now;
+                const distance = SALE_END_MS - now;
 
-                if (diff <= 0) {
-                    if (countdownEl) {
-                        countdownEl.textContent = "Offer Has Ended";
-                        countdownEl.style.color = "#94a3b8";
-                    }
+                if (distance <= 0) {
+                    if (timerEl1) timerEl1.textContent = "00d 00h 00m 00s (Sale Ended)";
+                    if (timerEl2) timerEl2.textContent = "Sale Ended";
                     return false;
                 }
 
-                const d = Math.floor(diff / (1000 * 60 * 60 * 24));
-                const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-                const s = Math.floor((diff % (1000 * 60)) / 1000);
+                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-                if (countdownEl) {
-                    countdownEl.textContent = `⏳ Offer Ends In: ${String(d).padStart(2, '0')}d ${String(h).padStart(2, '0')}h ${String(m).padStart(2, '0')}m ${String(s).padStart(2, '0')}s`;
-                }
+                const formatted = `${String(days).padStart(2, '0')}d ${String(hours).padStart(2, '0')}h ${String(minutes).padStart(2, '0')}m ${String(seconds).padStart(2, '0')}s`;
+
+                if (timerEl1) timerEl1.textContent = formatted;
+                if (timerEl2) timerEl2.textContent = `⏳ ${formatted}`;
+
                 return true;
             }
 
             if (updateTimer()) {
-                const interval = setInterval(function() {
-                    if (!updateTimer()) clearInterval(interval);
-                }, 1000);
+                setInterval(updateTimer, 1000);
             }
         })();
+
+        // Share Handlers
+        function shareOnTwitter() {
+            const url = encodeURIComponent(window.location.href);
+            const text = encodeURIComponent("🇮🇳 Flat ₹200 OFF on IISER SmartPrep 1-Year Pro Plan for IAT 2027! Check out the Freedom Sale:");
+            window.open(`https://twitter.com/intent/tweet?url=${url}&text=${text}`, '_blank');
+        }
+
+        function shareOnWhatsApp() {
+            const url = encodeURIComponent(window.location.href);
+            const text = encodeURIComponent("🇮🇳 Freedom Sale: Flat ₹200 OFF on 1-Year Pro Plan for IISER IAT 2027! Check it out: ") + url;
+            window.open(`https://api.whatsapp.com/send?text=${text}`, '_blank');
+        }
+
+        function copyArticleLink() {
+            navigator.clipboard.writeText(window.location.href).then(() => {
+                alert("Article link copied to clipboard!");
+            });
+        }
     </script>
 </body>
+
 </html>
