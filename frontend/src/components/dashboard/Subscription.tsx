@@ -361,31 +361,34 @@ export function Subscription({ returnTo, onNavigate }: SubscriptionProps) {
       {/* Independence Day Sale Notice Banner */}
       {isSaleActive && (
         <div className={cn(
-          "relative overflow-hidden rounded-2xl border p-4 sm:p-5 flex flex-col sm:flex-row items-center justify-between gap-4 transition-all",
+          "relative overflow-hidden rounded-2xl border flex flex-col transition-all shadow-md",
           isLight
-            ? "bg-gradient-to-r from-amber-50 via-orange-50 to-amber-50 border-amber-200 text-slate-800 shadow-[0_4px_20px_rgba(245,158,11,0.08)]"
+            ? "bg-white border-amber-200 text-slate-800 shadow-[0_4px_20px_rgba(245,158,11,0.08)]"
             : "bg-gradient-to-r from-slate-900 via-amber-950/30 to-slate-900 border-amber-500/30 text-white shadow-[0_0_30px_rgba(245,158,11,0.1)]"
         )}>
-          <div className="flex items-center gap-3">
-            <span className="text-2xl">🇮🇳</span>
-            <div>
-              <div className="flex items-center gap-2">
-                <span className="text-xs font-bold uppercase tracking-wider text-amber-500 bg-amber-500/10 px-2 py-0.5 rounded border border-amber-500/20">
-                  Independence Day Special
-                </span>
-                <span className="text-xs font-bold text-emerald-600 dark:text-emerald-400">Flat ₹200 OFF</span>
+          <div className="h-1 w-full bg-gradient-to-r from-[#FF671F] via-white to-[#046A38]" />
+          <div className="p-4 sm:p-5 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div className="flex items-center gap-3">
+              <span className="text-2xl">🇮🇳</span>
+              <div>
+                <div className="flex items-center gap-2">
+                  <span className="text-xs font-bold uppercase tracking-wider text-amber-500 bg-amber-500/10 px-2 py-0.5 rounded border border-amber-500/20">
+                    Independence Day Special
+                  </span>
+                  <span className="text-xs font-bold text-emerald-600 dark:text-emerald-400">Flat ₹200 OFF</span>
+                </div>
+                <p className="text-xs text-slate-600 dark:text-slate-300 mt-1">
+                  Get full 1-Year Pro access for just <strong>₹699</strong> (regular ₹899). Price automatically reverts after 4 days.
+                </p>
               </div>
-              <p className="text-xs text-slate-600 dark:text-slate-300 mt-1">
-                Get full 1-Year Pro access for just <strong>₹699</strong> (regular ₹899). Price automatically reverts after 4 days.
-              </p>
             </div>
+            {saleTimeRemaining && (
+              <div className="shrink-0 flex items-center gap-2 bg-black/70 border border-white/10 px-3.5 py-2 rounded-xl text-xs font-mono font-bold text-yellow-300">
+                <span className="text-white/70">Ends in:</span>
+                <span>{saleTimeRemaining}</span>
+              </div>
+            )}
           </div>
-          {saleTimeRemaining && (
-            <div className="shrink-0 flex items-center gap-2 bg-black/40 border border-white/10 px-3.5 py-2 rounded-xl text-xs font-mono font-bold text-yellow-300">
-              <span className="text-white/70">Ends in:</span>
-              <span>{saleTimeRemaining}</span>
-            </div>
-          )}
         </div>
       )}
 

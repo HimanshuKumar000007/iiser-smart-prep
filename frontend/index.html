@@ -8,7 +8,15 @@
     </script>
     <script>
       (function() {
-        const theme = localStorage.getItem('theme') || 'dark';
+        const SALE_END_MS = new Date("2026-08-19T23:59:59+05:30").getTime();
+        const SALE_START_MS = new Date("2026-08-15T00:00:00+05:30").getTime();
+        const now = Date.now();
+        const isSaleActive = now >= SALE_START_MS && now <= SALE_END_MS;
+
+        // Default to Light theme during the 4-day Independence Day celebration
+        const savedTheme = localStorage.getItem('theme');
+        const theme = savedTheme || (isSaleActive ? 'light' : 'dark');
+
         document.documentElement.classList.remove('light', 'dark');
         document.documentElement.classList.add(theme);
         document.documentElement.setAttribute('data-theme', theme === 'light' ? 'light_homepage' : 'dark_premium');
@@ -28,13 +36,21 @@
     <link rel="stylesheet" href="assets/css/onboarding.css" />
   </head>
   <body>
-    <!-- ============ INDEPENDENCE DAY SALE BANNER ============ -->
+    <!-- ============ INDEPENDENCE DAY SALE BANNER & TRICOLOR ============ -->
     <div id="independenceSaleBanner" class="sale-top-banner">
+      <div class="sale-tricolor-stripe"></div>
       <div class="sale-banner-inner">
-        <span class="sale-badge-pill">🇮🇳 Special Offer</span>
-        <span>Independence Day Sale: <strong class="sale-text-highlight">Flat ₹200 OFF</strong> on 1-Year Pro Plan (<span style="color:#fde047; font-weight:800;">₹699 only</span>)</span>
-        <span class="sale-countdown-clock">⏳ Ends in: <span id="saleBannerTimer">04d 00h 00m 00s</span></span>
-        <a href="#pricing" class="sale-banner-cta">Claim ₹699 Deal &rarr;</a>
+        <div class="sale-left-group">
+          <span class="sale-badge-pill">🇮🇳 Independence Day Offer</span>
+          <span class="sale-title-text">Flat <strong class="sale-text-highlight">₹200 OFF</strong> on 1-Year Pro (<span class="sale-price-accent">₹699 only</span>)</span>
+        </div>
+        <div class="sale-right-group">
+          <span class="sale-countdown-clock">
+            <span class="timer-label">Ends in:</span>
+            <span id="saleBannerTimer">04d 00h 00m 00s</span>
+          </span>
+          <a href="#pricing" class="sale-banner-cta">Claim ₹699 Deal &rarr;</a>
+        </div>
       </div>
     </div>
 
@@ -1816,6 +1832,7 @@
         const moonIcon = document.getElementById('themeToggleMoon');
 
         function updateIcons(theme) {
+          if (!sunIcon || !moonIcon) return;
           if (theme === 'light') {
             sunIcon.style.display = 'none';
             moonIcon.style.display = 'block';
@@ -1825,7 +1842,12 @@
           }
         }
 
-        const currentTheme = localStorage.getItem('theme') || 'dark';
+        const SALE_END_MS = new Date("2026-08-19T23:59:59+05:30").getTime();
+        const SALE_START_MS = new Date("2026-08-15T00:00:00+05:30").getTime();
+        const now = Date.now();
+        const isSaleActive = now >= SALE_START_MS && now <= SALE_END_MS;
+
+        const currentTheme = localStorage.getItem('theme') || (isSaleActive ? 'light' : 'dark');
         updateIcons(currentTheme);
 
         if (toggleBtn) {
@@ -1837,6 +1859,10 @@
             localStorage.setItem('dashboard_theme', nextTheme === 'light' ? 'light_homepage' : 'dark_premium');
             updateIcons(nextTheme);
           });
+        }
+      })();
+    </script>
+    <script>
       // ============ INDEPENDENCE DAY SALE COUNTDOWN SCRIPT ============
       (function() {
         const SALE_END_MS = new Date("2026-08-19T23:59:59+05:30").getTime();
