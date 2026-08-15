@@ -2051,14 +2051,14 @@ footer {
 .independence-modal-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(6, 8, 20, 0.78);
+  background: rgba(6, 8, 20, 0.82);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   z-index: 100000;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 1.25rem;
+  padding: 1rem;
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1);
@@ -2069,311 +2069,422 @@ footer {
   pointer-events: auto;
 }
 
-.independence-modal-card {
-  position: relative;
-  background: var(--panel);
-  border: 1px solid rgba(255, 103, 31, 0.35);
-  border-radius: 28px;
+.independence-modal-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.85rem;
   max-width: 430px;
   width: 100%;
-  box-shadow: 0 30px 90px -15px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.1);
-  overflow: hidden;
-  transform: scale(0.92) translateY(24px);
-  transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
-  text-align: center;
 }
 
-html.light .independence-modal-card {
-  background: #ffffff;
-  border: 1.5px solid rgba(255, 103, 31, 0.35);
-  box-shadow: 0 30px 90px -15px rgba(15, 23, 42, 0.25), 0 0 0 1px rgba(0, 0, 0, 0.05);
+.independence-modal-card {
+  position: relative;
+  background: linear-gradient(180deg, #fff7ed 0%, #ffffff 35%, #ffffff 65%, #f0fdf4 100%);
+  border-radius: 28px;
+  width: 100%;
+  box-shadow: 0 35px 90px -15px rgba(0, 0, 0, 0.55), 0 0 0 1px rgba(255, 255, 255, 0.8);
+  overflow: hidden;
+  transform: scale(0.92) translateY(20px);
+  transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+  text-align: center;
+  padding: 1.75rem 1.4rem 1.4rem 1.4rem;
 }
 
 .independence-modal-overlay.active .independence-modal-card {
   transform: scale(1) translateY(0);
 }
 
-/* Decorative Tricolor Curved Ribbons */
-.modal-ribbon-top {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 120px;
-  height: 120px;
-  pointer-events: none;
-  opacity: 0.85;
-}
-
-.modal-ribbon-bottom {
-  position: absolute;
-  bottom: 0;
-  right: 0;
-  width: 130px;
-  height: 130px;
-  pointer-events: none;
-  opacity: 0.85;
-}
-
+/* Modal Close Button */
 .modal-close-btn {
   position: absolute;
   top: 14px;
   right: 14px;
-  width: 32px;
-  height: 32px;
+  width: 34px;
+  height: 34px;
   border-radius: 50%;
-  background: rgba(139, 92, 246, 0.15);
-  color: var(--text);
-  border: 1px solid rgba(139, 92, 246, 0.3);
-  font-size: 1.15rem;
+  background: #8b5cf6;
+  color: #ffffff;
+  border: 2px solid #ffffff;
+  font-size: 1.25rem;
   font-weight: 700;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  z-index: 10;
-  transition: transform 0.2s ease, background-color 0.2s ease, color 0.2s ease;
-}
-
-html.dark .modal-close-btn {
-  background: rgba(255, 255, 255, 0.1);
-  border-color: rgba(255, 255, 255, 0.2);
-  color: #ffffff;
+  z-index: 20;
+  box-shadow: 0 4px 15px rgba(139, 92, 246, 0.5);
+  transition: transform 0.2s ease, background-color 0.2s ease;
 }
 
 .modal-close-btn:hover {
   transform: scale(1.1) rotate(90deg);
-  background: #8b5cf6;
-  color: #ffffff;
+  background: #7c3aed;
 }
 
-.modal-body {
-  padding: 2.2rem 1.6rem 1.6rem 1.6rem;
-  position: relative;
+/* Modal Silk Ribbon & Dove Graphic */
+.modal-bg-tricolor-wave {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 160px;
+  height: 160px;
+  pointer-events: none;
   z-index: 1;
 }
 
-.modal-brand {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  font-weight: 800;
-  font-size: 1.05rem;
-  color: var(--text);
-  margin-bottom: 0.5rem;
+.modal-dove-icon {
+  position: absolute;
+  top: 12px;
+  right: 52px;
+  font-size: 2rem;
+  z-index: 2;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.15));
+  animation: floatDove 3s ease-in-out infinite alternate;
 }
 
-.modal-brand-logo {
-  width: 26px;
-  height: 26px;
-  border-radius: 8px;
-  background: linear-gradient(135deg, #4f7cff, #8b5cf6);
-  color: #ffffff;
+@keyframes floatDove {
+  0% { transform: translateY(0) rotate(0deg); }
+  100% { transform: translateY(-6px) rotate(4deg); }
+}
+
+/* Confetti */
+.modal-confetti-particle {
+  position: absolute;
+  border-radius: 2px;
+  z-index: 1;
+}
+.modal-confetti-particle.c1 { top: 40px; left: 100px; width: 6px; height: 10px; background: #FF671F; transform: rotate(25deg); }
+.modal-confetti-particle.c2 { top: 75px; left: 45px; width: 5px; height: 8px; background: #046A38; transform: rotate(-15deg); }
+.modal-confetti-particle.c3 { top: 35px; right: 105px; width: 6px; height: 9px; background: #FF671F; transform: rotate(45deg); }
+.modal-confetti-particle.c4 { top: 90px; right: 35px; width: 5px; height: 7px; background: #046A38; transform: rotate(-30deg); }
+
+/* Header Brand */
+.modal-card-banner {
+  position: relative;
+  z-index: 5;
+  margin-bottom: 1rem;
+}
+
+.modal-brand-header {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 0.72rem;
+  margin-bottom: 0.5rem;
+}
+
+.modal-logo-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  padding: 4px 12px 4px 6px;
+  border-radius: 100px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.modal-logo-sq {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: #0f172a;
+  color: #ffffff;
+  font-size: 0.7rem;
   font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-brand-name {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: #0f172a;
+}
+
+/* 3D FREEDOM SALE Typography */
+.modal-freedom-title-wrap {
+  margin: 0.4rem 0 0.8rem 0;
 }
 
 .modal-title-freedom {
   font-family: 'Space Grotesk', sans-serif;
-  font-size: 2.35rem;
+  font-size: 2.7rem;
   font-weight: 900;
-  line-height: 1.05;
+  line-height: 0.98;
   letter-spacing: -0.02em;
   text-transform: uppercase;
-  margin-bottom: 1.15rem;
+  margin: 0;
 }
 
-.modal-title-freedom .txt-orange {
-  background: linear-gradient(135deg, #ff671f, #f97316);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-.modal-title-freedom .txt-green {
-  background: linear-gradient(135deg, #046a38, #16a34a);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+.modal-title-freedom .word-freedom {
   display: block;
+  color: #ff671f;
+  text-shadow: 0 3px 0 #ea580c, 0 6px 15px rgba(255, 103, 31, 0.35);
 }
 
-.modal-discount-box {
-  background: var(--bg-soft);
-  border: 1.5px solid var(--border);
+.modal-title-freedom .word-sale {
+  display: block;
+  color: #046a38;
+  text-shadow: 0 3px 0 #03542c, 0 6px 15px rgba(4, 106, 56, 0.35);
+}
+
+/* White Floating Discount Card */
+.modal-inner-card {
+  position: relative;
+  z-index: 5;
+  background: #ffffff;
   border-radius: 20px;
-  padding: 1.1rem 1.25rem;
-  margin-bottom: 1.15rem;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 0 12px 35px -5px rgba(0, 0, 0, 0.1);
+  padding: 1.25rem 1.25rem 1.1rem 1.25rem;
+  margin-bottom: 1rem;
 }
 
-html.dark .modal-discount-box {
-  background: rgba(22, 26, 54, 0.7);
-  border-color: rgba(255, 255, 255, 0.08);
-}
-
-.modal-disc-row {
+.modal-deal-row {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 1rem;
-  margin-bottom: 0.75rem;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
 }
 
-.modal-disc-amount {
+.modal-deal-left {
   text-align: left;
+  flex: 1;
 }
 
-.modal-disc-amount .disc-label {
-  font-size: 0.72rem;
-  font-weight: 800;
-  color: var(--text-faint);
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  display: block;
-}
-
-.modal-disc-amount .disc-val {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 2.1rem;
+.deal-tag-flat {
+  font-size: 0.85rem;
   font-weight: 900;
+  color: #0f172a;
+  letter-spacing: 0.06em;
+  display: block;
   line-height: 1;
-  color: #ea580c;
-  letter-spacing: -0.02em;
 }
 
-.modal-disc-amount .disc-sub {
-  font-size: 0.78rem;
-  font-weight: 800;
-  color: #ea580c;
-  text-transform: uppercase;
-}
-
-.modal-plan-badge {
-  text-align: right;
+.deal-main-figure {
   display: flex;
-  flex-direction: column;
-  align-items: flex-end;
+  align-items: baseline;
   gap: 4px;
 }
 
-.modal-plan-icon {
-  width: 34px;
-  height: 34px;
+.deal-num {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 2.3rem;
+  font-weight: 900;
+  color: #ff671f;
+  line-height: 1;
+}
+
+.deal-off {
+  font-size: 0.95rem;
+  font-weight: 900;
+  color: #ff671f;
+}
+
+.modal-deal-divider {
+  width: 1px;
+  height: 48px;
+  background: #e2e8f0;
+}
+
+.modal-deal-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  text-align: left;
+  flex: 1.2;
+}
+
+.modal-grad-circle {
+  width: 38px;
+  height: 38px;
   border-radius: 50%;
-  background: rgba(249, 115, 22, 0.15);
+  background: #ffedd5;
   color: #ea580c;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.1rem;
+  font-size: 1.2rem;
+  flex-shrink: 0;
 }
 
-.modal-plan-name {
-  font-size: 0.78rem;
-  font-weight: 700;
-  color: var(--text);
+.modal-plan-desc {
+  display: flex;
+  flex-direction: column;
+}
+
+.modal-plan-desc strong {
+  font-size: 0.82rem;
+  color: #0f172a;
   line-height: 1.2;
 }
 
-.modal-coupon-box {
-  background: var(--panel);
-  border: 1.5px dashed var(--border);
+.modal-plan-desc span {
+  font-size: 0.72rem;
+  color: #16a34a;
+  font-weight: 700;
+}
+
+/* Coupon Row */
+.modal-coupon-row {
+  background: #f8fafc;
+  border: 1.5px dashed #cbd5e1;
   border-radius: 12px;
-  padding: 0.45rem 0.85rem;
+  padding: 0.5rem 0.85rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
   font-size: 0.78rem;
   font-weight: 700;
-  color: var(--text);
+  color: #334155;
+  margin-bottom: 1rem;
 }
 
-.modal-coupon-badge {
+.modal-coupon-left {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.modal-applied-pill {
   background: #15803d;
   color: #ffffff;
-  padding: 0.15rem 0.55rem;
+  padding: 0.2rem 0.6rem;
   border-radius: 6px;
   font-size: 0.72rem;
   font-weight: 800;
-  letter-spacing: 0.03em;
+  letter-spacing: 0.04em;
 }
 
-.modal-cta-btn {
+/* Main CTA Button */
+.modal-main-cta-btn {
   display: block;
   width: 100%;
-  padding: 0.85rem 1.5rem;
+  padding: 0.9rem 1.5rem;
   background: linear-gradient(135deg, #15803d 0%, #16a34a 100%);
   color: #ffffff;
-  font-size: 0.98rem;
+  font-size: 1.05rem;
   font-weight: 800;
   border-radius: 14px;
   border: none;
   cursor: pointer;
-  box-shadow: 0 8px 20px rgba(22, 163, 74, 0.35);
+  box-shadow: 0 10px 25px rgba(22, 163, 74, 0.4);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
-  margin-bottom: 0.85rem;
 }
 
-.modal-cta-btn:hover {
+.modal-main-cta-btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 12px 25px rgba(22, 163, 74, 0.45);
+  box-shadow: 0 14px 30px rgba(22, 163, 74, 0.5);
   color: #ffffff;
 }
 
-.modal-tagline {
-  font-size: 0.82rem;
-  font-weight: 700;
-  color: #16a34a;
-  margin-bottom: 0.35rem;
+/* Bottom Scene */
+.modal-bottom-scene {
+  position: relative;
+  z-index: 5;
 }
 
-.modal-institutes-pill {
+.modal-career-slogan {
+  font-size: 0.88rem;
+  font-weight: 800;
+  color: #15803d;
+  margin-bottom: 0.4rem;
+}
+
+.modal-institutes-badge {
   display: inline-block;
-  background: var(--panel-2);
-  color: var(--text-dim);
+  background: #ffffff;
+  color: #1e293b;
   font-size: 0.72rem;
-  font-weight: 700;
-  padding: 0.25rem 0.75rem;
+  font-weight: 800;
+  padding: 0.35rem 0.85rem;
   border-radius: 100px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(0, 0, 0, 0.06);
   margin-bottom: 0.85rem;
-  border: 1px solid var(--border);
 }
 
-.modal-footer-ends {
+.modal-countdown-footer {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.5rem;
+  gap: 0.6rem;
   font-size: 0.75rem;
   font-weight: 800;
-  color: var(--text-dim);
+  color: #475569;
   text-transform: uppercase;
   letter-spacing: 0.04em;
 }
 
-.modal-footer-ends .flag-line {
-  height: 3px;
-  width: 25px;
-  background: linear-gradient(90deg, #FF671F, #046A38);
-  border-radius: 100px;
+.modal-flag-bar {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5px;
+  width: 28px;
 }
 
-.modal-footer-ends .ends-date {
+.flag-stripe {
+  height: 2px;
+  width: 100%;
+  border-radius: 10px;
+}
+.flag-stripe.saffron { background: #FF671F; }
+.flag-stripe.white { background: #cbd5e1; }
+.flag-stripe.green { background: #046A38; }
+
+.modal-ends-txt .date-hl {
   color: #ea580c;
+  font-weight: 900;
 }
 
-.modal-timer-pill {
-  margin-top: 0.45rem;
-  font-size: 0.75rem;
-  font-weight: 700;
-  font-family: 'JetBrains Mono', monospace;
-  color: #047857;
-  background: rgba(34, 197, 94, 0.15);
-  border: 1px solid rgba(34, 197, 94, 0.3);
+.modal-live-timer-container {
+  margin-top: 0.4rem;
+}
+
+.modal-live-timer-pill {
   display: inline-block;
-  padding: 0.2rem 0.65rem;
+  background: rgba(34, 197, 94, 0.15);
+  border: 1px solid rgba(34, 197, 94, 0.35);
+  color: #047857;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.78rem;
+  font-weight: 800;
+  padding: 0.25rem 0.75rem;
   border-radius: 100px;
+  letter-spacing: 0.04em;
+}
+
+/* WhatsApp Community Button (Below Modal) */
+.modal-whatsapp-community-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+  color: #ffffff;
+  font-size: 0.95rem;
+  font-weight: 800;
+  padding: 0.8rem 1.6rem;
+  border-radius: 100px;
+  box-shadow: 0 8px 25px rgba(34, 197, 94, 0.4);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  width: 100%;
+  max-width: 430px;
+  text-decoration: none;
+}
+
+.modal-whatsapp-community-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 30px rgba(34, 197, 94, 0.5);
+  color: #ffffff;
+}
+
+.modal-whatsapp-community-btn .wa-icon {
+  font-size: 1.2rem;
 }
 
 /* ============ PREMIUM PRICING CARDS ============ */

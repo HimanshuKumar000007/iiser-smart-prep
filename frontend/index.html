@@ -35,9 +35,8 @@
     <link rel="stylesheet" href="assets/css/index.css" />
     <link rel="stylesheet" href="assets/css/onboarding.css" />
   </head>
-  <body>
     <!-- ============ INDEPENDENCE DAY TRICOLOR MOVING TICKER ============ -->
-    <div id="independenceSaleBanner" class="sale-ticker-banner" onclick="if (window.openFreedomModal) { window.openFreedomModal(); } else { window.location.href='#pricing'; }">
+    <div id="independenceSaleBanner" class="sale-ticker-banner" onclick="window.location.href='#pricing'">
       <div class="sale-ticker-wrap">
         <div class="sale-ticker-track">
           <!-- Item 1 -->
@@ -78,78 +77,112 @@
 
     <!-- ============ FIRST-TIME VISITOR INDEPENDENCE DAY MODAL ============ -->
     <div id="independenceModalOverlay" class="independence-modal-overlay" role="dialog" aria-modal="true" aria-labelledby="freedomModalTitle">
-      <div class="independence-modal-card">
-        <!-- Close Button -->
-        <button type="button" class="modal-close-btn" id="closeFreedomModalBtn" aria-label="Close Modal">&times;</button>
+      <div class="independence-modal-wrapper">
+        <div class="independence-modal-card">
+          <!-- Close Button -->
+          <button type="button" class="modal-close-btn" id="closeFreedomModalBtn" aria-label="Close Modal">&times;</button>
 
-        <!-- Top-Left Decorative Ribbon SVG -->
-        <svg class="modal-ribbon-top" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M0 0C40 0 70 30 70 70L55 70C55 38 38 20 0 20V0Z" fill="#FF671F"/>
-          <path d="M0 20C38 20 55 38 55 70L40 70C40 45 28 32 0 32V20Z" fill="#FFFFFF"/>
-          <path d="M0 32C28 32 40 45 40 70L25 70C25 52 18 42 0 42V32Z" fill="#046A38"/>
-        </svg>
+          <!-- Scenic Header & Tricolor Silk Wave SVG Background -->
+          <div class="modal-card-banner">
+            <!-- Tricolor Silk Ribbon Top Left -->
+            <svg class="modal-bg-tricolor-wave" viewBox="0 0 400 240" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+              <path d="M-20 0C60 0 100 70 80 140C60 210 140 220 200 200L180 240C100 250 20 220 40 140C60 60 10 30 -20 30V0Z" fill="#FF671F" fill-opacity="0.95"/>
+              <path d="M-20 25C50 25 80 80 65 140C50 200 110 210 160 195L140 230C80 240 15 210 30 140C45 70 5 45 -20 45V25Z" fill="#FFFFFF" fill-opacity="0.95"/>
+              <path d="M-20 40C40 40 65 90 50 140C35 190 85 200 120 190L100 220C60 230 10 200 20 140C30 80 0 60 -20 60V40Z" fill="#046A38" fill-opacity="0.95"/>
+            </svg>
 
-        <!-- Bottom-Right Decorative Ribbon SVG -->
-        <svg class="modal-ribbon-bottom" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M100 100C60 100 30 70 30 30L45 30C45 62 62 80 100 80V100Z" fill="#046A38"/>
-          <path d="M100 80C62 80 45 62 45 30L60 30C60 55 72 68 100 68V80Z" fill="#FFFFFF"/>
-          <path d="M100 68C72 68 60 55 60 30L75 30C75 48 82 58 100 58V68Z" fill="#FF671F"/>
-        </svg>
+            <!-- Floating White Dove / Peace Bird & Confetti -->
+            <div class="modal-dove-icon">🕊️</div>
+            <div class="modal-confetti-particle c1"></div>
+            <div class="modal-confetti-particle c2"></div>
+            <div class="modal-confetti-particle c3"></div>
+            <div class="modal-confetti-particle c4"></div>
 
-        <div class="modal-body">
-          <!-- Brand -->
-          <div class="modal-brand">
-            <span class="modal-brand-logo">IS</span>
-            <span>IISER SmartPrep</span>
+            <!-- Brand Logo Header -->
+            <div class="modal-brand-header">
+              <div class="modal-logo-badge">
+                <span class="modal-logo-sq">IS</span>
+                <span class="modal-brand-name">IISER SmartPrep</span>
+              </div>
+            </div>
+
+            <!-- 3D Bold FREEDOM SALE Title -->
+            <div class="modal-freedom-title-wrap">
+              <h2 class="modal-title-freedom" id="freedomModalTitle">
+                <span class="word-freedom">FREEDOM</span>
+                <span class="word-sale">SALE</span>
+              </h2>
+            </div>
           </div>
 
-          <!-- Title -->
-          <h2 class="modal-title-freedom" id="freedomModalTitle">
-            <span class="txt-orange">FREEDOM</span>
-            <span class="txt-green">SALE</span>
-          </h2>
-
-          <!-- Discount Feature Box -->
-          <div class="modal-discount-box">
-            <div class="modal-disc-row">
-              <div class="modal-disc-amount">
-                <span class="disc-label">FLAT</span>
-                <span class="disc-val">₹200</span>
-                <span class="disc-sub">OFF</span>
+          <!-- White Floating Discount Card -->
+          <div class="modal-inner-card">
+            <div class="modal-deal-row">
+              <div class="modal-deal-left">
+                <span class="deal-tag-flat">FLAT</span>
+                <div class="deal-main-figure">
+                  <span class="deal-num">₹200</span>
+                  <span class="deal-off">OFF</span>
+                </div>
               </div>
-              <div class="modal-plan-badge">
-                <div class="modal-plan-icon">🎓</div>
-                <div class="modal-plan-name">1-Year Pro Plan<br/><span style="color:#16a34a; font-weight:800;">₹699 Only</span></div>
+              <div class="modal-deal-divider"></div>
+              <div class="modal-deal-right">
+                <div class="modal-grad-circle">🎓</div>
+                <div class="modal-plan-desc">
+                  <strong>On 1-Year Pro Plan</strong>
+                  <span>(Complete IAT 2027 Prep)</span>
+                </div>
               </div>
             </div>
 
             <!-- Coupon Box -->
-            <div class="modal-coupon-box">
-              <span>🎟️ Discount Applied:</span>
-              <span class="modal-coupon-badge">INDEPENDENCE200</span>
+            <div class="modal-coupon-row">
+              <div class="modal-coupon-left">
+                <span class="coupon-icon">🎟️</span>
+                <span>Coupon Code: <strong style="color:#0f172a; font-family:'JetBrains Mono',monospace;">FREEDOM200</strong></span>
+              </div>
+              <span class="modal-applied-pill">APPLIED</span>
+            </div>
+
+            <!-- Big CTA Button -->
+            <button type="button" class="modal-main-cta-btn" id="claimFreedomDealBtn">
+              Claim ₹699 Pro Deal &rarr;
+            </button>
+          </div>
+
+          <!-- Bottom Monument & Nature Scene -->
+          <div class="modal-bottom-scene">
+            <p class="modal-career-slogan">Your Science Career Starts Here</p>
+            <div class="modal-institutes-badge">
+              Prepare For IISERs | NISER | IAT 2027 | NEST
+            </div>
+
+            <!-- Footer Ends Notice & Live Timer -->
+            <div class="modal-countdown-footer">
+              <div class="modal-flag-bar">
+                <span class="flag-stripe saffron"></span>
+                <span class="flag-stripe white"></span>
+                <span class="flag-stripe green"></span>
+              </div>
+              <span class="modal-ends-txt">OFFER ENDS <strong class="date-hl">AUGUST 19</strong> (4 DAYS ONLY)</span>
+              <div class="modal-flag-bar">
+                <span class="flag-stripe saffron"></span>
+                <span class="flag-stripe white"></span>
+                <span class="flag-stripe green"></span>
+              </div>
+            </div>
+
+            <div class="modal-live-timer-container">
+              <span class="modal-live-timer-pill" id="modalCountdownTimer">⏳ Ends in: 04d 00h 00m 00s</span>
             </div>
           </div>
-
-          <!-- CTA Button -->
-          <button type="button" class="modal-cta-btn" id="claimFreedomDealBtn">
-            Claim ₹699 Pro Deal &rarr;
-          </button>
-
-          <!-- Tagline & Target Institutes -->
-          <p class="modal-tagline">Your Science Career Starts Here</p>
-          <span class="modal-institutes-pill">Prepare For IISERs | NISER | IAT 2027</span>
-
-          <!-- Footer Timer Notice -->
-          <div class="modal-footer-ends">
-            <span class="flag-line"></span>
-            <span>OFFER ENDS <span class="ends-date">AUGUST 19</span></span>
-            <span class="flag-line"></span>
-          </div>
-
-          <div>
-            <span class="modal-timer-pill" id="modalCountdownTimer">⏳ Ends in: 04d 00h 00m 00s</span>
-          </div>
         </div>
+
+        <!-- Bottom Community Button (Matching Reference) -->
+        <a href="https://whatsapp.com/channel/0029Va9R1lK1iUxQ8YhZg30X" target="_blank" rel="noopener" class="modal-whatsapp-community-btn">
+          <span class="wa-icon">💬</span>
+          <span>Join India's Top IISER Community &rarr;</span>
+        </a>
       </div>
     </div>
 
@@ -2045,28 +2078,25 @@
             modalOverlay.classList.add("active");
           }
         }
-        window.openFreedomModal = openFreedomModal;
 
         function closeFreedomModal() {
           if (modalOverlay) {
             modalOverlay.classList.remove("active");
-            try {
-              sessionStorage.setItem("independence_modal_dismissed", "true");
-            } catch (e) {}
           }
         }
-        window.closeFreedomModal = closeFreedomModal;
 
-        // Automatically show on first visit (after 600ms delay)
+        // Show popup automatically on homepage arrival
         if (isSaleCurrentlyActive()) {
-          try {
-            const alreadyDismissed = sessionStorage.getItem("independence_modal_dismissed");
-            if (!alreadyDismissed) {
-              setTimeout(openFreedomModal, 600);
+          setTimeout(openFreedomModal, 450);
+        }
+
+        // Allow reopening via top ticker
+        if (bannerEl) {
+          bannerEl.addEventListener("click", function(e) {
+            if (window.innerWidth < 640) {
+              openFreedomModal();
             }
-          } catch (e) {
-            setTimeout(openFreedomModal, 600);
-          }
+          });
         }
 
         if (closeModalBtn) {
@@ -2104,11 +2134,5 @@
         });
       })();
     </script>
-
-    <!-- Floating Independence Day Quick Deal Pill -->
-    <div id="independenceFloatingPill" style="position: fixed; bottom: 24px; right: 24px; z-index: 9999; background: linear-gradient(135deg, #ff671f 0%, #e11d48 100%); color: #ffffff; padding: 10px 18px; border-radius: 100px; font-weight: 800; font-size: 0.8rem; box-shadow: 0 10px 30px rgba(249, 115, 22, 0.45); cursor: pointer; display: flex; align-items: center; gap: 8px; border: 1.5px solid rgba(255, 255, 255, 0.3); transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);" onclick="if(window.openFreedomModal) window.openFreedomModal();" onmouseover="this.style.transform='scale(1.06) translateY(-2px)'" onmouseout="this.style.transform='scale(1) translateY(0)'">
-      <span style="font-size: 1rem;">🇮🇳</span>
-      <span>Freedom Sale: <strong>₹200 OFF</strong></span>
-    </div>
   </body>
 </html>
