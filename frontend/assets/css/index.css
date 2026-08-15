@@ -2047,6 +2047,19 @@ footer {
   justify-content: center;
   padding: 1rem;
   opacity: 0;
+/* ============ INDEPENDENCE DAY POPUP MODAL ============ */
+.independence-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(6, 8, 20, 0.78);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  z-index: 100000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.25rem;
+  opacity: 0;
   pointer-events: none;
   transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
@@ -2058,15 +2071,22 @@ footer {
 
 .independence-modal-card {
   position: relative;
-  background: #ffffff;
+  background: var(--panel);
+  border: 1px solid rgba(255, 103, 31, 0.35);
   border-radius: 28px;
-  max-width: 420px;
+  max-width: 430px;
   width: 100%;
-  box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 30px 90px -15px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.1);
   overflow: hidden;
-  transform: scale(0.9) translateY(20px);
+  transform: scale(0.92) translateY(24px);
   transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
   text-align: center;
+}
+
+html.light .independence-modal-card {
+  background: #ffffff;
+  border: 1.5px solid rgba(255, 103, 31, 0.35);
+  box-shadow: 0 30px 90px -15px rgba(15, 23, 42, 0.25), 0 0 0 1px rgba(0, 0, 0, 0.05);
 }
 
 .independence-modal-overlay.active .independence-modal-card {
@@ -2101,23 +2121,29 @@ footer {
   width: 32px;
   height: 32px;
   border-radius: 50%;
-  background: #8b5cf6;
-  color: #ffffff;
-  border: none;
-  font-size: 1.1rem;
+  background: rgba(139, 92, 246, 0.15);
+  color: var(--text);
+  border: 1px solid rgba(139, 92, 246, 0.3);
+  font-size: 1.15rem;
   font-weight: 700;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
   z-index: 10;
-  box-shadow: 0 4px 12px rgba(139, 92, 246, 0.4);
-  transition: transform 0.2s ease, background-color 0.2s ease;
+  transition: transform 0.2s ease, background-color 0.2s ease, color 0.2s ease;
+}
+
+html.dark .modal-close-btn {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.2);
+  color: #ffffff;
 }
 
 .modal-close-btn:hover {
-  transform: scale(1.1);
-  background: #7c3aed;
+  transform: scale(1.1) rotate(90deg);
+  background: #8b5cf6;
+  color: #ffffff;
 }
 
 .modal-body {
@@ -2132,7 +2158,7 @@ footer {
   gap: 8px;
   font-weight: 800;
   font-size: 1.05rem;
-  color: #0f172a;
+  color: var(--text);
   margin-bottom: 0.5rem;
 }
 
@@ -2150,7 +2176,8 @@ footer {
 }
 
 .modal-title-freedom {
-  font-size: 2.3rem;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 2.35rem;
   font-weight: 900;
   line-height: 1.05;
   letter-spacing: -0.02em;
@@ -2159,25 +2186,30 @@ footer {
 }
 
 .modal-title-freedom .txt-orange {
-  background: linear-gradient(135deg, #ea580c, #f97316);
+  background: linear-gradient(135deg, #ff671f, #f97316);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
 .modal-title-freedom .txt-green {
-  background: linear-gradient(135deg, #15803d, #16a34a);
+  background: linear-gradient(135deg, #046a38, #16a34a);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   display: block;
 }
 
 .modal-discount-box {
-  background: #f8fafc;
-  border: 1.5px solid #e2e8f0;
+  background: var(--bg-soft);
+  border: 1.5px solid var(--border);
   border-radius: 20px;
   padding: 1.1rem 1.25rem;
   margin-bottom: 1.15rem;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+}
+
+html.dark .modal-discount-box {
+  background: rgba(22, 26, 54, 0.7);
+  border-color: rgba(255, 255, 255, 0.08);
 }
 
 .modal-disc-row {
@@ -2193,16 +2225,17 @@ footer {
 }
 
 .modal-disc-amount .disc-label {
-  font-size: 0.75rem;
+  font-size: 0.72rem;
   font-weight: 800;
-  color: #64748b;
+  color: var(--text-faint);
   text-transform: uppercase;
   letter-spacing: 0.05em;
   display: block;
 }
 
 .modal-disc-amount .disc-val {
-  font-size: 2rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 2.1rem;
   font-weight: 900;
   line-height: 1;
   color: #ea580c;
@@ -2210,7 +2243,7 @@ footer {
 }
 
 .modal-disc-amount .disc-sub {
-  font-size: 0.8rem;
+  font-size: 0.78rem;
   font-weight: 800;
   color: #ea580c;
   text-transform: uppercase;
@@ -2228,7 +2261,7 @@ footer {
   width: 34px;
   height: 34px;
   border-radius: 50%;
-  background: #ffedd5;
+  background: rgba(249, 115, 22, 0.15);
   color: #ea580c;
   display: flex;
   align-items: center;
@@ -2239,13 +2272,13 @@ footer {
 .modal-plan-name {
   font-size: 0.78rem;
   font-weight: 700;
-  color: #334155;
+  color: var(--text);
   line-height: 1.2;
 }
 
 .modal-coupon-box {
-  background: #ffffff;
-  border: 1.5px dashed #cbd5e1;
+  background: var(--panel);
+  border: 1.5px dashed var(--border);
   border-radius: 12px;
   padding: 0.45rem 0.85rem;
   display: flex;
@@ -2253,7 +2286,7 @@ footer {
   justify-content: space-between;
   font-size: 0.78rem;
   font-weight: 700;
-  color: #334155;
+  color: var(--text);
 }
 
 .modal-coupon-badge {
@@ -2291,19 +2324,20 @@ footer {
 .modal-tagline {
   font-size: 0.82rem;
   font-weight: 700;
-  color: #15803d;
+  color: #16a34a;
   margin-bottom: 0.35rem;
 }
 
 .modal-institutes-pill {
   display: inline-block;
-  background: #f1f5f9;
-  color: #334155;
+  background: var(--panel-2);
+  color: var(--text-dim);
   font-size: 0.72rem;
   font-weight: 700;
   padding: 0.25rem 0.75rem;
   border-radius: 100px;
   margin-bottom: 0.85rem;
+  border: 1px solid var(--border);
 }
 
 .modal-footer-ends {
@@ -2313,7 +2347,7 @@ footer {
   gap: 0.5rem;
   font-size: 0.75rem;
   font-weight: 800;
-  color: #475569;
+  color: var(--text-dim);
   text-transform: uppercase;
   letter-spacing: 0.04em;
 }
@@ -2335,236 +2369,94 @@ footer {
   font-weight: 700;
   font-family: 'JetBrains Mono', monospace;
   color: #047857;
-  background: #dcfce7;
+  background: rgba(34, 197, 94, 0.15);
+  border: 1px solid rgba(34, 197, 94, 0.3);
   display: inline-block;
-  padding: 0.2rem 0.6rem;
+  padding: 0.2rem 0.65rem;
   border-radius: 100px;
 }
 
-.sale-tricolor-stripe {
-  height: 4px;
-  width: 100%;
-  background: linear-gradient(
-    90deg,
-    #FF671F 0%,
-    #FF671F 33.33%,
-    #FFFFFF 33.33%,
-    #FFFFFF 66.66%,
-    #046A38 66.66%,
-    #046A38 100%
-  );
-  box-shadow: 0 1px 8px rgba(255, 103, 31, 0.35);
-}
-
-.sale-top-banner {
-  background: linear-gradient(135deg, #0b0f29 0%, #151a3a 50%, #0d122e 100%);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  color: #ffffff;
+/* ============ PREMIUM PRICING CARDS ============ */
+.price-card.sale-annual-active {
+  border: 2px solid #f97316;
   position: relative;
-  z-index: 1001;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  background: linear-gradient(
+    160deg,
+    rgba(249, 115, 22, 0.08),
+    var(--panel) 60%
+  );
+  box-shadow: 0 30px 80px -20px rgba(249, 115, 22, 0.22);
+  transform: scale(1.03);
 }
 
-html.light .sale-top-banner {
-  background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+.price-card.sale-annual-active::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: var(--radius);
+  background: linear-gradient(135deg, #ff671f, #e11d48, #046a38);
+  opacity: 0.3;
+  filter: blur(22px);
+  z-index: -1;
+}
+
+.price-sale-tag {
+  position: absolute;
+  top: -13px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: linear-gradient(135deg, #ff671f 0%, #e11d48 100%);
   color: #ffffff;
-}
-
-.sale-banner-inner {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0.5rem 1rem;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.75rem;
-}
-
-.sale-left-group {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  font-size: 0.88rem;
-  font-weight: 500;
-  flex-wrap: wrap;
-}
-
-.sale-right-group {
-  display: flex;
-  align-items: center;
-  gap: 0.65rem;
-  flex-shrink: 0;
-}
-
-.sale-badge-pill {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.35rem;
-  background: linear-gradient(135deg, rgba(255, 103, 31, 0.25), rgba(4, 106, 56, 0.25));
-  border: 1px solid rgba(255, 103, 31, 0.6);
-  color: #ffb703;
-  padding: 0.2rem 0.6rem;
+  font-size: 0.72rem;
+  font-weight: 800;
+  padding: 0.35rem 1.1rem;
   border-radius: 100px;
-  font-weight: 800;
-  font-size: 0.72rem;
   text-transform: uppercase;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.05em;
+  box-shadow: 0 8px 20px -5px rgba(249, 115, 22, 0.6);
   white-space: nowrap;
 }
 
-.sale-text-highlight {
-  color: #38bdf8;
-  font-weight: 700;
+.original-price-strike {
+  text-decoration: line-through;
+  opacity: 0.45;
+  font-size: 0.85em;
+  margin-right: 0.35rem;
+  color: var(--text-faint);
+  font-family: "JetBrains Mono", monospace;
 }
 
-.sale-price-accent {
-  color: #fde047;
+.sale-live-price {
+  color: #f97316;
   font-weight: 800;
 }
 
-.sale-countdown-clock {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.35rem;
-  background: rgba(0, 0, 0, 0.55);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  padding: 0.22rem 0.6rem;
-  border-radius: 8px;
-  font-family: 'JetBrains Mono', monospace;
-  font-weight: 700;
-  font-size: 0.8rem;
-  color: #fde047;
-  letter-spacing: 0.03em;
-  white-space: nowrap;
-}
-
-.sale-countdown-clock .timer-label {
-  color: #94a3b8;
-  font-size: 0.72rem;
-  font-family: 'Inter', sans-serif;
-  font-weight: 600;
-}
-
-.sale-banner-cta {
+.sale-savings-callout {
   display: inline-flex;
   align-items: center;
   gap: 0.3rem;
-  background: linear-gradient(135deg, #ff671f 0%, #ea580c 50%, #dc2626 100%);
-  color: #ffffff;
-  padding: 0.28rem 0.9rem;
-  border-radius: 100px;
-  font-weight: 800;
-  font-size: 0.75rem;
-  text-transform: uppercase;
-  letter-spacing: 0.03em;
-  white-space: nowrap;
-  box-shadow: 0 2px 8px rgba(255, 103, 31, 0.35);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.sale-banner-cta:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 4px 15px rgba(255, 103, 31, 0.5);
-  color: #ffffff;
-}
-
-/* Mobile Screen Optimization */
-@media (max-width: 768px) {
-  .sale-banner-inner {
-    padding: 0.4rem 0.75rem;
-    flex-direction: column;
-    justify-content: center;
-    gap: 0.4rem;
-    text-align: center;
-  }
-  .sale-left-group {
-    justify-content: center;
-    gap: 0.4rem;
-    font-size: 0.78rem;
-  }
-  .sale-title-text {
-    font-size: 0.76rem;
-    line-height: 1.3;
-  }
-  .sale-right-group {
-    justify-content: center;
-    gap: 0.5rem;
-    width: 100%;
-  }
-  .sale-countdown-clock {
-    font-size: 0.75rem;
-    padding: 0.18rem 0.5rem;
-  }
-  .sale-banner-cta {
-    font-size: 0.7rem;
-    padding: 0.22rem 0.7rem;
-  }
-}
-
-@media (max-width: 480px) {
-  .sale-banner-inner {
-    padding: 0.35rem 0.5rem;
-    gap: 0.3rem;
-  }
-  .sale-badge-pill {
-    padding: 0.15rem 0.45rem;
-    font-size: 0.65rem;
-  }
-  .sale-title-text {
-    font-size: 0.72rem;
-  }
-  .sale-countdown-clock {
-    font-size: 0.72rem;
-    padding: 0.15rem 0.45rem;
-  }
-  .sale-countdown-clock .timer-label {
-    display: none;
-  }
-  .sale-banner-cta {
-    font-size: 0.68rem;
-    padding: 0.2rem 0.6rem;
-  }
-}
-
-/* Pricing Card Sale Modifications */
-.price-card.sale-annual-active {
-  border: 2px solid #f59e0b;
-  position: relative;
-  box-shadow: 0 10px 35px rgba(245, 158, 11, 0.18);
-}
-.price-sale-tag {
-  position: absolute;
-  top: 0;
-  right: 0;
-  background: linear-gradient(135deg, #f59e0b, #ef4444);
-  color: #ffffff;
-  font-size: 0.7rem;
-  font-weight: 800;
-  padding: 0.25rem 0.85rem;
-  border-bottom-left-radius: 12px;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-}
-.original-price-strike {
-  text-decoration: line-through;
-  opacity: 0.5;
-  font-size: 0.9em;
-  margin-right: 0.4rem;
-  color: var(--text-faint);
-}
-.sale-live-price {
-  color: #f59e0b;
-}
-.sale-savings-callout {
-  display: inline-block;
-  margin-top: 0.35rem;
+  margin-top: 0.4rem;
   font-size: 0.75rem;
   font-weight: 700;
   color: #10b981;
-  background: rgba(16, 185, 129, 0.1);
-  padding: 0.15rem 0.5rem;
-  border-radius: 6px;
+  background: rgba(16, 185, 129, 0.12);
+  padding: 0.2rem 0.6rem;
+  border-radius: 8px;
   border: 1px solid rgba(16, 185, 129, 0.25);
+}
+
+.sale-countdown-badge-card {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin-top: 0.5rem;
+  font-size: 0.74rem;
+  color: #f59e0b;
+  font-weight: 700;
+  background: rgba(245, 158, 11, 0.1);
+  border: 1px solid rgba(245, 158, 11, 0.25);
+  padding: 0.25rem 0.65rem;
+  border-radius: 8px;
 }
 
 /* Homepage Blog Section Styles */
@@ -2583,16 +2475,16 @@ html.light .sale-top-banner {
   background: var(--panel);
   border: 1px solid var(--border);
   border-radius: var(--radius-sm);
-  padding: 1.5rem;
+  padding: 1.6rem;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
 }
 .blog-home-card:hover {
-  transform: translateY(-3px);
+  transform: translateY(-4px);
   border-color: var(--blue);
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 16px 35px rgba(0, 0, 0, 0.08);
 }
 .blog-home-tag {
   display: inline-block;
