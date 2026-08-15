@@ -35,21 +35,119 @@
     <link rel="stylesheet" href="assets/css/index.css" />
     <link rel="stylesheet" href="assets/css/onboarding.css" />
   </head>
-  <body>
-    <!-- ============ INDEPENDENCE DAY SALE BANNER & TRICOLOR ============ -->
-    <div id="independenceSaleBanner" class="sale-top-banner">
-      <div class="sale-tricolor-stripe"></div>
-      <div class="sale-banner-inner">
-        <div class="sale-left-group">
-          <span class="sale-badge-pill">🇮🇳 Independence Day Offer</span>
-          <span class="sale-title-text">Flat <strong class="sale-text-highlight">₹200 OFF</strong> on 1-Year Pro (<span class="sale-price-accent">₹699 only</span>)</span>
+    <!-- ============ INDEPENDENCE DAY TRICOLOR MOVING TICKER ============ -->
+    <div id="independenceSaleBanner" class="sale-ticker-banner" onclick="window.location.href='#pricing'">
+      <div class="sale-ticker-wrap">
+        <div class="sale-ticker-track">
+          <!-- Item 1 -->
+          <div class="sale-ticker-item">
+            <span class="badge-pill-inline">🇮🇳 FREEDOM SALE</span>
+            <span>Flat <strong class="highlight-orange">₹200 OFF</strong> on 1-Year Pro Plan (<strong class="highlight-green">₹699 Only</strong>)</span>
+            <span class="ticker-arrow">&rarr;</span>
+          </div>
+          <!-- Item 2 -->
+          <div class="sale-ticker-item">
+            <span>✨ Prepare for <strong>IISER IAT &amp; NEST 2027</strong> with 45+ TCS iON Mocks &amp; AI Coach | <span style="text-decoration:underline;">Claim ₹699 Deal</span></span>
+            <span class="ticker-arrow">&rarr;</span>
+          </div>
+          <!-- Item 3 -->
+          <div class="sale-ticker-item">
+            <span class="badge-pill-inline">⏳ 4 DAYS ONLY</span>
+            <span>Offer Ends August 19, 2026 (<span id="saleTickerTimer" style="font-family:'JetBrains Mono',monospace; font-weight:800; color:#c2410c;">04d 00h 00m 00s</span>)</span>
+            <span class="ticker-arrow">&rarr;</span>
+          </div>
+          <!-- Duplicate items for seamless continuous looping -->
+          <div class="sale-ticker-item">
+            <span class="badge-pill-inline">🇮🇳 FREEDOM SALE</span>
+            <span>Flat <strong class="highlight-orange">₹200 OFF</strong> on 1-Year Pro Plan (<strong class="highlight-green">₹699 Only</strong>)</span>
+            <span class="ticker-arrow">&rarr;</span>
+          </div>
+          <div class="sale-ticker-item">
+            <span>✨ Prepare for <strong>IISER IAT &amp; NEST 2027</strong> with 45+ TCS iON Mocks &amp; AI Coach | <span style="text-decoration:underline;">Claim ₹699 Deal</span></span>
+            <span class="ticker-arrow">&rarr;</span>
+          </div>
+          <div class="sale-ticker-item">
+            <span class="badge-pill-inline">⏳ 4 DAYS ONLY</span>
+            <span>Offer Ends August 19, 2026 (<span id="saleTickerTimer2" style="font-family:'JetBrains Mono',monospace; font-weight:800; color:#c2410c;">04d 00h 00m 00s</span>)</span>
+            <span class="ticker-arrow">&rarr;</span>
+          </div>
         </div>
-        <div class="sale-right-group">
-          <span class="sale-countdown-clock">
-            <span class="timer-label">Ends in:</span>
-            <span id="saleBannerTimer">04d 00h 00m 00s</span>
-          </span>
-          <a href="#pricing" class="sale-banner-cta">Claim ₹699 Deal &rarr;</a>
+      </div>
+    </div>
+
+    <!-- ============ FIRST-TIME VISITOR INDEPENDENCE DAY MODAL ============ -->
+    <div id="independenceModalOverlay" class="independence-modal-overlay" role="dialog" aria-modal="true" aria-labelledby="freedomModalTitle">
+      <div class="independence-modal-card">
+        <!-- Close Button -->
+        <button type="button" class="modal-close-btn" id="closeFreedomModalBtn" aria-label="Close Modal">&times;</button>
+
+        <!-- Top-Left Decorative Ribbon SVG -->
+        <svg class="modal-ribbon-top" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M0 0C40 0 70 30 70 70L55 70C55 38 38 20 0 20V0Z" fill="#FF671F"/>
+          <path d="M0 20C38 20 55 38 55 70L40 70C40 45 28 32 0 32V20Z" fill="#FFFFFF"/>
+          <path d="M0 32C28 32 40 45 40 70L25 70C25 52 18 42 0 42V32Z" fill="#046A38"/>
+        </svg>
+
+        <!-- Bottom-Right Decorative Ribbon SVG -->
+        <svg class="modal-ribbon-bottom" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M100 100C60 100 30 70 30 30L45 30C45 62 62 80 100 80V100Z" fill="#046A38"/>
+          <path d="M100 80C62 80 45 62 45 30L60 30C60 55 72 68 100 68V80Z" fill="#FFFFFF"/>
+          <path d="M100 68C72 68 60 55 60 30L75 30C75 48 82 58 100 58V68Z" fill="#FF671F"/>
+        </svg>
+
+        <div class="modal-body">
+          <!-- Brand -->
+          <div class="modal-brand">
+            <span class="modal-brand-logo">IS</span>
+            <span>IISER SmartPrep</span>
+          </div>
+
+          <!-- Title -->
+          <h2 class="modal-title-freedom" id="freedomModalTitle">
+            <span class="txt-orange">FREEDOM</span>
+            <span class="txt-green">SALE</span>
+          </h2>
+
+          <!-- Discount Feature Box -->
+          <div class="modal-discount-box">
+            <div class="modal-disc-row">
+              <div class="modal-disc-amount">
+                <span class="disc-label">FLAT</span>
+                <span class="disc-val">₹200</span>
+                <span class="disc-sub">OFF</span>
+              </div>
+              <div class="modal-plan-badge">
+                <div class="modal-plan-icon">🎓</div>
+                <div class="modal-plan-name">1-Year Pro Plan<br/><span style="color:#16a34a; font-weight:800;">₹699 Only</span></div>
+              </div>
+            </div>
+
+            <!-- Coupon Box -->
+            <div class="modal-coupon-box">
+              <span>🎟️ Discount Applied:</span>
+              <span class="modal-coupon-badge">INDEPENDENCE200</span>
+            </div>
+          </div>
+
+          <!-- CTA Button -->
+          <button type="button" class="modal-cta-btn" id="claimFreedomDealBtn">
+            Claim ₹699 Pro Deal &rarr;
+          </button>
+
+          <!-- Tagline & Target Institutes -->
+          <p class="modal-tagline">Your Science Career Starts Here</p>
+          <span class="modal-institutes-pill">Prepare For IISERs | NISER | IAT 2027</span>
+
+          <!-- Footer Timer Notice -->
+          <div class="modal-footer-ends">
+            <span class="flag-line"></span>
+            <span>OFFER ENDS <span class="ends-date">AUGUST 19</span></span>
+            <span class="flag-line"></span>
+          </div>
+
+          <div>
+            <span class="modal-timer-pill" id="modalCountdownTimer">⏳ Ends in: 04d 00h 00m 00s</span>
+          </div>
         </div>
       </div>
     </div>
@@ -1863,11 +1961,15 @@
       })();
     </script>
     <script>
-      // ============ INDEPENDENCE DAY SALE COUNTDOWN SCRIPT ============
+      // ============ INDEPENDENCE DAY SALE & MODAL SCRIPT ============
       (function() {
         const SALE_END_MS = new Date("2026-08-19T23:59:59+05:30").getTime();
+        const SALE_START_MS = new Date("2026-08-15T00:00:00+05:30").getTime();
+
         const bannerEl = document.getElementById("independenceSaleBanner");
-        const bannerTimerEl = document.getElementById("saleBannerTimer");
+        const tickerTimerEl1 = document.getElementById("saleTickerTimer");
+        const tickerTimerEl2 = document.getElementById("saleTickerTimer2");
+        const modalTimerEl = document.getElementById("modalCountdownTimer");
         const cardTimerEl = document.getElementById("annualCardTimer");
         const annualCardEl = document.getElementById("annualPriceCard");
         const annualSaleBadgeEl = document.getElementById("annualSaleBadge");
@@ -1877,6 +1979,15 @@
         const annualCountdownWrapEl = document.getElementById("annualCountdownWrap");
         const annualCtaBtnEl = document.getElementById("annualCtaBtn");
 
+        const modalOverlay = document.getElementById("independenceModalOverlay");
+        const closeModalBtn = document.getElementById("closeFreedomModalBtn");
+        const claimDealBtn = document.getElementById("claimFreedomDealBtn");
+
+        function isSaleCurrentlyActive() {
+          const now = Date.now();
+          return now >= SALE_START_MS && now <= SALE_END_MS;
+        }
+
         function updateSaleState() {
           const now = Date.now();
           const distance = SALE_END_MS - now;
@@ -1884,6 +1995,7 @@
           if (distance <= 0) {
             // Sale has ended — revert UI seamlessly
             if (bannerEl) bannerEl.style.display = "none";
+            if (modalOverlay) modalOverlay.classList.remove("active");
             if (annualCardEl) annualCardEl.classList.remove("sale-annual-active");
             if (annualSaleBadgeEl) annualSaleBadgeEl.style.display = "none";
             if (annualOriginalPriceEl) annualOriginalPriceEl.style.display = "none";
@@ -1907,13 +2019,16 @@
 
           const formatted = `${String(days).padStart(2, '0')}d ${String(hours).padStart(2, '0')}h ${String(minutes).padStart(2, '0')}m ${String(seconds).padStart(2, '0')}s`;
 
-          if (bannerTimerEl) bannerTimerEl.textContent = formatted;
+          if (tickerTimerEl1) tickerTimerEl1.textContent = formatted;
+          if (tickerTimerEl2) tickerTimerEl2.textContent = formatted;
+          if (modalTimerEl) modalTimerEl.textContent = `⏳ Ends in: ${formatted}`;
           if (cardTimerEl) cardTimerEl.textContent = formatted;
           if (bannerEl) bannerEl.style.display = "block";
 
           return true;
         }
 
+        // Initialize sale countdown
         if (updateSaleState()) {
           const timerInterval = setInterval(function() {
             if (!updateSaleState()) {
@@ -1921,6 +2036,68 @@
             }
           }, 1000);
         }
+
+        // ============ POPUP MODAL BEHAVIOR ============
+        function openFreedomModal() {
+          if (modalOverlay && isSaleCurrentlyActive()) {
+            modalOverlay.classList.add("active");
+          }
+        }
+
+        function closeFreedomModal() {
+          if (modalOverlay) {
+            modalOverlay.classList.remove("active");
+            try {
+              sessionStorage.setItem("independence_modal_dismissed", "true");
+            } catch (e) {}
+          }
+        }
+
+        // Show on first visit (after 800ms delay)
+        if (isSaleCurrentlyActive()) {
+          try {
+            const alreadyDismissed = sessionStorage.getItem("independence_modal_dismissed");
+            if (!alreadyDismissed) {
+              setTimeout(openFreedomModal, 800);
+            }
+          } catch (e) {
+            setTimeout(openFreedomModal, 800);
+          }
+        }
+
+        if (closeModalBtn) {
+          closeModalBtn.addEventListener("click", function(e) {
+            e.stopPropagation();
+            closeFreedomModal();
+          });
+        }
+
+        if (claimDealBtn) {
+          claimDealBtn.addEventListener("click", function(e) {
+            e.stopPropagation();
+            closeFreedomModal();
+            const pricingEl = document.getElementById("pricing");
+            if (pricingEl) {
+              pricingEl.scrollIntoView({ behavior: "smooth" });
+            } else {
+              window.location.href = "#pricing";
+            }
+          });
+        }
+
+        if (modalOverlay) {
+          modalOverlay.addEventListener("click", function(e) {
+            if (e.target === modalOverlay) {
+              closeFreedomModal();
+            }
+          });
+        }
+
+        document.addEventListener("keydown", function(e) {
+          if (e.key === "Escape" && modalOverlay && modalOverlay.classList.contains("active")) {
+            closeFreedomModal();
+          }
+        });
       })();
     </script>
   </body>

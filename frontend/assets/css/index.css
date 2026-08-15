@@ -1951,6 +1951,396 @@ footer {
 }
 
 /* ============ INDEPENDENCE DAY SALE STYLES & TRICOLOR ============ */
+.sale-ticker-banner {
+  background: linear-gradient(90deg, #FF671F 0%, #FF9933 25%, #FFFFFF 50%, #86efac 75%, #046A38 100%);
+  color: #0b0f29;
+  position: relative;
+  z-index: 1002;
+  overflow: hidden;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+  cursor: pointer;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+}
+
+.sale-ticker-wrap {
+  display: flex;
+  width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+  padding: 0.42rem 0;
+  user-select: none;
+}
+
+.sale-ticker-track {
+  display: inline-flex;
+  gap: 2.5rem;
+  animation: tickerMove 26s linear infinite;
+  will-change: transform;
+}
+
+.sale-ticker-banner:hover .sale-ticker-track {
+  animation-play-state: paused;
+}
+
+@keyframes tickerMove {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+.sale-ticker-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #0f172a;
+  letter-spacing: 0.02em;
+}
+
+.sale-ticker-item .badge-pill-inline {
+  background: #1e1b4b;
+  color: #fbbf24;
+  padding: 0.15rem 0.55rem;
+  border-radius: 100px;
+  font-size: 0.72rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.sale-ticker-item .highlight-orange {
+  color: #c2410c;
+  font-weight: 800;
+}
+
+.sale-ticker-item .highlight-green {
+  color: #047857;
+  font-weight: 800;
+}
+
+.sale-ticker-item .ticker-arrow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #0f172a;
+  color: #ffffff;
+  font-size: 0.65rem;
+  margin-left: 2px;
+}
+
+/* ============ INDEPENDENCE DAY POPUP MODAL ============ */
+.independence-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(11, 15, 41, 0.75);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  z-index: 100000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.independence-modal-overlay.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.independence-modal-card {
+  position: relative;
+  background: #ffffff;
+  border-radius: 28px;
+  max-width: 420px;
+  width: 100%;
+  box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+  transform: scale(0.9) translateY(20px);
+  transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+  text-align: center;
+}
+
+.independence-modal-overlay.active .independence-modal-card {
+  transform: scale(1) translateY(0);
+}
+
+/* Decorative Tricolor Curved Ribbons */
+.modal-ribbon-top {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 120px;
+  height: 120px;
+  pointer-events: none;
+  opacity: 0.85;
+}
+
+.modal-ribbon-bottom {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 130px;
+  height: 130px;
+  pointer-events: none;
+  opacity: 0.85;
+}
+
+.modal-close-btn {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #8b5cf6;
+  color: #ffffff;
+  border: none;
+  font-size: 1.1rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 10;
+  box-shadow: 0 4px 12px rgba(139, 92, 246, 0.4);
+  transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+.modal-close-btn:hover {
+  transform: scale(1.1);
+  background: #7c3aed;
+}
+
+.modal-body {
+  padding: 2.2rem 1.6rem 1.6rem 1.6rem;
+  position: relative;
+  z-index: 1;
+}
+
+.modal-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 800;
+  font-size: 1.05rem;
+  color: #0f172a;
+  margin-bottom: 0.5rem;
+}
+
+.modal-brand-logo {
+  width: 26px;
+  height: 26px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #4f7cff, #8b5cf6);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.72rem;
+  font-weight: 800;
+}
+
+.modal-title-freedom {
+  font-size: 2.3rem;
+  font-weight: 900;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  margin-bottom: 1.15rem;
+}
+
+.modal-title-freedom .txt-orange {
+  background: linear-gradient(135deg, #ea580c, #f97316);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.modal-title-freedom .txt-green {
+  background: linear-gradient(135deg, #15803d, #16a34a);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: block;
+}
+
+.modal-discount-box {
+  background: #f8fafc;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 20px;
+  padding: 1.1rem 1.25rem;
+  margin-bottom: 1.15rem;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+}
+
+.modal-disc-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 0.75rem;
+}
+
+.modal-disc-amount {
+  text-align: left;
+}
+
+.modal-disc-amount .disc-label {
+  font-size: 0.75rem;
+  font-weight: 800;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  display: block;
+}
+
+.modal-disc-amount .disc-val {
+  font-size: 2rem;
+  font-weight: 900;
+  line-height: 1;
+  color: #ea580c;
+  letter-spacing: -0.02em;
+}
+
+.modal-disc-amount .disc-sub {
+  font-size: 0.8rem;
+  font-weight: 800;
+  color: #ea580c;
+  text-transform: uppercase;
+}
+
+.modal-plan-badge {
+  text-align: right;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+}
+
+.modal-plan-icon {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: #ffedd5;
+  color: #ea580c;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+}
+
+.modal-plan-name {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #334155;
+  line-height: 1.2;
+}
+
+.modal-coupon-box {
+  background: #ffffff;
+  border: 1.5px dashed #cbd5e1;
+  border-radius: 12px;
+  padding: 0.45rem 0.85rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #334155;
+}
+
+.modal-coupon-badge {
+  background: #15803d;
+  color: #ffffff;
+  padding: 0.15rem 0.55rem;
+  border-radius: 6px;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.03em;
+}
+
+.modal-cta-btn {
+  display: block;
+  width: 100%;
+  padding: 0.85rem 1.5rem;
+  background: linear-gradient(135deg, #15803d 0%, #16a34a 100%);
+  color: #ffffff;
+  font-size: 0.98rem;
+  font-weight: 800;
+  border-radius: 14px;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 8px 20px rgba(22, 163, 74, 0.35);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  margin-bottom: 0.85rem;
+}
+
+.modal-cta-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 25px rgba(22, 163, 74, 0.45);
+  color: #ffffff;
+}
+
+.modal-tagline {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #15803d;
+  margin-bottom: 0.35rem;
+}
+
+.modal-institutes-pill {
+  display: inline-block;
+  background: #f1f5f9;
+  color: #334155;
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 0.25rem 0.75rem;
+  border-radius: 100px;
+  margin-bottom: 0.85rem;
+}
+
+.modal-footer-ends {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 800;
+  color: #475569;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.modal-footer-ends .flag-line {
+  height: 3px;
+  width: 25px;
+  background: linear-gradient(90deg, #FF671F, #046A38);
+  border-radius: 100px;
+}
+
+.modal-footer-ends .ends-date {
+  color: #ea580c;
+}
+
+.modal-timer-pill {
+  margin-top: 0.45rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  font-family: 'JetBrains Mono', monospace;
+  color: #047857;
+  background: #dcfce7;
+  display: inline-block;
+  padding: 0.2rem 0.6rem;
+  border-radius: 100px;
+}
+
 .sale-tricolor-stripe {
   height: 4px;
   width: 100%;
