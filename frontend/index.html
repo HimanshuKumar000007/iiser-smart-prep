@@ -35,8 +35,9 @@
     <link rel="stylesheet" href="assets/css/index.css" />
     <link rel="stylesheet" href="assets/css/onboarding.css" />
   </head>
+  <body>
     <!-- ============ INDEPENDENCE DAY TRICOLOR MOVING TICKER ============ -->
-    <div id="independenceSaleBanner" class="sale-ticker-banner" onclick="window.location.href='#pricing'">
+    <div id="independenceSaleBanner" class="sale-ticker-banner" onclick="if (window.openFreedomModal) { window.openFreedomModal(); } else { window.location.href='#pricing'; }">
       <div class="sale-ticker-wrap">
         <div class="sale-ticker-track">
           <!-- Item 1 -->
@@ -2040,10 +2041,11 @@
 
         // ============ POPUP MODAL BEHAVIOR ============
         function openFreedomModal() {
-          if (modalOverlay && isSaleCurrentlyActive()) {
+          if (modalOverlay) {
             modalOverlay.classList.add("active");
           }
         }
+        window.openFreedomModal = openFreedomModal;
 
         function closeFreedomModal() {
           if (modalOverlay) {
@@ -2053,16 +2055,17 @@
             } catch (e) {}
           }
         }
+        window.closeFreedomModal = closeFreedomModal;
 
-        // Show on first visit (after 800ms delay)
+        // Automatically show on first visit (after 600ms delay)
         if (isSaleCurrentlyActive()) {
           try {
             const alreadyDismissed = sessionStorage.getItem("independence_modal_dismissed");
             if (!alreadyDismissed) {
-              setTimeout(openFreedomModal, 800);
+              setTimeout(openFreedomModal, 600);
             }
           } catch (e) {
-            setTimeout(openFreedomModal, 800);
+            setTimeout(openFreedomModal, 600);
           }
         }
 
@@ -2101,5 +2104,11 @@
         });
       })();
     </script>
+
+    <!-- Floating Independence Day Quick Deal Pill -->
+    <div id="independenceFloatingPill" style="position: fixed; bottom: 24px; right: 24px; z-index: 9999; background: linear-gradient(135deg, #ff671f 0%, #e11d48 100%); color: #ffffff; padding: 10px 18px; border-radius: 100px; font-weight: 800; font-size: 0.8rem; box-shadow: 0 10px 30px rgba(249, 115, 22, 0.45); cursor: pointer; display: flex; align-items: center; gap: 8px; border: 1.5px solid rgba(255, 255, 255, 0.3); transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);" onclick="if(window.openFreedomModal) window.openFreedomModal();" onmouseover="this.style.transform='scale(1.06) translateY(-2px)'" onmouseout="this.style.transform='scale(1) translateY(0)'">
+      <span style="font-size: 1rem;">🇮🇳</span>
+      <span>Freedom Sale: <strong>₹200 OFF</strong></span>
+    </div>
   </body>
 </html>
