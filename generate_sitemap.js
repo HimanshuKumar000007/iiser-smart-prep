@@ -28,30 +28,7 @@ const newsPages = newsFiles.map(f => ({
   changefreq: 'weekly'
 }));
 
-function getFiles(dir) {
-  let results = [];
-  const list = fs.readdirSync(dir);
-  list.forEach(file => {
-    const fullPath = path.join(dir, file);
-    const stat = fs.statSync(fullPath);
-    if (stat && stat.isDirectory()) {
-      results = results.concat(getFiles(fullPath));
-    } else if (file.endsWith('.html')) {
-      const rel = path.relative(path.join(__dirname, 'frontend'), fullPath).replace(/\\/g, '/');
-      results.push({
-        loc: '/' + rel,
-        priority: '0.8',
-        changefreq: 'weekly'
-      });
-    }
-  });
-  return results;
-}
-
-const notesDir = path.join(__dirname, 'frontend', 'smart_notes', 'subjects', 'short-notes');
-const notesPages = getFiles(notesDir);
-
-const allPages = [...corePages, ...newsPages, ...notesPages];
+const allPages = [...corePages, ...newsPages];
 
 let xml = '<?xml version="1.0" encoding="UTF-8"?>\n';
 xml += '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n\n';
@@ -70,4 +47,4 @@ xml += '</urlset>\n';
 fs.writeFileSync(path.join(__dirname, 'frontend', 'sitemap.xml'), xml);
 fs.writeFileSync(path.join(__dirname, 'sitemap.xml'), xml);
 
-console.log('Successfully generated sitemap with ' + allPages.length + ' total URLs!');
+console.log('Successfully generated clean sitemap with ' + allPages.length + ' total URLs!');
