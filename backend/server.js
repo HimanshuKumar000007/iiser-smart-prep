@@ -595,7 +595,7 @@ app.post("/api/verify-payment", authMiddleware, async (req, res) => {
               Congratulations! Your payment was successful and your account has been upgraded to <strong>PRO — ${plan.description}</strong>. Expiry: ${newExpiryString ? new Date(newExpiryString).toLocaleDateString() : "Lifetime"} 🎯
             </p>
             <div style="text-align:center;margin-bottom:24px;">
-              <a href="https://iisersmartprep.space/dashboard.html"
+              <a href="https://iisersmartprep.space/dashboard-react/index.html"
                 style="display:inline-block;background:linear-gradient(135deg,#6366f1,#8b5cf6);color:white;text-decoration:none;padding:14px 36px;border-radius:50px;font-weight:700;font-size:1rem;letter-spacing:-0.2px;">
                 Go to My Dashboard →
               </a>

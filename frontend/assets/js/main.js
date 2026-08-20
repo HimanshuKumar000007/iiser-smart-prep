@@ -56,7 +56,7 @@
 
             if (token) {
                 container.innerHTML = `
-                    <a href="/mock_test/full_mock_test_homepage.html" class="btn btn-primary" style="padding: 0.5rem 1rem;">Dashboard</a>
+                    <a href="/dashboard-react/index.html" class="btn btn-primary" style="padding: 0.5rem 1rem;">Dashboard</a>
                     <button onclick="logout()" class="btn btn-outline" style="border:none; color: var(--text-muted);">Logout</button>
                 `;
             }
