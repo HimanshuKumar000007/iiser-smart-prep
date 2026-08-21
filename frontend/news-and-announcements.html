@@ -523,6 +523,7 @@
         .badge-books { background: #ccfbf1; color: #0f766e; }
         .badge-syllabus { background: #fef3c7; color: #b45309; }
         .badge-offer { background: #fee2e2; color: #b91c1c; }
+        .badge-launch { background: #ecfdf5; color: #047857; }
         .badge-tools { background: #f1f5f9; color: #334155; }
 
         .card-time {
@@ -802,7 +803,27 @@
             <!-- Articles Grid -->
             <div class="articles-grid" id="articlesGrid">
 
-                <!-- 1. Independence Day Special Sale -->
+                <!-- 1. SciPrep NEST Launch Announcement -->
+                <article class="article-card" data-category="comparison strategy offers" data-title="Announcing SciPrep in Dedicated NEST Study Material Mock Tests PYQs for NISER and CEBS" data-keywords="sciprep sciprep.in nest study material nest mock test niser preparation cebs nest pyq solved smas cutoff disha scholarship" style="border: 2px solid rgba(16, 185, 129, 0.4); background: linear-gradient(180deg, #ffffff 0%, #f0fdf4 100%);">
+                    <div class="card-top">
+                        <span class="card-badge badge-launch">🚀 Platform Launch</span>
+                        <span class="card-time">⏱️ 9 min read</span>
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title">
+                            <a href="/news/sciprep-nest-study-material-launch.html">Introducing SciPrep.in: Dedicated NEST Study Material &amp; Mocks for NISER &amp; UM-DAE CEBS</a>
+                        </h3>
+                        <p class="card-excerpt">
+                            The IISER SmartPrep team launches SciPrep.in — India’s premier dedicated platform for the NEST exam, featuring NCERT+ concept notes, SMAS mock tests, and 15+ years solved PYQs.
+                        </p>
+                        <div class="card-footer" style="color: #059669;">
+                            <span>Aug 21, 2026</span>
+                            <a href="/news/sciprep-nest-study-material-launch.html" style="color: #059669;">Read Announcement &rarr;</a>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- 2. Independence Day Special Sale -->
                 <article class="article-card" data-category="offers" data-title="Independence Day Freedom Sale Flat ₹200 OFF Pro Plan 2027" data-keywords="sale freedom independence 699 discount pro plan 200 off offers">
                     <div class="card-top">
                         <span class="card-badge badge-offer">🇮🇳 Special Offer</span>
@@ -1107,7 +1128,7 @@
                 const keywords = card.getAttribute('data-keywords').toLowerCase();
                 const category = card.getAttribute('data-category');
 
-                const matchesCategory = (currentCategory === 'all' || category === currentCategory);
+                const matchesCategory = (currentCategory === 'all' || (category && category.includes(currentCategory)));
                 const matchesQuery = !query || title.includes(query) || keywords.includes(query);
 
                 if (matchesCategory && matchesQuery) {
