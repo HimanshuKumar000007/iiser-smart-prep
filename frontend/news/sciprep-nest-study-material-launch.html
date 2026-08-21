@@ -510,15 +510,25 @@
 
         .content-grid {
             display: grid;
-            grid-template-columns: 1fr 340px;
+            grid-template-columns: minmax(0, 1fr) 340px;
             gap: 3.5rem;
             align-items: start;
+            width: 100%;
+            max-width: 100%;
+            min-width: 0;
+            box-sizing: border-box;
         }
 
         /* Article Prose */
         .article-body {
             font-size: 1.06rem;
             color: #334155;
+            min-width: 0;
+            width: 100%;
+            max-width: 100%;
+            overflow-wrap: break-word;
+            word-wrap: break-word;
+            box-sizing: border-box;
         }
 
         .article-body h2 {
@@ -531,6 +541,8 @@
             letter-spacing: -0.01em;
             padding-bottom: 0.5rem;
             border-bottom: 2px solid #e2e8f0;
+            overflow-wrap: break-word;
+            word-wrap: break-word;
         }
 
         .article-body h3 {
@@ -539,18 +551,26 @@
             font-weight: 700;
             color: var(--secondary);
             margin: 2rem 0 0.85rem;
+            overflow-wrap: break-word;
+            word-wrap: break-word;
         }
 
         .article-body p {
             margin-bottom: 1.4rem;
+            overflow-wrap: break-word;
+            word-wrap: break-word;
         }
 
         .article-body ul, .article-body ol {
             margin: 1rem 0 1.5rem 1.5rem;
+            overflow-wrap: break-word;
+            word-wrap: break-word;
         }
 
         .article-body li {
             margin-bottom: 0.6rem;
+            overflow-wrap: break-word;
+            word-wrap: break-word;
         }
 
         .article-body strong {
@@ -568,7 +588,12 @@
             box-shadow: 0 15px 35px rgba(6, 78, 59, 0.25);
             position: relative;
             overflow: hidden;
+            contain: paint;
             border: 1px solid rgba(16, 185, 129, 0.3);
+            width: 100%;
+            max-width: 100%;
+            min-width: 0;
+            box-sizing: border-box;
         }
 
         .launch-hero-box::before {
@@ -935,22 +960,72 @@
             background: #ecfdf5;
         }
 
+        /* Final CTA Box */
+        .final-cta-box {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            border-radius: var(--radius-lg);
+            padding: 3rem 2rem;
+            text-align: center;
+            color: white;
+            margin-top: 3rem;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            width: 100%;
+            max-width: 100%;
+            min-width: 0;
+            box-sizing: border-box;
+        }
+
+        .final-cta-box h3 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 2.2rem;
+            font-weight: 800;
+            margin-bottom: 0.75rem;
+            color: #fff;
+            overflow-wrap: break-word;
+            word-wrap: break-word;
+        }
+
+        .final-cta-box p {
+            color: #94a3b8;
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto 2rem;
+            overflow-wrap: break-word;
+            word-wrap: break-word;
+        }
+
         /* Footer */
         footer {
             background: #ffffff;
             border-top: 1px solid var(--border);
             padding: 4rem 0 2rem;
             margin-top: 4rem;
+            width: 100%;
+            max-width: 100%;
+            box-sizing: border-box;
         }
 
         /* Responsive Breakpoints */
         @media (max-width: 992px) {
             .content-grid {
-                grid-template-columns: 1fr;
+                grid-template-columns: minmax(0, 1fr);
                 gap: 2.5rem;
+                width: 100%;
+                max-width: 100%;
             }
             .sidebar {
                 position: static;
+                width: 100%;
+                max-width: 100%;
+                min-width: 0;
+                box-sizing: border-box;
+            }
+            .sidebar-card {
+                width: 100%;
+                max-width: 100%;
+                min-width: 0;
+                box-sizing: border-box;
             }
             .features-showcase {
                 grid-template-columns: 1fr;
@@ -1052,6 +1127,9 @@
                 border-radius: var(--radius-md);
                 margin: 1.5rem 0 2rem;
             }
+            .launch-hero-box::before {
+                display: none;
+            }
             .launch-hero-box h3 {
                 font-size: 1.35rem;
                 line-height: 1.3;
@@ -1060,6 +1138,13 @@
                 font-size: 0.92rem;
                 line-height: 1.55;
                 margin-bottom: 1.25rem;
+            }
+            blockquote {
+                margin: 1.25rem 0 !important;
+                padding: 0.85rem 1rem !important;
+                font-size: 0.92rem !important;
+                max-width: 100% !important;
+                box-sizing: border-box !important;
             }
             .launch-actions {
                 flex-direction: column;
@@ -1102,6 +1187,24 @@
             .faq-body {
                 padding: 0 1.15rem 1rem;
                 font-size: 0.9rem;
+            }
+            .final-cta-box {
+                padding: 2rem 1.25rem;
+                margin-top: 2rem;
+                border-radius: var(--radius-md);
+            }
+            .final-cta-box h3 {
+                font-size: 1.45rem;
+            }
+            .final-cta-box p {
+                font-size: 0.92rem;
+                margin-bottom: 1.5rem;
+            }
+            .final-cta-box .btn-sciprep {
+                width: 100%;
+                justify-content: center;
+                padding: 0.75rem 1.5rem !important;
+                font-size: 0.95rem !important;
             }
         }
 
@@ -1391,14 +1494,12 @@
                     </div>
 
                     <!-- Final CTA Box -->
-                    <div style="background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); border-radius: var(--radius-lg); padding: 3rem 2rem; text-align: center; color: white; margin-top: 3rem; box-shadow: var(--shadow-lg); border: 1px solid rgba(255, 255, 255, 0.1);">
-                        <h3 style="font-family: 'Outfit', sans-serif; font-size: 2.2rem; font-weight: 800; margin-bottom: 0.75rem; color: #fff;">
-                            Ready to Conquer NEST &amp; NISER?
-                        </h3>
-                        <p style="color: #94a3b8; font-size: 1.1rem; max-width: 600px; margin: 0 auto 2rem;">
+                    <div class="final-cta-box">
+                        <h3>Ready to Conquer NEST &amp; NISER?</h3>
+                        <p>
                             Join the growing community of science aspirants on SciPrep.in and get access to the best NEST study material and mock tests.
                         </p>
-                        <a href="https://sciprep.in" target="_blank" rel="noopener noreferrer" class="btn btn-sciprep" style="font-size: 1.05rem; padding: 0.95rem 2.5rem; font-weight: 800;">
+                        <a href="https://sciprep.in" target="_blank" rel="noopener noreferrer" class="btn btn-sciprep">
                             Go to SciPrep.in &rarr;
                         </a>
                     </div>
