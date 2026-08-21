@@ -204,9 +204,11 @@
 
         /* Container */
         .container {
-            width: 92%;
+            width: 100%;
             max-width: 1240px;
+            padding: 0 1.25rem;
             margin: 0 auto;
+            box-sizing: border-box;
         }
 
         /* Header Navigation */
@@ -218,6 +220,12 @@
             justify-content: center;
             margin-top: 8px;
             pointer-events: none;
+            width: 100%;
+            padding: 0 1rem;
+            box-sizing: border-box;
+            width: 100%;
+            padding: 0 1rem;
+            box-sizing: border-box;
         }
 
         .nav-container {
@@ -232,8 +240,9 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            width: 92%;
+            width: 100%;
             max-width: 1240px;
+            box-sizing: border-box;
         }
 
         .logo {
@@ -521,14 +530,21 @@
 
         .content-grid {
             display: grid;
-            grid-template-columns: 1fr 320px;
+            grid-template-columns: minmax(0, 1fr) 320px;
             gap: 3.5rem;
             align-items: start;
+            width: 100%;
+            max-width: 100%;
+            min-width: 0;
+            box-sizing: border-box;
         }
 
         @media (max-width: 1024px) {
             .content-grid {
-                grid-template-columns: 1fr;
+                grid-template-columns: minmax(0, 1fr);
+                gap: 2.5rem;
+                width: 100%;
+                max-width: 100%;
             }
         }
 
@@ -537,6 +553,12 @@
             font-size: 1.05rem;
             line-height: 1.85;
             color: var(--text-main);
+            min-width: 0;
+            width: 100%;
+            max-width: 100%;
+            overflow-wrap: break-word;
+            word-wrap: break-word;
+            box-sizing: border-box;
         }
 
         .article-main h2 {
@@ -637,7 +659,7 @@
 
         @media (max-width: 640px) {
             .comparison-cards-row {
-                grid-template-columns: 1fr;
+                grid-template-columns: minmax(0, 1fr);
             }
         }
 
@@ -979,7 +1001,7 @@
         /* Responsive Breakpoints & Mobile Optimization */
         @media (max-width: 1024px) {
             .content-grid {
-                grid-template-columns: 1fr;
+                grid-template-columns: minmax(0, 1fr);
                 gap: 2.5rem;
             }
             .article-sidebar {
@@ -1012,15 +1034,21 @@
         }
 
         @media (max-width: 540px) {
+            .container {
+                padding: 0 0.85rem;
+            }
+            header {
+                padding: 0 0.5rem;
+            }
             .nav-container {
-                width: 95%;
-                padding: 0.45rem 0.85rem;
-                gap: 0.5rem;
+                width: 100%;
+                padding: 0.45rem 0.75rem;
+                gap: 0.4rem;
             }
             .logo {
-                font-size: 1.05rem;
+                font-size: 0.98rem;
                 white-space: nowrap;
-                gap: 0.4rem;
+                gap: 0.35rem;
             }
             .logo-icon {
                 width: 28px;
@@ -1191,8 +1219,7 @@
                         Here is a quick snapshot comparing every major parameter of both examinations:
                     </p>
 
-                    <div class="table-responsive">
-                        <table class="custom-table">
+                    <div class="table-responsive"><table class="custom-table">
                             <thead>
                                 <tr>
                                     <th>Parameter</th>
@@ -1242,8 +1269,7 @@
                                     <td>DISHA (₹60,000 stipend + ₹20,000 grant) for all</td>
                                 </tr>
                             </tbody>
-                        </table>
-                    </div>
+                        </table></div>
 
                     <!-- Section 2 -->
                     <h2 id="scoring-differences">Scoring Strategy &amp; Evaluation Nuances</h2>
@@ -1313,8 +1339,7 @@
                         Should you focus exclusively on one exam or prepare for both?
                     </p>
 
-                    <div class="table-responsive">
-                        <table class="custom-table">
+                    <div class="table-responsive"><table class="custom-table">
                             <thead>
                                 <tr>
                                     <th>Your Profile / Background</th>
@@ -1339,8 +1364,7 @@
                                     <td>Build fundamental NCERT Math for IAT; in NEST your PCB score can carry your rank.</td>
                                 </tr>
                             </tbody>
-                        </table>
-                    </div>
+                        </table></div>
 
                     <!-- High Impact CTA Banner -->
                     <div class="cta-banner">

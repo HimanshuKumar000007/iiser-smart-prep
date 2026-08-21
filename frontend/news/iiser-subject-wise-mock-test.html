@@ -66,6 +66,15 @@
         }
 
         * {
+            box-sizing: border-box;
+        }
+
+        html, body {
+            overflow-x: hidden;
+            width: 100%;
+            max-width: 100%;
+            margin: 0;
+            padding: 0;
             margin: 0;
             padding: 0;
             box-sizing: border-box
@@ -111,7 +120,7 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            width: 90%;
+            width: 100%; box-sizing: border-box;
             max-width: 1200px
         }
 
@@ -405,7 +414,7 @@
 
         .content-grid {
             display: grid;
-            grid-template-columns: 1fr 300px;
+            grid-template-columns: minmax(0, 1fr) 300px;
             gap: 3rem;
             align-items: start
         }
@@ -677,6 +686,8 @@
             border-top: 1px solid var(--border);
             padding: 5rem 0 2rem
         }
+            .table-responsive { overflow-x: auto; -webkit-overflow-scrolling: touch; width: 100%; max-width: 100%; margin: 1.5rem 0; box-sizing: border-box; }
+        table { max-width: 100%; }
     </style>
 </head>
 
@@ -855,7 +866,7 @@
                         questions per subject and +3/-1 marking, each subject carries a maximum of <strong>45
                             marks</strong> — making the total 180 marks.</p>
 
-                    <table class="compare-table">
+                    <div class="table-responsive"><table class="compare-table">
                         <thead>
                             <tr>
                                 <th>Subject</th>
@@ -895,7 +906,7 @@
                                 <td>0% (IAT only)</td>
                             </tr>
                         </tbody>
-                    </table>
+                    </table></div>
 
                     <h2>How to Use Subject-Wise Mocks Strategically</h2>
                     <ul class="feature-list">

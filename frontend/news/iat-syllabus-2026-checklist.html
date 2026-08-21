@@ -91,11 +91,7 @@
             list-style: none;
         }
 
-        .container {
-            width: 90%;
-            max-width: var(--container-width);
-            margin: 0 auto;
-        }
+        .container { width: 100%; max-width: var(--container-width); padding: 0 1.25rem; margin: 0 auto; box-sizing: border-box; }
 
         /* =========================================
            NAVIGATION (Matching Homepage)
@@ -109,6 +105,9 @@
             display: flex;
             justify-content: center;
             pointer-events: none;
+            width: 100%;
+            padding: 0 1rem;
+            box-sizing: border-box;
             transition: top 0.3s cubic-bezier(0.16, 1, 0.3, 1);
             will-change: top;
             transform: translateZ(0);
@@ -129,7 +128,7 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            width: 90%;
+            width: 100%; box-sizing: border-box;
             max-width: var(--container-width);
             transition: background 0.3s cubic-bezier(0.16, 1, 0.3, 1),
                 box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1),
@@ -1088,7 +1087,7 @@
             }
 
             .sprint-row {
-                grid-template-columns: 1fr;
+                grid-template-columns: minmax(0, 1fr);
             }
 
             .sprint-week {
@@ -1258,7 +1257,7 @@
 
                 <h3 class="fade-in-up">Class 11 Topics</h3>
                 <div class="table-container fade-in-up">
-                    <table>
+                    <div class="table-responsive"><table>
                         <thead>
                             <tr>
                                 <th>Chapter</th>
@@ -1369,12 +1368,12 @@
                                 <td><span class="priority priority-high">High</span></td>
                             </tr>
                         </tbody>
-                    </table>
+                    </table></div>
                 </div>
 
                 <h3 class="fade-in-up">Class 12 Topics</h3>
                 <div class="table-container fade-in-up">
-                    <table>
+                    <div class="table-responsive"><table>
                         <thead>
                             <tr>
                                 <th>Chapter</th>
@@ -1487,7 +1486,7 @@
                                 <td><span class="priority priority-medium">Medium</span></td>
                             </tr>
                         </tbody>
-                    </table>
+                    </table></div>
                 </div>
 
                 <div class="highlight-box fade-in-up">
@@ -1519,7 +1518,7 @@
 
                 <h3 class="fade-in-up">Class 11 Topics</h3>
                 <div class="table-container fade-in-up">
-                    <table>
+                    <div class="table-responsive"><table>
                         <thead>
                             <tr>
                                 <th>Chapter</th>
@@ -1600,12 +1599,12 @@
                                 <td><span class="priority priority-medium">Medium</span></td>
                             </tr>
                         </tbody>
-                    </table>
+                    </table></div>
                 </div>
 
                 <h3 class="fade-in-up">Class 12 Topics</h3>
                 <div class="table-container fade-in-up">
-                    <table>
+                    <div class="table-responsive"><table>
                         <thead>
                             <tr>
                                 <th>Chapter</th>
@@ -1686,7 +1685,7 @@
                                 <td><span class="priority priority-high">High</span></td>
                             </tr>
                         </tbody>
-                    </table>
+                    </table></div>
                 </div>
 
                 <div class="highlight-box fade-in-up">
@@ -1716,7 +1715,7 @@
 
                 <h3 class="fade-in-up">Class 11 Topics</h3>
                 <div class="table-container fade-in-up">
-                    <table>
+                    <div class="table-responsive"><table>
                         <thead>
                             <tr>
                                 <th>Chapter</th>
@@ -1838,12 +1837,12 @@
                                 <td><span class="priority priority-medium">Medium</span></td>
                             </tr>
                         </tbody>
-                    </table>
+                    </table></div>
                 </div>
 
                 <h3 class="fade-in-up">Class 12 Topics</h3>
                 <div class="table-container fade-in-up">
-                    <table>
+                    <div class="table-responsive"><table>
                         <thead>
                             <tr>
                                 <th>Chapter</th>
@@ -1940,7 +1939,7 @@
                                 <td><span class="priority priority-high">High</span></td>
                             </tr>
                         </tbody>
-                    </table>
+                    </table></div>
                 </div>
 
                 <div class="highlight-box fade-in-up">
@@ -1971,7 +1970,7 @@
                 <h3 class="fade-in-up">Units I–V: Diversity, Structural Organisation, Cell, Plant Physiology &amp; Human
                     Physiology</h3>
                 <div class="table-container fade-in-up">
-                    <table>
+                    <div class="table-responsive"><table>
                         <thead>
                             <tr>
                                 <th>Unit</th>
@@ -2096,13 +2095,13 @@
                                 <td><span class="priority priority-critical">Critical</span></td>
                             </tr>
                         </tbody>
-                    </table>
+                    </table></div>
                 </div>
 
                 <h3 class="fade-in-up">Units VI–X: Reproduction, Genetics &amp; Evolution, Biology in Human Welfare,
                     Biotechnology &amp; Ecology</h3>
                 <div class="table-container fade-in-up">
-                    <table>
+                    <div class="table-responsive"><table>
                         <thead>
                             <tr>
                                 <th>Unit</th>
@@ -2195,7 +2194,7 @@
                             </tr>
 
                         </tbody>
-                    </table>
+                    </table></div>
                 </div>
 
                 <div class="highlight-box fade-in-up">
@@ -2228,7 +2227,7 @@
                     multiple subjects:</p>
 
                 <div class="table-container fade-in-up">
-                    <table class="cross-link-table">
+                    <div class="table-responsive"><table class="cross-link-table">
                         <thead>
                             <tr>
                                 <th>Question Type</th>
@@ -2258,7 +2257,7 @@
                                 <td>Calculus in wave interference and diffraction patterns</td>
                             </tr>
                         </tbody>
-                    </table>
+                    </table></div>
                 </div>
 
                 <div class="info-box fade-in-up">
@@ -2431,7 +2430,7 @@
                 <details class="faq-item fade-in-up">
                     <summary class="faq-summary">How is IAT different from NEST or JEE?</summary>
                     <div class="faq-content">
-                        <table style="margin-top:0.5rem; font-size:0.9rem; width:100%;">
+                        <div class="table-responsive"><table style="margin-top:0.5rem; font-size:0.9rem; width:100%;">
                             <tr style="border-bottom:1px solid var(--border);">
                                 <td style="padding:0.5rem 0; font-weight:600;">IAT</td>
                                 <td style="padding:0.5rem 0;">NCERT-focused, 4 subjects, moderate difficulty, speed
@@ -2447,7 +2446,7 @@
                                 <td style="padding:0.5rem 0;">Calculation-heavy, requires advanced problem-solving,
                                     single/double correct</td>
                             </tr>
-                        </table>
+                        </table></div>
                     </div>
                 </details>
 

@@ -34,6 +34,15 @@
         }
 
         * {
+            box-sizing: border-box;
+        }
+
+        html, body {
+            overflow-x: hidden;
+            width: 100%;
+            max-width: 100%;
+            margin: 0;
+            padding: 0;
             margin: 0;
             padding: 0;
             box-sizing: border-box
@@ -80,7 +89,7 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            width: 90%;
+            width: 100%; box-sizing: border-box;
             max-width: 1200px
         }
 
@@ -244,7 +253,7 @@
 
         .content-grid {
             display: grid;
-            grid-template-columns: 1fr 300px;
+            grid-template-columns: minmax(0, 1fr) 300px;
             gap: 3rem;
             align-items: start
         }
@@ -532,6 +541,8 @@
                 grid-template-columns: 1fr
             }
         }
+            .table-responsive { overflow-x: auto; -webkit-overflow-scrolling: touch; width: 100%; max-width: 100%; margin: 1.5rem 0; box-sizing: border-box; }
+        table { max-width: 100%; }
     </style>
 </head>
 
@@ -585,7 +596,7 @@
                     <p>The IISER IAT 2026 syllabus is based on <strong>NCERT Class 11 and 12 curriculum</strong>. The
                         exam has 60 MCQs across 4 subjects — each contributing 15 questions and 45 marks (+3 correct, −1
                         incorrect).</p>
-                    <table class="wtable">
+                    <div class="table-responsive"><table class="wtable">
                         <thead>
                             <tr>
                                 <th>Subject</th>
@@ -626,7 +637,7 @@
                                 <td>—</td>
                             </tr>
                         </tbody>
-                    </table>
+                    </table></div>
 
                     <h2>Subject-Wise Syllabus Breakdown</h2>
                     <div class="subject-grid">

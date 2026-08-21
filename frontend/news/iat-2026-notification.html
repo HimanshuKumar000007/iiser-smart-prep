@@ -90,11 +90,7 @@
             list-style: none;
         }
 
-        .container {
-            width: 90%;
-            max-width: var(--container-width);
-            margin: 0 auto;
-        }
+        .container { width: 100%; max-width: var(--container-width); padding: 0 1.25rem; margin: 0 auto; box-sizing: border-box; }
 
         /* Animations */
         @keyframes float {
@@ -305,6 +301,9 @@
             display: flex;
             justify-content: center;
             pointer-events: none;
+            width: 100%;
+            padding: 0 1rem;
+            box-sizing: border-box;
             transition: top 0.3s cubic-bezier(0.16, 1, 0.3, 1);
             will-change: top;
             transform: translateZ(0);
@@ -325,7 +324,7 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            width: 90%;
+            width: 100%; box-sizing: border-box;
             max-width: var(--container-width);
             transition: background 0.3s cubic-bezier(0.16, 1, 0.3, 1),
                 box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1),
@@ -498,12 +497,18 @@
 
         .article-grid {
             display: grid;
-            grid-template-columns: 1fr 300px;
+            grid-template-columns: minmax(0, 1fr) 300px;
             gap: 4rem;
             align-items: start;
         }
 
         .article-main {
+            min-width: 0;
+            width: 100%;
+            max-width: 100%;
+            overflow-wrap: break-word;
+            word-wrap: break-word;
+            box-sizing: border-box;
             max-width: 100%;
         }
 
@@ -920,7 +925,7 @@
             }
 
             .article-grid {
-                grid-template-columns: 1fr;
+                grid-template-columns: minmax(0, 1fr);
                 gap: 2rem;
             }
 
@@ -931,11 +936,11 @@
             }
 
             .syllabus-grid {
-                grid-template-columns: 1fr;
+                grid-template-columns: minmax(0, 1fr);
             }
 
             .institutes-grid {
-                grid-template-columns: 1fr;
+                grid-template-columns: minmax(0, 1fr);
             }
         }
 
@@ -976,6 +981,8 @@
             background-clip: text;
             -webkit-text-fill-color: transparent;
         }
+            .table-responsive { overflow-x: auto; -webkit-overflow-scrolling: touch; width: 100%; max-width: 100%; margin: 1.5rem 0; box-sizing: border-box; }
+        table { max-width: 100%; }
     </style>
 </head>
 
@@ -1086,7 +1093,7 @@
                     <p>The IAT 2026 follows a standardized format designed to test your grasp of Class 11 & 12 NCERT
                         concepts across all four subjects.</p>
 
-                    <table class="exam-table">
+                    <div class="table-responsive"><table class="exam-table">
                         <thead>
                             <tr>
                                 <th>Feature</th>
@@ -1119,13 +1126,13 @@
                                 <td>TCS iON</td>
                             </tr>
                         </tbody>
-                    </table>
+                    </table></div>
 
                     <!-- Important Dates -->
                     <h2>Important Dates</h2>
                     <p>Mark your calendars. Missing these deadlines means waiting another year.</p>
 
-                    <table class="dates-table">
+                    <div class="table-responsive"><table class="dates-table">
                         <thead>
                             <tr>
                                 <th>Activity</th>
@@ -1154,7 +1161,7 @@
                                 <td>July 2026 (Tentative)</td>
                             </tr>
                         </tbody>
-                    </table>
+                    </table></div>
 
                     <!-- Syllabus -->
                     <h2>Syllabus Overview</h2>

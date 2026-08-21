@@ -163,6 +163,14 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+        }
+
+        html, body {
+            overflow-x: hidden;
+            width: 100%;
+            max-width: 100%;
+            margin: 0;
+            padding: 0;
             -webkit-tap-highlight-color: transparent;
         }
 
@@ -205,11 +213,7 @@
         }
 
         /* Container */
-        .container {
-            width: 92%;
-            max-width: 1240px;
-            margin: 0 auto;
-        }
+        .container { width: 100%; max-width: 1240px; padding: 0 1.25rem; margin: 0 auto; box-sizing: border-box; }
 
         /* Header Navigation */
         header {
@@ -220,6 +224,9 @@
             justify-content: center;
             margin-top: 8px;
             pointer-events: none;
+            width: 100%;
+            padding: 0 1rem;
+            box-sizing: border-box;
         }
 
         .nav-container {
@@ -234,7 +241,7 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            width: 92%;
+            width: 100%;
             max-width: 1240px;
         }
 
@@ -524,19 +531,25 @@
 
         .content-grid {
             display: grid;
-            grid-template-columns: 1fr 320px;
+            grid-template-columns: minmax(0, 1fr) 320px;
             gap: 3.5rem;
             align-items: start;
         }
 
         @media (max-width: 1024px) {
             .content-grid {
-                grid-template-columns: 1fr;
+                grid-template-columns: minmax(0, 1fr);
             }
         }
 
         /* Article Main Typography */
         .article-main {
+            min-width: 0;
+            width: 100%;
+            max-width: 100%;
+            overflow-wrap: break-word;
+            word-wrap: break-word;
+            box-sizing: border-box;
             font-size: 1.05rem;
             line-height: 1.85;
             color: var(--text-main);
@@ -1053,7 +1066,7 @@
         /* Responsive Breakpoints & Mobile Optimization */
         @media (max-width: 1024px) {
             .content-grid {
-                grid-template-columns: 1fr;
+                grid-template-columns: minmax(0, 1fr);
                 gap: 2.5rem;
             }
             .article-sidebar {
@@ -1083,7 +1096,7 @@
                 padding-top: 0.6rem;
                 border-top: 1px dashed var(--border);
             }
-            .feature-grid { grid-template-columns: 1fr; }
+            .feature-grid { grid-template-columns: minmax(0, 1fr); }
         }
 
         @media (max-width: 540px) {
@@ -1287,8 +1300,7 @@
                         Here is an honest breakdown of what you get with free access versus the 1-Year Pro Annual Plan during the Independence Day Freedom Sale:
                     </p>
 
-                    <div class="table-responsive">
-                        <table class="custom-table">
+                    <div class="table-responsive"><table class="custom-table">
                             <thead>
                                 <tr>
                                     <th style="width: 45%;">Feature</th>
@@ -1338,8 +1350,7 @@
                                     <td><strong>365 Days (Full 2027 Cycle)</strong></td>
                                 </tr>
                             </tbody>
-                        </table>
-                    </div>
+                        </table></div>
 
                     <!-- Section 3 -->
                     <h2 id="why-annual-plan">Why the 1-Year Plan is the Smartest Choice for IAT 2027</h2>

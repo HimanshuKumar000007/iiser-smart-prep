@@ -224,6 +224,14 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+        }
+
+        html, body {
+            overflow-x: hidden;
+            width: 100%;
+            max-width: 100%;
+            margin: 0;
+            padding: 0;
             -webkit-tap-highlight-color: transparent;
         }
 
@@ -266,11 +274,7 @@
         }
 
         /* Container */
-        .container {
-            width: 92%;
-            max-width: 1240px;
-            margin: 0 auto;
-        }
+        .container { width: 100%; max-width: 1240px; padding: 0 1.25rem; margin: 0 auto; box-sizing: border-box; }
 
         /* Header Navigation */
         header {
@@ -282,6 +286,9 @@
             display: flex;
             justify-content: center;
             pointer-events: none;
+            width: 100%;
+            padding: 0 1rem;
+            box-sizing: border-box;
         }
 
         .nav-container {
@@ -296,7 +303,7 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            width: 92%;
+            width: 100%;
             max-width: 1240px;
         }
 
@@ -585,19 +592,25 @@
 
         .content-grid {
             display: grid;
-            grid-template-columns: 1fr 320px;
+            grid-template-columns: minmax(0, 1fr) 320px;
             gap: 3.5rem;
             align-items: start;
         }
 
         @media (max-width: 1024px) {
             .content-grid {
-                grid-template-columns: 1fr;
+                grid-template-columns: minmax(0, 1fr);
             }
         }
 
         /* Article Main Typography */
         .article-main {
+            min-width: 0;
+            width: 100%;
+            max-width: 100%;
+            overflow-wrap: break-word;
+            word-wrap: break-word;
+            box-sizing: border-box;
             font-size: 1.05rem;
             line-height: 1.85;
             color: var(--text-main);
@@ -880,7 +893,7 @@
         /* Common Mistakes & Fixes Grid */
         .mistake-grid {
             display: grid;
-            grid-template-columns: 1fr;
+            grid-template-columns: minmax(0, 1fr);
             gap: 1.25rem;
             margin: 2rem 0;
         }
@@ -1192,7 +1205,7 @@
             .nav-links { display: none; }
             .meta-bar { flex-direction: column; align-items: flex-start; }
             .feature-showcase-box { padding: 1.75rem; }
-            .subject-grid { grid-template-columns: 1fr; }
+            .subject-grid { grid-template-columns: minmax(0, 1fr); }
             .timeline-steps { padding-left: 1.75rem; }
             .timeline-steps::before { left: 10px; }
             .step-number-badge { left: -1.75rem; width: 28px; height: 28px; font-size: 0.75rem; }
@@ -1324,8 +1337,7 @@
                         Once you have the syllabus in front of you, break every subject into topics and classify them honestly:
                     </p>
 
-                    <div class="table-responsive">
-                        <table class="custom-table">
+                    <div class="table-responsive"><table class="custom-table">
                             <thead>
                                 <tr>
                                     <th>Category</th>
@@ -1355,8 +1367,7 @@
                                     <td>Schedule it into your plan</td>
                                 </tr>
                             </tbody>
-                        </table>
-                    </div>
+                        </table></div>
 
                     <p>For example, a student might classify their Physics topics like this:</p>
                     <ul>
@@ -1579,8 +1590,7 @@
                         A mock test is a diagnostic tool. It tells you where you are bleeding marks. Here is what you should analyze after every test:
                     </p>
 
-                    <div class="table-responsive">
-                        <table class="custom-table">
+                    <div class="table-responsive"><table class="custom-table">
                             <thead>
                                 <tr>
                                     <th>Aspect</th>
@@ -1617,8 +1627,7 @@
                                     <td>Which topics had the most wrong answers?</td>
                                 </tr>
                             </tbody>
-                        </table>
-                    </div>
+                        </table></div>
 
                     <p>
                         There is a big difference between <strong>taking</strong> a mock test and <strong>learning</strong> from a mock test. The first takes three hours. The second should take at least another hour of careful analysis.
@@ -1633,8 +1642,7 @@
                         You cannot fix what you cannot see. Use a simple color-coded system to track your preparation status:
                     </p>
 
-                    <div class="table-responsive">
-                        <table class="custom-table">
+                    <div class="table-responsive"><table class="custom-table">
                             <thead>
                                 <tr>
                                     <th>Color</th>
@@ -1655,8 +1663,7 @@
                                     <td>Weak — frequent mistakes or conceptual gaps</td>
                                 </tr>
                             </tbody>
-                        </table>
-                    </div>
+                        </table></div>
 
                     <p>
                         Update this map every week based on your mock tests, PYQ attempts, and practice sessions. Turn the results directly into your next week's study plan. If Rotational Dynamics is 🔴, it gets two hours in the coming week. If Genetics is 🟡, schedule one extra problem set.
@@ -1717,8 +1724,7 @@
                         Here is a realistic weekday schedule for a student preparing full-time:
                     </p>
 
-                    <div class="table-responsive">
-                        <table class="custom-table">
+                    <div class="table-responsive"><table class="custom-table">
                             <thead>
                                 <tr>
                                     <th>Time</th>
@@ -1779,8 +1785,7 @@
                                     <td>Wind down, sleep</td>
                                 </tr>
                             </tbody>
-                        </table>
-                    </div>
+                        </table></div>
 
                     <p>
                         Adjust this based on your energy levels. If you focus better in the evening, shift heavy subjects there. The key is protecting sleep. Cutting sleep to study more almost always backfires.

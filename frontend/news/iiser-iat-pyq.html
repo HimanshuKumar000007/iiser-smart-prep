@@ -35,6 +35,15 @@
         }
 
         * {
+            box-sizing: border-box;
+        }
+
+        html, body {
+            overflow-x: hidden;
+            width: 100%;
+            max-width: 100%;
+            margin: 0;
+            padding: 0;
             margin: 0;
             padding: 0;
             box-sizing: border-box
@@ -80,7 +89,7 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            width: 90%;
+            width: 100%; box-sizing: border-box;
             max-width: 1200px
         }
 
@@ -231,7 +240,7 @@
 
         .content-grid {
             display: grid;
-            grid-template-columns: 1fr 300px;
+            grid-template-columns: minmax(0, 1fr) 300px;
             gap: 3rem;
             align-items: start
         }
@@ -510,6 +519,8 @@
                 grid-template-columns: 1fr
             }
         }
+            .table-responsive { overflow-x: auto; -webkit-overflow-scrolling: touch; width: 100%; max-width: 100%; margin: 1.5rem 0; box-sizing: border-box; }
+        table { max-width: 100%; }
     </style>
 </head>
 
@@ -610,7 +621,7 @@
                     </div>
 
                     <h2>Year-Wise IAT Difficulty Trend</h2>
-                    <table class="wtable">
+                    <div class="table-responsive"><table class="wtable">
                         <thead>
                             <tr>
                                 <th>Year</th>
@@ -650,7 +661,7 @@
                                 <td>Foundational, NCERT-heavier questions</td>
                             </tr>
                         </tbody>
-                    </table>
+                    </table></div>
 
                     <h2>How to Use IAT PYQs Effectively</h2>
                     <ul class="checklist">
