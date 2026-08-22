@@ -261,9 +261,9 @@
       <div class="container">
         <div class="hero-grid">
           <div class="reveal visible">
-            <div class="exam-tabs" style="display:inline-flex; background:rgba(0,0,0,0.05); padding:4px; border-radius:100px; margin-bottom:1.5rem;">
-              <button class="hero-tab-btn active" onclick="switchHeroExam('iiser', this)" style="padding:8px 20px; border-radius:100px; border:none; background:#fff; font-weight:600; box-shadow:0 2px 10px rgba(0,0,0,0.1); cursor:pointer;">IISER IAT</button>
-              <button class="hero-tab-btn" onclick="switchHeroExam('nest', this)" style="padding:8px 20px; border-radius:100px; border:none; background:transparent; font-weight:600; color:var(--text-dim); cursor:pointer; transition:all 0.3s;">NEST (Coming Soon)</button>
+            <div class="exam-tabs" style="display:inline-flex; background:var(--bg-soft); border:1px solid var(--border); padding:4px; border-radius:100px; margin-bottom:1.5rem;">
+              <button class="hero-tab-btn active" onclick="switchHeroExam('iiser', this)" style="padding:8px 20px; border-radius:100px; border:none; background:var(--panel); color:var(--text); font-weight:600; box-shadow:0 2px 10px rgba(0,0,0,0.1); cursor:pointer;">IISER IAT</button>
+              <button class="hero-tab-btn" onclick="switchHeroExam('nest', this)" style="padding:8px 20px; border-radius:100px; border:none; background:transparent; font-weight:600; color:var(--text-dim); cursor:pointer; transition:all 0.3s;">NEST</button>
             </div>
             <h1 style="font-size: clamp(2.2rem, 4.5vw, 3.5rem); line-height: 1.15;">
               Stop Guessing What to Study Next.
@@ -1157,38 +1157,40 @@
           <h2>Which exam should you target?</h2>
           <p>We recommend preparing for both. Here is a quick breakdown of how they compare.</p>
         </div>
-        <div class="reveal" style="background:#fff; border:1px solid var(--border); border-radius:16px; overflow:hidden; box-shadow:0 4px 20px rgba(0,0,0,0.03); margin-top:2rem;">
-          <table style="width:100%; text-align:left; border-collapse:collapse;">
-            <thead>
-              <tr style="background:var(--bg-soft); border-bottom:1px solid var(--border);">
-                <th style="padding:1.5rem; font-weight:600;">Feature</th>
-                <th style="padding:1.5rem; font-weight:600; color:var(--blue);">IISER IAT</th>
-                <th style="padding:1.5rem; font-weight:600; color:var(--violet);">NEST (Coming Soon)</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr style="border-bottom:1px solid var(--border);">
-                <td style="padding:1rem 1.5rem; font-weight:500;">Institutes</td>
-                <td style="padding:1rem 1.5rem;">7 IISERs</td>
-                <td style="padding:1rem 1.5rem;">NISER & UM-DAE CEBS</td>
-              </tr>
-              <tr style="border-bottom:1px solid var(--border);">
-                <td style="padding:1rem 1.5rem; font-weight:500;">Subject Strategy</td>
-                <td style="padding:1rem 1.5rem;">PCMB (Equal weightage)</td>
-                <td style="padding:1rem 1.5rem;">Best 3 out of 4 (PCMB)</td>
-              </tr>
-              <tr style="border-bottom:1px solid var(--border);">
-                <td style="padding:1rem 1.5rem; font-weight:500;">Exam Pattern</td>
-                <td style="padding:1rem 1.5rem;">60 Questions (180 mins)</td>
-                <td style="padding:1rem 1.5rem;">68 Questions (210 mins)</td>
-              </tr>
-              <tr>
-                <td style="padding:1rem 1.5rem; font-weight:500;">Difficulty Focus</td>
-                <td style="padding:1rem 1.5rem;">Analytical problem solving</td>
-                <td style="padding:1rem 1.5rem;">High conceptual depth</td>
-              </tr>
-            </tbody>
-          </table>
+        <div class="reveal" style="background:var(--panel); border:1px solid var(--border); border-radius:16px; overflow:hidden; box-shadow:0 4px 20px rgba(0,0,0,0.03); margin-top:2rem;">
+          <div style="overflow-x:auto; width:100%;">
+            <table style="width:100%; text-align:left; border-collapse:collapse;">
+              <thead>
+                <tr style="background:var(--bg-soft); border-bottom:1px solid var(--border);">
+                  <th style="padding:1.25rem 1.5rem; font-weight:600; color:var(--text);">Feature</th>
+                  <th style="padding:1.25rem 1.5rem; font-weight:600; color:var(--blue);">IISER IAT</th>
+                  <th style="padding:1.25rem 1.5rem; font-weight:600; color:var(--violet);">NEST (via SciPrep.in)</th>
+                </tr>
+              </thead>
+              <tbody style="background:var(--panel);">
+                <tr style="border-bottom:1px solid var(--border);">
+                  <td style="padding:1rem 1.5rem; font-weight:600; color:var(--text);">Institutes</td>
+                  <td style="padding:1rem 1.5rem; color:var(--text-dim);">7 IISERs</td>
+                  <td style="padding:1rem 1.5rem; color:var(--text-dim);">NISER &amp; UM-DAE CEBS</td>
+                </tr>
+                <tr style="border-bottom:1px solid var(--border);">
+                  <td style="padding:1rem 1.5rem; font-weight:600; color:var(--text);">Subject Strategy</td>
+                  <td style="padding:1rem 1.5rem; color:var(--text-dim);">PCMB (Equal weightage)</td>
+                  <td style="padding:1rem 1.5rem; color:var(--text-dim);">Best 3 out of 4 (PCMB)</td>
+                </tr>
+                <tr style="border-bottom:1px solid var(--border);">
+                  <td style="padding:1rem 1.5rem; font-weight:600; color:var(--text);">Exam Pattern</td>
+                  <td style="padding:1rem 1.5rem; color:var(--text-dim);">60 Questions (180 mins)</td>
+                  <td style="padding:1rem 1.5rem; color:var(--text-dim);">68 Questions (210 mins)</td>
+                </tr>
+                <tr>
+                  <td style="padding:1rem 1.5rem; font-weight:600; color:var(--text);">Difficulty Focus</td>
+                  <td style="padding:1rem 1.5rem; color:var(--text-dim);">Analytical problem solving</td>
+                  <td style="padding:1rem 1.5rem; color:var(--text-dim);">High conceptual depth</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </section>
@@ -1202,17 +1204,17 @@
           <p>Crack IISER IAT or NEST to secure a seat at India's premier research institutions.</p>
         </div>
         <div class="reveal" style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:1.5rem; margin-top:2rem;">
-          <div style="background:#fff; border:1px solid var(--border); border-radius:12px; padding:2rem; text-align:center; box-shadow:0 4px 10px rgba(0,0,0,0.02);">
+          <div style="background:var(--panel); border:1px solid var(--border); border-radius:12px; padding:2rem; text-align:center; box-shadow:0 4px 10px rgba(0,0,0,0.02);">
             <div style="font-size:2rem; margin-bottom:1rem;">🏛️</div>
             <h4 style="color:var(--blue); margin-bottom:0.5rem;">7 IISERs</h4>
             <p style="font-size:0.9rem; color:var(--text-dim);">Pune, Kolkata, Mohali, Bhopal, Thiruvananthapuram, Tirupati, Berhampur</p>
           </div>
-          <div style="background:#fff; border:1px solid var(--border); border-radius:12px; padding:2rem; text-align:center; box-shadow:0 4px 10px rgba(0,0,0,0.02);">
+          <div style="background:var(--panel); border:1px solid var(--border); border-radius:12px; padding:2rem; text-align:center; box-shadow:0 4px 10px rgba(0,0,0,0.02);">
             <div style="font-size:2rem; margin-bottom:1rem;">🔬</div>
             <h4 style="color:var(--violet); margin-bottom:0.5rem;">NISER</h4>
             <p style="font-size:0.9rem; color:var(--text-dim);">National Institute of Science Education and Research, Bhubaneswar</p>
           </div>
-          <div style="background:#fff; border:1px solid var(--border); border-radius:12px; padding:2rem; text-align:center; box-shadow:0 4px 10px rgba(0,0,0,0.02);">
+          <div style="background:var(--panel); border:1px solid var(--border); border-radius:12px; padding:2rem; text-align:center; box-shadow:0 4px 10px rgba(0,0,0,0.02);">
             <div style="font-size:2rem; margin-bottom:1rem;">⚛️</div>
             <h4 style="color:var(--cyan); margin-bottom:0.5rem;">UM-DAE CEBS</h4>
             <p style="font-size:0.9rem; color:var(--text-dim);">Centre for Excellence in Basic Sciences, Mumbai</p>
@@ -1642,9 +1644,9 @@
           btn.style.color = 'var(--text-dim)';
           btn.classList.remove('active');
         });
-        btnElement.style.background = '#fff';
+        btnElement.style.background = 'var(--panel)';
         btnElement.style.boxShadow = '0 2px 10px rgba(0,0,0,0.1)';
-        btnElement.style.color = 'inherit';
+        btnElement.style.color = 'var(--text)';
         btnElement.classList.add('active');
         
         // Sync the dropdown and trigger the dashboard update
