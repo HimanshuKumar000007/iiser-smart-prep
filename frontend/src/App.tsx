@@ -273,7 +273,7 @@ function DashboardApp() {
               />
             );
           })() : currentView === 'settings' ? (
-            <Settings />
+            <Settings onNavigate={handleNavigate} />
           ) : currentView === 'support' ? (
             <Support onNavigate={handleNavigate} />
           ) : currentView === 'feedback' ? (

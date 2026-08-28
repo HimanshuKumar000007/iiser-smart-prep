@@ -8,14 +8,21 @@ import {
   HelpCircle,
   AlertTriangle,
   ChevronRight,
-  LogOut
+  LogOut,
+  Sparkles
 } from 'lucide-react';
 import { currentUser } from '../../data/mockData';
 import { cn } from '../../lib/utils';
 import { Footer } from '../layout/Footer';
 import { useTheme, Theme } from '../../context/ThemeContext';
+import { useEntitlement } from '../../hooks/useEntitlement';
 
-export function Settings() {
+interface SettingsProps {
+  onNavigate?: (view: string) => void;
+}
+
+export function Settings({ onNavigate }: SettingsProps) {
+  const entitlement = useEntitlement();
   const [profile, setProfile] = useState<any>(null);
   const [loadingProfile, setLoadingProfile] = useState(false);
 
@@ -209,7 +216,7 @@ export function Settings() {
               {(() => {
                 const name = profile?.name || "Student";
                 const email = profile?.email || "student@iisersmartprep.space";
-                const isPro = profile?.plan === 'pro' || profile?.is_pro;
+                const isPro = entitlement.isPro || profile?.plan === 'pro' || profile?.is_pro;
                 const getInitials = (nameStr: string) => {
                   if (!nameStr) return "S";
                   const parts = nameStr.trim().split(/\s+/);
@@ -231,7 +238,7 @@ export function Settings() {
                           <span className={cn("text-xs font-bold px-2.5 py-1 rounded-md border", isLight ? "bg-slate-100 text-slate-700 border-slate-200" : "bg-white/5 text-white/70 border-white/10")}>IISER IAT 2027</span>
                           {isPro ? (
                             <span className="text-xs font-bold px-2.5 py-1 rounded-md bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 flex items-center gap-1">
-                              <Diamond className="w-3 h-3 text-indigo-400" /> Premium Member
+                              <Diamond className="w-3 h-3 text-indigo-400 fill-indigo-400/20" /> Premium Member
                             </span>
                           ) : (
                             <span className="text-xs font-bold px-2.5 py-1 rounded-md bg-amber-500/10 text-amber-400 border border-amber-500/20">
@@ -292,32 +299,140 @@ export function Settings() {
             </div>
           </section>
 
-          {/* SECTION 3: SUBSCRIPTION */}
-          <section className={cn(
-            "p-6 rounded-3xl border space-y-6 relative overflow-hidden group transition-colors",
-            isLight
-              ? "bg-gradient-to-br from-indigo-50/80 via-white to-indigo-50/40 border-slate-200/80 shadow-[0_8px_30px_rgba(15,23,42,0.03)]"
-              : "bg-gradient-to-br from-[#0A0C16] to-[#0A0C16] border-white/5"
-          )}>
-            <div className="absolute inset-0 bg-gradient-to-r from-indigo-500/0 via-indigo-500/5 to-purple-500/0 translate-x-[-100%] group-hover:animate-[shimmer_2s_infinite]" />
-            <h2 className={cn("text-base font-bold flex items-center gap-2 border-b pb-4 relative z-10", isLight ? "text-slate-900 border-slate-100" : "text-white border-white/5")}>
-              <Diamond className="w-5 h-5 text-indigo-400" /> Premium Plan
-            </h2>
-            <div className="flex flex-col sm:flex-row items-center justify-between gap-6 relative z-10">
-               <div>
-                  <h3 className={cn("text-lg font-bold mb-1", isLight ? "text-slate-900" : "text-white")}>SmartPrep Pro</h3>
-                  <p className={cn("text-sm", isLight ? "text-slate-500" : "text-white/50")}>Active until Dec 2027</p>
-                  <ul className={cn("text-xs space-y-1 mt-3", isLight ? "text-slate-600" : "text-white/60")}>
-                    <li>✓ Unlimited AI Smart Lessons</li>
-                    <li>✓ Deep Performance Analytics</li>
-                    <li>✓ Predicted All India Rank</li>
-                  </ul>
-               </div>
-               <button className={cn("px-6 py-3 rounded-xl font-bold text-sm transition-all whitespace-nowrap w-full sm:w-auto text-center cursor-pointer", isLight ? "bg-indigo-600 text-white hover:bg-indigo-700 shadow-md" : "bg-white text-black shadow-[0_0_20px_rgba(255,255,255,0.2)] hover:shadow-[0_0_30px_rgba(255,255,255,0.4)]")}>
-                 Manage Subscription
-               </button>
-            </div>
-          </section>
+          {/* SECTION 3: SUBSCRIPTION & MEMBERSHIP */}
+          {(() => {
+            const isPro = entitlement.isPro || profile?.plan === 'pro' || profile?.is_pro;
+            const expiryDate = entitlement.expiresAt || profile?.plan_expiry;
+            const daysLeft = entitlement.daysRemaining;
+
+            const formatExpiry = (expiresAtStr: string | null) => {
+              if (!expiresAtStr) return "Lifetime Access";
+              try {
+                const d = new Date(expiresAtStr);
+                if (isNaN(d.getTime())) return "Active Plan";
+                const dateFormatted = d.toLocaleDateString('en-US', {
+                  day: 'numeric',
+                  month: 'short',
+                  year: 'numeric'
+                });
+                if (daysLeft > 0 && daysLeft <= 9990) {
+                  return `Active until ${dateFormatted} (${daysLeft} days remaining)`;
+                }
+                return `Active until ${dateFormatted}`;
+              } catch {
+                return "Active Plan";
+              }
+            };
+
+            const getPlanTitle = (planId: string | null) => {
+              const p = (planId || profile?.plan || "").toLowerCase();
+              if (p.includes('annual') || p.includes('1_year') || p.includes('year')) return "SmartPrep Pro (Annual Pass)";
+              if (p.includes('six') || p.includes('6_month')) return "SmartPrep Pro (6-Month Plan)";
+              if (p.includes('month')) return "SmartPrep Pro (1-Month Plan)";
+              return "SmartPrep Pro";
+            };
+
+            if (isPro) {
+              return (
+                <section className={cn(
+                  "p-6 rounded-3xl border space-y-6 relative overflow-hidden group transition-colors",
+                  isLight
+                    ? "bg-gradient-to-br from-indigo-50/90 via-white to-cyan-50/40 border-indigo-200/80 shadow-[0_8px_30px_rgba(99,102,241,0.08)]"
+                    : "bg-gradient-to-br from-[#0A0C16] to-[#0d1124] border-indigo-500/20 shadow-[0_0_40px_rgba(99,102,241,0.1)]"
+                )}>
+                  <div className="absolute inset-0 bg-gradient-to-r from-indigo-500/0 via-indigo-500/5 to-cyan-500/0 translate-x-[-100%] group-hover:animate-[shimmer_2s_infinite]" />
+                  
+                  <div className={cn("flex items-center justify-between border-b pb-4 relative z-10", isLight ? "border-indigo-100" : "border-indigo-500/10")}>
+                    <h2 className={cn("text-base font-bold flex items-center gap-2", isLight ? "text-indigo-950" : "text-white")}>
+                      <Diamond className="w-5 h-5 text-indigo-400 fill-indigo-400/20" /> Premium Plan
+                    </h2>
+                    <span className="text-xs font-bold px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-500 border border-emerald-500/20 flex items-center gap-1.5">
+                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                      Active Pro Member
+                    </span>
+                  </div>
+
+                  <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 relative z-10">
+                    <div className="space-y-2">
+                      <h3 className={cn("text-xl font-bold tracking-tight", isLight ? "text-slate-900" : "text-white")}>
+                        {getPlanTitle(entitlement.planId)}
+                      </h3>
+                      <p className={cn("text-sm font-semibold flex items-center gap-1.5", isLight ? "text-indigo-700" : "text-cyan-300")}>
+                        <Sparkles className="w-4 h-4 text-cyan-400" />
+                        {formatExpiry(expiryDate)}
+                      </p>
+                      <ul className={cn("text-xs space-y-1.5 pt-2", isLight ? "text-slate-600" : "text-white/70")}>
+                        <li className="flex items-center gap-2">
+                          <span className="text-emerald-500 font-bold">✓</span> Unlimited AI Smart Lessons & Revision Engine
+                        </li>
+                        <li className="flex items-center gap-2">
+                          <span className="text-emerald-500 font-bold">✓</span> All 48+ Chapter-Wise & Full Length Mocks
+                        </li>
+                        <li className="flex items-center gap-2">
+                          <span className="text-emerald-500 font-bold">✓</span> Deep Performance Analytics & Predicted Rank
+                        </li>
+                      </ul>
+                    </div>
+
+                    <div className="flex flex-col items-start sm:items-end gap-2 w-full sm:w-auto">
+                      <div className={cn("px-5 py-3 rounded-2xl border text-center w-full sm:w-auto", isLight ? "bg-indigo-50/80 border-indigo-100 text-indigo-900" : "bg-white/5 border-white/10 text-white/90")}>
+                        <p className="text-[11px] uppercase tracking-wider font-semibold opacity-70">Membership Status</p>
+                        <p className="text-sm font-bold text-emerald-500 mt-0.5">Premium Unlocked</p>
+                      </div>
+                    </div>
+                  </div>
+                </section>
+              );
+            }
+
+            return (
+              <section className={cn(
+                "p-6 rounded-3xl border space-y-6 relative overflow-hidden transition-colors",
+                isLight
+                  ? "bg-gradient-to-br from-slate-50 via-white to-amber-50/30 border-slate-200/80 shadow-[0_8px_30px_rgba(15,23,42,0.03)]"
+                  : "bg-gradient-to-br from-[#0A0C16] to-[#120f1a] border-white/10"
+              )}>
+                <div className={cn("flex items-center justify-between border-b pb-4 relative z-10", isLight ? "border-slate-100" : "border-white/5")}>
+                  <h2 className={cn("text-base font-bold flex items-center gap-2", isLight ? "text-slate-900" : "text-white")}>
+                    <Diamond className="w-5 h-5 text-amber-400" /> Premium Plan
+                  </h2>
+                  <span className="text-xs font-bold px-3 py-1 rounded-full bg-amber-500/10 text-amber-400 border border-amber-500/20">
+                    Free Plan
+                  </span>
+                </div>
+
+                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 relative z-10">
+                  <div className="space-y-2">
+                    <h3 className={cn("text-xl font-bold tracking-tight", isLight ? "text-slate-900" : "text-white")}>
+                      Upgrade to SmartPrep Pro
+                    </h3>
+                    <p className={cn("text-sm", isLight ? "text-slate-500" : "text-white/60")}>
+                      Unlock all mock tests, AI tutor, deep analytics, and predicted IISER rank.
+                    </p>
+                    <ul className={cn("text-xs space-y-1.5 pt-2", isLight ? "text-slate-600" : "text-white/60")}>
+                      <li className="flex items-center gap-2">
+                        <span className="text-amber-500 font-bold">★</span> 48+ Full Syllabus & Chapter-Wise Mock Tests
+                      </li>
+                      <li className="flex items-center gap-2">
+                        <span className="text-amber-500 font-bold">★</span> Unlimited AI Smart Lessons & Mastery Roadmaps
+                      </li>
+                      <li className="flex items-center gap-2">
+                        <span className="text-amber-500 font-bold">★</span> Real-time All India Rank Predictor
+                      </li>
+                    </ul>
+                  </div>
+
+                  <button 
+                    onClick={() => onNavigate ? onNavigate('subscription') : (window.location.href = '#subscription')}
+                    className="px-6 py-3.5 rounded-xl font-bold text-sm bg-gradient-to-r from-indigo-600 via-indigo-500 to-cyan-500 hover:from-indigo-500 hover:to-cyan-400 text-white shadow-[0_0_25px_rgba(99,102,241,0.4)] hover:shadow-[0_0_35px_rgba(99,102,241,0.6)] transition-all whitespace-nowrap w-full sm:w-auto text-center cursor-pointer flex items-center justify-center gap-2"
+                  >
+                    <Diamond className="w-4 h-4" />
+                    Upgrade to Pro
+                  </button>
+                </div>
+              </section>
+            );
+          })()}
 
           {/* SECTION 4: DANGER ZONE & ACCOUNT ACTIONS */}
           <section className={cn(
