@@ -1008,6 +1008,51 @@ app.post("/api/change-password", authMiddleware, async (req, res) => {
 });
 
 // =======================
+// 👤 UPDATE PROFILE (NAME) API
+// =======================
+app.post("/api/update-profile", authMiddleware, async (req, res) => {
+  try {
+    const userId = req.user.id || req.user.userId;
+    const userEmail = req.user.email;
+    const { name } = req.body;
+
+    if (!name || typeof name !== "string" || !name.trim()) {
+      return res.status(400).json({ error: "Valid name is required" });
+    }
+
+    const trimmedName = name.trim();
+    if (trimmedName.length > 60) {
+      return res.status(400).json({ error: "Name must be 60 characters or less" });
+    }
+
+    let query = supabase.from("users").update({ name: trimmedName });
+
+    if (userId) {
+      query = query.eq("id", userId);
+    } else if (userEmail) {
+      query = query.eq("email", userEmail);
+    } else {
+      return res.status(401).json({ error: "Unauthorized user identity" });
+    }
+
+    const { data, error } = await query.select("id, name, email, plan, is_pro").single();
+
+    if (error) {
+      console.error("Update profile DB error:", error);
+      return res.status(500).json({ error: "Database error while updating profile" });
+    }
+
+    res.json({
+      message: "Profile updated successfully",
+      user: data
+    });
+  } catch (err) {
+    console.error("Update profile error:", err);
+    res.status(500).json({ error: "Failed to update profile" });
+  }
+});
+
+// =======================
 // 👤 GET USER INFO API
 // =======================
 app.get("/api/me", async (req, res) => {

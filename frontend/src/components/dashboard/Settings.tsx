@@ -54,6 +54,67 @@ export function Settings() {
   const [passwordSuccess, setPasswordSuccess] = useState('');
   const [submittingPassword, setSubmittingPassword] = useState(false);
 
+  const [showEditProfileModal, setShowEditProfileModal] = useState(false);
+  const [editName, setEditName] = useState('');
+  const [profileError, setProfileError] = useState('');
+  const [profileSuccess, setProfileSuccess] = useState('');
+  const [submittingProfile, setSubmittingProfile] = useState(false);
+
+  const handleOpenEditProfile = () => {
+    setEditName(profile?.name || '');
+    setProfileError('');
+    setProfileSuccess('');
+    setShowEditProfileModal(true);
+  };
+
+  const handleUpdateProfile = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setProfileError('');
+    setProfileSuccess('');
+
+    if (!editName || !editName.trim()) {
+      setProfileError('Name cannot be empty');
+      return;
+    }
+
+    if (editName.trim().length > 60) {
+      setProfileError('Name must be 60 characters or less');
+      return;
+    }
+
+    setSubmittingProfile(true);
+    try {
+      const token = localStorage.getItem('IAT_TOKEN');
+      const API_BASE =
+        (import.meta as any).env?.VITE_API_URL ??
+        ((import.meta as any).env?.DEV ? 'http://localhost:5000' : 'https://api.iisersmartprep.space');
+      const res = await fetch(`${API_BASE}/api/update-profile`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({ name: editName.trim() })
+      });
+      const data = await res.json();
+      if (res.ok) {
+        setProfileSuccess('Profile updated successfully!');
+        const updatedName = data.user?.name || editName.trim();
+        setProfile((prev: any) => ({ ...prev, name: updatedName }));
+        localStorage.setItem('currentUser', updatedName);
+        window.dispatchEvent(new Event('storage'));
+        setTimeout(() => setShowEditProfileModal(false), 1200);
+      } else {
+        setProfileError(data.error || 'Failed to update profile');
+      }
+    } catch (err) {
+      console.error(err);
+      setProfileError('Network error. Please try again.');
+    } finally {
+      setSubmittingProfile(false);
+    }
+  };
+
   const handleChangePassword = async (e: React.FormEvent) => {
     e.preventDefault();
     setPasswordError('');
@@ -183,7 +244,10 @@ export function Settings() {
                 );
               })()}
               <div className="flex flex-col gap-2 w-full sm:w-auto">
-                 <button className={cn("px-4 py-2 rounded-xl font-medium text-sm transition-colors border cursor-pointer", isLight ? "bg-slate-100 hover:bg-slate-200 text-slate-800 border-slate-200" : "bg-white/5 hover:bg-white/10 text-white border-white/10")}>
+                 <button 
+                   onClick={handleOpenEditProfile}
+                   className={cn("px-4 py-2 rounded-xl font-medium text-sm transition-colors border cursor-pointer", isLight ? "bg-slate-100 hover:bg-slate-200 text-slate-800 border-slate-200" : "bg-white/5 hover:bg-white/10 text-white border-white/10")}
+                 >
                    Edit Profile
                  </button>
                   <button 
@@ -325,6 +389,93 @@ export function Settings() {
             </div>
           </div>
         </div>
+
+      {/* 👤 EDIT PROFILE MODAL */}
+      {showEditProfileModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-in fade-in duration-300">
+          <div className={cn(
+            "w-full max-w-md p-6 rounded-3xl border relative overflow-hidden animate-in zoom-in-95 duration-300 transition-colors",
+            isLight
+              ? "bg-white border-slate-200 shadow-2xl"
+              : "bg-[#0A0C16] border-white/10 shadow-[0_0_50px_rgba(99,102,241,0.15)]"
+          )}>
+            <div className="absolute right-0 top-0 w-48 h-48 bg-cyan-500/10 blur-[60px] rounded-full pointer-events-none" />
+            <h3 className={cn("text-xl font-bold mb-6 flex items-center gap-2", isLight ? "text-slate-900" : "text-white")}>
+              👤 Edit Profile
+            </h3>
+            <form onSubmit={handleUpdateProfile} className="space-y-4 relative z-10">
+              <div>
+                <label className={cn("block text-xs font-semibold uppercase tracking-widest mb-1.5", isLight ? "text-slate-500" : "text-white/50")}>Full Name / Display Name</label>
+                <input
+                  type="text"
+                  value={editName}
+                  onChange={(e) => setEditName(e.target.value)}
+                  className={cn(
+                    "w-full rounded-xl p-3 text-sm outline-none transition-colors",
+                    isLight
+                      ? "bg-slate-50 border border-slate-200 text-slate-900 focus:border-cyan-500"
+                      : "bg-[#05060F] border border-white/10 text-white focus:border-cyan-500/50"
+                  )}
+                  placeholder="Enter your name"
+                  maxLength={60}
+                  required
+                />
+              </div>
+
+              <div>
+                <label className={cn("block text-xs font-semibold uppercase tracking-widest mb-1.5", isLight ? "text-slate-500" : "text-white/50")}>Email Address</label>
+                <input
+                  type="email"
+                  value={profile?.email || ''}
+                  disabled
+                  className={cn(
+                    "w-full rounded-xl p-3 text-sm outline-none transition-colors cursor-not-allowed opacity-60",
+                    isLight
+                      ? "bg-slate-100 border border-slate-200 text-slate-600"
+                      : "bg-white/5 border border-white/10 text-white/50"
+                  )}
+                  placeholder="Email"
+                />
+                <p className={cn("text-[11px] mt-1", isLight ? "text-slate-400" : "text-white/40")}>Email cannot be changed directly.</p>
+              </div>
+
+              {profileError && (
+                <p className="text-sm font-semibold text-rose-500 bg-rose-500/10 border border-rose-500/20 px-3 py-2 rounded-lg">
+                  {profileError}
+                </p>
+              )}
+
+              {profileSuccess && (
+                <p className="text-sm font-semibold text-emerald-500 bg-emerald-500/10 border border-emerald-500/20 px-3 py-2 rounded-lg">
+                  {profileSuccess}
+                </p>
+              )}
+
+              <div className="flex gap-3 pt-2">
+                <button
+                  type="button"
+                  onClick={() => setShowEditProfileModal(false)}
+                  className={cn(
+                    "flex-1 py-3 rounded-xl border font-semibold text-sm transition-colors cursor-pointer",
+                    isLight
+                      ? "bg-slate-100 hover:bg-slate-200 border-slate-200 text-slate-700"
+                      : "bg-white/5 hover:bg-white/10 border-white/10 text-white"
+                  )}
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  disabled={submittingProfile}
+                  className="flex-1 py-3 rounded-xl bg-cyan-600 hover:bg-cyan-500 text-white font-semibold text-sm transition-colors shadow-md disabled:opacity-50 cursor-pointer"
+                >
+                  {submittingProfile ? 'Saving...' : 'Save Profile'}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
 
       {/* 🔐 CHANGE PASSWORD MODAL */}
       {showPasswordModal && (
