@@ -185,7 +185,7 @@ export function Settings({ onNavigate }: SettingsProps) {
   };
 
   return (
-    <div className="max-w-6xl mx-auto w-full space-y-6 flex-1 mt-2 lg:mt-4 animate-in fade-in slide-in-from-bottom-4 duration-500 pb-32 lg:pb-0">
+    <div className="max-w-4xl mx-auto w-full space-y-6 flex-1 mt-2 lg:mt-4 animate-in fade-in slide-in-from-bottom-4 duration-500 pb-32 lg:pb-0">
       
       {/* HEADER SECTION */}
       <div className="flex items-center gap-3 mb-2">
@@ -198,12 +198,10 @@ export function Settings({ onNavigate }: SettingsProps) {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 items-start">
-        {/* LEFT COLUMN: Main Settings Content */}
-        <div className="lg:col-span-3 space-y-6">
-          
-          {/* SECTION 1: PROFILE & ACCOUNT */}
-          <section className={cn(
+      <div className="space-y-6">
+        
+        {/* SECTION 1: PROFILE & ACCOUNT */}
+        <section className={cn(
             "p-6 rounded-3xl border space-y-6 transition-colors",
             isLight
               ? "bg-white/80 border-slate-200/80 shadow-[0_8px_30px_rgba(15,23,42,0.03)]"
@@ -466,44 +464,6 @@ export function Settings({ onNavigate }: SettingsProps) {
                </button>
             </div>
           </section>
-
-        </div>
-
-        {/* RIGHT COLUMN: Sidebar Quick Settings */}
-        <div className="lg:col-span-1 space-y-6">
-          <div className={cn(
-            "p-6 rounded-3xl border sticky top-24 transition-colors",
-            isLight
-              ? "bg-white/80 border-slate-200/80 shadow-[0_8px_30px_rgba(15,23,42,0.03)]"
-              : "bg-[#0A0C16] border-white/5"
-          )}>
-            <h3 className={cn("text-sm font-bold mb-6", isLight ? "text-slate-900" : "text-white")}>Quick Overview</h3>
-            
-            <div className="space-y-6">
-               <div>
-                 <p className={cn("text-xs uppercase tracking-widest font-bold mb-1", isLight ? "text-slate-400" : "text-white/40")}>Current Exam</p>
-                 <p className={cn("text-sm font-medium", isLight ? "text-slate-800" : "text-white")}>IISER IAT</p>
-               </div>
-               <div>
-                 <p className={cn("text-xs uppercase tracking-widest font-bold mb-1", isLight ? "text-slate-400" : "text-white/40")}>Target Institute</p>
-                 <p className={cn("text-sm font-medium", isLight ? "text-slate-800" : "text-white")}>IISER Pune</p>
-               </div>
-               <div>
-                 <p className={cn("text-xs uppercase tracking-widest font-bold mb-1", isLight ? "text-slate-400" : "text-white/40")}>Days Remaining</p>
-                 <p className="text-2xl font-display font-bold text-cyan-500">127</p>
-               </div>
-            </div>
-
-            <div className={cn("mt-8 pt-6 border-t space-y-3", isLight ? "border-slate-100" : "border-white/5")}>
-               <button className={cn("w-full flex items-center gap-3 text-sm transition-colors cursor-pointer", isLight ? "text-slate-600 hover:text-slate-900" : "text-white/60 hover:text-white")}>
-                 <HelpCircle className="w-4 h-4" /> FAQ & Support
-               </button>
-               <button className={cn("w-full flex items-center gap-3 text-sm transition-colors cursor-pointer", isLight ? "text-slate-600 hover:text-slate-900" : "text-white/60 hover:text-white")}>
-                 <AlertTriangle className="w-4 h-4" /> Report Bug
-               </button>
-            </div>
-          </div>
-        </div>
 
       {/* 👤 EDIT PROFILE MODAL */}
       {showEditProfileModal && (
