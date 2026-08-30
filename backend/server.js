@@ -2147,7 +2147,7 @@ async function fetchUserAttemptData(user_id) {
           .eq("user_id", user_id),
         supabase
           .from("mock_question_attempts")
-          .select("id, mock_result_id, chapter_id, question_id, topic_id, difficulty, selected_answer, correct_answer, is_correct, time_taken_seconds, estimated_time_seconds, question_order, created_at, subject")
+          .select("id, mock_result_id, chapter_id, question_id, topic_id, difficulty, selected_answer, correct_answer, is_correct, time_taken_seconds, estimated_time_seconds, question_order, subject, mock_id")
           .eq("user_id", user_id)
       ]);
 
@@ -2162,30 +2162,40 @@ async function fetchUserAttemptData(user_id) {
       const rawMockResults = mockResultsRes.data || [];
       const rawMockQuestionAttempts = mockQuestionRes.data || [];
 
+      // Build a lookup map for parent mock_results created_at timestamps
+      const mockResultDateMap = new Map();
+      rawMockResults.forEach(mr => {
+        if (mr.id) mockResultDateMap.set(mr.id, mr.created_at);
+      });
+
       const validMockResults = rawMockResults.filter(mr => mr.mock_id !== "quick_mock" && !mr.mock_id?.startsWith("qm_"));
       const validMockQuestionAttempts = rawMockQuestionAttempts.filter(mq => mq.mock_id !== "quick_mock" && !mq.mock_id?.startsWith("qm_"));
 
-      const simulatedQuestionAttempts = validMockQuestionAttempts.map(a => ({
-        id: a.id || `sim_q_${a.question_id}_${a.mock_result_id}`,
-        quiz_attempt_id: a.mock_result_id,
-        chapter_id: a.chapter_id,
-        question_id: a.question_id,
-        topic_id: a.topic_id,
-        difficulty: a.difficulty,
-        selected_answer: a.selected_answer,
-        correct_answer: a.correct_answer,
-        is_correct: a.is_correct,
-        time_taken_seconds: a.time_taken_seconds || 0,
-        estimated_time_seconds: a.estimated_time_seconds || 0,
-        question_order: a.question_order || 1,
-        answered_at: a.created_at || new Date().toISOString()
-      }));
+      const simulatedQuestionAttempts = validMockQuestionAttempts.map(a => {
+        const attemptDate = mockResultDateMap.get(a.mock_result_id) || new Date().toISOString();
+        return {
+          id: a.id || `sim_q_${a.question_id}_${a.mock_result_id}`,
+          quiz_attempt_id: a.mock_result_id,
+          chapter_id: a.chapter_id,
+          question_id: a.question_id,
+          topic_id: a.topic_id,
+          difficulty: a.difficulty,
+          selected_answer: a.selected_answer,
+          correct_answer: a.correct_answer,
+          is_correct: a.is_correct,
+          time_taken_seconds: a.time_taken_seconds || 0,
+          estimated_time_seconds: a.estimated_time_seconds || 0,
+          question_order: a.question_order || 1,
+          answered_at: attemptDate
+        };
+      });
 
       const parentMap = {};
       validMockQuestionAttempts.forEach(a => {
         if (!a.chapter_id) return;
         const key = `${a.mock_result_id}_${a.chapter_id}`;
         if (!parentMap[key]) {
+          const attemptDate = mockResultDateMap.get(a.mock_result_id) || new Date().toISOString();
           parentMap[key] = {
             id: a.mock_result_id,
             chapter_id: a.chapter_id,
@@ -2195,7 +2205,7 @@ async function fetchUserAttemptData(user_id) {
             wrong_answers: 0,
             unanswered_answers: 0,
             total_time_seconds: 0,
-            created_at: a.created_at || new Date().toISOString()
+            created_at: attemptDate
           };
         }
         parentMap[key].total_questions++;
