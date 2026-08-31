@@ -53,7 +53,8 @@ window.QUICK_MOCKS_CONFIG = (function () {
         const mocks = [];
         topics.forEach((topic, index) => {
             const isFreeTopic = subject === 'physics' && (index === 0 || index === 1);
-            for (let i = 1; i <= 4; i++) {
+            const totalCount = topic.count || 4;
+            for (let i = 1; i <= totalCount; i++) {
                 mocks.push({
                     id: currentId++,
                     label: `${topic.name} - Mock ${String(i).padStart(2, '0')}`,
@@ -77,7 +78,7 @@ window.QUICK_MOCKS_CONFIG = (function () {
         { name: 'Gravitation', folder: '7. gravitation' },
         { name: 'Mechanical Properties of Solids', folder: '8. mechanical-properties-of-solids' },
         { name: 'Mechanical Properties of Fluids', folder: '9.mechanical-properties-of-fluids' },
-        { name: 'Thermal Properties of Matter', folder: '10. thermal-properties-of-matter' },
+        { name: 'Thermal Properties of Matter', folder: '10. thermal-properties-of-matter', count: 2 },
         { name: 'Thermodynamics', folder: '11. thermodynamics' },
         { name: 'Kinetic Theory', folder: '12. kinetic-theory' },
         { name: 'Oscillations', folder: '13. oscillations' },
@@ -121,8 +122,7 @@ window.QUICK_MOCKS_CONFIG = (function () {
     ];
 
     const mathTopics = [
-        { name: 'Sets and Logic', folder: '1.sets-and-logic' },
-        { name: 'Relations & functions', folder: 'relations-and-functions' },
+        { name: 'Sets, Relations and Logic', folder: '1.sets-and-logic' },
         { name: 'Basic counting techniques', folder: '2.basic-counting-techniques' },
         { name: 'Complex numbers and equations', folder: '3.complex-numbers-linear-and-quadratic-equations' },
         { name: 'Trigonometric functions', folder: '4.trigonometric-functions' },
@@ -131,7 +131,7 @@ window.QUICK_MOCKS_CONFIG = (function () {
         { name: 'Coordinate geometry', folder: '7.coordinate-geometry' },
         { name: 'Three-dimensional geometry', folder: '8.three-dimensional-geometry' },
         { name: 'Sequences & series', folder: '9.sequences-and-series' },
-        { name: 'Limit & continuity', folder: '10.limit-and-continuity' },
+        { name: 'Limit & continuity', folder: '10.limit-and-continuity', count: 1 },
         { name: 'Differentiation', folder: '11.differentiation' },
         { name: 'Integration', folder: '12.integration' },
         { name: 'Differential equations', folder: '13.differential-equations' },
@@ -145,6 +145,7 @@ window.QUICK_MOCKS_CONFIG = (function () {
         { name: 'Plant Physiology', folder: 'plant-physiology' },
         { name: 'Human Physiology', folder: 'human-physiology' },
         { name: 'Reproduction', folder: 'reproduction' },
+        { name: 'Genetics and Evolution', folder: 'genetics-and-evolution' },
         { name: 'Biology In Human Welfare', folder: 'biology-in-human-welfare' },
         { name: 'Biotechnology', folder: 'biotechnology' },
         { name: 'Ecology', folder: 'ecology' }
