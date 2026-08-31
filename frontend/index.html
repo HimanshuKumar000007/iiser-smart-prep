@@ -118,11 +118,32 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
+      rel="preload"
+      as="style"
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700;800&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap"
+    />
+    <link
       href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700;800&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap"
       rel="stylesheet"
+      media="print"
+      onload="this.media='all'"
     />
+    <noscript>
+      <link
+        href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700;800&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap"
+        rel="stylesheet"
+      />
+    </noscript>
     <link rel="stylesheet" href="assets/css/index.css" />
-    <link rel="stylesheet" href="assets/css/onboarding.css" />
+    <link
+      rel="stylesheet"
+      href="assets/css/onboarding.css"
+      media="print"
+      onload="this.media='all'"
+    />
+    <noscript>
+      <link rel="stylesheet" href="assets/css/onboarding.css" />
+    </noscript>
   </head>
   <body>
     <!-- ============ NAV ============ -->
@@ -210,103 +231,104 @@
       </div>
     </header>
 
-    <!-- ============ HERO ============ -->
-    <section class="hero">
-      <div class="container">
-        <div class="hero-grid">
-          <div class="reveal visible">
-            <div class="exam-tabs" style="display:inline-flex; background:var(--bg-soft); border:1px solid var(--border); padding:4px; border-radius:100px; margin-bottom:1.5rem;">
-              <button class="hero-tab-btn active" onclick="switchHeroExam('iiser', this)" style="padding:8px 20px; border-radius:100px; border:none; background:var(--panel); color:var(--text); font-weight:600; box-shadow:0 2px 10px rgba(0,0,0,0.1); cursor:pointer;">IISER IAT</button>
-              <button class="hero-tab-btn" onclick="switchHeroExam('nest', this)" style="padding:8px 20px; border-radius:100px; border:none; background:transparent; font-weight:600; color:var(--text-dim); cursor:pointer; transition:all 0.3s;">NEST</button>
-            </div>
-            <h1 style="font-size: clamp(2.2rem, 4.5vw, 3.5rem); line-height: 1.15;">
-              Stop Guessing What to Study Next.
-              <span class="grad">Your Complete IISER IAT</span> Preparation System
-            </h1>
-            <p class="lead">
-              Learn concepts, practice chapter quick mocks, attempt official PYQ simulations, identify weak areas, and get personalized next actions—all in one connected preparation system.
-            </p>
-            <div class="hero-ctas">
-              <a id="roadmap-btn" class="btn btn-primary" href="onboarding.html">Start Preparing Free</a>
-              <a href="login.html" class="btn btn-ghost">Login</a>
-            </div>
-          </div>
-
-          <div class="dash-wrap reveal visible">
-            <div class="float-chip fc1">
-              <span>🎯</span>
-              <div>Readiness <span class="num">68%</span></div>
-            </div>
-            <div class="float-chip fc2">
-              <span>🔥</span>
-              <div>Streak <span class="num">14 days</span></div>
+    <main id="main-content">
+      <!-- ============ HERO ============ -->
+      <section class="hero">
+        <div class="container">
+          <div class="hero-grid">
+            <div class="reveal visible">
+              <div class="exam-tabs" style="display:inline-flex; background:var(--bg-soft); border:1px solid var(--border); padding:4px; border-radius:100px; margin-bottom:1.5rem;">
+                <button class="hero-tab-btn active" onclick="switchHeroExam('iiser', this)" style="padding:8px 20px; border-radius:100px; border:none; background:var(--panel); color:var(--text); font-weight:600; box-shadow:0 2px 10px rgba(0,0,0,0.1); cursor:pointer;">IISER IAT</button>
+                <button class="hero-tab-btn" onclick="switchHeroExam('nest', this)" style="padding:8px 20px; border-radius:100px; border:none; background:transparent; font-weight:600; color:var(--text-dim); cursor:pointer; transition:all 0.3s;">NEST</button>
+              </div>
+              <h1 style="font-size: clamp(2.2rem, 4.5vw, 3.5rem); line-height: 1.15;">
+                Stop Guessing What to Study Next.
+                <span class="grad">Your Complete IISER IAT</span> Preparation System
+              </h1>
+              <p class="lead">
+                Learn concepts, practice chapter quick mocks, attempt official PYQ simulations, identify weak areas, and get personalized next actions—all in one connected preparation system.
+              </p>
+              <div class="hero-ctas">
+                <a id="roadmap-btn" class="btn btn-primary" href="onboarding.html">Start Preparing Free</a>
+                <a href="login.html" class="btn btn-ghost">Login</a>
+              </div>
             </div>
 
-            <div class="dash-card">
-              <div class="dash-top">
-                <div class="who">
-                  <div class="dash-avatar">AR</div>
-                  <div>
-                    <strong>Aditya's Roadmap</strong>
-                    <span id="hero-target-college">Target: IISER Pune</span>
-                  </div>
-                </div>
-                <div>
-                  <span style="font-size:0.65rem; color:var(--text-faint); margin-right:0.4rem;">Current Exam:</span>
-                  <select id="exam-dropdown" onchange="switchDashboardData(this.value)" style="background:rgba(0,0,0,0.05); border:1px solid var(--border); border-radius:6px; padding:0.2rem 0.5rem; font-size:0.75rem; font-weight:600; color:var(--text); cursor:pointer;">
-                    <option value="iiser">IISER IAT</option>
-                    <option value="nest">NEST</option>
-                  </select>
-                </div>
+            <div class="dash-wrap reveal visible">
+              <div class="float-chip fc1">
+                <span>🎯</span>
+                <div>Readiness <span class="num">68%</span></div>
+              </div>
+              <div class="float-chip fc2">
+                <span>🔥</span>
+                <div>Streak <span class="num">14 days</span></div>
               </div>
 
-              <!-- gauge -->
-              <div class="gauge-row">
-                <div class="gauge">
-                  <svg width="96" height="96" viewBox="0 0 96 96">
-                    <defs>
-                      <linearGradient
-                        id="gaugeGrad"
-                        x1="0%"
-                        y1="0%"
-                        x2="100%"
-                        y2="100%"
-                      >
-                        <stop offset="0%" stop-color="#4F7CFF" />
-                        <stop offset="100%" stop-color="#22D3EE" />
-                      </linearGradient>
-                    </defs>
-                    <circle
-                      class="gauge-track"
-                      cx="48"
-                      cy="48"
-                      r="40"
-                      fill="none"
-                      stroke-width="8"
-                    />
-                    <circle
-                      class="gauge-fill"
-                      cx="48"
-                      cy="48"
-                      r="40"
-                      fill="none"
-                      stroke-width="8"
-                      stroke-dasharray="251.2"
-                      stroke-dashoffset="80"
-                      id="hero-gauge-circle"
-                    />
-                  </svg>
-                  <div class="gauge-label">
-                    <strong id="hero-readiness">68%</strong>
-                    <span>Ready</span>
+              <div class="dash-card">
+                <div class="dash-top">
+                  <div class="who">
+                    <div class="dash-avatar">AR</div>
+                    <div>
+                      <strong>Aditya's Roadmap</strong>
+                      <span id="hero-target-college">Target: IISER Pune</span>
+                    </div>
+                  </div>
+                  <div>
+                    <span style="font-size:0.65rem; color:var(--text-faint); margin-right:0.4rem;">Current Exam:</span>
+                    <select id="exam-dropdown" aria-label="Select Target Exam" onchange="switchDashboardData(this.value)" style="background:rgba(0,0,0,0.05); border:1px solid var(--border); border-radius:6px; padding:0.2rem 0.5rem; font-size:0.75rem; font-weight:600; color:var(--text); cursor:pointer;">
+                      <option value="iiser">IISER IAT</option>
+                      <option value="nest">NEST</option>
+                    </select>
                   </div>
                 </div>
-                <div class="gauge-info">
-                  <h4 id="hero-countdown">Exam Countdown: 127 Days</h4>
-                  <p id="hero-insight">
-                    You're ahead of pace for IAT 2027. Keep Chemistry momentum
-                    going.
-                  </p>
+
+                <!-- gauge -->
+                <div class="gauge-row">
+                  <div class="gauge">
+                    <svg width="96" height="96" viewBox="0 0 96 96">
+                      <defs>
+                        <linearGradient
+                          id="gaugeGrad"
+                          x1="0%"
+                          y1="0%"
+                          x2="100%"
+                          y2="100%"
+                        >
+                          <stop offset="0%" stop-color="#4F7CFF" />
+                          <stop offset="100%" stop-color="#22D3EE" />
+                        </linearGradient>
+                      </defs>
+                      <circle
+                        class="gauge-track"
+                        cx="48"
+                        cy="48"
+                        r="40"
+                        fill="none"
+                        stroke-width="8"
+                      />
+                      <circle
+                        class="gauge-fill"
+                        cx="48"
+                        cy="48"
+                        r="40"
+                        fill="none"
+                        stroke-width="8"
+                        stroke-dasharray="251.2"
+                        stroke-dashoffset="80"
+                        id="hero-gauge-circle"
+                      />
+                    </svg>
+                    <div class="gauge-label">
+                      <strong id="hero-readiness">68%</strong>
+                      <span>Ready</span>
+                    </div>
+                  </div>
+                  <div class="gauge-info">
+                    <div class="gauge-title" id="hero-countdown">Exam Countdown: 127 Days</div>
+                    <p id="hero-insight">
+                      You're ahead of pace for IAT 2027. Keep Chemistry momentum
+                      going.
+                    </p>
                   <div class="gauge-stats">
                     <div><strong>14</strong><span>Day Streak</span></div>
                     <div><strong id="hero-qs">312</strong><span>Qs This Week</span></div>
@@ -685,9 +707,9 @@
         <div class="showcase reveal">
           <div class="showcase-grid">
             <div class="sc-main">
-              <h4>
+              <h3>
                 Subject Mastery — Last 8 Weeks <span class="tag">PCMB</span>
-              </h4>
+              </h3>
               <div class="sc-chart">
                 <div
                   style="
@@ -777,14 +799,14 @@
             </div>
             <div class="sc-side">
               <div class="sc-box">
-                <h5>Preparation Readiness</h5>
+                <div class="sc-heading">Preparation Readiness</div>
                 <div class="rank-display">
                   <strong>Competitive</strong><span>Sufficient evidence established</span>
                 </div>
                 <div class="rank-trend">Syllabus coverage &amp; mock performance tracked</div>
               </div>
               <div class="sc-box">
-                <h5>Today's Plan</h5>
+                <div class="sc-heading">Today's Plan</div>
                 <div class="sc-tasklist">
                   <div class="sc-task">
                     <div class="check done">✓</div>
@@ -875,7 +897,7 @@
               <span class="lesson-subj" style="color: var(--green)"
                 >Biology</span
               >
-              <h4>Cell Organelles &amp; Function</h4>
+              <h3>Cell Organelles &amp; Function</h3>
               <p>
                 Interactive diagram-led walkthrough of organelle structure and
                 roles.
@@ -893,7 +915,7 @@
               <span class="lesson-subj" style="color: var(--blue)"
                 >Physics</span
               >
-              <h4>Newton's Laws of Motion</h4>
+              <h3>Newton's Laws of Motion</h3>
               <p>
                 Formula derivations with worked examples from past IAT papers.
               </p>
@@ -918,7 +940,7 @@
               <span class="lesson-subj" style="color: var(--violet)"
                 >Chemistry</span
               >
-              <h4>Reaction Mechanism Flows</h4>
+              <h3>Reaction Mechanism Flows</h3>
               <p>
                 Step-by-step organic reaction pathways with electron-flow
                 visuals.
@@ -948,7 +970,7 @@
               <span class="lesson-subj" style="color: var(--cyan)"
                 >Mathematics</span
               >
-              <h4>Curves &amp; Derivatives</h4>
+              <h3>Curves &amp; Derivatives</h3>
               <p>
                 Visualize how slope and curvature connect to differentiation
                 rules.
@@ -1028,7 +1050,7 @@
                 🖥️
               </div>
               <div>
-                <h4>IISER IAT Mode (TCS iON)</h4>
+                <h3>IISER IAT Mode (TCS iON)</h3>
                 <p>
                   Practice the exact PCMB format with the official TCS iON layout. Zero surprises on test day.
                 </p>
@@ -1042,7 +1064,7 @@
                 ⚡
               </div>
               <div>
-                <h4>NEST Mode</h4>
+                <h3>NEST Mode</h3>
                 <p>
                   Simulate section-wise time limits and master the best-of-3 subject selection strategy.
                 </p>
@@ -1056,7 +1078,7 @@
                 🧭
               </div>
               <div>
-                <h4>Question Palette &amp; Timer</h4>
+                <h3>Question Palette &amp; Timer</h3>
                 <p>
                   Practice managing your time across all 60 questions with the
                   same on-screen tools.
@@ -1074,7 +1096,7 @@
                 📈
               </div>
               <div>
-                <h4>Detailed Performance Reports</h4>
+                <h3>Detailed Performance Reports</h3>
                 <p>
                   Section-wise accuracy, time-per-question, and comparison
                   against top scorers.
@@ -1092,7 +1114,7 @@
                 🛠️
               </div>
               <div>
-                <h4>Recovery Action Plans</h4>
+                <h3>Recovery Action Plans</h3>
                 <p>
                   Get automated recovery recommendations highlighting frequent mistakes and targeted tasks after every attempt.
                 </p>
@@ -1160,17 +1182,17 @@
         <div class="reveal" style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:1.5rem; margin-top:2rem;">
           <div style="background:var(--panel); border:1px solid var(--border); border-radius:12px; padding:2rem; text-align:center; box-shadow:0 4px 10px rgba(0,0,0,0.02);">
             <div style="font-size:2rem; margin-bottom:1rem;">🏛️</div>
-            <h4 style="color:var(--blue); margin-bottom:0.5rem;">7 IISERs</h4>
+            <h3 style="color:var(--blue); margin-bottom:0.5rem; font-size:1.15rem; font-weight:700;">7 IISERs</h3>
             <p style="font-size:0.9rem; color:var(--text-dim);">Pune, Kolkata, Mohali, Bhopal, Thiruvananthapuram, Tirupati, Berhampur</p>
           </div>
           <div style="background:var(--panel); border:1px solid var(--border); border-radius:12px; padding:2rem; text-align:center; box-shadow:0 4px 10px rgba(0,0,0,0.02);">
             <div style="font-size:2rem; margin-bottom:1rem;">🔬</div>
-            <h4 style="color:var(--violet); margin-bottom:0.5rem;">NISER</h4>
+            <h3 style="color:var(--violet); margin-bottom:0.5rem; font-size:1.15rem; font-weight:700;">NISER</h3>
             <p style="font-size:0.9rem; color:var(--text-dim);">National Institute of Science Education and Research, Bhubaneswar</p>
           </div>
           <div style="background:var(--panel); border:1px solid var(--border); border-radius:12px; padding:2rem; text-align:center; box-shadow:0 4px 10px rgba(0,0,0,0.02);">
             <div style="font-size:2rem; margin-bottom:1rem;">⚛️</div>
-            <h4 style="color:var(--cyan); margin-bottom:0.5rem;">UM-DAE CEBS</h4>
+            <h3 style="color:var(--cyan); margin-bottom:0.5rem; font-size:1.15rem; font-weight:700;">UM-DAE CEBS</h3>
             <p style="font-size:0.9rem; color:var(--text-dim);">Centre for Excellence in Basic Sciences, Mumbai</p>
           </div>
         </div>
@@ -1569,6 +1591,8 @@
       </div>
     </section>
 
+    </main>
+
     <!-- ============ FOOTER ============ -->
     <footer>
       <div class="container">
@@ -1585,14 +1609,14 @@
 
           </div>
           <div class="footer-col">
-            <h5>Product</h5>
+            <p class="footer-heading">Product</p>
             <a href="#features">Features</a>
             <a href="#mock-tests">Mock Tests</a>
             <a href="#lessons">Smart Lessons</a>
             <a href="#pricing">Pricing</a>
           </div>
           <div class="footer-col">
-            <h5>Resources</h5>
+            <p class="footer-heading">Resources</p>
             <a href="https://sciprep.in" target="_blank" rel="noopener noreferrer" style="color: #10b981; font-weight: 700;">SciPrep.in (NEST) ↗</a>
             <a href="/news/sciprep-nest-study-material-launch.html">SciPrep Announcement</a>
             <a href="/news/iiser-iat-2027-preparation-strategy.html">IAT Strategy 2027</a>
@@ -1601,7 +1625,7 @@
             <a href="/news-and-announcements.html">News &amp; Guides</a>
           </div>
           <div class="footer-col">
-            <h5>Contact</h5>
+            <p class="footer-heading">Contact</p>
             <a href="contact-us.html">Contact Us</a>
             <a href="privacy.html">Privacy Policy</a>
             <a href="terms.html">Terms &amp; Conditions</a>

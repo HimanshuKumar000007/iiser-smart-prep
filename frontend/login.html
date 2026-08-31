@@ -4,7 +4,8 @@
   <script>
     if (localStorage.getItem('IAT_TOKEN')) {
       const redirect = new URLSearchParams(window.location.search).get('redirect');
-      window.location.replace(redirect ? decodeURIComponent(redirect) : 'dashboard-react/index.html');
+      const target = (!redirect || redirect === 'dashboard-react.html' || redirect.endsWith('/dashboard-react.html') || redirect === 'dashboard.html' || redirect.endsWith('/dashboard.html') || redirect === 'dashboard' || redirect.endsWith('/dashboard')) ? 'dashboard-react/index.html' : decodeURIComponent(redirect);
+      window.location.replace(target);
     }
   </script>
   <meta charset="UTF-8">
@@ -696,7 +697,8 @@
         } catch(_) {}
 
         const redirect = new URLSearchParams(window.location.search).get('redirect');
-        window.location.href = redirect ? decodeURIComponent(redirect) : 'dashboard-react/index.html';
+        const target = (!redirect || redirect === 'dashboard-react.html' || redirect.endsWith('/dashboard-react.html') || redirect === 'dashboard.html' || redirect.endsWith('/dashboard.html') || redirect === 'dashboard' || redirect.endsWith('/dashboard')) ? 'dashboard-react/index.html' : decodeURIComponent(redirect);
+        window.location.href = target;
       } catch(err) {
         showMsg('login-error', err.message, 'error');
         setLoading('login-btn','login-spin','login-btn-text', false, 'Log In →');
@@ -729,7 +731,8 @@
         localStorage.setItem('IAT_PLAN', plan);
         showMsg('signup-success', '🎉 Account created! Redirecting...', 'success');
         const redirect = new URLSearchParams(window.location.search).get('redirect');
-        setTimeout(() => { window.location.href = redirect ? decodeURIComponent(redirect) : 'dashboard-react/index.html'; }, 1000);
+        const target = (!redirect || redirect === 'dashboard-react.html' || redirect.endsWith('/dashboard-react.html') || redirect === 'dashboard.html' || redirect.endsWith('/dashboard.html') || redirect === 'dashboard' || redirect.endsWith('/dashboard')) ? 'dashboard-react/index.html' : decodeURIComponent(redirect);
+        setTimeout(() => { window.location.href = target; }, 1000);
       } catch(err) {
         showMsg('signup-error', err.message, 'error');
         setLoading('signup-btn','signup-spin','signup-btn-text', false, 'Create Free Account →');
