@@ -5,14 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Dashboard - SmartPrep</title>
     <script>
-      // If loaded on a static server (e.g. Live Server) without Vite dev server active, redirect to the pre-bundled React dashboard
-      const isVite = window.location.port === '3000' || window.location.port === '5173' || Boolean(window.__vite_plugin_react_preamble_installed__);
-      if (!isVite && !window.location.pathname.includes('/dashboard-react/index.html')) {
-        window.location.replace('/dashboard-react/index.html' + window.location.search + window.location.hash);
-      }
       if (!localStorage.getItem('IAT_TOKEN')) {
-        const loginUrl = window.location.pathname.includes('/dashboard-react/') ? '../login.html' : 'login.html';
-        window.location.replace(loginUrl);
+        window.location.replace('../login.html');
       }
     </script>
     <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
