@@ -3072,7 +3072,7 @@ app.get("/api/student/performance-insights", authMiddleware, async (req, res) =>
 // ========================================================
 
 // 1. GET PYQ SUMMARY STATISTICS & CONTENT
-app.get("/api/student/pyq-summary", authMiddleware, requirePro, async (req, res) => {
+app.get("/api/student/pyq-summary", authMiddleware, async (req, res) => {
   try {
     const userId = req.user.id || req.user.userId;
     if (!userId) {
@@ -3210,7 +3210,7 @@ app.get("/api/student/pyq-summary", authMiddleware, requirePro, async (req, res)
 });
 
 // 2. START A NEW PYQ SESSION
-app.post("/api/pyq/session/start", authMiddleware, requirePro, async (req, res) => {
+app.post("/api/pyq/session/start", authMiddleware, async (req, res) => {
   try {
     const userId = req.user.id || req.user.userId;
     if (!userId) {
@@ -3325,7 +3325,7 @@ app.post("/api/pyq/session/start", authMiddleware, requirePro, async (req, res) 
 });
 
 // 3. SUBMIT PYQ SESSION
-app.post("/api/pyq/session/submit", authMiddleware, requirePro, async (req, res) => {
+app.post("/api/pyq/session/submit", authMiddleware, async (req, res) => {
   try {
     const userId = req.user.id || req.user.userId;
     if (!userId) {

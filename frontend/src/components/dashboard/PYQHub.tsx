@@ -156,11 +156,22 @@ export function PYQHub({ onNavigate, initialTab, initialResultId, initialMockId 
       });
 
       if (!res.ok) {
-        throw new Error('Failed to start session.');
+        const errorData = await res.json().catch(() => ({}));
+        if (res.status === 401) {
+          alert("Your session has expired. Please login again.");
+          window.location.href = '/login.html';
+          return;
+        }
+        if (res.status === 403 || errorData.code === 'PRO_REQUIRED') {
+          alert("This PYQ feature is available on the Pro plan. Please upgrade to unlock unlimited access.");
+          onNavigate?.('pricing');
+          return;
+        }
+        throw new Error(errorData.error || errorData.message || 'Failed to start session.');
       }
 
       const data = await res.json();
-      if (data.success && data.questions.length > 0) {
+      if (data.success && data.questions && data.questions.length > 0) {
         setPlayerData({
           questions: data.questions,
           sessionId: data.sessionId,
@@ -174,7 +185,7 @@ export function PYQHub({ onNavigate, initialTab, initialResultId, initialMockId 
       }
     } catch (err: any) {
       console.error("PYQ launch session error:", err);
-      alert("Something went wrong. Please check your connection and try again.");
+      alert(err.message || "Failed to start practice session. Please try again.");
     } finally {
       setLoading(false);
     }
