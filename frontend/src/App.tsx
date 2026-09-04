@@ -208,7 +208,7 @@ function DashboardApp() {
                     localStorage.removeItem('currentUser');
                     localStorage.removeItem('onboarding_completed');
                     localStorage.removeItem('IAT_TOKEN');
-                    window.location.href = 'index.html';
+                    window.location.href = '/index.html';
                   }}
                   className={`w-full text-left text-xs px-3 py-2 rounded-lg mt-1 font-semibold transition-all cursor-pointer ${
                     theme === 'light' ? 'text-rose-600 hover:bg-slate-50' : 'text-rose-400 hover:bg-white/5'

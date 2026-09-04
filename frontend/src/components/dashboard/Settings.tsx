@@ -16,6 +16,7 @@ import { cn } from '../../lib/utils';
 import { Footer } from '../layout/Footer';
 import { useTheme, Theme } from '../../context/ThemeContext';
 import { useEntitlement } from '../../hooks/useEntitlement';
+import { Analytics } from '../../lib/analytics';
 
 interface SettingsProps {
   onNavigate?: (view: string) => void;
@@ -178,10 +179,12 @@ export function Settings({ onNavigate }: SettingsProps) {
   };
 
   const handleLogout = () => {
+    Analytics.track('User Logged Out');
+    Analytics.reset();
     localStorage.removeItem('IAT_TOKEN');
     localStorage.removeItem('currentUser');
     localStorage.removeItem('dashboard_current_view');
-    window.location.href = '../index.html';
+    window.location.href = '/index.html';
   };
 
   return (

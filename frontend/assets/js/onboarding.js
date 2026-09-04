@@ -470,8 +470,17 @@ function unlockDashboard() {
   localStorage.setItem('onboarding_weak', JSON.stringify(obState.weak));
   localStorage.setItem('onboarding_completed', 'true');
 
-  // Redirect to signup page
-  window.location.href = 'signup.html';
+  if (window.smartPrepAnalytics) {
+    window.smartPrepAnalytics.track('Onboarding Completed', {
+      exam: obState.exam,
+      level: obState.level,
+      days: obState.days,
+      hours: obState.hours
+    });
+  }
+
+  // Redirect to login/signup page directly
+  window.location.href = 'login.html?mode=signup&redirect=dashboard-react/index.html';
 }
 
 // Export to window for global access when bundled as a module

@@ -18,6 +18,7 @@ import { cn } from '../../lib/utils';
 import { currentUser } from '../../data/mockData';
 import { useTheme } from '../../context/ThemeContext';
 import { useEntitlement } from '../../hooks/useEntitlement';
+import { Analytics } from '../../lib/analytics';
 
 const navItems = [
   { id: 'dashboard', icon: LayoutDashboard, label: 'Dashboard' },
@@ -177,10 +178,12 @@ export function Sidebar({
               </button>
               <button 
                 onClick={() => {
+                  Analytics.track('User Logged Out');
+                  Analytics.reset();
                   localStorage.removeItem('currentUser');
                   localStorage.removeItem('onboarding_completed');
                   localStorage.removeItem('IAT_TOKEN');
-                  window.location.href = 'index.html';
+                  window.location.href = '/index.html';
                 }}
                 className={cn(
                   "p-2 rounded-lg transition-all cursor-pointer",

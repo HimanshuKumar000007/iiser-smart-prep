@@ -2,10 +2,13 @@
 <html lang="en">
 <head>
   <script>
-    if (localStorage.getItem('IAT_TOKEN')) {
-      const redirect = new URLSearchParams(window.location.search).get('redirect');
-      window.location.replace(redirect ? decodeURIComponent(redirect) : 'dashboard-react/index.html');
-    }
+    (function() {
+      var token = localStorage.getItem('IAT_TOKEN');
+      if (token && token !== 'undefined' && token !== 'null' && token.trim() !== '') {
+        const redirect = new URLSearchParams(window.location.search).get('redirect');
+        window.location.replace(redirect ? decodeURIComponent(redirect) : 'dashboard-react/index.html');
+      }
+    })();
   </script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -773,7 +776,10 @@
         'onboarding_hours',
         'onboarding_strong',
         'onboarding_weak',
-        'onboarding_completed'
+        'onboarding_completed',
+        'theme',
+        'dashboard_theme',
+        'smartprep_theme'
       ];
       const savedOnboarding = {};
       preserveKeys.forEach(k => {

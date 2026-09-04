@@ -2,9 +2,12 @@
 <html lang="en">
 <head>
   <script>
-    if (localStorage.getItem('IAT_TOKEN')) {
-      window.location.replace('dashboard-react/index.html');
-    }
+    (function() {
+      var token = localStorage.getItem('IAT_TOKEN');
+      if (token && token !== 'undefined' && token !== 'null' && token.trim() !== '') {
+        window.location.replace('dashboard-react/index.html');
+      }
+    })();
   </script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">

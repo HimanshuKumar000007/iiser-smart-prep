@@ -5,13 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Dashboard - SmartPrep</title>
     <script>
-      if (!localStorage.getItem('IAT_TOKEN')) {
-        window.location.replace('../login.html');
-      }
+      (function() {
+        var token = localStorage.getItem('IAT_TOKEN');
+        if (!token || token === 'undefined' || token === 'null' || token.trim() === '') {
+          localStorage.removeItem('IAT_TOKEN');
+          var dest = window.location.pathname + window.location.search;
+          window.location.replace('/login.html?redirect=' + encodeURIComponent(dest));
+        }
+      })();
     </script>
     <script src="/config.js"></script>
     <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
-    <script type="module" crossorigin src="./assets/index-CabFKZKH.js"></script>
+    <script type="module" crossorigin src="./assets/index-B7Ao6Tg-.js"></script>
     <link rel="stylesheet" crossorigin href="./assets/index-1mqDOI8D.css">
   </head>
   <body>

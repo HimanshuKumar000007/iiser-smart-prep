@@ -2,9 +2,12 @@
 <html lang="en">
   <head>
     <script>
-      if (localStorage.getItem('IAT_TOKEN')) {
-        window.location.replace('dashboard-react/index.html');
-      }
+      (function() {
+        var token = localStorage.getItem('IAT_TOKEN');
+        if (token && token !== 'undefined' && token !== 'null' && token.trim() !== '') {
+          window.location.replace('dashboard-react/index.html');
+        }
+      })();
     </script>
     <script>
       (function() {
@@ -1389,7 +1392,7 @@
               <li><span class="chk">✓</span> Priority Academic email support</li>
               <li><span class="chk">✓</span> Adaptive Spaced Revision planner</li>
             </ul>
-            <a href="login.html?mode=signup" class="btn btn-primary btn-block">Get Premium</a>
+            <a href="login.html?mode=signup&redirect=dashboard-react%2Findex.html%3FreturnTo%3Dsubscription" class="btn btn-primary btn-block">Get Premium</a>
           </div>
 
           <!-- PRO ANNUAL -->
@@ -1415,7 +1418,7 @@
               <li><span class="chk">✓</span> Adaptive Spaced Revision planner</li>
               <li><span class="chk">✓</span> Personal study schedule audit &amp; plan</li>
             </ul>
-            <a href="login.html?mode=signup" class="btn btn-primary btn-block" id="annualCtaBtn">Get Annual Plan</a>
+            <a href="login.html?mode=signup&redirect=dashboard-react%2Findex.html%3FreturnTo%3Dsubscription" class="btn btn-primary btn-block" id="annualCtaBtn">Get Annual Plan</a>
           </div>
         </div>
       </div>
