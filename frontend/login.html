@@ -452,6 +452,10 @@
     gtag('js', new Date());
     gtag('config', 'G-WHHM4FTNHG');
   </script>
+
+  <!-- Mixpanel Analytics -->
+  <script src="/config.js"></script>
+  <script src="/assets/js/mixpanel-tracker.js"></script>
 </head>
 
 <body>
@@ -696,8 +700,20 @@
         } catch(_) {}
 
         const redirect = new URLSearchParams(window.location.search).get('redirect');
+        if (window.smartPrepAnalytics) {
+          window.smartPrepAnalytics.identify(email, {
+            $email: email,
+            $name: localStorage.getItem('currentUser') || email.split('@')[0],
+            Plan: localStorage.getItem('IAT_PLAN') || 'FREE',
+            'Last Login': new Date().toISOString()
+          });
+          window.smartPrepAnalytics.track('User Logged In', { method: 'password' });
+        }
         window.location.href = redirect ? decodeURIComponent(redirect) : 'dashboard-react/index.html';
       } catch(err) {
+        if (window.smartPrepAnalytics) {
+          window.smartPrepAnalytics.track('Login Failed', { error: err.message });
+        }
         showMsg('login-error', err.message, 'error');
         setLoading('login-btn','login-spin','login-btn-text', false, 'Log In →');
       }
@@ -727,10 +743,22 @@
         if (name) localStorage.setItem('currentUser', name);
         const plan = (data.user?.plan || 'FREE').toUpperCase();
         localStorage.setItem('IAT_PLAN', plan);
+        if (window.smartPrepAnalytics) {
+          window.smartPrepAnalytics.identify(email, {
+            $email: email,
+            $name: name,
+            Plan: plan,
+            'Signup Date': new Date().toISOString()
+          });
+          window.smartPrepAnalytics.track('User Signed Up', { method: 'email' });
+        }
         showMsg('signup-success', '🎉 Account created! Redirecting...', 'success');
         const redirect = new URLSearchParams(window.location.search).get('redirect');
         setTimeout(() => { window.location.href = redirect ? decodeURIComponent(redirect) : 'dashboard-react/index.html'; }, 1000);
       } catch(err) {
+        if (window.smartPrepAnalytics) {
+          window.smartPrepAnalytics.track('Signup Failed', { error: err.message });
+        }
         showMsg('signup-error', err.message, 'error');
         setLoading('signup-btn','signup-spin','signup-btn-text', false, 'Create Free Account →');
       }

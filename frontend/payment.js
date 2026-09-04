@@ -18,6 +18,9 @@ async function buyPro() {
 
     // 1️⃣ Create order from backend
     try {
+        if (window.smartPrepAnalytics) {
+            window.smartPrepAnalytics.track("Checkout Initiated", { plan: "PRO" });
+        }
         const res = await fetch("https://api.iisersmartprep.space/api/create-order", {
             method: "POST",
             headers: {
@@ -64,6 +67,20 @@ async function buyPro() {
                     const verifyData = await verifyRes.json();
 
                     if (verifyData.success) {
+                        if (window.smartPrepAnalytics) {
+                            window.smartPrepAnalytics.track("Payment Completed", {
+                                plan: "PRO",
+                                payment_id: response.razorpay_payment_id,
+                                order_id: response.razorpay_order_id,
+                                amount: (data.amount || 0) / 100,
+                                status: "success"
+                            });
+                            window.smartPrepAnalytics.setUserProperties({
+                                Plan: "PRO",
+                                ProActivatedAt: new Date().toISOString()
+                            });
+                        }
+
                         // Re-sync plan from DB using the canonical auth.js function
                         if (typeof refreshPlanFromServer === "function") {
                             await refreshPlanFromServer();
@@ -91,6 +108,9 @@ async function buyPro() {
             modal: {
                 ondismiss: function () {
                     console.log("Razorpay modal closed by user.");
+                    if (window.smartPrepAnalytics) {
+                        window.smartPrepAnalytics.track("Checkout Dismissed", { plan: "PRO" });
+                    }
                 }
             },
 
@@ -102,6 +122,12 @@ async function buyPro() {
 
         rzp.on("payment.failed", function (response) {
             console.error("Payment failed:", response.error);
+            if (window.smartPrepAnalytics) {
+                window.smartPrepAnalytics.track("Payment Failed", {
+                    plan: "PRO",
+                    error: response.error?.description || "Payment failed"
+                });
+            }
             alert("❌ Payment failed: " + (response.error.description || "Unknown error") + ". Please try again.");
         });
 

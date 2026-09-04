@@ -12,6 +12,7 @@ import { QuickMockModal } from './QuickMockModal';
 import { QuickMockPlayer } from './QuickMockPlayer';
 import { QuickMockResults } from './QuickMockResults';
 import { useEntitlement } from '../../hooks/useEntitlement';
+import { Analytics } from '../../lib/analytics';
 
 const API_BASE =
   (import.meta as any).env?.VITE_API_URL ??
@@ -197,6 +198,7 @@ export function MockTestCenter({ onNavigate, initialTab, initialResultId, initia
       setIsModalOpen(false);
       return;
     }
+    Analytics.trackMockStarted(realMock.id, realMock.title, 'full_mock');
     setActiveMockTest(realMock);
     setIsModalOpen(false);
   };
@@ -207,6 +209,11 @@ export function MockTestCenter({ onNavigate, initialTab, initialResultId, initia
         mockTest={activeMockTest} 
         onClose={() => setActiveMockTest(null)} 
         onFinish={(result, answers, times) => {
+          Analytics.trackMockSubmitted(
+            activeMockTest.id,
+            result?.score ?? 0,
+            result?.accuracy ?? 0
+          );
           setCompletedMock(activeMockTest);
           setAttemptedAnswers(answers || {});
           setAttemptedTimes(times || {});

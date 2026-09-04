@@ -3,6 +3,7 @@ import { useEntitlement } from '../../hooks/useEntitlement';
 import { Sparkles, Check, ShieldCheck, AlertCircle, Calendar, CreditCard, Loader2 } from 'lucide-react';
 import { cn } from '../../lib/utils';
 import { useTheme } from '../../context/ThemeContext';
+import { Analytics } from '../../lib/analytics';
 
 interface SubscriptionProps {
   returnTo?: string;
@@ -126,6 +127,7 @@ export function Subscription({ returnTo, onNavigate }: SubscriptionProps) {
   const handleSubscribe = async (selectedPlanId: string) => {
     setLoadingPlan(selectedPlanId);
     setErrorMessage(null);
+    Analytics.trackUpgradeClicked('subscription_component', selectedPlanId);
     const token = localStorage.getItem('IAT_TOKEN');
 
     if (!token) {
@@ -180,6 +182,7 @@ export function Subscription({ returnTo, onNavigate }: SubscriptionProps) {
             const verifyData = await verifyRes.json();
 
             if (verifyData.success) {
+              Analytics.trackPaymentSuccess(selectedPlanId, (orderData.amount || 0) / 100, response.razorpay_payment_id);
               await refresh();
               // Redirect back to intended page if one was saved
               if (returnTo && onNavigate) {
@@ -200,6 +203,7 @@ export function Subscription({ returnTo, onNavigate }: SubscriptionProps) {
         modal: {
           ondismiss: function () {
             console.log("Razorpay checkout dismissed");
+            Analytics.track('Checkout Dismissed', { plan: selectedPlanId });
             setLoadingPlan(null);
           }
         },

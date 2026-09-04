@@ -15,6 +15,11 @@ var AI_HEALTH_URL = (window.location.hostname === "localhost" || window.location
 // Razorpay Key (LIVE)
 const RAZORPAY_KEY_ID = "rzp_live_SC3R47SGOoJHvE";
 
+// Mixpanel Analytics Configuration
+// Configure your project token from Mixpanel Settings > Project Settings > Project Token
+var MIXPANEL_TOKEN = window.MIXPANEL_TOKEN || "402e83996720ec06e2fb612a03778002";
+var MIXPANEL_REGION = window.MIXPANEL_REGION || "US"; // "US" or "EU"
+
 // Global PRO UI Manager
 document.addEventListener("DOMContentLoaded", () => {
     const plan = localStorage.getItem("IAT_PLAN") || "FREE";

@@ -45,6 +45,9 @@ async function refreshPlanFromServer() {
         if (res.status === 401) {
             // Token expired — clear local storage
             console.warn("Token expired — clearing session");
+            if (window.smartPrepAnalytics) {
+                window.smartPrepAnalytics.reset();
+            }
             localStorage.removeItem("IAT_TOKEN");
             localStorage.removeItem("IAT_PLAN");
             return null;
@@ -56,6 +59,9 @@ async function refreshPlanFromServer() {
                 const normalizedPlan = data.plan.toUpperCase();
                 localStorage.setItem("IAT_PLAN", normalizedPlan);
                 console.log("✅ Plan synced from DB:", normalizedPlan);
+                if (window.smartPrepAnalytics) {
+                    window.smartPrepAnalytics.setUserProperties({ Plan: normalizedPlan });
+                }
                 return normalizedPlan;
             }
         }

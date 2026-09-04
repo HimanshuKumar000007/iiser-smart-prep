@@ -44,6 +44,7 @@ import { useEntitlement } from './hooks/useEntitlement';
 import { Subscription } from './components/dashboard/Subscription';
 import { currentUser } from './data/mockData';
 import { ThemeProvider, useTheme } from './context/ThemeContext';
+import { Analytics } from './lib/analytics';
  
 function DashboardApp() {
   const { theme, toggleTheme } = useTheme();
@@ -53,6 +54,20 @@ function DashboardApp() {
   const [currentView, setCurrentView] = useState<string>(() => {
     return localStorage.getItem('dashboard_current_view') || 'dashboard';
   });
+
+  useEffect(() => {
+    Analytics.init();
+    const token = localStorage.getItem('IAT_TOKEN');
+    const userName = localStorage.getItem('currentUser') || currentUser.name;
+    const plan = (localStorage.getItem('IAT_PLAN') || (entitlement.isPro ? 'PRO' : 'FREE')).toUpperCase();
+    if (token) {
+      Analytics.identify(userName || token.substring(0, 16), {
+        $name: userName,
+        Plan: plan,
+      });
+    }
+    Analytics.pageView('Dashboard Home', { initial_view: currentView });
+  }, []);
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -96,6 +111,7 @@ function DashboardApp() {
   const handleNavigateRaw = (view: string) => {
     setCurrentView(view);
     localStorage.setItem('dashboard_current_view', view);
+    Analytics.trackViewChanged(view);
 
     refreshDashboard?.();
     refreshSls?.();
@@ -152,7 +168,11 @@ function DashboardApp() {
           </div>
           <div className="flex items-center gap-3 relative">
             <button 
-              onClick={toggleTheme}
+              onClick={() => {
+                const nextTheme = theme === 'light' ? 'dark' : 'light';
+                toggleTheme();
+                Analytics.trackThemeToggled(nextTheme);
+              }}
               className={`p-2 transition-colors cursor-pointer ${
                 theme === 'light' ? 'text-slate-500 hover:text-slate-800' : 'text-white/60 hover:text-white'
               }`}
@@ -183,6 +203,8 @@ function DashboardApp() {
                 }`}>Logged in as {currentUser.name}</p>
                 <button
                   onClick={() => {
+                    Analytics.track('User Logged Out');
+                    Analytics.reset();
                     localStorage.removeItem('currentUser');
                     localStorage.removeItem('onboarding_completed');
                     localStorage.removeItem('IAT_TOKEN');
