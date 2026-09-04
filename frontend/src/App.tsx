@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, lazy, Suspense } from 'react';
 import { useDashboardData } from './hooks/useDashboardData';
 import { useSlsDashboard } from './hooks/useSlsDashboard';
 import { useStudentActionPlan } from './hooks/useStudentActionPlan';
@@ -25,24 +25,35 @@ import { SLSLearningJourneyHub } from './components/dashboard/SLSLearningJourney
 
 import { MockTestPerformance } from './components/dashboard/MockTestPerformance';
 import { QuickAccess } from './components/dashboard/QuickAccess';
-import { PathToIISER } from './components/dashboard/PathToIISER';
-import { MockTestCenter } from './components/dashboard/MockTestCenter';
-import { PYQHub } from './components/dashboard/PYQHub';
-import { PerformanceInsights } from './components/dashboard/PerformanceInsights';
-import { SmartLesson } from './components/dashboard/SmartLesson';
-import { SmartLessonsHub } from './components/dashboard/SmartLessonsHub';
-import { Settings } from './components/dashboard/Settings';
-import { Support } from './components/dashboard/Support';
-import { Feedback } from './components/dashboard/Feedback';
-import { Contact } from './components/dashboard/Contact';
-import { Terms } from './components/dashboard/Terms';
-import { Privacy } from './components/dashboard/Privacy';
 import { SupportBar } from './components/layout/SupportBar';
 import { MobileNav } from './components/layout/MobileNav';
 import { Menu, Bell, BrainCircuit, Sun, Moon } from 'lucide-react';
 import { useEntitlement } from './hooks/useEntitlement';
-import { Subscription } from './components/dashboard/Subscription';
 import { currentUser } from './data/mockData';
+
+// Code-split heavy secondary views to keep initial bundle lightweight and fast
+const PathToIISER = lazy(() => import('./components/dashboard/PathToIISER').then(m => ({ default: m.PathToIISER })));
+const MockTestCenter = lazy(() => import('./components/dashboard/MockTestCenter').then(m => ({ default: m.MockTestCenter })));
+const PYQHub = lazy(() => import('./components/dashboard/PYQHub').then(m => ({ default: m.PYQHub })));
+const PerformanceInsights = lazy(() => import('./components/dashboard/PerformanceInsights').then(m => ({ default: m.PerformanceInsights })));
+const SmartLesson = lazy(() => import('./components/dashboard/SmartLesson').then(m => ({ default: m.SmartLesson })));
+const SmartLessonsHub = lazy(() => import('./components/dashboard/SmartLessonsHub').then(m => ({ default: m.SmartLessonsHub })));
+const Settings = lazy(() => import('./components/dashboard/Settings').then(m => ({ default: m.Settings })));
+const Support = lazy(() => import('./components/dashboard/Support').then(m => ({ default: m.Support })));
+const Feedback = lazy(() => import('./components/dashboard/Feedback').then(m => ({ default: m.Feedback })));
+const Contact = lazy(() => import('./components/dashboard/Contact').then(m => ({ default: m.Contact })));
+const Terms = lazy(() => import('./components/dashboard/Terms').then(m => ({ default: m.Terms })));
+const Privacy = lazy(() => import('./components/dashboard/Privacy').then(m => ({ default: m.Privacy })));
+const Subscription = lazy(() => import('./components/dashboard/Subscription').then(m => ({ default: m.Subscription })));
+
+const ViewLoadingFallback = () => (
+  <div className="w-full flex-1 min-h-[350px] flex items-center justify-center">
+    <div className="flex flex-col items-center gap-3">
+      <div className="w-8 h-8 rounded-full border-2 border-cyan-500/20 border-t-cyan-500 animate-spin" />
+      <span className="text-xs text-slate-400 font-medium">Loading section...</span>
+    </div>
+  </div>
+);
 import { ThemeProvider, useTheme } from './context/ThemeContext';
 import { Analytics } from './lib/analytics';
  
@@ -232,16 +243,19 @@ function DashboardApp() {
           const lessonId = startAtQuiz ? rawId.replace('::quiz', '') : rawId;
           return (
             <div className="lesson-reader-container px-2 sm:px-4 lg:px-8 pt-4 overflow-y-auto w-full flex-1 flex flex-col">
-              <SmartLesson
-                onNavigate={handleNavigate}
-                lessonId={lessonId}
-                startAtQuiz={startAtQuiz}
-              />
+              <Suspense fallback={<ViewLoadingFallback />}>
+                <SmartLesson
+                  onNavigate={handleNavigate}
+                  lessonId={lessonId}
+                  startAtQuiz={startAtQuiz}
+                />
+              </Suspense>
             </div>
           );
         })() : (
         <div className="p-4 lg:p-8 overflow-y-auto w-full flex-1 flex flex-col justify-between">
           <div className="flex-1 w-full">
+            <Suspense fallback={<ViewLoadingFallback />}>
             {currentView === 'path' ? (
             <PathToIISER 
               onNavigate={handleNavigate} 
@@ -427,6 +441,7 @@ function DashboardApp() {
               </div>
             </div>
           )}
+          </Suspense>
           </div>
           
           <div className="w-full max-w-6xl mx-auto mt-12 shrink-0">
