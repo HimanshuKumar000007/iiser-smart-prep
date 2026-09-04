@@ -10,6 +10,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Personalized Study Roadmap Onboarding - SmartPrep</title>
 
+  <!-- Mixpanel Analytics -->
+  <script src="/config.js"></script>
+  <script src="/assets/js/mixpanel-tracker.js"></script>
+
   <style>
     /* ========================================================
        DESIGN TOKENS — IISER SmartPrep brand (light indigo SaaS)
@@ -1897,6 +1901,14 @@
       localStorage.setItem('onboarding_strong', JSON.stringify(obState.strong));
       localStorage.setItem('onboarding_weak', JSON.stringify(obState.weak));
       localStorage.setItem('onboarding_completed', 'true');
+
+      if (window.smartPrepAnalytics) {
+        window.smartPrepAnalytics.track('Onboarding Completed', {
+          exam: obState.exam,
+          days: obState.days,
+          hours: obState.hours
+        });
+      }
 
       // Redirect directly to login/signup page
       window.location.href = 'login.html?mode=signup&redirect=dashboard-react/index.html';

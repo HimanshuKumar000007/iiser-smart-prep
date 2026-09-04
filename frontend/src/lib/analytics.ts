@@ -125,6 +125,11 @@ export const Analytics = {
       test_title: testTitle || testId,
       test_type: type || 'full_mock',
     });
+    trackEvent('Mock Test', {
+      test_id: testId,
+      test_title: testTitle || testId,
+      test_type: type || 'full_mock',
+    });
   },
 
   trackMockSubmitted: (testId: string, score: number, accuracy: number, durationSeconds?: number) => {
@@ -142,6 +147,7 @@ export const Analytics = {
 
   trackPYQStarted: (year: string | number, subject?: string) => {
     trackEvent('PYQ Session Started', { year, subject: subject || 'all' });
+    trackEvent('Simulator', { year, subject: subject || 'all', type: 'pyq' });
   },
 
   trackSmartLessonViewed: (chapter: string, topicTitle: string) => {
@@ -154,6 +160,12 @@ export const Analytics = {
 
   trackPaymentSuccess: (plan: string, amount: number, paymentId: string) => {
     trackEvent('Payment Completed', {
+      plan,
+      amount,
+      payment_id: paymentId,
+      status: 'success',
+    });
+    trackEvent('Payment', {
       plan,
       amount,
       payment_id: paymentId,

@@ -75,6 +75,11 @@ async function buyPro() {
                                 amount: (data.amount || 0) / 100,
                                 status: "success"
                             });
+                            window.smartPrepAnalytics.track("Payment", {
+                                plan: "PRO",
+                                amount: (data.amount || 0) / 100,
+                                payment_id: response.razorpay_payment_id
+                            });
                             window.smartPrepAnalytics.setUserProperties({
                                 Plan: "PRO",
                                 ProActivatedAt: new Date().toISOString()

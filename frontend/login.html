@@ -708,6 +708,7 @@
             'Last Login': new Date().toISOString()
           });
           window.smartPrepAnalytics.track('User Logged In', { method: 'password' });
+          window.smartPrepAnalytics.track('Login', { method: 'password' });
         }
         window.location.href = redirect ? decodeURIComponent(redirect) : 'dashboard-react/index.html';
       } catch(err) {
@@ -751,6 +752,7 @@
             'Signup Date': new Date().toISOString()
           });
           window.smartPrepAnalytics.track('User Signed Up', { method: 'email' });
+          window.smartPrepAnalytics.track('Sign Up', { method: 'email' });
         }
         showMsg('signup-success', '🎉 Account created! Redirecting...', 'success');
         const redirect = new URLSearchParams(window.location.search).get('redirect');
