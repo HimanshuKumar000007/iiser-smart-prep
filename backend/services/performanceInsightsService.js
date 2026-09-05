@@ -97,8 +97,8 @@ function calculatePerformanceInsights({
   }
 
   // 4. Questions Solved definition: unique chapter quiz question attempts + mock question attempts
-  const uniqueSlsQuestions = new Set(questionAttempts.map(q => `${q.chapter_id}_${q.question_id}`));
-  const uniqueMockQuestions = new Set(mockQuestionAttempts.map(q => `${q.mock_id || q.mock_title}_${q.question_id}`));
+  const uniqueSlsQuestions = new Set(questionAttempts.filter(q => q && q.question_id).map(q => `${q.chapter_id || 'ch'}_${q.question_id}`));
+  const uniqueMockQuestions = new Set(mockQuestionAttempts.filter(q => q && q.question_id).map(q => `${q.mock_id || q.mock_title || 'mock'}_${q.question_id}`));
   const questionsSolved = uniqueSlsQuestions.size + uniqueMockQuestions.size;
 
   // 5. Calculate Streak
@@ -211,8 +211,8 @@ function calculatePerformanceInsights({
   // 8. Subject Performance
   const subjectPerformance = HERO_SUBJECTS.map(subj => {
     const subjectLessons = catalogArray.filter(l => l.subject === subj);
-    const subjectLessonIds = new Set(subjectLessons.map(l => l.id));
-    const subjAttempts = parentAttempts.filter(pa => pa.subject === subj || subjectLessonIds.has(pa.chapter_id));
+    const subjectLessonIds = new Set(subjectLessons.map(l => l.chapterId || l.id).filter(Boolean));
+    const subjAttempts = parentAttempts.filter(pa => pa && (pa.subject === subj || (pa.chapter_id && subjectLessonIds.has(pa.chapter_id))));
     
     let score = 0;
     let status = 'NO EVIDENCE';
@@ -279,11 +279,16 @@ function calculatePerformanceInsights({
   // Quiz points (only if mocks are few)
   if (mockResults.length < 5) {
     parentAttempts.forEach(pa => {
-      const chapterTitle = catalogArray.find(c => c.id === pa.chapter_id)?.title || pa.chapter_id;
+      if (!pa) return;
+      const matched = catalogArray.find(c => (c.chapterId || c.id) === pa.chapter_id);
+      const rawTitle = matched?.chapterTitle || matched?.title || pa.chapter_id || pa.subject || "Practice Quiz";
+      const chapterTitle = String(rawTitle);
+      const dateVal = pa.created_at || pa.started_at;
+      const parsedDate = dateVal ? new Date(dateVal).getTime() : Date.now();
       trendPoints.push({
-        name: chapterTitle.substring(0, 12) + "...",
-        accuracy: pa.accuracy,
-        date: new Date(pa.created_at || pa.started_at).getTime(),
+        name: chapterTitle.length > 12 ? chapterTitle.substring(0, 12) + "..." : chapterTitle,
+        accuracy: typeof pa.accuracy === 'number' && !isNaN(pa.accuracy) ? pa.accuracy : 0,
+        date: isNaN(parsedDate) ? Date.now() : parsedDate,
         type: 'Quiz'
       });
     });
@@ -291,11 +296,12 @@ function calculatePerformanceInsights({
 
   // Sort chronologically and limit to 10 points
   const sortedPoints = trendPoints
+    .filter(pt => pt && !isNaN(pt.date))
     .sort((a, b) => a.date - b.date)
     .slice(-10)
     .map(pt => ({
       name: new Date(pt.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
-      accuracy: pt.accuracy,
+      accuracy: typeof pt.accuracy === 'number' && !isNaN(pt.accuracy) ? pt.accuracy : 0,
       type: pt.type
     }));
 
