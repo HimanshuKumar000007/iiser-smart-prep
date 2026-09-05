@@ -75,18 +75,6 @@ export function useStudentActionPlan() {
         headers: { Authorization: `Bearer ${token}` }
       });
 
-      if (res.status === 401) {
-        // Token has expired or been revoked on the backend
-        localStorage.removeItem('IAT_TOKEN');
-        if (requestId === activeRequestIdRef.current) {
-          setPlan(null);
-          setError(null);
-          setLoading(false);
-        }
-        window.location.replace('/login.html?redirect=' + encodeURIComponent(window.location.pathname + window.location.search));
-        return;
-      }
-
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const data: StudentActionPlan = await res.json();
 
@@ -96,7 +84,7 @@ export function useStudentActionPlan() {
         setError(null);
       }
     } catch (err) {
-      console.warn('[useStudentActionPlan] Notice fetching plan:', err);
+      console.error('[useStudentActionPlan] Error fetching plan:', err);
       if (requestId === activeRequestIdRef.current) {
         setError(err instanceof Error ? err.message : 'Unknown error');
       }
