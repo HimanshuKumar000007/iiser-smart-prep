@@ -15,10 +15,11 @@
  * each chapter is bundled into its own chunk and downloaded only when opened.
  */
 
-import React, { lazy, Suspense, useState, useEffect, useRef } from 'react';
+import React, { lazy, Suspense, useState, useEffect, useRef, useMemo } from 'react';
 import { Sparkles, ArrowRight, ArrowLeft, Lightbulb, CheckCircle, Check, X, Lock, Unlock, BookOpen, Brain } from 'lucide-react';
 import { LESSONS_DATA, LessonItem } from '../../data/lessons';
 import { getLessonContent, DetailedLessonContent, QuizQuestion } from '../../data/lessonContent';
+import { useEntitlement } from '../../hooks/useEntitlement';
 import { LessonHeader } from './LessonHeader';
 import { SummaryCard } from './SummaryCard';
 import { FormulaBox } from './FormulaBox';
@@ -172,11 +173,37 @@ export function LessonReader({ lessonId, onNavigate, startAtQuiz = false }: Prop
     bestRevisionOrder: 3,
   };
 
+  const { isPro, loading: entitlementLoading } = useEntitlement();
+
+  // 1st lesson per subject is FREE for non-Pro users
+  const freeLessonIds = useMemo(() => {
+    const freeSet = new Set<string>();
+    ['Physics', 'Chemistry', 'Biology', 'Mathematics'].forEach(sub => {
+      const firstSubjLesson = LESSONS_DATA.find(l => l.subject === sub);
+      if (firstSubjLesson) {
+        freeSet.add(firstSubjLesson.id);
+      }
+    });
+    return freeSet;
+  }, []);
+
+  // Filter lessons for current subject so linear progression stays within subject
+  const subjectLessons = useMemo(() => {
+    return LESSONS_DATA.filter(l => l.subject === lesson.subject);
+  }, [lesson.subject]);
+
+  const subjectLessonIndex = subjectLessons.findIndex(l => l.id === lesson.id);
+  const prevLesson = subjectLessonIndex > 0 ? subjectLessons[subjectLessonIndex - 1] : null;
+  const nextLesson = subjectLessonIndex >= 0 && subjectLessonIndex < subjectLessons.length - 1 ? subjectLessons[subjectLessonIndex + 1] : null;
+
+  const isCurrentLessonLocked = !isPro && !freeLessonIds.has(lesson.id);
+  const isNextLocked = !!(nextLesson && !isPro && !freeLessonIds.has(nextLesson.id));
+  const isPrevLocked = !!(prevLesson && !isPro && !freeLessonIds.has(prevLesson.id));
+
   const content: DetailedLessonContent = getLessonContent(lesson.id, lesson.title, lesson.subject);
-  const prevLesson = currentLessonIndex > 0 ? LESSONS_DATA[currentLessonIndex - 1] : null;
-  const nextLesson = currentLessonIndex < LESSONS_DATA.length - 1 ? LESSONS_DATA[currentLessonIndex + 1] : null;
 
   useEffect(() => {
+    if (isCurrentLessonLocked) return;
     const token = localStorage.getItem('IAT_TOKEN');
     if (!token) return;
 
@@ -217,7 +244,7 @@ export function LessonReader({ lessonId, onNavigate, startAtQuiz = false }: Prop
     return () => {
       active = false;
     };
-  }, [lesson.id, refreshTrigger]);
+  }, [lesson.id, refreshTrigger, isCurrentLessonLocked]);
 
   const [scrollProgress, setScrollProgress] = useState(0);
   const questions = content.quizQuestions;
@@ -237,6 +264,7 @@ export function LessonReader({ lessonId, onNavigate, startAtQuiz = false }: Prop
 
   // Set to in_progress initially and hook scroll tracking
   useEffect(() => {
+    if (isCurrentLessonLocked) return;
     startTimeRef.current = Date.now();
     lastSyncedProgressRef.current = 0;
 
@@ -449,7 +477,7 @@ export function LessonReader({ lessonId, onNavigate, startAtQuiz = false }: Prop
         }
       }
     };
-  }, [lesson.id]);
+  }, [lesson.id, isCurrentLessonLocked]);
 
   // Quiz calculations
   const currentQuestion: QuizQuestion = questions[currentQuestionIndex] || {
@@ -875,6 +903,120 @@ export function LessonReader({ lessonId, onNavigate, startAtQuiz = false }: Prop
     );
   }
 
+  if (isCurrentLessonLocked && entitlementLoading) {
+    return <ChapterSkeleton />;
+  }
+
+  if (isCurrentLessonLocked) {
+    const freeLessonForSubject = LESSONS_DATA.find(l => l.subject === lesson.subject && freeLessonIds.has(l.id));
+
+    return (
+      <div className="lesson-reader-container max-w-2xl mx-auto w-full space-y-6 mt-4 pb-32 px-4">
+        {/* Back Button */}
+        <button
+          onClick={() => onNavigate?.('smart_lessons')}
+          className="flex items-center gap-2 text-white/50 hover:text-white text-xs font-bold transition-colors py-2 px-3 rounded-xl hover:bg-white/5"
+        >
+          <ArrowLeft className="w-4 h-4" />
+          <span>Back to Smart Lessons</span>
+        </button>
+
+        {/* Lock Paywall Card */}
+        <div className="relative rounded-3xl bg-gradient-to-b from-[#0D0F20] via-[#090B14] to-[#0D0F20] border border-amber-500/30 p-6 sm:p-8 overflow-hidden shadow-[0_0_50px_rgba(245,158,11,0.08)]">
+          {/* Ambient Glow */}
+          <div className="absolute -top-32 left-1/2 -translate-x-1/2 w-80 h-80 bg-amber-500/10 blur-[120px] rounded-full pointer-events-none" />
+
+          <div className="relative z-10 flex flex-col items-center text-center space-y-5">
+            {/* Lock Icon Badge */}
+            <div className="w-16 h-16 rounded-2xl bg-amber-500/15 border border-amber-500/30 flex items-center justify-center text-amber-400 shadow-[0_0_30px_rgba(245,158,11,0.2)]">
+              <Lock className="w-8 h-8" />
+            </div>
+
+            {/* Tags / Badges */}
+            <div className="flex items-center gap-2 flex-wrap justify-center">
+              <span className="px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/25 text-amber-300 text-[11px] font-black uppercase tracking-wider flex items-center gap-1.5">
+                <Sparkles className="w-3.5 h-3.5" />
+                Pro Chapter Locked
+              </span>
+              <span className="px-3 py-1 rounded-full bg-white/5 border border-white/10 text-white/70 text-[11px] font-bold">
+                {lesson.subject}
+              </span>
+            </div>
+
+            {/* Title & Description */}
+            <div className="space-y-2">
+              <h2 className="text-2xl sm:text-3xl font-display font-black text-white">
+                {lesson.title}
+              </h2>
+              <p className="text-white/50 text-xs sm:text-sm max-w-md mx-auto leading-relaxed">
+                This chapter is exclusively available to SmartPrep Pro members. Upgrade now to unlock all 60+ chapters, formula vaults, trap breakdowns, and adaptive quizzes.
+              </p>
+            </div>
+
+            {/* Feature Checklist */}
+            <div className="w-full max-w-md bg-white/[0.02] border border-white/5 rounded-2xl p-4 space-y-2.5 text-left text-xs">
+              <div className="flex items-center gap-2.5 text-white/80">
+                <CheckCircle className="w-4 h-4 text-emerald-400 shrink-0" />
+                <span>Complete 10-15 Min Concept & NCERT Bridge breakdown</span>
+              </div>
+              <div className="flex items-center gap-2.5 text-white/80">
+                <CheckCircle className="w-4 h-4 text-emerald-400 shrink-0" />
+                <span>Frequently asked formulas & PYQ frequency patterns</span>
+              </div>
+              <div className="flex items-center gap-2.5 text-white/80">
+                <CheckCircle className="w-4 h-4 text-emerald-400 shrink-0" />
+                <span>High-yield exam traps & negative marking warnings</span>
+              </div>
+              <div className="flex items-center gap-2.5 text-white/80">
+                <CheckCircle className="w-4 h-4 text-emerald-400 shrink-0" />
+                <span>5-Question SLS adaptive mastery quiz & instant score analytics</span>
+              </div>
+            </div>
+
+            {/* Actions */}
+            <div className="flex flex-col sm:flex-row items-center gap-3 w-full max-w-md pt-2">
+              <button
+                onClick={() => onNavigate?.('subscription:smart_lessons')}
+                className="w-full py-3.5 px-6 rounded-2xl bg-gradient-to-r from-amber-500 via-orange-500 to-amber-500 text-black font-black text-sm shadow-[0_0_25px_rgba(245,158,11,0.35)] hover:shadow-[0_0_35px_rgba(245,158,11,0.5)] transition-all active:scale-95 flex items-center justify-center gap-2"
+              >
+                <Sparkles className="w-4 h-4" />
+                <span>Unlock with SmartPrep Pro</span>
+              </button>
+
+              {freeLessonForSubject && (
+                <button
+                  onClick={() => onNavigate?.(`/smart-lessons/${freeLessonForSubject.id}`)}
+                  className="w-full py-3.5 px-6 rounded-2xl bg-white/5 hover:bg-white/10 border border-white/10 text-white/80 hover:text-white font-bold text-xs transition-all active:scale-95"
+                >
+                  Read Free Chapter ({freeLessonForSubject.title.split(' ')[0]}...)
+                </button>
+              )}
+            </div>
+          </div>
+        </div>
+
+        {/* Bottom Nav to go to previous lesson if available */}
+        <div className="flex items-center justify-between gap-4 pt-2">
+          {prevLesson && (
+            <button
+              onClick={() => {
+                if (isPrevLocked) {
+                  onNavigate?.('subscription:smart_lessons');
+                } else {
+                  onNavigate?.(`/smart-lessons/${prevLesson.id}`);
+                }
+              }}
+              className="flex items-center gap-2 text-white/40 hover:text-white text-xs font-bold transition-colors py-2 px-3 rounded-xl hover:bg-white/5"
+            >
+              <ArrowLeft className="w-4 h-4" />
+              <span>Previous: {prevLesson.title}</span>
+            </button>
+          )}
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div ref={containerRef} className="lesson-reader-container max-w-4xl mx-auto w-full space-y-6 mt-2 pb-32 lg:pb-8 px-2 sm:px-4 lg:px-0">
       
@@ -1285,13 +1427,47 @@ export function LessonReader({ lessonId, onNavigate, startAtQuiz = false }: Prop
       <div className="flex items-center justify-between gap-4 pt-4 border-t border-white/5">
         {prevLesson ? (
           <button
-            onClick={() => onNavigate?.(`/smart-lessons/${prevLesson.id}`)}
-            className="flex items-center gap-2.5 text-white/50 hover:text-white text-sm font-bold transition-colors group text-left active:scale-95 p-3 rounded-2xl hover:bg-white/5 flex-1"
+            onClick={() => {
+              if (isPrevLocked) {
+                onNavigate?.('subscription:smart_lessons');
+              } else {
+                onNavigate?.(`/smart-lessons/${prevLesson.id}`);
+              }
+            }}
+            className={cn(
+              "flex items-center gap-2.5 text-sm font-bold transition-all group text-left active:scale-95 p-3.5 rounded-2xl flex-1 border",
+              isPrevLocked
+                ? "bg-gradient-to-r from-amber-500/10 via-amber-500/5 to-transparent border-amber-500/25 hover:border-amber-500/40 hover:bg-amber-500/15 text-amber-300 shadow-[0_0_15px_rgba(245,158,11,0.06)]"
+                : "border-transparent text-white/50 hover:text-white hover:bg-white/5"
+            )}
           >
-            <ArrowLeft className="w-5 h-5 transition-transform group-hover:-translate-x-1 shrink-0" />
+            {isPrevLocked ? (
+              <div className="w-8 h-8 rounded-xl bg-amber-500/20 border border-amber-500/30 flex items-center justify-center shrink-0 text-amber-400 group-hover:scale-105 transition-transform shadow-[0_0_10px_rgba(245,158,11,0.15)]">
+                <Lock className="w-4 h-4" />
+              </div>
+            ) : (
+              <ArrowLeft className="w-5 h-5 transition-transform group-hover:-translate-x-1 shrink-0" />
+            )}
             <div className="min-w-0">
-              <span className="text-[10px] text-white/30 block uppercase font-bold mb-0.5">← Previous</span>
-              <span className="truncate block text-xs">{prevLesson.title}</span>
+              <span className={cn(
+                "text-[10px] block uppercase font-bold mb-0.5 flex items-center gap-1",
+                isPrevLocked ? "text-amber-400" : "text-white/30"
+              )}>
+                {isPrevLocked ? (
+                  <>
+                    <Lock className="w-2.5 h-2.5" />
+                    <span>Previous (PRO LOCK)</span>
+                  </>
+                ) : (
+                  <span>← Previous</span>
+                )}
+              </span>
+              <span className={cn(
+                "truncate block text-xs",
+                isPrevLocked ? "text-amber-200/90 font-semibold" : "text-white/70 group-hover:text-white"
+              )}>
+                {prevLesson.title}
+              </span>
             </div>
           </button>
         ) : (
@@ -1300,14 +1476,48 @@ export function LessonReader({ lessonId, onNavigate, startAtQuiz = false }: Prop
 
         {nextLesson && (
           <button
-            onClick={() => onNavigate?.(`/smart-lessons/${nextLesson.id}`)}
-            className="flex items-center gap-2.5 text-white/50 hover:text-white text-sm font-bold transition-colors group text-right active:scale-95 p-3 rounded-2xl hover:bg-white/5 flex-1 justify-end"
+            onClick={() => {
+              if (isNextLocked) {
+                onNavigate?.('subscription:smart_lessons');
+              } else {
+                onNavigate?.(`/smart-lessons/${nextLesson.id}`);
+              }
+            }}
+            className={cn(
+              "flex items-center gap-2.5 text-sm font-bold transition-all group text-right active:scale-95 p-3.5 rounded-2xl flex-1 justify-end border",
+              isNextLocked
+                ? "bg-gradient-to-l from-amber-500/10 via-amber-500/5 to-transparent border-amber-500/25 hover:border-amber-500/40 hover:bg-amber-500/15 text-amber-300 shadow-[0_0_15px_rgba(245,158,11,0.06)]"
+                : "border-transparent text-white/50 hover:text-white hover:bg-white/5"
+            )}
           >
             <div className="text-right min-w-0">
-              <span className="text-[10px] text-white/30 block uppercase font-bold mb-0.5">Next →</span>
-              <span className="truncate block text-xs">{nextLesson.title}</span>
+              <span className={cn(
+                "text-[10px] block uppercase font-bold mb-0.5 flex items-center justify-end gap-1",
+                isNextLocked ? "text-amber-400" : "text-white/30"
+              )}>
+                {isNextLocked ? (
+                  <>
+                    <Lock className="w-2.5 h-2.5" />
+                    <span>Next (PRO LOCK)</span>
+                  </>
+                ) : (
+                  <span>Next →</span>
+                )}
+              </span>
+              <span className={cn(
+                "truncate block text-xs",
+                isNextLocked ? "text-amber-200/90 font-semibold" : "text-white/70 group-hover:text-white"
+              )}>
+                {nextLesson.title}
+              </span>
             </div>
-            <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1 shrink-0" />
+            {isNextLocked ? (
+              <div className="w-8 h-8 rounded-xl bg-amber-500/20 border border-amber-500/30 flex items-center justify-center shrink-0 text-amber-400 group-hover:scale-105 transition-transform shadow-[0_0_10px_rgba(245,158,11,0.15)]">
+                <Lock className="w-4 h-4" />
+              </div>
+            ) : (
+              <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1 shrink-0" />
+            )}
           </button>
         )}
       </div>
