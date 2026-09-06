@@ -341,7 +341,7 @@ export function Hero({ onNavigate, dashboardData: data, loading, actionPlan: pla
       <div className={cn("absolute inset-0 pointer-events-none", isLight ? "opacity-[0.07]" : "opacity-[0.018]")}
         style={{ backgroundImage: 'radial-gradient(circle, rgba(15,23,42,0.5) 1px, transparent 1px)', backgroundSize: '28px 28px' }} />
 
-      <div className="relative z-10 p-6 md:p-8 space-y-6">
+      <div className="relative z-10 p-4 sm:p-6 md:p-8 space-y-5 sm:space-y-6">
 
         {/* ══ SECTION 1: Header — Greeting + Metrics ══════════════════════ */}
         <motion.div
@@ -370,7 +370,7 @@ export function Hero({ onNavigate, dashboardData: data, loading, actionPlan: pla
           </div>
 
           {/* Right — Metric Cards */}
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 w-full lg:w-auto lg:min-w-[520px]">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-2.5 w-full lg:w-auto lg:min-w-[520px]">
             {metrics.map((m, i) => (
               <motion.div
                 key={m.label}
@@ -406,7 +406,7 @@ export function Hero({ onNavigate, dashboardData: data, loading, actionPlan: pla
             transition={{ duration: 0.4, delay: 0.1, ease: 'easeOut' }}
             onClick={() => handleCta(plan.primaryAction)}
             className={cn(
-              "p-5 rounded-2xl border transition-all duration-300 relative overflow-hidden group cursor-pointer",
+              "p-4 sm:p-5 rounded-2xl border transition-all duration-300 relative overflow-hidden group cursor-pointer",
               isLight
                 ? "bg-white/60 border-slate-200/80 hover:border-cyan-400/40 shadow-[0_4px_20px_rgba(15,23,42,0.08),inset_0_1px_0_rgba(255,255,255,0.95)]"
                 : "bg-gradient-to-r from-white/[0.03] to-white/[0.01] border-white/10 hover:border-cyan-500/30 hover:bg-white/[0.04] shadow-[0_8px_32px_0_rgba(0,0,0,0.37)] backdrop-blur-md"
@@ -416,13 +416,31 @@ export function Hero({ onNavigate, dashboardData: data, loading, actionPlan: pla
             <div className="absolute top-[-50px] right-[-50px] w-[180px] h-[180px] bg-cyan-500/5 blur-[40px] rounded-full pointer-events-none transition-transform group-hover:scale-110" />
 
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 relative z-10">
-              <div className="flex items-start gap-4">
-                {/* Icon box */}
-                <div className="w-12 h-12 rounded-xl bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center shrink-0 mt-0.5 text-cyan-400">
-                  <SubjectIcon subject={plan.primaryAction.subject} className="w-6 h-6" />
+              <div className="flex flex-col sm:flex-row sm:items-start gap-3 sm:gap-4 flex-1 min-w-0">
+                {/* Header row on mobile: Icon + Badges */}
+                <div className="flex items-center sm:items-start gap-3 sm:gap-4 shrink-0">
+                  <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center shrink-0 text-cyan-400">
+                    <SubjectIcon subject={plan.primaryAction.subject} className="w-5 h-5 sm:w-6 sm:h-6" />
+                  </div>
+                  {/* Badges on mobile (displayed next to icon) */}
+                  <div className="flex sm:hidden flex-wrap items-center gap-1.5 min-w-0">
+                    <span className="text-[9px] font-bold uppercase tracking-wider text-cyan-400 bg-cyan-500/10 px-2 py-0.5 rounded border border-cyan-500/20">
+                      Next Best Action
+                    </span>
+                    <span className={cn(
+                      "text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded border",
+                      plan.primaryAction.priorityBand === 'CRITICAL' ? "text-rose-400 bg-rose-500/15 border-rose-500/20" :
+                      plan.primaryAction.priorityBand === 'HIGH' ? "text-orange-400 bg-orange-500/15 border-orange-500/20" :
+                      "text-blue-400 bg-blue-500/15 border-blue-500/20"
+                    )}>
+                      {plan.primaryAction.priorityBand}
+                    </span>
+                  </div>
                 </div>
-                <div>
-                  <div className="flex items-center gap-2 flex-wrap">
+
+                <div className="flex-1 min-w-0">
+                  {/* Badges on tablet/desktop */}
+                  <div className="hidden sm:flex items-center gap-2 flex-wrap mb-1">
                     <span className="text-[10px] font-bold uppercase tracking-wider text-cyan-400 bg-cyan-500/10 px-2.5 py-0.5 rounded border border-cyan-500/20">
                       Next Best Action
                     </span>
@@ -438,7 +456,8 @@ export function Hero({ onNavigate, dashboardData: data, loading, actionPlan: pla
                       Confidence: {plan.primaryAction.evidenceLevel}
                     </span>
                   </div>
-                  <h2 className="text-[1.125rem] font-bold text-white mt-2 group-hover:text-cyan-200 transition-colors">
+
+                  <h2 className="text-base sm:text-[1.125rem] font-bold text-white mt-1 sm:mt-2 group-hover:text-cyan-200 transition-colors leading-snug">
                     {plan.primaryAction.title}
                   </h2>
                   <p className="text-xs text-white/50 mt-1 leading-relaxed">
@@ -454,13 +473,15 @@ export function Hero({ onNavigate, dashboardData: data, loading, actionPlan: pla
                   </div>
                 </div>
               </div>
-              <div className="shrink-0 flex items-center md:justify-end">
+
+              {/* Button */}
+              <div className="shrink-0 flex items-center md:justify-end w-full md:w-auto mt-2 md:mt-0">
                 <button
                   onClick={(e) => {
                     e.stopPropagation();
                     handleCta(plan.primaryAction);
                   }}
-                  className="px-5 py-2.5 rounded-xl text-xs font-bold bg-gradient-to-r from-cyan-400 to-indigo-500 hover:from-cyan-300 hover:to-indigo-400 text-black shadow-lg shadow-cyan-500/10 transition-all duration-150 flex items-center gap-1.5 transform group-hover:translate-x-0.5"
+                  className="w-full md:w-auto justify-center px-5 py-2.5 rounded-xl text-xs font-bold bg-gradient-to-r from-cyan-400 to-indigo-500 hover:from-cyan-300 hover:to-indigo-400 text-black shadow-lg shadow-cyan-500/10 transition-all duration-150 flex items-center gap-1.5 transform group-hover:translate-x-0.5"
                 >
                   <span>{plan.primaryAction.ctaLabel}</span>
                   <ArrowRight className="w-3.5 h-3.5" />

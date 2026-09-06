@@ -83,20 +83,20 @@ export function SLSIntelligencePanel({
     .slice(0, 3);
 
   return (
-    <div className="relative bg-gradient-to-br from-[#0D0F1F] via-[#0A0C18] to-[#0D0F1F] border border-white/10 rounded-3xl p-6 overflow-hidden shadow-xl">
+    <div className="relative bg-gradient-to-br from-[#0D0F1F] via-[#0A0C18] to-[#0D0F1F] border border-white/10 rounded-3xl p-4 sm:p-6 overflow-hidden shadow-xl">
       {/* Background glows */}
       <div className="absolute top-0 right-0 w-72 h-72 bg-purple-500/6 blur-[100px] rounded-full pointer-events-none" />
       <div className="absolute bottom-0 left-0 w-72 h-72 bg-indigo-500/5 blur-[90px] rounded-full pointer-events-none" />
 
       {/* ── Header ─────────────────────────────────────────────────────── */}
-      <div className="relative z-10 flex items-start justify-between mb-6">
+      <div className="relative z-10 flex flex-col sm:flex-row sm:items-start justify-between gap-3 mb-5 sm:mb-6">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-purple-500/20 to-indigo-500/10 border border-purple-500/25 flex items-center justify-center shadow-[0_0_20px_rgba(168,85,247,0.12)]">
-            <BrainCircuit className="w-5 h-5 text-purple-400" />
+          <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-2xl bg-gradient-to-br from-purple-500/20 to-indigo-500/10 border border-purple-500/25 flex items-center justify-center shadow-[0_0_20px_rgba(168,85,247,0.12)] shrink-0">
+            <BrainCircuit className="w-4 h-4 sm:w-5 sm:h-5 text-purple-400" />
           </div>
-          <div>
-            <div className="flex items-center gap-2">
-              <h3 className="text-white font-display font-bold text-base leading-tight">
+          <div className="min-w-0">
+            <div className="flex items-center gap-2 flex-wrap">
+              <h3 className="text-white font-display font-bold text-sm sm:text-base leading-tight">
                 SLS Intelligence Engine
               </h3>
               <span className="flex items-center gap-1 text-[9px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full bg-purple-500/15 border border-purple-500/20 text-purple-300">
@@ -104,7 +104,7 @@ export function SLSIntelligencePanel({
                 Live
               </span>
             </div>
-            <p className="text-[11px] text-white/40 mt-0.5">
+            <p className="text-[11px] text-white/40 mt-0.5 truncate">
               {recommendations?.summary
                 ? `${recommendations.summary.totalRecommendations} recommendation${recommendations.summary.totalRecommendations !== 1 ? 's' : ''} · ${dueItems.length} revision${dueItems.length !== 1 ? 's' : ''} due`
                 : 'Analysing your performance data…'}
@@ -118,17 +118,17 @@ export function SLSIntelligencePanel({
             initial={{ opacity: 0, scale: 0.85 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: 0.2 }}
-            className="flex items-center gap-2 flex-shrink-0"
+            className="flex items-center gap-2 shrink-0 self-end sm:self-auto"
           >
             {masterySummary.masteredCount > 0 && (
-              <div className="flex flex-col items-center px-2.5 py-1.5 rounded-xl bg-purple-500/10 border border-purple-500/20">
-                <span className="text-base font-display font-black text-purple-400 leading-none">{masterySummary.masteredCount}</span>
+              <div className="flex flex-col items-center px-2.5 py-1 sm:py-1.5 rounded-xl bg-purple-500/10 border border-purple-500/20">
+                <span className="text-sm sm:text-base font-display font-black text-purple-400 leading-none">{masterySummary.masteredCount}</span>
                 <span className="text-[8px] font-bold uppercase tracking-wider text-purple-400/70">Mastered</span>
               </div>
             )}
             {masterySummary.weakCount > 0 && (
-              <div className="flex flex-col items-center px-2.5 py-1.5 rounded-xl bg-rose-500/10 border border-rose-500/20">
-                <span className="text-base font-display font-black text-rose-400 leading-none">{masterySummary.weakCount}</span>
+              <div className="flex flex-col items-center px-2.5 py-1 sm:py-1.5 rounded-xl bg-rose-500/10 border border-rose-500/20">
+                <span className="text-sm sm:text-base font-display font-black text-rose-400 leading-none">{masterySummary.weakCount}</span>
                 <span className="text-[8px] font-bold uppercase tracking-wider text-rose-400/70">Weak</span>
               </div>
             )}
@@ -177,44 +177,50 @@ export function SLSIntelligencePanel({
             )}
 
             {/* ── Mastery State Summary ─────────────────────────────────── */}
-            {masterySummary && (
-              <div>
-                <p className="text-[10px] font-black uppercase tracking-widest text-white/25 mb-2">
-                  Mastery Overview
-                </p>
-                <div className="grid grid-cols-3 gap-2">
-                  {(
-                    [
-                      ['NEW',       masterySummary.newCount],
-                      ['LEARNING',  masterySummary.learningCount],
-                      ['WEAK',      masterySummary.weakCount],
-                      ['IMPROVING', masterySummary.improvingCount],
-                      ['STRONG',    masterySummary.strongCount],
-                      ['MASTERED',  masterySummary.masteredCount],
-                    ] as [SlsMasteryState, number][]
-                  )
-                    .filter(([, count]) => count > 0)
-                    .slice(0, 6)
-                    .map(([state, count]) => {
+            {masterySummary && (() => {
+              const activeList = (
+                [
+                  ['NEW',       masterySummary.newCount],
+                  ['LEARNING',  masterySummary.learningCount],
+                  ['WEAK',      masterySummary.weakCount],
+                  ['IMPROVING', masterySummary.improvingCount],
+                  ['STRONG',    masterySummary.strongCount],
+                  ['MASTERED',  masterySummary.masteredCount],
+                ] as [SlsMasteryState, number][]
+              ).filter(([, count]) => count > 0);
+
+              return (
+                <div>
+                  <p className="text-[10px] font-black uppercase tracking-widest text-white/25 mb-2">
+                    Mastery Overview
+                  </p>
+                  <div className={cn(
+                    "grid gap-2",
+                    activeList.length === 2 ? "grid-cols-2" :
+                    activeList.length === 4 ? "grid-cols-2 sm:grid-cols-4" :
+                    "grid-cols-3 sm:grid-cols-6"
+                  )}>
+                    {activeList.slice(0, 6).map(([state, count]) => {
                       const mcfg = MASTERY_DISPLAY[state];
                       return (
                         <div
                           key={state}
                           className={cn(
-                            'flex flex-col items-center py-2 rounded-xl border border-white/5',
+                            'flex flex-col items-center py-2 px-1 rounded-xl border border-white/5',
                             mcfg.bg,
                           )}
                         >
-                          <span className={cn('text-lg font-black leading-none', mcfg.color)}>{count}</span>
+                          <span className={cn('text-base sm:text-lg font-black leading-none', mcfg.color)}>{count}</span>
                           <span className={cn('text-[9px] font-bold uppercase tracking-wide mt-0.5', mcfg.color, 'opacity-70')}>
                             {mcfg.label}
                           </span>
                         </div>
                       );
                     })}
+                  </div>
                 </div>
-              </div>
-            )}
+              );
+            })()}
 
             {/* ── Revision Queue (Due Items) ────────────────────────────── */}
             {dueItems.length > 0 && (
@@ -252,14 +258,14 @@ export function SLSIntelligencePanel({
             )}
 
             {/* ── Footer ───────────────────────────────────────────────── */}
-            <div className="flex items-center justify-between pt-3 border-t border-white/5">
-              <p className="text-[11px] text-white/25 flex items-center gap-1.5">
-                <Sparkles className="w-3 h-3 text-purple-400/50" />
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pt-3 border-t border-white/5">
+              <p className="text-[10px] sm:text-[11px] text-white/25 flex items-center gap-1.5">
+                <Sparkles className="w-3 h-3 text-purple-400/50 shrink-0" />
                 SLS Engine · Updates per quiz attempt
               </p>
               {masterySummary && (
-                <p className="text-[11px] text-white/25 flex items-center gap-1">
-                  <CheckCircle2 className="w-3 h-3 text-emerald-400/50" />
+                <p className="text-[10px] sm:text-[11px] text-white/25 flex items-center gap-1">
+                  <CheckCircle2 className="w-3 h-3 text-emerald-400/50 shrink-0" />
                   {masterySummary.masteredCount} / {masterySummary.totalChapters} mastered
                 </p>
               )}

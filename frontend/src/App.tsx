@@ -308,7 +308,7 @@ function DashboardApp() {
             </div>
           );
         })() : (
-        <div className="p-4 lg:p-8 overflow-y-auto w-full flex-1 flex flex-col justify-between">
+        <div className="p-3 sm:p-4 lg:p-8 overflow-y-auto w-full flex-1 flex flex-col justify-between">
           <div className="flex-1 w-full">
             {currentView === 'path' ? (
             <PathToIISER 
@@ -375,7 +375,7 @@ function DashboardApp() {
           ) : currentView === 'privacy' ? (
             <Privacy onNavigate={handleNavigate} />
           ) : (
-            <div className="max-w-6xl mx-auto w-full space-y-6 flex-1 mt-2 lg:mt-4 pb-32 lg:pb-0">
+            <div className="max-w-6xl mx-auto w-full space-y-4 sm:space-y-6 flex-1 mt-2 lg:mt-4 pb-32 lg:pb-0">
               <Hero 
                 onNavigate={handleNavigate} 
                 dashboardData={dashboardData} 
@@ -384,7 +384,7 @@ function DashboardApp() {
                 actionPlanLoading={actionPlanLoading}
               />
 
-              <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-stretch">
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6 items-stretch">
                 <div className="col-span-1 flex flex-col h-full">
                   <ReadinessEngine dashboardData={dashboardData} loading={dashboardLoading} onNavigate={handleNavigate} />
                 </div>

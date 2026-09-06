@@ -128,7 +128,7 @@ export function SLSNextActionCard({ recommendation: rec, onNavigate, className }
       transition={{ duration: 0.35 }}
       onClick={handleStart}
       className={cn(
-        'group relative flex gap-4 p-4 rounded-2xl border-l-[3px] border cursor-pointer',
+        'group relative p-3.5 sm:p-4 rounded-2xl border-l-[3px] border cursor-pointer',
         'transition-all duration-200 hover:bg-white/[0.05] hover:-translate-y-0.5',
         'bg-white/[0.04]',
         ucfg.accentBorder,
@@ -136,36 +136,51 @@ export function SLSNextActionCard({ recommendation: rec, onNavigate, className }
         className,
       )}
     >
-      {/* Subject icon */}
-      <div className={cn(
-        'w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0 mt-0.5 border transition-transform group-hover:scale-105',
-        scfg.bg, scfg.border,
-      )}>
-        <SubjectIcon subject={rec.subject} className={cn('w-5 h-5', scfg.color)} />
-      </div>
-
-      {/* Body */}
-      <div className="flex-1 min-w-0">
-        {/* Subject · Chapter */}
-        <div className="flex items-baseline gap-2 mb-1">
-          {rec.subject && (
-            <span className={cn('text-[10px] font-black uppercase tracking-wider', scfg.color)}>
-              {rec.subject}
-            </span>
-          )}
-          {rec.chapterTitle && (
-            <>
-              <span className="text-white/20 text-[10px]">·</span>
-              <span className="text-[11px] text-white/50 truncate">{rec.chapterTitle}</span>
-            </>
-          )}
+      {/* Top row: Subject Icon + Subject/Chapter + Urgency Badge */}
+      <div className="flex items-center justify-between gap-2.5 mb-2.5">
+        <div className="flex items-center gap-2.5 min-w-0 flex-1">
+          <div className={cn(
+            'w-8 h-8 sm:w-9 sm:h-9 rounded-xl flex items-center justify-center flex-shrink-0 border transition-transform group-hover:scale-105',
+            scfg.bg, scfg.border,
+          )}>
+            <SubjectIcon subject={rec.subject} className={cn('w-4 h-4', scfg.color)} />
+          </div>
+          <div className="flex items-center gap-1.5 min-w-0 flex-1 flex-wrap">
+            {rec.subject && (
+              <span className={cn('text-[10px] sm:text-[11px] font-black uppercase tracking-wider shrink-0', scfg.color)}>
+                {rec.subject}
+              </span>
+            )}
+            {rec.chapterTitle && (
+              <>
+                <span className="text-white/20 text-[10px]">·</span>
+                <span className="text-xs text-white/60 font-medium truncate max-w-[180px] sm:max-w-md">
+                  {rec.chapterTitle}
+                </span>
+              </>
+            )}
+          </div>
         </div>
 
-        {/* Explanation */}
-        <p className="text-sm font-bold text-white leading-snug mb-2">{explanation}</p>
+        {/* Urgency badge */}
+        <div className={cn(
+          'flex items-center gap-1 px-2.5 py-0.5 rounded-full border text-[9px] font-black uppercase tracking-wider whitespace-nowrap shrink-0',
+          ucfg.color, ucfg.bg, ucfg.border,
+        )}>
+          <AlertTriangle className="w-2.5 h-2.5" />
+          {ucfg.label}
+        </div>
+      </div>
 
+      {/* Explanation — Full Width, never squished into 1-word column! */}
+      <p className="text-xs sm:text-sm font-semibold text-white leading-relaxed mb-3">
+        {explanation}
+      </p>
+
+      {/* Bottom row: Evidence Stats & Action CTA */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 pt-2.5 border-t border-white/5">
         {/* Evidence stats */}
-        {rec.evidence && (
+        {rec.evidence ? (
           <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
             <span className="text-[11px] text-white/40 font-medium">
               Accuracy: <span className="text-rose-400 font-bold">
@@ -188,28 +203,18 @@ export function SLSNextActionCard({ recommendation: rec, onNavigate, className }
               </span>
             )}
           </div>
+        ) : (
+          <div />
         )}
-      </div>
-
-      {/* Right: urgency + CTA */}
-      <div className="flex flex-col items-end justify-between flex-shrink-0 gap-2 min-w-[80px]">
-        {/* Urgency badge */}
-        <div className={cn(
-          'flex items-center gap-1 px-2 py-0.5 rounded-full border text-[9px] font-black uppercase tracking-wider whitespace-nowrap',
-          ucfg.color, ucfg.bg, ucfg.border,
-        )}>
-          <AlertTriangle className="w-2.5 h-2.5" />
-          {ucfg.label}
-        </div>
 
         {/* CTA button */}
         <button
           onClick={(e) => { e.stopPropagation(); handleStart(); }}
-          className="flex items-center gap-1.5 text-[11px] font-bold text-white/30 group-hover:text-white transition-all"
+          className="flex items-center justify-center sm:justify-start gap-1.5 px-3 py-1.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-xs font-bold text-white/80 hover:text-white transition-all self-stretch sm:self-auto"
         >
           {actionIcon(rec.actionType)}
-          {actionLabel(rec.actionType)}
-          <ArrowRight className="w-3 h-3 group-hover:translate-x-0.5 transition-transform" />
+          <span>{actionLabel(rec.actionType)}</span>
+          <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform text-cyan-400" />
         </button>
       </div>
     </motion.div>
