@@ -109,30 +109,33 @@ function DashboardApp() {
 
   const [isImprovementModalOpen, setIsImprovementModalOpen] = useState(false);
 
-  // Interactive Student Improvement & Feedback Modal auto-popup trigger for returning students
+  // Interactive Student Improvement & Feedback Modal:
+  // Shows to EVERY logged-in user ONCE after login, and NEVER appears again automatically!
   useEffect(() => {
-    if (dashboardLoading) return;
     const token = localStorage.getItem('IAT_TOKEN');
-    if (!token) return;
+    if (!token) return; // Only for logged-in users
 
-    const alreadyHandled = localStorage.getItem('smartprep_improvement_feedback_v1');
-    if (alreadyHandled) return;
+    const email = localStorage.getItem('currentUserEmail') || '';
+    const alreadyShown = 
+      localStorage.getItem('smartprep_feedback_shown_v2') === 'true' ||
+      (email ? localStorage.getItem(`smartprep_feedback_shown_v2_${email}`) === 'true' : false);
 
-    const sessionCount = parseInt(localStorage.getItem('smartprep_session_count') || '0', 10) + 1;
-    localStorage.setItem('smartprep_session_count', String(sessionCount));
-    const loginCount = parseInt(localStorage.getItem('smartprep_login_count') || '1', 10);
-    const pendingPopup = localStorage.getItem('smartprep_pending_feedback_popup') === 'true';
+    // If it has already been shown once to this user, NEVER appear again!
+    if (alreadyShown) return;
 
-    // Show to existing students who logged in, or have previous attempts, or have visited sessions
-    const isExistingUser = pendingPopup || hasAttempts || loginCount >= 1 || sessionCount >= 1;
-    if (isExistingUser) {
-      const timer = setTimeout(() => {
-        setIsImprovementModalOpen(true);
-        localStorage.removeItem('smartprep_pending_feedback_popup');
-      }, 1500);
-      return () => clearTimeout(timer);
+    // Immediately mark as shown so it never pops up again even if they reload or navigate
+    localStorage.setItem('smartprep_feedback_shown_v2', 'true');
+    if (email) {
+      localStorage.setItem(`smartprep_feedback_shown_v2_${email}`, 'true');
     }
-  }, [dashboardLoading, hasAttempts]);
+
+    // Open modal after a smooth 1.2s delay once the dashboard has mounted
+    const timer = setTimeout(() => {
+      setIsImprovementModalOpen(true);
+    }, 1200);
+
+    return () => clearTimeout(timer);
+  }, []);
 
   const handleNavigateRaw = (view: string) => {
     if (view === 'feedback') {

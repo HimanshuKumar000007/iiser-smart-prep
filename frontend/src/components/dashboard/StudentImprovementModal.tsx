@@ -79,6 +79,9 @@ export function StudentImprovementModal({
 
   const handleDismiss = () => {
     localStorage.setItem('smartprep_improvement_feedback_v1', 'dismissed');
+    localStorage.setItem('smartprep_feedback_shown_v2', 'true');
+    const email = userEmail || localStorage.getItem('currentUserEmail') || '';
+    if (email) localStorage.setItem(`smartprep_feedback_shown_v2_${email}`, 'true');
     onClose();
   };
 
@@ -128,7 +131,10 @@ export function StudentImprovementModal({
         });
       } catch (_) {}
 
+      const email = userEmail || localStorage.getItem('currentUserEmail') || '';
       localStorage.setItem('smartprep_improvement_feedback_v1', 'submitted');
+      localStorage.setItem('smartprep_feedback_shown_v2', 'true');
+      if (email) localStorage.setItem(`smartprep_feedback_shown_v2_${email}`, 'true');
       setIsSubmitted(true);
 
       setTimeout(() => {
@@ -137,7 +143,10 @@ export function StudentImprovementModal({
     } catch (err) {
       console.warn('Feedback submission failed:', err);
       // Still mark as submitted locally so the user is never stuck or repeatedly prompted
+      const email = userEmail || localStorage.getItem('currentUserEmail') || '';
       localStorage.setItem('smartprep_improvement_feedback_v1', 'submitted');
+      localStorage.setItem('smartprep_feedback_shown_v2', 'true');
+      if (email) localStorage.setItem(`smartprep_feedback_shown_v2_${email}`, 'true');
       setIsSubmitted(true);
       setTimeout(() => {
         onClose();
