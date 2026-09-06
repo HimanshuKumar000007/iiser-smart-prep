@@ -13,7 +13,7 @@ export default defineConfig({
   },
   build: {
     outDir: 'dashboard-react',
-    emptyOutDir: false,
+    emptyOutDir: true,
     rollupOptions: {
       input: {
         index: path.resolve(__dirname, 'dashboard-react.html'),

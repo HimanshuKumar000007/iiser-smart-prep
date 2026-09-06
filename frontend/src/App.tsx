@@ -34,6 +34,7 @@ import { SmartLessonsHub } from './components/dashboard/SmartLessonsHub';
 import { Settings } from './components/dashboard/Settings';
 import { Support } from './components/dashboard/Support';
 import { Feedback } from './components/dashboard/Feedback';
+import { StudentImprovementModal } from './components/dashboard/StudentImprovementModal';
 import { Contact } from './components/dashboard/Contact';
 import { Terms } from './components/dashboard/Terms';
 import { Privacy } from './components/dashboard/Privacy';
@@ -106,9 +107,39 @@ function DashboardApp() {
     refresh: refreshActionPlan,
   } = useStudentActionPlan();
 
-  // Legacy useEffect removed since ThemeProvider handles synchronization
+  const [isImprovementModalOpen, setIsImprovementModalOpen] = useState(false);
+
+  // Interactive Student Improvement & Feedback Modal auto-popup trigger for returning students
+  useEffect(() => {
+    if (dashboardLoading) return;
+    const token = localStorage.getItem('IAT_TOKEN');
+    if (!token) return;
+
+    const alreadyHandled = localStorage.getItem('smartprep_improvement_feedback_v1');
+    if (alreadyHandled) return;
+
+    const sessionCount = parseInt(localStorage.getItem('smartprep_session_count') || '0', 10) + 1;
+    localStorage.setItem('smartprep_session_count', String(sessionCount));
+    const loginCount = parseInt(localStorage.getItem('smartprep_login_count') || '1', 10);
+    const pendingPopup = localStorage.getItem('smartprep_pending_feedback_popup') === 'true';
+
+    // Show to existing students who logged in, or have previous attempts, or have visited sessions
+    const isExistingUser = pendingPopup || hasAttempts || loginCount >= 1 || sessionCount >= 1;
+    if (isExistingUser) {
+      const timer = setTimeout(() => {
+        setIsImprovementModalOpen(true);
+        localStorage.removeItem('smartprep_pending_feedback_popup');
+      }, 1500);
+      return () => clearTimeout(timer);
+    }
+  }, [dashboardLoading, hasAttempts]);
 
   const handleNavigateRaw = (view: string) => {
+    if (view === 'feedback') {
+      setIsImprovementModalOpen(true);
+      return;
+    }
+
     setCurrentView(view);
     localStorage.setItem('dashboard_current_view', view);
     Analytics.trackViewChanged(view);
@@ -223,21 +254,19 @@ function DashboardApp() {
 
         {/* Lesson reader gets its own full-width wrapper with consistent px-2 on mobile */}
         {currentView === 'lesson_reader' || currentView.startsWith('/smart-lessons/') || currentView.startsWith('lesson_reader:') ? (() => {
-          // Parse optional ::quiz or ::detailed suffix: "/smart-lessons/phy_thermo::quiz" or "/smart-lessons/phy_units::detailed"
+          // Parse optional ::quiz suffix: "/smart-lessons/phy_thermo::quiz"
           const rawId = currentView
             .replace('/smart-lessons/', '')
             .replace('lesson_reader:', '')
             .replace('lesson_reader', '');
-          const isDetailed = rawId.endsWith('::detailed');
           const startAtQuiz = rawId.endsWith('::quiz');
-          const lessonId = rawId.replace('::detailed', '').replace('::quiz', '');
+          const lessonId = rawId.replace('::quiz', '');
           return (
             <div className="lesson-reader-container px-2 sm:px-4 lg:px-8 pt-4 overflow-y-auto w-full flex-1 flex flex-col">
               <SmartLesson
                 onNavigate={handleNavigate}
                 lessonId={lessonId}
                 startAtQuiz={startAtQuiz}
-                initialMode={isDetailed ? 'detailed' : 'quick'}
               />
             </div>
           );
@@ -300,7 +329,7 @@ function DashboardApp() {
             <Settings onNavigate={handleNavigate} />
           ) : currentView === 'support' ? (
             <Support onNavigate={handleNavigate} />
-          ) : currentView === 'feedback' ? (
+          ) : (currentView === 'feedback' || currentView === 'feedback_full') ? (
             <Feedback onNavigate={handleNavigate} />
           ) : currentView === 'contact' ? (
             <Contact onNavigate={handleNavigate} />
@@ -438,6 +467,17 @@ function DashboardApp() {
         )}
         
         <MobileNav currentView={currentView} onNavigate={handleNavigate} />
+
+        <StudentImprovementModal
+          isOpen={isImprovementModalOpen}
+          onClose={() => setIsImprovementModalOpen(false)}
+          onOpenFullFeedback={() => {
+            setIsImprovementModalOpen(false);
+            setCurrentView('feedback_full');
+          }}
+          userName={localStorage.getItem('currentUser') || currentUser.name}
+          userEmail={localStorage.getItem('currentUserEmail') || currentUser.email}
+        />
 
       </main>
     </div>

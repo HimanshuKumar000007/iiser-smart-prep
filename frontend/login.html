@@ -678,6 +678,7 @@
 
         const currentLoginCount = parseInt(localStorage.getItem('smartprep_login_count') || '0', 10);
         localStorage.setItem('smartprep_login_count', String(currentLoginCount + 1));
+        localStorage.setItem('smartprep_pending_feedback_popup', 'true');
 
         const resolvedPlan = (data.plan || data.user?.plan || 'FREE').toUpperCase();
         localStorage.setItem('IAT_PLAN', resolvedPlan);
@@ -785,6 +786,7 @@
         'smartprep_login_count',
         'smartprep_session_count',
         'smartprep_improvement_feedback_v1',
+        'smartprep_pending_feedback_popup',
         'currentUserEmail'
       ];
       const savedOnboarding = {};

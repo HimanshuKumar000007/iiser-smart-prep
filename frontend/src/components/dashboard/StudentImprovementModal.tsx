@@ -21,13 +21,14 @@ import { Analytics } from '../../lib/analytics';
 interface StudentImprovementModalProps {
   isOpen: boolean;
   onClose: () => void;
+  onOpenFullFeedback?: () => void;
   userName?: string;
   userEmail?: string;
 }
 
 const IMPROVEMENT_OPTIONS = [
   { id: 'full_mocks', label: 'More Full-Length TCS iON Mocks', icon: Target },
-  { id: 'detailed_notes', label: 'NCERT Detailed Theory Notes', icon: BookOpen },
+  { id: 'formula_sheets', label: 'NCERT Formula Sheets & Mind Maps', icon: BookOpen },
   { id: 'speed_drills', label: 'Speed & Accuracy Timed Drills', icon: Clock },
   { id: 'ai_tutor', label: 'AI Tutor Step-by-Step Audio/Chat', icon: BrainCircuit },
   { id: 'rank_predictor', label: 'IISER Cutoff & Rank Predictor', icon: BarChart3 },
@@ -43,6 +44,7 @@ const CONFIDENCE_OPTIONS = [
 export function StudentImprovementModal({
   isOpen,
   onClose,
+  onOpenFullFeedback,
   userName = 'Aspirant',
   userEmail = ''
 }: StudentImprovementModalProps) {
@@ -54,6 +56,12 @@ export function StudentImprovementModal({
   const [notes, setNotes] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+
+  React.useEffect(() => {
+    if (isOpen) {
+      setIsSubmitted(false);
+    }
+  }, [isOpen]);
 
   if (!isOpen) return null;
 
@@ -305,6 +313,21 @@ export function StudentImprovementModal({
                 )}
               </button>
             </div>
+
+            {onOpenFullFeedback && (
+              <div className="pt-2 border-t border-slate-200/50 dark:border-slate-800/50 text-center">
+                <button
+                  type="button"
+                  onClick={() => {
+                    handleDismiss();
+                    onOpenFullFeedback();
+                  }}
+                  className="text-[11px] font-medium text-slate-400 hover:text-indigo-500 transition-colors inline-block"
+                >
+                  Need to report a bug or write detailed feedback? Open full form →
+                </button>
+              </div>
+            )}
           </form>
         )}
       </div>
