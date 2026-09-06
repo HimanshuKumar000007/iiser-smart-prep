@@ -351,7 +351,7 @@ export function Hero({ onNavigate, dashboardData: data, loading, actionPlan: pla
         >
           {/* Left — Greeting */}
           <div className="space-y-2.5">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-500/8 border border-cyan-500/20 text-cyan-400 text-[11px] font-bold uppercase tracking-widest">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-500/8 border border-cyan-500/20 text-cyan-400 text-[11px] font-bold uppercase tracking-widest font-mono">
               <Sparkles className="w-3 h-3" />
               <span>Personalized Command Center</span>
             </div>
@@ -388,10 +388,10 @@ export function Hero({ onNavigate, dashboardData: data, loading, actionPlan: pla
                   <div className={cn('w-6 h-6 rounded-lg flex items-center justify-center', m.iconBg)}>
                     <m.icon className={cn('w-3.5 h-3.5', m.iconColor)} />
                   </div>
-                  <span className={cn('text-[9px] font-bold uppercase tracking-widest', isLight ? 'text-slate-400' : 'text-white/30')}>{m.label}</span>
+                  <span className={cn('text-[9px] font-bold uppercase tracking-widest font-mono', isLight ? 'text-slate-400' : 'text-white/30')}>{m.label}</span>
                 </div>
-                <span className={cn('text-[0.85rem] font-black block leading-tight', m.valueColor)}>{m.value}</span>
-                <span className={cn('text-[10px] font-medium block mt-0.5', m.subColor)}>{m.sub}</span>
+                <span className={cn('text-[0.88rem] font-bold font-mono block leading-tight tracking-tight', m.valueColor)}>{m.value}</span>
+                <span className={cn('text-[10px] font-medium font-mono block mt-0.5', m.subColor)}>{m.sub}</span>
               </motion.div>
             ))}
           </div>
@@ -423,22 +423,22 @@ export function Hero({ onNavigate, dashboardData: data, loading, actionPlan: pla
                 </div>
                 <div>
                   <div className="flex items-center gap-2 flex-wrap">
-                    <span className="text-[10px] font-bold uppercase tracking-wider text-cyan-400 bg-cyan-500/10 px-2.5 py-0.5 rounded border border-cyan-500/20">
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-cyan-400 bg-cyan-500/10 px-2.5 py-0.5 rounded border border-cyan-500/20 font-mono">
                       Next Best Action
                     </span>
                     <span className={cn(
-                      "text-[10px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded border",
+                      "text-[10px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded border font-mono",
                       plan.primaryAction.priorityBand === 'CRITICAL' ? "text-rose-400 bg-rose-500/15 border-rose-500/20" :
                       plan.primaryAction.priorityBand === 'HIGH' ? "text-orange-400 bg-orange-500/15 border-orange-500/20" :
                       "text-blue-400 bg-blue-500/15 border-blue-500/20"
                     )}>
                       {plan.primaryAction.priorityBand} Priority
                     </span>
-                    <span className="text-[10px] font-medium text-white/40">
+                    <span className="text-[10px] font-medium text-white/40 font-mono">
                       Confidence: {plan.primaryAction.evidenceLevel}
                     </span>
                   </div>
-                  <h2 className="text-[1.125rem] font-bold text-white mt-2 group-hover:text-cyan-200 transition-colors">
+                  <h2 className="text-[1.125rem] font-bold text-white mt-2 group-hover:text-cyan-200 transition-colors font-display tracking-tight">
                     {plan.primaryAction.title}
                   </h2>
                   <p className="text-xs text-white/50 mt-1 leading-relaxed">
@@ -485,11 +485,11 @@ export function Hero({ onNavigate, dashboardData: data, loading, actionPlan: pla
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <Compass className="w-4 h-4 text-cyan-400" />
-                <h3 className="text-[0.85rem] font-bold uppercase tracking-wider text-white">Continue Revision</h3>
+                <h3 className="text-[0.85rem] font-bold uppercase tracking-wider text-white font-display">Continue Revision</h3>
               </div>
               <button
                 onClick={() => onNavigate?.('smart_lessons')}
-                className="text-[10.5px] font-bold text-cyan-400 hover:text-cyan-300 transition-colors uppercase tracking-wider flex items-center gap-1 group"
+                className="text-[10.5px] font-bold text-cyan-400 hover:text-cyan-300 transition-colors uppercase tracking-wider flex items-center gap-1 group font-mono"
               >
                 <span>View Library</span>
                 <ArrowRight className="w-3 h-3 group-hover:translate-x-0.5 transition-transform" />
@@ -526,7 +526,7 @@ export function Hero({ onNavigate, dashboardData: data, loading, actionPlan: pla
                           <sub.icon className={cn('w-5 h-5', sub.iconColor)} />
                         </div>
                         <div>
-                          <h4 className="text-[0.875rem] font-bold text-white group-hover:text-cyan-200 transition-colors">
+                          <h4 className="text-[0.875rem] font-bold text-white group-hover:text-cyan-200 transition-colors font-display tracking-tight">
                             {sub.name}
                           </h4>
                           <p className="text-[10px] text-white/35 mt-0.5 max-w-[140px] truncate">
@@ -548,8 +548,8 @@ export function Hero({ onNavigate, dashboardData: data, loading, actionPlan: pla
                     {/* Progress */}
                     <div>
                       <div className="flex justify-between items-center mb-1.5">
-                        <span className="text-[9px] font-bold text-white/25 uppercase tracking-wider">Syllabus Progress</span>
-                        <span className="text-[10px] font-bold text-white/60">{progressScore}%</span>
+                        <span className="text-[9px] font-bold text-white/25 uppercase tracking-wider font-mono">Syllabus Progress</span>
+                        <span className="text-[10px] font-bold text-white/60 font-mono">{progressScore}%</span>
                       </div>
                       <div className="w-full h-[3px] bg-white/5 rounded-full overflow-hidden">
                         <div
@@ -587,8 +587,8 @@ export function Hero({ onNavigate, dashboardData: data, loading, actionPlan: pla
                     <stat.icon className={cn('w-4.5 h-4.5', stat.iconColor)} />
                   </div>
                   <div>
-                    <span className="text-[9px] font-bold text-white/30 block uppercase tracking-widest">{stat.label}</span>
-                    <span className={cn('text-[1.05rem] font-display font-black', stat.valueColor)}>{stat.value}</span>
+                    <span className="text-[9px] font-bold text-white/30 block uppercase tracking-widest font-mono">{stat.label}</span>
+                    <span className={cn('text-[1.05rem] font-bold font-mono', stat.valueColor)}>{stat.value}</span>
                   </div>
                 </div>
               ))}
@@ -619,12 +619,12 @@ export function Hero({ onNavigate, dashboardData: data, loading, actionPlan: pla
                   <Sparkles className="w-4.5 h-4.5" />
                 </div>
                 <div>
-                  <h3 className="text-[0.8rem] font-bold text-white uppercase tracking-wider">Smart Study Assistant</h3>
+                  <h3 className="text-[0.8rem] font-bold text-white uppercase tracking-wider font-display">Smart Study Assistant</h3>
                   <p className="text-[9.5px] text-white/35 mt-0.5">Learn, practice, or get help instantly</p>
                 </div>
               </div>
 
-              <span className="text-[9px] font-black px-2.5 py-1 rounded-full border border-purple-500/20 bg-purple-500/10 text-purple-300 uppercase tracking-wider">
+              <span className="text-[9px] font-bold px-2.5 py-1 rounded-full border border-purple-500/20 bg-purple-500/10 text-purple-300 uppercase tracking-wider font-mono">
                 AI Active
               </span>
             </div>
