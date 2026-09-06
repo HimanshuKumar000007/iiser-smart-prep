@@ -676,6 +676,10 @@
         }
         localStorage.setItem('currentUserEmail', email);
 
+        // Mark as existing user who explicitly logged in
+        localStorage.removeItem('smartprep_is_new_signup');
+        localStorage.setItem('smartprep_is_existing_user', 'true');
+
         const currentLoginCount = parseInt(localStorage.getItem('smartprep_login_count') || '0', 10);
         localStorage.setItem('smartprep_login_count', String(currentLoginCount + 1));
 
@@ -746,6 +750,15 @@
         clearOldProgressData();
         localStorage.setItem('IAT_TOKEN', data.token);
         if (name) localStorage.setItem('currentUser', name);
+        localStorage.setItem('currentUserEmail', email);
+
+        // Explicitly flag as NEW SIGNUP so feedback popup is NEVER shown to new users
+        localStorage.setItem('smartprep_is_new_signup', 'true');
+        localStorage.setItem('smartprep_feedback_shown_v2', 'true');
+        localStorage.setItem('smartprep_feedback_dismissed', 'true');
+        localStorage.setItem(`smartprep_feedback_shown_v2_${email}`, 'true');
+        localStorage.setItem(`smartprep_feedback_dismissed_${email}`, 'true');
+
         const plan = (data.user?.plan || 'FREE').toUpperCase();
         localStorage.setItem('IAT_PLAN', plan);
         if (window.smartPrepAnalytics) {
@@ -786,6 +799,9 @@
         'smartprep_session_count',
         'smartprep_improvement_feedback_v1',
         'smartprep_feedback_shown_v2',
+        'smartprep_feedback_dismissed',
+        'smartprep_is_new_signup',
+        'smartprep_is_existing_user',
         'currentUserEmail'
       ];
       const savedOnboarding = {};
@@ -795,7 +811,7 @@
       });
       for (let i = 0; i < localStorage.length; i++) {
         const k = localStorage.key(i);
-        if (k && k.startsWith('smartprep_feedback_shown_v2')) {
+        if (k && (k.startsWith('smartprep_feedback_shown_v2') || k.startsWith('smartprep_feedback_dismissed'))) {
           savedOnboarding[k] = localStorage.getItem(k);
         }
       }
