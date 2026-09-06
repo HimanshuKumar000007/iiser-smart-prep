@@ -223,19 +223,21 @@ function DashboardApp() {
 
         {/* Lesson reader gets its own full-width wrapper with consistent px-2 on mobile */}
         {currentView === 'lesson_reader' || currentView.startsWith('/smart-lessons/') || currentView.startsWith('lesson_reader:') ? (() => {
-          // Parse optional ::quiz suffix: "/smart-lessons/phy_thermo::quiz" → id=phy_thermo, startAtQuiz=true
+          // Parse optional ::quiz or ::detailed suffix: "/smart-lessons/phy_thermo::quiz" or "/smart-lessons/phy_units::detailed"
           const rawId = currentView
             .replace('/smart-lessons/', '')
             .replace('lesson_reader:', '')
             .replace('lesson_reader', '');
+          const isDetailed = rawId.endsWith('::detailed');
           const startAtQuiz = rawId.endsWith('::quiz');
-          const lessonId = startAtQuiz ? rawId.replace('::quiz', '') : rawId;
+          const lessonId = rawId.replace('::detailed', '').replace('::quiz', '');
           return (
             <div className="lesson-reader-container px-2 sm:px-4 lg:px-8 pt-4 overflow-y-auto w-full flex-1 flex flex-col">
               <SmartLesson
                 onNavigate={handleNavigate}
                 lessonId={lessonId}
                 startAtQuiz={startAtQuiz}
+                initialMode={isDetailed ? 'detailed' : 'quick'}
               />
             </div>
           );

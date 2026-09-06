@@ -727,7 +727,7 @@ app.post("/api/login", loginRateLimiter, async (req, res) => {
     // 1️⃣ Find user
     const { data: users, error } = await supabase
       .from("users")
-      .select("*")
+      .select("id, name, email, password, plan, is_pro, plan_expiry, created_at")
       .eq("email", email)
       .limit(1);
 
@@ -744,22 +744,62 @@ app.post("/api/login", loginRateLimiter, async (req, res) => {
       return res.status(401).json({ error: "Invalid credentials" });
     }
 
-    // 3️⃣ Create token
+    // 3️⃣ Evaluate Pro entitlement in-memory (no extra DB queries)
+    const rawPlan = (user.plan || "").toUpperCase();
+    const isProPlan = rawPlan === "PRO" || rawPlan === "MONTHLY" || rawPlan === "SIX_MONTH" || rawPlan === "ANNUAL";
+    const isPro = user.is_pro === true || isProPlan;
+    const now = new Date();
+
+    let status = "FREE";
+    let hasExpired = false;
+    let daysRemaining = 0;
+
+    if (isPro) {
+      if (user.plan_expiry) {
+        const expiry = new Date(user.plan_expiry);
+        if (expiry.getTime() > now.getTime()) {
+          status = "ACTIVE";
+          daysRemaining = Math.max(0, Math.ceil((expiry.getTime() - now.getTime()) / (24 * 60 * 60 * 1000)));
+        } else {
+          status = "EXPIRED";
+          hasExpired = true;
+        }
+      } else {
+        status = "ACTIVE";
+        daysRemaining = 9999;
+      }
+    }
+
+    const resolvedPlan = (isPro && !hasExpired) ? "PRO" : "FREE";
+
+    // 4️⃣ Create token with user name included
     const token = jwt.sign(
       {
         id: user.id,
+        name: user.name || "",
         email: user.email,
-        plan: user.plan
+        plan: resolvedPlan
       },
       process.env.JWT_SECRET,
       { expiresIn: "7d" }
     );
 
-    // 4️⃣ Send response
+    // 5️⃣ Send complete user response (eliminates need for /api/me and /api/check-pro-status roundtrips)
     res.json({
       message: "Login successful",
       token,
-      plan: user.plan
+      plan: resolvedPlan,
+      user: {
+        id: user.id,
+        name: user.name || "",
+        email: user.email,
+        plan: resolvedPlan,
+        is_pro: isPro && !hasExpired,
+        planId: user.plan || null,
+        planExpiry: user.plan_expiry || null,
+        status,
+        daysRemaining
+      }
     });
 
   } catch (err) {
@@ -827,6 +867,86 @@ app.post('/api/contact', async (req, res) => {
   } catch (err) {
     console.error('Contact route error:', err);
     res.status(500).json({ error: 'Server error. Please try again.' });
+  }
+});
+
+// =======================
+// 💬 USER IMPROVEMENT FEEDBACK API
+// =======================
+app.post('/api/user-feedback', async (req, res) => {
+  try {
+    const { priorities = [], confidence = '', notes = '', name = '', email = '' } = req.body;
+    
+    // Fallback user identification from auth token if present
+    let userEmail = email;
+    let userName = name;
+    const authHeader = req.headers.authorization;
+    if (authHeader) {
+      try {
+        const token = authHeader.split(' ')[1];
+        if (token) {
+          const decoded = jwt.verify(token, process.env.JWT_SECRET);
+          if (decoded.email && !userEmail) userEmail = decoded.email;
+          if (decoded.name && !userName) userName = decoded.name;
+        }
+      } catch (_) {}
+    }
+
+    const priorityList = Array.isArray(priorities) ? priorities.join(', ') : String(priorities || 'None selected');
+    console.log(`💬 User feedback received from ${userName || 'Student'} <${userEmail || 'unknown'}>: [${priorityList}] | Confidence: ${confidence}`);
+
+    // Log to Supabase user_feedback table (graceful if table doesn't exist)
+    try {
+      await supabase.from('user_feedback').insert([{
+        user_email: userEmail || 'anonymous',
+        user_name: userName || 'Student',
+        priorities: Array.isArray(priorities) ? priorities : [priorities],
+        confidence,
+        notes,
+        created_at: new Date().toISOString()
+      }]);
+    } catch (_) {}
+
+    // Notify team inbox via Resend
+    try {
+      await resend.emails.send({
+        from: 'IISER Smart Prep Feedback <noreply@iisersmartprep.space>',
+        to: 'weborbitsolutions0@gmail.com',
+        replyTo: userEmail || undefined,
+        subject: `🚀 Student Wishlist / Feedback: ${userName || 'Active Aspirant'}`,
+        html: `
+          <div style="font-family:Arial,sans-serif;max-width:560px;margin:auto;padding:24px;border-radius:12px;border:1px solid #e2e8f0;background:#ffffff;">
+            <div style="background:linear-gradient(135deg,#4f46e5,#06b6d4);padding:16px 20px;border-radius:8px;margin-bottom:20px;">
+              <h2 style="color:white;margin:0;font-size:1.25rem;">🚀 Student Wishlist & Feedback</h2>
+              <p style="color:rgba(255,255,255,0.9);margin:4px 0 0;font-size:0.85rem;">Submitted by an active IAT aspirant</p>
+            </div>
+            <table style="width:100%;border-collapse:collapse;margin-bottom:16px;">
+              <tr><td style="padding:6px 0;color:#64748b;font-size:0.9rem;width:130px;"><strong>Student:</strong></td><td style="padding:6px 0;color:#0f172a;font-weight:600;">${userName || 'Anonymous'}</td></tr>
+              <tr><td style="padding:6px 0;color:#64748b;font-size:0.9rem;"><strong>Email:</strong></td><td style="padding:6px 0;color:#4f46e5;">${userEmail || 'Not provided'}</td></tr>
+              <tr><td style="padding:6px 0;color:#64748b;font-size:0.9rem;"><strong>Preparation Mood:</strong></td><td style="padding:6px 0;color:#0f172a;">${confidence || 'Not specified'}</td></tr>
+            </table>
+            <div style="background:#f8fafc;padding:14px;border-radius:8px;border-left:4px solid #4f46e5;margin-bottom:16px;">
+              <p style="margin:0 0 6px;color:#475569;font-size:0.85rem;font-weight:700;text-transform:uppercase;">Top Requested Features:</p>
+              <p style="margin:0;color:#0f172a;font-size:0.95rem;font-weight:600;">${priorityList || 'None selected'}</p>
+            </div>
+            ${notes ? `
+            <div style="background:#f8fafc;padding:14px;border-radius:8px;border-left:4px solid #06b6d4;margin-bottom:16px;">
+              <p style="margin:0 0 6px;color:#475569;font-size:0.85rem;font-weight:700;text-transform:uppercase;">Student Note / Wish:</p>
+              <p style="margin:0;color:#0f172a;font-size:0.95rem;white-space:pre-wrap;">${notes.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</p>
+            </div>` : ''}
+            <hr style="border:none;border-top:1px solid #e2e8f0;margin:16px 0;">
+            <p style="color:#94a3b8;font-size:0.8rem;margin:0;">IISER SmartPrep Product Intelligence System</p>
+          </div>
+        `
+      });
+    } catch (emailErr) {
+      console.warn('Feedback email failed (non-critical):', emailErr.message);
+    }
+
+    res.json({ success: true, message: 'Thank you for your feedback!' });
+  } catch (err) {
+    console.error('User feedback error:', err);
+    res.status(500).json({ error: 'Failed to record feedback' });
   }
 });
 

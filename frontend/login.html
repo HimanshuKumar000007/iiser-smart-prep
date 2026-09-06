@@ -669,53 +669,55 @@
         clearOldProgressData();
         localStorage.setItem('IAT_TOKEN', data.token);
         
-        try {
-          const profileRes = await fetch(`${API_BASE}/me`, {
+        // Immediate user profile & plan hydration
+        const userName = data.user?.name || data.name || email.split('@')[0];
+        if (userName) {
+          localStorage.setItem('currentUser', userName);
+        }
+        localStorage.setItem('currentUserEmail', email);
+
+        const currentLoginCount = parseInt(localStorage.getItem('smartprep_login_count') || '0', 10);
+        localStorage.setItem('smartprep_login_count', String(currentLoginCount + 1));
+
+        const resolvedPlan = (data.plan || data.user?.plan || 'FREE').toUpperCase();
+        localStorage.setItem('IAT_PLAN', resolvedPlan);
+        localStorage.setItem('IAT_PLAN_SYNCED_AT', String(Date.now()));
+
+        setLoading('login-btn','login-spin','login-btn-text', true, 'Redirecting...');
+
+        // Non-blocking background profile sync if name wasn't returned (legacy API fallback)
+        if (!data.user?.name) {
+          fetch(`${API_BASE}/me`, {
             headers: { 'Authorization': 'Bearer ' + data.token }
-          });
-          if (profileRes.ok) {
-            const profileData = await profileRes.json();
-            if (profileData.name) {
+          }).then(r => r.ok ? r.json() : null).then(profileData => {
+            if (profileData && profileData.name) {
               localStorage.setItem('currentUser', profileData.name);
             }
-          }
-        } catch (_) {}
-
-        const initialPlan = (data.plan || data.user?.plan || 'FREE').toUpperCase();
-        localStorage.setItem('IAT_PLAN', initialPlan);
-        localStorage.removeItem('IAT_PLAN_SYNCED_AT');
-        setLoading('login-btn','login-spin','login-btn-text', true, 'Redirecting...');
-        
-        try {
-          const controller = new AbortController();
-          const timeout = setTimeout(() => controller.abort(), 3000);
-          const planRes = await fetch(`${API_BASE}/check-pro-status`, {
-            headers: { 'Authorization': 'Bearer ' + data.token },
-            signal: controller.signal
-          });
-          clearTimeout(timeout);
-          if (planRes.ok) {
-            const planData = await planRes.json();
-            if (planData.plan) localStorage.setItem('IAT_PLAN', planData.plan.toUpperCase());
-          }
-          localStorage.setItem('IAT_PLAN_SYNCED_AT', String(Date.now()));
-        } catch(_) {}
-
-        const redirect = new URLSearchParams(window.location.search).get('redirect');
-        if (window.smartPrepAnalytics) {
-          window.smartPrepAnalytics.identify(email, {
-            $email: email,
-            $name: localStorage.getItem('currentUser') || email.split('@')[0],
-            Plan: localStorage.getItem('IAT_PLAN') || 'FREE',
-            'Last Login': new Date().toISOString()
-          });
-          window.smartPrepAnalytics.track('User Logged In', { method: 'password' });
-          window.smartPrepAnalytics.track('Login', { method: 'password' });
+          }).catch(() => {});
         }
+
+        // Non-blocking analytics
+        if (window.smartPrepAnalytics) {
+          try {
+            window.smartPrepAnalytics.identify(email, {
+              $email: email,
+              $name: userName,
+              Plan: resolvedPlan,
+              'Last Login': new Date().toISOString()
+            });
+            window.smartPrepAnalytics.track('User Logged In', { method: 'password' });
+            window.smartPrepAnalytics.track('Login', { method: 'password' });
+          } catch (_) {}
+        }
+
+        // Instant redirect without waiting for extra roundtrips
+        const redirect = new URLSearchParams(window.location.search).get('redirect');
         window.location.href = redirect ? decodeURIComponent(redirect) : 'dashboard-react/index.html';
       } catch(err) {
         if (window.smartPrepAnalytics) {
-          window.smartPrepAnalytics.track('Login Failed', { error: err.message });
+          try {
+            window.smartPrepAnalytics.track('Login Failed', { error: err.message });
+          } catch (_) {}
         }
         showMsg('login-error', err.message, 'error');
         setLoading('login-btn','login-spin','login-btn-text', false, 'Log In →');
@@ -779,7 +781,11 @@
         'onboarding_completed',
         'theme',
         'dashboard_theme',
-        'smartprep_theme'
+        'smartprep_theme',
+        'smartprep_login_count',
+        'smartprep_session_count',
+        'smartprep_improvement_feedback_v1',
+        'currentUserEmail'
       ];
       const savedOnboarding = {};
       preserveKeys.forEach(k => {

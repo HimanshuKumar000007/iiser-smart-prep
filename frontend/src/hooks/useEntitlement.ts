@@ -15,14 +15,19 @@ const API_BASE =
   ((import.meta as any).env?.DEV ? 'http://localhost:5000' : 'https://api.iisersmartprep.space');
 
 export function useEntitlement() {
-  const [entitlement, setEntitlement] = useState<Entitlement>({
-    isPro: false,
-    status: 'FREE',
-    planId: null,
-    startedAt: null,
-    expiresAt: null,
-    daysRemaining: 0,
-    loading: true
+  const [entitlement, setEntitlement] = useState<Entitlement>(() => {
+    const token = typeof window !== 'undefined' ? localStorage.getItem('IAT_TOKEN') : null;
+    const cachedPlan = typeof window !== 'undefined' ? (localStorage.getItem('IAT_PLAN') || 'FREE') : 'FREE';
+    const isPro = cachedPlan.toUpperCase() === 'PRO';
+    return {
+      isPro,
+      status: isPro ? 'ACTIVE' : 'FREE',
+      planId: cachedPlan,
+      startedAt: null,
+      expiresAt: null,
+      daysRemaining: 0,
+      loading: !token ? false : true
+    };
   });
 
   const refreshEntitlement = useCallback(async () => {
