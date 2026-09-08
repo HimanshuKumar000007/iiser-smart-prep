@@ -41,7 +41,7 @@ import { Terms } from './components/dashboard/Terms';
 import { Privacy } from './components/dashboard/Privacy';
 import { SupportBar } from './components/layout/SupportBar';
 import { MobileNav } from './components/layout/MobileNav';
-import { Menu, Bell, BrainCircuit, Sun, Moon } from 'lucide-react';
+import { Menu, Bell, BrainCircuit, Sun, Moon, ArrowLeft, Sparkles } from 'lucide-react';
 import { useEntitlement } from './hooks/useEntitlement';
 import { Subscription } from './components/dashboard/Subscription';
 import { currentUser } from './data/mockData';
@@ -222,18 +222,44 @@ function DashboardApp() {
             ? 'bg-white/80 border-slate-200/80 shadow-[0_1px_12px_rgba(15,23,42,0.06)] backdrop-blur-md'
             : 'border-white/5 bg-background/80 backdrop-blur-md'
         }`}>
-          <div className="flex items-center gap-3">
-            <button 
-              onClick={() => setIsSidebarOpen(true)} 
-              className={`p-2 -ml-2 transition-colors ${
-                theme === 'light' ? 'text-slate-600 hover:text-slate-900' : 'text-white/70 hover:text-white'
-              }`}
-            >
-              <Menu className="w-6 h-6" />
-            </button>
+          <div className="flex items-center gap-2.5">
+            {(currentView === 'ai_doubt_solver' || currentView === 'ai_tutor') ? (
+              <button 
+                onClick={() => handleNavigate('dashboard')} 
+                className={`p-2 -ml-2 transition-colors flex items-center gap-1 cursor-pointer ${
+                  theme === 'light' ? 'text-slate-600 hover:text-slate-900' : 'text-white/80 hover:text-white'
+                }`}
+                title="Back to Dashboard"
+              >
+                <ArrowLeft className="w-5 h-5" />
+              </button>
+            ) : (
+              <button 
+                onClick={() => setIsSidebarOpen(true)} 
+                className={`p-2 -ml-2 transition-colors cursor-pointer ${
+                  theme === 'light' ? 'text-slate-600 hover:text-slate-900' : 'text-white/70 hover:text-white'
+                }`}
+              >
+                <Menu className="w-6 h-6" />
+              </button>
+            )}
             <div className="w-8 h-8 rounded-lg bg-gradient-to-tr from-indigo-500 to-cyan-400 flex items-center justify-center shadow-[0_0_15px_rgba(6,182,212,0.5)]">
-              <BrainCircuit className="w-5 h-5 text-white" />
+              {(currentView === 'ai_doubt_solver' || currentView === 'ai_tutor') ? (
+                <Sparkles className="w-4 h-4 text-white" />
+              ) : (
+                <BrainCircuit className="w-5 h-5 text-white" />
+              )}
             </div>
+            {(currentView === 'ai_doubt_solver' || currentView === 'ai_tutor') && (
+              <div className="flex items-center gap-1.5">
+                <span className={`font-bold text-sm tracking-tight ${theme === 'light' ? 'text-slate-900' : 'text-white'}`}>
+                  AI Tutor
+                </span>
+                <span className="border border-cyan-500/30 bg-cyan-500/10 text-cyan-400 text-[9px] font-bold px-1.5 py-0.5 rounded">
+                  IAT 2027
+                </span>
+              </div>
+            )}
           </div>
           <div className="flex items-center gap-3 relative">
             <button 
@@ -292,7 +318,7 @@ function DashboardApp() {
 
         {/* Full-bleed AI Study Assistant Workspace */}
         {(currentView === 'ai_doubt_solver' || currentView === 'ai_tutor') ? (
-          <div className="w-full flex-1 flex flex-col h-[calc(100vh-4.25rem)] lg:h-screen overflow-hidden">
+          <div className="w-full flex-1 flex flex-col h-[calc(100dvh-4rem)] lg:h-screen overflow-hidden">
             <AiTutorHub onNavigate={handleNavigate} dashboardData={dashboardData} />
           </div>
         ) : (currentView === 'lesson_reader' || currentView.startsWith('/smart-lessons/') || currentView.startsWith('lesson_reader:')) ? (() => {
