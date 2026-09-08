@@ -29,6 +29,7 @@ import { PathToIISER } from './components/dashboard/PathToIISER';
 import { MockTestCenter } from './components/dashboard/MockTestCenter';
 import { PYQHub } from './components/dashboard/PYQHub';
 import { PerformanceInsights } from './components/dashboard/PerformanceInsights';
+import { AiTutorHub } from './components/dashboard/AiTutorHub';
 import { SmartLesson } from './components/dashboard/SmartLesson';
 import { SmartLessonsHub } from './components/dashboard/SmartLessonsHub';
 import { Settings } from './components/dashboard/Settings';
@@ -289,8 +290,12 @@ function DashboardApp() {
           </div>
         </div>
 
-        {/* Lesson reader gets its own full-width wrapper with consistent px-2 on mobile */}
-        {currentView === 'lesson_reader' || currentView.startsWith('/smart-lessons/') || currentView.startsWith('lesson_reader:') ? (() => {
+        {/* Full-bleed AI Study Assistant Workspace */}
+        {(currentView === 'ai_doubt_solver' || currentView === 'ai_tutor') ? (
+          <div className="w-full flex-1 flex flex-col h-[calc(100vh-4.25rem)] lg:h-screen overflow-hidden">
+            <AiTutorHub onNavigate={handleNavigate} dashboardData={dashboardData} />
+          </div>
+        ) : (currentView === 'lesson_reader' || currentView.startsWith('/smart-lessons/') || currentView.startsWith('lesson_reader:')) ? (() => {
           // Parse optional ::quiz suffix: "/smart-lessons/phy_thermo::quiz"
           const rawId = currentView
             .replace('/smart-lessons/', '')
@@ -299,7 +304,7 @@ function DashboardApp() {
           const startAtQuiz = rawId.endsWith('::quiz');
           const lessonId = rawId.replace('::quiz', '');
           return (
-            <div className="lesson-reader-container px-2 sm:px-4 lg:px-8 pt-4 overflow-y-auto w-full flex-1 flex flex-col">
+            <div id="lesson-reader-scroll-container" className="lesson-reader-container px-2 sm:px-4 lg:px-8 pt-4 overflow-y-auto w-full flex-1 flex flex-col">
               <SmartLesson
                 onNavigate={handleNavigate}
                 lessonId={lessonId}
@@ -345,7 +350,12 @@ function DashboardApp() {
               />
             );
           })() : currentView === 'analytics' ? (
-            <PerformanceInsights onNavigate={handleNavigate} />
+            <PerformanceInsights 
+              onNavigate={handleNavigate} 
+              dashboardData={dashboardData}
+              slsData={slsData}
+              actionPlan={actionPlan}
+            />
           ) : currentView.startsWith('smart_lessons') ? (
             <SmartLessonsHub
               onNavigate={handleNavigate}
@@ -389,38 +399,18 @@ function DashboardApp() {
                   <ReadinessEngine dashboardData={dashboardData} loading={dashboardLoading} onNavigate={handleNavigate} />
                 </div>
                 <div className="col-span-1 flex flex-col h-full">
-                  {entitlement.isPro ? (
-                    <StudyCoach
-                      dashboardData={dashboardData}
-                      loading={dashboardLoading || actionPlanLoading}
-                      onNavigate={handleNavigate}
-                      actionPlan={actionPlan}
-                      error={actionPlanError}
-                      onRetry={refreshActionPlan}
-                    />
-                  ) : (
-                    <ProLockedCard
-                      featureName="Smart Coach"
-                      featureDesc="Get your personalised AI-powered morning, afternoon & evening study schedule based on your weak areas."
-                      featureIcon="🧠"
-                      accent="violet"
-                      onNavigate={handleNavigate}
-                      className="h-full min-h-[260px]"
-                    />
-                  )}
+                  <StudyCoach
+                    dashboardData={dashboardData}
+                    loading={dashboardLoading || actionPlanLoading}
+                    onNavigate={handleNavigate}
+                    actionPlan={actionPlan}
+                    error={actionPlanError}
+                    onRetry={refreshActionPlan}
+                  />
                 </div>
                 {/* SLS Weak Areas Panel (real data) — falls back to legacy WeakAreas if no SLS data */}
                 <div className="col-span-1 flex flex-col h-full">
-                  {!entitlement.isPro ? (
-                    <ProLockedCard
-                      featureName="Weak Area Engine"
-                      featureDesc="AI-powered detection of your weak chapters and topics from quiz & mock performance."
-                      featureIcon="🎯"
-                      accent="amber"
-                      onNavigate={handleNavigate}
-                      className="h-full min-h-[260px]"
-                    />
-                  ) : slsHasNoData
+                  {slsHasNoData
                     ? <WeakAreas dashboardData={dashboardData} loading={dashboardLoading} onNavigate={handleNavigate} />
                     : <SLSWeakAreasPanel
                         weaknesses={slsData.weaknesses}
@@ -431,17 +421,8 @@ function DashboardApp() {
                 </div>
               </div>
 
-              {/* SLS Intelligence Suite — shown when SLS has data; LockedAISuite / Journey Hub when zero-data */}
-              {!entitlement.isPro ? (
-                <ProLockedCard
-                  featureName="SLS Intelligence Suite"
-                  featureDesc="Smart Learning System — personalized revision queue, mastery tracking, chapter recommendations & spaced repetition powered by your real quiz data."
-                  featureIcon="✦"
-                  accent="cyan"
-                  onNavigate={handleNavigate}
-                  className="w-full min-h-[200px]"
-                />
-              ) : slsLoading || !slsHasNoData ? (
+              {/* SLS Intelligence Suite — unlocked for all users */}
+              {slsLoading || !slsHasNoData ? (
                 <>
                   {/* SLS Intelligence Panel (recommendation + mastery + revision queue) */}
                   <div className="w-full">

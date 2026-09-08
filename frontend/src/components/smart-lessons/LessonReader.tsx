@@ -318,7 +318,11 @@ export function LessonReader({ lessonId, onNavigate, startAtQuiz = false }: Prop
     setQuizScores([]);
     setQuizFinished(false);
     setFrozenAttempt(null);          // clear stale results from previous chapter
-    setScrollProgress(startAtQuiz ? 100 : 0);
+    const savedLessonStatus = localStorage.getItem(`lesson_${lesson.id}`);
+    const isAlreadyCompleted = savedLessonStatus === 'completed';
+    const savedProg = parseInt(localStorage.getItem(`lesson_progress_${lesson.id}`) || '0', 10);
+    const initialProg = (startAtQuiz || isAlreadyCompleted || savedProg >= 90) ? 100 : savedProg;
+    setScrollProgress(initialProg);
     setSubmissionId('');
     setPendingPayload(null);
     setSubmitError(null);
@@ -385,7 +389,7 @@ export function LessonReader({ lessonId, onNavigate, startAtQuiz = false }: Prop
         body: JSON.stringify({
           chapterId: lesson.id,
           subject: lesson.subject,
-          scrollProgress: startAtQuiz ? 100 : 0,
+          scrollProgress: startAtQuiz ? 100 : initialProg,
           status: startAtQuiz ? 'viewed_to_end' : 'started'
         })
       }).catch(err => console.error("Error registering lesson session:", err));
@@ -395,13 +399,10 @@ export function LessonReader({ lessonId, onNavigate, startAtQuiz = false }: Prop
     if (startAtQuiz) {
       setTimeout(() => {
         const quizSection = document.getElementById('sls-quiz-section');
-        const scrollContainer = document.querySelector('.overflow-y-auto') || window;
-        if (quizSection && scrollContainer !== window) {
-          (scrollContainer as HTMLElement).scrollTo({ top: (quizSection as HTMLElement).offsetTop - 80, behavior: 'smooth' });
-        } else if (quizSection) {
+        if (quizSection) {
           quizSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
-      }, 400);
+      }, 300);
     }
 
     const syncProgressToServer = (prog: number) => {
@@ -420,27 +421,45 @@ export function LessonReader({ lessonId, onNavigate, startAtQuiz = false }: Prop
     };
 
     const handleScroll = () => {
-      const container = document.querySelector('.overflow-y-auto') || document.documentElement;
-      if (!container) return;
-      
-      const scrollTop = container.scrollTop;
-      const scrollHeight = container.scrollHeight;
-      const clientHeight = container.clientHeight;
-      
-      const totalScroll = scrollHeight - clientHeight;
-      let clamped = 0;
-      if (totalScroll <= 0) {
-        clamped = 100;
-      } else {
-        const pct = Math.round((scrollTop / totalScroll) * 100);
-        clamped = Math.min(100, Math.max(0, pct));
+      // 1. If quiz section entered viewport, the student reached the end of the lesson
+      const quizSection = document.getElementById('sls-quiz-section');
+      if (quizSection) {
+        const rect = quizSection.getBoundingClientRect();
+        const winH = window.innerHeight || document.documentElement.clientHeight;
+        if (rect.top <= winH + 150) {
+          setScrollProgress(100);
+          localStorage.setItem(`lesson_progress_${lesson.id}`, '100');
+          if (lastSyncedProgressRef.current < 100) {
+            lastSyncedProgressRef.current = 100;
+            syncProgressToServer(100);
+          }
+          return;
+        }
       }
 
-      setScrollProgress(clamped);
+      // 2. Measure actual scroll progress from the lesson container or window
+      const container = document.getElementById('lesson-reader-scroll-container')
+        || (containerRef.current?.closest('.overflow-y-auto') as HTMLElement | null);
+
+      let pct = 0;
+      if (container && container.scrollHeight > container.clientHeight) {
+        const scrollTop = container.scrollTop;
+        const totalScroll = container.scrollHeight - container.clientHeight;
+        pct = totalScroll > 0 ? Math.round((scrollTop / totalScroll) * 100) : 100;
+      } else {
+        const winScrollTop = window.scrollY || document.documentElement.scrollTop || document.body.scrollTop || 0;
+        const winScrollHeight = document.documentElement.scrollHeight || document.body.scrollHeight || 0;
+        const winClientHeight = window.innerHeight || document.documentElement.clientHeight || 0;
+        const totalScroll = winScrollHeight - winClientHeight;
+        pct = totalScroll > 0 ? Math.round((winScrollTop / totalScroll) * 100) : 100;
+      }
+
+      const clamped = Math.min(100, Math.max(0, pct));
+      setScrollProgress(prev => Math.max(prev, clamped));
+
       if (clamped > 0) {
         localStorage.setItem(`lesson_progress_${lesson.id}`, String(clamped));
-        
-        // Milestone checks (25%, 50%, 75%, 100%) to avoid excessive API requests
+
         let targetMilestone = 0;
         if (clamped === 100) targetMilestone = 100;
         else if (clamped >= 75) targetMilestone = 75;
@@ -454,27 +473,52 @@ export function LessonReader({ lessonId, onNavigate, startAtQuiz = false }: Prop
       }
     };
 
-    const scrollContainer = document.querySelector('.overflow-y-auto') || window;
-    scrollContainer.addEventListener('scroll', handleScroll, { capture: true, passive: true });
-    
-    // Initial run
-    handleScroll();
+    // Attach to window and the lesson scroll container
+    const scrollContainer = document.getElementById('lesson-reader-scroll-container')
+      || (containerRef.current?.closest('.overflow-y-auto') as HTMLElement | null);
+
+    window.addEventListener('scroll', handleScroll, { capture: true, passive: true });
+    if (scrollContainer) {
+      scrollContainer.addEventListener('scroll', handleScroll, { passive: true });
+    }
+
+    // IntersectionObserver for fail-safe unlock when quiz section is in view
+    let observer: IntersectionObserver | null = null;
+    const quizSection = document.getElementById('sls-quiz-section');
+    if (quizSection && typeof IntersectionObserver !== 'undefined') {
+      observer = new IntersectionObserver((entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting || entry.boundingClientRect.top < (window.innerHeight || 800) + 100) {
+            setScrollProgress(100);
+            localStorage.setItem(`lesson_progress_${lesson.id}`, '100');
+            if (lastSyncedProgressRef.current < 100) {
+              lastSyncedProgressRef.current = 100;
+              syncProgressToServer(100);
+            }
+          }
+        }
+      }, { threshold: 0.05, rootMargin: '120px' });
+      observer.observe(quizSection);
+    }
+
+    // Initial check after render
+    setTimeout(handleScroll, 100);
+    setTimeout(handleScroll, 500);
 
     return () => {
-      scrollContainer.removeEventListener('scroll', handleScroll, { capture: true });
-      
-      // On unmount/exit, sync the final scroll progress to server
-      const container = document.querySelector('.overflow-y-auto') || document.documentElement;
-      if (container) {
-        const scrollTop = container.scrollTop;
-        const scrollHeight = container.scrollHeight;
-        const clientHeight = container.clientHeight;
-        const totalScroll = scrollHeight - clientHeight;
-        const pct = totalScroll <= 0 ? 100 : Math.round((scrollTop / totalScroll) * 100);
-        const finalClamped = Math.min(100, Math.max(0, pct));
-        if (finalClamped > lastSyncedProgressRef.current) {
-          syncProgressToServer(finalClamped);
-        }
+      window.removeEventListener('scroll', handleScroll, { capture: true });
+      if (scrollContainer) {
+        scrollContainer.removeEventListener('scroll', handleScroll);
+      }
+      if (observer && quizSection) {
+        observer.unobserve(quizSection);
+        observer.disconnect();
+      }
+
+      // Sync final progress
+      const finalProg = parseInt(localStorage.getItem(`lesson_progress_${lesson.id}`) || '0', 10);
+      if (finalProg > lastSyncedProgressRef.current) {
+        syncProgressToServer(finalProg);
       }
     };
   }, [lesson.id, isCurrentLessonLocked]);
@@ -888,13 +932,7 @@ export function LessonReader({ lessonId, onNavigate, startAtQuiz = false }: Prop
           // Scroll to quiz section after state settles
           setTimeout(() => {
             const quizSection = document.getElementById('sls-quiz-section');
-            const scrollContainer = document.querySelector('.overflow-y-auto') || window;
-            if (quizSection && scrollContainer !== window) {
-              (scrollContainer as HTMLElement).scrollTo({
-                top: (quizSection as HTMLElement).offsetTop - 80,
-                behavior: 'smooth',
-              });
-            } else if (quizSection) {
+            if (quizSection) {
               quizSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
             }
           }, 100);
@@ -1245,37 +1283,45 @@ export function LessonReader({ lessonId, onNavigate, startAtQuiz = false }: Prop
               </div>
             )}
 
-            {/* Reading Progress (when locked) */}
-            {!isQuizUnlocked && (
-              <div className="max-w-xs mx-auto space-y-1.5">
-                <div className="flex justify-between text-[11px] text-white/40 font-bold">
-                  <span>Reading Progress</span>
-                  <span>{scrollProgress}%</span>
+            {/* Reading Progress & Quiz Unlock */}
+            {!isQuizUnlocked ? (
+              <div className="space-y-4 max-w-sm mx-auto">
+                <div className="space-y-1.5">
+                  <div className="flex justify-between text-[11px] text-white/40 font-bold">
+                    <span>Reading Progress</span>
+                    <span>{scrollProgress}%</span>
+                  </div>
+                  <div className="w-full h-1.5 bg-white/5 rounded-full overflow-hidden">
+                    <div
+                      className="h-full bg-gradient-to-r from-cyan-500 to-violet-500 transition-all duration-500"
+                      style={{ width: `${Math.max(scrollProgress, 5)}%` }}
+                    />
+                  </div>
+                  <p className="text-[10px] text-white/40">Read through the chapter above or unlock immediately</p>
                 </div>
-                <div className="w-full h-1.5 bg-white/5 rounded-full overflow-hidden">
-                  <div
-                    className="h-full bg-gradient-to-r from-cyan-500 to-violet-500 transition-all duration-500"
-                    style={{ width: `${scrollProgress}%` }}
-                  />
-                </div>
-                <p className="text-[10px] text-white/30">Scroll to 90% to unlock quiz</p>
-              </div>
-            )}
 
-            <button
-              disabled={!isQuizUnlocked}
-              onClick={handleStartQuiz}
-              className={cn(
-                'px-10 py-3.5 font-bold text-sm rounded-full transition-all shadow-lg active:scale-95',
-                isQuizUnlocked
-                  ? 'bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 text-white shadow-violet-500/25'
-                  : 'bg-white/5 border border-white/10 text-white/30 cursor-not-allowed'
-              )}
-            >
-              {isQuizUnlocked
-                ? (masteryInfo && masteryInfo.attemptCount > 0 ? '🔄 Retake Quiz' : '🚀 Start Quiz')
-                : 'Complete Reading to Unlock'}
-            </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setScrollProgress(100);
+                    localStorage.setItem(`lesson_progress_${lesson.id}`, '100');
+                    handleStartQuiz();
+                  }}
+                  className="px-8 py-3.5 font-bold text-sm rounded-full bg-gradient-to-r from-cyan-500 via-indigo-600 to-violet-600 hover:from-cyan-400 hover:to-violet-500 text-white shadow-lg shadow-cyan-500/25 transition-all active:scale-95 cursor-pointer flex items-center justify-center gap-2 mx-auto"
+                >
+                  <Unlock className="w-4 h-4" />
+                  <span>I've Read the Chapter • Start Quiz</span>
+                </button>
+              </div>
+            ) : (
+              <button
+                type="button"
+                onClick={handleStartQuiz}
+                className="px-10 py-3.5 font-bold text-sm rounded-full bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 text-white shadow-lg shadow-violet-500/25 transition-all active:scale-95 cursor-pointer"
+              >
+                {masteryInfo && masteryInfo.attemptCount > 0 ? '🔄 Retake Quiz' : '🚀 Start Quiz'}
+              </button>
+            )}
           </div>
         )}
 

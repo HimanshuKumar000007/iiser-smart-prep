@@ -6,13 +6,15 @@ import {
   FileCheck,
   History,
   BarChart2,
-  Settings,
+  AlertTriangle,
+  Calendar,
   Sparkles,
+  Crosshair,
+  MessageSquareQuote,
+  Sliders,
   LogOut,
   Sun,
-  Moon,
-  HelpCircle,
-  ThumbsUp
+  Moon
 } from 'lucide-react';
 import { cn } from '../../lib/utils';
 import { currentUser } from '../../data/mockData';
@@ -20,17 +22,50 @@ import { useTheme } from '../../context/ThemeContext';
 import { useEntitlement } from '../../hooks/useEntitlement';
 import { Analytics } from '../../lib/analytics';
 
-const navItems = [
-  { id: 'dashboard', icon: LayoutDashboard, label: 'Dashboard' },
-  { id: 'path', icon: Map, label: 'My Path to IISER' },
-  { id: 'smart_lessons', icon: BrainCircuit, label: 'Smart Lessons' },
-  { id: 'mock_tests', icon: FileCheck, label: 'Mock Tests' },
-  { id: 'pyqs', icon: History, label: 'PYQs' },
-  { id: 'analytics', icon: BarChart2, label: 'Performance Insights' },
-  { id: 'subscription', icon: Sparkles, label: 'Pricing Plans' },
-  { id: 'settings', icon: Settings, label: 'Settings' },
-  { id: 'support', icon: HelpCircle, label: 'Support & Help' },
-  { id: 'feedback', icon: ThumbsUp, label: 'Send Feedback' },
+interface NavItem {
+  id: string;
+  icon: any;
+  label: string;
+  badge?: string;
+  badgeType?: 'default' | 'new';
+}
+
+interface NavSection {
+  title: string;
+  items: NavItem[];
+}
+
+const navSections: NavSection[] = [
+  {
+    title: 'PREPARE',
+    items: [
+      { id: 'dashboard', icon: LayoutDashboard, label: 'Dashboard' },
+      { id: 'path', icon: Map, label: 'My Path to IISER' },
+      { id: 'smart_lessons', icon: BookOpen, label: 'Smart Lessons' },
+      { id: 'pyqs', icon: History, label: 'PYQs' },
+      { id: 'practice_arena', icon: Crosshair, label: 'Practice Arena' },
+      { id: 'mock_tests', icon: FileCheck, label: 'Mock Test Ce...', badge: '45+ Tests' },
+    ]
+  },
+  {
+    title: 'ANALYZE',
+    items: [
+      { id: 'analytics', icon: BarChart2, label: 'Performance' },
+      { id: 'weak_areas', icon: AlertTriangle, label: 'Weak Areas' },
+    ]
+  },
+  {
+    title: 'PLAN',
+    items: [
+      { id: 'planner', icon: Calendar, label: 'Study Planner' },
+    ]
+  },
+  {
+    title: 'AI & TOOLS',
+    items: [
+      { id: 'ai_doubt_solver', icon: MessageSquareQuote, label: 'AI Doubt Solver', badge: 'NEW', badgeType: 'new' },
+    ]
+  }
 ];
 
 export function Sidebar({ 
@@ -45,7 +80,21 @@ export function Sidebar({
   onNavigate?: (view: any) => void;
 }) {
   const { theme, toggleTheme } = useTheme();
+  const isLight = theme === 'light';
   const { isPro } = useEntitlement();
+
+  const storedName = localStorage.getItem('currentUser') || currentUser.name || 'Himanshu Kumar';
+  const userInitial = storedName.charAt(0).toUpperCase() || 'H';
+
+  // Dynamic days left until June 7, 2027
+  const calculateDaysUntilExam = () => {
+    const EXAM_DATE = new Date('2027-06-07T00:00:00');
+    const today = new Date();
+    const diffTime = EXAM_DATE.getTime() - today.getTime();
+    return Math.max(0, Math.ceil(diffTime / (1000 * 60 * 60 * 24)));
+  };
+  const daysUntilExam = calculateDaysUntilExam();
+
   return (
     <>
       {/* Mobile Backdrop */}
@@ -58,123 +107,191 @@ export function Sidebar({
 
       {/* Sidebar Content */}
       <aside className={cn(
-        "fixed left-0 top-0 h-screen w-64 flex flex-col z-50 transition-transform duration-300",
-        theme === 'light'
-          ? "bg-white/85 backdrop-blur-[12px] border-r border-slate-200/80 shadow-[2px_0_20px_rgba(15,23,42,0.05)]"
-          : "bg-background border-r border-white/5",
+        "fixed left-0 top-0 h-screen w-64 flex flex-col z-50 transition-transform duration-300 select-none",
+        isLight
+          ? "bg-white/90 backdrop-blur-xl border-r border-slate-200/80 shadow-[2px_0_20px_rgba(15,23,42,0.05)]"
+          : "bg-[#080a14] border-r border-white/[0.08]",
         isOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
       )}>
-        <div className="p-6">
-          <div className="flex items-center gap-3 mb-8">
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-tr from-indigo-500 to-cyan-400 flex items-center justify-center shadow-[0_0_15px_rgba(6,182,212,0.5)]">
+        {/* ── TOP LOGO HEADER ── */}
+        <div className="p-5 pb-3">
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-cyan-500 to-indigo-600 flex items-center justify-center shadow-[0_0_15px_rgba(6,182,212,0.4)] shrink-0">
               <BrainCircuit className="w-5 h-5 text-white" />
             </div>
-            <h1 className={cn("font-display font-bold text-xl tracking-tight", theme === 'light' ? "text-slate-800" : "text-white")}>
-              SmartPrep
-            </h1>
+            <div>
+              <div className="flex items-center gap-2">
+                <h1 className={cn("font-display font-bold text-base tracking-tight leading-none", isLight ? "text-slate-900" : "text-white")}>
+                  SmartPrep
+                </h1>
+                <span className="text-[9px] font-bold text-cyan-400 bg-cyan-500/10 border border-cyan-500/30 px-1.5 py-0.5 rounded leading-none">
+                  IAT
+                </span>
+              </div>
+              <p className={cn("text-[10px] font-medium tracking-wide mt-1", isLight ? "text-slate-400" : "text-white/40")}>
+                IISER IAT 2027
+              </p>
+            </div>
           </div>
-
-          <nav className="space-y-1">
-            {navItems.map((item) => {
-              const Icon = item.icon;
-              const isActive = item.id === currentView || 
-                (item.id === 'smart_lessons' && currentView.startsWith('smart_lessons')) ||
-                (item.id === 'subscription' && currentView.startsWith('subscription'));
-              return (
-                <button
-                  key={item.label}
-                  onClick={() => {
-                    if (['dashboard', 'path', 'mock_tests', 'pyqs', 'analytics', 'smart_lessons', 'subscription', 'settings', 'support', 'feedback'].includes(item.id)) {
-                      onNavigate?.(item.id);
-                    }
-                    onClose?.();
-                  }}
-                  className={cn(
-                    "w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200",
-                    isActive 
-                      ? (theme === 'light' ? "bg-cyan-500/10 text-cyan-700 shadow-sm" : "bg-white/10 text-white") 
-                      : (theme === 'light' ? "text-slate-600 hover:text-slate-900 hover:bg-slate-100/60" : "text-white/60 hover:text-white hover:bg-white/5")
-                  )}
-                >
-                  <Icon className={cn("w-4 h-4", isActive ? (theme === 'light' ? "text-cyan-600" : "text-cyan-400") : (item.id === 'subscription' ? "text-amber-400" : ""))} />
-                  {item.label}
-                  {item.id === 'subscription' && !isPro && (
-                    <span className="ml-auto text-[10px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded bg-gradient-to-r from-amber-500 to-indigo-500 text-white">
-                      PRO
-                    </span>
-                  )}
-                </button>
-              );
-            })}
-          </nav>
         </div>
 
-        <div className="mt-auto p-6 space-y-4">
-          {/* Exam Selector Display */}
+        {/* ── CATEGORIZED NAVIGATION LIST (SCROLLABLE) ── */}
+        <div className="flex-1 overflow-y-auto px-3.5 py-2 space-y-4 custom-scrollbar">
+          {navSections.map(section => (
+            <div key={section.title} className="space-y-1">
+              <p className={cn("text-[10px] font-bold uppercase tracking-widest px-3 py-1", isLight ? "text-slate-400" : "text-white/35")}>
+                {section.title}
+              </p>
+              {section.items.map(item => {
+                const Icon = item.icon;
+                const isActive = item.id === currentView || 
+                  (item.id === 'smart_lessons' && currentView.startsWith('smart_lessons')) ||
+                  (item.id === 'mock_tests' && currentView.startsWith('mock_tests')) ||
+                  (item.id === 'pyqs' && currentView.startsWith('pyqs'));
+
+                return (
+                  <button
+                    key={item.id}
+                    onClick={() => {
+                      if (item.id === 'ai_doubt_solver') {
+                        onNavigate?.('ai_doubt_solver');
+                        onClose?.();
+                        return;
+                      }
+                      if (item.id === 'practice_arena') {
+                        onNavigate?.('smart_lessons');
+                        onClose?.();
+                        return;
+                      }
+                      if (item.id === 'weak_areas') {
+                        onNavigate?.('analytics');
+                        onClose?.();
+                        return;
+                      }
+                      if (item.id === 'planner') {
+                        onNavigate?.('path');
+                        onClose?.();
+                        return;
+                      }
+                      onNavigate?.(item.id);
+                      onClose?.();
+                    }}
+                    className={cn(
+                      "w-full flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-medium transition-all duration-200 group cursor-pointer",
+                      isActive
+                        ? (isLight 
+                            ? "bg-cyan-500/10 border border-cyan-500/30 text-cyan-700 shadow-sm font-semibold" 
+                            : "bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 font-semibold shadow-[0_0_15px_rgba(6,182,212,0.12)]")
+                        : (isLight 
+                            ? "text-slate-600 hover:text-slate-900 hover:bg-slate-100/70" 
+                            : "text-white/60 hover:text-white hover:bg-white/[0.04]")
+                    )}
+                  >
+                    <Icon className={cn(
+                      "w-4 h-4 shrink-0 transition-colors",
+                      isActive ? (isLight ? "text-cyan-600" : "text-cyan-400") : "text-white/50 group-hover:text-white/80"
+                    )} />
+                    <span className="truncate">{item.label}</span>
+                    {item.badge && (
+                      <span className={cn(
+                        "ml-auto text-[9px] shrink-0 leading-tight transition-all",
+                        item.badgeType === 'new' || item.badge === 'NEW'
+                          ? (isLight
+                              ? "bg-gradient-to-r from-cyan-600 to-indigo-600 text-white font-black px-2 py-0.5 rounded-full border border-cyan-500/40 shadow-sm uppercase tracking-wider"
+                              : "bg-gradient-to-r from-cyan-500 to-indigo-500 text-white font-black px-2 py-0.5 rounded-full border border-cyan-300/40 shadow-[0_0_12px_rgba(6,182,212,0.45)] uppercase tracking-wider")
+                          : (isLight 
+                              ? "bg-slate-100 border border-slate-200 text-slate-600 font-semibold px-1.5 py-0.5 rounded" 
+                              : "bg-white/5 border border-white/10 text-white/60 font-semibold px-1.5 py-0.5 rounded")
+                      )}>
+                        {item.badge}
+                      </span>
+                    )}
+                  </button>
+                );
+              })}
+            </div>
+          ))}
+        </div>
+
+        {/* ── SIDEBAR BOTTOM FOOTER ── */}
+        <div className="p-3.5 pt-2 space-y-2.5 border-t border-white/[0.06]">
+          {/* Target countdown display */}
           <div className={cn(
-            "p-4 rounded-xl border",
-            theme === 'light'
-              ? "bg-white/60 border-slate-200/60 shadow-[0_2px_8px_rgba(15,23,42,0.04)]"
-              : "bg-white/5 border-white/5"
+            "p-3 rounded-xl border transition-all",
+            isLight
+              ? "bg-slate-50 border-slate-200"
+              : "bg-white/[0.02] border-white/[0.05]"
           )}>
-            <p className={cn("text-xs mb-1 font-medium tracking-wider uppercase", theme === 'light' ? "text-slate-400" : "text-white/50")}>Current Target</p>
-            <div className="flex items-baseline justify-between mb-3">
-              <p className={cn("text-sm font-semibold", theme === 'light' ? "text-slate-800" : "text-white")}>{currentUser.exam}</p>
+            <div className="flex items-center justify-between text-xs mb-2">
+              <span className={cn("font-medium", isLight ? "text-slate-600" : "text-white/70")}>
+                IISER IAT 2027
+              </span>
+              <span className="font-bold text-cyan-400">
+                {daysUntilExam} Days Left
+              </span>
             </div>
-            <div className={cn("h-1.5 w-full rounded-full overflow-hidden", theme === 'light' ? "bg-slate-100" : "bg-white/10")}>
-               {/* Progress bar visual concept for time passed vs remaining */}
-               <div className="h-full bg-gradient-to-r from-indigo-500 to-cyan-400 w-2/3" />
+            <div className={cn("h-1 w-full rounded-full overflow-hidden", isLight ? "bg-slate-200" : "bg-white/10")}>
+              <div className="h-full bg-gradient-to-r from-indigo-500 to-cyan-400 w-2/3" />
             </div>
-            <p className={cn("text-xs mt-2", theme === 'light' ? "text-slate-600" : "text-white/70")}>
-              <span className={cn("font-bold", theme === 'light' ? "text-cyan-600" : "text-cyan-400")}>{currentUser.daysUntilExam}</span> Days Remaining
-            </p>
           </div>
 
-          {/* Premium Upgrade */}
-          {!isPro && (
-            <button 
-              onClick={() => onNavigate?.('subscription')}
-              className={cn(
-                "w-full relative group overflow-hidden rounded-xl p-4 transition-all",
-                theme === 'light'
-                  ? "bg-gradient-to-b from-indigo-500/10 to-purple-500/5 border border-indigo-500/20 hover:border-indigo-500/40 shadow-sm"
-                  : "bg-gradient-to-b from-indigo-500/20 to-purple-500/10 border border-indigo-500/30 hover:border-indigo-400/50"
-              )}
-            >
-              <div className="absolute inset-0 bg-gradient-to-r from-indigo-500/0 via-white/5 to-purple-500/0 opacity-0 group-hover:opacity-100 transition-opacity -translate-x-full group-hover:animate-[shimmer_1.5s_infinite]" />
-              <div className="flex items-start gap-3 relative z-10">
-                <Sparkles className="w-5 h-5 text-indigo-500 mt-0.5" />
-                <div className="text-left">
-                  <p className={cn("text-sm font-semibold", theme === 'light' ? "text-indigo-950" : "text-white")}>Upgrade to Pro</p>
-                  <p className={cn("text-xs mt-0.5", theme === 'light' ? "text-indigo-600/80" : "text-indigo-200/70")}>Unlock predicted ranks & deep analytics.</p>
-                </div>
+          {/* SmartPrep Pro Banner */}
+          <button
+            onClick={() => onNavigate?.('subscription')}
+            className={cn(
+              "w-full rounded-xl p-2.5 border text-left transition-all duration-200 group cursor-pointer flex items-center justify-between",
+              isLight
+                ? "bg-indigo-50/60 border-indigo-200/80 hover:border-indigo-400 shadow-sm"
+                : "bg-gradient-to-r from-indigo-950/40 via-purple-950/30 to-indigo-950/40 border-indigo-500/25 hover:border-indigo-500/45 shadow-[0_0_15px_rgba(99,102,241,0.08)]"
+            )}
+          >
+            <div className="flex items-center gap-2.5 min-w-0">
+              <div className="w-6 h-6 rounded-lg bg-indigo-500/20 flex items-center justify-center shrink-0">
+                <Sparkles className="w-3.5 h-3.5 text-amber-400" />
               </div>
-            </button>
-          )}
-
-          {/* User Profile & Logout */}
-          <div className={cn("pt-4 border-t flex items-center justify-between gap-3", theme === 'light' ? "border-slate-200/80" : "border-white/5")}>
-            <div className="flex items-center gap-3">
-              <div className="w-9 h-9 rounded-full bg-gradient-to-tr from-purple-500 to-indigo-500 flex items-center justify-center font-bold text-white text-sm shrink-0">
-                {currentUser.name ? currentUser.name.charAt(0).toUpperCase() : 'U'}
-              </div>
-              <div className="text-left overflow-hidden">
-                <p className={cn("text-sm font-semibold truncate", theme === 'light' ? "text-slate-800" : "text-white")}>
-                  {currentUser.name ? currentUser.name.split(' ')[0] : 'User'}
+              <div className="min-w-0">
+                <p className={cn("text-xs font-bold leading-tight truncate", isLight ? "text-indigo-950" : "text-white")}>
+                  SmartPrep Pro
                 </p>
-                <p className={cn("text-[11px] truncate", theme === 'light' ? "text-slate-400" : "text-white/45")}>Student Profile</p>
+                <p className={cn("text-[9.5px] leading-tight truncate mt-0.5", isLight ? "text-indigo-600" : "text-white/50")}>
+                  Unlock 45+ Mocks & AI
+                </p>
               </div>
             </div>
+            <span className={cn(
+              "text-xs transition-transform group-hover:translate-x-1 shrink-0 ml-2",
+              isLight ? "text-indigo-600" : "text-cyan-400"
+            )}>
+              &rarr;
+            </span>
+          </button>
+
+          {/* User Profile & Actions Row */}
+          <div className="pt-2 flex items-center justify-between gap-2 border-t border-white/[0.04]">
+            <div className="flex items-center gap-2 min-w-0">
+              <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-purple-500 via-indigo-500 to-cyan-500 flex items-center justify-center font-bold text-white text-xs shrink-0 shadow-sm">
+                {userInitial}
+              </div>
+              <div className="min-w-0">
+                <p className={cn("text-xs font-bold truncate leading-tight", isLight ? "text-slate-800" : "text-white")}>
+                  {storedName}
+                </p>
+                <p className={cn("text-[10px] truncate leading-tight mt-0.5", isLight ? "text-slate-400" : "text-white/40")}>
+                  IISER Aspirant
+                </p>
+              </div>
+            </div>
+
             <div className="flex items-center gap-1 shrink-0">
               <button 
                 onClick={toggleTheme}
                 className={cn(
-                  "p-2 rounded-lg transition-all cursor-pointer",
-                  theme === 'light' ? "text-slate-400 hover:text-slate-700 hover:bg-slate-100" : "text-white/40 hover:text-white/80 hover:bg-white/5"
+                  "p-1.5 rounded-lg transition-colors cursor-pointer",
+                  isLight ? "text-slate-400 hover:text-slate-700 hover:bg-slate-100" : "text-white/40 hover:text-white hover:bg-white/5"
                 )}
                 title="Toggle Theme"
               >
-                {theme === 'light' ? <Moon className="w-4 h-4" /> : <Sun className="w-4 h-4" />}
+                {isLight ? <Moon className="w-3.5 h-3.5" /> : <Sun className="w-3.5 h-3.5" />}
               </button>
               <button 
                 onClick={() => {
@@ -186,12 +303,12 @@ export function Sidebar({
                   window.location.href = '/index.html';
                 }}
                 className={cn(
-                  "p-2 rounded-lg transition-all cursor-pointer",
-                  theme === 'light' ? "text-slate-400 hover:text-slate-700 hover:bg-slate-100" : "text-white/40 hover:text-white/80 hover:bg-white/5"
+                  "p-1.5 rounded-lg transition-colors cursor-pointer",
+                  isLight ? "text-slate-400 hover:text-slate-700 hover:bg-slate-100" : "text-white/40 hover:text-white hover:bg-white/5"
                 )}
                 title="Logout"
               >
-                <LogOut className="w-4 h-4" />
+                <LogOut className="w-3.5 h-3.5" />
               </button>
             </div>
           </div>

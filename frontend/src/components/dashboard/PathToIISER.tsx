@@ -1,12 +1,65 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { motion } from 'motion/react';
-import { Target, CheckCircle2, Circle, ArrowRight, BookOpen, Calculator, Beaker, Dna, Map, Zap, Calendar, Star, Trophy, TrendingUp, Compass, Flag } from 'lucide-react';
+import { motion, AnimatePresence } from 'motion/react';
+import {
+  Target,
+  CheckCircle2,
+  Circle,
+  ArrowRight,
+  ArrowLeft,
+  BookOpen,
+  Calculator,
+  Beaker,
+  Dna,
+  Map,
+  Zap,
+  Calendar,
+  Star,
+  Trophy,
+  TrendingUp,
+  Compass,
+  Flag,
+  Sparkles,
+  Clock,
+  RotateCcw,
+  Check,
+  ChevronRight,
+  School,
+  Award,
+  AlertCircle,
+  HelpCircle,
+  Lightbulb,
+  CheckSquare,
+  Square,
+  MessageSquare,
+  Atom,
+  Flame,
+  Layers,
+  GraduationCap
+} from 'lucide-react';
 import { cn } from '../../lib/utils';
 import { Footer } from '../layout/Footer';
 import { useSlsMyPath } from '../../hooks/useSlsMyPath';
-import type { SlsRecommendation, SlsMasteryChapter, SlsWeakChapter, SlsWeakTopic } from '../../types/sls';
-import { LESSONS_DATA } from '../../data/lessons';
 import { useTheme } from '../../context/ThemeContext';
+import {
+  AiOnboardingAnswers,
+  AiGeneratedStudyPlan,
+  TARGET_INSTITUTES,
+  STREAMS,
+  STAGES,
+  SUBJECT_OPTIONS,
+  WEAKNESS_HURDLES,
+  STUDY_HOURS,
+  TARGET_AIRS,
+  getStoredAiStudyPlan,
+  saveAiStudyPlan,
+  generateAiStudyPlan,
+  isDailyActionCompleted,
+  setDailyActionCompleted,
+  getSavedChecklistState,
+  saveChecklistState,
+  resolveLessonTarget
+} from './aiPathGenerator';
+
 interface PathToIISERProps {
   onNavigate?: (view: string) => void;
   dashboardData?: any;
@@ -15,1120 +68,1344 @@ interface PathToIISERProps {
   actionPlanLoading?: boolean;
 }
 
-function getPreparationStage(progress: number): string {
-  if (progress <= 0) return 'Getting Started';
-  if (progress < 25) return 'Building Foundations';
-  if (progress < 50) return 'Developing Concepts';
-  if (progress < 75) return 'Strengthening Preparation';
-  if (progress < 90) return 'Advanced Preparation';
-  return 'Mastery Phase';
-}
+export function PathToIISER({
+  onNavigate,
+  dashboardData,
+  dashboardLoading,
+  actionPlan: plan,
+  actionPlanLoading: planLoading
+}: PathToIISERProps) {
+  const { theme } = useTheme();
+  const isLight = theme === 'light';
 
-function getRecommendationLabel(actionType: SlsRecommendation['actionType']): string {
-  switch (actionType) {
-    case 'REVISE_CHAPTER':
-      return 'Revise Chapter';
-    case 'PRACTICE_TOPIC':
-      return 'Practice Weak Topic';
-    case 'RETRY_CHAPTER_QUIZ':
-      return 'Retry Chapter Quiz';
-    case 'PRACTICE_DIFFICULTY':
-      return 'Practice Questions';
-    case 'CONTINUE_LEARNING':
-      return 'Continue Learning';
-    default:
-      return 'Continue Learning';
-  }
-}
-
-function getRecommendationCta(actionType: SlsRecommendation['actionType']): string {
-  switch (actionType) {
-    case 'REVISE_CHAPTER':
-      return 'Revise Now';
-    case 'PRACTICE_TOPIC':
-      return 'Practice Topic';
-    case 'RETRY_CHAPTER_QUIZ':
-      return 'Retry Quiz';
-    case 'PRACTICE_DIFFICULTY':
-      return 'Start Practice';
-    case 'CONTINUE_LEARNING':
-      return 'Continue Learning';
-    default:
-      return 'Continue Learning';
-  }
-}
-
-function getUrgencyText(urgency: SlsRecommendation['urgency']): string {
-  switch (urgency) {
-    case 'immediate':
-      return 'Immediate';
-    case 'high':
-      return 'High Priority';
-    case 'moderate':
-      return 'Medium Priority';
-    case 'low':
-      return 'Low Priority';
-    default:
-      return 'Priority';
-  }
-}
-
-interface SubjectProgressData {
-  subject: string;
-  totalChapters: number;
-  attemptedChapters: number;
-  masteredChapters: number;
-  progress: number;
-}
-
-function calculateSubjectProgress(
-  mastery: SlsMasteryChapter[],
-  subject: string
-): SubjectProgressData {
-  const subjectChapters = mastery.filter(chapter => {
-    const s = (chapter.subject || '').toLowerCase();
-    const t = subject.toLowerCase();
-    if (t === 'mathematics') {
-      return s === 'mathematics' || s === 'math';
+  // ── Plan & Calibration State ───────────────────────────────────────────
+  const [aiPlan, setAiPlan] = useState<AiGeneratedStudyPlan | null>(() => {
+    const p = getStoredAiStudyPlan();
+    if (!p) return null;
+    // Sanitize any raw markdown headers that may have leaked in earlier versions
+    if (p.aiMentorTips && Array.isArray(p.aiMentorTips)) {
+      p.aiMentorTips = p.aiMentorTips.map((tip, idx) => {
+        if (tip.includes('Headline:') || tip.includes('Golden Tips') || tip.startsWith('*') || tip.endsWith('**')) {
+          const defaults = [
+            `Focus on ${p.answers.weakSubject}: Every +4 marks in ${p.answers.weakSubject} boosts your IAT rank by 80+ positions. Target high-probability formula questions first.`,
+            `180-Min Pacing: Divide exam time: Chemistry (35m) → Biology (30m) → Physics (55m) → Math (50m) → Final Review (10m).`,
+            `Zero-Error Habit: In Section A, eliminate careless negative marks to secure your Top 100 AIR at ${p.answers.targetInstitute}.`
+          ];
+          return defaults[idx % defaults.length];
+        }
+        return tip;
+      });
     }
-    return s === t;
+    if (p.headlineStrategy && (p.headlineStrategy.includes('Headline:') || p.headlineStrategy.startsWith('*'))) {
+      p.headlineStrategy = `Tailored ${p.answers.dailyHours} hrs/day roadmap for ${p.answers.targetInstitute}. Maximizing ${p.answers.strongSubject} speed while executing targeted surgery on ${p.answers.weakSubject}.`;
+    }
+    return p;
+  });
+  const [isCalibrating, setIsCalibrating] = useState<boolean>(() => !getStoredAiStudyPlan());
+  const [isGenerating, setIsGenerating] = useState<boolean>(false);
+  const [generationStepText, setGenerationStepText] = useState<string>('Analyzing your academic stream...');
+
+  // ── Onboarding Wizard Answers ──────────────────────────────────────────
+  const [wizardStep, setWizardStep] = useState<number>(1);
+  const [wizardAnswers, setWizardAnswers] = useState<AiOnboardingAnswers>(() => {
+    const existing = getStoredAiStudyPlan()?.answers;
+    return existing || {
+      targetInstitute: 'IISER Pune',
+      targetYear: '2027',
+      stream: 'PCB',
+      currentStage: 'STARTING',
+      strongSubject: 'Biology',
+      weakSubject: 'Mathematics',
+      weakTopicHurdle: 'Matrices, Determinants & System of Equations',
+      dailyHours: 5,
+      targetAir: 'Top 100 AIR'
+    };
   });
 
-  const totalChapters = subjectChapters.length;
-  const attemptedChapters = subjectChapters.filter(chapter => (chapter.attemptCount || 0) > 0).length;
-  const masteredChapters = subjectChapters.filter(chapter => chapter.state === 'MASTERED').length;
-  
-  const progressSum = subjectChapters.reduce((sum, chapter) => sum + (chapter.masteryScore || 0), 0);
-  const progress = totalChapters > 0 ? Math.round(progressSum / totalChapters) : 0;
+  // ── Interactive Action States ──────────────────────────────────────────
+  const [dailyCompleted, setDailyCompleted] = useState<boolean>(() => {
+    const p = getStoredAiStudyPlan();
+    return p ? isDailyActionCompleted(p.id) : false;
+  });
 
-  return {
-    subject,
-    totalChapters,
-    attemptedChapters,
-    masteredChapters,
-    progress
-  };
-}
+  const [checklist, setChecklist] = useState<Record<string, boolean>>(() => getSavedChecklistState());
+  const [activePhaseTab, setActivePhaseTab] = useState<string>('PHASE_1');
 
-interface FocusAreaItem {
-  id: string;
-  chapterId: string;
-  topicId?: string;
-  subject?: string;
-  reasons: string[];
-  severity: 'mild' | 'moderate' | 'high' | 'critical';
-  type: 'chapter' | 'topic';
-}
-
-function selectFocusAreas(
-  weakChapters: SlsWeakChapter[],
-  weakTopics: SlsWeakTopic[]
-): FocusAreaItem[] {
-  const selected: FocusAreaItem[] = [];
-  const addedChapters = new Set<string>();
-
-  // 1. Add confirmed chapter weaknesses in backend order (up to 3)
-  for (const wc of (weakChapters || [])) {
-    if (selected.length >= 3) break;
-    selected.push({
-      id: `wc-${wc.chapterId}`,
-      chapterId: wc.chapterId,
-      subject: wc.subject,
-      reasons: wc.reasons,
-      severity: wc.severity,
-      type: 'chapter'
-    });
-    addedChapters.add(wc.chapterId);
-  }
-
-  if (selected.length < 3) {
-    // 2. Add weakTopics, prioritizing those from chapters not already added to avoid duplicates
-    const distinctTopics: SlsWeakTopic[] = [];
-    const duplicateTopics: SlsWeakTopic[] = [];
-
-    for (const wt of (weakTopics || [])) {
-      if (addedChapters.has(wt.chapterId)) {
-        duplicateTopics.push(wt);
-      } else {
-        distinctTopics.push(wt);
-      }
-    }
-
-    // Add distinct topics first
-    for (const wt of distinctTopics) {
-      if (selected.length >= 3) break;
-      selected.push({
-        id: `wt-${wt.chapterId}-${wt.topicId}`,
-        chapterId: wt.chapterId,
-        topicId: wt.topicId,
-        reasons: wt.reasons,
-        severity: wt.severity,
-        type: 'topic'
-      });
-      addedChapters.add(wt.chapterId);
-    }
-
-    // If still less than 3, add topics from already-represented chapters
-    for (const wt of duplicateTopics) {
-      if (selected.length >= 3) break;
-      selected.push({
-        id: `wt-${wt.chapterId}-${wt.topicId}-dup`,
-        chapterId: wt.chapterId,
-        topicId: wt.topicId,
-        reasons: wt.reasons,
-        severity: wt.severity,
-        type: 'topic'
-      });
-    }
-  }
-
-  return selected;
-}
-
-function getWeaknessReason(reasons: string[]): string {
-  if (!reasons || reasons.length === 0) return 'Needs more practice';
-  if (reasons.includes('FAST_BUT_INACCURATE')) {
-    return 'Answering too quickly with low accuracy';
-  }
-  if (reasons.includes('LOW_ACCURACY_AND_SLOW')) {
-    return 'Needs improvement in accuracy and speed';
-  }
-  if (reasons.includes('VERY_LOW_ACCURACY')) {
-    return 'Low accuracy';
-  }
-  if (reasons.includes('LOW_ACCURACY')) {
-    return 'Accuracy needs improvement';
-  }
-  if (reasons.includes('SLOW_SOLVING')) {
-    return 'Solving questions slower than expected';
-  }
-  return 'Needs more practice';
-}
-
-function getSeverityBadgeStyle(severity: 'mild' | 'moderate' | 'high' | 'critical'): string {
-  switch (severity) {
-    case 'critical':
-      return 'bg-rose-500/10 text-rose-400 border-rose-500/20';
-    case 'high':
-      return 'bg-orange-500/10 text-orange-400 border-orange-500/20';
-    case 'moderate':
-      return 'bg-amber-500/10 text-amber-400 border-amber-500/20';
-    case 'mild':
-    default:
-      return 'bg-indigo-500/10 text-indigo-400 border-indigo-500/20';
-  }
-}
-
-function getSeverityLabel(severity: 'mild' | 'moderate' | 'high' | 'critical'): string {
-  switch (severity) {
-    case 'critical':
-      return 'Critical';
-    case 'high':
-      return 'High Priority';
-    case 'moderate':
-      return 'Needs Attention';
-    case 'mild':
-    default:
-      return 'Keep Practicing';
-  }
-}
-
-export function PathToIISER({ onNavigate, dashboardData, dashboardLoading, actionPlan: plan, actionPlanLoading: planLoading }: PathToIISERProps) {
-  const { theme } = useTheme();
-  const examLabel = (() => {
-    const raw = localStorage.getItem('onboarding_exam') || 'iiser';
-    if (raw === 'nest') return 'NEST 2027';
-    if (raw === 'both') return 'IAT & NEST 2027';
-    return 'IISER IAT 2027';
-  })();
-
-  const daysUntilExam = (() => {
+  // Days left dynamic countdown
+  const daysUntilExam = useMemo(() => {
     const EXAM_DATE = new Date('2027-06-07T00:00:00');
     const today = new Date();
     const diffTime = EXAM_DATE.getTime() - today.getTime();
     return Math.max(0, Math.ceil(diffTime / (1000 * 60 * 60 * 24)));
-  })();
+  }, []);
 
-  const markMissionCompleted = (actionId: string) => {
-    const list = localStorage.getItem('completed_missions') || '';
-    const arr = list ? list.split(',') : [];
-    if (!arr.includes(actionId)) {
-      arr.push(actionId);
-      localStorage.setItem('completed_missions', arr.join(','));
+  const storedUserName = useMemo(() => {
+    return dashboardData?.displayName || localStorage.getItem('currentUser') || 'Himanshu';
+  }, [dashboardData]);
+
+  // Handle Generating AI Plan
+  const handleGeneratePlan = async () => {
+    setIsGenerating(true);
+    const steps = [
+      `Analyzing ${wizardAnswers.stream} academic background...`,
+      `Formulating high-yield scoring tactics for ${wizardAnswers.targetInstitute}...`,
+      `Balancing ${wizardAnswers.dailyHours} daily hours across all 4 subjects...`,
+      `Structuring 4-phase milestones towards ${wizardAnswers.targetAir}...`
+    ];
+
+    let stepIdx = 0;
+    const interval = setInterval(() => {
+      stepIdx++;
+      if (stepIdx < steps.length) {
+        setGenerationStepText(steps[stepIdx]);
+      }
+    }, 700);
+
+    try {
+      const newPlan = await generateAiStudyPlan(wizardAnswers, storedUserName);
+      clearInterval(interval);
+      setAiPlan(newPlan);
+      setIsGenerating(false);
+      setIsCalibrating(false);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } catch (err) {
+      clearInterval(interval);
+      setIsGenerating(false);
+      setIsCalibrating(false);
     }
   };
 
-  const {
-    loading,
-    error,
-    analytics,
-    weaknessAnalysis,
-    weaknessesAvailable,
-    recommendations,
-    recommendationsAvailable,
-    mastery,
-    hasSlsData,
-    analyticsAvailable,
-    masteryAvailable
-  } = useSlsMyPath();
-
-  const [selectedPhaseId, setSelectedPhaseId] = useState<'FOUNDATION' | 'CONCEPT_MASTERY' | 'ADVANCED_PREPARATION' | 'MOCK_TEST_PHASE' | 'FINAL_REVISION' | null>(null);
-
-  // ── Journey Constants & Calculation ──────────────────────────────────
-  const THRESHOLDS = useMemo(() => ({
-    CONCEPT_MASTERY: {
-      MIN_CHAPTERS: 3,
-      MIN_QUIZ_ATTEMPTS: 5
-    },
-    ADVANCED_PREPARATION: {
-      MIN_CHAPTERS: 8,
-      MIN_QUIZ_ATTEMPTS: 15,
-      MIN_STRONG_CHAPTERS: 3
-    },
-    MOCK_TEST_PHASE: {
-      MIN_CHAPTERS: 15,
-      MIN_MOCK_ATTEMPTS: 2
-    },
-    FINAL_REVISION: {
-      MAX_DAYS_REMAINING: 30,
-      MIN_CHAPTERS: 10
-    }
-  }), []);
-
-  const PHASES_ORDER = useMemo(() => [
-    'FOUNDATION',
-    'CONCEPT_MASTERY',
-    'ADVANCED_PREPARATION',
-    'MOCK_TEST_PHASE',
-    'FINAL_REVISION'
-  ] as const, []);
-
-  const currentPhaseId = useMemo(() => {
-    const uniqueChapters = analytics?.analytics?.overall?.uniqueChaptersAttempted ?? 0;
-    const totalQuizAttempts = analytics?.analytics?.overall?.totalAttempts ?? 0;
-    const mockAttempts = dashboardData?.total_attempts ?? 0;
-    const strongChapters = mastery.filter(chap => chap.state === 'STRONG' || chap.state === 'MASTERED').length;
-    
-    if (daysUntilExam <= THRESHOLDS.FINAL_REVISION.MAX_DAYS_REMAINING && uniqueChapters >= THRESHOLDS.FINAL_REVISION.MIN_CHAPTERS) {
-      return 'FINAL_REVISION';
-    }
-    if (uniqueChapters >= THRESHOLDS.MOCK_TEST_PHASE.MIN_CHAPTERS && mockAttempts >= THRESHOLDS.MOCK_TEST_PHASE.MIN_MOCK_ATTEMPTS) {
-      return 'MOCK_TEST_PHASE';
-    }
-    if (uniqueChapters >= THRESHOLDS.ADVANCED_PREPARATION.MIN_CHAPTERS && 
-        totalQuizAttempts >= THRESHOLDS.ADVANCED_PREPARATION.MIN_QUIZ_ATTEMPTS && 
-        strongChapters >= THRESHOLDS.ADVANCED_PREPARATION.MIN_STRONG_CHAPTERS) {
-      return 'ADVANCED_PREPARATION';
-    }
-    if (uniqueChapters >= THRESHOLDS.CONCEPT_MASTERY.MIN_CHAPTERS && 
-        totalQuizAttempts >= THRESHOLDS.CONCEPT_MASTERY.MIN_QUIZ_ATTEMPTS) {
-      return 'CONCEPT_MASTERY';
-    }
-    return 'FOUNDATION';
-  }, [analytics, mastery, dashboardData, daysUntilExam, THRESHOLDS]);
-
-  const completedLessonsCount = dashboardData?.completed_lessons_count ?? 0;
-  const overallReadiness = dashboardData?.overallReadiness ?? 0;
-
-  const getPhaseDetails = (phaseId: typeof PHASES_ORDER[number]) => {
-    const uniqueChapters = analytics?.analytics?.overall?.uniqueChaptersAttempted ?? 0;
-    const totalQuizAttempts = analytics?.analytics?.overall?.totalAttempts ?? 0;
-    const mockAttempts = dashboardData?.total_attempts ?? 0;
-    const strongChapters = mastery.filter(chap => chap.state === 'STRONG' || chap.state === 'MASTERED').length;
-
-    switch (phaseId) {
-      case 'FOUNDATION':
-        return {
-          title: 'Foundation Phase',
-          timeline: 'Months 1–3 (Kickoff)',
-          description: 'You are establishing your baseline subject understanding and generating early learning evidence.',
-          progressVal: uniqueChapters >= THRESHOLDS.CONCEPT_MASTERY.MIN_CHAPTERS ? 100 : Math.round((uniqueChapters / THRESHOLDS.CONCEPT_MASTERY.MIN_CHAPTERS) * 100),
-          requirements: `${Math.min(THRESHOLDS.CONCEPT_MASTERY.MIN_CHAPTERS, uniqueChapters)} / ${THRESHOLDS.CONCEPT_MASTERY.MIN_CHAPTERS} Chapters Evaluated`,
-          evidence: [
-            `✓ ${completedLessonsCount} Smart Lessons completed`,
-            `✓ ${uniqueChapters} unique chapters evaluated via quizzes`,
-            `✓ ${totalQuizAttempts} total quiz questions attempted`
-          ]
-        };
-      case 'CONCEPT_MASTERY':
-        return {
-          title: 'Concept Mastery',
-          timeline: 'Months 4–6 (Core Concepts)',
-          description: 'You are actively building syllabus coverage and strengthening chapter-level accuracies.',
-          progressVal: uniqueChapters >= THRESHOLDS.ADVANCED_PREPARATION.MIN_CHAPTERS ? 100 : Math.round((uniqueChapters / THRESHOLDS.ADVANCED_PREPARATION.MIN_CHAPTERS) * 100),
-          requirements: `${Math.min(THRESHOLDS.ADVANCED_PREPARATION.MIN_CHAPTERS, uniqueChapters)} / ${THRESHOLDS.ADVANCED_PREPARATION.MIN_CHAPTERS} Chapters Evaluated`,
-          evidence: [
-            `✓ ${strongChapters} chapters at Strong or Mastered state`,
-            `✓ Overall syllabus readiness score at ${overallReadiness}%`,
-            `✓ Dedicated Weak Area Polish active`
-          ]
-        };
-      case 'ADVANCED_PREPARATION':
-        return {
-          title: 'Advanced Preparation',
-          timeline: 'Months 7–8 (Syllabus Completion)',
-          description: 'You are deep-diving into complex concepts, resolving weak topics, and scheduling spaced revisions.',
-          progressVal: uniqueChapters >= THRESHOLDS.MOCK_TEST_PHASE.MIN_CHAPTERS ? 100 : Math.round((uniqueChapters / THRESHOLDS.MOCK_TEST_PHASE.MIN_CHAPTERS) * 100),
-          requirements: `${Math.min(THRESHOLDS.MOCK_TEST_PHASE.MIN_CHAPTERS, uniqueChapters)} / ${THRESHOLDS.MOCK_TEST_PHASE.MIN_CHAPTERS} Chapters Evaluated`,
-          evidence: [
-            `✓ Spaced repetition system managing ${mastery.length} chapters`,
-            `✓ Focused Weak Area review sessions active`,
-            `✓ Direct student interaction surface active`
-          ]
-        };
-      case 'MOCK_TEST_PHASE':
-        return {
-          title: 'Mock Test Phase',
-          timeline: 'Months 9–10 (Exam Simulation)',
-          description: 'You are simulating exam scenarios, practicing full-length mock papers, and refining time-management skills.',
-          progressVal: mockAttempts >= THRESHOLDS.MOCK_TEST_PHASE.MIN_MOCK_ATTEMPTS ? 100 : Math.round((mockAttempts / THRESHOLDS.MOCK_TEST_PHASE.MIN_MOCK_ATTEMPTS) * 100),
-          requirements: `${Math.min(THRESHOLDS.MOCK_TEST_PHASE.MIN_MOCK_ATTEMPTS, mockAttempts)} / ${THRESHOLDS.MOCK_TEST_PHASE.MIN_MOCK_ATTEMPTS} Mocks Completed`,
-          evidence: [
-            `✓ ${mockAttempts} full mock tests attempted`,
-            `✓ Interactive performance analysis active`,
-            `✓ Post-mock revision workflows generated`
-          ]
-        };
-      case 'FINAL_REVISION':
-        return {
-          title: 'Final Revision',
-          timeline: 'Month 11 (Last 30 Days)',
-          description: 'You are in the final 30-day pre-exam stretch. Focus is on high-yield topic reviews and previous years papers.',
-          progressVal: daysUntilExam <= THRESHOLDS.FINAL_REVISION.MAX_DAYS_REMAINING ? Math.round(((30 - daysUntilExam) / 30) * 100) : 0,
-          requirements: daysUntilExam <= 30 ? `${30 - daysUntilExam} Days in Revision Window` : 'Locked until 30 days before exam',
-          evidence: [
-            `✓ Target exam: ${examLabel} scheduled on 7 June 2027`,
-            `✓ ${daysUntilExam} days remaining until exam day`,
-            `✓ Rapid revision queues optimized`
-          ]
-        };
-    }
+  // Toggle Daily Mission Completed
+  const handleToggleDailyMission = () => {
+    if (!aiPlan) return;
+    const nextState = !dailyCompleted;
+    setDailyCompleted(nextState);
+    setDailyActionCompleted(aiPlan.id, nextState);
   };
 
-  const selectedFocusAreas = useMemo(() => {
-    if (loading || !weaknessesAvailable || !weaknessAnalysis) return [];
-    return selectFocusAreas(
-      weaknessAnalysis.weakChapters || [],
-      weaknessAnalysis.weakTopics || []
-    );
-  }, [loading, weaknessesAvailable, weaknessAnalysis]);
-
-  // Check if mastery failed to load (loading completed but mastery array is empty)
-  const isMasteryFailed = !loading && mastery.length === 0;
-
-  const preparationProgress = useMemo(() => {
-    if (isMasteryFailed) return null;
-    if (!hasSlsData) return 0;
-    const sum = mastery.reduce((acc, chap) => acc + (chap.masteryScore || 0), 0);
-    return mastery.length > 0 ? Math.round(sum / mastery.length) : 0;
-  }, [mastery, hasSlsData, isMasteryFailed]);
-
-  const chaptersMastered = useMemo(() => {
-    if (isMasteryFailed) return null;
-    if (!hasSlsData) return 0;
-    return mastery.filter(chap => chap.state === 'MASTERED').length;
-  }, [mastery, hasSlsData, isMasteryFailed]);
-
-  const totalChapters = useMemo(() => {
-    if (isMasteryFailed) return null;
-    return mastery.length > 0 ? mastery.length : 78;
-  }, [mastery, isMasteryFailed]);
-
-  const stage = useMemo(() => {
-    if (isMasteryFailed) return 'Unavailable';
-    if (preparationProgress === null) return 'Getting Started';
-    return getPreparationStage(preparationProgress);
-  }, [preparationProgress, isMasteryFailed]);
-
-  const supportingMessage = useMemo(() => {
-    if (isMasteryFailed) {
-      return 'Progress data is temporarily unavailable.';
-    }
-    if (!hasSlsData) {
-      return 'Complete your first Smart Lesson quiz to start building your preparation profile.';
-    }
-    return 'Based on mastery across your IAT syllabus';
-  }, [isMasteryFailed, hasSlsData]);
-
-  const subjectsConfig = useMemo(() => [
-    { name: 'Physics', icon: Calculator, color: 'text-blue-400', bg: 'bg-blue-400' },
-    { name: 'Chemistry', icon: Beaker, color: 'text-rose-400', bg: 'bg-rose-400' },
-    { name: 'Mathematics', icon: Target, color: 'text-amber-400', bg: 'bg-amber-400' },
-    { name: 'Biology', icon: Dna, color: 'text-emerald-400', bg: 'bg-emerald-400' },
-  ], []);
-
-  const subjectProgressList = useMemo(() => {
-    if (loading || isMasteryFailed) return [];
-    return subjectsConfig.map((sub) => {
-      const data = calculateSubjectProgress(mastery, sub.name);
-      return {
-        ...sub,
-        data,
-      };
+  // Toggle Weekly Checklist Item
+  const handleToggleChecklistItem = (id: string) => {
+    setChecklist(prev => {
+      const next = { ...prev, [id]: !prev[id] };
+      saveChecklistState(next);
+      return next;
     });
-  }, [mastery, loading, isMasteryFailed, subjectsConfig]);
+  };
 
-  useEffect(() => {
-    if (!loading) {
-      console.log('[PathToIISER SLS Verification]', {
-        totalAttempts: analytics?.analytics?.overall?.totalAttempts ?? 0,
-        masteryChaptersCount: mastery.length,
-        recommendationsCount: recommendations.length,
-        detectedWeaknessesCount: weaknessAnalysis?.weakTopics?.length ?? 0,
-        hasSlsData
-      });
-    }
-  }, [loading, analytics, mastery, recommendations, weaknessAnalysis, hasSlsData]);
+  // ══════════════════════════════════════════════════════════════════════════
+  // 1. AI GENERATION ANIMATED LOADING SCREEN
+  // ══════════════════════════════════════════════════════════════════════════
+  if (isGenerating) {
+    return (
+      <div className="max-w-4xl mx-auto w-full min-h-[70vh] flex flex-col items-center justify-center text-center p-6 space-y-8 animate-in fade-in duration-300">
+        <div className="relative">
+          <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-3xl bg-gradient-to-tr from-indigo-600 via-purple-600 to-cyan-400 flex items-center justify-center text-white shadow-[0_0_50px_rgba(6,182,212,0.45)] border border-white/20 animate-pulse">
+            <Sparkles className="w-12 h-12 text-white animate-spin" style={{ animationDuration: '6s' }} />
+          </div>
+          <div className="absolute -bottom-2 -right-2 w-8 h-8 rounded-xl bg-[#0b0e24] border border-cyan-400 flex items-center justify-center text-cyan-300 shadow-lg">
+            <Atom className="w-4 h-4 animate-spin" style={{ animationDuration: '3s' }} />
+          </div>
+        </div>
 
-  return (
-    <div className="max-w-6xl mx-auto w-full space-y-6 flex-1 mt-2 lg:mt-4 animate-in fade-in slide-in-from-bottom-4 duration-500 pb-32 lg:pb-0">
-      
-      {/* 1. PAGE HEADER & HERO CARD */}
-      <div className="relative overflow-hidden rounded-[2.5rem] bg-[#0A0C16] border border-white/10 p-8 lg:p-12">
-        <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/10 via-cyan-500/5 to-transparent pointer-events-none" />
-        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-cyan-500/20 blur-[120px] rounded-full pointer-events-none mix-blend-screen opacity-50 translate-x-1/3 -translate-y-1/3" />
+        <div className="space-y-3 max-w-md">
+          <h2 className="text-2xl sm:text-3xl font-display font-black text-white tracking-tight">
+            Synthesizing Your IISER Roadmap
+          </h2>
+          <p className="text-sm text-cyan-400 font-mono tracking-wide flex items-center justify-center gap-2">
+            <span className="w-2 h-2 rounded-full bg-cyan-400 animate-ping" />
+            <span>{generationStepText}</span>
+          </p>
+          <p className="text-xs text-white/50 leading-relaxed pt-2">
+            Calibrating subject weightages, non-calculus scoring shortcuts, and phase targets powered by NVIDIA AI.
+          </p>
+        </div>
+
+        <div className="w-64 h-1.5 rounded-full bg-white/10 overflow-hidden relative">
+          <div className="absolute inset-0 bg-gradient-to-r from-indigo-500 via-cyan-400 to-indigo-500 animate-[shimmer_1.5s_infinite] bg-[length:200%_100%]" />
+        </div>
+      </div>
+    );
+  }
+
+  // ══════════════════════════════════════════════════════════════════════════
+  // 2. INTERACTIVE ONBOARDING QUESTIONNAIRE WIZARD
+  // ══════════════════════════════════════════════════════════════════════════
+  if (isCalibrating || !aiPlan) {
+    return (
+      <div className="max-w-4xl mx-auto w-full space-y-6 flex-1 mt-2 lg:mt-4 pb-20 animate-in fade-in duration-300">
         
-        <div className="relative z-10 grid lg:grid-cols-2 gap-12">
-          <div className="space-y-8">
+        {/* Wizard Header */}
+        <div className={cn(
+          "p-6 sm:p-8 rounded-3xl border relative overflow-hidden backdrop-blur-xl shadow-2xl",
+          isLight 
+            ? "bg-white/90 border-slate-200 shadow-slate-200/50" 
+            : "bg-[#0b0e24]/90 border-indigo-500/25 shadow-[0_8px_32px_rgba(0,0,0,0.5),0_0_30px_rgba(99,102,241,0.1)]"
+        )}>
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/10 pb-5 mb-6">
             <div>
-              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/5 border border-white/10 mb-6">
-                <Target className="w-4 h-4 text-cyan-400" />
-                <span className="text-xs font-medium text-white/80 tracking-wide uppercase">Your Journey Map</span>
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 text-xs font-bold mb-2">
+                <Sparkles className="w-3.5 h-3.5" />
+                <span>AI Preparation Architect</span>
               </div>
-              <h1 className="text-4xl lg:text-5xl font-display font-bold text-white tracking-tight mb-4">
-                My Path to <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-indigo-400">IISER</span>
+              <h1 className="text-2xl sm:text-3xl font-display font-extrabold text-white tracking-tight">
+                Calibrate Your Path to IISER
               </h1>
-              <p className="text-lg text-white/60 max-w-md">
-                Your personalized journey towards IISER admission. I know exactly where I am and what I need to do next.
+              <p className={cn("text-xs sm:text-sm mt-1", isLight ? "text-slate-600" : "text-white/60")}>
+                Answer 6 quick questions so the AI can craft your exact stream-specific scoring blueprint.
               </p>
             </div>
 
-            <div className="grid grid-cols-2 gap-4">
-              <div className="p-4 rounded-2xl bg-white/5 border border-white/5">
-                <p className="text-xs text-white/40 mb-1">Target Exam</p>
-                <p className="font-semibold text-white">{examLabel}</p>
-              </div>
-              <div className="p-4 rounded-2xl bg-white/5 border border-white/5">
-                <p className="text-xs text-white/40 mb-1">Target Institute</p>
-                <p className="font-semibold text-white">IISER Pune</p>
-              </div>
-              <div className="p-4 rounded-2xl bg-white/5 border border-white/5">
-                <p className="text-xs text-white/40 mb-1">Days Remaining</p>
-                <p className="font-semibold text-cyan-400">{daysUntilExam}</p>
-              </div>
-              <div className="p-4 rounded-2xl bg-white/5 border border-white/5">
-                <p className="text-xs text-white/40 mb-1">Current Level</p>
-                <p className="font-semibold text-emerald-400">🌱 Beginner</p>
-              </div>
-            </div>
-          </div>
-
-          <div className="relative flex flex-col justify-center">
-            <div className={cn(
-              "p-6 lg:p-8 rounded-3xl border shadow-2xl relative overflow-hidden group backdrop-blur-md",
-              theme === 'light'
-                ? "bg-white/70 border-slate-200/80 shadow-[0_8px_32px_rgba(15,23,42,0.08),inset_0_1px_0_rgba(255,255,255,0.95)]"
-                : "bg-[#05060F]/80 border-white/10"
-            )}>
-              <div className="absolute inset-0 bg-gradient-to-b from-cyan-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-              
-              <div className="flex justify-between items-end mb-8 relative z-10">
-                <div>
-                  <p className="text-sm font-medium text-white/50 mb-1">Preparation Progress</p>
-                  {loading ? (
-                    <div className="h-10 w-24 bg-white/10 rounded animate-pulse mt-1" />
-                  ) : isMasteryFailed ? (
-                    <div className="flex items-baseline gap-1">
-                      <span className="text-5xl font-display font-bold text-white tracking-tighter">—</span>
-                    </div>
-                  ) : (
-                    <div className="flex items-baseline gap-1">
-                      <span className="text-5xl font-display font-bold text-white tracking-tighter">
-                        {preparationProgress}
-                      </span>
-                      <span className="text-2xl font-bold text-cyan-400">%</span>
-                    </div>
-                  )}
-                </div>
-                <div className="text-right">
-                  <p className="text-sm font-medium text-white/50 mb-1">Chapters Mastered</p>
-                  {loading ? (
-                    <div className="h-6 w-20 bg-white/10 rounded animate-pulse mt-1 ml-auto" />
-                  ) : isMasteryFailed ? (
-                    <p className="text-2xl font-display font-bold text-white/80">—</p>
-                  ) : (
-                    <p className="text-2xl font-display font-bold text-white/80">
-                      {chaptersMastered} <span className="text-sm text-white/40">/ {totalChapters}</span>
-                    </p>
-                  )}
-                </div>
-              </div>
-
-              {/* Progress Line */}
-              <div className="relative h-2 w-full bg-white/10 rounded-full mb-4 z-10 overflow-hidden">
-                {!loading && !isMasteryFailed && preparationProgress !== null && (
-                  <>
-                    <motion.div 
-                      initial={{ width: 0 }}
-                      animate={{ width: `${Math.min(100, Math.max(0, preparationProgress))}%` }}
-                      transition={{ duration: 1.5, ease: "easeOut" }}
-                      className="absolute top-0 left-0 h-full bg-gradient-to-r from-indigo-500 via-cyan-400 to-cyan-300 rounded-full"
-                    />
-                    <motion.div
-                      initial={{ left: 0 }}
-                      animate={{ left: `${Math.min(100, Math.max(0, preparationProgress))}%` }}
-                      transition={{ duration: 1.5, ease: "easeOut" }}
-                      className="absolute top-1/2 -translate-y-1/2 -ml-1.5 w-3 h-3 bg-white rounded-full shadow-[0_0_10px_rgba(255,255,255,0.8)]"
-                    />
-                  </>
-                )}
-              </div>
-
-              <div className="text-[11px] font-semibold text-white/40 mb-8 relative z-10 leading-normal">
-                {supportingMessage}
-              </div>
-
-              <div className={cn(
-                "p-5 rounded-2xl flex items-center gap-4 relative z-10 border",
-                theme === 'light'
-                  ? "bg-indigo-500/8 border-indigo-500/15"
-                  : "bg-indigo-500/10 border-indigo-500/20"
-              )}>
-                <Compass className={cn("w-8 h-8", theme === 'light' ? "text-indigo-600" : "text-indigo-400")} />
-                <div className="flex-1">
-                  <p className={cn("text-xs font-medium mb-1", theme === 'light' ? "text-indigo-600/80" : "text-indigo-300/70")}>Current Position</p>
-                  {loading ? (
-                    <div className={cn("h-5 w-40 rounded animate-pulse", theme === 'light' ? "bg-indigo-500/10" : "bg-white/10")} />
-                  ) : (
-                    <p className={cn("text-sm font-bold", theme === 'light' ? "text-indigo-950" : "text-indigo-100")}>{stage}</p>
-                  )}
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        
-        {/* LEFT COLUMN: Main Journey & Steps */}
-        <div className="lg:col-span-2 space-y-6">
-          
-          {/* 2. TODAY'S NEXT STEP */}
-          <div className="p-6 md:p-8 rounded-3xl bg-gradient-to-br from-indigo-500/10 to-cyan-500/10 border border-indigo-500/30 relative overflow-hidden group hover:border-indigo-400/50 transition-all">
-            <div className="absolute inset-0 bg-[linear-gradient(45deg,transparent_25%,rgba(68,210,255,0.03)_50%,transparent_75%,transparent_100%)] bg-[length:250%_250%,100%_100%] animate-[shimmer_3s_infinite]" />
-            <div className="absolute -top-24 -right-24 w-48 h-48 bg-indigo-500/20 blur-[60px] rounded-full pointer-events-none" />
-            
-            {loading || planLoading ? (
-              <div className="relative z-10 flex flex-col md:flex-row gap-6 md:items-center justify-between animate-pulse">
-                <div className="space-y-4 flex-1">
-                  <div className="h-5 w-32 bg-white/10 rounded" />
-                  <div className="space-y-2">
-                    <div className="h-8 w-64 bg-white/10 rounded" />
-                    <div className="h-4 w-48 bg-white/10 rounded" />
-                  </div>
-                </div>
-                <div className="h-14 w-48 bg-white/10 rounded-2xl" />
-              </div>
-            ) : plan?.primaryAction && plan.primaryAction.type !== 'NO_ACTION' ? (() => {
-              const nextAction = plan.primaryAction;
-              const label = nextAction.type.replace(/_/g, ' ');
-              const cta = nextAction.ctaLabel;
-              const priorityText = nextAction.priorityBand.charAt(0).toUpperCase() + nextAction.priorityBand.slice(1).toLowerCase() + ' Priority';
-
-              const handleActionClick = () => {
-                if (nextAction.id) {
-                  markMissionCompleted(nextAction.id);
-                }
-                if (nextAction.route) {
-                  onNavigate?.(nextAction.route);
-                }
-              };
-
-              return (
-                <div className="relative z-10 flex flex-col md:flex-row gap-6 md:items-center justify-between">
-                  <div className="space-y-4">
-                    <div className="flex items-center gap-2">
-                      <Zap className="w-5 h-5 text-amber-400 fill-amber-400/20" />
-                      <span className="text-sm font-bold text-amber-400 tracking-wider uppercase">Your Next Action</span>
-                    </div>
-                    <div>
-                      <span className="inline-block px-2 py-0.5 text-[10px] font-bold bg-indigo-500/20 text-indigo-300 rounded border border-indigo-500/30 mb-2 uppercase tracking-wide">
-                        {label}
-                      </span>
-                      <h3 className="text-2xl font-display font-bold text-white mb-2 flex items-center gap-3">
-                        <BookOpen className="w-6 h-6 text-indigo-400" /> {nextAction.title}
-                      </h3>
-                      <div className="flex items-center gap-4 text-xs font-semibold text-white/50">
-                        <span className="capitalize">{nextAction.subject}</span>
-                        <span className="w-1.5 h-1.5 rounded-full bg-white/20" />
-                        <span className="text-cyan-400">{priorityText}</span>
-                      </div>
-                    </div>
-                  </div>
-
-                  <button
-                    onClick={handleActionClick}
-                    className="whitespace-nowrap px-8 py-4 bg-white text-[#0A0C16] hover:bg-white/90 rounded-2xl font-bold transition-all shadow-[0_0_20px_rgba(255,255,255,0.3)] hover:shadow-[0_0_30px_rgba(255,255,255,0.5)] transform hover:-translate-y-1 flex items-center justify-center gap-2 group/btn"
-                  >
-                    {cta}
-                    <ArrowRight className="w-5 h-5 group-hover/btn:translate-x-1 transition-transform" />
-                  </button>
-                </div>
-              );
-            })() : !recommendationsAvailable ? (
-              <div className="relative z-10 flex flex-col md:flex-row gap-6 md:items-center justify-between">
-                <div className="space-y-4">
-                  <div className="flex items-center gap-2">
-                    <Zap className="w-5 h-5 text-amber-400 fill-amber-400/20" />
-                    <span className="text-sm font-bold text-amber-400 tracking-wider uppercase">Your Next Action</span>
-                  </div>
-                  <div>
-                    <h3 className="text-2xl font-display font-bold text-white mb-2">
-                      Recommendations Temporarily Unavailable
-                    </h3>
-                    <p className="text-sm text-white/50 font-medium">
-                      You can continue studying from Smart Lessons.
-                    </p>
-                  </div>
-                </div>
-
-                <button
-                  onClick={() => onNavigate?.('smart_lessons')}
-                  className="whitespace-nowrap px-8 py-4 bg-white text-[#0A0C16] hover:bg-white/90 rounded-2xl font-bold transition-all shadow-[0_0_20px_rgba(255,255,255,0.3)] hover:shadow-[0_0_30px_rgba(255,255,255,0.5)] transform hover:-translate-y-1 flex items-center justify-center gap-2 group/btn"
-                >
-                  Open Smart Lessons
-                  <ArrowRight className="w-5 h-5 group-hover/btn:translate-x-1 transition-transform" />
-                </button>
-              </div>
-            ) : recommendations.length === 0 || !hasSlsData ? (
-              <div className="relative z-10 flex flex-col md:flex-row gap-6 md:items-center justify-between">
-                <div className="space-y-4">
-                  <div className="flex items-center gap-2">
-                    <Zap className="w-5 h-5 text-amber-400 fill-amber-400/20" />
-                    <span className="text-sm font-bold text-amber-400 tracking-wider uppercase">Your Next Action</span>
-                  </div>
-                  <div>
-                    <h3 className="text-2xl font-display font-bold text-white mb-2">
-                      Start Your First Smart Lesson
-                    </h3>
-                    <p className="text-sm text-white/50 font-medium">
-                      Complete a chapter quiz to begin building your personalized learning path.
-                    </p>
-                  </div>
-                </div>
-
-                <button
-                  onClick={() => onNavigate?.('smart_lessons')}
-                  className="whitespace-nowrap px-8 py-4 bg-white text-[#0A0C16] hover:bg-white/90 rounded-2xl font-bold transition-all shadow-[0_0_20px_rgba(255,255,255,0.3)] hover:shadow-[0_0_30px_rgba(255,255,255,0.5)] transform hover:-translate-y-1 flex items-center justify-center gap-2 group/btn"
-                >
-                  Explore Smart Lessons
-                  <ArrowRight className="w-5 h-5 group-hover/btn:translate-x-1 transition-transform" />
-                </button>
-              </div>
-            ) : (() => {
-              const nextAction = recommendations[0];
-              const label = getRecommendationLabel(nextAction.actionType);
-              const cta = getRecommendationCta(nextAction.actionType);
-              const urgencyText = getUrgencyText(nextAction.urgency);
-
-              const handleActionClick = () => {
-                const chapterId = nextAction.chapterId;
-                if (!chapterId) {
-                  onNavigate?.('smart_lessons');
-                  return;
-                }
-                if (nextAction.actionType === 'RETRY_CHAPTER_QUIZ') {
-                  onNavigate?.(`/smart-lessons/${chapterId}::quiz`);
-                } else {
-                  onNavigate?.(`/smart-lessons/${chapterId}`);
-                }
-              };
-
-              return (
-                <div className="relative z-10 flex flex-col md:flex-row gap-6 md:items-center justify-between">
-                  <div className="space-y-4">
-                    <div className="flex items-center gap-2">
-                      <Zap className="w-5 h-5 text-amber-400 fill-amber-400/20" />
-                      <span className="text-sm font-bold text-amber-400 tracking-wider uppercase">Your Next Action</span>
-                    </div>
-                    <div>
-                      <span className="inline-block px-2 py-0.5 text-[10px] font-bold bg-indigo-500/20 text-indigo-300 rounded border border-indigo-500/30 mb-2 uppercase tracking-wide">
-                        {label}
-                      </span>
-                      <h3 className="text-2xl font-display font-bold text-white mb-2 flex items-center gap-3">
-                        <BookOpen className="w-6 h-6 text-indigo-400" /> {nextAction.chapterTitle || nextAction.chapterId}
-                      </h3>
-                      <div className="flex items-center gap-4 text-xs font-semibold text-white/50">
-                        <span className="capitalize">{nextAction.subject}</span>
-                        <span className="w-1.5 h-1.5 rounded-full bg-white/20" />
-                        <span className="text-cyan-400">{urgencyText}</span>
-                      </div>
-                    </div>
-                  </div>
-
-                  <button
-                    onClick={handleActionClick}
-                    className="whitespace-nowrap px-8 py-4 bg-white text-[#0A0C16] hover:bg-white/90 rounded-2xl font-bold transition-all shadow-[0_0_20px_rgba(255,255,255,0.3)] hover:shadow-[0_0_30px_rgba(255,255,255,0.5)] transform hover:-translate-y-1 flex items-center justify-center gap-2 group/btn"
-                  >
-                    {cta} <ArrowRight className="w-5 h-5 group-hover/btn:translate-x-1 transition-transform" />
-                  </button>
-                </div>
-              );
-            })()}
-          </div>
-
-          {/* 3. JOURNEY MILESTONES */}
-          <div className="p-6 md:p-8 rounded-3xl bg-[#0A0C16] border border-white/5 space-y-6">
-            <div>
-              <h3 className="text-xl font-display font-bold text-white">Preparation Journey</h3>
-              <p className="text-xs text-white/40 mt-1">Tracks your progression across the complete preparation lifecycle</p>
-            </div>
-
-            {/* Stepper Row */}
-            <div className="grid grid-cols-1 md:grid-cols-5 gap-4 relative">
-              {PHASES_ORDER.map((phaseId, index) => {
-                const isCurrent = phaseId === currentPhaseId;
-                const isCompleted = PHASES_ORDER.indexOf(phaseId) < PHASES_ORDER.indexOf(currentPhaseId);
-                const isUpcoming = PHASES_ORDER.indexOf(phaseId) === PHASES_ORDER.indexOf(currentPhaseId) + 1;
-                const isLocked = PHASES_ORDER.indexOf(phaseId) > PHASES_ORDER.indexOf(currentPhaseId) + 1;
-
-                const details = getPhaseDetails(phaseId);
-                const isSelected = selectedPhaseId ? selectedPhaseId === phaseId : isCurrent;
-
-                // Select icon
-                let Icon = BookOpen;
-                if (phaseId === 'FOUNDATION') Icon = Map;
-                else if (phaseId === 'CONCEPT_MASTERY') Icon = Calculator;
-                else if (phaseId === 'ADVANCED_PREPARATION') Icon = Trophy;
-                else if (phaseId === 'MOCK_TEST_PHASE') Icon = Target;
-                else if (phaseId === 'FINAL_REVISION') Icon = Flag;
-
-                return (
-                  <button
-                    key={phaseId}
-                    onClick={() => setSelectedPhaseId(phaseId)}
-                    aria-current={isCurrent ? 'step' : undefined}
-                    aria-expanded={isSelected}
-                    className={cn(
-                      "relative p-4 rounded-2xl text-left transition-all duration-200 focus:outline-none focus:ring-1 focus:ring-purple-500/50 flex flex-col justify-between border min-h-[110px] md:min-h-[120px]",
-                      isSelected
-                        ? "bg-purple-500/5 border-purple-500/30 shadow-[0_0_20px_rgba(168,85,247,0.05)]"
-                        : "bg-white/[0.01] border-white/5 hover:bg-white/[0.02] hover:border-white/10"
-                    )}
-                  >
-                    <div className="flex items-center justify-between w-full mb-3">
-                      <div className={cn(
-                        "w-8 h-8 rounded-lg flex items-center justify-center border",
-                        isCompleted ? "bg-emerald-500/10 border-emerald-500/20 text-emerald-400" :
-                        isCurrent ? "bg-purple-500/15 border-purple-500/30 text-purple-400" :
-                        "bg-white/5 border-white/5 text-white/30"
-                      )}>
-                        <Icon className="w-4 h-4" />
-                      </div>
-
-                      {/* Status indicator */}
-                      <span className={cn(
-                        "text-[8px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full border",
-                        isCompleted ? "bg-emerald-500/10 border-emerald-500/20 text-emerald-400" :
-                        isCurrent ? "bg-purple-500/15 border-purple-500/30 text-purple-300 animate-pulse" :
-                        isUpcoming ? "bg-blue-500/5 border-blue-500/10 text-blue-400/80" :
-                        "bg-white/[0.02] border-white/5 text-white/20"
-                      )}>
-                        {isCompleted ? 'Done' : isCurrent ? 'Active' : isUpcoming ? 'Next' : 'Locked'}
-                      </span>
-                    </div>
-
-                    <div>
-                      <h4 className={cn(
-                        "text-[10px] md:text-xs font-bold leading-tight mt-1.5 whitespace-normal break-words",
-                        isLocked ? "text-white/20" : "text-white"
-                      )}>
-                        {details.title}
-                      </h4>
-                      
-                      {/* Small progress bar if active or done */}
-                      {(isCompleted || isCurrent) && details.progressVal !== null && (
-                        <div className="mt-2.5 space-y-1">
-                          <div className="flex justify-between items-center text-[9px] text-white/35 font-bold">
-                            <span>Progress</span>
-                            <span>{details.progressVal}%</span>
-                          </div>
-                          <div className="w-full h-1 bg-white/5 rounded-full overflow-hidden">
-                            <div 
-                              className={cn(
-                                "h-full rounded-full transition-all duration-500",
-                                isCompleted ? "bg-emerald-500" : "bg-purple-500"
-                              )}
-                              style={{ width: `${details.progressVal}%` }}
-                            />
-                          </div>
-                        </div>
-                      )}
-                    </div>
-                  </button>
-                );
-              })}
-            </div>
-
-            {/* Selected/Current Phase Expanded Details */}
-            {(() => {
-              const activeId = selectedPhaseId || currentPhaseId;
-              const details = getPhaseDetails(activeId);
-              const isCurrent = activeId === currentPhaseId;
-              const isCompleted = PHASES_ORDER.indexOf(activeId) < PHASES_ORDER.indexOf(currentPhaseId);
-              const isUpcoming = activeId === currentPhaseId + 1;
-              const isLocked = PHASES_ORDER.indexOf(activeId) > PHASES_ORDER.indexOf(currentPhaseId) + 1;
-
-              return (
-                <div className="p-5 rounded-2xl bg-white/[0.015] border border-white/6 space-y-4">
-                  <div className="flex justify-between items-start flex-wrap gap-2">
-                    <div>
-                      <span className="text-[9px] font-black uppercase tracking-wider text-purple-400">
-                        {isCurrent ? 'Current Lifecycle Phase' : isCompleted ? 'Completed Lifecycle Phase' : 'Future Lifecycle Phase'}
-                      </span>
-                      <div className="flex flex-wrap items-center gap-2 mt-1">
-                        <h4 className="text-lg font-display font-bold text-white">{details.title}</h4>
-                        <span className="text-[9px] font-bold px-2 py-0.5 bg-purple-500/10 border border-purple-500/20 text-purple-300 rounded-md">
-                          Timeline: {details.timeline}
-                        </span>
-                      </div>
-                    </div>
-
-                    {details.progressVal !== null && (
-                      <div className="text-right">
-                        <span className="text-[10px] text-white/40 block font-medium">Phase Completeness</span>
-                        <span className="text-lg font-display font-black text-white">{details.progressVal}%</span>
-                      </div>
-                    )}
-                  </div>
-
-                  <p className="text-xs text-white/55 leading-relaxed">{details.description}</p>
-
-                  <div className="grid md:grid-cols-2 gap-4 pt-2 border-t border-white/5">
-                    <div>
-                      <h5 className="text-[10px] font-black uppercase tracking-wider text-white/30 mb-2.5">Verification Criteria</h5>
-                      <div className="p-3.5 rounded-xl bg-white/[0.01] border border-white/5 text-xs text-white/60 font-semibold">
-                        {details.requirements}
-                      </div>
-                    </div>
-
-                    <div>
-                      <h5 className="text-[10px] font-black uppercase tracking-wider text-white/30 mb-2.5">Lifecycle Evidence Logs</h5>
-                      <ul className="space-y-2">
-                        {details.evidence.map((ev, i) => (
-                          <li key={i} className="flex items-center gap-2 text-xs text-white/60">
-                            <span className="text-purple-400">•</span>
-                            <span>{ev}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-              );
-            })()}
-          </div>
-          
-        </div>
-
-        {/* RIGHT COLUMN: Sidebar Stats */}
-        <div className="space-y-6">
-
-          {/* SUBJECT JOURNEY */}
-          <div className="p-6 rounded-3xl bg-[#0A0C16] border border-white/10">
-            <h3 className="text-lg font-display font-bold text-white mb-6">Subject Progress</h3>
-            
-            {loading ? (
-              <div className="space-y-6 animate-pulse">
-                {[1, 2, 3, 4].map((i) => (
-                  <div key={i} className="space-y-2">
-                    <div className="flex justify-between">
-                      <div className="h-4 w-24 bg-white/10 rounded" />
-                      <div className="h-4 w-8 bg-white/10 rounded" />
-                    </div>
-                    <div className="h-3 w-40 bg-white/10 rounded" />
-                    <div className="flex gap-1 h-2">
-                      {Array.from({ length: 10 }).map((_, idx) => (
-                        <div key={idx} className="h-full flex-1 bg-white/5 rounded-sm" />
-                      ))}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            ) : isMasteryFailed ? (
-              <div className="text-sm font-medium text-white/40 leading-normal">
-                Progress data temporarily unavailable.
-              </div>
-            ) : (
-              <div className="space-y-6">
-                {subjectProgressList.map((subject) => (
-                  <div key={subject.name}>
-                    <div className="flex justify-between items-center mb-1">
-                      <div className="flex items-center gap-2">
-                        <subject.icon className={cn("w-4 h-4", subject.color)} />
-                        <span className="text-sm font-medium text-white/80">{subject.name}</span>
-                      </div>
-                      <span className="text-sm font-bold text-white">{subject.data.progress}%</span>
-                    </div>
-                    <div className="text-xs text-white/40 mb-2 font-medium">
-                      {subject.data.attemptedChapters} / {subject.data.totalChapters} attempted · {subject.data.masteredChapters} mastered
-                    </div>
-                    <div className="flex gap-1 h-2">
-                      {Array.from({ length: 10 }).map((_, i) => (
-                        <div 
-                          key={i} 
-                          className={cn(
-                            "h-full flex-1 rounded-sm transition-all",
-                            i < Math.round(Math.min(100, Math.max(0, subject.data.progress)) / 10) ? subject.bg : "bg-white/10"
-                          )} 
-                        />
-                      ))}
-                    </div>
-                  </div>
-                ))}
-              </div>
+            {aiPlan && (
+              <button
+                type="button"
+                onClick={() => setIsCalibrating(false)}
+                className="self-start sm:self-auto text-xs px-3 py-1.5 rounded-xl border border-white/10 hover:border-white/20 text-white/60 hover:text-white transition-all cursor-pointer"
+              >
+                Cancel & View Existing Plan
+              </button>
             )}
           </div>
 
-          {/* SMART RECOMMENDATIONS */}
-          <div className="p-6 rounded-3xl bg-[#0A0C16] border border-white/10">
-            <h3 className="text-lg font-display font-bold text-white mb-4">Focus Areas</h3>
-            
-            {loading ? (
-              <div className="space-y-3 animate-pulse">
-                {[1, 2, 3].map((i) => (
-                  <div key={i} className="p-4 rounded-2xl bg-white/5 border border-white/5 flex justify-between items-center">
-                    <div className="space-y-2 flex-1">
-                      <div className="h-4 w-40 bg-white/10 rounded" />
-                      <div className="h-3 w-32 bg-white/10 rounded" />
-                    </div>
-                    <div className="h-6 w-16 bg-white/10 rounded" />
+          {/* 6-Step Indicator Pills */}
+          <div className="flex items-center justify-between gap-1 sm:gap-2 mb-8 overflow-x-auto pb-1">
+            {[
+              { num: 1, label: 'Target College' },
+              { num: 2, label: 'Your Stream' },
+              { num: 3, label: 'Current Stage' },
+              { num: 4, label: 'Subject Balance' },
+              { num: 5, label: 'Study Hours' },
+              { num: 6, label: 'Target AIR' },
+            ].map(s => {
+              const isActive = wizardStep === s.num;
+              const isPast = wizardStep > s.num;
+              return (
+                <div
+                  key={s.num}
+                  onClick={() => setWizardStep(s.num)}
+                  className={cn(
+                    "flex-1 min-w-[50px] sm:min-w-[80px] p-2 rounded-xl border text-center transition-all cursor-pointer select-none",
+                    isActive
+                      ? "bg-cyan-500/15 border-cyan-400 text-cyan-300 shadow-[0_0_15px_rgba(6,182,212,0.25)]"
+                      : isPast
+                        ? "bg-emerald-500/10 border-emerald-500/30 text-emerald-400"
+                        : "bg-white/[0.03] border-white/5 text-white/40 hover:bg-white/[0.06]"
+                  )}
+                >
+                  <div className="text-[10px] font-mono font-bold flex items-center justify-center gap-1">
+                    {isPast ? <Check className="w-3 h-3" /> : `STEP ${s.num}`}
                   </div>
-                ))}
-              </div>
-            ) : !weaknessesAvailable ? (
-              <div className="space-y-4">
-                <p className="text-sm font-medium text-white/40 leading-normal">
-                  Focus area data temporarily unavailable.
-                </p>
-                <button
-                  onClick={() => onNavigate?.('smart_lessons')}
-                  className="w-full py-3 bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl text-xs font-bold text-white transition-all flex items-center justify-center gap-2"
-                >
-                  Open Smart Lessons <ArrowRight className="w-4 h-4" />
-                </button>
-              </div>
-            ) : !hasSlsData ? (
-              <div className="space-y-4">
-                <p className="text-sm font-medium text-white/40 leading-normal">
-                  Complete your first chapter quiz to discover areas that need improvement.
-                </p>
-                <button
-                  onClick={() => onNavigate?.('smart_lessons')}
-                  className="w-full py-3 bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl text-xs font-bold text-white transition-all flex items-center justify-center gap-2"
-                >
-                  Explore Smart Lessons <ArrowRight className="w-4 h-4" />
-                </button>
-              </div>
-            ) : selectedFocusAreas.length === 0 ? (
-              <p className="text-sm font-medium text-white/40 leading-normal">
-                No major weak areas detected. Keep learning and practicing to build stronger mastery.
-              </p>
-            ) : (
-              <div className="space-y-3">
-                {selectedFocusAreas.map((item) => {
-                  const chapterTitle = LESSONS_DATA.find(l => l.id === item.chapterId)?.title || item.chapterId;
-                  const reason = getWeaknessReason(item.reasons);
-                  const severityLabel = getSeverityLabel(item.severity);
-                  const severityStyle = getSeverityBadgeStyle(item.severity);
+                  <div className="text-[11px] font-semibold truncate hidden sm:block mt-0.5">
+                    {s.label}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
 
+          {/* ── STEP 1: TARGET INSTITUTE ─────────────────────────────────── */}
+          {wizardStep === 1 && (
+            <div className="space-y-4 animate-in fade-in duration-200">
+              <div className="space-y-1">
+                <h3 className="text-base sm:text-lg font-bold text-white">
+                  1. Which Premier Institute is your dream destination?
+                </h3>
+                <p className="text-xs text-white/50">
+                  Target selection configures the composite marks and ranking threshold required in IAT 2027.
+                </p>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
+                {TARGET_INSTITUTES.map((inst) => {
+                  const isSelected = wizardAnswers.targetInstitute === inst.id;
                   return (
-                    <div 
-                      key={item.id} 
-                      className="p-4 rounded-2xl bg-white/5 border border-white/5 flex items-center justify-between gap-4 group/item hover:bg-white/[0.07] transition-all"
+                    <div
+                      key={inst.id}
+                      onClick={() => setWizardAnswers(prev => ({ ...prev, targetInstitute: inst.id }))}
+                      className={cn(
+                        "p-4 rounded-2xl border transition-all cursor-pointer text-left flex items-start justify-between gap-3 group",
+                        isSelected
+                          ? "bg-cyan-500/15 border-cyan-400 shadow-[0_0_20px_rgba(6,182,212,0.2)]"
+                          : "bg-white/[0.03] border-white/10 hover:border-cyan-500/40 hover:bg-white/[0.06]"
+                      )}
                     >
                       <div className="space-y-1">
-                        <div className="flex items-center gap-2 flex-wrap">
-                          <h4 className="font-bold text-white text-sm">{chapterTitle}</h4>
-                          <span className={cn("text-[10px] font-bold px-2 py-0.5 rounded border uppercase tracking-wider", severityStyle)}>
-                            {severityLabel}
+                        <div className="flex items-center gap-2">
+                          <span className={cn("font-bold text-sm sm:text-base", isSelected ? "text-cyan-200" : "text-white")}>
+                            {inst.name}
+                          </span>
+                          <span className="text-[9.5px] px-2 py-0.5 rounded-full bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 font-bold">
+                            {inst.badge}
                           </span>
                         </div>
-                        <p className="text-xs text-white/50">{reason}</p>
+                        <p className="text-xs text-white/50 leading-relaxed">
+                          {inst.tag}
+                        </p>
+                        <span className="text-[10px] font-mono text-cyan-400/80 block pt-0.5">
+                          {inst.rank}
+                        </span>
                       </div>
-                      <button
-                        onClick={() => onNavigate?.(`/smart-lessons/${item.chapterId}`)}
-                        className="text-xs font-bold text-cyan-400 hover:text-cyan-300 transition-colors flex items-center gap-1 shrink-0 group/btn"
-                      >
-                        Review <ArrowRight className="w-3.5 h-3.5 group-hover/btn:translate-x-0.5 transition-transform" />
-                      </button>
+
+                      <div className={cn(
+                        "w-5 h-5 rounded-full border flex items-center justify-center shrink-0 mt-1 transition-all",
+                        isSelected ? "border-cyan-400 bg-cyan-400 text-slate-950 font-bold" : "border-white/20"
+                      )}>
+                        {isSelected && <Check className="w-3.5 h-3.5 stroke-[3]" />}
+                      </div>
                     </div>
                   );
                 })}
               </div>
+            </div>
+          )}
+
+          {/* ── STEP 2: STREAM & BACKGROUND ─────────────────────────────── */}
+          {wizardStep === 2 && (
+            <div className="space-y-4 animate-in fade-in duration-200">
+              <div className="space-y-1">
+                <h3 className="text-base sm:text-lg font-bold text-white">
+                  2. What is your Academic Stream / Background?
+                </h3>
+                <p className="text-xs text-white/50">
+                  Crucial for designing your non-core subject tactical blueprint (e.g. PCB Math vs PCM Bio).
+                </p>
+              </div>
+
+              <div className="grid grid-cols-1 gap-3 pt-2">
+                {STREAMS.map((s) => {
+                  const isSelected = wizardAnswers.stream === s.id;
+                  return (
+                    <div
+                      key={s.id}
+                      onClick={() => setWizardAnswers(prev => ({ 
+                        ...prev, 
+                        stream: s.id,
+                        // Update weak subject sensible default
+                        weakSubject: s.id === 'PCB' ? 'Mathematics' : (s.id === 'PCM' ? 'Biology' : prev.weakSubject)
+                      }))}
+                      className={cn(
+                        "p-4 rounded-2xl border transition-all cursor-pointer flex items-center justify-between gap-4 text-left group",
+                        isSelected
+                          ? "bg-indigo-500/20 border-indigo-400 shadow-[0_0_20px_rgba(99,102,241,0.25)]"
+                          : "bg-white/[0.03] border-white/10 hover:border-indigo-500/40 hover:bg-white/[0.06]"
+                      )}
+                    >
+                      <div className="space-y-1">
+                        <div className="flex items-center gap-2.5">
+                          <span className={cn("font-bold text-sm sm:text-base", isSelected ? "text-indigo-200" : "text-white")}>
+                            {s.title}
+                          </span>
+                          <span className="text-[10px] px-2 py-0.5 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-300 font-bold">
+                            {s.tag}
+                          </span>
+                        </div>
+                        <p className="text-xs text-white/50">
+                          {s.desc}
+                        </p>
+                      </div>
+
+                      <div className={cn(
+                        "w-5 h-5 rounded-full border flex items-center justify-center shrink-0 transition-all",
+                        isSelected ? "border-indigo-400 bg-indigo-400 text-slate-950 font-bold" : "border-white/20"
+                      )}>
+                        {isSelected && <Check className="w-3.5 h-3.5 stroke-[3]" />}
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+
+          {/* ── STEP 3: CURRENT PREPARATION STAGE ───────────────────────── */}
+          {wizardStep === 3 && (
+            <div className="space-y-4 animate-in fade-in duration-200">
+              <div className="space-y-1">
+                <h3 className="text-base sm:text-lg font-bold text-white">
+                  3. Where are you currently in your IAT syllabus?
+                </h3>
+                <p className="text-xs text-white/50">
+                  Determines your starting phase: Foundation, Concept Mastery, or Mock Sprint.
+                </p>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2">
+                {STAGES.map((st) => {
+                  const isSelected = wizardAnswers.currentStage === st.id;
+                  return (
+                    <div
+                      key={st.id}
+                      onClick={() => setWizardAnswers(prev => ({ ...prev, currentStage: st.id }))}
+                      className={cn(
+                        "p-5 rounded-2xl border transition-all cursor-pointer flex flex-col justify-between text-left group min-h-[140px]",
+                        isSelected
+                          ? "bg-cyan-500/15 border-cyan-400 shadow-[0_0_20px_rgba(6,182,212,0.25)]"
+                          : "bg-white/[0.03] border-white/10 hover:border-cyan-500/40 hover:bg-white/[0.06]"
+                      )}
+                    >
+                      <div className="space-y-2">
+                        <div className="flex items-center justify-between">
+                          <span className="text-2xl">{st.icon}</span>
+                          <div className={cn(
+                            "w-5 h-5 rounded-full border flex items-center justify-center transition-all",
+                            isSelected ? "border-cyan-400 bg-cyan-400 text-slate-950 font-bold" : "border-white/20"
+                          )}>
+                            {isSelected && <Check className="w-3.5 h-3.5 stroke-[3]" />}
+                          </div>
+                        </div>
+                        <h4 className={cn("font-bold text-sm", isSelected ? "text-cyan-200" : "text-white")}>
+                          {st.title}
+                        </h4>
+                        <p className="text-xs text-white/50 leading-relaxed">
+                          {st.desc}
+                        </p>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+
+          {/* ── STEP 4: SUBJECT PROFILE & SPECIFIC HURDLE ────────────────── */}
+          {wizardStep === 4 && (
+            <div className="space-y-5 animate-in fade-in duration-200">
+              <div className="space-y-1">
+                <h3 className="text-base sm:text-lg font-bold text-white">
+                  4. Your Strongest vs Weakest Subject Area
+                </h3>
+                <p className="text-xs text-white/50">
+                  We will reinforce your strength for speed while scheduling targeted surgery for your hurdle.
+                </p>
+              </div>
+
+              {/* Strongest Subject */}
+              <div className="space-y-2">
+                <label className="text-xs font-bold uppercase tracking-wider text-emerald-400 flex items-center gap-1.5">
+                  <Star className="w-3.5 h-3.5 text-emerald-400" />
+                  Your Strongest / Highest Confidence Subject:
+                </label>
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+                  {SUBJECT_OPTIONS.map((sub) => {
+                    const isSelected = wizardAnswers.strongSubject === sub;
+                    return (
+                      <button
+                        key={sub}
+                        type="button"
+                        onClick={() => setWizardAnswers(prev => ({ ...prev, strongSubject: sub }))}
+                        className={cn(
+                          "py-2.5 px-3 rounded-xl border text-xs font-bold transition-all cursor-pointer",
+                          isSelected
+                            ? "bg-emerald-500/20 border-emerald-400 text-emerald-300 shadow-[0_0_15px_rgba(16,185,129,0.2)]"
+                            : "bg-white/[0.03] border-white/10 hover:border-emerald-500/40 text-white/70 hover:text-white"
+                        )}
+                      >
+                        {sub}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* Weakest Subject */}
+              <div className="space-y-2 pt-2">
+                <label className="text-xs font-bold uppercase tracking-wider text-rose-400 flex items-center gap-1.5">
+                  <AlertCircle className="w-3.5 h-3.5 text-rose-400" />
+                  Your Weakest / Highest Anxiety Subject:
+                </label>
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+                  {SUBJECT_OPTIONS.map((sub) => {
+                    const isSelected = wizardAnswers.weakSubject === sub;
+                    return (
+                      <button
+                        key={sub}
+                        type="button"
+                        onClick={() => setWizardAnswers(prev => ({
+                          ...prev,
+                          weakSubject: sub,
+                          weakTopicHurdle: WEAKNESS_HURDLES[sub]?.[0] || 'Fundamentals'
+                        }))}
+                        className={cn(
+                          "py-2.5 px-3 rounded-xl border text-xs font-bold transition-all cursor-pointer",
+                          isSelected
+                            ? "bg-rose-500/20 border-rose-400 text-rose-300 shadow-[0_0_15px_rgba(244,63,94,0.2)]"
+                            : "bg-white/[0.03] border-white/10 hover:border-rose-500/40 text-white/70 hover:text-white"
+                        )}
+                      >
+                        {sub}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* Specific Hurdle within Weak Subject */}
+              <div className="space-y-2 pt-2">
+                <label className="text-xs font-bold uppercase tracking-wider text-amber-400 flex items-center gap-1.5">
+                  <Zap className="w-3.5 h-3.5 text-amber-400" />
+                  Specific Topic / Hurdle in {wizardAnswers.weakSubject}:
+                </label>
+                <div className="space-y-2">
+                  {(WEAKNESS_HURDLES[wizardAnswers.weakSubject] || []).map((hurdle) => {
+                    const isSelected = wizardAnswers.weakTopicHurdle === hurdle;
+                    return (
+                      <div
+                        key={hurdle}
+                        onClick={() => setWizardAnswers(prev => ({ ...prev, weakTopicHurdle: hurdle }))}
+                        className={cn(
+                          "p-3 rounded-xl border transition-all cursor-pointer flex items-center justify-between text-xs font-medium group",
+                          isSelected
+                            ? "bg-amber-500/15 border-amber-400 text-amber-200"
+                            : "bg-white/[0.02] border-white/10 hover:border-amber-500/30 text-white/70 hover:text-white"
+                        )}
+                      >
+                        <span>{hurdle}</span>
+                        <div className={cn(
+                          "w-4 h-4 rounded-full border flex items-center justify-center shrink-0",
+                          isSelected ? "border-amber-400 bg-amber-400 text-slate-950 font-bold" : "border-white/20"
+                        )}>
+                          {isSelected && <Check className="w-3 h-3 stroke-[3]" />}
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* ── STEP 5: DAILY STUDY HOURS ───────────────────────────────── */}
+          {wizardStep === 5 && (
+            <div className="space-y-4 animate-in fade-in duration-200">
+              <div className="space-y-1">
+                <h3 className="text-base sm:text-lg font-bold text-white">
+                  5. How many hours can you dedicate to self-study each day?
+                </h3>
+                <p className="text-xs text-white/50">
+                  Consistency is paramount. We will distribute these hours to ensure you never miss revision.
+                </p>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2">
+                {STUDY_HOURS.map((h) => {
+                  const isSelected = wizardAnswers.dailyHours === h.hours;
+                  return (
+                    <div
+                      key={h.hours}
+                      onClick={() => setWizardAnswers(prev => ({ ...prev, dailyHours: h.hours }))}
+                      className={cn(
+                        "p-5 rounded-2xl border transition-all cursor-pointer flex flex-col justify-between text-left group min-h-[120px]",
+                        isSelected
+                          ? "bg-purple-500/20 border-purple-400 shadow-[0_0_20px_rgba(168,85,247,0.25)]"
+                          : "bg-white/[0.03] border-white/10 hover:border-purple-500/40 hover:bg-white/[0.06]"
+                      )}
+                    >
+                      <div className="space-y-1">
+                        <div className="flex items-center justify-between">
+                          <span className="text-xl font-display font-black text-white">
+                            {h.hours} Hours
+                          </span>
+                          <div className={cn(
+                            "w-5 h-5 rounded-full border flex items-center justify-center transition-all",
+                            isSelected ? "border-purple-400 bg-purple-400 text-slate-950 font-bold" : "border-white/20"
+                          )}>
+                            {isSelected && <Check className="w-3.5 h-3.5 stroke-[3]" />}
+                          </div>
+                        </div>
+                        <p className={cn("text-xs font-bold", isSelected ? "text-purple-300" : "text-white/70")}>
+                          {h.label}
+                        </p>
+                        <p className="text-[11px] text-white/50 leading-relaxed pt-1">
+                          {h.desc}
+                        </p>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+
+          {/* ── STEP 6: TARGET AIR / AIM ─────────────────────────────────── */}
+          {wizardStep === 6 && (
+            <div className="space-y-4 animate-in fade-in duration-200">
+              <div className="space-y-1">
+                <h3 className="text-base sm:text-lg font-bold text-white">
+                  6. What is your Target AIR and Score Ambition?
+                </h3>
+                <p className="text-xs text-white/50">
+                  Calculates minimum safe sectional cutoffs and sets question accuracy thresholds.
+                </p>
+              </div>
+
+              <div className="grid grid-cols-1 gap-3 pt-2">
+                {TARGET_AIRS.map((a) => {
+                  const isSelected = wizardAnswers.targetAir === a.id;
+                  return (
+                    <div
+                      key={a.id}
+                      onClick={() => setWizardAnswers(prev => ({ ...prev, targetAir: a.id }))}
+                      className={cn(
+                        "p-4 rounded-2xl border transition-all cursor-pointer flex items-center justify-between text-left group",
+                        isSelected
+                          ? "bg-amber-500/20 border-amber-400 shadow-[0_0_20px_rgba(245,158,11,0.25)]"
+                          : "bg-white/[0.03] border-white/10 hover:border-amber-500/40 hover:bg-white/[0.06]"
+                      )}
+                    >
+                      <div className="space-y-1">
+                        <div className="flex items-center gap-2">
+                          <Trophy className={cn("w-4 h-4", isSelected ? "text-amber-400" : "text-white/40")} />
+                          <span className={cn("font-bold text-sm sm:text-base", isSelected ? "text-amber-200" : "text-white")}>
+                            {a.id}
+                          </span>
+                          <span className="text-xs font-mono font-bold px-2 py-0.5 rounded bg-white/10 text-white/80">
+                            {a.score}
+                          </span>
+                        </div>
+                        <p className="text-xs text-white/50">
+                          {a.aim}
+                        </p>
+                      </div>
+
+                      <div className={cn(
+                        "w-5 h-5 rounded-full border flex items-center justify-center shrink-0 transition-all",
+                        isSelected ? "border-amber-400 bg-amber-400 text-slate-950 font-bold" : "border-white/20"
+                      )}>
+                        {isSelected && <Check className="w-3.5 h-3.5 stroke-[3]" />}
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+
+          {/* Wizard Footer Navigation Controls */}
+          <div className="flex items-center justify-between border-t border-white/10 pt-6 mt-8">
+            <button
+              type="button"
+              disabled={wizardStep === 1}
+              onClick={() => setWizardStep(prev => Math.max(1, prev - 1))}
+              className={cn(
+                "px-4 py-2.5 rounded-xl text-xs font-semibold flex items-center gap-1.5 transition-all cursor-pointer border",
+                wizardStep === 1
+                  ? "opacity-30 cursor-not-allowed border-transparent text-white/30"
+                  : "bg-white/[0.04] border-white/10 hover:border-white/20 text-white/80 hover:text-white"
+              )}
+            >
+              <ArrowLeft className="w-3.5 h-3.5" />
+              <span>Back</span>
+            </button>
+
+            {wizardStep < 6 ? (
+              <button
+                type="button"
+                onClick={() => setWizardStep(prev => Math.min(6, prev + 1))}
+                className="px-6 py-2.5 rounded-xl text-xs font-bold bg-white text-slate-950 hover:bg-white/90 shadow-[0_0_20px_rgba(255,255,255,0.25)] flex items-center gap-2 cursor-pointer hover:translate-x-0.5 transition-all"
+              >
+                <span>Continue</span>
+                <ArrowRight className="w-3.5 h-3.5" />
+              </button>
+            ) : (
+              <button
+                type="button"
+                onClick={handleGeneratePlan}
+                className="px-6 py-3 rounded-xl text-xs sm:text-sm font-bold bg-gradient-to-r from-cyan-400 to-indigo-500 hover:from-cyan-300 hover:to-indigo-400 text-slate-950 shadow-[0_0_30px_rgba(6,182,212,0.4)] flex items-center gap-2 cursor-pointer transform hover:scale-[1.02] active:scale-[0.98] transition-all"
+              >
+                <Sparkles className="w-4 h-4 text-slate-950" />
+                <span>Generate My AI Study Plan</span>
+                <ArrowRight className="w-4 h-4 text-slate-950" />
+              </button>
             )}
           </div>
 
-           {/* MOTIVATION SECTION */}
-           <div className="p-6 rounded-3xl bg-[#0A0C16] border border-white/10">
-             <h3 className="text-lg font-display font-bold text-white mb-4">Journey Stats</h3>
-             
-             {loading ? (
-               <div className="grid grid-cols-2 gap-3 mb-4 animate-pulse">
-                 {[1, 2, 3, 4].map((i) => (
-                   <div key={i} className="p-4 rounded-2xl bg-white/5 border border-white/5 flex flex-col items-center justify-center text-center">
-                     <div className="h-8 w-12 bg-white/10 rounded mb-2" />
-                     <div className="h-3 w-20 bg-white/10 rounded" />
-                   </div>
-                 ))}
-               </div>
-             ) : (() => {
-               const quizAttempts = !analyticsAvailable 
-                 ? '—' 
-                 : (!hasSlsData ? 0 : (analytics?.analytics?.overall?.totalAttempts ?? 0));
+        </div>
 
-               const questionsAnswered = !analyticsAvailable 
-                 ? '—' 
-                 : (!hasSlsData ? 0 : (analytics?.analytics?.overall?.totalQuestionsAttempted ?? 0));
+      </div>
+    );
+  }
 
-               const chaptersStudied = !analyticsAvailable 
-                 ? '—' 
-                 : (!hasSlsData ? 0 : (analytics?.analytics?.overall?.uniqueChaptersAttempted ?? 0));
+  // ══════════════════════════════════════════════════════════════════════════
+  // 3. ACTION-ORIENTED AI STUDY PLAN DASHBOARD VIEW
+  // ══════════════════════════════════════════════════════════════════════════
+  const activePhase = aiPlan.phases.find(p => p.id === activePhaseTab) || aiPlan.phases[0];
+  const checklistTotal = aiPlan.weeklyChecklist.length;
+  const checklistCompletedCount = aiPlan.weeklyChecklist.filter(c => checklist[c.id]).length;
+  const checklistPercent = checklistTotal > 0 ? Math.round((checklistCompletedCount / checklistTotal) * 100) : 0;
+  const dailyTarget = resolveLessonTarget(aiPlan.dailyAction.targetChapter || aiPlan.dailyAction.title, aiPlan.dailyAction.subject);
 
-               const chaptersMasteredValue = !masteryAvailable || isMasteryFailed
-                 ? '—' 
-                 : (!hasSlsData ? 0 : (chaptersMastered ?? 0));
+  return (
+    <div className="max-w-6xl mx-auto w-full space-y-6 flex-1 mt-2 lg:mt-4 pb-32 lg:pb-12 animate-in fade-in duration-400">
 
-               return (
-                 <div className="grid grid-cols-2 gap-3 mb-4">
-                   <div className="p-4 rounded-2xl bg-white/5 border border-white/5 flex flex-col items-center justify-center text-center">
-                     <span className="text-2xl font-bold text-white mb-1">{quizAttempts}</span>
-                     <span className="text-[10px] uppercase tracking-wider text-white/50 font-bold">Quiz Attempts</span>
-                   </div>
-                   <div className="p-4 rounded-2xl bg-white/5 border border-white/5 flex flex-col items-center justify-center text-center">
-                     <span className="text-2xl font-bold text-white mb-1">{questionsAnswered}</span>
-                     <span className="text-[10px] uppercase tracking-wider text-white/50 font-bold">Questions Answered</span>
-                   </div>
-                   <div className="p-4 rounded-2xl bg-white/5 border border-white/5 flex flex-col items-center justify-center text-center">
-                     <span className="text-2xl font-bold text-white mb-1">{chaptersStudied}</span>
-                     <span className="text-[10px] uppercase tracking-wider text-white/50 font-bold">Chapters Studied</span>
-                   </div>
-                   <div className="p-4 rounded-2xl bg-white/5 border border-white/5 flex flex-col items-center justify-center text-center">
-                     <span className="text-2xl font-bold text-white mb-1">{chaptersMasteredValue}</span>
-                     <span className="text-[10px] uppercase tracking-wider text-white/50 font-bold">Chapters Mastered</span>
-                   </div>
-                 </div>
-               );
-             })()}
-           </div>
+      {/* ── 1. HERO BANNER WITH TARGET INSTITUTE & RE-CALIBRATE ── */}
+      <div className={cn(
+        "relative overflow-hidden rounded-[2.5rem] border p-6 sm:p-8 lg:p-10 shadow-2xl backdrop-blur-xl",
+        isLight 
+          ? "bg-white/90 border-slate-200 shadow-slate-200/50" 
+          : "bg-[#090b1c]/90 border-indigo-500/20 shadow-[0_8px_32px_rgba(0,0,0,0.5),0_0_30px_rgba(99,102,241,0.08)]"
+      )}>
+        <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/10 via-cyan-500/5 to-transparent pointer-events-none" />
+        <div className="absolute top-0 right-0 w-[450px] h-[450px] bg-cyan-500/15 blur-[120px] rounded-full pointer-events-none mix-blend-screen opacity-50 translate-x-1/3 -translate-y-1/3" />
 
+        <div className="relative z-10 space-y-6">
+          {/* Top Pill & Re-calibrate Button */}
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-xs font-bold text-cyan-300">
+              <Sparkles className="w-3.5 h-3.5 text-cyan-400" />
+              <span>AI CALIBRATED ROADMAP • IISER IAT 2027</span>
+            </div>
+
+            <button
+              type="button"
+              onClick={() => {
+                setWizardStep(1);
+                setIsCalibrating(true);
+              }}
+              className={cn(
+                "px-3.5 py-1.5 rounded-xl text-xs font-semibold flex items-center gap-2 transition-all cursor-pointer border shadow-sm",
+                isLight 
+                  ? "bg-white hover:bg-slate-50 border-slate-200 text-slate-700 hover:text-cyan-700" 
+                  : "bg-white/[0.05] border-white/10 hover:border-cyan-500/40 text-white/80 hover:text-white hover:bg-white/[0.08]"
+              )}
+              title="Retake onboarding to modify your daily study hours, target college, or weak subjects"
+            >
+              <RotateCcw className="w-3.5 h-3.5 text-cyan-400" />
+              <span>Re-calibrate Plan</span>
+            </button>
+          </div>
+
+          {/* Title & Headline Strategy */}
+          <div className="space-y-2 max-w-3xl">
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-display font-extrabold text-white tracking-tight leading-tight">
+              My Path to <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-teal-300 to-indigo-400">{aiPlan.answers.targetInstitute}</span>
+            </h1>
+            <p className={cn("text-sm sm:text-base leading-relaxed font-medium", isLight ? "text-slate-600" : "text-white/70")}>
+              {aiPlan.headlineStrategy}
+            </p>
+          </div>
+
+          {/* 4 Metric Badges in 2x2 or 4-col Grid */}
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 pt-2">
+            <div className={cn(
+              "p-4 rounded-2xl border transition-all space-y-1.5",
+              isLight 
+                ? "bg-indigo-50/70 border-indigo-200/80 text-slate-900" 
+                : "bg-indigo-950/30 border-indigo-500/25 shadow-[inset_0_1px_0_rgba(255,255,255,0.06)]"
+            )}>
+              <div className="flex items-center justify-between">
+                <span className={cn("text-[10px] uppercase font-bold tracking-wider", isLight ? "text-indigo-600" : "text-indigo-400")}>
+                  Exam Target
+                </span>
+                <Calendar className="w-3.5 h-3.5 text-indigo-400" />
+              </div>
+              <p className="font-bold text-sm sm:text-base text-white">IISER IAT 2027</p>
+              <span className="text-xs font-mono font-bold text-cyan-400 block">{daysUntilExam} Days Left</span>
+            </div>
+
+            <div className={cn(
+              "p-4 rounded-2xl border transition-all space-y-1.5",
+              isLight 
+                ? "bg-cyan-50/70 border-cyan-200/80 text-slate-900" 
+                : "bg-cyan-950/30 border-cyan-500/25 shadow-[inset_0_1px_0_rgba(255,255,255,0.06)]"
+            )}>
+              <div className="flex items-center justify-between">
+                <span className={cn("text-[10px] uppercase font-bold tracking-wider", isLight ? "text-cyan-700" : "text-cyan-400")}>
+                  Target College
+                </span>
+                <GraduationCap className="w-3.5 h-3.5 text-cyan-400" />
+              </div>
+              <p className="font-bold text-sm sm:text-base text-white">{aiPlan.answers.targetInstitute}</p>
+              <span className="text-xs text-indigo-300 font-semibold block">
+                {TARGET_INSTITUTES.find(i => i.id === aiPlan.answers.targetInstitute)?.rank || '#1 Campus'}
+              </span>
+            </div>
+
+            <div className={cn(
+              "p-4 rounded-2xl border transition-all space-y-1.5",
+              isLight 
+                ? "bg-amber-50/70 border-amber-200/80 text-slate-900" 
+                : "bg-amber-950/30 border-amber-500/25 shadow-[inset_0_1px_0_rgba(255,255,255,0.06)]"
+            )}>
+              <div className="flex items-center justify-between">
+                <span className={cn("text-[10px] uppercase font-bold tracking-wider", isLight ? "text-amber-700" : "text-amber-400")}>
+                  Stream & Habit
+                </span>
+                <Flame className="w-3.5 h-3.5 text-amber-400" />
+              </div>
+              <p className="font-bold text-sm sm:text-base text-white">{aiPlan.answers.stream}</p>
+              <span className="text-xs text-amber-300 font-semibold block">{aiPlan.answers.dailyHours} Hours / day</span>
+            </div>
+
+            <div className={cn(
+              "p-4 rounded-2xl border transition-all space-y-1.5",
+              isLight 
+                ? "bg-emerald-50/70 border-emerald-200/80 text-slate-900" 
+                : "bg-emerald-950/30 border-emerald-500/25 shadow-[inset_0_1px_0_rgba(255,255,255,0.06)]"
+            )}>
+              <div className="flex items-center justify-between">
+                <span className={cn("text-[10px] uppercase font-bold tracking-wider", isLight ? "text-emerald-700" : "text-emerald-400")}>
+                  Goal Aim
+                </span>
+                <Trophy className="w-3.5 h-3.5 text-emerald-400" />
+              </div>
+              <p className="font-bold text-sm sm:text-base text-white">{aiPlan.answers.targetAir}</p>
+              <span className="text-xs text-emerald-400 font-bold block">
+                {TARGET_AIRS.find(a => a.id === aiPlan.answers.targetAir)?.score || '160+ Marks'}
+              </span>
+            </div>
+          </div>
         </div>
       </div>
 
-      <div className="mt-8 border-t border-white/5 pt-8">
-        <Footer />
+      {/* ── 2. THE ACTION-ORIENTED CORE: TODAY'S ACTION MISSION ── */}
+      <div className={cn(
+        "p-6 sm:p-8 rounded-3xl border relative overflow-hidden group transition-all duration-300 shadow-2xl",
+        dailyCompleted 
+          ? "bg-emerald-950/20 border-emerald-500/30"
+          : "bg-gradient-to-br from-indigo-950/40 via-[#0b0e24]/90 to-cyan-950/40 border-cyan-500/30 hover:border-cyan-400/60 shadow-[0_8px_32px_rgba(0,0,0,0.6),0_0_35px_rgba(6,182,212,0.15)]"
+      )}>
+        <div className="absolute inset-0 bg-[linear-gradient(45deg,transparent_25%,rgba(68,210,255,0.03)_50%,transparent_75%,transparent_100%)] bg-[length:250%_250%,100%_100%] animate-[shimmer_3s_infinite]" />
+        
+        <div className="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+          <div className="space-y-3.5 max-w-2xl">
+            {/* Top Tag & Status */}
+            <div className="flex flex-wrap items-center gap-2.5">
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/15 border border-amber-500/30 text-amber-300 text-xs font-bold uppercase tracking-wider">
+                <Zap className="w-3.5 h-3.5 text-amber-400 fill-amber-400/20" />
+                <span>Today's Immediate Mission • Day {aiPlan.dailyAction.dayNumber}</span>
+              </span>
+
+              {dailyCompleted ? (
+                <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 text-xs font-bold">
+                  <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
+                  <span>Completed Today! Streak Active</span>
+                </span>
+              ) : (
+                <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-cyan-500/10 border border-cyan-500/25 text-cyan-300 text-xs font-semibold">
+                  <Clock className="w-3.5 h-3.5 text-cyan-400" />
+                  <span>Pending • Est. ~{aiPlan.dailyAction.estimatedMinutes} Mins</span>
+                </span>
+              )}
+            </div>
+
+            {/* Mission Title */}
+            <h2 className="text-xl sm:text-2xl lg:text-3xl font-display font-extrabold text-white tracking-tight leading-snug">
+              {aiPlan.dailyAction.title}
+            </h2>
+
+            {/* Description */}
+            <p className={cn("text-xs sm:text-sm leading-relaxed", isLight ? "text-slate-600" : "text-white/70")}>
+              {aiPlan.dailyAction.description}
+            </p>
+
+            {/* Meta Tags */}
+            <div className="flex flex-wrap items-center gap-2 pt-1 text-xs">
+              <span className="px-2.5 py-1 rounded-lg bg-indigo-500/15 border border-indigo-500/25 text-indigo-300 font-bold flex items-center gap-1.5">
+                <BookOpen className="w-3.5 h-3.5" />
+                <span>{aiPlan.dailyAction.subject}</span>
+              </span>
+              <span className="px-2.5 py-1 rounded-lg bg-white/[0.04] border border-white/10 text-white/70 font-mono">
+                Target: {aiPlan.dailyAction.targetChapter}
+              </span>
+              {dailyTarget.lessonTitle && (
+                <span className="px-2.5 py-1 rounded-lg bg-cyan-500/15 border border-cyan-500/30 text-cyan-300 font-bold flex items-center gap-1.5">
+                  <Sparkles className="w-3.5 h-3.5 text-cyan-400" />
+                  <span>Direct Deep-Link: {dailyTarget.lessonTitle}</span>
+                </span>
+              )}
+            </div>
+          </div>
+
+          {/* Action Buttons */}
+          <div className="flex flex-col sm:flex-row lg:flex-col gap-3 shrink-0">
+            <button
+              type="button"
+              onClick={() => onNavigate?.(dailyTarget.route)}
+              className="px-6 py-3.5 rounded-2xl font-bold text-xs sm:text-sm bg-white hover:bg-slate-100 text-slate-950 shadow-[0_0_25px_rgba(255,255,255,0.35)] hover:shadow-[0_0_35px_rgba(255,255,255,0.5)] transition-all flex items-center justify-center gap-2 cursor-pointer transform hover:-translate-y-0.5"
+            >
+              <BookOpen className="w-4 h-4 text-slate-950" />
+              <span>Start Today's Mission</span>
+              <ArrowRight className="w-4 h-4 text-slate-950" />
+            </button>
+
+            <button
+              type="button"
+              onClick={handleToggleDailyMission}
+              className={cn(
+                "px-5 py-2.5 rounded-xl font-semibold text-xs border transition-all flex items-center justify-center gap-2 cursor-pointer",
+                dailyCompleted
+                  ? "bg-emerald-500/20 border-emerald-500/40 text-emerald-300 hover:bg-emerald-500/30"
+                  : "bg-white/[0.04] border-white/10 hover:border-white/20 text-white/80 hover:text-white"
+              )}
+            >
+              <CheckCircle2 className={cn("w-4 h-4", dailyCompleted ? "text-emerald-400" : "text-white/40")} />
+              <span>{dailyCompleted ? 'Mark as Incomplete' : 'Mark Completed ✓'}</span>
+            </button>
+
+            <button
+              type="button"
+              onClick={() => {
+                sessionStorage.setItem('smartprep_active_chat', JSON.stringify([{
+                  role: 'user',
+                  content: `I am executing today's study mission: "${aiPlan.dailyAction.title}". Give me the 3 most crucial formulas, high-yield concept traps, and 1 practice numerical for IISER IAT.`
+                }]));
+                onNavigate?.('ai_doubt_solver');
+              }}
+              className="text-xs text-cyan-300 hover:text-cyan-200 flex items-center justify-center gap-1.5 py-1 transition-colors cursor-pointer"
+            >
+              <MessageSquare className="w-3.5 h-3.5" />
+              <span>Ask AI Tutor about this mission</span>
+            </button>
+          </div>
+        </div>
       </div>
+
+      {/* ── 3. TWO-COLUMN STRATEGY LAYOUT: BLUEPRINT + HOURLY ALLOCATION ── */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+
+        {/* ── Left: Stream Strategic Blueprint ── */}
+        <div className={cn(
+          "p-6 sm:p-7 rounded-3xl border flex flex-col justify-between space-y-5 backdrop-blur-xl relative overflow-hidden",
+          isLight 
+            ? "bg-white/90 border-slate-200 shadow-sm" 
+            : "bg-[#0b0e24]/80 border-indigo-500/20 shadow-[0_8px_32px_rgba(0,0,0,0.4)]"
+        )}>
+          <div className="space-y-3">
+            <div className="flex items-center justify-between">
+              <span className="text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full bg-indigo-500/15 border border-indigo-500/30 text-indigo-300">
+                {aiPlan.specialBlueprint.badge}
+              </span>
+              <Lightbulb className="w-4 h-4 text-amber-400" />
+            </div>
+
+            <h3 className="text-lg sm:text-xl font-display font-bold text-white leading-snug">
+              {aiPlan.specialBlueprint.title}
+            </h3>
+            <p className="text-xs text-cyan-300 font-semibold">
+              {aiPlan.specialBlueprint.subtitle}
+            </p>
+            <p className={cn("text-xs leading-relaxed", isLight ? "text-slate-600" : "text-white/60")}>
+              {aiPlan.specialBlueprint.description}
+            </p>
+
+            {/* Tactical Advice Bullets */}
+            <div className="space-y-2 pt-1">
+              {aiPlan.specialBlueprint.tactics.map((t, idx) => (
+                <div key={idx} className="flex items-start gap-2.5 text-xs text-white/80">
+                  <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 mt-1.5 shrink-0" />
+                  <span className="leading-relaxed">{t}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* High-Yield Chapter Shortcuts */}
+          <div className="pt-3 border-t border-white/10 space-y-2">
+            <span className="text-[10.5px] font-bold uppercase tracking-wider text-white/40 block">
+              Recommended High-Yield Chapters:
+            </span>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+              {aiPlan.specialBlueprint.recommendedChapters.map((c, i) => {
+                const chapTarget = resolveLessonTarget(c.name, aiPlan.answers.weakSubject);
+                return (
+                  <div
+                    key={i}
+                    onClick={() => onNavigate?.(chapTarget.route)}
+                    className={cn(
+                      "p-3.5 rounded-2xl border transition-all cursor-pointer group flex flex-col justify-between min-h-[74px]",
+                      isLight 
+                        ? "bg-slate-50 hover:bg-white border-slate-200 hover:border-cyan-400 shadow-sm" 
+                        : "bg-white/[0.03] hover:bg-white/[0.07] border-white/5 hover:border-cyan-500/40 shadow-[0_2px_10px_rgba(0,0,0,0.2)]"
+                    )}
+                  >
+                    <div className="flex items-center justify-between gap-2">
+                      <span className="text-xs font-bold text-white group-hover:text-cyan-300 transition-colors">
+                        {c.name}
+                      </span>
+                      <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded-md bg-cyan-500/15 border border-cyan-500/30 text-cyan-300 flex items-center gap-1 group-hover:bg-cyan-400 group-hover:text-slate-950 transition-all shrink-0">
+                        <span>Open</span>
+                        <ArrowRight className="w-3 h-3" />
+                      </span>
+                    </div>
+                    <span className={cn("text-[11px] line-clamp-2 mt-1 leading-relaxed", isLight ? "text-slate-500" : "text-white/60")}>
+                      {c.why}
+                    </span>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+
+        {/* ── Right: Weekly Hourly Allocation & Subject Balance ── */}
+        <div className={cn(
+          "p-6 sm:p-7 rounded-3xl border flex flex-col justify-between space-y-5 backdrop-blur-xl",
+          isLight 
+            ? "bg-white/90 border-slate-200 shadow-sm" 
+            : "bg-[#0b0e24]/80 border-indigo-500/20 shadow-[0_8px_32px_rgba(0,0,0,0.4)]"
+        )}>
+          <div className="space-y-2">
+            <div className="flex items-center justify-between">
+              <h3 className="text-lg font-display font-bold text-white">
+                Weekly Subject Hour Allocation
+              </h3>
+              <span className="text-xs font-mono font-bold text-cyan-400">
+                {aiPlan.answers.dailyHours * 6} hrs / week total
+              </span>
+            </div>
+            <p className={cn("text-xs", isLight ? "text-slate-600" : "text-white/50")}>
+              Weighted mathematically to prioritize your identified hurdle in <span className="text-rose-400 font-bold">{aiPlan.answers.weakSubject}</span>.
+            </p>
+          </div>
+
+          <div className="space-y-4">
+            {aiPlan.weeklyHourlyAllocation.map((item) => (
+              <div key={item.subject} className="space-y-1.5">
+                <div className="flex justify-between items-center text-xs">
+                  <div className="flex items-center gap-2">
+                    <span className={cn("w-2.5 h-2.5 rounded-full", item.color)} />
+                    <span className="font-bold text-white">{item.subject}</span>
+                  </div>
+                  <span className="font-mono text-white/80 font-bold">
+                    {item.hours} hrs ({item.percentage}%)
+                  </span>
+                </div>
+
+                <div className="w-full h-2 rounded-full bg-white/10 overflow-hidden">
+                  <div
+                    className={cn("h-full rounded-full transition-all duration-500", item.color)}
+                    style={{ width: `${item.percentage}%` }}
+                  />
+                </div>
+
+                <p className="text-[10.5px] text-white/45 line-clamp-1">
+                  {item.focusNote}
+                </p>
+              </div>
+            ))}
+          </div>
+
+          {/* Active Study Rhythm Guideline */}
+          <div className={cn(
+            "p-3.5 rounded-2xl border text-xs flex items-start gap-2.5",
+            isLight 
+              ? "bg-indigo-50 border-indigo-200 text-indigo-900" 
+              : "bg-indigo-500/10 border-indigo-500/20 text-indigo-200"
+          )}>
+            <Sparkles className="w-4 h-4 text-cyan-400 shrink-0 mt-0.5" />
+            <span className="leading-relaxed">
+              <strong className="text-white font-semibold">Active Study Guideline:</strong> Allocate 60% of your daily {aiPlan.answers.dailyHours} hours strictly to numerical solving & derivations, and 40% to rapid NCERT revision.
+            </span>
+          </div>
+        </div>
+
+      </div>
+
+      {/* ── 4. FOUR-PHASE PREPARATION LIFECYCLE ROADMAP ── */}
+      <div className={cn(
+        "p-6 sm:p-8 rounded-3xl border space-y-6 backdrop-blur-xl",
+        isLight 
+          ? "bg-white/90 border-slate-200 shadow-sm" 
+          : "bg-[#0b0e24]/80 border-indigo-500/20 shadow-[0_8px_32px_rgba(0,0,0,0.4)]"
+      )}>
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div>
+            <span className="text-[10px] font-bold uppercase tracking-wider text-cyan-400">
+              Strategic Timeline
+            </span>
+            <h3 className="text-xl sm:text-2xl font-display font-extrabold text-white">
+              Preparation Lifecycle Roadmap
+            </h3>
+            <p className={cn("text-xs mt-0.5", isLight ? "text-slate-600" : "text-white/50")}>
+              Your structured pathway from baseline concepts to IISER rank qualification.
+            </p>
+          </div>
+
+          <span className="text-xs font-mono text-white/50 self-start sm:self-auto">
+            Click phase to inspect milestones
+          </span>
+        </div>
+
+        {/* 4 Phase Tab Buttons */}
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-2.5">
+          {aiPlan.phases.map((phase, idx) => {
+            const isSelected = activePhaseTab === phase.id;
+            return (
+              <button
+                key={phase.id}
+                type="button"
+                onClick={() => setActivePhaseTab(phase.id)}
+                className={cn(
+                  "p-3.5 rounded-2xl border text-left transition-all cursor-pointer flex flex-col justify-between min-h-[90px] relative overflow-hidden",
+                  isSelected
+                    ? "bg-cyan-500/15 border-cyan-400 shadow-[0_0_20px_rgba(6,182,212,0.2)]"
+                    : "bg-white/[0.03] border-white/10 hover:border-cyan-500/30 hover:bg-white/[0.05]"
+                )}
+              >
+                <div className="flex items-center justify-between w-full mb-1">
+                  <span className={cn(
+                    "text-[9.5px] font-bold px-2 py-0.5 rounded-md uppercase",
+                    phase.status === 'ACTIVE' 
+                      ? "bg-emerald-500/20 text-emerald-300 border border-emerald-500/30"
+                      : "bg-white/10 text-white/60"
+                  )}>
+                    {phase.status}
+                  </span>
+                  <span className="text-[10px] font-mono text-white/40">#{idx + 1}</span>
+                </div>
+
+                <div className="space-y-0.5">
+                  <h4 className={cn("text-xs sm:text-sm font-bold truncate", isSelected ? "text-cyan-200" : "text-white")}>
+                    {phase.title}
+                  </h4>
+                  <span className="text-[10px] text-white/45 block">{phase.timeline}</span>
+                </div>
+              </button>
+            );
+          })}
+        </div>
+
+        {/* Active Phase Deep Dive Card */}
+        <div className="p-5 sm:p-6 rounded-2xl bg-white/[0.02] border border-white/8 space-y-4">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-white/5 pb-4">
+            <div>
+              <div className="flex items-center gap-2">
+                <h4 className="text-lg font-bold text-white">{activePhase.title}</h4>
+                <span className="text-xs font-mono text-cyan-400 font-bold px-2 py-0.5 rounded bg-cyan-500/10 border border-cyan-500/20">
+                  {activePhase.timeline}
+                </span>
+              </div>
+              <p className="text-xs text-white/60 mt-1 leading-relaxed max-w-2xl">
+                {activePhase.description}
+              </p>
+            </div>
+
+            <div className="text-left sm:text-right shrink-0">
+              <span className="text-[10px] uppercase font-bold text-white/40 block">Target Progress</span>
+              <span className="text-xl font-display font-black text-white">{activePhase.targetProgress}%</span>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-1">
+            {/* Key Milestones */}
+            <div className="space-y-2.5">
+              <span className="text-[10.5px] font-bold uppercase tracking-wider text-white/40 block">
+                Key Milestone Objectives:
+              </span>
+              <div className="space-y-2">
+                {activePhase.keyMilestones.map((m, i) => (
+                  <div key={i} className="flex items-start gap-2.5 text-xs text-white/80">
+                    <CheckCircle2 className="w-4 h-4 text-cyan-400 shrink-0 mt-0.5" />
+                    <span className="leading-relaxed">{m}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Verification Criteria & Action */}
+            <div className="space-y-3 flex flex-col justify-between">
+              <div>
+                <span className="text-[10.5px] font-bold uppercase tracking-wider text-white/40 block mb-1.5">
+                  Phase Verification Criteria:
+                </span>
+                <div className="p-3 rounded-xl bg-white/[0.03] border border-white/8 text-xs font-mono text-cyan-300 font-semibold">
+                  {activePhase.verificationCriteria}
+                </div>
+              </div>
+
+              <button
+                type="button"
+                onClick={() => onNavigate?.(`smart_lessons:${aiPlan.answers.weakSubject}`)}
+                className="self-start px-4 py-2.5 rounded-xl text-xs font-bold bg-white/[0.07] hover:bg-white/15 border border-white/10 text-white transition-all flex items-center gap-2 cursor-pointer"
+              >
+                <span>Browse {aiPlan.answers.weakSubject} Smart Lessons</span>
+                <ArrowRight className="w-3.5 h-3.5 text-cyan-400" />
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* ── 5. INTERACTIVE WEEKLY ACTION CHECKLIST ── */}
+      <div className={cn(
+        "p-6 sm:p-8 rounded-3xl border space-y-5 backdrop-blur-xl",
+        isLight 
+          ? "bg-white/90 border-slate-200 shadow-sm" 
+          : "bg-[#0b0e24]/80 border-indigo-500/20 shadow-[0_8px_32px_rgba(0,0,0,0.4)]"
+      )}>
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div>
+            <div className="flex items-center gap-2">
+              <CheckSquare className="w-4 h-4 text-cyan-400" />
+              <h3 className="text-lg sm:text-xl font-display font-bold text-white">
+                This Week's Action Checklist
+              </h3>
+            </div>
+            <p className={cn("text-xs mt-1", isLight ? "text-slate-600" : "text-white/50")}>
+              Check off your tasks as you complete them. Progress is saved automatically.
+            </p>
+          </div>
+
+          <div className="flex items-center gap-3 self-start sm:self-auto">
+            <span className="text-xs font-mono font-bold text-cyan-400">
+              {checklistCompletedCount} / {checklistTotal} Completed ({checklistPercent}%)
+            </span>
+            <div className="w-24 h-2 rounded-full bg-white/10 overflow-hidden">
+              <div
+                className="h-full bg-gradient-to-r from-cyan-400 to-emerald-400 transition-all duration-300"
+                style={{ width: `${checklistPercent}%` }}
+              />
+            </div>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
+          {aiPlan.weeklyChecklist.map((item) => {
+            const isDone = !!checklist[item.id];
+            const itemTarget = item.route 
+              ? { route: item.route, label: item.targetLabel || 'Open Task' }
+              : (item.task.toLowerCase().includes('mock')
+                ? { route: 'mock_tests', label: 'Open Mock Tests' }
+                : (item.task.toLowerCase().includes('pyq')
+                  ? { route: 'pyqs', label: 'Open PYQ Hub' }
+                  : resolveLessonTarget(item.task, aiPlan.answers.weakSubject)));
+
+            return (
+              <div
+                key={item.id}
+                onClick={() => handleToggleChecklistItem(item.id)}
+                className={cn(
+                  "p-4 rounded-2xl border transition-all cursor-pointer flex items-start justify-between gap-3 select-none group",
+                  isDone
+                    ? "bg-emerald-500/10 border-emerald-500/30 shadow-[0_0_15px_rgba(16,185,129,0.1)]"
+                    : "bg-white/[0.02] border-white/8 hover:border-white/20 text-white/80 hover:bg-white/[0.04]"
+                )}
+              >
+                <div className="flex items-start gap-3 flex-1 min-w-0">
+                  <div className={cn(
+                    "w-5 h-5 rounded-lg border flex items-center justify-center shrink-0 mt-0.5 transition-all",
+                    isDone
+                      ? "border-emerald-400 bg-emerald-400 text-slate-950 font-bold"
+                      : "border-white/20 group-hover:border-cyan-400"
+                  )}>
+                    {isDone && <Check className="w-3.5 h-3.5 stroke-[3]" />}
+                  </div>
+
+                  <div className="space-y-1.5 min-w-0 flex-1">
+                    <span className={cn(
+                      "text-xs font-semibold leading-relaxed block transition-all",
+                      isDone ? "line-through text-white/50" : "text-white"
+                    )}>
+                      {item.task}
+                    </span>
+                    <div className="flex flex-wrap items-center gap-2">
+                      <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-white/5 text-white/40 uppercase">
+                        {item.category}
+                      </span>
+                      {itemTarget.route && (
+                        <button
+                          type="button"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            onNavigate?.(itemTarget.route);
+                          }}
+                          className="text-[10.5px] font-bold text-cyan-400 hover:text-cyan-300 hover:underline flex items-center gap-1 cursor-pointer transition-colors"
+                        >
+                          <span>{itemTarget.label || 'Go to Task'}</span>
+                          <ArrowRight className="w-3 h-3" />
+                        </button>
+                      )}
+                    </div>
+                  </div>
+                </div>
+
+                {isDone && (
+                  <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 shrink-0">
+                    Done ✓
+                  </span>
+                )}
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* ── 6. AI MENTOR COACHING DIRECTIVES ── */}
+      <div className={cn(
+        "p-6 sm:p-8 rounded-3xl border space-y-4 relative overflow-hidden backdrop-blur-xl",
+        isLight 
+          ? "bg-white/90 border-slate-200" 
+          : "bg-gradient-to-r from-indigo-950/50 via-[#0b0e24]/80 to-purple-950/50 border-purple-500/25 shadow-[0_8px_32px_rgba(0,0,0,0.5)]"
+      )}>
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <div className="flex items-center gap-2.5">
+            <div className="w-8 h-8 rounded-xl bg-purple-500/20 border border-purple-500/30 flex items-center justify-center text-purple-300">
+              <Sparkles className="w-4 h-4" />
+            </div>
+            <div>
+              <h3 className="text-sm sm:text-base font-display font-bold text-white">
+                AI Mentor Coaching Directives
+              </h3>
+              <p className="text-[11px] text-purple-300/80">
+                Tailored for {aiPlan.answers.targetInstitute} • {aiPlan.answers.targetAir}
+              </p>
+            </div>
+          </div>
+
+          <span className="text-[10px] font-mono text-cyan-400 uppercase tracking-wider px-2.5 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/20 hidden sm:inline">
+            NVIDIA NIM AI Verified
+          </span>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-3.5 pt-1">
+          {[
+            {
+              title: "Scoring Strategy & Mindset",
+              accent: "text-cyan-400",
+              border: "hover:border-cyan-500/40",
+              tag: "TACTIC #1",
+              text: aiPlan.aiMentorTips[0] || `Focus on ${aiPlan.answers.weakSubject}: Every +4 marks in ${aiPlan.answers.weakSubject} boosts your IAT rank by 80+ positions. Target high-probability formula questions first.`
+            },
+            {
+              title: "180-Minute Exam Pacing",
+              accent: "text-purple-400",
+              border: "hover:border-purple-500/40",
+              tag: "TACTIC #2",
+              text: aiPlan.aiMentorTips[1] || `Divide your 180 mins: Chemistry (35m) → Biology (30m) → Physics (55m) → Math (50m) → Final Review (10m). Never get stuck on 1 question.`
+            },
+            {
+              title: "Error Control & Negative Marks",
+              accent: "text-amber-400",
+              border: "hover:border-amber-500/40",
+              tag: "TACTIC #3",
+              text: aiPlan.aiMentorTips[2] || `In Section A, eliminate careless negative marks. Keeping negative marks under 12 secures your Top 100 AIR at ${aiPlan.answers.targetInstitute}.`
+            }
+          ].map((tactic, idx) => (
+            <div 
+              key={idx} 
+              className={cn(
+                "p-4 rounded-2xl border transition-all space-y-2 flex flex-col justify-between",
+                isLight 
+                  ? "bg-slate-50/80 border-slate-200" 
+                  : "bg-white/[0.03] border-white/8 hover:bg-white/[0.05]",
+                tactic.border
+              )}
+            >
+              <div className="space-y-1.5">
+                <div className="flex items-center justify-between">
+                  <span className={cn("text-[9.5px] font-mono font-bold tracking-wider", tactic.accent)}>
+                    {tactic.tag}
+                  </span>
+                  <Lightbulb className={cn("w-3.5 h-3.5", tactic.accent)} />
+                </div>
+                <h4 className="text-xs font-bold text-white">{tactic.title}</h4>
+                <p className="text-xs text-white/70 leading-relaxed pt-0.5">{tactic.text}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <Footer onNavigate={onNavigate} />
     </div>
   );
 }

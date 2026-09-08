@@ -10,21 +10,31 @@ module.exports = function(app, authMiddleware) {
             if (!prompt) return res.status(400).json({ error: "Prompt required" });
 
             // Check if API key is present
-            if (!process.env.DEEPSEEK_API_KEY || process.env.DEEPSEEK_API_KEY === "your_deepseek_api_key_here") {
-                console.error("[AI ERROR] DEEPSEEK_API_KEY is missing in .env");
-                return res.status(500).json({ error: "DeepSeek API key is not configured in .env" });
+            const nvidiaKey = process.env.NVIDIA_API_KEY || "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";
+            const deepseekKey = process.env.DEEPSEEK_API_KEY;
+            const isNvidia = !!nvidiaKey && nvidiaKey.startsWith("nvapi-");
+            const apiKey = isNvidia ? nvidiaKey : deepseekKey;
+
+            if (!apiKey || apiKey === "your_deepseek_api_key_here") {
+                console.error("[AI ERROR] Neither NVIDIA_API_KEY nor DEEPSEEK_API_KEY is configured in .env");
+                return res.status(500).json({ error: "AI API key is not configured in .env" });
             }
 
-            console.log(`[AI] Processing analysis request (Prompt Length: ${prompt.length})`);
+            console.log(`[AI] Processing analysis request (Prompt Length: ${prompt.length}, Provider: ${isNvidia ? 'NVIDIA' : 'DeepSeek'})`);
 
-            const response = await fetch("https://api.deepseek.com/v1/chat/completions", {
+            const apiUrl = isNvidia 
+                ? "https://integrate.api.nvidia.com/v1/chat/completions" 
+                : "https://api.deepseek.com/v1/chat/completions";
+            const model = isNvidia ? (process.env.NVIDIA_MODEL || "meta/llama-3.2-11b-vision-instruct") : "deepseek-chat";
+
+            const response = await fetch(apiUrl, {
                 method: "POST",
                 headers: {
-                    "Authorization": `Bearer ${process.env.DEEPSEEK_API_KEY}`,
+                    "Authorization": `Bearer ${apiKey}`,
                     "Content-Type": "application/json"
                 },
                 body: JSON.stringify({
-                    model: "deepseek-chat",
+                    model: model,
                     messages: [
                         { 
                             role: "system", 
@@ -47,9 +57,9 @@ module.exports = function(app, authMiddleware) {
 
             if (!response.ok) {
                 const errorData = await response.json().catch(() => ({}));
-                console.error("[AI DEEPSEEK ERROR]", errorData);
+                console.error("[AI ERROR]", response.status, errorData);
                 return res.status(response.status).json({ 
-                    error: "DeepSeek API returned an error. Check your API credits or key limits." 
+                    error: "AI API returned an error. Check your API credits or key limits." 
                 });
             }
 

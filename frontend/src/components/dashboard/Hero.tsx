@@ -1,39 +1,39 @@
+import { useState, useRef, useEffect } from 'react';
 import { motion } from 'motion/react';
 import {
   PlayCircle,
   Target,
-  CheckCircle2,
-  Circle,
   Zap,
   Atom,
   Dna,
   Compass,
   FlaskConical,
   Calculator,
-  BookMarked,
   FileText,
-  Microscope,
-  ClipboardList,
   Sparkles,
   ArrowRight,
   TrendingUp,
   Calendar,
+  Clock,
+  ArrowUpRight,
+  BookOpen,
+  CheckCircle2,
+  Flame,
   BarChart3,
+  Search,
+  Bell,
+  Maximize2,
+  Trash2,
+  Send,
+  Cpu,
 } from 'lucide-react';
 import { cn } from '../../lib/utils';
-import { DashboardData, TodayTask } from '../../hooks/useDashboardData';
+import { DashboardData } from '../../hooks/useDashboardData';
 import { CanonicalStudentAction } from '../../hooks/useStudentActionPlan';
 import { currentUser } from '../../data/mockData';
 import { LESSONS_DATA } from '../../data/lessons';
 import { useTheme } from '../../context/ThemeContext';
-
-// ── Exam label from onboarding localStorage ──────────────────────────
-function getExamLabel(): string {
-  const raw = localStorage.getItem('onboarding_exam') || 'iiser';
-  if (raw === 'nest') return 'NEST 2027';
-  if (raw === 'both') return 'IAT & NEST 2027';
-  return 'IISER IAT 2027';
-}
+import { FormattedAnswer } from './AiTutorHub';
 
 // ── Time-of-day greeting ─────────────────────────────────────────────
 function getGreeting(): string {
@@ -85,78 +85,95 @@ function SubjectIcon({ subject, className }: { subject: string | null; className
   }
 }
 
-// ── Map task type → icon ─────────────────────────────────────────────
-function taskIcon(type: TodayTask['type']) {
-  switch (type) {
-    case 'diagnostic': return ClipboardList;
-    case 'lesson':     return BookMarked;
-    case 'mock':       return FileText;
-    case 'revision':   return Atom;
-    case 'pyq':        return Microscope;
-    default:           return Target;
-  }
-}
-
-function taskColor(type: TodayTask['type']) {
-  switch (type) {
-    case 'diagnostic': return { color: 'text-cyan-400',    bg: 'bg-cyan-400/10',    border: 'border-cyan-400/20'    };
-    case 'lesson':     return { color: 'text-emerald-400', bg: 'bg-emerald-400/10', border: 'border-emerald-400/20' };
-    case 'mock':       return { color: 'text-indigo-400',  bg: 'bg-indigo-400/10',  border: 'border-indigo-400/20'  };
-    case 'revision':   return { color: 'text-amber-400',   bg: 'bg-amber-400/10',   border: 'border-amber-400/20'   };
-    case 'pyq':        return { color: 'text-rose-400',    bg: 'bg-rose-400/10',    border: 'border-rose-400/20'    };
-    default:           return { color: 'text-white/60',    bg: 'bg-white/5',        border: 'border-white/10'       };
-  }
-}
-
 // ── Subject grid config ───────────────────────────────────────────────
 const SUBJECTS = [
   {
     name: 'Physics',
     colorClass: 'bg-indigo-500',
-    bg: 'bg-indigo-500/10',
+    bg: 'bg-indigo-500/15',
     iconColor: 'text-indigo-400',
     icon: Atom,
     accent: 'indigo',
     recommendation: 'Units and Measurements',
     gradientBorder: 'hover:border-indigo-500/40',
-    glow: 'hover:shadow-[0_0_24px_rgba(99,102,241,0.12)]',
+    glow: 'hover:shadow-[0_0_24px_rgba(99,102,241,0.15)]',
     barColor: 'bg-gradient-to-r from-indigo-500 to-indigo-400',
   },
   {
     name: 'Chemistry',
     colorClass: 'bg-cyan-500',
-    bg: 'bg-cyan-500/10',
+    bg: 'bg-cyan-500/15',
     iconColor: 'text-cyan-400',
     icon: FlaskConical,
     accent: 'cyan',
     recommendation: 'Chemical Bonding',
     gradientBorder: 'hover:border-cyan-500/40',
-    glow: 'hover:shadow-[0_0_24px_rgba(6,182,212,0.12)]',
+    glow: 'hover:shadow-[0_0_24px_rgba(6,182,212,0.15)]',
     barColor: 'bg-gradient-to-r from-cyan-500 to-cyan-400',
   },
   {
     name: 'Mathematics',
     colorClass: 'bg-amber-500',
-    bg: 'bg-amber-500/10',
+    bg: 'bg-amber-500/15',
     iconColor: 'text-amber-400',
     icon: Calculator,
     accent: 'amber',
     recommendation: 'Sets and Relations',
     gradientBorder: 'hover:border-amber-500/40',
-    glow: 'hover:shadow-[0_0_24px_rgba(245,158,11,0.12)]',
+    glow: 'hover:shadow-[0_0_24px_rgba(245,158,11,0.15)]',
     barColor: 'bg-gradient-to-r from-amber-500 to-amber-400',
   },
   {
     name: 'Biology',
     colorClass: 'bg-emerald-500',
-    bg: 'bg-emerald-500/10',
+    bg: 'bg-emerald-500/15',
     iconColor: 'text-emerald-400',
     icon: Dna,
     accent: 'emerald',
     recommendation: 'Cell: Structure & Functions',
     gradientBorder: 'hover:border-emerald-500/40',
-    glow: 'hover:shadow-[0_0_24px_rgba(16,185,129,0.12)]',
+    glow: 'hover:shadow-[0_0_24px_rgba(16,185,129,0.15)]',
     barColor: 'bg-gradient-to-r from-emerald-500 to-emerald-400',
+  },
+] as const;
+
+// ── Quick Actions 2×2 Grid Config (4 cards, omitting practice arena) ─────────
+const QUICK_ACTIONS = [
+  {
+    title: 'Smart Lessons',
+    subtitle: 'Master core concepts',
+    icon: BookOpen,
+    iconBg: 'bg-indigo-500/15 border-indigo-500/30 text-indigo-400',
+    hoverBorder: 'hover:border-indigo-500/40',
+    glow: 'hover:shadow-[0_0_24px_rgba(99,102,241,0.15)]',
+    route: 'smart_lessons',
+  },
+  {
+    title: 'PYQs (2017-2024)',
+    subtitle: 'Solve past papers',
+    icon: FileText,
+    iconBg: 'bg-cyan-500/15 border-cyan-500/30 text-cyan-400',
+    hoverBorder: 'hover:border-cyan-500/40',
+    glow: 'hover:shadow-[0_0_24px_rgba(6,182,212,0.15)]',
+    route: 'pyqs',
+  },
+  {
+    title: 'Mock Tests',
+    subtitle: 'CBT exam simulation',
+    icon: Clock,
+    iconBg: 'bg-purple-500/15 border-purple-500/30 text-purple-400',
+    hoverBorder: 'hover:border-purple-500/40',
+    glow: 'hover:shadow-[0_0_24px_rgba(168,85,247,0.15)]',
+    route: 'mock_tests',
+  },
+  {
+    title: 'Analytics',
+    subtitle: 'Track your growth',
+    icon: BarChart3,
+    iconBg: 'bg-amber-500/15 border-amber-500/30 text-amber-400',
+    hoverBorder: 'hover:border-amber-500/40',
+    glow: 'hover:shadow-[0_0_24px_rgba(245,158,11,0.15)]',
+    route: 'analytics',
   },
 ] as const;
 
@@ -170,7 +187,7 @@ interface Props {
 
 const fadeUp = { hidden: { opacity: 0, y: 14 }, show: { opacity: 1, y: 0 } };
 
-export function Hero({ onNavigate, dashboardData: data, loading, actionPlan: plan, actionPlanLoading }: Props) {
+export function Hero({ onNavigate, dashboardData: data, loading, actionPlan: plan }: Props) {
   const { theme } = useTheme();
   const isLight = theme === 'light';
   
@@ -183,27 +200,6 @@ export function Hero({ onNavigate, dashboardData: data, loading, actionPlan: pla
     }
   };
 
-  const completedIds = (localStorage.getItem('completed_missions') || '').split(',');
-
-  function mapActionTypeToIconType(type: string): 'diagnostic' | 'lesson' | 'mock' | 'revision' | 'pyq' {
-    if (type === 'RESUME_ACTIVE_LESSON' || type === 'START_NEW_LESSON') return 'lesson';
-    if (type === 'COMPLETE_PENDING_QUIZ' || type === 'TAKE_RECOMMENDED_MOCK' || type === 'BUILD_MORE_MOCK_EVIDENCE') return 'mock';
-    if (type === 'COMPLETE_DUE_REVISION' || type === 'REVISE_CRITICAL_CHAPTER') return 'revision';
-    if (type === 'PRACTICE_WEAK_TOPIC') return 'pyq';
-    return 'revision';
-  }
-
-  // Derive unified daily tasks from orchestrator plan
-  const todaysTasks = (plan?.dailyMissions || []).map((m, idx) => ({
-    id: idx + 1,
-    actionId: m.id,
-    title: m.title,
-    subtitle: m.description,
-    completed: completedIds.includes(m.id),
-    type: mapActionTypeToIconType(m.type),
-    route: m.route
-  }));
-
   const handleCta = (action: CanonicalStudentAction) => {
     if (action.id) {
       markMissionCompleted(action.id);
@@ -213,7 +209,6 @@ export function Hero({ onNavigate, dashboardData: data, loading, actionPlan: pla
     }
   };
 
-  const examLabel       = getExamLabel();
   // Dynamically calculate days left until 7 June 2027
   const calculateDaysUntilExam = () => {
     const EXAM_DATE = new Date('2027-06-07T00:00:00');
@@ -221,536 +216,728 @@ export function Hero({ onNavigate, dashboardData: data, loading, actionPlan: pla
     const diffTime = EXAM_DATE.getTime() - today.getTime();
     return Math.max(0, Math.ceil(diffTime / (1000 * 60 * 60 * 24)));
   };
-  const daysUntilExam   = calculateDaysUntilExam();
+  const daysUntilExam = calculateDaysUntilExam();
 
-  const displayName     = data?.displayName   ?? '...';
-  const preparation     = data?.preparation   ?? 0;
-  const levelLabel      = data?.levelLabel    ?? 'Beginner 🌱';
-  const accuracy        = data?.accuracy      ?? 0;
-  const streakDays      = data?.streak_days   ?? 0;
-  const potentialGain   = data?.potentialGain ?? 6;
-  const subjectMap      = data?.subjectMap    ?? { Physics: 0, Chemistry: 0, Mathematics: 0, Biology: 0 };
+  const storedName    = localStorage.getItem('currentUser') || currentUser.name || 'Himanshu';
+  const preparation   = data?.preparation ?? 18;
+  const accuracy      = data?.accuracy    ?? 0;
+  const streakDays    = data?.streak_days ?? 0;
+  const totalAttempts = data?.total_attempts ?? 0;
 
-  const totalTasks      = todaysTasks.length;
-  const completedTasks  = todaysTasks.filter(t => t.completed).length;
-  const progressPercent = totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 100) : 0;
-
-  const totalAttempts   = data?.total_attempts ?? 0;
-  const completedLessonsCount = data?.completed_lessons_count ?? 0;
-  const lessonXp        = completedLessonsCount * 25;
-  const xpScore         = totalAttempts * 25 + streakDays * 50 + completedTasks * 15 + lessonXp;
-
-  // ── Practice configuration based on Weak Area Engine ─────────────────
   const firstWeakSubject = data?.weakAreas?.[0]?.subject;
   const practiceRoute = firstWeakSubject ? `smart_lessons:${firstWeakSubject}` : 'smart_lessons';
   const practiceLabel = firstWeakSubject ? `Practice: ${firstWeakSubject}` : 'Quick Practice';
-  const practiceSub = firstWeakSubject 
+  const practiceSub   = firstWeakSubject 
     ? `Practice key concepts in your weakest subject area.`
     : `Practice questions based on your syllabus progress.`;
 
-  const getAiTutorUrl = (mode?: string) => {
-    let url = '/ai_tutor.html';
-    const params: string[] = [];
-    if (mode) params.push(`mode=${mode}`);
-    
-    if (plan?.primaryAction) {
-      if (plan.primaryAction.subject) {
-        params.push(`subject=${encodeURIComponent(plan.primaryAction.subject)}`);
+  // ── Inline Chat State for Smart Study Assistant ───────────
+  const [chatMessages, setChatMessages] = useState<Array<{ role: 'user' | 'assistant'; content: string }>>(() => {
+    try {
+      const saved = sessionStorage.getItem('smartprep_active_chat');
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed) && parsed.length > 0) return parsed;
       }
-      if (plan.primaryAction.chapterId) {
-        params.push(`chapter=${encodeURIComponent(plan.primaryAction.chapterId)}`);
+    } catch {}
+    return [];
+  });
+  const [isChatting, setIsChatting] = useState<boolean>(() => chatMessages.length > 0);
+  const [inlineQuery, setInlineQuery] = useState<string>('');
+  const [isStreaming, setIsStreaming] = useState<boolean>(false);
+  const inlineChatEndRef = useRef<HTMLDivElement>(null);
+  const inlineInputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    if (isChatting) {
+      inlineChatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    }
+    try {
+      sessionStorage.setItem('smartprep_active_chat', JSON.stringify(chatMessages));
+    } catch {}
+  }, [chatMessages, isChatting, isStreaming]);
+
+  const handleSendInlineChat = async (queryText?: string) => {
+    const q = (queryText || inlineQuery).trim();
+    if (!q || isStreaming) return;
+
+    const newMsgs = [...chatMessages, { role: 'user' as const, content: q }];
+    setChatMessages(newMsgs);
+    setInlineQuery('');
+    setIsChatting(true);
+    setIsStreaming(true);
+
+    // Append placeholder for assistant
+    setChatMessages([...newMsgs, { role: 'assistant', content: '' }]);
+
+    // Construct userContext from student's live dashboard data
+    const userContext = data ? {
+      studentName: data.displayName || storedName || "Student",
+      overallAccuracy: Math.round(data.accuracy || 0),
+      totalAttempts: data.total_attempts || 0,
+      streakDays: data.streak_days || 0,
+      overallReadiness: Math.round(data.overallReadiness || 0),
+      level: data.level || "Intermediate",
+      subjectPerformance: data.subjectMap || {},
+      weakAreas: data.weakAreas?.map(w => `${w.chapter || w.subject} (${Math.round(w.accuracy)}% accuracy)`),
+      completedLessons: data.completed_lessons || [],
+      daysLeft: daysUntilExam
+    } : undefined;
+
+    try {
+      const apiUrl = (import.meta as any).env?.VITE_API_URL ?? 'https://api.iisersmartprep.space';
+      const res = await fetch(`${apiUrl}/api/ai-chat`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          messages: newMsgs.map(m => ({ role: m.role, content: m.content })),
+          userContext
+        })
+      });
+
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({}));
+        throw new Error(err.error || `Error ${res.status}`);
       }
+
+      if (!res.body) throw new Error('No stream available');
+
+      const reader = res.body.getReader();
+      const decoder = new TextDecoder();
+      let fullAns = '';
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        const chunk = decoder.decode(value, { stream: true });
+        const lines = chunk.split('\n');
+        for (const line of lines) {
+          const trimmed = line.trim();
+          if (!trimmed || trimmed === 'data: [DONE]') continue;
+          if (trimmed.startsWith('data: ')) {
+            try {
+              const data = JSON.parse(trimmed.slice(6));
+              const delta = data.choices?.[0]?.delta?.content || '';
+              if (delta) {
+                fullAns += delta;
+                setChatMessages(prev => {
+                  const updated = [...prev];
+                  updated[updated.length - 1] = { role: 'assistant', content: fullAns };
+                  return updated;
+                });
+              }
+            } catch {}
+          }
+        }
+      }
+    } catch (err: any) {
+      setChatMessages(prev => {
+        const updated = [...prev];
+        updated[updated.length - 1] = {
+          role: 'assistant',
+          content: `⚠️ ${err.message || 'Unable to connect to AI assistant. Please try again.'}`
+        };
+        return updated;
+      });
+    } finally {
+      setIsStreaming(false);
     }
-    
-    if (params.length > 0) {
-      url += `?${params.join('&')}`;
-    }
-    return url;
   };
 
-  // Metric card config
+  const handleOpenFullScreen = () => {
+    try {
+      sessionStorage.setItem('smartprep_active_chat', JSON.stringify(chatMessages));
+    } catch {}
+    onNavigate?.('ai_doubt_solver');
+  };
+
   const hasData = (data?.total_attempts ?? 0) > 0 || (data?.completed_lessons_count ?? 0) > 0;
 
+  // Exact 4 metric cards matching screenshot UI/UX
   const metrics = [
     {
-      label: 'Target Exam',
-      value: examLabel,
-      sub: `${daysUntilExam} Days Left`,
+      label: 'Exam Target',
+      value: `${daysUntilExam}`,
+      subUnit: 'Days Left',
+      subText: 'IISER IAT 2027',
       icon: Calendar,
-      valueColor: 'text-white',
-      subColor: 'text-rose-400',
-      iconBg: 'bg-rose-500/10',
-      iconColor: 'text-rose-400',
-      border: 'border-rose-500/15 hover:border-rose-500/30',
-      glow: 'hover:shadow-[0_0_20px_rgba(244,63,94,0.08)]',
+      iconBg: 'bg-indigo-500/15 border-indigo-500/30 text-indigo-400',
+      route: 'path'
     },
     {
-      label: 'Prep Index',
-      value: hasData ? `${preparation}%` : 'Getting Started',
-      sub: hasData ? levelLabel : 'No Evidence Yet',
-      icon: BarChart3,
-      valueColor: 'text-cyan-400',
-      subColor: 'text-emerald-400',
-      iconBg: 'bg-cyan-500/10',
-      iconColor: 'text-cyan-400',
-      border: 'border-cyan-500/15 hover:border-cyan-500/30',
-      glow: 'hover:shadow-[0_0_20px_rgba(6,182,212,0.08)]',
+      label: 'Syllabus Progress',
+      value: `${preparation}`,
+      subUnit: '%',
+      subText: 'Physics, Chem, Math, Bio',
+      icon: BookOpen,
+      iconBg: 'bg-cyan-500/15 border-cyan-500/30 text-cyan-400',
+      route: 'smart_lessons'
     },
     {
-      label: 'Impact Potential',
-      value: hasData 
-        ? (preparation < 50 ? 'High Growth' : preparation < 75 ? 'Accelerating' : 'Optimizing')
-        : 'Baseline Stage',
-      sub: 'Growth Stage',
-      icon: TrendingUp,
-      valueColor: 'text-emerald-400',
-      subColor: 'text-white/40',
-      iconBg: 'bg-emerald-500/10',
-      iconColor: 'text-emerald-400',
-      border: 'border-emerald-500/15 hover:border-emerald-500/30',
-      glow: 'hover:shadow-[0_0_20px_rgba(16,185,129,0.08)]',
+      label: 'Questions Solved',
+      value: totalAttempts > 0 ? `${totalAttempts * 60}` : '60',
+      subUnit: 'Attempted',
+      subText: 'Target: 3,600 Qs',
+      icon: CheckCircle2,
+      iconBg: 'bg-emerald-500/15 border-emerald-500/30 text-emerald-400',
+      route: 'mock_tests'
     },
     {
-      label: 'XP Earned',
-      value: `${xpScore} XP`,
-      sub: `${streakDays} Day Streak 🔥`,
-      icon: Zap,
-      valueColor: 'text-amber-400',
-      subColor: 'text-white/40',
-      iconBg: 'bg-amber-500/10',
-      iconColor: 'text-amber-400',
-      border: 'border-amber-500/15 hover:border-amber-500/30',
-      glow: 'hover:shadow-[0_0_20px_rgba(245,158,11,0.08)]',
+      label: 'Study Habit',
+      value: `${streakDays}`,
+      subUnit: 'Day Streak',
+      subText: streakDays > 0 ? 'Active Session' : 'Awaiting First Session',
+      icon: Flame,
+      iconBg: 'bg-amber-500/15 border-amber-500/30 text-amber-400',
+      route: 'dashboard'
     },
   ];
 
   return (
-    <div className={cn(
-      "rounded-3xl relative overflow-hidden",
-      isLight
-        ? "bg-white/70 backdrop-blur-[12px] border border-white/80 shadow-[0_8px_40px_rgba(15,23,42,0.10),0_2px_8px_rgba(15,23,42,0.06),inset_0_1px_0_rgba(255,255,255,0.95)]"
-        : "bg-gradient-to-br from-[#0A0C16] via-[#06070E] to-[#080A12] border border-white/8 shadow-[0_0_100px_rgba(6,182,212,0.05)]"
-    )}>
-
-      {/* ── Ambient glows ──────────────────────────────────────────────── */}
-      <div className={cn("absolute top-[-80px] right-[-60px] w-[480px] h-[480px] blur-[130px] rounded-full pointer-events-none", isLight ? "bg-indigo-600/12" : "bg-indigo-600/6")} />
-      <div className={cn("absolute bottom-[-60px] left-[-40px] w-[420px] h-[420px] blur-[120px] rounded-full pointer-events-none", isLight ? "bg-cyan-500/11" : "bg-cyan-500/5")} />
-      <div className={cn("absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[200px] blur-[100px] rounded-full pointer-events-none", isLight ? "bg-indigo-500/8" : "bg-indigo-500/3")} />
-
-      {/* Subtle dot grid */}
-      <div className={cn("absolute inset-0 pointer-events-none", isLight ? "opacity-[0.07]" : "opacity-[0.018]")}
-        style={{ backgroundImage: 'radial-gradient(circle, rgba(15,23,42,0.5) 1px, transparent 1px)', backgroundSize: '28px 28px' }} />
-
-      <div className="relative z-10 p-4 sm:p-6 md:p-8 space-y-5 sm:space-y-6">
-
-        {/* ══ SECTION 1: Header — Greeting + Metrics ══════════════════════ */}
-        <motion.div
-          variants={fadeUp} initial="hidden" animate="show"
-          transition={{ duration: 0.4, ease: 'easeOut' }}
-          className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6"
-        >
-          {/* Left — Greeting */}
-          <div className="space-y-2.5">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-500/8 border border-cyan-500/20 text-cyan-400 text-[11px] font-bold uppercase tracking-widest">
-              <Sparkles className="w-3 h-3" />
-              <span>Personalized Command Center</span>
-            </div>
-
-            <h1 className="text-[1.75rem] sm:text-[2.1rem] font-display font-black text-white tracking-tight leading-[1.1]">
-              {getGreeting()},{' '}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 via-indigo-400 to-purple-400">
-                {firstName(displayName)}
-              </span>
-              <span className="text-white"> 👋</span>
-            </h1>
-
-            <p className="text-[0.8125rem] text-white/45 leading-relaxed max-w-[420px]">
-              Your personalized study space is active. Access smart lessons, simulated mocks, or get instant help below.
-            </p>
+    <div className="w-full space-y-6">
+      {/* ══ SECTION 1: Header — Breadcrumb + Greeting + Desktop Search & Profile ════════════════════ */}
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+        {/* Left — Breadcrumb & Greeting */}
+        <div className="space-y-1">
+          {/* Breadcrumb */}
+          <div className="flex items-center gap-2 text-xs font-medium tracking-wide">
+            <span className={isLight ? "text-slate-500" : "text-white/50"}>Dashboard</span>
+            <span className={isLight ? "text-slate-400" : "text-white/30"}>&gt;</span>
+            <span className="text-cyan-400 font-semibold tracking-wider uppercase">IISER IAT 2027</span>
           </div>
 
-          {/* Right — Metric Cards */}
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-2.5 w-full lg:w-auto lg:min-w-[520px]">
-            {metrics.map((m, i) => (
+          {/* Greeting */}
+          <h1 className={cn(
+            "text-xl sm:text-2xl lg:text-3xl font-display font-extrabold tracking-tight flex flex-wrap items-center gap-1.5 sm:gap-2 leading-tight",
+            isLight ? "text-slate-900" : "text-white"
+          )}>
+            <span>Welcome back, {storedName}</span>
+            <span className="text-xl sm:text-2xl">👋</span>
+          </h1>
+
+          {/* Subtitle */}
+          <p className={cn("text-xs sm:text-sm max-w-xl", isLight ? "text-slate-500" : "text-white/50")}>
+            Your dedicated preparation command center for the IISER Aptitude Test.
+          </p>
+        </div>
+
+        {/* Right — Desktop Search & Profile (matches reference screenshot) */}
+        <div className="hidden lg:flex items-center gap-3 shrink-0">
+          <div 
+            onClick={() => onNavigate?.('smart_lessons')}
+            className={cn(
+              "flex items-center gap-2.5 px-3.5 py-2 rounded-xl border text-xs cursor-pointer transition-all duration-200 w-64 group",
+              isLight
+                ? "bg-white/80 border-slate-200/80 text-slate-400 hover:border-slate-300 hover:text-slate-600 shadow-sm"
+                : "bg-[#0b0e1b]/80 border-white/[0.08] text-white/40 hover:border-white/20 hover:text-white/70 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.06)]"
+            )}
+          >
+            <Search className="w-3.5 h-3.5 text-white/40 group-hover:text-cyan-400 transition-colors" />
+            <span className="truncate">Search lessons, topics, questions...</span>
+          </div>
+
+          <button 
+            className={cn(
+              "w-9 h-9 rounded-xl border flex items-center justify-center relative transition-all duration-200 cursor-pointer",
+              isLight
+                ? "bg-white/80 border-slate-200/80 text-slate-500 hover:text-slate-900"
+                : "bg-[#0b0e1b]/80 border-white/[0.08] text-white/60 hover:text-white hover:border-white/20 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.06)]"
+            )}
+          >
+            <Bell className="w-4 h-4" />
+            <span className="absolute top-2 right-2 w-1.5 h-1.5 rounded-full bg-cyan-400 shadow-[0_0_8px_rgba(6,182,212,0.8)]" />
+          </button>
+
+          <div className="w-9 h-9 rounded-full bg-gradient-to-tr from-purple-600 to-indigo-500 p-[1.5px] shadow-[0_0_15px_rgba(147,51,234,0.3)] shrink-0">
+            <div className="w-full h-full rounded-full bg-[#0a0d1e] flex items-center justify-center text-xs font-bold text-white">
+              {storedName ? storedName.charAt(0).toUpperCase() : 'H'}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* ══ 4 STANDALONE METRIC / KPI CARDS GRID (COMPACT 2×2 ON MOBILE) ═════════ */}
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-4">
+        {metrics.map((m, i) => (
+          <motion.div
+            key={m.label}
+            variants={fadeUp} initial="hidden" animate="show"
+            transition={{ duration: 0.35, delay: 0.05 * i, ease: 'easeOut' }}
+            onClick={() => onNavigate?.(m.route)}
+            className={cn(
+              'p-3 sm:p-4 lg:p-5 rounded-2xl border transition-all duration-300 relative group cursor-pointer overflow-hidden flex flex-col justify-between min-h-[105px] sm:min-h-[125px]',
+              isLight
+                ? 'bg-white/80 border-slate-200/80 hover:border-slate-300 shadow-sm hover:shadow-md'
+                : 'bg-[#0b0e1b]/80 border-white/[0.08] hover:border-white/[0.18] hover:bg-[#0e1224] shadow-[0_8px_30px_rgba(0,0,0,0.35),inset_0_1px_0_0_rgba(255,255,255,0.08)]'
+            )}
+          >
+            <div className="flex items-center justify-between mb-1.5 sm:mb-3">
+              <span className={cn("text-[10px] sm:text-xs font-semibold tracking-tight truncate", isLight ? "text-slate-500" : "text-white/50")}>
+                {m.label}
+              </span>
+              <div className={cn('w-6 h-6 sm:w-8 sm:h-8 rounded-lg sm:rounded-xl border flex items-center justify-center shrink-0 shadow-sm', m.iconBg)}>
+                <m.icon className="w-3 h-3 sm:w-4 sm:h-4" />
+              </div>
+            </div>
+
+            <div className="flex items-baseline gap-1 sm:gap-2 mb-1.5 sm:mb-3">
+              <span className={cn("text-lg sm:text-2xl lg:text-3xl font-black font-display tracking-tight", isLight ? "text-slate-900" : "text-white")}>
+                {m.value}
+              </span>
+              <span className={cn("text-[9px] sm:text-xs font-semibold truncate", isLight ? "text-slate-500" : "text-white/50")}>
+                {m.subUnit}
+              </span>
+            </div>
+
+            <div className="flex items-center justify-between text-[9.5px] sm:text-xs pt-1 border-t border-white/[0.04]">
+              <span className={cn("font-semibold truncate", isLight ? "text-slate-600" : "text-white/70")}>
+                {m.subText}
+              </span>
+              <ArrowUpRight className={cn("w-3 h-3 sm:w-4 sm:h-4 shrink-0 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5", isLight ? "text-slate-400" : "text-white/40")} />
+            </div>
+          </motion.div>
+        ))}
+      </div>
+
+      {/* ── Tier Divider 1 ────────────────────────────────────────────── */}
+      <div className="w-full h-px bg-gradient-to-r from-transparent via-white/[0.08] to-transparent my-1" />
+
+      {/* ══ SECTION 2: NEXT BEST ACTION CARD (STANDALONE CARD) ══════════ */}
+      {plan && plan.primaryAction && plan.primaryAction.type !== 'NO_ACTION' && (
+        <motion.div
+          variants={fadeUp}
+          initial="hidden"
+          animate="show"
+          transition={{ duration: 0.4, delay: 0.1, ease: 'easeOut' }}
+          onClick={() => handleCta(plan.primaryAction)}
+          className={cn(
+            "p-4 sm:p-5 lg:p-6 rounded-2xl sm:rounded-3xl border transition-all duration-300 relative overflow-hidden group cursor-pointer",
+            isLight
+              ? "bg-gradient-to-br from-indigo-50/70 via-white to-cyan-50/50 border-indigo-200/80 shadow-md hover:border-cyan-400"
+              : "bg-gradient-to-br from-[#0c1028]/95 via-[#090c20]/90 to-[#070916]/95 border border-cyan-500/30 shadow-[0_8px_32px_rgba(0,0,0,0.5),0_0_35px_rgba(6,182,212,0.1),inset_0_1px_0_0_rgba(6,182,212,0.25)] backdrop-blur-xl hover:border-cyan-400/50"
+          )}
+        >
+          <div className="absolute top-[-50px] right-[-50px] w-80 h-80 bg-cyan-500/[0.07] blur-[90px] rounded-full pointer-events-none transition-opacity group-hover:opacity-100" />
+
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 sm:gap-5 relative z-10">
+            <div className="flex flex-col sm:flex-row sm:items-start gap-3 sm:gap-4 flex-1 min-w-0">
+              <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl bg-cyan-500/15 border border-cyan-500/30 flex items-center justify-center shrink-0 text-cyan-400 shadow-[0_0_15px_rgba(6,182,212,0.25)]">
+                <SubjectIcon subject={plan.primaryAction.subject} className="w-5 h-5 sm:w-6 sm:h-6" />
+              </div>
+
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center gap-1.5 sm:gap-2 flex-wrap mb-1.5 sm:mb-2">
+                  <span className="text-[9.5px] sm:text-[10px] font-bold uppercase tracking-wider text-indigo-300 bg-indigo-950/80 border border-indigo-500/40 px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-md">
+                    RECOMMENDED NEXT STEP
+                  </span>
+                  <span className="text-[10.5px] sm:text-[11px] font-semibold text-cyan-400 flex items-center gap-1.5">
+                    <Sparkles className="w-3.5 h-3.5" />
+                    <span>{plan.primaryAction.priorityBand || 'High'} Priority</span>
+                  </span>
+                </div>
+
+                <h2 className={cn("text-sm sm:text-base lg:text-lg font-bold tracking-tight group-hover:text-cyan-300 transition-colors leading-snug", isLight ? "text-slate-900" : "text-white")}>
+                  {plan.primaryAction.title}
+                </h2>
+                <p className={cn("text-xs sm:text-sm mt-1 leading-relaxed", isLight ? "text-slate-600" : "text-white/60")}>
+                  {plan.primaryAction.description}
+                </p>
+
+                <div className="mt-2.5 sm:mt-3 flex flex-wrap items-center gap-1.5 sm:gap-2">
+                  <span className={cn("inline-flex items-center gap-1 px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-lg text-[10.5px] sm:text-xs font-medium border", isLight ? "bg-slate-100 border-slate-200 text-slate-700" : "bg-white/[0.03] border-white/[0.08] text-white/75")}>
+                    <FileText className="w-3 h-3 text-cyan-400" />
+                    <span>Full 60 Questions</span>
+                  </span>
+                  <span className={cn("inline-flex items-center gap-1 px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-lg text-[10.5px] sm:text-xs font-medium border", isLight ? "bg-slate-100 border-slate-200 text-slate-700" : "bg-white/[0.03] border-white/[0.08] text-white/75")}>
+                    <Clock className="w-3 h-3 text-amber-400" />
+                    <span>180 Min Timed</span>
+                  </span>
+                  <span className="inline-flex items-center gap-1 px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-lg text-[10.5px] sm:text-xs font-semibold bg-emerald-500/10 border border-emerald-500/25 text-emerald-400">
+                    <TrendingUp className="w-3 h-3 text-emerald-400" />
+                    <span>Predicted Rank Boost</span>
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <div className="shrink-0 flex items-center md:justify-end w-full md:w-auto mt-1 sm:mt-0">
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleCta(plan.primaryAction);
+                }}
+                className="w-full md:w-auto justify-center px-5 py-3 sm:px-6 sm:py-3.5 rounded-xl text-xs sm:text-sm font-bold bg-[#00b8db] hover:bg-[#00caef] text-slate-950 shadow-[0_0_24px_rgba(0,184,219,0.4)] hover:shadow-[0_0_32px_rgba(0,184,219,0.6)] transition-all flex items-center gap-2 cursor-pointer transform group-hover:translate-x-0.5"
+              >
+                <span>{plan.primaryAction.ctaLabel || 'Start Mock'}</span>
+                <ArrowRight className="w-4 h-4" />
+              </button>
+            </div>
+          </div>
+        </motion.div>
+      )}
+
+      {/* ── Tier Divider 2 ────────────────────────────────────────────── */}
+      <div className="w-full h-px bg-gradient-to-r from-transparent via-white/[0.08] to-transparent my-1" />
+
+      {/* ══ SECTION 3: Body Grid — Subjects + Assistant (STANDALONE CARDS) ══ */}
+      <div className="grid grid-cols-1 lg:grid-cols-[7fr_5fr] gap-4 sm:gap-5">
+
+        {/* ── Left: Subject Cards ──────────────────────────────────────── */}
+        <motion.div
+          variants={fadeUp} initial="hidden" animate="show"
+          transition={{ duration: 0.4, delay: 0.2, ease: 'easeOut' }}
+          className="space-y-3"
+        >
+          {/* Section Header */}
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <span className="w-2 h-2 rounded-full bg-cyan-400 shadow-[0_0_8px_rgba(6,182,212,0.8)]" />
+              <h3 className={cn("text-xs sm:text-sm font-bold tracking-tight uppercase", isLight ? "text-slate-900" : "text-white")}>
+                Quick Actions
+              </h3>
+            </div>
+            <span className={cn("text-[10.5px] sm:text-xs font-medium tracking-wide", isLight ? "text-slate-400" : "text-white/40")}>
+              Core Shortcuts
+            </span>
+          </div>
+
+          {/* Quick Actions 2×2 Grid (Responsive on all screens) */}
+          <div className="grid grid-cols-2 gap-2.5 sm:gap-3">
+            {QUICK_ACTIONS.map((item, idx) => (
               <motion.div
-                key={m.label}
+                key={item.title}
                 variants={fadeUp} initial="hidden" animate="show"
-                transition={{ duration: 0.4, delay: 0.05 * i, ease: 'easeOut' }}
+                transition={{ duration: 0.35, delay: 0.22 + idx * 0.06, ease: 'easeOut' }}
+                onClick={() => onNavigate?.(item.route)}
                 className={cn(
-                  'p-3 rounded-2xl border transition-all duration-300 cursor-default',
+                  'p-3 sm:p-4 lg:p-5 rounded-2xl border transition-all duration-300 cursor-pointer group flex flex-col justify-between min-h-[96px] sm:min-h-[114px]',
                   isLight
-                    ? 'bg-white/65 shadow-[0_2px_12px_rgba(15,23,42,0.07),inset_0_1px_0_rgba(255,255,255,0.95)]'
-                    : 'bg-white/[0.025]',
-                  m.border, m.glow
+                    ? 'bg-white/80 border-slate-200/80 hover:border-slate-300 hover:bg-white shadow-sm hover:shadow-md'
+                    : 'bg-[#0b0e1b]/80 border-white/[0.08] hover:border-white/[0.18] hover:bg-[#0e1224] shadow-[0_8px_30px_rgba(0,0,0,0.35),inset_0_1px_0_0_rgba(255,255,255,0.08)]',
+                  item.hoverBorder, item.glow
                 )}
               >
-                <div className="flex items-center gap-2 mb-2">
-                  <div className={cn('w-6 h-6 rounded-lg flex items-center justify-center', m.iconBg)}>
-                    <m.icon className={cn('w-3.5 h-3.5', m.iconColor)} />
+                <div className="flex items-center justify-between mb-2 sm:mb-3">
+                  <div className={cn(
+                    'w-7 h-7 sm:w-9 sm:h-9 rounded-full flex items-center justify-center border transition-all duration-300 group-hover:scale-105 shrink-0 shadow-sm',
+                    item.iconBg
+                  )}>
+                    <item.icon className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                   </div>
-                  <span className={cn('text-[9px] font-bold uppercase tracking-widest', isLight ? 'text-slate-400' : 'text-white/30')}>{m.label}</span>
+                  <ArrowRight className={cn(
+                    "w-3 h-3 sm:w-3.5 sm:h-3.5 transition-all duration-200 group-hover:translate-x-0.5",
+                    isLight ? "text-slate-300 group-hover:text-slate-600" : "text-white/20 group-hover:text-white/70"
+                  )} />
                 </div>
-                <span className={cn('text-[0.85rem] font-black block leading-tight', m.valueColor)}>{m.value}</span>
-                <span className={cn('text-[10px] font-medium block mt-0.5', m.subColor)}>{m.sub}</span>
+
+                <div>
+                  <h4 className={cn(
+                    "text-xs sm:text-sm font-bold truncate group-hover:text-cyan-300 transition-colors tracking-tight",
+                    isLight ? "text-slate-900" : "text-white"
+                  )}>
+                    {item.title}
+                  </h4>
+                  <p className={cn(
+                    "text-[9px] sm:text-[11px] truncate mt-0.5 font-medium",
+                    isLight ? "text-slate-500" : "text-white/40"
+                  )}>
+                    {item.subtitle}
+                  </p>
+                </div>
               </motion.div>
+            ))}
+          </div>
+
+          {/* Performance Capsule — Streak & Accuracy */}
+          <div className="grid grid-cols-2 gap-2.5 sm:gap-3 pt-1">
+            {[
+              {
+                icon: Zap, label: 'Revision Streak', value: `${streakDays} Days`,
+                iconBg: 'bg-amber-500/15 border-amber-500/30', iconColor: 'text-amber-400',
+                valueColor: 'text-amber-400',
+                pulseColor: 'bg-amber-400',
+              },
+              {
+                icon: Target, label: 'Avg Accuracy', value: hasData ? `${accuracy.toFixed(1)}%` : 'Not Evaluated',
+                iconBg: 'bg-emerald-500/15 border-emerald-500/30', iconColor: 'text-emerald-400',
+                valueColor: 'text-emerald-400',
+                pulseColor: 'bg-emerald-400',
+              },
+            ].map((stat) => (
+              <div key={stat.label} className={cn(
+                'p-2.5 sm:p-3.5 rounded-2xl flex items-center gap-2.5 sm:gap-3 border transition-all duration-200',
+                isLight
+                  ? 'bg-white/70 border-slate-200/80 shadow-sm'
+                  : 'bg-[#0b0e1b]/80 border-white/[0.08] shadow-[0_8px_30px_rgba(0,0,0,0.35),inset_0_1px_0_0_rgba(255,255,255,0.06)] hover:border-white/[0.14]'
+              )}>
+                <div className={cn('w-7 h-7 sm:w-9 sm:h-9 rounded-xl border flex items-center justify-center shrink-0 shadow-sm', stat.iconBg)}>
+                  <stat.icon className={cn('w-3.5 h-3.5 sm:w-4.5 sm:h-4.5', stat.iconColor)} />
+                </div>
+                <div className="min-w-0 flex-1">
+                  <div className="flex items-center gap-1 sm:gap-1.5">
+                    <span className={cn("w-1.5 h-1.5 rounded-full shrink-0 animate-pulse", stat.pulseColor)} />
+                    <span className={cn("text-[8px] sm:text-[9px] font-bold uppercase tracking-wider sm:tracking-widest truncate", isLight ? "text-slate-400" : "text-white/40")}>{stat.label}</span>
+                  </div>
+                  <span className={cn('text-xs sm:text-sm font-display font-black tracking-tight block mt-0.5 truncate', stat.valueColor)}>{stat.value}</span>
+                </div>
+              </div>
             ))}
           </div>
         </motion.div>
 
-        {/* ══ NEXT BEST ACTION CARD ══════════════════════════════════════ */}
-        {plan && plan.primaryAction && plan.primaryAction.type !== 'NO_ACTION' && (
-          <motion.div
-            variants={fadeUp}
-            initial="hidden"
-            animate="show"
-            transition={{ duration: 0.4, delay: 0.1, ease: 'easeOut' }}
-            onClick={() => handleCta(plan.primaryAction)}
-            className={cn(
-              "p-4 sm:p-5 rounded-2xl border transition-all duration-300 relative overflow-hidden group cursor-pointer",
-              isLight
-                ? "bg-white/60 border-slate-200/80 hover:border-cyan-400/40 shadow-[0_4px_20px_rgba(15,23,42,0.08),inset_0_1px_0_rgba(255,255,255,0.95)]"
-                : "bg-gradient-to-r from-white/[0.03] to-white/[0.01] border-white/10 hover:border-cyan-500/30 hover:bg-white/[0.04] shadow-[0_8px_32px_0_rgba(0,0,0,0.37)] backdrop-blur-md"
-            )}
-          >
-            {/* Subtle glow behind the card */}
-            <div className="absolute top-[-50px] right-[-50px] w-[180px] h-[180px] bg-cyan-500/5 blur-[40px] rounded-full pointer-events-none transition-transform group-hover:scale-110" />
+        {/* ── Right: Smart Study Assistant ────────────────────────────── */}
+        <motion.div
+          variants={fadeUp} initial="hidden" animate="show"
+          transition={{ duration: 0.4, delay: 0.28, ease: 'easeOut' }}
+          className={cn(
+            'flex flex-col rounded-2xl sm:rounded-3xl overflow-hidden min-h-[340px] sm:min-h-[370px] relative group/assistant border transition-all duration-300',
+            isLight
+              ? 'bg-white/80 border-slate-200/80 shadow-md'
+              : 'bg-gradient-to-b from-[#0e102a]/95 via-[#0a0c22]/90 to-[#070818]/95 border-purple-500/25 shadow-[0_8px_32px_rgba(0,0,0,0.5),0_0_30px_rgba(168,85,247,0.08),inset_0_1px_0_0_rgba(168,85,247,0.25)] backdrop-blur-xl hover:border-purple-500/40'
+          )}
+        >
+          <div className="absolute top-[-40px] right-[-40px] w-64 h-64 bg-purple-600/[0.12] blur-[70px] rounded-full pointer-events-none" />
 
-            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 relative z-10">
-              <div className="flex flex-col sm:flex-row sm:items-start gap-3 sm:gap-4 flex-1 min-w-0">
-                {/* Header row on mobile: Icon + Badges */}
-                <div className="flex items-center sm:items-start gap-3 sm:gap-4 shrink-0">
-                  <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center shrink-0 text-cyan-400">
-                    <SubjectIcon subject={plan.primaryAction.subject} className="w-5 h-5 sm:w-6 sm:h-6" />
-                  </div>
-                  {/* Badges on mobile (displayed next to icon) */}
-                  <div className="flex sm:hidden flex-wrap items-center gap-1.5 min-w-0">
-                    <span className="text-[9px] font-bold uppercase tracking-wider text-cyan-400 bg-cyan-500/10 px-2 py-0.5 rounded border border-cyan-500/20">
-                      Next Best Action
-                    </span>
-                    <span className={cn(
-                      "text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded border",
-                      plan.primaryAction.priorityBand === 'CRITICAL' ? "text-rose-400 bg-rose-500/15 border-rose-500/20" :
-                      plan.primaryAction.priorityBand === 'HIGH' ? "text-orange-400 bg-orange-500/15 border-orange-500/20" :
-                      "text-blue-400 bg-blue-500/15 border-blue-500/20"
-                    )}>
-                      {plan.primaryAction.priorityBand}
-                    </span>
-                  </div>
-                </div>
-
-                <div className="flex-1 min-w-0">
-                  {/* Badges on tablet/desktop */}
-                  <div className="hidden sm:flex items-center gap-2 flex-wrap mb-1">
-                    <span className="text-[10px] font-bold uppercase tracking-wider text-cyan-400 bg-cyan-500/10 px-2.5 py-0.5 rounded border border-cyan-500/20">
-                      Next Best Action
-                    </span>
-                    <span className={cn(
-                      "text-[10px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded border",
-                      plan.primaryAction.priorityBand === 'CRITICAL' ? "text-rose-400 bg-rose-500/15 border-rose-500/20" :
-                      plan.primaryAction.priorityBand === 'HIGH' ? "text-orange-400 bg-orange-500/15 border-orange-500/20" :
-                      "text-blue-400 bg-blue-500/15 border-blue-500/20"
-                    )}>
-                      {plan.primaryAction.priorityBand} Priority
-                    </span>
-                    <span className="text-[10px] font-medium text-white/40">
-                      Confidence: {plan.primaryAction.evidenceLevel}
-                    </span>
-                  </div>
-
-                  <h2 className="text-base sm:text-[1.125rem] font-bold text-white mt-1 sm:mt-2 group-hover:text-cyan-200 transition-colors leading-snug">
-                    {plan.primaryAction.title}
-                  </h2>
-                  <p className="text-xs text-white/50 mt-1 leading-relaxed">
-                    {plan.primaryAction.description}
-                  </p>
-                  <div className="mt-3 flex flex-col gap-1.5">
-                    {plan.primaryAction.reasons.map((r, i) => (
-                      <div key={i} className="flex items-start gap-2 text-[11px] text-white/40 leading-relaxed">
-                        <span className="text-cyan-400 mt-0.5 shrink-0">✦</span>
-                        <span>{r}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
+          {/* Header */}
+          <div className={cn(
+            'flex items-center justify-between px-4 sm:px-5 pt-4 sm:pt-5 pb-3.5 border-b relative z-10',
+            isLight ? 'border-slate-200/60' : 'border-purple-500/15'
+          )}>
+            <div className="flex items-center gap-2.5">
+              <div className="w-8 h-8 rounded-xl bg-purple-500/15 border border-purple-500/30 flex items-center justify-center text-purple-400 shrink-0 shadow-[0_0_12px_rgba(168,85,247,0.25)]">
+                <Sparkles className="w-4 h-4" />
               </div>
-
-              {/* Button */}
-              <div className="shrink-0 flex items-center md:justify-end w-full md:w-auto mt-2 md:mt-0">
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handleCta(plan.primaryAction);
-                  }}
-                  className="w-full md:w-auto justify-center px-5 py-2.5 rounded-xl text-xs font-bold bg-gradient-to-r from-cyan-400 to-indigo-500 hover:from-cyan-300 hover:to-indigo-400 text-black shadow-lg shadow-cyan-500/10 transition-all duration-150 flex items-center gap-1.5 transform group-hover:translate-x-0.5"
-                >
-                  <span>{plan.primaryAction.ctaLabel}</span>
-                  <ArrowRight className="w-3.5 h-3.5" />
-                </button>
+              <div>
+                <h3 className={cn("text-xs font-bold uppercase tracking-wider", isLight ? "text-slate-800" : "text-white")}>
+                  Smart Study Assistant
+                </h3>
+                <p className={cn("text-[10px] mt-0.5", isLight ? "text-slate-500" : "text-white/40")}>
+                  Learn, practice, or get help instantly
+                </p>
               </div>
             </div>
-          </motion.div>
-        )}
 
+            <button
+              onClick={handleOpenFullScreen}
+              className={cn(
+                "flex items-center gap-1.5 text-[9.5px] sm:text-[10px] font-bold px-2.5 py-1 rounded-full border transition-all cursor-pointer shadow-sm",
+                isLight
+                  ? "bg-purple-50 border-purple-200 text-purple-700 hover:bg-purple-100"
+                  : "border-purple-500/35 bg-purple-500/15 text-purple-300 hover:bg-purple-500/25 hover:border-purple-400/50 shadow-[0_0_12px_rgba(168,85,247,0.2)]"
+              )}
+              title="Open full screen AI Tutor"
+            >
+              <span>Open Full Screen</span>
+              <Maximize2 className="w-3 h-3" />
+            </button>
+          </div>
 
-
-        {/* ══ SECTION 3: Body Grid — Subjects + Mission ══════════════════ */}
-        <div className="grid grid-cols-1 lg:grid-cols-[7fr_5fr] gap-5">
-
-          {/* ── Left: Subject Cards ──────────────────────────────────────── */}
-          <motion.div
-            variants={fadeUp} initial="hidden" animate="show"
-            transition={{ duration: 0.4, delay: 0.2, ease: 'easeOut' }}
-            className="space-y-3"
-          >
-            {/* Section Header */}
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <Compass className="w-4 h-4 text-cyan-400" />
-                <h3 className="text-[0.85rem] font-bold uppercase tracking-wider text-white">Continue Revision</h3>
-              </div>
-              <button
-                onClick={() => onNavigate?.('smart_lessons')}
-                className="text-[10.5px] font-bold text-cyan-400 hover:text-cyan-300 transition-colors uppercase tracking-wider flex items-center gap-1 group"
-              >
-                <span>View Library</span>
-                <ArrowRight className="w-3 h-3 group-hover:translate-x-0.5 transition-transform" />
-              </button>
-            </div>
-
-            {/* Subject 2×2 Grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              {SUBJECTS.map((sub, idx) => {
-                const progressScore = data?.lessonProgressMap?.[sub.name] ?? 0;
-                const recText       = getSubjectRecommendation(sub.name, data?.completed_lessons || []);
-
-                return (
-                  <motion.div
-                    key={sub.name}
-                    variants={fadeUp} initial="hidden" animate="show"
-                    transition={{ duration: 0.35, delay: 0.22 + idx * 0.06, ease: 'easeOut' }}
-                    onClick={() => onNavigate?.(`smart_lessons:${sub.name}`)}
-                    className={cn(
-                      'p-4 rounded-2xl border transition-all duration-300 cursor-pointer group',
-                      isLight
-                        ? 'bg-white/60 border-slate-200/60 hover:border-slate-300/80 shadow-[0_2px_12px_rgba(15,23,42,0.06),inset_0_1px_0_rgba(255,255,255,0.95)] hover:shadow-[0_4px_20px_rgba(15,23,42,0.09)]'
-                        : 'bg-white/[0.015] hover:bg-white/[0.03] border-white/6',
-                      sub.gradientBorder, sub.glow
-                    )}
-                  >
-                    <div className="flex items-center justify-between gap-3 mb-3">
-                      <div className="flex items-center gap-3">
-                        {/* Larger icon box */}
-                        <div className={cn(
-                          'w-10 h-10 rounded-xl flex items-center justify-center border border-white/8 transition-all duration-300 group-hover:scale-105',
-                          sub.bg
-                        )}>
-                          <sub.icon className={cn('w-5 h-5', sub.iconColor)} />
-                        </div>
-                        <div>
-                          <h4 className="text-[0.875rem] font-bold text-white group-hover:text-cyan-200 transition-colors">
-                            {sub.name}
-                          </h4>
-                          <p className="text-[10px] text-white/35 mt-0.5 max-w-[140px] truncate">
-                            {recText}
-                          </p>
-                        </div>
-                      </div>
-
-                      {/* Play button */}
-                      <div className={cn(
-                        'w-7 h-7 rounded-xl border border-white/10 flex items-center justify-center shrink-0',
-                        'bg-white/5 text-white/30 group-hover:bg-cyan-500 group-hover:border-cyan-400 group-hover:text-black',
-                        'transition-all duration-200'
-                      )}>
-                        <PlayCircle className="w-4 h-4 ml-0.5" />
-                      </div>
-                    </div>
-
-                    {/* Progress */}
-                    <div>
-                      <div className="flex justify-between items-center mb-1.5">
-                        <span className="text-[9px] font-bold text-white/25 uppercase tracking-wider">Syllabus Progress</span>
-                        <span className="text-[10px] font-bold text-white/60">{progressScore}%</span>
-                      </div>
-                      <div className="w-full h-[3px] bg-white/5 rounded-full overflow-hidden">
-                        <div
-                          className={cn('h-full rounded-full transition-all duration-700', sub.barColor)}
-                          style={{ width: `${Math.max(progressScore, 3)}%` }}
-                        />
-                      </div>
-                    </div>
-                  </motion.div>
-                );
-              })}
-            </div>
-
-            {/* Streak & Accuracy footer */}
-            <div className="grid grid-cols-2 gap-3 pt-1">
-              {[
-                {
-                  icon: Zap, label: 'Revision Streak', value: `${streakDays} Days`,
-                  iconBg: 'bg-amber-500/10 border-amber-500/15', iconColor: 'text-amber-400',
-                  valueColor: 'text-amber-300',
-                },
-                {
-                  icon: Target, label: 'Avg Accuracy', value: hasData ? `${accuracy.toFixed(1)}%` : 'Not Evaluated',
-                  iconBg: 'bg-emerald-500/10 border-emerald-500/15', iconColor: 'text-emerald-400',
-                  valueColor: 'text-emerald-300',
-                },
-              ].map((stat) => (
-                <div key={stat.label} className={cn(
-                  'p-3.5 rounded-2xl flex items-center gap-3',
-                  isLight
-                    ? 'bg-white/55 border border-slate-200/60 shadow-[0_2px_8px_rgba(15,23,42,0.05),inset_0_1px_0_rgba(255,255,255,0.95)]'
-                    : 'bg-white/[0.015] border border-white/6'
-                )}>
-                  <div className={cn('w-9 h-9 rounded-xl border flex items-center justify-center shrink-0', stat.iconBg)}>
-                    <stat.icon className={cn('w-4.5 h-4.5', stat.iconColor)} />
-                  </div>
-                  <div>
-                    <span className="text-[9px] font-bold text-white/30 block uppercase tracking-widest">{stat.label}</span>
-                    <span className={cn('text-[1.05rem] font-display font-black', stat.valueColor)}>{stat.value}</span>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </motion.div>
-
-          {/* ── Right: Smart Study Assistant ────────────────────────────── */}
-          <motion.div
-            variants={fadeUp} initial="hidden" animate="show"
-            transition={{ duration: 0.4, delay: 0.28, ease: 'easeOut' }}
-            className={cn(
-              'flex flex-col rounded-2xl overflow-hidden min-h-[350px] relative group/assistant',
-              isLight
-                ? 'bg-white/65 border border-white/80 shadow-[0_4px_24px_rgba(15,23,42,0.08),inset_0_1px_0_rgba(255,255,255,0.95)]'
-                : 'bg-white/[0.015] border border-white/6'
-            )}
-          >
-            {/* Ambient subtle glow inside card */}
-            <div className="absolute top-[-30px] right-[-30px] w-48 h-48 bg-purple-500/5 blur-[40px] rounded-full pointer-events-none transition-opacity duration-300 group-hover/assistant:opacity-80" />
-
-            {/* Header */}
-            <div className={cn(
-              'flex items-center justify-between px-5 pt-5 pb-4 border-b relative z-10',
-              isLight ? 'border-slate-200/60' : 'border-white/5'
-            )}>
-              <div className="flex items-center gap-2.5">
-                <div className="w-9 h-9 rounded-xl bg-purple-500/10 border border-purple-500/20 flex items-center justify-center text-purple-400">
-                  <Sparkles className="w-4.5 h-4.5" />
-                </div>
-                <div>
-                  <h3 className="text-[0.8rem] font-bold text-white uppercase tracking-wider">Smart Study Assistant</h3>
-                  <p className="text-[9.5px] text-white/35 mt-0.5">Learn, practice, or get help instantly</p>
-                </div>
-              </div>
-
-              <span className="text-[9px] font-black px-2.5 py-1 rounded-full border border-purple-500/20 bg-purple-500/10 text-purple-300 uppercase tracking-wider">
-                AI Active
-              </span>
-            </div>
-
-            {/* Content Actions */}
+          {/* Content Area: Either Buttons OR Inline Chat Feed */}
+          {(!isChatting && chatMessages.length === 0) ? (
+            /* Default Mode: Action Cards */
             <div className="flex-1 px-5 py-4 space-y-3 relative z-10 flex flex-col justify-start">
-              {/* Primary Action — Ask a Doubt */}
+              {/* Ask a Doubt */}
               <div 
                 onClick={() => {
-                  window.location.href = getAiTutorUrl();
+                  setIsChatting(true);
+                  if (chatMessages.length === 0) {
+                    setChatMessages([{
+                      role: 'assistant',
+                      content: "👋 Hi! I'm your Smart Study Assistant powered by NVIDIA AI. Ask me any doubt in Physics, Chemistry, Math, or Biology below!"
+                    }]);
+                  }
+                  setTimeout(() => inlineInputRef.current?.focus(), 50);
                 }}
                 className={cn(
-                  'group/btn p-3.5 rounded-xl border transition-all duration-200 cursor-pointer flex items-center justify-between gap-4',
+                  'p-3.5 rounded-2xl border transition-all duration-200 cursor-pointer flex items-center justify-between gap-4 group/btn',
                   isLight
-                    ? 'bg-white/50 border-slate-200/60 hover:bg-white/70 hover:border-purple-400/30 shadow-[0_1px_6px_rgba(15,23,42,0.05)]'
-                    : 'border-white/5 bg-white/[0.025] hover:bg-white/[0.05] hover:border-purple-500/20'
+                    ? 'bg-white/60 border-slate-200/80 hover:border-purple-400/40 shadow-sm'
+                    : 'border-white/[0.08] bg-white/[0.02] hover:bg-purple-500/[0.06] hover:border-purple-500/35 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.05)]'
                 )}
               >
                 <div className="min-w-0">
-                  <h4 className="text-xs font-bold text-white group-hover/btn:text-purple-300 transition-colors">Ask a Doubt</h4>
-                  <p className="text-[10px] text-white/40 mt-0.5 leading-relaxed">
+                  <h4 className={cn("text-xs font-bold group-hover/btn:text-purple-300 transition-colors", isLight ? "text-slate-900" : "text-white")}>
+                    Ask a Doubt
+                  </h4>
+                  <p className={cn("text-[10px] mt-0.5 leading-relaxed", isLight ? "text-slate-500" : "text-white/40")}>
                     Get help with any Physics, Chemistry, Mathematics, or Biology question.
                   </p>
                 </div>
-                <button className="flex items-center justify-center w-8 h-8 rounded-lg bg-white/5 border border-white/10 text-white/40 group-hover/btn:bg-purple-500 group-hover/btn:border-purple-400 group-hover/btn:text-black transition-all shrink-0">
-                  <ArrowRight className="w-4 h-4" />
+                <button className="flex items-center justify-center w-7 h-7 rounded-lg bg-white/5 border border-white/10 text-white/40 group-hover/btn:bg-purple-500 group-hover/btn:border-purple-400 group-hover/btn:text-black transition-all shrink-0">
+                  <ArrowRight className="w-3.5 h-3.5" />
                 </button>
               </div>
 
               <div className="grid grid-cols-2 gap-3">
-                {/* Secondary Action — Explain a Concept */}
+                {/* Explain a Concept */}
                 <div 
                   onClick={() => {
-                    window.location.href = getAiTutorUrl('EXPLAIN_CONCEPT');
+                    const subj = plan?.primaryAction?.subject || "Physics";
+                    const chap = plan?.primaryAction?.title || "Key High-Yield Exam Concept";
+                    handleSendInlineChat(`Please explain the core concept of "${chap}" in ${subj} step-by-step with formulas, common traps, and key points for IISER IAT.`);
                   }}
                   className={cn(
-                    'group/btn2 p-3 rounded-xl border transition-all duration-200 cursor-pointer flex flex-col justify-between min-h-[90px]',
+                    'p-3 rounded-2xl border transition-all duration-200 cursor-pointer flex flex-col justify-between min-h-[85px] group/btn2',
                     isLight
-                      ? 'bg-white/50 border-slate-200/60 hover:bg-white/65 hover:border-purple-400/25'
-                      : 'border-white/5 bg-white/[0.015] hover:bg-white/[0.03] hover:border-purple-500/10'
+                      ? 'bg-white/60 border-slate-200/80 hover:border-purple-400/40 shadow-sm'
+                      : 'border-white/[0.08] bg-white/[0.02] hover:bg-purple-500/[0.06] hover:border-purple-500/35 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.05)]'
                   )}
                 >
-                  <h4 className="text-[11px] font-bold text-white group-hover/btn2:text-purple-300 transition-colors">Explain a Concept</h4>
-                  <p className="text-[9.5px] text-white/35 mt-1 leading-normal">
+                  <h4 className={cn("text-[11px] font-bold group-hover/btn2:text-purple-300 transition-colors", isLight ? "text-slate-900" : "text-white")}>
+                    Explain a Concept
+                  </h4>
+                  <p className={cn("text-[9.5px] mt-1 leading-normal", isLight ? "text-slate-500" : "text-white/40")}>
                     Learn difficult topics with step-by-step explanations.
                   </p>
                 </div>
 
-                {/* Secondary Action — Quick Practice */}
+                {/* Quick Practice */}
                 <div 
                   onClick={() => {
                     onNavigate?.(practiceRoute);
                   }}
                   className={cn(
-                    'group/btn3 p-3 rounded-xl border transition-all duration-200 cursor-pointer flex flex-col justify-between min-h-[90px]',
+                    'p-3 rounded-2xl border transition-all duration-200 cursor-pointer flex flex-col justify-between min-h-[85px] group/btn3',
                     isLight
-                      ? 'bg-white/50 border-slate-200/60 hover:bg-white/65 hover:border-indigo-400/25'
-                      : 'border-white/5 bg-white/[0.015] hover:bg-white/[0.03] hover:border-indigo-500/10'
+                      ? 'bg-white/60 border-slate-200/80 hover:border-cyan-400/40 shadow-sm'
+                      : 'border-white/[0.08] bg-white/[0.02] hover:bg-cyan-500/[0.06] hover:border-cyan-500/35 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.05)]'
                   )}
                 >
-                  <h4 className="text-[11px] font-bold text-white group-hover/btn3:text-indigo-300 transition-colors truncate">
+                  <h4 className={cn("text-[11px] font-bold group-hover/btn3:text-cyan-300 transition-colors truncate", isLight ? "text-slate-900" : "text-white")}>
                     {practiceLabel}
                   </h4>
-                  <p className="text-[9.5px] text-white/35 mt-1 leading-normal">
+                  <p className={cn("text-[9.5px] mt-1 leading-normal", isLight ? "text-slate-500" : "text-white/40")}>
                     {practiceSub}
                   </p>
                 </div>
               </div>
             </div>
-
-            {/* AI Input Form */}
-            <div className={cn(
-              'relative border-t p-4 z-10',
-              isLight ? 'border-slate-200/50 bg-white/30' : 'border-white/5 bg-white/[0.008]'
-            )}>
-              <form 
-                onSubmit={(e) => {
-                  e.preventDefault();
-                  const form = e.currentTarget;
-                  const val = (form.elements.namedItem('doubtQuery') as HTMLInputElement).value.trim();
-                  if (val) {
-                    window.location.href = `/ai_tutor.html?query=${encodeURIComponent(val)}`;
-                  }
-                }} 
-                className="relative flex items-center"
-              >
-                <input 
-                  type="text" 
-                  name="doubtQuery"
-                  placeholder="Ask SmartPrep anything..."
-                  className={cn(
-                    'w-full border rounded-xl py-2.5 pl-4 pr-10 text-xs outline-none transition-colors',
-                    isLight
-                      ? 'bg-white/70 border-slate-200/70 text-slate-800 placeholder-slate-400 focus:border-purple-400/50'
-                      : 'bg-[#05060F] border-white/8 text-white placeholder-white/25 focus:border-purple-500/30'
+          ) : (
+            /* Active Inline Chat Feed */
+            <div className="flex-1 px-4 py-3 relative z-10 flex flex-col justify-between min-h-[220px]">
+              {/* Mini Toolbar */}
+              <div className="flex items-center justify-between pb-2 border-b border-white/5 mb-2">
+                <div className="flex items-center gap-2">
+                  <span className="text-[10px] font-mono text-purple-300 flex items-center gap-1.5">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                    Live Chatting (NVIDIA AI)
+                  </span>
+                  {data && (
+                    <span className={cn(
+                      "text-[9.5px] font-mono px-1.5 py-0.5 rounded border hidden sm:inline-flex items-center gap-1",
+                      isLight 
+                        ? "bg-cyan-50 border-cyan-200 text-cyan-800" 
+                        : "bg-cyan-500/10 border-cyan-500/25 text-cyan-300"
+                    )}>
+                      <span className="w-1 h-1 rounded-full bg-cyan-400" />
+                      Stats Synced ({Math.round(data.accuracy || 0)}% Acc)
+                    </span>
                   )}
-                />
-                <button type="submit" className={cn('absolute right-2 p-1.5 transition-colors', isLight ? 'text-slate-400 hover:text-slate-700' : 'text-white/30 hover:text-white')}>
-                  <ArrowRight className="w-3.5 h-3.5" />
+                </div>
+                <button
+                  onClick={() => {
+                    setChatMessages([]);
+                    setIsChatting(false);
+                    try { sessionStorage.removeItem('smartprep_active_chat'); } catch {}
+                  }}
+                  className={cn(
+                    "text-[10px] flex items-center gap-1 px-2 py-0.5 rounded transition-colors cursor-pointer",
+                    isLight ? "text-slate-500 hover:text-rose-600" : "text-white/40 hover:text-rose-400"
+                  )}
+                  title="Clear chat and return to quick actions"
+                >
+                  <Trash2 className="w-3 h-3" />
+                  <span>Clear</span>
                 </button>
-              </form>
-            </div>
-          </motion.div>
+              </div>
 
-        </div>
+              {/* Scrollable messages */}
+              <div className="flex-1 overflow-y-auto max-h-[210px] space-y-2.5 pr-1 custom-scrollbar">
+                {chatMessages.map((msg, idx) => {
+                  const isUser = msg.role === 'user';
+                  return (
+                    <div
+                      key={idx}
+                      className={cn(
+                        "flex flex-col gap-1",
+                        isUser ? "items-end" : "items-start"
+                      )}
+                    >
+                      <div
+                        className={cn(
+                          "max-w-[90%] rounded-xl px-3 py-2 text-xs leading-relaxed transition-all",
+                          isUser
+                            ? "bg-gradient-to-tr from-indigo-600 to-purple-600 text-white rounded-br-none shadow-sm"
+                            : cn(
+                                "rounded-bl-none border",
+                                isLight
+                                  ? "bg-white border-slate-200 text-slate-800 shadow-sm"
+                                  : "bg-[#0b0e24]/90 border-purple-500/20 text-white/90"
+                              )
+                        )}
+                      >
+                        {msg.content ? (
+                          isUser ? (
+                            <div className="whitespace-pre-wrap">{msg.content}</div>
+                          ) : (
+                            <FormattedAnswer content={msg.content} />
+                          )
+                        ) : (
+                          <div className="flex items-center gap-1.5 text-purple-300 py-0.5">
+                            <span className="w-1.5 h-1.5 rounded-full bg-purple-400 animate-ping" />
+                            <span className="text-[11px]">Thinking...</span>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  );
+                })}
+                <div ref={inlineChatEndRef} />
+              </div>
+            </div>
+          )}
+
+          {/* AI Input Form */}
+          <div className={cn(
+            'relative border-t p-3 sm:p-4 z-10',
+            isLight ? 'border-slate-200/50 bg-white/40' : 'border-purple-500/15 bg-[#070916]/80'
+          )}>
+            <form 
+              onSubmit={(e) => {
+                e.preventDefault();
+                handleSendInlineChat();
+              }} 
+              className="relative flex items-center"
+            >
+              <input 
+                ref={inlineInputRef}
+                type="text" 
+                value={inlineQuery}
+                onChange={(e) => setInlineQuery(e.target.value)}
+                placeholder="Ask SmartPrep anything (starts chat here)..."
+                className={cn(
+                  'w-full border rounded-xl py-2.5 pl-4 pr-10 text-xs outline-none transition-all',
+                  isLight
+                    ? 'bg-white/80 border-slate-200 text-slate-800 placeholder-slate-400 focus:border-cyan-500'
+                    : 'bg-[#060814] border-white/10 text-white placeholder-white/30 focus:border-purple-500/60 focus:shadow-[0_0_15px_rgba(168,85,247,0.15)]'
+                )}
+              />
+              <button 
+                type="submit" 
+                disabled={!inlineQuery.trim() || isStreaming}
+                className={cn(
+                  'absolute right-2 p-1.5 transition-colors cursor-pointer',
+                  inlineQuery.trim() && !isStreaming
+                    ? (isLight ? 'text-purple-600 hover:text-purple-800' : 'text-purple-300 hover:text-white')
+                    : 'text-white/20 cursor-not-allowed'
+                )}
+              >
+                <ArrowRight className="w-3.5 h-3.5" />
+              </button>
+            </form>
+          </div>
+        </motion.div>
+
       </div>
     </div>
   );

@@ -2,12 +2,13 @@ const express = require("express");
 const app = express();
 const { Resend } = require("resend");
 
+const path = require("path");
 if (process.env.NODE_ENV !== "production") {
-  require("dotenv").config();
+  require("dotenv").config({ path: path.join(__dirname, ".env") });
 }
 
 // ── Resend email client (HTTPS-based, works on Railway) ────
-const resend = new Resend(process.env.RESEND_API_KEY);
+const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null;
 
 const PORT = process.env.PORT || 8080;
 
@@ -1362,20 +1363,23 @@ ${question}
 });
 
 // =======================
-// 🤖 AI TUTOR CHAT PROXY
+// 🤖 AI TUTOR CHAT PROXY (NVIDIA AI)
 // =======================
 // Rate limit tracker: { "ip_YYYY-MM-DD": count }
 const chatUsage = new Map();
 const DAILY_LIMIT = 30;
-const MAX_TOKENS = 800; // enough for complete answers (~600 words)
+const MAX_TOKENS = 1500; // ample tokens for complete derivations & step-by-step solutions
 
 const IISER_SYSTEM_PROMPT = `You are an expert AI tutor specialized exclusively for the IISER IAT (Indian Institutes of Science Education and Research Aptitude Test).
 Help students with Physics, Chemistry, Mathematics and Biology at Class 11-12 level.
 Rules:
-- Keep answers concise and under 300 words.
-- Use step-by-step explanations for problems.
-- Focus only on IAT-relevant topics.
-- Be encouraging and supportive.
+- Format all mathematical equations using standard LaTeX: inline math with \\( ... \\) and display math with \\[ ... \\].
+- For multiple choice questions, cleanly format options on separate lines as (A), (B), (C), (D) followed by **Answer:** and **Explanation:**.
+- Keep answers structured, rigorous, and easy to read.
+- Use step-by-step numbered steps for numerical problem solving and derivations.
+- Ensure complete derivations without cutting off early.
+- Focus strictly on IISER IAT relevant curriculum and problem solving.
+- Be encouraging, scientific, and supportive.
 - If asked something unrelated to studies, politely redirect to IAT topics.`;
 
 // ── Smart AI Insights (Isolated Module) ───────────────────
@@ -1403,37 +1407,96 @@ app.post("/api/ai-chat", async (req, res) => {
       }
     }
 
-    // ── Build messages with enforced system prompt ───
-    const { messages } = req.body;
+    // ── Build messages with enforced system prompt & user performance context ───
+    const { messages, userContext } = req.body;
     if (!messages || !Array.isArray(messages)) {
       return res.status(400).json({ error: "messages array required" });
     }
 
-    // Strip any system messages from client, inject our own
+    let dynamicSystemPrompt = IISER_SYSTEM_PROMPT;
+
+    if (userContext && typeof userContext === 'object') {
+      const {
+        studentName,
+        overallAccuracy,
+        totalAttempts,
+        streakDays,
+        overallReadiness,
+        subjectPerformance,
+        weakAreas,
+        completedLessons,
+        daysLeft,
+        level
+      } = userContext;
+
+      let perfSummary = `\n\n--- REAL-TIME STUDENT PREPARATION & PERFORMANCE DATA ---`;
+      if (studentName) perfSummary += `\n- Student Name: ${studentName}`;
+      if (daysLeft) perfSummary += `\n- Target Exam: IISER IAT 2027 (${daysLeft} Days Remaining)`;
+      if (level) perfSummary += `\n- Current Prep Level: ${level}`;
+      if (overallReadiness !== undefined) perfSummary += `\n- Overall IAT Readiness Score: ${overallReadiness}%`;
+      if (overallAccuracy !== undefined) perfSummary += `\n- Overall Question Accuracy: ${overallAccuracy}% across ${totalAttempts || 0} attempted questions`;
+      if (streakDays !== undefined) perfSummary += `\n- Active Study Streak: ${streakDays} days`;
+
+      if (subjectPerformance && typeof subjectPerformance === 'object') {
+        const subList = Object.entries(subjectPerformance)
+          .map(([sub, acc]) => `${sub}: ${acc}%`)
+          .join(', ');
+        perfSummary += `\n- Subject Accuracies: ${subList}`;
+      }
+
+      if (Array.isArray(weakAreas) && weakAreas.length > 0) {
+        perfSummary += `\n- Identified Weak Chapters / Topics: ${weakAreas.slice(0, 8).join(', ')}`;
+      }
+
+      if (Array.isArray(completedLessons) && completedLessons.length > 0) {
+        perfSummary += `\n- Completed Syllabus Lessons: ${completedLessons.slice(0, 8).join(', ')}`;
+      }
+
+      perfSummary += `\n\nCOACHING & PERSONALIZATION DIRECTIVE:
+- You have direct, real-time visibility into this student's actual test metrics above.
+- When the student asks questions like "how is my preparation?", "what should I focus on?", "what is my weak area?", "test me on my weakness", or asks for study advice, ALWAYS reference their exact statistics, weakest subjects, and accuracy percentages.
+- Tailor question difficulty and derivations to strengthen their specific weak chapters.
+- Act as their dedicated, intelligent personal IISER mentor who genuinely knows their progress.`;
+
+      dynamicSystemPrompt += perfSummary;
+    }
+
+    // Strip any system messages from client, inject our dynamic prompt
     const userMessages = messages.filter(m => m.role !== "system");
     const fullMessages = [
-      { role: "system", content: IISER_SYSTEM_PROMPT },
+      { role: "system", content: dynamicSystemPrompt },
       ...userMessages
     ];
 
-    // ── Call DeepSeek (cheapest model) ───────────────
-    const deepseekRes = await fetch("https://api.deepseek.com/v1/chat/completions", {
+    // ── Call NVIDIA AI (or DeepSeek fallback) ─────────
+    const nvidiaKey = process.env.NVIDIA_API_KEY || "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";
+    const nvidiaModel = process.env.NVIDIA_MODEL || "meta/llama-3.2-11b-vision-instruct";
+
+    const isNvidia = !!nvidiaKey && nvidiaKey.startsWith("nvapi-");
+    const apiUrl = isNvidia 
+      ? "https://integrate.api.nvidia.com/v1/chat/completions" 
+      : "https://api.deepseek.com/v1/chat/completions";
+    const apiKey = isNvidia ? nvidiaKey : process.env.DEEPSEEK_API_KEY;
+    const model = isNvidia ? nvidiaModel : "deepseek-chat";
+
+    const aiRes = await fetch(apiUrl, {
       method: "POST",
       headers: {
-        "Authorization": `Bearer ${process.env.DEEPSEEK_API_KEY}`,
+        "Authorization": `Bearer ${apiKey}`,
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
-        model: "deepseek-chat",   // cheapest model
+        model: model,
         messages: fullMessages,
         stream: true,
-        max_tokens: MAX_TOKENS         // enforce ~300-word limit
+        max_tokens: MAX_TOKENS
       })
     });
 
-    if (!deepseekRes.ok) {
-      const err = await deepseekRes.json().catch(() => ({}));
-      return res.status(deepseekRes.status).json({ error: err.error?.message || "DeepSeek error" });
+    if (!aiRes.ok) {
+      const err = await aiRes.json().catch(() => ({}));
+      console.error("[AI Tutor Error]", aiRes.status, err);
+      return res.status(aiRes.status).json({ error: err.detail || err.error?.message || "AI Tutor service error" });
     }
 
     // ── Stream response to browser ───────────────────
@@ -1443,7 +1506,7 @@ app.post("/api/ai-chat", async (req, res) => {
     res.setHeader("X-Daily-Remaining", String(DAILY_LIMIT - used - 1));
 
     // Pump Web ReadableStream chunks to the Express response
-    const reader = deepseekRes.body.getReader();
+    const reader = aiRes.body.getReader();
     const pump = async () => {
       while (true) {
         const { done, value } = await reader.read();
@@ -3162,6 +3225,8 @@ app.get("/api/student/performance-insights", authMiddleware, async (req, res) =>
     }
 
     // 2. Invoke the performance insights service
+    const examDate = new Date('2027-06-07T00:00:00');
+    const dynamicDaysRemaining = Math.max(0, Math.ceil((examDate.getTime() - Date.now()) / (1000 * 60 * 60 * 24)));
     const performanceInsights = performanceInsightsService.calculatePerformanceInsights({
       userObj,
       parentAttempts,
@@ -3170,7 +3235,7 @@ app.get("/api/student/performance-insights", authMiddleware, async (req, res) =>
       mockQuestionAttempts,
       lessonSessions,
       revisions,
-      daysUntilExam: 330,
+      daysUntilExam: dynamicDaysRemaining,
       examLabel: "IISER IAT 2027",
       currentPhaseId: "FOUNDATION",
       sources

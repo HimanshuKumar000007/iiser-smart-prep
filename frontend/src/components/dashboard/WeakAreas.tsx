@@ -54,7 +54,7 @@ export function WeakAreas({ dashboardData, loading, onNavigate }: Props) {
       'border rounded-3xl p-6 h-full flex flex-col shadow-xl relative overflow-hidden group',
       isLight
         ? 'bg-white/72 backdrop-blur-[12px] border-white/80 shadow-[0_8px_32px_rgba(15,23,42,0.08),0_2px_8px_rgba(15,23,42,0.04),inset_0_1px_0_rgba(255,255,255,0.95)]'
-        : 'bg-[#05060F] border-white/10'
+        : 'bg-[#0b0e1b]/90 border-white/[0.08] shadow-[0_8px_32px_rgba(0,0,0,0.4)] backdrop-blur-xl hover:border-white/[0.14]'
     )}>
       {/* Background glow */}
       <div className="absolute -top-24 -left-24 w-72 h-72 bg-amber-500/5 blur-[100px] rounded-full pointer-events-none transition-opacity duration-500 group-hover:bg-amber-500/10" />
