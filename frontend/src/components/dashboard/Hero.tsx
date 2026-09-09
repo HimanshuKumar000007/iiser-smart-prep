@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { motion } from 'motion/react';
 import {
   PlayCircle,
@@ -187,6 +187,110 @@ interface Props {
 
 const fadeUp = { hidden: { opacity: 0, y: 14 }, show: { opacity: 1, y: 0 } };
 
+const ChatMessageItem = React.memo(function ChatMessageItem({
+  msg,
+  isLight
+}: {
+  msg: { role: 'user' | 'assistant'; content: string };
+  isLight: boolean;
+}) {
+  const isUser = msg.role === 'user';
+  return (
+    <div
+      className={cn(
+        "flex flex-col gap-1",
+        isUser ? "items-end" : "items-start"
+      )}
+    >
+      <div
+        className={cn(
+          "max-w-[90%] rounded-xl px-3 py-2 text-xs leading-relaxed transition-all",
+          isUser
+            ? "bg-gradient-to-tr from-indigo-600 to-purple-600 text-white rounded-br-none shadow-sm"
+            : cn(
+                "rounded-bl-none border",
+                isLight
+                  ? "bg-white border-slate-200 text-slate-800 shadow-sm"
+                  : "bg-[#0b0e24]/90 border-purple-500/20 text-white/90"
+              )
+        )}
+      >
+        {msg.content ? (
+          isUser ? (
+            <div className="whitespace-pre-wrap">{msg.content}</div>
+          ) : (
+            <FormattedAnswer content={msg.content} />
+          )
+        ) : (
+          <div className="flex items-center gap-1.5 text-purple-300 py-0.5">
+            <span className="w-1.5 h-1.5 rounded-full bg-purple-400 animate-ping" />
+            <span className="text-[11px]">Thinking...</span>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+});
+
+interface InlineChatInputProps {
+  onSend: (text: string) => void;
+  isStreaming: boolean;
+  isLight: boolean;
+}
+
+const InlineChatInput = React.memo(
+  React.forwardRef<HTMLInputElement, InlineChatInputProps>(
+    function InlineChatInput({ onSend, isStreaming, isLight }, ref) {
+      const [val, setVal] = useState('');
+
+      const handleSubmit = (e: React.FormEvent) => {
+        e.preventDefault();
+        const trimmed = val.trim();
+        if (!trimmed || isStreaming) return;
+        onSend(trimmed);
+        setVal('');
+      };
+
+      return (
+        <div
+          className={cn(
+            'relative border-t p-3 sm:p-4 z-10',
+            isLight ? 'border-slate-200/50 bg-white/40' : 'border-purple-500/15 bg-[#070916]/80'
+          )}
+        >
+          <form onSubmit={handleSubmit} className="relative flex items-center">
+            <input
+              ref={ref}
+              type="text"
+              value={val}
+              onChange={(e) => setVal(e.target.value)}
+              placeholder="Ask SmartPrep anything (starts chat here)..."
+              className={cn(
+                'w-full border rounded-xl py-2.5 pl-4 pr-10 text-xs outline-none transition-all',
+                isLight
+                  ? 'bg-white/80 border-slate-200 text-slate-800 placeholder-slate-400 focus:border-cyan-500'
+                  : 'bg-[#060814] border-white/10 text-white placeholder-white/30 focus:border-purple-500/60 focus:shadow-[0_0_15px_rgba(168,85,247,0.15)]'
+              )}
+            />
+            <button
+              type="submit"
+              disabled={!val.trim() || isStreaming}
+              className={cn(
+                'absolute right-2 p-1.5 transition-colors cursor-pointer',
+                val.trim() && !isStreaming
+                  ? (isLight ? 'text-purple-600 hover:text-purple-800' : 'text-purple-300 hover:text-white')
+                  : 'text-white/20 cursor-not-allowed'
+              )}
+            >
+              <ArrowRight className="w-3.5 h-3.5" />
+            </button>
+          </form>
+        </div>
+      );
+    }
+  )
+);
+
 export function Hero({ onNavigate, dashboardData: data, loading, actionPlan: plan }: Props) {
   const { theme } = useTheme();
   const isLight = theme === 'light';
@@ -243,7 +347,6 @@ export function Hero({ onNavigate, dashboardData: data, loading, actionPlan: pla
     return [];
   });
   const [isChatting, setIsChatting] = useState<boolean>(() => chatMessages.length > 0);
-  const [inlineQuery, setInlineQuery] = useState<string>('');
   const [isStreaming, setIsStreaming] = useState<boolean>(false);
   const inlineChatEndRef = useRef<HTMLDivElement>(null);
   const inlineInputRef = useRef<HTMLInputElement>(null);
@@ -258,12 +361,11 @@ export function Hero({ onNavigate, dashboardData: data, loading, actionPlan: pla
   }, [chatMessages, isChatting, isStreaming]);
 
   const handleSendInlineChat = async (queryText?: string) => {
-    const q = (queryText || inlineQuery).trim();
+    const q = (queryText || '').trim();
     if (!q || isStreaming) return;
 
     const newMsgs = [...chatMessages, { role: 'user' as const, content: q }];
     setChatMessages(newMsgs);
-    setInlineQuery('');
     setIsChatting(true);
     setIsStreaming(true);
 
@@ -305,6 +407,7 @@ export function Hero({ onNavigate, dashboardData: data, loading, actionPlan: pla
       const reader = res.body.getReader();
       const decoder = new TextDecoder();
       let fullAns = '';
+      let lastRenderTime = 0;
 
       while (true) {
         const { done, value } = await reader.read();
@@ -320,16 +423,28 @@ export function Hero({ onNavigate, dashboardData: data, loading, actionPlan: pla
               const delta = data.choices?.[0]?.delta?.content || '';
               if (delta) {
                 fullAns += delta;
-                setChatMessages(prev => {
-                  const updated = [...prev];
-                  updated[updated.length - 1] = { role: 'assistant', content: fullAns };
-                  return updated;
-                });
+                const now = performance.now();
+                if (now - lastRenderTime > 50) {
+                  lastRenderTime = now;
+                  const currentText = fullAns;
+                  setChatMessages(prev => {
+                    const updated = [...prev];
+                    updated[updated.length - 1] = { role: 'assistant', content: currentText };
+                    return updated;
+                  });
+                }
               }
             } catch {}
           }
         }
       }
+
+      // Final flush to ensure complete response is rendered
+      setChatMessages(prev => {
+        const updated = [...prev];
+        updated[updated.length - 1] = { role: 'assistant', content: fullAns };
+        return updated;
+      });
     } catch (err: any) {
       setChatMessages(prev => {
         const updated = [...prev];
@@ -853,89 +968,25 @@ export function Hero({ onNavigate, dashboardData: data, loading, actionPlan: pla
 
               {/* Scrollable messages */}
               <div className="flex-1 overflow-y-auto max-h-[210px] space-y-2.5 pr-1 custom-scrollbar">
-                {chatMessages.map((msg, idx) => {
-                  const isUser = msg.role === 'user';
-                  return (
-                    <div
-                      key={idx}
-                      className={cn(
-                        "flex flex-col gap-1",
-                        isUser ? "items-end" : "items-start"
-                      )}
-                    >
-                      <div
-                        className={cn(
-                          "max-w-[90%] rounded-xl px-3 py-2 text-xs leading-relaxed transition-all",
-                          isUser
-                            ? "bg-gradient-to-tr from-indigo-600 to-purple-600 text-white rounded-br-none shadow-sm"
-                            : cn(
-                                "rounded-bl-none border",
-                                isLight
-                                  ? "bg-white border-slate-200 text-slate-800 shadow-sm"
-                                  : "bg-[#0b0e24]/90 border-purple-500/20 text-white/90"
-                              )
-                        )}
-                      >
-                        {msg.content ? (
-                          isUser ? (
-                            <div className="whitespace-pre-wrap">{msg.content}</div>
-                          ) : (
-                            <FormattedAnswer content={msg.content} />
-                          )
-                        ) : (
-                          <div className="flex items-center gap-1.5 text-purple-300 py-0.5">
-                            <span className="w-1.5 h-1.5 rounded-full bg-purple-400 animate-ping" />
-                            <span className="text-[11px]">Thinking...</span>
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                  );
-                })}
+                {chatMessages.map((msg, idx) => (
+                  <ChatMessageItem
+                    key={idx}
+                    msg={msg}
+                    isLight={isLight}
+                  />
+                ))}
                 <div ref={inlineChatEndRef} />
               </div>
             </div>
           )}
 
           {/* AI Input Form */}
-          <div className={cn(
-            'relative border-t p-3 sm:p-4 z-10',
-            isLight ? 'border-slate-200/50 bg-white/40' : 'border-purple-500/15 bg-[#070916]/80'
-          )}>
-            <form 
-              onSubmit={(e) => {
-                e.preventDefault();
-                handleSendInlineChat();
-              }} 
-              className="relative flex items-center"
-            >
-              <input 
-                ref={inlineInputRef}
-                type="text" 
-                value={inlineQuery}
-                onChange={(e) => setInlineQuery(e.target.value)}
-                placeholder="Ask SmartPrep anything (starts chat here)..."
-                className={cn(
-                  'w-full border rounded-xl py-2.5 pl-4 pr-10 text-xs outline-none transition-all',
-                  isLight
-                    ? 'bg-white/80 border-slate-200 text-slate-800 placeholder-slate-400 focus:border-cyan-500'
-                    : 'bg-[#060814] border-white/10 text-white placeholder-white/30 focus:border-purple-500/60 focus:shadow-[0_0_15px_rgba(168,85,247,0.15)]'
-                )}
-              />
-              <button 
-                type="submit" 
-                disabled={!inlineQuery.trim() || isStreaming}
-                className={cn(
-                  'absolute right-2 p-1.5 transition-colors cursor-pointer',
-                  inlineQuery.trim() && !isStreaming
-                    ? (isLight ? 'text-purple-600 hover:text-purple-800' : 'text-purple-300 hover:text-white')
-                    : 'text-white/20 cursor-not-allowed'
-                )}
-              >
-                <ArrowRight className="w-3.5 h-3.5" />
-              </button>
-            </form>
-          </div>
+          <InlineChatInput
+            ref={inlineInputRef}
+            onSend={handleSendInlineChat}
+            isStreaming={isStreaming}
+            isLight={isLight}
+          />
         </motion.div>
 
       </div>

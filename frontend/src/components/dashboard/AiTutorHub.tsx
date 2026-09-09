@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, memo } from 'react';
 import { 
   Sparkles, 
   Send, 
@@ -149,7 +149,7 @@ function preprocessContent(content: string): string {
 }
 
 // ── Safe KaTeX math token renderer ───────────────────────────────────
-function MathToken({ math, display = false }: { math: string; display?: boolean }) {
+const MathToken = memo(function MathToken({ math, display = false }: { math: string; display?: boolean }) {
   const cleaned = cleanMath(math);
   if (!cleaned) return null;
 
@@ -178,7 +178,7 @@ function MathToken({ math, display = false }: { math: string; display?: boolean 
       </span>
     );
   }
-}
+});
 
 // ── Code block with Copy button ──────────────────────────────────────
 function CodeBlock({ code, lang }: { code: string; lang?: string }) {
@@ -312,7 +312,7 @@ function renderInline(text: string, keyPrefix = ''): React.ReactNode[] {
 }
 
 // ── Multi-type Markdown & Math Content Formatter ─────────────────────
-export function FormattedAnswer({ content }: { content: string }) {
+export const FormattedAnswer = memo(function FormattedAnswer({ content }: { content: string }) {
   if (!content) return null;
 
   const sanitizedContent = preprocessContent(content);
@@ -517,7 +517,7 @@ export function FormattedAnswer({ content }: { content: string }) {
       {elements}
     </div>
   );
-}
+});
 
 export function AiTutorHub({ 
   onNavigate,
