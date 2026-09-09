@@ -1,6 +1,27 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { History, Target, CheckCircle2, BookOpen, Flame, AlertTriangle, ArrowRight, BarChart, Calendar, Play, Clock, Sparkles, Lock } from 'lucide-react';
+import { 
+  History, 
+  Target, 
+  CheckCircle2, 
+  BookOpen, 
+  Flame, 
+  AlertTriangle, 
+  ArrowRight, 
+  BarChart, 
+  Calendar, 
+  Play, 
+  Clock, 
+  Sparkles, 
+  Lock,
+  Zap,
+  RotateCcw,
+  Award,
+  Filter,
+  Layers,
+  X,
+  SlidersHorizontal
+} from 'lucide-react';
 import { cn } from '../../lib/utils';
 import { Footer } from '../layout/Footer';
 import { LESSONS_DATA } from '../../data/lessons';
@@ -29,11 +50,13 @@ export function PYQHub({ onNavigate, initialTab, initialResultId, initialMockId 
   const [configType, setConfigType] = useState<'subject' | 'chapter' | 'year' | 'recommended' | null>(null);
   const [configTarget, setConfigTarget] = useState<string | null>(null);
 
-  // Config parameters
+  // Goal Presets & Config parameters
+  const [goalPreset, setGoalPreset] = useState<'iat_section' | 'speed_sprint' | 'rank_booster' | 'mistake_fix' | 'custom'>('iat_section');
   const [selectedExam, setSelectedExam] = useState<'IAT' | 'NEST'>('IAT');
-  const [questionCount, setQuestionCount] = useState<'10' | '15' | '25' | 'all'>('10');
-  const [yearRange, setYearRange] = useState<'all' | 'recent_5'>('all');
-  const [practiceMode, setPracticeMode] = useState<'Practice' | 'Timed'>('Practice');
+  const [questionCount, setQuestionCount] = useState<'10' | '15' | '30' | 'all'>('15');
+  const [difficulty, setDifficulty] = useState<'all' | 'foundation' | 'hard'>('all');
+  const [yearRange, setYearRange] = useState<'modern' | 'all' | 'recent_5'>('modern');
+  const [practiceMode, setPracticeMode] = useState<'Practice' | 'Timed'>('Timed');
   const [attemptFilter, setAttemptFilter] = useState<'all' | 'unattempted' | 'incorrect'>('all');
   const [selectedChapterId, setSelectedChapterId] = useState<string>('');
 
@@ -101,11 +124,83 @@ export function PYQHub({ onNavigate, initialTab, initialResultId, initialMockId 
     }
   }, [initialTab, initialResultId]);
 
-  // Open config modal with correct lock context
+  // Smart Preset Handler
+  const applyPreset = (preset: 'iat_section' | 'speed_sprint' | 'rank_booster' | 'mistake_fix' | 'custom') => {
+    setGoalPreset(preset);
+    if (preset === 'iat_section') {
+      setQuestionCount('15');
+      setPracticeMode('Timed');
+      setYearRange(configType === 'year' ? 'all' : 'modern');
+      setDifficulty('all');
+      setAttemptFilter('all');
+    } else if (preset === 'speed_sprint') {
+      setQuestionCount('10');
+      setPracticeMode('Practice');
+      setYearRange(configType === 'year' ? 'all' : 'modern');
+      setDifficulty('all');
+      setAttemptFilter('all');
+    } else if (preset === 'rank_booster') {
+      setQuestionCount('15');
+      setPracticeMode('Practice');
+      setYearRange('all');
+      setDifficulty('hard');
+      setAttemptFilter('all');
+    } else if (preset === 'mistake_fix') {
+      setQuestionCount('15');
+      setPracticeMode('Practice');
+      setYearRange('all');
+      setDifficulty('all');
+      setAttemptFilter('incorrect');
+    }
+  };
+
+  // Open config modal with correct lock context and student-aligned smart defaults
   const handleOpenConfig = (type: 'subject' | 'chapter' | 'year' | 'recommended', target: string) => {
     setConfigType(type);
     setConfigTarget(target);
+    if (type === 'year') {
+      setGoalPreset('custom');
+      setYearRange('all');
+      setQuestionCount('all');
+      setPracticeMode('Timed');
+      setDifficulty('all');
+      setAttemptFilter('all');
+    } else if (type === 'recommended') {
+      setGoalPreset('speed_sprint');
+      setQuestionCount('10');
+      setPracticeMode('Practice');
+      setYearRange('modern');
+      setDifficulty('all');
+      setAttemptFilter('all');
+    } else {
+      setGoalPreset('iat_section');
+      setQuestionCount('15');
+      setPracticeMode('Timed');
+      setYearRange('modern');
+      setDifficulty('all');
+      setAttemptFilter('all');
+    }
     setShowConfigModal(true);
+  };
+
+  const getTargetTitle = () => {
+    if (configType === 'subject') return `${configTarget} Section Practice`;
+    if (configType === 'chapter') {
+      const ch = LESSONS_DATA.find(l => l.id === configTarget);
+      return ch ? `${ch.title}` : (configTarget || 'Chapter Practice');
+    }
+    if (configType === 'year') return `${selectedExam} ${configTarget} Official Paper`;
+    return `${selectedExam} Recommended High-Yield Mix`;
+  };
+
+  const getTargetSubtitle = () => {
+    if (configType === 'subject') return `Official ${selectedExam} questions across all ${configTarget} chapters`;
+    if (configType === 'chapter') {
+      const ch = LESSONS_DATA.find(l => l.id === configTarget);
+      return `${ch?.subject || 'Subject'} Chapter Drill from past ${selectedExam} exams`;
+    }
+    if (configType === 'year') return `All official questions from the ${configTarget} exam`;
+    return `Balanced multi-subject question mix targeting high-frequency topics`;
   };
 
   // Launch a session using POST /api/pyq/session/start
@@ -114,13 +209,14 @@ export function PYQHub({ onNavigate, initialTab, initialResultId, initialMockId 
     setLoading(true);
     const token = localStorage.getItem('IAT_TOKEN');
     
-    // Prepare API body based on type locks
+    // Prepare API body based on type locks and student selections
     const body: any = {
       count: questionCount,
-      yearRange,
+      yearRange: configType === 'year' ? [configTarget] : yearRange,
       practiceMode,
       filter: attemptFilter,
-      exam: selectedExam
+      exam: selectedExam,
+      difficulty
     };
 
     let title = "";
@@ -181,7 +277,9 @@ export function PYQHub({ onNavigate, initialTab, initialResultId, initialMockId 
         });
         setView('player');
       } else {
-        alert(data.questions?.length === 0 ? "No matching questions exist for the selected filters." : "Failed to load session questions.");
+        alert(data.questions?.length === 0 
+          ? "No questions match this specific combination (e.g. no past incorrect attempts found yet). Try switching the filter to 'All Questions' or 'Unattempted'." 
+          : "Failed to load session questions.");
       }
     } catch (err: any) {
       console.error("PYQ launch session error:", err);
@@ -565,142 +663,515 @@ export function PYQHub({ onNavigate, initialTab, initialResultId, initialMockId 
 
       {/* CONFIGURATION DIALOG / MODAL */}
       {showConfigModal && (
-        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+        <div 
+          className="fixed inset-0 bg-black/85 backdrop-blur-md z-50 flex items-center justify-center p-3 sm:p-4 overflow-y-auto"
+          onClick={(e) => {
+            if (e.target === e.currentTarget) setShowConfigModal(false);
+          }}
+        >
           <motion.div
-            initial={{ scale: 0.95, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            className="w-full max-w-md p-6 rounded-3xl bg-[#0A0C16] border border-white/10 shadow-2xl space-y-6"
+            initial={{ scale: 0.95, opacity: 0, y: 10 }}
+            animate={{ scale: 1, opacity: 1, y: 0 }}
+            className="w-full max-w-2xl max-h-[92vh] flex flex-col rounded-3xl bg-[#0A0C16] border border-white/10 shadow-2xl overflow-hidden"
           >
             
-            {/* Header */}
-            <div>
-              <h3 className="text-lg font-bold text-white flex items-center gap-2">
-                Configure Practice Session
-              </h3>
-              <p className="text-xs text-white/50 mt-1">Customize your session configuration parameters.</p>
+            {/* 1. Sticky Header with Target Context */}
+            <div className="p-5 sm:p-6 border-b border-white/10 bg-[#070810]/90 backdrop-blur-sm flex items-start justify-between gap-4 sticky top-0 z-20">
+              <div className="space-y-1">
+                <div className="flex items-center gap-2">
+                  <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-purple-500/10 text-purple-300 border border-purple-500/20">
+                    {selectedExam} Official Practice
+                  </span>
+                  {configType === 'year' ? (
+                    <span className="px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-cyan-500/10 text-cyan-300 border border-cyan-500/20">
+                      Official Paper
+                    </span>
+                  ) : (
+                    <span className="px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-white/5 text-white/50 border border-white/10">
+                      Smart Selection
+                    </span>
+                  )}
+                </div>
+                <h3 className="text-xl font-display font-bold text-white tracking-tight">
+                  {getTargetTitle()}
+                </h3>
+                <p className="text-xs text-white/50 leading-relaxed">
+                  {getTargetSubtitle()}
+                </p>
+              </div>
+
+              <button
+                type="button"
+                onClick={() => setShowConfigModal(false)}
+                className="p-2 rounded-xl bg-white/5 hover:bg-white/10 text-white/50 hover:text-white transition-colors shrink-0"
+              >
+                <X className="w-5 h-5" />
+              </button>
             </div>
 
-            {/* Config Fields */}
-            <div className="space-y-4 text-xs">
+            {/* 2. Scrollable Body with Student-Centric Controls */}
+            <div className="p-5 sm:p-6 overflow-y-auto space-y-6 text-xs text-white/80">
               
-              {/* Question Count */}
-              <div className="space-y-2">
-                <label className="text-white/60 font-bold block">Question Count</label>
-                <div className="grid grid-cols-4 gap-2">
-                  {(['10', '15', '25', 'all'] as const).map(c => (
-                    <button
-                      key={c}
-                      onClick={() => setQuestionCount(c)}
-                      className={cn(
-                        "py-2 rounded-lg border font-semibold transition-all uppercase",
-                        questionCount === c 
-                          ? "bg-purple-500/20 border-purple-500 text-purple-300"
-                          : "bg-black/30 border-white/5 text-white/50 hover:text-white"
-                      )}
-                    >
-                      {c}
-                    </button>
-                  ))}
+              {/* SECTION A: Preparation Goal Presets */}
+              <div className="space-y-2.5">
+                <div className="flex items-center justify-between">
+                  <label className="text-xs font-bold text-white uppercase tracking-wider flex items-center gap-1.5">
+                    <Target className="w-3.5 h-3.5 text-purple-400" />
+                    Preparation Goal
+                  </label>
+                  <span className="text-[10px] text-white/40 font-medium">1-Tap Smart Preset</span>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                  {/* Preset 1: Official IAT Section Drill */}
+                  <button
+                    type="button"
+                    onClick={() => applyPreset('iat_section')}
+                    className={cn(
+                      "p-3.5 rounded-2xl border text-left transition-all relative flex flex-col justify-between gap-1.5 group",
+                      goalPreset === 'iat_section'
+                        ? "bg-purple-500/15 border-purple-500 shadow-[0_0_20px_rgba(168,85,247,0.15)] text-white"
+                        : "bg-[#03040A] border-white/5 hover:border-white/15 text-white/70 hover:text-white"
+                    )}
+                  >
+                    <div className="flex items-center justify-between w-full">
+                      <div className="flex items-center gap-2">
+                        <div className={cn(
+                          "w-7 h-7 rounded-lg flex items-center justify-center text-xs font-bold shrink-0",
+                          goalPreset === 'iat_section' ? "bg-purple-500 text-white" : "bg-white/5 text-purple-400"
+                        )}>
+                          <Award className="w-4 h-4" />
+                        </div>
+                        <span className="font-bold text-xs">Official Section Drill</span>
+                      </div>
+                      <span className="px-1.5 py-0.5 rounded text-[9px] font-bold bg-purple-500/20 text-purple-300 border border-purple-500/30">
+                        Exam Ready
+                      </span>
+                    </div>
+                    <p className="text-[11px] text-white/50 leading-snug">
+                      15 Qs &bull; Timed Exam Mode &bull; Modern CBT Era (2021-2024). Exact subject test simulation.
+                    </p>
+                  </button>
+
+                  {/* Preset 2: Speed & Formula Sprint */}
+                  <button
+                    type="button"
+                    onClick={() => applyPreset('speed_sprint')}
+                    className={cn(
+                      "p-3.5 rounded-2xl border text-left transition-all relative flex flex-col justify-between gap-1.5 group",
+                      goalPreset === 'speed_sprint'
+                        ? "bg-amber-500/15 border-amber-500 shadow-[0_0_20px_rgba(245,158,11,0.15)] text-white"
+                        : "bg-[#03040A] border-white/5 hover:border-white/15 text-white/70 hover:text-white"
+                    )}
+                  >
+                    <div className="flex items-center justify-between w-full">
+                      <div className="flex items-center gap-2">
+                        <div className={cn(
+                          "w-7 h-7 rounded-lg flex items-center justify-center text-xs font-bold shrink-0",
+                          goalPreset === 'speed_sprint' ? "bg-amber-500 text-black" : "bg-white/5 text-amber-400"
+                        )}>
+                          <Zap className="w-4 h-4" />
+                        </div>
+                        <span className="font-bold text-xs">Speed & Concept Sprint</span>
+                      </div>
+                      <span className="px-1.5 py-0.5 rounded text-[9px] font-bold bg-amber-500/20 text-amber-300 border border-amber-500/30">
+                        15 Mins
+                      </span>
+                    </div>
+                    <p className="text-[11px] text-white/50 leading-snug">
+                      10 Qs &bull; Practice & Learn &bull; Foundation & Core. Fast formula recall with instant solutions.
+                    </p>
+                  </button>
+
+                  {/* Preset 3: Rank Booster (Hard Qs) */}
+                  <button
+                    type="button"
+                    onClick={() => applyPreset('rank_booster')}
+                    className={cn(
+                      "p-3.5 rounded-2xl border text-left transition-all relative flex flex-col justify-between gap-1.5 group",
+                      goalPreset === 'rank_booster'
+                        ? "bg-rose-500/15 border-rose-500 shadow-[0_0_20px_rgba(244,63,94,0.15)] text-white"
+                        : "bg-[#03040A] border-white/5 hover:border-white/15 text-white/70 hover:text-white"
+                    )}
+                  >
+                    <div className="flex items-center justify-between w-full">
+                      <div className="flex items-center gap-2">
+                        <div className={cn(
+                          "w-7 h-7 rounded-lg flex items-center justify-center text-xs font-bold shrink-0",
+                          goalPreset === 'rank_booster' ? "bg-rose-500 text-white" : "bg-white/5 text-rose-400"
+                        )}>
+                          <Flame className="w-4 h-4" />
+                        </div>
+                        <span className="font-bold text-xs">Rank Booster (AIR &lt; 100)</span>
+                      </div>
+                      <span className="px-1.5 py-0.5 rounded text-[9px] font-bold bg-rose-500/20 text-rose-300 border border-rose-500/30">
+                        Hard Only
+                      </span>
+                    </div>
+                    <p className="text-[11px] text-white/50 leading-snug">
+                      15 Qs &bull; Multi-concept problems &bull; High weightage rank deciders that make top cutoffs.
+                    </p>
+                  </button>
+
+                  {/* Preset 4: Mistake Remediation */}
+                  <button
+                    type="button"
+                    onClick={() => applyPreset('mistake_fix')}
+                    className={cn(
+                      "p-3.5 rounded-2xl border text-left transition-all relative flex flex-col justify-between gap-1.5 group",
+                      goalPreset === 'mistake_fix'
+                        ? "bg-emerald-500/15 border-emerald-500 shadow-[0_0_20px_rgba(16,185,129,0.15)] text-white"
+                        : "bg-[#03040A] border-white/5 hover:border-white/15 text-white/70 hover:text-white"
+                    )}
+                  >
+                    <div className="flex items-center justify-between w-full">
+                      <div className="flex items-center gap-2">
+                        <div className={cn(
+                          "w-7 h-7 rounded-lg flex items-center justify-center text-xs font-bold shrink-0",
+                          goalPreset === 'mistake_fix' ? "bg-emerald-500 text-black" : "bg-white/5 text-emerald-400"
+                        )}>
+                          <RotateCcw className="w-4 h-4" />
+                        </div>
+                        <span className="font-bold text-xs">Mistake Remediation</span>
+                      </div>
+                      <span className="px-1.5 py-0.5 rounded text-[9px] font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
+                        Error Fix
+                      </span>
+                    </div>
+                    <p className="text-[11px] text-white/50 leading-snug">
+                      Re-attempt past incorrect questions &bull; Untimed practice &bull; Stop repeating errors.
+                    </p>
+                  </button>
                 </div>
               </div>
 
-              {/* Year Range */}
+              {/* SECTION B: Question Count */}
+              <div className="space-y-2">
+                <div className="flex items-center justify-between">
+                  <label className="text-xs font-bold text-white uppercase tracking-wider flex items-center gap-1.5">
+                    <Layers className="w-3.5 h-3.5 text-blue-400" />
+                    Question Volume
+                  </label>
+                  <span className="text-[10px] text-purple-400 font-semibold">Official section is 15 Qs</span>
+                </div>
+
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                  {[
+                    { id: '10', title: '10 Qs', subtitle: 'Rapid Sprint (~15m)' },
+                    { id: '15', title: '15 Qs', subtitle: 'Official Section (~35m)', highlight: true },
+                    { id: '30', title: '30 Qs', subtitle: 'Double Block (~60m)' },
+                    { id: 'all', title: 'ALL', subtitle: 'Exhaustive Bank' }
+                  ].map(opt => {
+                    const isSelected = questionCount === opt.id;
+                    return (
+                      <button
+                        key={opt.id}
+                        type="button"
+                        onClick={() => {
+                          setQuestionCount(opt.id as any);
+                          setGoalPreset('custom');
+                        }}
+                        className={cn(
+                          "p-3 rounded-xl border text-center transition-all flex flex-col items-center justify-center gap-0.5",
+                          isSelected
+                            ? "bg-purple-500/20 border-purple-500 text-white shadow-[0_0_15px_rgba(168,85,247,0.15)]"
+                            : "bg-[#03040A] border-white/5 hover:border-white/10 text-white/60 hover:text-white"
+                        )}
+                      >
+                        <div className="flex items-center gap-1">
+                          <span className="font-bold text-sm">{opt.title}</span>
+                          {opt.highlight && (
+                            <span className="w-1.5 h-1.5 rounded-full bg-purple-400" />
+                          )}
+                        </div>
+                        <span className="text-[10px] text-white/40">{opt.subtitle}</span>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* SECTION C: Difficulty / Cognitive Depth */}
+              <div className="space-y-2">
+                <div className="flex items-center justify-between">
+                  <label className="text-xs font-bold text-white uppercase tracking-wider flex items-center gap-1.5">
+                    <Award className="w-3.5 h-3.5 text-amber-400" />
+                    Cognitive Difficulty Level
+                  </label>
+                  <span className="text-[10px] text-white/40 font-medium">Exam Level Stratification</span>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                  {[
+                    { 
+                      id: 'all', 
+                      title: 'Real Exam Mix', 
+                      subtitle: 'Balanced Easy, Medium & Hard as per official paper' 
+                    },
+                    { 
+                      id: 'foundation', 
+                      title: 'Foundation & Core', 
+                      subtitle: 'Easy & Medium: formulas, direct concepts & definitions' 
+                    },
+                    { 
+                      id: 'hard', 
+                      title: 'Rank Deciders', 
+                      subtitle: 'Hard Only: multi-concept questions for Top IISER cutoffs' 
+                    }
+                  ].map(diff => {
+                    const isSelected = difficulty === diff.id;
+                    return (
+                      <button
+                        key={diff.id}
+                        type="button"
+                        onClick={() => {
+                          setDifficulty(diff.id as any);
+                          setGoalPreset('custom');
+                        }}
+                        className={cn(
+                          "p-3 rounded-xl border text-left transition-all flex flex-col justify-between gap-1",
+                          isSelected
+                            ? "bg-purple-500/20 border-purple-500 text-white shadow-[0_0_15px_rgba(168,85,247,0.15)]"
+                            : "bg-[#03040A] border-white/5 hover:border-white/10 text-white/60 hover:text-white"
+                        )}
+                      >
+                        <span className="font-bold text-xs text-white">{diff.title}</span>
+                        <span className="text-[10px] text-white/40 leading-snug">{diff.subtitle}</span>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* SECTION D: Year Range / Exam Era (if not locked to a specific year paper) */}
               {configType !== 'year' && (
                 <div className="space-y-2">
-                  <label className="text-white/60 font-bold block">Year Range</label>
-                  <div className="grid grid-cols-2 gap-2">
+                  <div className="flex items-center justify-between">
+                    <label className="text-xs font-bold text-white uppercase tracking-wider flex items-center gap-1.5">
+                      <Calendar className="w-3.5 h-3.5 text-cyan-400" />
+                      Exam Era & Syllabus Relevance
+                    </label>
+                    <span className="text-[10px] text-cyan-400 font-semibold">2021+ is modern online CBT</span>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                     <button
-                      onClick={() => setYearRange('all')}
+                      type="button"
+                      onClick={() => {
+                        setYearRange('modern');
+                        setGoalPreset('custom');
+                      }}
                       className={cn(
-                        "py-2 rounded-lg border font-semibold transition-all",
-                        yearRange === 'all' 
-                          ? "bg-purple-500/20 border-purple-500 text-purple-300"
-                          : "bg-black/30 border-white/5 text-white/50 hover:text-white"
+                        "p-3 rounded-xl border text-left transition-all flex flex-col justify-between gap-1 relative",
+                        yearRange === 'modern'
+                          ? "bg-purple-500/20 border-purple-500 text-white shadow-[0_0_15px_rgba(168,85,247,0.15)]"
+                          : "bg-[#03040A] border-white/5 hover:border-white/10 text-white/60 hover:text-white"
                       )}
                     >
-                      All Years
+                      <div className="flex items-center justify-between">
+                        <span className="font-bold text-xs text-white">Modern CBT Era (2021–2024)</span>
+                        <span className="px-1.5 py-0.5 rounded text-[9px] font-bold bg-cyan-500/20 text-cyan-300 border border-cyan-500/30">
+                          Recommended
+                        </span>
+                      </div>
+                      <span className="text-[10px] text-white/40 leading-snug">
+                        Matches latest online exam pattern, high-yield graphical and multi-statement questions.
+                      </span>
                     </button>
+
                     <button
-                      onClick={() => setYearRange('recent_5')}
+                      type="button"
+                      onClick={() => {
+                        setYearRange('all');
+                        setGoalPreset('custom');
+                      }}
                       className={cn(
-                        "py-2 rounded-lg border font-semibold transition-all",
-                        yearRange === 'recent_5' 
-                          ? "bg-purple-500/20 border-purple-500 text-purple-300"
-                          : "bg-black/30 border-white/5 text-white/50 hover:text-white"
+                        "p-3 rounded-xl border text-left transition-all flex flex-col justify-between gap-1",
+                        yearRange === 'all'
+                          ? "bg-purple-500/20 border-purple-500 text-white shadow-[0_0_15px_rgba(168,85,247,0.15)]"
+                          : "bg-[#03040A] border-white/5 hover:border-white/10 text-white/60 hover:text-white"
                       )}
                     >
-                      Recent 5 Years
+                      <span className="font-bold text-xs text-white">All Years (2017–2024)</span>
+                      <span className="text-[10px] text-white/40 leading-snug">
+                        Exhaustive archive of 420 official questions across all 7 historical administrations.
+                      </span>
                     </button>
                   </div>
                 </div>
               )}
 
-              {/* Attempt filter */}
+              {/* SECTION E: Question Pool Filter */}
               <div className="space-y-2">
-                <label className="text-white/60 font-bold block">Question Filter</label>
-                <div className="grid grid-cols-3 gap-2">
-                  {(['all', 'unattempted', 'incorrect'] as const).map(f => (
-                    <button
-                      key={f}
-                      onClick={() => setAttemptFilter(f)}
-                      className={cn(
-                        "py-2 rounded-lg border font-semibold transition-all text-[10px]",
-                        attemptFilter === f 
-                          ? "bg-purple-500/20 border-purple-500 text-purple-300"
-                          : "bg-black/30 border-white/5 text-white/50 hover:text-white"
-                      )}
-                    >
-                      {f === 'all' ? 'All Questions' : f === 'unattempted' ? 'Unattempted' : 'Incorrect'}
-                    </button>
-                  ))}
+                <div className="flex items-center justify-between">
+                  <label className="text-xs font-bold text-white uppercase tracking-wider flex items-center gap-1.5">
+                    <Filter className="w-3.5 h-3.5 text-emerald-400" />
+                    Question Pool Filter
+                  </label>
+                  <span className="text-[10px] text-white/40 font-medium">Prevent Memory Bias</span>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                  {[
+                    { id: 'all', title: 'All Questions', subtitle: 'Standard mix from available pool' },
+                    { id: 'unattempted', title: 'Unattempted Only', subtitle: 'Fresh questions with zero recall bias' },
+                    { id: 'incorrect', title: 'Past Mistakes', subtitle: 'Questions previously marked wrong' }
+                  ].map(f => {
+                    const isSelected = attemptFilter === f.id;
+                    return (
+                      <button
+                        key={f.id}
+                        type="button"
+                        onClick={() => {
+                          setAttemptFilter(f.id as any);
+                          setGoalPreset('custom');
+                        }}
+                        className={cn(
+                          "p-3 rounded-xl border text-left transition-all flex flex-col justify-between gap-1",
+                          isSelected
+                            ? "bg-purple-500/20 border-purple-500 text-white shadow-[0_0_15px_rgba(168,85,247,0.15)]"
+                            : "bg-[#03040A] border-white/5 hover:border-white/10 text-white/60 hover:text-white"
+                        )}
+                      >
+                        <span className="font-bold text-xs text-white">{f.title}</span>
+                        <span className="text-[10px] text-white/40 leading-snug">{f.subtitle}</span>
+                      </button>
+                    );
+                  })}
                 </div>
               </div>
 
-              {/* Practice Mode */}
+              {/* SECTION F: Practice Mode & Pedagogical Engine */}
               <div className="space-y-2">
-                <label className="text-white/60 font-bold block">Practice Mode</label>
-                <div className="grid grid-cols-2 gap-2">
+                <div className="flex items-center justify-between">
+                  <label className="text-xs font-bold text-white uppercase tracking-wider flex items-center gap-1.5">
+                    <SlidersHorizontal className="w-3.5 h-3.5 text-purple-400" />
+                    Session Mode & Feedback
+                  </label>
+                  <span className="text-[10px] text-purple-400 font-semibold">Pedagogical Experience</span>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  {/* Mode 1: Practice & Learn */}
                   <button
-                    onClick={() => setPracticeMode('Practice')}
+                    type="button"
+                    onClick={() => {
+                      setPracticeMode('Practice');
+                      setGoalPreset('custom');
+                    }}
                     className={cn(
-                      "py-2.5 rounded-lg border font-semibold transition-all flex items-center justify-center gap-1.5",
-                      practiceMode === 'Practice' 
-                        ? "bg-purple-500/20 border-purple-500 text-purple-300"
-                        : "bg-black/30 border-white/5 text-white/50 hover:text-white"
+                      "p-4 rounded-2xl border text-left transition-all flex flex-col justify-between gap-2",
+                      practiceMode === 'Practice'
+                        ? "bg-purple-500/15 border-purple-500 shadow-[0_0_20px_rgba(168,85,247,0.15)] text-white"
+                        : "bg-[#03040A] border-white/5 hover:border-white/15 text-white/70 hover:text-white"
                     )}
                   >
-                    <BookOpen className="w-3.5 h-3.5 text-purple-400" /> Practice
+                    <div className="flex items-center gap-2">
+                      <div className={cn(
+                        "w-8 h-8 rounded-xl flex items-center justify-center text-sm",
+                        practiceMode === 'Practice' ? "bg-purple-500 text-white" : "bg-white/5 text-purple-400"
+                      )}>
+                        <BookOpen className="w-4 h-4" />
+                      </div>
+                      <div>
+                        <h4 className="font-bold text-xs text-white">Practice & Learn</h4>
+                        <span className="text-[10px] text-purple-300 font-medium">Untimed Deep Study</span>
+                      </div>
+                    </div>
+                    <ul className="space-y-1 text-[10px] text-white/50 pl-1">
+                      <li className="flex items-center gap-1.5">&bull; No timer pressure — focus on concepts</li>
+                      <li className="flex items-center gap-1.5">&bull; Instant step-by-step solutions after submission</li>
+                      <li className="flex items-center gap-1.5">&bull; Zero negative marking penalty</li>
+                    </ul>
                   </button>
+
+                  {/* Mode 2: Exam Simulation */}
                   <button
-                    onClick={() => setPracticeMode('Timed')}
+                    type="button"
+                    onClick={() => {
+                      setPracticeMode('Timed');
+                      setGoalPreset('custom');
+                    }}
                     className={cn(
-                      "py-2.5 rounded-lg border font-semibold transition-all flex items-center justify-center gap-1.5",
-                      practiceMode === 'Timed' 
-                        ? "bg-purple-500/20 border-purple-500 text-purple-300"
-                        : "bg-black/30 border-white/5 text-white/50 hover:text-white"
+                      "p-4 rounded-2xl border text-left transition-all flex flex-col justify-between gap-2",
+                      practiceMode === 'Timed'
+                        ? "bg-rose-500/15 border-rose-500 shadow-[0_0_20px_rgba(244,63,94,0.15)] text-white"
+                        : "bg-[#03040A] border-white/5 hover:border-white/15 text-white/70 hover:text-white"
                     )}
                   >
-                    <Clock className="w-3.5 h-3.5 text-rose-400" /> Timed Mode
+                    <div className="flex items-center gap-2">
+                      <div className={cn(
+                        "w-8 h-8 rounded-xl flex items-center justify-center text-sm",
+                        practiceMode === 'Timed' ? "bg-rose-500 text-white" : "bg-white/5 text-rose-400"
+                      )}>
+                        <Clock className="w-4 h-4" />
+                      </div>
+                      <div>
+                        <h4 className="font-bold text-xs text-white">Official Exam Simulation</h4>
+                        <span className="text-[10px] text-rose-300 font-medium">Timed CBT Environment</span>
+                      </div>
+                    </div>
+                    <ul className="space-y-1 text-[10px] text-white/50 pl-1">
+                      <li className="flex items-center gap-1.5">&bull; Active countdown timer (~2.5 min/Q)</li>
+                      <li className="flex items-center gap-1.5">&bull; Real exam marking rules (+4 / -1 negative mark)</li>
+                      <li className="flex items-center gap-1.5">&bull; Comprehensive performance breakdown at the end</li>
+                    </ul>
                   </button>
                 </div>
               </div>
 
             </div>
 
-            {/* Footer Buttons */}
-            <div className="flex gap-3 justify-end pt-4 border-t border-white/5">
-              <button
-                onClick={() => setShowConfigModal(false)}
-                className="px-4 py-2 rounded-lg bg-white/5 hover:bg-white/10 text-white text-xs font-semibold transition-colors"
-              >
-                Cancel
-              </button>
-              <button
-                onClick={handleLaunchSession}
-                className="px-5 py-2 rounded-lg bg-purple-500 hover:bg-purple-400 text-white text-xs font-bold transition-all shadow-[0_0_15px_rgba(168,85,247,0.2)]"
-              >
-                Start Practice
-              </button>
+            {/* 3. Sticky Modal Footer: Live Blueprint & Action Buttons */}
+            <div className="p-4 sm:p-5 border-t border-white/10 bg-[#070810] space-y-3 sticky bottom-0 z-20">
+              {/* Live Blueprint Summary Bar */}
+              <div className="p-2.5 rounded-xl bg-white/[0.03] border border-white/5 flex flex-wrap items-center justify-between gap-2 text-[11px]">
+                <div className="flex items-center gap-2 flex-wrap">
+                  <span className="text-white/40 font-semibold">Blueprint:</span>
+                  <span className="px-2 py-0.5 rounded bg-purple-500/20 text-purple-300 font-bold border border-purple-500/20">
+                    {questionCount === 'all' ? 'All Questions' : `${questionCount} Questions`}
+                  </span>
+                  <span className="px-2 py-0.5 rounded bg-white/5 text-white/70 font-semibold border border-white/10">
+                    {difficulty === 'all' ? 'Exam Mix' : difficulty === 'hard' ? 'Rank Deciders' : 'Foundation'}
+                  </span>
+                  {configType !== 'year' && (
+                    <span className="px-2 py-0.5 rounded bg-white/5 text-white/70 font-semibold border border-white/10">
+                      {yearRange === 'modern' ? '2021–2024' : '2017–2024'}
+                    </span>
+                  )}
+                  <span className={cn(
+                    "px-2 py-0.5 rounded font-bold border",
+                    practiceMode === 'Timed' 
+                      ? "bg-rose-500/10 text-rose-300 border-rose-500/20" 
+                      : "bg-purple-500/10 text-purple-300 border-purple-500/20"
+                  )}>
+                    {practiceMode === 'Timed' ? '⏱️ Timed (+4/-1)' : '📖 Practice & Learn'}
+                  </span>
+                </div>
+
+                <span className="text-[10px] text-white/40 hidden sm:inline">
+                  {goalPreset === 'custom' ? '⚙️ Custom Setup' : '🎯 Preset Active'}
+                </span>
+              </div>
+
+              {/* Action Buttons */}
+              <div className="flex items-center justify-between gap-3 pt-1">
+                <button
+                  type="button"
+                  onClick={() => setShowConfigModal(false)}
+                  className="px-4 py-2.5 rounded-xl bg-white/5 hover:bg-white/10 text-white/70 hover:text-white text-xs font-semibold transition-colors"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="button"
+                  onClick={handleLaunchSession}
+                  className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-purple-500 to-indigo-600 hover:from-purple-400 hover:to-indigo-500 text-white text-xs font-bold transition-all shadow-[0_0_20px_rgba(168,85,247,0.3)] flex items-center gap-2"
+                >
+                  <span>Start Practice Session</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </button>
+              </div>
             </div>
 
           </motion.div>

@@ -3409,7 +3409,8 @@ app.post("/api/pyq/session/start", authMiddleware, async (req, res) => {
       filter,
       chapterId,
       subject,
-      exam
+      exam,
+      difficulty
     } = req.body;
 
     const pyqQuestions = require("./data/pyqQuestions.json");
@@ -3427,14 +3428,29 @@ app.post("/api/pyq/session/start", authMiddleware, async (req, res) => {
       pool = pool.filter(q => q.chapterId === chapterId);
     }
 
-    // Filter by yearRange
+    // Filter by difficulty (Cognitive depth: Foundation, Rank Deciders, Real Exam Mix)
+    if (difficulty && difficulty !== "all") {
+      if (difficulty === "hard" || difficulty === "rank_booster") {
+        pool = pool.filter(q => q.difficulty?.toLowerCase() === "hard");
+      } else if (difficulty === "foundation" || difficulty === "easy") {
+        pool = pool.filter(q => q.difficulty?.toLowerCase() === "easy" || q.difficulty?.toLowerCase() === "medium");
+      } else {
+        pool = pool.filter(q => q.difficulty?.toLowerCase() === difficulty.toLowerCase());
+      }
+    }
+
+    // Filter by yearRange (Reflecting official IAT format evolution)
     if (yearRange && yearRange !== "all") {
-      if (yearRange === "recent_5") {
-        const currentYear = new Date().getFullYear();
-        pool = pool.filter(q => q.year >= currentYear - 5);
+      if (yearRange === "recent_5" || yearRange === "modern") {
+        // Modern CBT pattern (2021-2024)
+        pool = pool.filter(q => q.year >= 2021);
+      } else if (yearRange === "classic") {
+        pool = pool.filter(q => q.year < 2021);
       } else if (Array.isArray(yearRange)) {
         const yearsSet = new Set(yearRange.map(Number));
         pool = pool.filter(q => yearsSet.has(q.year));
+      } else if (!isNaN(Number(yearRange))) {
+        pool = pool.filter(q => q.year === Number(yearRange));
       }
     }
 
