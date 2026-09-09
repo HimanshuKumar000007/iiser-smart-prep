@@ -28,6 +28,7 @@ import { LESSONS_DATA } from '../../data/lessons';
 import { PYQPlayer } from './PYQPlayer';
 import { PYQResults } from './PYQResults';
 import { useEntitlement } from '../../hooks/useEntitlement';
+import { useTheme } from '../../context/ThemeContext';
 
 interface PYQHubProps {
   onNavigate?: (view: string) => void;
@@ -38,6 +39,8 @@ interface PYQHubProps {
 
 export function PYQHub({ onNavigate, initialTab, initialResultId, initialMockId }: PYQHubProps & { initialMockId?: string }) {
   const { isPro } = useEntitlement();
+  const { theme } = useTheme();
+  const isLight = theme === 'light';
   // Main view state: 'hub' | 'player' | 'results'
   const [view, setView] = useState<'hub' | 'player' | 'results'>(
     initialTab === 'results' ? 'results' : 'hub'
@@ -664,9 +667,13 @@ export function PYQHub({ onNavigate, initialTab, initialResultId, initialMockId 
       )}
 
       {/* CONFIGURATION DIALOG / MODAL */}
+      {/* CONFIGURATION DIALOG / MODAL */}
       {showConfigModal && (
         <div 
-          className="fixed inset-0 bg-black/85 backdrop-blur-md z-50 flex items-center justify-center p-3 sm:p-4 overflow-y-auto"
+          className={cn(
+            "fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 overflow-y-auto transition-colors",
+            isLight ? "bg-slate-900/40 backdrop-blur-sm" : "bg-black/85 backdrop-blur-md"
+          )}
           onClick={(e) => {
             if (e.target === e.currentTarget) setShowConfigModal(false);
           }}
@@ -674,26 +681,46 @@ export function PYQHub({ onNavigate, initialTab, initialResultId, initialMockId 
           <motion.div
             initial={{ scale: 0.95, opacity: 0, y: 10 }}
             animate={{ scale: 1, opacity: 1, y: 0 }}
-            className="w-full max-w-xl max-h-[90vh] flex flex-col rounded-3xl bg-[#0A0C16] border border-white/10 shadow-2xl overflow-hidden"
+            className={cn(
+              "w-full max-w-xl max-h-[90vh] flex flex-col rounded-3xl overflow-hidden shadow-2xl transition-colors",
+              isLight 
+                ? "bg-white border border-slate-200 text-slate-900 shadow-[0_25px_60px_rgba(15,23,42,0.18)]" 
+                : "bg-[#0A0C16] border border-white/10 text-white"
+            )}
           >
             
             {/* 1. Header with Target Context */}
-            <div className="p-5 border-b border-white/10 bg-[#070810]/95 backdrop-blur-sm flex items-start justify-between gap-4 sticky top-0 z-20">
+            <div className={cn(
+              "p-5 border-b flex items-start justify-between gap-4 sticky top-0 z-20 transition-colors",
+              isLight ? "bg-white/95 border-slate-200/90 backdrop-blur-md" : "bg-[#070810]/95 border-white/10 backdrop-blur-sm"
+            )}>
               <div className="space-y-1">
                 <div className="flex items-center gap-2">
-                  <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-purple-500/10 text-purple-300 border border-purple-500/20">
+                  <span className={cn(
+                    "px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider border",
+                    isLight ? "bg-purple-50 text-purple-700 border-purple-200" : "bg-purple-500/10 text-purple-300 border-purple-500/20"
+                  )}>
                     {selectedExam} Official PYQs
                   </span>
                   {configType === 'year' && (
-                    <span className="px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-cyan-500/10 text-cyan-300 border border-cyan-500/20">
+                    <span className={cn(
+                      "px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider border",
+                      isLight ? "bg-cyan-50 text-cyan-700 border-cyan-200" : "bg-cyan-500/10 text-cyan-300 border-cyan-500/20"
+                    )}>
                       Official Paper
                     </span>
                   )}
                 </div>
-                <h3 className="text-lg font-display font-bold text-white tracking-tight">
+                <h3 className={cn(
+                  "text-lg font-display font-bold tracking-tight",
+                  isLight ? "text-slate-900" : "text-white"
+                )}>
                   {getTargetTitle()}
                 </h3>
-                <p className="text-xs text-white/50">
+                <p className={cn(
+                  "text-xs",
+                  isLight ? "text-slate-500" : "text-white/50"
+                )}>
                   {getTargetSubtitle()}
                 </p>
               </div>
@@ -701,23 +728,35 @@ export function PYQHub({ onNavigate, initialTab, initialResultId, initialMockId 
               <button
                 type="button"
                 onClick={() => setShowConfigModal(false)}
-                className="p-2 rounded-xl bg-white/5 hover:bg-white/10 text-white/50 hover:text-white transition-colors shrink-0"
+                className={cn(
+                  "p-2 rounded-xl transition-colors shrink-0",
+                  isLight 
+                    ? "bg-slate-100 hover:bg-slate-200 text-slate-500 hover:text-slate-900" 
+                    : "bg-white/5 hover:bg-white/10 text-white/50 hover:text-white"
+                )}
               >
                 <X className="w-4 h-4" />
               </button>
             </div>
 
             {/* 2. Sleek Tab Switcher */}
-            <div className="px-5 pt-4 bg-[#0A0C16]">
-              <div className="flex items-center gap-1 p-1 rounded-xl bg-black/50 border border-white/5">
+            <div className={cn("px-5 pt-4 transition-colors", isLight ? "bg-white" : "bg-[#0A0C16]")}>
+              <div className={cn(
+                "flex items-center gap-1 p-1 rounded-2xl border transition-colors",
+                isLight ? "bg-slate-100 border-slate-200" : "bg-black/50 border-white/5"
+              )}>
                 <button
                   type="button"
                   onClick={() => setModalTab('presets')}
                   className={cn(
-                    "flex-1 py-2 rounded-lg text-xs font-bold transition-all flex items-center justify-center gap-1.5",
+                    "flex-1 py-2 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1.5",
                     modalTab === 'presets'
-                      ? "bg-purple-500/20 border border-purple-500/30 text-purple-300 shadow-sm"
-                      : "text-white/40 hover:text-white"
+                      ? isLight 
+                        ? "bg-white text-purple-700 shadow-sm border border-slate-200" 
+                        : "bg-purple-500/20 border border-purple-500/30 text-purple-300 shadow-sm"
+                      : isLight 
+                        ? "text-slate-500 hover:text-slate-900" 
+                        : "text-white/40 hover:text-white"
                   )}
                 >
                   <Target className="w-3.5 h-3.5" />
@@ -727,10 +766,14 @@ export function PYQHub({ onNavigate, initialTab, initialResultId, initialMockId 
                   type="button"
                   onClick={() => setModalTab('custom')}
                   className={cn(
-                    "flex-1 py-2 rounded-lg text-xs font-bold transition-all flex items-center justify-center gap-1.5",
+                    "flex-1 py-2 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1.5",
                     modalTab === 'custom'
-                      ? "bg-purple-500/20 border border-purple-500/30 text-purple-300 shadow-sm"
-                      : "text-white/40 hover:text-white"
+                      ? isLight 
+                        ? "bg-white text-purple-700 shadow-sm border border-slate-200" 
+                        : "bg-purple-500/20 border border-purple-500/30 text-purple-300 shadow-sm"
+                      : isLight 
+                        ? "text-slate-500 hover:text-slate-900" 
+                        : "text-white/40 hover:text-white"
                   )}
                 >
                   <SlidersHorizontal className="w-3.5 h-3.5" />
@@ -740,7 +783,10 @@ export function PYQHub({ onNavigate, initialTab, initialResultId, initialMockId 
             </div>
 
             {/* 3. Scrollable Tab Content */}
-            <div className="p-5 overflow-y-auto space-y-4 text-xs text-white/80">
+            <div className={cn(
+              "p-5 overflow-y-auto space-y-4 text-xs transition-colors",
+              isLight ? "bg-white text-slate-800" : "bg-[#0A0C16] text-white/80"
+            )}>
               
               {/* TAB 1: 1-TAP GOAL PRESETS */}
               {modalTab === 'presets' && (
@@ -755,25 +801,34 @@ export function PYQHub({ onNavigate, initialTab, initialResultId, initialMockId 
                       className={cn(
                         "p-3.5 rounded-2xl border text-left transition-all flex flex-col justify-between gap-2 relative",
                         goalPreset === 'iat_section'
-                          ? "bg-purple-500/15 border-purple-500 text-white shadow-[0_0_15px_rgba(168,85,247,0.15)]"
-                          : "bg-[#03040A] border-white/5 hover:border-white/10 text-white/70 hover:text-white"
+                          ? isLight
+                            ? "bg-purple-50/80 border-purple-500 text-slate-900 shadow-[0_4px_16px_rgba(168,85,247,0.12)] ring-1 ring-purple-500/30"
+                            : "bg-purple-500/15 border-purple-500 text-white shadow-[0_0_15px_rgba(168,85,247,0.15)]"
+                          : isLight
+                            ? "bg-slate-50/90 border-slate-200 hover:bg-slate-100 hover:border-slate-300 text-slate-800"
+                            : "bg-[#03040A] border-white/5 hover:border-white/10 text-white/70 hover:text-white"
                       )}
                     >
                       <div className="flex items-center justify-between w-full">
                         <div className="flex items-center gap-2">
                           <div className={cn(
                             "w-7 h-7 rounded-lg flex items-center justify-center text-xs font-bold shrink-0",
-                            goalPreset === 'iat_section' ? "bg-purple-500 text-white" : "bg-white/5 text-purple-400"
+                            goalPreset === 'iat_section' 
+                              ? "bg-purple-600 text-white" 
+                              : isLight ? "bg-purple-100 text-purple-700" : "bg-white/5 text-purple-400"
                           )}>
                             <Award className="w-4 h-4" />
                           </div>
-                          <span className="font-bold text-xs">Official Section Drill</span>
+                          <span className={cn("font-bold text-xs", isLight ? "text-slate-900" : "text-white")}>Official Section Drill</span>
                         </div>
-                        <span className="px-1.5 py-0.5 rounded text-[9px] font-bold bg-purple-500/20 text-purple-300 border border-purple-500/30">
+                        <span className={cn(
+                          "px-1.5 py-0.5 rounded text-[9px] font-bold border",
+                          isLight ? "bg-purple-100 text-purple-700 border-purple-200" : "bg-purple-500/20 text-purple-300 border-purple-500/30"
+                        )}>
                           Recommended
                         </span>
                       </div>
-                      <p className="text-[11px] text-white/50 leading-snug">
+                      <p className={cn("text-[11px] leading-snug", isLight ? "text-slate-600" : "text-white/50")}>
                         15 Qs &bull; Timed Exam Simulation &bull; Modern CBT Era (2021–2024). Exact subject test pacing.
                       </p>
                     </button>
@@ -785,25 +840,34 @@ export function PYQHub({ onNavigate, initialTab, initialResultId, initialMockId 
                       className={cn(
                         "p-3.5 rounded-2xl border text-left transition-all flex flex-col justify-between gap-2 relative",
                         goalPreset === 'speed_sprint'
-                          ? "bg-amber-500/15 border-amber-500 text-white shadow-[0_0_15px_rgba(245,158,11,0.15)]"
-                          : "bg-[#03040A] border-white/5 hover:border-white/10 text-white/70 hover:text-white"
+                          ? isLight
+                            ? "bg-amber-50/80 border-amber-500 text-slate-900 shadow-[0_4px_16px_rgba(245,158,11,0.12)] ring-1 ring-amber-500/30"
+                            : "bg-amber-500/15 border-amber-500 text-white shadow-[0_0_15px_rgba(245,158,11,0.15)]"
+                          : isLight
+                            ? "bg-slate-50/90 border-slate-200 hover:bg-slate-100 hover:border-slate-300 text-slate-800"
+                            : "bg-[#03040A] border-white/5 hover:border-white/10 text-white/70 hover:text-white"
                       )}
                     >
                       <div className="flex items-center justify-between w-full">
                         <div className="flex items-center gap-2">
                           <div className={cn(
                             "w-7 h-7 rounded-lg flex items-center justify-center text-xs font-bold shrink-0",
-                            goalPreset === 'speed_sprint' ? "bg-amber-500 text-black" : "bg-white/5 text-amber-400"
+                            goalPreset === 'speed_sprint' 
+                              ? "bg-amber-500 text-white" 
+                              : isLight ? "bg-amber-100 text-amber-700" : "bg-white/5 text-amber-400"
                           )}>
                             <Zap className="w-4 h-4" />
                           </div>
-                          <span className="font-bold text-xs">Speed & Concept Sprint</span>
+                          <span className={cn("font-bold text-xs", isLight ? "text-slate-900" : "text-white")}>Speed & Concept Sprint</span>
                         </div>
-                        <span className="px-1.5 py-0.5 rounded text-[9px] font-bold bg-amber-500/20 text-amber-300 border border-amber-500/30">
+                        <span className={cn(
+                          "px-1.5 py-0.5 rounded text-[9px] font-bold border",
+                          isLight ? "bg-amber-100 text-amber-800 border-amber-200" : "bg-amber-500/20 text-amber-300 border-amber-500/30"
+                        )}>
                           15 Mins
                         </span>
                       </div>
-                      <p className="text-[11px] text-white/50 leading-snug">
+                      <p className={cn("text-[11px] leading-snug", isLight ? "text-slate-600" : "text-white/50")}>
                         10 Qs &bull; Practice & Learn &bull; Foundation & Core. Fast formula recall with instant solutions.
                       </p>
                     </button>
@@ -815,25 +879,34 @@ export function PYQHub({ onNavigate, initialTab, initialResultId, initialMockId 
                       className={cn(
                         "p-3.5 rounded-2xl border text-left transition-all flex flex-col justify-between gap-2 relative",
                         goalPreset === 'rank_booster'
-                          ? "bg-rose-500/15 border-rose-500 text-white shadow-[0_0_15px_rgba(244,63,94,0.15)]"
-                          : "bg-[#03040A] border-white/5 hover:border-white/10 text-white/70 hover:text-white"
+                          ? isLight
+                            ? "bg-rose-50/80 border-rose-500 text-slate-900 shadow-[0_4px_16px_rgba(244,63,94,0.12)] ring-1 ring-rose-500/30"
+                            : "bg-rose-500/15 border-rose-500 text-white shadow-[0_0_15px_rgba(244,63,94,0.15)]"
+                          : isLight
+                            ? "bg-slate-50/90 border-slate-200 hover:bg-slate-100 hover:border-slate-300 text-slate-800"
+                            : "bg-[#03040A] border-white/5 hover:border-white/10 text-white/70 hover:text-white"
                       )}
                     >
                       <div className="flex items-center justify-between w-full">
                         <div className="flex items-center gap-2">
                           <div className={cn(
                             "w-7 h-7 rounded-lg flex items-center justify-center text-xs font-bold shrink-0",
-                            goalPreset === 'rank_booster' ? "bg-rose-500 text-white" : "bg-white/5 text-rose-400"
+                            goalPreset === 'rank_booster' 
+                              ? "bg-rose-600 text-white" 
+                              : isLight ? "bg-rose-100 text-rose-700" : "bg-white/5 text-rose-400"
                           )}>
                             <Flame className="w-4 h-4" />
                           </div>
-                          <span className="font-bold text-xs">Rank Booster (AIR &lt; 100)</span>
+                          <span className={cn("font-bold text-xs", isLight ? "text-slate-900" : "text-white")}>Rank Booster (AIR &lt; 100)</span>
                         </div>
-                        <span className="px-1.5 py-0.5 rounded text-[9px] font-bold bg-rose-500/20 text-rose-300 border border-rose-500/30">
+                        <span className={cn(
+                          "px-1.5 py-0.5 rounded text-[9px] font-bold border",
+                          isLight ? "bg-rose-100 text-rose-700 border-rose-200" : "bg-rose-500/20 text-rose-300 border-rose-500/30"
+                        )}>
                           Hard Only
                         </span>
                       </div>
-                      <p className="text-[11px] text-white/50 leading-snug">
+                      <p className={cn("text-[11px] leading-snug", isLight ? "text-slate-600" : "text-white/50")}>
                         15 Qs &bull; Multi-concept problems &bull; High weightage rank deciders for top IISER cutoffs.
                       </p>
                     </button>
@@ -845,38 +918,58 @@ export function PYQHub({ onNavigate, initialTab, initialResultId, initialMockId 
                       className={cn(
                         "p-3.5 rounded-2xl border text-left transition-all flex flex-col justify-between gap-2 relative",
                         goalPreset === 'mistake_fix'
-                          ? "bg-emerald-500/15 border-emerald-500 text-white shadow-[0_0_15px_rgba(16,185,129,0.15)]"
-                          : "bg-[#03040A] border-white/5 hover:border-white/10 text-white/70 hover:text-white"
+                          ? isLight
+                            ? "bg-emerald-50/80 border-emerald-500 text-slate-900 shadow-[0_4px_16px_rgba(16,185,129,0.12)] ring-1 ring-emerald-500/30"
+                            : "bg-emerald-500/15 border-emerald-500 text-white shadow-[0_0_15px_rgba(16,185,129,0.15)]"
+                          : isLight
+                            ? "bg-slate-50/90 border-slate-200 hover:bg-slate-100 hover:border-slate-300 text-slate-800"
+                            : "bg-[#03040A] border-white/5 hover:border-white/10 text-white/70 hover:text-white"
                       )}
                     >
                       <div className="flex items-center justify-between w-full">
                         <div className="flex items-center gap-2">
                           <div className={cn(
                             "w-7 h-7 rounded-lg flex items-center justify-center text-xs font-bold shrink-0",
-                            goalPreset === 'mistake_fix' ? "bg-emerald-500 text-black" : "bg-white/5 text-emerald-400"
+                            goalPreset === 'mistake_fix' 
+                              ? "bg-emerald-600 text-white" 
+                              : isLight ? "bg-emerald-100 text-emerald-700" : "bg-white/5 text-emerald-400"
                           )}>
                             <RotateCcw className="w-4 h-4" />
                           </div>
-                          <span className="font-bold text-xs">Mistake Remediation</span>
+                          <span className={cn("font-bold text-xs", isLight ? "text-slate-900" : "text-white")}>Mistake Remediation</span>
                         </div>
-                        <span className="px-1.5 py-0.5 rounded text-[9px] font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
+                        <span className={cn(
+                          "px-1.5 py-0.5 rounded text-[9px] font-bold border",
+                          isLight ? "bg-emerald-100 text-emerald-800 border-emerald-200" : "bg-emerald-500/20 text-emerald-300 border-emerald-500/30"
+                        )}>
                           Error Fix
                         </span>
                       </div>
-                      <p className="text-[11px] text-white/50 leading-snug">
+                      <p className={cn("text-[11px] leading-snug", isLight ? "text-slate-600" : "text-white/50")}>
                         Re-attempt past incorrect questions &bull; Untimed practice &bull; Stop repeating errors.
                       </p>
                     </button>
                   </div>
 
                   {/* Compact Quick-Tweak Bar */}
-                  <div className="p-3.5 rounded-2xl bg-[#03040A] border border-white/5 space-y-3">
+                  <div className={cn(
+                    "p-3.5 rounded-2xl border space-y-3 transition-colors",
+                    isLight ? "bg-slate-50/90 border-slate-200" : "bg-[#03040A] border-white/5"
+                  )}>
                     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-                      <span className="text-[11px] font-bold text-white/50 uppercase tracking-wider">Quick Adjustments</span>
+                      <span className={cn(
+                        "text-[11px] font-bold uppercase tracking-wider",
+                        isLight ? "text-slate-500" : "text-white/50"
+                      )}>
+                        Quick Adjustments
+                      </span>
                       <button
                         type="button"
                         onClick={() => setModalTab('custom')}
-                        className="text-[11px] text-purple-400 hover:text-purple-300 font-semibold flex items-center gap-1 transition-colors self-start sm:self-auto"
+                        className={cn(
+                          "text-[11px] font-semibold flex items-center gap-1 transition-colors self-start sm:self-auto",
+                          isLight ? "text-purple-600 hover:text-purple-700" : "text-purple-400 hover:text-purple-300"
+                        )}
                       >
                         Advanced filters & year era &rarr;
                       </button>
@@ -885,7 +978,7 @@ export function PYQHub({ onNavigate, initialTab, initialResultId, initialMockId 
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
                       {/* Question Count */}
                       <div className="space-y-1.5">
-                        <label className="text-[10px] text-white/40 font-semibold block">Questions</label>
+                        <label className={cn("text-[10px] font-semibold block", isLight ? "text-slate-500" : "text-white/40")}>Questions</label>
                         <div className="grid grid-cols-4 gap-1.5">
                           {[
                             { id: '10', label: '10 Qs' },
@@ -903,8 +996,12 @@ export function PYQHub({ onNavigate, initialTab, initialResultId, initialMockId 
                               className={cn(
                                 "py-1.5 rounded-lg border font-bold text-xs transition-all text-center",
                                 questionCount === c.id
-                                  ? "bg-purple-500/25 border-purple-500 text-purple-200"
-                                  : "bg-white/5 border-white/5 text-white/50 hover:text-white"
+                                  ? isLight
+                                    ? "bg-purple-600 border-purple-600 text-white shadow-sm"
+                                    : "bg-purple-500/25 border-purple-500 text-purple-200"
+                                  : isLight
+                                    ? "bg-white border-slate-200 text-slate-700 hover:bg-slate-100 hover:text-slate-900"
+                                    : "bg-white/5 border-white/5 text-white/50 hover:text-white"
                               )}
                             >
                               {c.label}
@@ -915,7 +1012,7 @@ export function PYQHub({ onNavigate, initialTab, initialResultId, initialMockId 
 
                       {/* Mode */}
                       <div className="space-y-1.5">
-                        <label className="text-[10px] text-white/40 font-semibold block">Mode</label>
+                        <label className={cn("text-[10px] font-semibold block", isLight ? "text-slate-500" : "text-white/40")}>Mode</label>
                         <div className="grid grid-cols-2 gap-1.5">
                           <button
                             type="button"
@@ -926,11 +1023,15 @@ export function PYQHub({ onNavigate, initialTab, initialResultId, initialMockId 
                             className={cn(
                               "py-1.5 px-2 rounded-lg border font-semibold text-xs transition-all flex items-center justify-center gap-1",
                               practiceMode === 'Practice'
-                                ? "bg-purple-500/25 border-purple-500 text-purple-200"
-                                : "bg-white/5 border-white/5 text-white/50 hover:text-white"
+                                ? isLight
+                                  ? "bg-purple-600 border-purple-600 text-white shadow-sm"
+                                  : "bg-purple-500/25 border-purple-500 text-purple-200"
+                                : isLight
+                                  ? "bg-white border-slate-200 text-slate-700 hover:bg-slate-100 hover:text-slate-900"
+                                  : "bg-white/5 border-white/5 text-white/50 hover:text-white"
                             )}
                           >
-                            <BookOpen className="w-3 h-3 text-purple-400" /> Practice
+                            <BookOpen className="w-3 h-3" /> Practice
                           </button>
                           <button
                             type="button"
@@ -941,11 +1042,15 @@ export function PYQHub({ onNavigate, initialTab, initialResultId, initialMockId 
                             className={cn(
                               "py-1.5 px-2 rounded-lg border font-semibold text-xs transition-all flex items-center justify-center gap-1",
                               practiceMode === 'Timed'
-                                ? "bg-rose-500/25 border-rose-500 text-rose-200"
-                                : "bg-white/5 border-white/5 text-white/50 hover:text-white"
+                                ? isLight
+                                  ? "bg-rose-600 border-rose-600 text-white shadow-sm"
+                                  : "bg-rose-500/25 border-rose-500 text-rose-200"
+                                : isLight
+                                  ? "bg-white border-slate-200 text-slate-700 hover:bg-slate-100 hover:text-slate-900"
+                                  : "bg-white/5 border-white/5 text-white/50 hover:text-white"
                             )}
                           >
-                            <Clock className="w-3 h-3 text-rose-400" /> Timed (+4/-1)
+                            <Clock className="w-3 h-3" /> Timed (+4/-1)
                           </button>
                         </div>
                       </div>
@@ -962,8 +1067,8 @@ export function PYQHub({ onNavigate, initialTab, initialResultId, initialMockId 
                   {/* 1. Question Count */}
                   <div className="space-y-1.5">
                     <div className="flex items-center justify-between">
-                      <label className="text-white/60 font-bold block text-xs">Question Count</label>
-                      <span className="text-[10px] text-purple-400 font-semibold">15 Qs is official IAT section</span>
+                      <label className={cn("font-bold block text-xs", isLight ? "text-slate-800" : "text-white/60")}>Question Count</label>
+                      <span className={cn("text-[10px] font-semibold", isLight ? "text-purple-600" : "text-purple-400")}>15 Qs is official IAT section</span>
                     </div>
                     <div className="grid grid-cols-4 gap-2">
                       {[
@@ -982,12 +1087,16 @@ export function PYQHub({ onNavigate, initialTab, initialResultId, initialMockId 
                           className={cn(
                             "p-2 rounded-xl border font-bold transition-all text-center flex flex-col items-center",
                             questionCount === c.id
-                              ? "bg-purple-500/20 border-purple-500 text-purple-200"
-                              : "bg-white/5 border-white/5 text-white/50 hover:text-white"
+                              ? isLight
+                                ? "bg-purple-50 border-purple-500 text-purple-900 shadow-sm"
+                                : "bg-purple-500/20 border-purple-500 text-purple-200"
+                              : isLight
+                                ? "bg-slate-50/80 border-slate-200 text-slate-700 hover:bg-slate-100 hover:text-slate-900"
+                                : "bg-white/5 border-white/5 text-white/50 hover:text-white"
                           )}
                         >
                           <span className="text-xs">{c.label}</span>
-                          <span className="text-[9px] text-white/40 font-normal">{c.sub}</span>
+                          <span className={cn("text-[9px] font-normal", isLight ? "text-slate-500" : "text-white/40")}>{c.sub}</span>
                         </button>
                       ))}
                     </div>
@@ -995,7 +1104,7 @@ export function PYQHub({ onNavigate, initialTab, initialResultId, initialMockId 
 
                   {/* 2. Difficulty */}
                   <div className="space-y-1.5">
-                    <label className="text-white/60 font-bold block text-xs">Difficulty Level</label>
+                    <label className={cn("font-bold block text-xs", isLight ? "text-slate-800" : "text-white/60")}>Difficulty Level</label>
                     <div className="grid grid-cols-3 gap-2">
                       {[
                         { id: 'all', label: 'Real Exam Mix', sub: 'Easy, Med & Hard' },
@@ -1012,12 +1121,16 @@ export function PYQHub({ onNavigate, initialTab, initialResultId, initialMockId 
                           className={cn(
                             "p-2 rounded-xl border text-center transition-all flex flex-col items-center",
                             difficulty === d.id
-                              ? "bg-purple-500/20 border-purple-500 text-purple-200"
-                              : "bg-white/5 border-white/5 text-white/50 hover:text-white"
+                              ? isLight
+                                ? "bg-purple-50 border-purple-500 text-purple-900 shadow-sm"
+                                : "bg-purple-500/20 border-purple-500 text-purple-200"
+                              : isLight
+                                ? "bg-slate-50/80 border-slate-200 text-slate-700 hover:bg-slate-100 hover:text-slate-900"
+                                : "bg-white/5 border-white/5 text-white/50 hover:text-white"
                           )}
                         >
                           <span className="text-xs font-bold">{d.label}</span>
-                          <span className="text-[9px] text-white/40 font-normal">{d.sub}</span>
+                          <span className={cn("text-[9px] font-normal", isLight ? "text-slate-500" : "text-white/40")}>{d.sub}</span>
                         </button>
                       ))}
                     </div>
@@ -1025,7 +1138,7 @@ export function PYQHub({ onNavigate, initialTab, initialResultId, initialMockId 
 
                   {/* 3. Session Mode */}
                   <div className="space-y-1.5">
-                    <label className="text-white/60 font-bold block text-xs">Practice Mode</label>
+                    <label className={cn("font-bold block text-xs", isLight ? "text-slate-800" : "text-white/60")}>Practice Mode</label>
                     <div className="grid grid-cols-2 gap-2">
                       <button
                         type="button"
@@ -1036,11 +1149,15 @@ export function PYQHub({ onNavigate, initialTab, initialResultId, initialMockId 
                         className={cn(
                           "p-2.5 rounded-xl border font-semibold text-xs transition-all flex items-center justify-center gap-2",
                           practiceMode === 'Practice'
-                            ? "bg-purple-500/20 border-purple-500 text-purple-200"
-                            : "bg-white/5 border-white/5 text-white/50 hover:text-white"
+                            ? isLight
+                              ? "bg-purple-50 border-purple-500 text-purple-900 shadow-sm"
+                              : "bg-purple-500/20 border-purple-500 text-purple-200"
+                            : isLight
+                              ? "bg-slate-50/80 border-slate-200 text-slate-700 hover:bg-slate-100 hover:text-slate-900"
+                              : "bg-white/5 border-white/5 text-white/50 hover:text-white"
                         )}
                       >
-                        <BookOpen className="w-3.5 h-3.5 text-purple-400" />
+                        <BookOpen className="w-3.5 h-3.5 text-purple-500" />
                         <span>Practice & Learn (Untimed)</span>
                       </button>
                       <button
@@ -1052,11 +1169,15 @@ export function PYQHub({ onNavigate, initialTab, initialResultId, initialMockId 
                         className={cn(
                           "p-2.5 rounded-xl border font-semibold text-xs transition-all flex items-center justify-center gap-2",
                           practiceMode === 'Timed'
-                            ? "bg-rose-500/20 border-rose-500 text-rose-200"
-                            : "bg-white/5 border-white/5 text-white/50 hover:text-white"
+                            ? isLight
+                              ? "bg-rose-50 border-rose-500 text-rose-900 shadow-sm"
+                              : "bg-rose-500/20 border-rose-500 text-rose-200"
+                            : isLight
+                              ? "bg-slate-50/80 border-slate-200 text-slate-700 hover:bg-slate-100 hover:text-slate-900"
+                              : "bg-white/5 border-white/5 text-white/50 hover:text-white"
                         )}
                       >
-                        <Clock className="w-3.5 h-3.5 text-rose-400" />
+                        <Clock className="w-3.5 h-3.5 text-rose-500" />
                         <span>Timed Exam (+4 / -1)</span>
                       </button>
                     </div>
@@ -1066,8 +1187,8 @@ export function PYQHub({ onNavigate, initialTab, initialResultId, initialMockId 
                   {configType !== 'year' && (
                     <div className="space-y-1.5">
                       <div className="flex items-center justify-between">
-                        <label className="text-white/60 font-bold block text-xs">Exam Era</label>
-                        <span className="text-[10px] text-cyan-400 font-semibold">2021+ is modern online CBT</span>
+                        <label className={cn("font-bold block text-xs", isLight ? "text-slate-800" : "text-white/60")}>Exam Era</label>
+                        <span className={cn("text-[10px] font-semibold", isLight ? "text-cyan-600" : "text-cyan-400")}>2021+ is modern online CBT</span>
                       </div>
                       <div className="grid grid-cols-2 gap-2">
                         <button
@@ -1079,12 +1200,16 @@ export function PYQHub({ onNavigate, initialTab, initialResultId, initialMockId 
                           className={cn(
                             "p-2 rounded-xl border text-center transition-all flex flex-col items-center",
                             yearRange === 'modern'
-                              ? "bg-purple-500/20 border-purple-500 text-purple-200"
-                              : "bg-white/5 border-white/5 text-white/50 hover:text-white"
+                              ? isLight
+                                ? "bg-purple-50 border-purple-500 text-purple-900 shadow-sm"
+                                : "bg-purple-500/20 border-purple-500 text-purple-200"
+                              : isLight
+                                ? "bg-slate-50/80 border-slate-200 text-slate-700 hover:bg-slate-100 hover:text-slate-900"
+                                : "bg-white/5 border-white/5 text-white/50 hover:text-white"
                           )}
                         >
                           <span className="text-xs font-bold">Modern CBT (2021–2024)</span>
-                          <span className="text-[9px] text-white/40 font-normal">Current online pattern</span>
+                          <span className={cn("text-[9px] font-normal", isLight ? "text-slate-500" : "text-white/40")}>Current online pattern</span>
                         </button>
                         <button
                           type="button"
@@ -1095,12 +1220,16 @@ export function PYQHub({ onNavigate, initialTab, initialResultId, initialMockId 
                           className={cn(
                             "p-2 rounded-xl border text-center transition-all flex flex-col items-center",
                             yearRange === 'all'
-                              ? "bg-purple-500/20 border-purple-500 text-purple-200"
-                              : "bg-white/5 border-white/5 text-white/50 hover:text-white"
+                              ? isLight
+                                ? "bg-purple-50 border-purple-500 text-purple-900 shadow-sm"
+                                : "bg-purple-500/20 border-purple-500 text-purple-200"
+                              : isLight
+                                ? "bg-slate-50/80 border-slate-200 text-slate-700 hover:bg-slate-100 hover:text-slate-900"
+                                : "bg-white/5 border-white/5 text-white/50 hover:text-white"
                           )}
                         >
                           <span className="text-xs font-bold">All Years (2017–2024)</span>
-                          <span className="text-[9px] text-white/40 font-normal">All 420 questions</span>
+                          <span className={cn("text-[9px] font-normal", isLight ? "text-slate-500" : "text-white/40")}>All 420 questions</span>
                         </button>
                       </div>
                     </div>
@@ -1108,7 +1237,7 @@ export function PYQHub({ onNavigate, initialTab, initialResultId, initialMockId 
 
                   {/* 5. Question Filter */}
                   <div className="space-y-1.5">
-                    <label className="text-white/60 font-bold block text-xs">Question Filter</label>
+                    <label className={cn("font-bold block text-xs", isLight ? "text-slate-800" : "text-white/60")}>Question Filter</label>
                     <div className="grid grid-cols-3 gap-2">
                       {[
                         { id: 'all', label: 'All Questions', sub: 'Standard mix' },
@@ -1125,12 +1254,16 @@ export function PYQHub({ onNavigate, initialTab, initialResultId, initialMockId 
                           className={cn(
                             "p-2 rounded-xl border text-center transition-all flex flex-col items-center",
                             attemptFilter === f.id
-                              ? "bg-purple-500/20 border-purple-500 text-purple-200"
-                              : "bg-white/5 border-white/5 text-white/50 hover:text-white"
+                              ? isLight
+                                ? "bg-purple-50 border-purple-500 text-purple-900 shadow-sm"
+                                : "bg-purple-500/20 border-purple-500 text-purple-200"
+                              : isLight
+                                ? "bg-slate-50/80 border-slate-200 text-slate-700 hover:bg-slate-100 hover:text-slate-900"
+                                : "bg-white/5 border-white/5 text-white/50 hover:text-white"
                           )}
                         >
                           <span className="text-xs font-bold">{f.label}</span>
-                          <span className="text-[9px] text-white/40 font-normal">{f.sub}</span>
+                          <span className={cn("text-[9px] font-normal", isLight ? "text-slate-500" : "text-white/40")}>{f.sub}</span>
                         </button>
                       ))}
                     </div>
@@ -1142,33 +1275,48 @@ export function PYQHub({ onNavigate, initialTab, initialResultId, initialMockId 
             </div>
 
             {/* 4. Sticky Modal Footer: Live Blueprint & Action Buttons */}
-            <div className="p-4 sm:p-5 border-t border-white/10 bg-[#070810] space-y-3 sticky bottom-0 z-20">
+            <div className={cn(
+              "p-4 sm:p-5 border-t space-y-3 sticky bottom-0 z-20 transition-colors",
+              isLight ? "bg-white/95 border-slate-200/90 backdrop-blur-md" : "bg-[#070810]/95 border-white/10 backdrop-blur-md"
+            )}>
               {/* Live Blueprint Summary Bar */}
-              <div className="p-2.5 rounded-xl bg-white/[0.03] border border-white/5 flex flex-wrap items-center justify-between gap-2 text-[11px]">
+              <div className={cn(
+                "p-2.5 rounded-xl border flex flex-wrap items-center justify-between gap-2 text-[11px] transition-colors",
+                isLight ? "bg-slate-50 border-slate-200/90" : "bg-white/[0.03] border-white/5"
+              )}>
                 <div className="flex items-center gap-1.5 flex-wrap">
-                  <span className="text-white/40 font-semibold">Blueprint:</span>
-                  <span className="px-2 py-0.5 rounded bg-purple-500/20 text-purple-300 font-bold border border-purple-500/20">
+                  <span className={cn("font-semibold", isLight ? "text-slate-500" : "text-white/40")}>Blueprint:</span>
+                  <span className={cn(
+                    "px-2 py-0.5 rounded font-bold border",
+                    isLight ? "bg-purple-100 text-purple-800 border-purple-200" : "bg-purple-500/20 text-purple-300 border-purple-500/20"
+                  )}>
                     {questionCount === 'all' ? 'All Questions' : `${questionCount} Qs`}
                   </span>
-                  <span className="px-2 py-0.5 rounded bg-white/5 text-white/70 font-semibold border border-white/10">
+                  <span className={cn(
+                    "px-2 py-0.5 rounded font-semibold border",
+                    isLight ? "bg-slate-200/80 text-slate-700 border-slate-300" : "bg-white/5 text-white/70 border-white/10"
+                  )}>
                     {difficulty === 'all' ? 'Exam Mix' : difficulty === 'hard' ? 'Hard Only' : 'Foundation'}
                   </span>
                   {configType !== 'year' && (
-                    <span className="px-2 py-0.5 rounded bg-white/5 text-white/70 font-semibold border border-white/10">
+                    <span className={cn(
+                      "px-2 py-0.5 rounded font-semibold border",
+                      isLight ? "bg-slate-200/80 text-slate-700 border-slate-300" : "bg-white/5 text-white/70 border-white/10"
+                    )}>
                       {yearRange === 'modern' ? '2021–2024' : '2017–2024'}
                     </span>
                   )}
                   <span className={cn(
                     "px-2 py-0.5 rounded font-bold border",
                     practiceMode === 'Timed' 
-                      ? "bg-rose-500/10 text-rose-300 border-rose-500/20" 
-                      : "bg-purple-500/10 text-purple-300 border-purple-500/20"
+                      ? isLight ? "bg-rose-100 text-rose-800 border-rose-200" : "bg-rose-500/10 text-rose-300 border-rose-500/20" 
+                      : isLight ? "bg-purple-100 text-purple-800 border-purple-200" : "bg-purple-500/10 text-purple-300 border-purple-500/20"
                   )}>
                     {practiceMode === 'Timed' ? '⏱️ Timed (+4/-1)' : '📖 Practice'}
                   </span>
                 </div>
 
-                <span className="text-[10px] text-white/40 hidden sm:inline">
+                <span className={cn("text-[10px] hidden sm:inline", isLight ? "text-slate-500" : "text-white/40")}>
                   {goalPreset === 'custom' ? '⚙️ Custom' : '🎯 Preset'}
                 </span>
               </div>
@@ -1178,14 +1326,17 @@ export function PYQHub({ onNavigate, initialTab, initialResultId, initialMockId 
                 <button
                   type="button"
                   onClick={() => setShowConfigModal(false)}
-                  className="px-4 py-2.5 rounded-xl bg-white/5 hover:bg-white/10 text-white/70 hover:text-white text-xs font-semibold transition-colors"
+                  className={cn(
+                    "px-4 py-2.5 rounded-xl text-xs font-semibold transition-colors",
+                    isLight ? "bg-slate-100 hover:bg-slate-200 text-slate-700 hover:text-slate-900" : "bg-white/5 hover:bg-white/10 text-white/70 hover:text-white"
+                  )}
                 >
                   Cancel
                 </button>
                 <button
                   type="button"
                   onClick={handleLaunchSession}
-                  className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-purple-500 to-indigo-600 hover:from-purple-400 hover:to-indigo-500 text-white text-xs font-bold transition-all shadow-[0_0_20px_rgba(168,85,247,0.3)] flex items-center gap-2"
+                  className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white text-xs font-bold transition-all shadow-[0_0_20px_rgba(168,85,247,0.3)] flex items-center gap-2"
                 >
                   <span>Start Practice Session</span>
                   <ArrowRight className="w-3.5 h-3.5" />
