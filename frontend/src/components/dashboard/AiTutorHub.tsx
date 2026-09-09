@@ -1036,12 +1036,12 @@ export function AiTutorHub({
         </div>
       </header>
 
-      {/* ── WORKSPACE CONTAINER (Scrollable on phone with bottom padding for MobileNav) ── */}
-      <div className="flex-1 flex flex-col overflow-y-auto custom-scrollbar relative z-10">
+      {/* ── WORKSPACE CONTAINER ── */}
+      <div className="flex-1 min-h-0 flex flex-col relative z-10 overflow-hidden">
 
         {/* ── 1. EMPTY / WELCOME STATE ── */}
         {messages.length === 0 ? (
-          <div className="flex-1 flex flex-col items-center justify-start sm:justify-center px-3.5 sm:px-4 max-w-3xl mx-auto w-full pt-3 sm:pt-6 pb-28 sm:pb-8">
+          <div className="flex-1 min-h-0 overflow-y-auto custom-scrollbar overscroll-contain flex flex-col items-center justify-start sm:justify-center px-3.5 sm:px-4 max-w-3xl mx-auto w-full pt-3 sm:pt-6 pb-6 sm:pb-8">
             
             {/* Jewel Icon & Title */}
             <div className="text-center mb-4 sm:mb-7 space-y-2 sm:space-y-3">
@@ -1343,33 +1343,43 @@ export function AiTutorHub({
           </div>
         ) : (
           /* ── 2. ACTIVE CONVERSATION STATE (Super-Premium Stream) ── */
-          <div className="flex-1 flex flex-col h-full overflow-hidden">
+          <div className="flex-1 min-h-0 flex flex-col h-full overflow-hidden">
             
-            {/* Messages Thread */}
+            {/* Mobile-only session header bar (Fixed at top, strictly outside scrollable messages) */}
+            <div className={cn(
+              "flex items-center justify-between px-3.5 sm:px-6 py-2 border-b shrink-0 lg:hidden z-20 transition-colors",
+              isLight 
+                ? "bg-white/95 border-slate-200/80 text-slate-800 shadow-sm" 
+                : "bg-[#060814]/95 border-white/10 text-white shadow-[0_2px_10px_rgba(0,0,0,0.3)] backdrop-blur-md"
+            )}>
+              <div className="flex items-center gap-1.5 text-xs text-cyan-400">
+                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                <span className="font-semibold text-[11px]">Active Session</span>
+                <span className={isLight ? "text-slate-300" : "text-white/30"}>•</span>
+                <span className={cn("text-[10px] font-mono", isLight ? "text-purple-700 font-bold" : "text-purple-300 font-semibold")}>NVIDIA NIM</span>
+              </div>
+              <button
+                onClick={handleClearChat}
+                className={cn(
+                  "px-2.5 py-1 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition-all cursor-pointer border",
+                  isLight 
+                    ? "bg-slate-100 hover:bg-rose-50 text-slate-600 hover:text-rose-600 border-slate-200" 
+                    : "bg-white/5 hover:bg-rose-500/10 text-white/70 hover:text-rose-400 border-white/10"
+                )}
+                title="Start a fresh chat"
+              >
+                <Trash2 className="w-3 h-3" />
+                <span>New Chat</span>
+              </button>
+            </div>
+
+            {/* Messages Thread (Strictly the ONLY area that scrolls) */}
             <div 
               ref={messagesContainerRef}
               onScroll={handleMessagesScroll}
-              className="flex-1 overflow-y-auto px-3 sm:px-6 py-3 sm:py-6 custom-scrollbar"
+              className="flex-1 min-h-0 overflow-y-auto overscroll-contain px-3 sm:px-6 py-3 sm:py-6 custom-scrollbar"
             >
               <div className="max-w-3xl mx-auto w-full space-y-4 sm:space-y-6">
-                
-                {/* Mobile-only session header bar */}
-                <div className="flex items-center justify-between pb-2 border-b border-white/10 lg:hidden">
-                  <div className="flex items-center gap-1.5 text-xs text-cyan-400">
-                    <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-                    <span className="font-semibold text-[11px]">Active Session</span>
-                    <span className="text-white/30">•</span>
-                    <span className="text-[10px] font-mono text-purple-300">NVIDIA NIM</span>
-                  </div>
-                  <button
-                    onClick={handleClearChat}
-                    className="px-2.5 py-1 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition-all cursor-pointer bg-white/5 hover:bg-rose-500/10 text-white/70 hover:text-rose-400 border border-white/10"
-                  >
-                    <Trash2 className="w-3 h-3" />
-                    <span>New Chat</span>
-                  </button>
-                </div>
-
                 {messages.map((msg, idx) => (
                   <MessageBubble
                     key={idx}
@@ -1387,8 +1397,13 @@ export function AiTutorHub({
               </div>
             </div>
 
-            {/* Pinned Bottom Input Capsule */}
-            <div className="px-3 sm:px-4 pb-24 sm:pb-4 pt-2 shrink-0">
+            {/* Pinned Bottom Input Capsule (Fixed firmly at bottom of viewport, no mobile nav overlap) */}
+            <div className={cn(
+              "px-3 sm:px-4 pt-2 pb-3 sm:pb-4 shrink-0 border-t z-20 transition-colors",
+              isLight 
+                ? "bg-white/95 border-slate-200/80 shadow-[0_-4px_16px_rgba(15,23,42,0.04)]" 
+                : "bg-[#060814]/95 border-white/5 backdrop-blur-md shadow-[0_-4px_20px_rgba(0,0,0,0.5)]"
+            )}>
               <div className="max-w-3xl mx-auto w-full">
                 <form
                   onSubmit={(e) => {

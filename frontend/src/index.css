@@ -935,6 +935,19 @@ body.quick-mock-modal-open .mobile-nav-backdrop {
   display: none !important;
 }
 
+/* Prevent screen scroll and hide Mobile Navigation when AI Tutor is active */
+body.ai-tutor-active {
+  overflow: hidden !important;
+  overscroll-behavior: none !important;
+  height: 100dvh !important;
+  max-height: 100dvh !important;
+}
+
+body.ai-tutor-active .mobile-nav-container,
+body.ai-tutor-active .mobile-nav-backdrop {
+  display: none !important;
+}
+
 /* ========================================================
    LESSON READER — LIGHT MODE PREMIUM OVERRIDES
    ======================================================== */

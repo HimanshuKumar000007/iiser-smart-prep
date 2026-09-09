@@ -47,6 +47,7 @@ import { Subscription } from './components/dashboard/Subscription';
 import { currentUser } from './data/mockData';
 import { ThemeProvider, useTheme } from './context/ThemeContext';
 import { Analytics } from './lib/analytics';
+import { cn } from './lib/utils';
  
 function DashboardApp() {
   const { theme, toggleTheme } = useTheme();
@@ -56,6 +57,18 @@ function DashboardApp() {
   const [currentView, setCurrentView] = useState<string>(() => {
     return localStorage.getItem('dashboard_current_view') || 'dashboard';
   });
+
+  const isAiView = currentView === 'ai_doubt_solver' || currentView === 'ai_tutor';
+
+  // Lock document scroll and hide mobile navigation when AI Tutor is active
+  useEffect(() => {
+    if (isAiView) {
+      document.body.classList.add('ai-tutor-active');
+      return () => {
+        document.body.classList.remove('ai-tutor-active');
+      };
+    }
+  }, [isAiView]);
 
   useEffect(() => {
     Analytics.init();
@@ -207,7 +220,10 @@ function DashboardApp() {
   };
 
   return (
-    <div className="flex bg-background min-h-screen text-foreground selection:bg-cyan-500/30">
+    <div className={cn(
+      "flex bg-background text-foreground selection:bg-cyan-500/30",
+      isAiView ? "h-[100dvh] max-h-[100dvh] overflow-hidden overscroll-none" : "min-h-screen"
+    )}>
       <Sidebar 
         isOpen={isSidebarOpen} 
         onClose={() => setIsSidebarOpen(false)} 
@@ -215,9 +231,12 @@ function DashboardApp() {
         onNavigate={handleNavigate}
       />
 
-      <main className="flex-1 lg:ml-64 min-h-screen flex flex-col overflow-x-hidden">
+      <main className={cn(
+        "flex-1 lg:ml-64 flex flex-col",
+        isAiView ? "h-[100dvh] max-h-[100dvh] overflow-hidden overscroll-none" : "min-h-screen overflow-x-hidden"
+      )}>
         {/* Mobile Header */}
-        <div className={`lg:hidden flex items-center justify-between p-4 border-b sticky top-0 z-30 transition-colors duration-300 ${
+        <div className={`lg:hidden flex items-center justify-between p-4 border-b shrink-0 z-30 transition-colors duration-300 ${
           theme === 'light'
             ? 'bg-white/80 border-slate-200/80 shadow-[0_1px_12px_rgba(15,23,42,0.06)] backdrop-blur-md'
             : 'border-white/5 bg-background/80 backdrop-blur-md'
@@ -317,8 +336,8 @@ function DashboardApp() {
         </div>
 
         {/* Full-bleed AI Study Assistant Workspace */}
-        {(currentView === 'ai_doubt_solver' || currentView === 'ai_tutor') ? (
-          <div className="w-full flex-1 flex flex-col h-[calc(100dvh-4rem)] lg:h-screen overflow-hidden">
+        {isAiView ? (
+          <div className="w-full flex-1 min-h-0 flex flex-col overflow-hidden">
             <AiTutorHub onNavigate={handleNavigate} dashboardData={dashboardData} />
           </div>
         ) : (currentView === 'lesson_reader' || currentView.startsWith('/smart-lessons/') || currentView.startsWith('lesson_reader:')) ? (() => {
@@ -510,7 +529,7 @@ function DashboardApp() {
         </div>
         )}
         
-        <MobileNav currentView={currentView} onNavigate={handleNavigate} />
+        {!isAiView && <MobileNav currentView={currentView} onNavigate={handleNavigate} />}
 
         <StudentImprovementModal
           isOpen={isImprovementModalOpen}

@@ -23,6 +23,10 @@ export function MobileNav({
   const { theme } = useTheme();
   const isLight = theme === 'light';
   const inactiveColor = isLight ? 'text-slate-400' : 'text-white/40';
+ 
+  if (currentView === 'ai_tutor' || currentView === 'ai_doubt_solver') {
+    return null;
+  }
 
   return (
     <>
