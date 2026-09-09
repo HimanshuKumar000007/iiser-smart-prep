@@ -5,6 +5,7 @@ import {
   CheckCircle2,
   Circle,
   ArrowRight,
+  ArrowUpRight,
   ArrowLeft,
   BookOpen,
   Calculator,
@@ -906,66 +907,133 @@ export function PathToIISER({
         <div className="relative z-10 space-y-5">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-white/10 pb-4">
             <div>
-              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-300 text-[11px] font-mono font-bold uppercase tracking-wider mb-2">
-                <Target className="w-3.5 h-3.5 text-cyan-400" />
-                <span>Your Personalized Target</span>
+              <div className="flex flex-wrap items-center gap-2 mb-2">
+                <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-300 text-[11px] font-mono font-bold uppercase tracking-wider">
+                  <Target className="w-3.5 h-3.5 text-cyan-400" />
+                  <span>Your Personalized Target</span>
+                </div>
+                <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-purple-500/15 border border-purple-500/30 text-purple-300 text-[10.5px] font-mono font-bold">
+                  <Sparkles className="w-3 h-3 text-purple-400 animate-pulse" />
+                  <span>SmartPrep AI Active</span>
+                </div>
               </div>
-              <h2 className="text-xl sm:text-2xl font-display font-extrabold text-white tracking-tight">
+              <h2 className={cn(
+                "text-xl sm:text-2xl font-display font-extrabold tracking-tight",
+                isLight ? "text-slate-900" : "text-white"
+              )}>
                 Target College: <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-teal-300 to-indigo-300">{aiPlan.answers.targetInstitute}</span>
               </h2>
-              <p className="text-xs text-white/50 mt-0.5">
-                Based on your selected goal and study preferences during onboarding.
+              <p className={cn("text-xs mt-0.5", isLight ? "text-slate-500" : "text-white/50")}>
+                Based on your selected goal and study preferences during onboarding, continuously tuned by SmartPrep AI.
               </p>
             </div>
 
-            <button
-              type="button"
-              onClick={() => {
-                setWizardStep(1);
-                setIsCalibrating(true);
-              }}
-              className="self-start sm:self-auto inline-flex items-center gap-1 text-xs font-semibold text-cyan-400 hover:text-cyan-300 hover:underline cursor-pointer"
-            >
-              <span>Edit Path</span>
-              <ArrowRight className="w-3.5 h-3.5" />
-            </button>
+            <div className="flex items-center gap-2 self-start sm:self-auto">
+              <button
+                type="button"
+                onClick={() => {
+                  sessionStorage.setItem('smartprep_pending_prompt', `Based on my target college ${aiPlan.answers.targetInstitute} and stream ${aiPlan.answers.stream}, analyze my roadmap and tell me the highest-leverage actions to focus on.`);
+                  onNavigate?.('ai_doubt_solver');
+                }}
+                className={cn(
+                  "inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold border transition-all cursor-pointer",
+                  isLight 
+                    ? "bg-purple-50 hover:bg-purple-100 text-purple-700 border-purple-200 shadow-sm"
+                    : "bg-purple-500/10 hover:bg-purple-500/20 text-purple-300 border-purple-500/30 hover:border-purple-400 shadow-[0_0_12px_rgba(168,85,247,0.15)]"
+                )}
+                title="Ask SmartPrep AI about this target path"
+              >
+                <Sparkles className="w-3.5 h-3.5 text-purple-400" />
+                <span>Ask AI</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => {
+                  setWizardStep(1);
+                  setIsCalibrating(true);
+                }}
+                className="inline-flex items-center gap-1 text-xs font-semibold text-cyan-400 hover:text-cyan-300 hover:underline cursor-pointer px-2 py-1.5"
+              >
+                <span>Edit Path</span>
+                <ArrowRight className="w-3.5 h-3.5" />
+              </button>
+            </div>
           </div>
 
-          {/* 5 Data Badges: College, Exam, Goal, Commitment, Stream */}
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
+          {/* 6 Data Badges: College, Exam, Goal, Commitment, Stream, AI Strategy */}
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
             {/* Target College */}
-            <div className="p-3.5 rounded-2xl bg-white/[0.03] border border-white/8 space-y-1">
+            <div className={cn("p-3.5 rounded-2xl border space-y-1", isLight ? "bg-slate-50/80 border-slate-200" : "bg-white/[0.03] border-white/8")}>
               <span className="text-[10px] font-bold uppercase tracking-wider text-cyan-400 block">Target College</span>
-              <p className="font-bold text-sm text-white truncate">{aiPlan.answers.targetInstitute}</p>
-              <span className="text-[11px] text-white/50 block font-mono">Elite Choice</span>
+              <p className={cn("font-bold text-sm truncate", isLight ? "text-slate-900" : "text-white")}>{aiPlan.answers.targetInstitute}</p>
+              <span className={cn("text-[11px] block font-mono", isLight ? "text-slate-500" : "text-white/50")}>Elite Choice</span>
             </div>
 
             {/* Exam & Days Left */}
-            <div className="p-3.5 rounded-2xl bg-white/[0.03] border border-white/8 space-y-1">
+            <div className={cn("p-3.5 rounded-2xl border space-y-1", isLight ? "bg-slate-50/80 border-slate-200" : "bg-white/[0.03] border-white/8")}>
               <span className="text-[10px] font-bold uppercase tracking-wider text-indigo-400 block">Exam Target</span>
-              <p className="font-bold text-sm text-white">IISER IAT 2027</p>
+              <p className={cn("font-bold text-sm", isLight ? "text-slate-900" : "text-white")}>IISER IAT 2027</p>
               <span className="text-[11px] text-cyan-400 font-mono font-bold block">{daysUntilExam} Days Left</span>
             </div>
 
             {/* Goal & Score */}
-            <div className="p-3.5 rounded-2xl bg-white/[0.03] border border-white/8 space-y-1">
+            <div className={cn("p-3.5 rounded-2xl border space-y-1", isLight ? "bg-slate-50/80 border-slate-200" : "bg-white/[0.03] border-white/8")}>
               <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-400 block">Target Aim</span>
-              <p className="font-bold text-sm text-white">{aiPlan.answers.targetAir}</p>
+              <p className={cn("font-bold text-sm", isLight ? "text-slate-900" : "text-white")}>{aiPlan.answers.targetAir}</p>
               <span className="text-[11px] text-emerald-400 font-bold block">180+/240 Marks</span>
             </div>
 
             {/* Study Commitment */}
-            <div className="p-3.5 rounded-2xl bg-white/[0.03] border border-white/8 space-y-1">
+            <div className={cn("p-3.5 rounded-2xl border space-y-1", isLight ? "bg-slate-50/80 border-slate-200" : "bg-white/[0.03] border-white/8")}>
               <span className="text-[10px] font-bold uppercase tracking-wider text-purple-400 block">Commitment</span>
-              <p className="font-bold text-sm text-white">{aiPlan.answers.dailyHours} Hours / day</p>
-              <span className="text-[11px] text-white/50 block font-mono">{aiPlan.answers.dailyHours * 6} hrs/week</span>
+              <p className={cn("font-bold text-sm", isLight ? "text-slate-900" : "text-white")}>{aiPlan.answers.dailyHours} Hours / day</p>
+              <span className={cn("text-[11px] block font-mono", isLight ? "text-slate-500" : "text-white/50")}>{aiPlan.answers.dailyHours * 6} hrs/week</span>
             </div>
 
             {/* Stream */}
-            <div className="p-3.5 rounded-2xl bg-white/[0.03] border border-white/8 space-y-1 col-span-2 sm:col-span-1">
+            <div className={cn("p-3.5 rounded-2xl border space-y-1", isLight ? "bg-slate-50/80 border-slate-200" : "bg-white/[0.03] border-white/8")}>
               <span className="text-[10px] font-bold uppercase tracking-wider text-amber-400 block">Stream</span>
-              <p className="font-bold text-sm text-white">{aiPlan.answers.stream}</p>
+              <p className={cn("font-bold text-sm", isLight ? "text-slate-900" : "text-white")}>{aiPlan.answers.stream}</p>
               <span className="text-[11px] text-amber-300/80 block">Math Strategy Active</span>
+            </div>
+
+            {/* 6. AI Strategic Path Card */}
+            <div 
+              onClick={() => {
+                sessionStorage.setItem('smartprep_pending_prompt', `Based on my target (${aiPlan.answers.targetInstitute}, aiming for ${aiPlan.answers.targetAir}) and stream (${aiPlan.answers.stream}), what is the most high-yield strategy for my ${aiPlan.answers.dailyHours} hours/day study routine?`);
+                onNavigate?.('ai_doubt_solver');
+              }}
+              className={cn(
+                "p-3.5 rounded-2xl border space-y-1 transition-all duration-200 cursor-pointer group/aistat relative overflow-hidden",
+                isLight 
+                  ? "bg-gradient-to-br from-cyan-50 via-purple-50/50 to-indigo-50 border-cyan-300/80 hover:border-cyan-500 shadow-sm"
+                  : "bg-gradient-to-br from-cyan-500/10 via-purple-500/10 to-indigo-500/10 border-cyan-500/30 hover:border-cyan-400/60 hover:shadow-[0_0_20px_rgba(6,182,212,0.2)]"
+              )}
+            >
+              <div className="flex items-center justify-between">
+                <span className="text-[10px] font-bold uppercase tracking-wider text-cyan-400 flex items-center gap-1 font-mono">
+                  <Sparkles className="w-3 h-3 text-cyan-400 animate-pulse" />
+                  AI Strategy
+                </span>
+                <span className="flex h-2 w-2 relative">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
+                </span>
+              </div>
+              <p className={cn(
+                "font-bold text-sm flex items-center gap-1 group-hover/aistat:text-cyan-300 transition-colors",
+                isLight ? "text-slate-900" : "text-white"
+              )}>
+                <span className="truncate">NVIDIA NIM Active</span>
+                <ArrowUpRight className="w-3.5 h-3.5 text-cyan-400 shrink-0 group-hover/aistat:translate-x-0.5 group-hover/aistat:-translate-y-0.5 transition-transform" />
+              </p>
+              <span className={cn(
+                "text-[11px] block font-mono truncate",
+                isLight ? "text-slate-500" : "text-cyan-300/80"
+              )}>
+                Adaptive Sync • Ask AI →
+              </span>
             </div>
           </div>
         </div>
