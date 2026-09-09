@@ -338,7 +338,7 @@ export function getStoredAiStudyPlan(): AiGeneratedStudyPlan | null {
 
     // Auto-enrich existing plan if missing the 7-day schedule or fallback weak areas
     let modified = false;
-    if (!plan.sevenDaySchedule || plan.sevenDaySchedule.length === 0) {
+    if (!plan.sevenDaySchedule || plan.sevenDaySchedule.length === 0 || (plan.answers.stream === 'PCB' && plan.sevenDaySchedule[1]?.focusSubject === 'Biology')) {
       plan.sevenDaySchedule = generate7DaySchedule(plan.answers);
       modified = true;
     }
@@ -618,7 +618,7 @@ export function generate7DaySchedule(answers: AiOnboardingAnswers): DayScheduleP
       dayNumber: 1,
       dayLabel: 'Day 1 (Mon)',
       dayName: 'Monday',
-      theme: 'Hurdle Surgery & Baseline Clarity',
+      theme: stream === 'PCB' ? 'Hurdle Surgery: Matrices & Determinants' : 'Hurdle Surgery & Baseline Clarity',
       focusSubject: weakSubject,
       targetObjective: `Tackle your primary roadblock: ${weakTopicHurdle}. Solidify foundational formulas and eliminate conceptual fear.`
     },
@@ -626,50 +626,56 @@ export function generate7DaySchedule(answers: AiOnboardingAnswers): DayScheduleP
       dayNumber: 2,
       dayLabel: 'Day 2 (Tue)',
       dayName: 'Tuesday',
-      theme: 'Numerical Speed & Derivation Mastery',
-      focusSubject: strongSubject,
-      targetObjective: `Capitalize on your strength in ${strongSubject}. Solve high-difficulty multi-step numerical questions under timed pressure.`
+      theme: stream === 'PCB' ? 'Numerical Speed & Mechanics Derivations' : 'Numerical Speed & Derivation Mastery',
+      focusSubject: stream === 'PCB' ? 'Physics' : (stream === 'PCM' ? 'Chemistry' : strongSubject),
+      targetObjective: stream === 'PCB'
+        ? 'Solve high-difficulty multi-step Mechanics & Kinematics numericals under timed pressure to secure Physics score.'
+        : `Capitalize on your strength in ${strongSubject}. Solve high-difficulty multi-step numerical questions under timed pressure.`
     },
     {
       dayNumber: 3,
       dayLabel: 'Day 3 (Wed)',
       dayName: 'Wednesday',
-      theme: 'Strategic Blueprint High-Yield Sprint',
-      focusSubject: stream === 'PCB' ? 'Mathematics' : (stream === 'PCM' ? 'Biology' : midSub1),
-      targetObjective: stream === 'PCB' 
-        ? 'Non-Calculus Math shortcut: Master Matrices, Determinants, and Vector lines for 25+ bonus marks.'
+      theme: stream === 'PCB' ? 'Equilibrium Stoichiometry & Organic Mechanisms' : 'Strategic Blueprint High-Yield Sprint',
+      focusSubject: stream === 'PCB' ? 'Chemistry' : (stream === 'PCM' ? 'Biology' : midSub1),
+      targetObjective: stream === 'PCB'
+        ? 'Master Chemical Equilibrium stoichiometry and Organic Reaction pathways to eliminate negative marking.'
         : (stream === 'PCM' ? 'NCERT Biology rapid pass: Capture 30+ marks in 15 mins via Genetics & Ecology.' : 'Master cross-disciplinary physical chemistry and thermodynamic equilibria.')
     },
     {
       dayNumber: 4,
       dayLabel: 'Day 4 (Thu)',
       dayName: 'Thursday',
-      theme: 'Mechanism Clarity & Conceptual Traps',
-      focusSubject: midSub1,
-      targetObjective: `Identify deceptive options and Section A negative-marking traps in ${midSub1}. Focus on core mechanisms and exceptions.`
+      theme: stream === 'PCB' ? 'Strategic Mathematics Blueprint: Vectors & 3D' : 'Mechanism Clarity & Conceptual Traps',
+      focusSubject: stream === 'PCB' ? 'Mathematics' : midSub1,
+      targetObjective: stream === 'PCB'
+        ? 'Non-Calculus Math shortcut: Master Vectors and 3D Geometry for 15+ predictable marks.'
+        : `Identify deceptive options and Section A negative-marking traps in ${midSub1}. Focus on core mechanisms and exceptions.`
     },
     {
       dayNumber: 5,
       dayLabel: 'Day 5 (Fri)',
       dayName: 'Friday',
-      theme: 'Authentic IAT PYQ Marathon',
-      focusSubject: 'All PCMB',
+      theme: 'Authentic IAT PYQ Marathon (2019–2024)',
+      focusSubject: stream === 'PCB' ? 'Physics & Chemistry' : 'All PCMB',
       targetObjective: 'Solve 15 official IISER Aptitude Test past questions from 2019-2024. Understand the exact examiner testing patterns.'
     },
     {
       dayNumber: 6,
       dayLabel: 'Day 6 (Sat)',
       dayName: 'Saturday',
-      theme: 'Timed Sectional Simulation & Stamina',
-      focusSubject: `${weakSubject} & ${strongSubject}`,
-      targetObjective: 'Strict 60-minute timed sprint with negative marking penalty simulation. Train decision speed: attempt vs skip.'
+      theme: stream === 'PCB' ? 'Biology Fast-Track & Timed Sectional Mock' : 'Timed Sectional Simulation & Stamina',
+      focusSubject: stream === 'PCB' ? 'Biology' : `${weakSubject} & ${strongSubject}`,
+      targetObjective: stream === 'PCB'
+        ? 'Complete NCERT Biology rapid factual review (Genetics & Ecology), then take a 60-min timed sectional mock.'
+        : 'Strict 60-minute timed sprint with negative marking penalty simulation. Train decision speed: attempt vs skip.'
     },
     {
       dayNumber: 7,
       dayLabel: 'Day 7 (Sun)',
       dayName: 'Sunday',
       theme: 'Zero-Backlog Audit & Error Logbook',
-      focusSubject: 'Revision & Error Analysis',
+      focusSubject: 'All Subjects',
       targetObjective: 'Deep audit of all questions solved incorrectly this week. Review formula flashcards and consolidate mistake notebook.'
     }
   ];

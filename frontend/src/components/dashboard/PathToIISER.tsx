@@ -167,13 +167,42 @@ export function PathToIISER({
   // ── Mission Sub-Steps State ───────────────────────────────────────────
   const [missionStepsState, setMissionStepsState] = useState<Record<string, boolean>>(() => getSavedMissionSteps());
 
+  // Calculations for Today's Mission Sub-Steps
+  const subSteps = aiPlan.dailyAction.subSteps || [];
+  const completedSubStepsCount = subSteps.filter(s => !!missionStepsState[s.id]).length;
+  const subStepsPercent = subSteps.length > 0 ? Math.round((completedSubStepsCount / subSteps.length) * 100) : 0;
+
   const handleToggleMissionStep = (stepId: string) => {
     setMissionStepsState(prev => {
       const nextVal = !prev[stepId];
       const next = { ...prev, [stepId]: nextVal };
       saveMissionStep(stepId, nextVal);
+      // Auto-sync daily completed if all sub-steps are done
+      const allDone = subSteps.length > 0 && subSteps.every(s => next[s.id]);
+      if (allDone && !dailyCompleted) {
+        setDailyCompleted(true);
+        if (aiPlan) setDailyActionCompleted(aiPlan.id, true);
+      } else if (!allDone && dailyCompleted) {
+        setDailyCompleted(false);
+        if (aiPlan) setDailyActionCompleted(aiPlan.id, false);
+      }
       return next;
     });
+  };
+
+  // Toggle Daily Mission Completed (and sync sub-steps)
+  const handleToggleDailyMission = () => {
+    if (!aiPlan) return;
+    const nextState = !dailyCompleted;
+    setDailyCompleted(nextState);
+    setDailyActionCompleted(aiPlan.id, nextState);
+    // Sync all sub-steps
+    const updatedSteps: Record<string, boolean> = {};
+    subSteps.forEach(s => {
+      updatedSteps[s.id] = nextState;
+      saveMissionStep(s.id, nextState);
+    });
+    setMissionStepsState(prev => ({ ...prev, ...updatedSteps }));
   };
 
   // ── SLS Live Intelligence Integration ─────────────────────────────────
@@ -265,14 +294,6 @@ export function PathToIISER({
       setIsGenerating(false);
       setIsCalibrating(false);
     }
-  };
-
-  // Toggle Daily Mission Completed
-  const handleToggleDailyMission = () => {
-    if (!aiPlan) return;
-    const nextState = !dailyCompleted;
-    setDailyCompleted(nextState);
-    setDailyActionCompleted(aiPlan.id, nextState);
   };
 
   // Toggle Weekly Checklist Item
@@ -642,7 +663,7 @@ export function PathToIISER({
                           "w-4 h-4 rounded-full border flex items-center justify-center shrink-0",
                           isSelected ? "border-amber-400 bg-amber-400 text-slate-950 font-bold" : "border-white/20"
                         )}>
-                          {isSelected && <Check className="w-3 h-3 stroke-[3]" />}
+                          {isSelected && <Check className="w-3.5 h-3.5 stroke-[3]" />}
                         </div>
                       </div>
                     );
@@ -804,13 +825,8 @@ export function PathToIISER({
   }
 
   // ══════════════════════════════════════════════════════════════════════════
-  // 3. MAIN REDESIGNED ROADMAP VIEW (12-SECTION STRICT HIERARCHY)
+  // 3. MAIN REDESIGNED ROADMAP VIEW (12-SECTION HIERARCHY, UNIFIED SCHEDULE)
   // ══════════════════════════════════════════════════════════════════════════
-
-  // Calculations for Today's Mission Sub-Steps
-  const subSteps = aiPlan.dailyAction.subSteps || [];
-  const completedSubStepsCount = subSteps.filter(s => !!missionStepsState[s.id]).length;
-  const subStepsPercent = subSteps.length > 0 ? Math.round((completedSubStepsCount / subSteps.length) * 100) : 0;
 
   // Real or Diagnostic Accuracy for Current Focus
   const focusSubject = aiPlan.answers.weakSubject || 'Mathematics';
@@ -1106,163 +1122,37 @@ export function PathToIISER({
         </div>
       </div>
 
-      {/* ── 5. TODAY'S MISSION (ACTION CONNECTION & 3 CHECKABLE SUB-STEPS) ── */}
+      {/* ── 5. TODAY'S MISSION & 7-DAY SCHEDULE (UNIFIED SEAMLESS ROADMAP) ── */}
       <div className={cn(
-        "p-6 sm:p-7 rounded-3xl border relative overflow-hidden group transition-all duration-300 shadow-2xl space-y-6",
-        dailyCompleted 
-          ? "bg-emerald-950/20 border-emerald-500/30"
-          : "bg-gradient-to-br from-[#0a0d26] via-[#0b0e24] to-[#0d1330] border-cyan-500/30 hover:border-cyan-400/50 shadow-[0_8px_32px_rgba(0,0,0,0.6),0_0_35px_rgba(6,182,212,0.12)]"
+        "p-6 sm:p-7 rounded-3xl border relative overflow-hidden backdrop-blur-xl shadow-2xl space-y-6",
+        isLight
+          ? "bg-white/90 border-slate-200 shadow-slate-200/50"
+          : "bg-[#0b0e24]/95 border-indigo-500/25 shadow-[0_8px_32px_rgba(0,0,0,0.5),0_0_35px_rgba(99,102,241,0.08)]"
       )}>
-        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-5 border-b border-white/10 pb-5">
-          <div className="space-y-2">
-            <div className="flex flex-wrap items-center gap-2.5">
-              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-cyan-500/15 border border-cyan-500/30 text-cyan-300 text-xs font-bold uppercase tracking-wider">
-                <Flag className="w-3.5 h-3.5 text-cyan-400" />
-                <span>Today's Mission</span>
-              </span>
-              <span className="text-xs text-white/60 font-mono">Estimated ~75 Minutes</span>
-              <span className="text-white/30">•</span>
-              <span className="text-xs text-cyan-300 font-mono font-bold">{completedSubStepsCount} / {subSteps.length} Sub-Steps Completed</span>
+        {/* Header & Routine Toggle */}
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/10 pb-4">
+          <div className="space-y-1">
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-cyan-500/15 border border-cyan-500/30 text-cyan-300 text-xs font-bold uppercase tracking-wider">
+              <Calendar className="w-3.5 h-3.5 text-cyan-400" />
+              <span>Today's Mission & 7-Day Plan • {aiPlan.answers.dailyHours} Hours/Day</span>
             </div>
-
             <h2 className="text-xl sm:text-2xl font-display font-extrabold text-white tracking-tight">
-              Today's Focus: {aiPlan.dailyAction.targetChapter}
+              Daily Mission & Weekly Schedule
             </h2>
-            <p className="text-xs sm:text-sm text-white/70 leading-relaxed max-w-2xl">
-              Connect today's study session directly to your IISc Bangalore roadmap. Work through all 3 stages: concept review, targeted numerical questions, and mistake analysis.
+            <p className={cn("text-xs sm:text-sm", isLight ? "text-slate-600" : "text-white/60")}>
+              Execute today's priority surgery and follow your customized 5-hour daily study routine across the week.
             </p>
           </div>
 
-          <div className="flex flex-wrap items-center gap-3 shrink-0">
-            <button
-              type="button"
-              onClick={() => onNavigate?.(aiPlan.dailyAction.route)}
-              className="px-6 py-3 rounded-xl font-bold text-xs sm:text-sm bg-white hover:bg-slate-100 text-slate-950 shadow-[0_0_20px_rgba(255,255,255,0.3)] transition-all flex items-center gap-2 cursor-pointer transform hover:-translate-y-0.5"
-            >
-              <BookOpen className="w-4 h-4 text-slate-950" />
-              <span>Start Today's Mission</span>
-              <ArrowRight className="w-4 h-4 text-slate-950" />
-            </button>
-
-            <button
-              type="button"
-              onClick={handleToggleDailyMission}
-              className={cn(
-                "px-4 py-2.5 rounded-xl font-semibold text-xs border transition-all flex items-center gap-2 cursor-pointer",
-                dailyCompleted
-                  ? "bg-emerald-500/20 border-emerald-500/40 text-emerald-300"
-                  : "bg-white/[0.04] border-white/10 hover:border-white/20 text-white/80 hover:text-white"
-              )}
-            >
-              <CheckCircle2 className={cn("w-4 h-4", dailyCompleted ? "text-emerald-400" : "text-white/40")} />
-              <span>{dailyCompleted ? 'Completed ✓' : 'Mark Completed'}</span>
-            </button>
-          </div>
-        </div>
-
-        {/* 3 Checkable Sub-Steps in Today's Mission */}
-        <div className="space-y-3">
-          <div className="flex items-center justify-between text-xs font-mono">
-            <span className="text-white/50 font-bold uppercase tracking-wider">Mission Sub-Steps:</span>
-            <span className="text-cyan-400 font-bold">{subStepsPercent}% Overall Done</span>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-            {subSteps.map((step, idx) => {
-              const isStepDone = !!missionStepsState[step.id];
-              return (
-                <div
-                  key={step.id}
-                  onClick={() => handleToggleMissionStep(step.id)}
-                  className={cn(
-                    "p-4 rounded-2xl border transition-all cursor-pointer flex flex-col justify-between space-y-3 select-none group",
-                    isStepDone
-                      ? "bg-emerald-950/20 border-emerald-500/30 shadow-[0_0_15px_rgba(16,185,129,0.1)]"
-                      : "bg-white/[0.03] border-white/8 hover:border-white/20 hover:bg-white/[0.05]"
-                  )}
-                >
-                  <div className="space-y-1.5">
-                    <div className="flex items-center justify-between">
-                      <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-white/10 text-white/80">
-                        {step.durationMinutes} Mins
-                      </span>
-                      <div className={cn(
-                        "w-5 h-5 rounded-lg border flex items-center justify-center transition-all",
-                        isStepDone
-                          ? "border-emerald-400 bg-emerald-400 text-slate-950 font-bold"
-                          : "border-white/20 group-hover:border-cyan-400"
-                      )}>
-                        {isStepDone && <Check className="w-3.5 h-3.5 stroke-[3]" />}
-                      </div>
-                    </div>
-
-                    <h4 className={cn("text-xs sm:text-sm font-bold", isStepDone ? "line-through text-white/50" : "text-white")}>
-                      {step.title}
-                    </h4>
-
-                    <p className="text-xs text-white/60 leading-relaxed">
-                      {step.description}
-                    </p>
-                  </div>
-
-                  <div className="pt-2 border-t border-white/5 flex items-center justify-between text-[11px]">
-                    <span className={cn("font-semibold", isStepDone ? "text-emerald-400" : "text-cyan-400")}>
-                      {isStepDone ? 'Completed ✓' : step.actionLabel}
-                    </span>
-                    <span className="text-white/40 font-mono">Step {idx + 1} of 3</span>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-
-        {/* Ask SmartPrep Link */}
-        <div className="pt-2 flex justify-end">
-          <button
-            type="button"
-            onClick={() => {
-              sessionStorage.setItem('smartprep_active_chat', JSON.stringify([{
-                role: 'user',
-                content: `I am executing today's mission on ${aiPlan.dailyAction.targetChapter}. Provide 3 essential formula insights, high-frequency traps in IAT, and 1 quick practice problem.`
-              }]));
-              onNavigate?.('ai_doubt_solver');
-            }}
-            className="text-xs text-cyan-300 hover:text-cyan-200 flex items-center gap-1.5 cursor-pointer transition-colors"
-          >
-            <MessageSquare className="w-3.5 h-3.5" />
-            <span>Ask SmartPrep about this mission →</span>
-          </button>
-        </div>
-      </div>
-
-      {/* ── 6. THIS WEEK'S PLAN (7-DAY COMPACT VIEW) ── */}
-      <div className={cn(
-        "p-6 sm:p-7 rounded-3xl border relative overflow-hidden backdrop-blur-xl shadow-2xl space-y-5",
-        isLight
-          ? "bg-white/90 border-slate-200 shadow-slate-200/50"
-          : "bg-[#0b0e24]/90 border-indigo-500/25 shadow-[0_8px_32px_rgba(0,0,0,0.5),0_0_35px_rgba(99,102,241,0.08)]"
-      )}>
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/10 pb-4">
-          <div className="space-y-1">
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 text-xs font-bold uppercase tracking-wider">
-              <Calendar className="w-3.5 h-3.5 text-cyan-400" />
-              <span>This Week's Plan • Mon – Sun</span>
-            </div>
-            <h2 className="text-lg sm:text-xl font-display font-extrabold text-white tracking-tight">
-              Weekly Schedule & Study Sessions
-            </h2>
-          </div>
-
           {/* Routine Mode Selector */}
-          <div className="flex items-center gap-1 p-1 rounded-xl bg-white/[0.04] border border-white/10 self-start sm:self-auto">
+          <div className="flex items-center gap-1 p-1 rounded-xl bg-white/[0.04] border border-white/10 self-start sm:self-auto shrink-0">
             <button
               type="button"
               onClick={() => handleToggleSchedulePref('MORNING')}
               className={cn(
                 "px-3 py-1.5 rounded-lg text-xs font-bold flex items-center gap-1.5 transition-all cursor-pointer",
                 schedulePref === 'MORNING'
-                  ? "bg-amber-500/20 text-amber-300 border border-amber-500/30"
+                  ? "bg-amber-500/20 text-amber-300 border border-amber-500/30 shadow-[0_0_12px_rgba(245,158,11,0.2)]"
                   : "text-white/60 hover:text-white"
               )}
             >
@@ -1276,7 +1166,7 @@ export function PathToIISER({
               className={cn(
                 "px-3 py-1.5 rounded-lg text-xs font-bold flex items-center gap-1.5 transition-all cursor-pointer",
                 schedulePref === 'EVENING'
-                  ? "bg-indigo-500/25 text-indigo-300 border border-indigo-500/30"
+                  ? "bg-indigo-500/25 text-indigo-300 border border-indigo-500/30 shadow-[0_0_12px_rgba(99,102,241,0.2)]"
                   : "text-white/60 hover:text-white"
               )}
             >
@@ -1286,17 +1176,18 @@ export function PathToIISER({
           </div>
         </div>
 
-        {/* 7-Day Compact Selector Bar */}
+        {/* 7-Day Selector Bar */}
         <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-2">
           {sevenDaySchedule.map((d) => {
             const isSelected = selectedScheduleDay === d.dayNumber;
+            const isToday = d.dayNumber === 1;
             return (
               <button
                 key={d.dayNumber}
                 type="button"
                 onClick={() => setSelectedScheduleDay(d.dayNumber)}
                 className={cn(
-                  "p-3 rounded-2xl border text-left transition-all cursor-pointer flex flex-col justify-between min-h-[74px] group",
+                  "p-3 rounded-2xl border text-left transition-all cursor-pointer flex flex-col justify-between min-h-[74px] group relative",
                   isSelected
                     ? "bg-cyan-500/15 border-cyan-400 text-cyan-300 shadow-[0_0_20px_rgba(6,182,212,0.2)]"
                     : "bg-white/[0.03] border-white/8 hover:border-white/20 text-white/70 hover:bg-white/[0.06]"
@@ -1306,7 +1197,11 @@ export function PathToIISER({
                   <span className={cn("text-[11px] font-bold", isSelected ? "text-cyan-300" : "text-white")}>
                     {d.dayLabel}
                   </span>
-                  <span className="text-[9px] font-mono opacity-50">#{d.dayNumber}</span>
+                  {isToday ? (
+                    <span className="text-[8.5px] font-mono font-bold px-1.5 py-0.2 rounded bg-cyan-400 text-slate-950">TODAY</span>
+                  ) : (
+                    <span className="text-[9px] font-mono opacity-50">#{d.dayNumber}</span>
+                  )}
                 </div>
                 <span className="text-[10px] truncate block opacity-70 mt-1">
                   {d.focusSubject}
@@ -1316,27 +1211,234 @@ export function PathToIISER({
           })}
         </div>
 
-        {/* Selected Day Expanded View */}
-        {activeDayPlan && (
-          <div className="space-y-3 pt-2">
+        {/* Dynamic Content: Day 1 (Today's Mission) vs Other Days */}
+        {selectedScheduleDay === 1 ? (
+          <div className="space-y-6 pt-1">
+            {/* Embedded Today's Mission Container */}
+            <div className={cn(
+              "p-5 sm:p-6 rounded-2xl border transition-all duration-300 space-y-5",
+              dailyCompleted 
+                ? "bg-emerald-950/25 border-emerald-500/35 shadow-[0_0_25px_rgba(16,185,129,0.12)]"
+                : "bg-gradient-to-br from-[#090c24] via-[#0b0e24] to-[#0d1230] border-cyan-500/30"
+            )}>
+              <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 border-b border-white/10 pb-4">
+                <div className="space-y-1.5">
+                  <div className="flex flex-wrap items-center gap-2">
+                    <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-cyan-500/15 border border-cyan-500/30 text-cyan-300 text-[11px] font-bold uppercase tracking-wider">
+                      <Flag className="w-3.5 h-3.5 text-cyan-400" />
+                      <span>Today's Priority Mission • Session 1</span>
+                    </span>
+                    <span className="text-xs text-white/50 font-mono">Estimated ~75 Mins</span>
+                    <span className="text-white/30">•</span>
+                    {dailyCompleted ? (
+                      <span className="text-xs font-mono font-bold text-emerald-400 flex items-center gap-1">
+                        <CheckCircle2 className="w-3.5 h-3.5" />
+                        <span>Completed Today! (3/3 Done)</span>
+                      </span>
+                    ) : (
+                      <span className="text-xs text-cyan-300 font-mono font-bold">
+                        {completedSubStepsCount} / {subSteps.length} Sub-Steps Completed
+                      </span>
+                    )}
+                  </div>
+
+                  <h3 className="text-lg sm:text-xl font-display font-extrabold text-white">
+                    Today's Focus: {aiPlan.dailyAction.targetChapter}
+                  </h3>
+                  <p className="text-xs text-white/60 max-w-2xl leading-relaxed">
+                    Execute your primary growth surgery in Mathematics without advanced calculus. Complete all 3 sub-steps to solidify formulas and eliminate conceptual fear.
+                  </p>
+                </div>
+
+                <div className="flex flex-wrap items-center gap-2.5 shrink-0">
+                  <button
+                    type="button"
+                    onClick={() => onNavigate?.(aiPlan.dailyAction.route)}
+                    className="px-5 py-2.5 rounded-xl font-bold text-xs bg-white hover:bg-slate-100 text-slate-950 shadow-[0_0_18px_rgba(255,255,255,0.25)] transition-all flex items-center gap-1.5 cursor-pointer transform hover:-translate-y-0.5"
+                  >
+                    <BookOpen className="w-4 h-4 text-slate-950" />
+                    <span>Start Mission</span>
+                    <ArrowRight className="w-3.5 h-3.5 text-slate-950" />
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={handleToggleDailyMission}
+                    className={cn(
+                      "px-4 py-2.5 rounded-xl font-semibold text-xs border transition-all flex items-center gap-1.5 cursor-pointer",
+                      dailyCompleted
+                        ? "bg-emerald-500/20 border-emerald-500/40 text-emerald-300 shadow-[0_0_12px_rgba(16,185,129,0.2)]"
+                        : "bg-white/[0.04] border-white/10 hover:border-white/20 text-white/80 hover:text-white"
+                    )}
+                  >
+                    <CheckCircle2 className={cn("w-4 h-4", dailyCompleted ? "text-emerald-400" : "text-white/40")} />
+                    <span>{dailyCompleted ? 'Completed ✓' : 'Mark Completed'}</span>
+                  </button>
+                </div>
+              </div>
+
+              {/* 3 Sub-Steps */}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                {subSteps.map((step, idx) => {
+                  const isStepDone = !!missionStepsState[step.id];
+                  return (
+                    <div
+                      key={step.id}
+                      onClick={() => handleToggleMissionStep(step.id)}
+                      className={cn(
+                        "p-3.5 rounded-2xl border transition-all cursor-pointer flex flex-col justify-between space-y-2.5 select-none group",
+                        isStepDone
+                          ? "bg-emerald-950/20 border-emerald-500/30 shadow-[0_0_12px_rgba(16,185,129,0.1)]"
+                          : "bg-white/[0.03] border-white/8 hover:border-white/20 hover:bg-white/[0.05]"
+                      )}
+                    >
+                      <div className="space-y-1">
+                        <div className="flex items-center justify-between">
+                          <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-white/10 text-white/80">
+                            {step.durationMinutes} Mins
+                          </span>
+                          <div className={cn(
+                            "w-5 h-5 rounded-lg border flex items-center justify-center transition-all",
+                            isStepDone
+                              ? "border-emerald-400 bg-emerald-400 text-slate-950 font-bold"
+                              : "border-white/20 group-hover:border-cyan-400"
+                          )}>
+                            {isStepDone && <Check className="w-3.5 h-3.5 stroke-[3]" />}
+                          </div>
+                        </div>
+
+                        <h4 className={cn("text-xs sm:text-sm font-bold", isStepDone ? "line-through text-white/50" : "text-white")}>
+                          {step.title}
+                        </h4>
+
+                        <p className="text-xs text-white/60 leading-relaxed">
+                          {step.description}
+                        </p>
+                      </div>
+
+                      <div className="pt-2 border-t border-white/5 flex items-center justify-between text-[11px]">
+                        <span className={cn("font-semibold", isStepDone ? "text-emerald-400" : "text-cyan-400")}>
+                          {isStepDone ? 'Completed ✓' : step.actionLabel}
+                        </span>
+                        <span className="text-white/40 font-mono">Step {idx + 1} of 3</span>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+
+              <div className="flex justify-end pt-1">
+                <button
+                  type="button"
+                  onClick={() => {
+                    sessionStorage.setItem('smartprep_active_chat', JSON.stringify([{
+                      role: 'user',
+                      content: `I am executing today's mission on ${aiPlan.dailyAction.targetChapter}. Provide 3 essential formula insights, high-frequency traps in IAT, and 1 quick practice problem.`
+                    }]));
+                    onNavigate?.('ai_doubt_solver');
+                  }}
+                  className="text-xs text-cyan-300 hover:text-cyan-200 flex items-center gap-1.5 cursor-pointer transition-colors"
+                >
+                  <MessageSquare className="w-3.5 h-3.5" />
+                  <span>Ask SmartPrep about this mission →</span>
+                </button>
+              </div>
+            </div>
+
+            {/* Remaining Sessions for Day 1 */}
+            {activeSlots.length > 1 && (
+              <div className="space-y-3 pt-2">
+                <div className="flex items-center justify-between text-xs">
+                  <span className="font-bold text-white/60 uppercase tracking-wider">
+                    Remaining Study Sessions for Today ({aiPlan.answers.dailyHours} Hours Routine):
+                  </span>
+                  <span className="font-mono text-cyan-400 font-bold">
+                    {activeSlots.slice(1).length} More Sessions
+                  </span>
+                </div>
+
+                <div className="space-y-2.5">
+                  {activeSlots.slice(1).map((slot, sIdx) => {
+                    const isSlotDone = !!slotStates[slot.id];
+                    return (
+                      <div
+                        key={slot.id}
+                        className={cn(
+                          "p-3.5 rounded-2xl border transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-3 group",
+                          isSlotDone
+                            ? "bg-emerald-950/15 border-emerald-500/30 opacity-75"
+                            : "bg-white/[0.02] border-white/8 hover:border-white/20"
+                        )}
+                      >
+                        <div className="flex items-start gap-3 flex-1 min-w-0">
+                          <button
+                            type="button"
+                            onClick={() => handleToggleSlot(slot.id)}
+                            className={cn(
+                              "w-5 h-5 rounded-lg border flex items-center justify-center shrink-0 mt-0.5 transition-all cursor-pointer",
+                              isSlotDone
+                                ? "border-emerald-400 bg-emerald-400 text-slate-950 font-bold"
+                                : "border-white/20 hover:border-cyan-400"
+                            )}
+                          >
+                            {isSlotDone && <Check className="w-3.5 h-3.5 stroke-[3]" />}
+                          </button>
+
+                          <div className="space-y-0.5 flex-1 min-w-0">
+                            <div className="flex flex-wrap items-center gap-2">
+                              <span className="text-[10px] font-mono font-bold px-1.5 py-0.5 rounded bg-white/10 text-white/80">
+                                Session {sIdx + 2} • {slot.timeSlot}
+                              </span>
+                              <span className="text-[10px] font-mono text-cyan-400 font-bold">
+                                {slot.durationMinutes}m
+                              </span>
+                              <span className="text-[10px] font-bold text-white/50 uppercase">
+                                {slot.subject}
+                              </span>
+                            </div>
+                            <h5 className={cn("text-xs sm:text-sm font-bold", isSlotDone ? "line-through text-white/50" : "text-white")}>
+                              {slot.title}
+                            </h5>
+                            <p className="text-xs text-white/60 leading-relaxed line-clamp-1">{slot.description}</p>
+                          </div>
+                        </div>
+
+                        <button
+                          type="button"
+                          onClick={() => onNavigate?.(slot.route)}
+                          className="self-end sm:self-center px-3.5 py-1.5 rounded-xl text-xs font-bold bg-white/[0.06] hover:bg-white/15 border border-white/10 text-white transition-all flex items-center gap-1 cursor-pointer shrink-0"
+                        >
+                          <span>{slot.routeLabel}</span>
+                          <ArrowRight className="w-3 h-3 text-cyan-400" />
+                        </button>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+          </div>
+        ) : (
+          /* Day 2, 3, 4, 5, 6, 7 Content */
+          <div className="space-y-3 pt-1">
             <div className="p-3.5 rounded-2xl bg-white/[0.02] border border-white/8 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
               <div className="space-y-0.5">
                 <div className="flex items-center gap-2">
                   <span className="text-xs font-bold px-2 py-0.5 rounded bg-cyan-500/20 text-cyan-300 border border-cyan-500/30">
-                    {activeDayPlan.dayName}
+                    {activeDayPlan?.dayName}
                   </span>
-                  <h4 className="text-sm font-bold text-white">{activeDayPlan.theme}</h4>
+                  <h4 className="text-sm font-bold text-white">{activeDayPlan?.theme}</h4>
                 </div>
-                <p className="text-xs text-white/60">{activeDayPlan.targetObjective}</p>
+                <p className="text-xs text-white/60">{activeDayPlan?.targetObjective}</p>
               </div>
               <span className="text-xs font-mono text-cyan-400 font-semibold shrink-0">
                 {activeSlots.length} Sessions Planned
               </span>
             </div>
 
-            {/* Daily Sessions List */}
+            {/* All sessions for this day */}
             <div className="space-y-2.5">
-              {activeSlots.slice(0, 3).map((slot, sIdx) => {
+              {activeSlots.map((slot, sIdx) => {
                 const isSlotDone = !!slotStates[slot.id];
                 return (
                   <div
@@ -1397,7 +1499,7 @@ export function PathToIISER({
         )}
       </div>
 
-      {/* ── 7. WEEKLY STUDY ALLOCATION (HORIZONTAL PROGRESS BARS) ── */}
+      {/* ── 6. WEEKLY STUDY ALLOCATION (HORIZONTAL PROGRESS BARS) ── */}
       <div className={cn(
         "p-6 sm:p-7 rounded-3xl border space-y-4 backdrop-blur-xl",
         isLight
@@ -1446,7 +1548,7 @@ export function PathToIISER({
         </div>
       </div>
 
-      {/* ── 8. YOUR SUBJECT STRATEGY (STREAM SPECIFIC) ── */}
+      {/* ── 7. YOUR SUBJECT STRATEGY (STREAM SPECIFIC) ── */}
       <div className={cn(
         "p-6 sm:p-7 rounded-3xl border space-y-5 backdrop-blur-xl",
         isLight
@@ -1517,7 +1619,7 @@ export function PathToIISER({
         </div>
       </div>
 
-      {/* ── 9. PREPARATION ROADMAP (MILESTONE TRACKER) ── */}
+      {/* ── 8. PREPARATION ROADMAP (MILESTONE TRACKER) ── */}
       <div className={cn(
         "p-6 sm:p-7 rounded-3xl border space-y-5 backdrop-blur-xl",
         isLight
@@ -1591,7 +1693,7 @@ export function PathToIISER({
         </div>
       </div>
 
-      {/* ── 10. THIS WEEK'S ACTION CHECKLIST ── */}
+      {/* ── 9. THIS WEEK'S ACTION CHECKLIST ── */}
       <div className={cn(
         "p-6 sm:p-7 rounded-3xl border space-y-4 backdrop-blur-xl",
         isLight
@@ -1682,7 +1784,7 @@ export function PathToIISER({
         </div>
       </div>
 
-      {/* ── 11. SMARTPREP GUIDANCE (AI STUDY INSIGHTS) ── */}
+      {/* ── 10. SMARTPREP GUIDANCE (AI STUDY INSIGHTS) ── */}
       <div className={cn(
         "p-6 sm:p-7 rounded-3xl border space-y-4 backdrop-blur-xl",
         isLight
@@ -1723,7 +1825,7 @@ export function PathToIISER({
         </div>
       </div>
 
-      {/* ── 12. PERSONALIZATION TRANSPARENCY ── */}
+      {/* ── 11. PERSONALIZATION TRANSPARENCY ── */}
       <div className={cn(
         "p-5 sm:p-6 rounded-3xl border flex flex-col sm:flex-row sm:items-center justify-between gap-4 backdrop-blur-xl",
         isLight ? "bg-slate-50 border-slate-200" : "bg-white/[0.02] border-white/8"
@@ -1811,7 +1913,7 @@ export function PathToIISER({
         )}
       </AnimatePresence>
 
-      {/* ── 13. FOOTER ── */}
+      {/* ── 12. FOOTER ── */}
       <Footer />
     </div>
   );
