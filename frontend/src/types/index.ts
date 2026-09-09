@@ -24,6 +24,8 @@ export interface RoadmapTask {
 export interface WeakArea {
   id: string;
   concept: string;
+  chapter?: string;
+  subject?: string;
   priorityScore: number; // out of 100
   potentialGain: number;
 }

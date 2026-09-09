@@ -16,6 +16,7 @@ import {
   Star,
   Trophy,
   TrendingUp,
+  TrendingDown,
   Compass,
   Flag,
   Sparkles,
@@ -26,6 +27,7 @@ import {
   School,
   Award,
   AlertCircle,
+  AlertTriangle,
   HelpCircle,
   Lightbulb,
   CheckSquare,
@@ -34,7 +36,15 @@ import {
   Atom,
   Flame,
   Layers,
-  GraduationCap
+  GraduationCap,
+  Sunrise,
+  Sunset,
+  Sun,
+  Moon,
+  ShieldAlert,
+  Crosshair,
+  BarChart3,
+  Activity
 } from 'lucide-react';
 import { cn } from '../../lib/utils';
 import { Footer } from '../layout/Footer';
@@ -57,7 +67,16 @@ import {
   setDailyActionCompleted,
   getSavedChecklistState,
   saveChecklistState,
-  resolveLessonTarget
+  resolveLessonTarget,
+  DailyTimeSlot,
+  DaySchedulePlan,
+  WeakAreaDiagnosis,
+  getSavedSchedulePreference,
+  saveSchedulePreference,
+  getSavedSlotStates,
+  saveSlotState,
+  generate7DaySchedule,
+  getSynthesizedWeakAreas
 } from './aiPathGenerator';
 
 interface PathToIISERProps {
@@ -130,6 +149,107 @@ export function PathToIISER({
 
   const [checklist, setChecklist] = useState<Record<string, boolean>>(() => getSavedChecklistState());
   const [activePhaseTab, setActivePhaseTab] = useState<string>('PHASE_1');
+
+  // ── SLS Live Intelligence Integration ─────────────────────────────────
+  const {
+    weaknessAnalysis,
+    analytics,
+    masterySummary,
+    hasSlsData
+  } = useSlsMyPath();
+
+  // ── Daily Schedule State & Preference ──────────────────────────────────
+  const [selectedScheduleDay, setSelectedScheduleDay] = useState<number>(1);
+  const [schedulePref, setSchedulePref] = useState<'MORNING' | 'EVENING'>(() => getSavedSchedulePreference());
+  const [slotStates, setSlotStates] = useState<Record<string, boolean>>(() => getSavedSlotStates());
+
+  const handleToggleSlot = (slotId: string) => {
+    setSlotStates(prev => {
+      const next = { ...prev, [slotId]: !prev[slotId] };
+      saveSlotState(slotId, next[slotId]);
+      return next;
+    });
+  };
+
+  const handleToggleSchedulePref = (pref: 'MORNING' | 'EVENING') => {
+    setSchedulePref(pref);
+    saveSchedulePreference(pref);
+  };
+
+  // ── 7-Day Schedule Memo ────────────────────────────────────────────────
+  const sevenDaySchedule = useMemo<DaySchedulePlan[]>(() => {
+    if (aiPlan?.sevenDaySchedule && aiPlan.sevenDaySchedule.length === 7) {
+      return aiPlan.sevenDaySchedule;
+    }
+    if (aiPlan?.answers) {
+      return generate7DaySchedule(aiPlan.answers);
+    }
+    return [];
+  }, [aiPlan]);
+
+  const activeDayPlan = useMemo<DaySchedulePlan | null>(() => {
+    if (!sevenDaySchedule || sevenDaySchedule.length === 0) return null;
+    return sevenDaySchedule.find(d => d.dayNumber === selectedScheduleDay) || sevenDaySchedule[0];
+  }, [sevenDaySchedule, selectedScheduleDay]);
+
+  const activeSlots = useMemo<DailyTimeSlot[]>(() => {
+    if (!activeDayPlan) return [];
+    return schedulePref === 'MORNING' ? activeDayPlan.morningSlots : activeDayPlan.eveningSlots;
+  }, [activeDayPlan, schedulePref]);
+
+  const activeDayProgress = useMemo(() => {
+    if (!activeSlots || activeSlots.length === 0) return { completedMins: 0, totalMins: 0, percent: 0, completedCount: 0 };
+    let total = 0;
+    let completed = 0;
+    let count = 0;
+    for (const slot of activeSlots) {
+      total += slot.durationMinutes;
+      if (slotStates[slot.id]) {
+        completed += slot.durationMinutes;
+        count++;
+      }
+    }
+    const pct = total > 0 ? Math.round((completed / total) * 100) : 0;
+    return { completedMins: completed, totalMins: total, percent: pct, completedCount: count };
+  }, [activeSlots, slotStates]);
+
+  // ── Where You Need Work (Diagnosed Urgency Hub) Memo ───────────────────
+  const diagnosedWeakAreas = useMemo<WeakAreaDiagnosis[]>(() => {
+    if (hasSlsData && weaknessAnalysis && weaknessAnalysis.weakChapters && weaknessAnalysis.weakChapters.length > 0) {
+      return weaknessAnalysis.weakChapters.slice(0, 3).map((wc, idx) => {
+        const chapterName = wc.chapterTitle || wc.chapterId;
+        const target = resolveLessonTarget(chapterName, wc.subject);
+        const acc = Math.round((wc.accuracy || 0) * 100);
+        const total = wc.questionsAttempted || wc.totalQuestions || wc.attempts || 0;
+        const incorrect = wc.incorrectCount || 0;
+        const urgency: 'CRITICAL' | 'HIGH' | 'MODERATE' = 
+          wc.severity === 'critical' ? 'CRITICAL' : (wc.severity === 'high' ? 'HIGH' : (acc < 50 ? 'HIGH' : 'MODERATE'));
+        return {
+          id: `sls_${wc.chapterId || idx}`,
+          subject: wc.subject,
+          chapter: chapterName,
+          topic: (wc.reasons && wc.reasons[0]) || 'High Error Frequency',
+          accuracyPct: acc,
+          errorCount: incorrect,
+          totalAttempts: total,
+          urgency,
+          reason: `Detected from your live quiz attempts. Accuracy is ${acc}% with ${incorrect} incorrect answers across ${total} questions.`,
+          markImpact: urgency === 'CRITICAL' ? '+16 Marks at Stake' : '+12 Marks at Stake',
+          route: target.route,
+          routeLabel: target.lessonTitle ? `Practice ${target.lessonTitle}` : `Open ${wc.subject}`,
+          isRealData: true
+        };
+      });
+    }
+
+    if (aiPlan?.fallbackWeakAreas && aiPlan.fallbackWeakAreas.length > 0) {
+      return aiPlan.fallbackWeakAreas;
+    }
+    if (aiPlan?.answers) {
+      return getSynthesizedWeakAreas(aiPlan.answers);
+    }
+    return [];
+  }, [hasSlsData, weaknessAnalysis, aiPlan]);
 
   // Days left dynamic countdown
   const daysUntilExam = useMemo(() => {
@@ -856,7 +976,394 @@ export function PathToIISER({
         </div>
       </div>
 
-      {/* ── 2. THE ACTION-ORIENTED CORE: TODAY'S ACTION MISSION ── */}
+      {/* ── 2. WHERE YOU NEED WORK: TARGETED WEAKNESS DIAGNOSTIC CENTER ── */}
+      <div className={cn(
+        "p-6 sm:p-8 rounded-3xl border relative overflow-hidden backdrop-blur-xl shadow-2xl space-y-6",
+        isLight
+          ? "bg-white/90 border-slate-200 shadow-slate-200/50"
+          : "bg-[#0b0e24]/90 border-rose-500/25 shadow-[0_8px_32px_rgba(0,0,0,0.5),0_0_35px_rgba(244,63,94,0.08)]"
+      )}>
+        {/* Subtle accent glow */}
+        <div className="absolute top-0 right-0 w-80 h-80 bg-rose-500/10 blur-[90px] rounded-full pointer-events-none" />
+
+        <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-white/10 pb-5">
+          <div>
+            <div className="flex items-center gap-2 mb-1.5">
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-rose-500/15 border border-rose-500/30 text-rose-300 text-[11px] font-mono font-bold uppercase tracking-wider">
+                <AlertTriangle className="w-3.5 h-3.5 text-rose-400" />
+                <span>Diagnostic Surgery • Where You Need Work</span>
+              </span>
+
+              {hasSlsData ? (
+                <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-500/15 border border-emerald-500/30 text-emerald-300 text-[11px] font-bold">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                  <span>Live Quiz Data Synced</span>
+                </span>
+              ) : (
+                <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-cyan-500/10 border border-cyan-500/25 text-cyan-300 text-[11px]">
+                  <Sparkles className="w-3 h-3 text-cyan-400" />
+                  <span>Calibrated Baseline</span>
+                </span>
+              )}
+            </div>
+
+            <h2 className="text-xl sm:text-2xl lg:text-3xl font-display font-extrabold text-white tracking-tight">
+              Targeted Urgency: High-Yield Recovery Focus
+            </h2>
+            <p className={cn("text-xs sm:text-sm mt-1", isLight ? "text-slate-600" : "text-white/60")}>
+              Prioritized chapters and concepts where you are losing marks. Fixing these directly unlocks your target cutoff for {aiPlan.answers.targetInstitute}.
+            </p>
+          </div>
+
+          <div className="flex items-center gap-3 self-start md:self-auto shrink-0">
+            <div className="text-left md:text-right">
+              <span className="text-[10px] uppercase font-bold text-rose-400 block tracking-wider">Est. Mark Recovery</span>
+              <span className="text-xl sm:text-2xl font-display font-black text-white">+40–56 Marks</span>
+            </div>
+            <div className="w-10 h-10 rounded-2xl bg-rose-500/15 border border-rose-500/30 flex items-center justify-center text-rose-300 shadow-inner">
+              <ShieldAlert className="w-5 h-5 text-rose-400" />
+            </div>
+          </div>
+        </div>
+
+        {/* 3 Diagnosed Weak Area Cards */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+          {diagnosedWeakAreas.map((weak) => {
+            const isCritical = weak.urgency === 'CRITICAL';
+            const isHigh = weak.urgency === 'HIGH';
+
+            return (
+              <div
+                key={weak.id}
+                className={cn(
+                  "p-5 rounded-2xl border transition-all flex flex-col justify-between space-y-4 group relative overflow-hidden",
+                  isCritical
+                    ? "bg-rose-950/20 border-rose-500/30 hover:border-rose-400/60 shadow-[0_4px_20px_rgba(244,63,94,0.12)]"
+                    : isHigh
+                    ? "bg-amber-950/20 border-amber-500/30 hover:border-amber-400/60 shadow-[0_4px_20px_rgba(245,158,11,0.1)]"
+                    : "bg-indigo-950/20 border-indigo-500/30 hover:border-indigo-400/60"
+                )}
+              >
+                <div className="space-y-2.5">
+                  {/* Card Header: Urgency & Potential Gain */}
+                  <div className="flex items-center justify-between gap-2">
+                    <span className={cn(
+                      "text-[9.5px] font-mono font-bold px-2 py-0.5 rounded-md uppercase tracking-wider",
+                      isCritical
+                        ? "bg-rose-500/20 text-rose-300 border border-rose-500/30"
+                        : isHigh
+                        ? "bg-amber-500/20 text-amber-300 border border-amber-500/30"
+                        : "bg-indigo-500/20 text-indigo-300 border border-indigo-500/30"
+                    )}>
+                      {weak.urgency === 'CRITICAL' ? 'CRITICAL DEFICIT' : weak.urgency === 'HIGH' ? 'HIGH PRIORITY' : 'PACING & ERRORS'}
+                    </span>
+
+                    <span className="text-[10.5px] font-mono font-bold text-emerald-400">
+                      {weak.markImpact}
+                    </span>
+                  </div>
+
+                  {/* Subject & Chapter Title */}
+                  <div>
+                    <span className="text-[10.5px] font-bold text-white/50 uppercase tracking-wider block">
+                      {weak.subject}
+                    </span>
+                    <h3 className="text-base font-bold text-white group-hover:text-cyan-200 transition-colors leading-snug">
+                      {weak.chapter}
+                    </h3>
+                    {weak.topic && (
+                      <span className="text-xs text-cyan-300 font-semibold mt-0.5 block">
+                        {weak.topic}
+                      </span>
+                    )}
+                  </div>
+
+                  {/* Real Stats if Available */}
+                  {weak.isRealData && weak.accuracyPct !== undefined && (
+                    <div className="p-2.5 rounded-xl bg-black/30 border border-white/5 space-y-1.5">
+                      <div className="flex justify-between text-[11px] font-mono">
+                        <span className="text-white/60">Actual Accuracy</span>
+                        <span className={cn("font-bold", weak.accuracyPct < 40 ? "text-rose-400" : "text-amber-400")}>
+                          {weak.accuracyPct}%
+                        </span>
+                      </div>
+                      <div className="w-full h-1.5 rounded-full bg-white/10 overflow-hidden">
+                        <div
+                          className={cn("h-full rounded-full", weak.accuracyPct < 40 ? "bg-rose-500" : "bg-amber-500")}
+                          style={{ width: `${weak.accuracyPct}%` }}
+                        />
+                      </div>
+                      <div className="flex justify-between text-[10px] text-white/40 font-mono pt-0.5">
+                        <span>Attempts: {weak.totalAttempts || 0}</span>
+                        <span className="text-rose-400">Mistakes: {weak.errorCount || 0}</span>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Reasoning & Pitfall Note */}
+                  <p className={cn("text-xs leading-relaxed", isLight ? "text-slate-600" : "text-white/70")}>
+                    {weak.reason}
+                  </p>
+                </div>
+
+                {/* Actions */}
+                <div className="pt-2 border-t border-white/10 flex flex-col gap-2">
+                  <button
+                    type="button"
+                    onClick={() => onNavigate?.(weak.route)}
+                    className="w-full py-2.5 px-3 rounded-xl font-bold text-xs bg-white hover:bg-slate-100 text-slate-950 transition-all flex items-center justify-center gap-1.5 cursor-pointer shadow-md group-hover:shadow-[0_0_20px_rgba(255,255,255,0.3)]"
+                  >
+                    <span>{weak.routeLabel || 'Fix This Weakness'}</span>
+                    <ArrowRight className="w-3.5 h-3.5" />
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => {
+                      sessionStorage.setItem('smartprep_active_chat', JSON.stringify([{
+                        role: 'user',
+                        content: `I need urgent clinical help with my weak topic in ${weak.subject}: "${weak.chapter}". Explain the core concept traps that cause negative marks in IAT and give me 1 diagnostic example.`
+                      }]));
+                      onNavigate?.('ai_doubt_solver');
+                    }}
+                    className="w-full py-1.5 text-[11px] text-cyan-300 hover:text-cyan-200 flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
+                  >
+                    <MessageSquare className="w-3 h-3" />
+                    <span>Ask AI Tutor to diagnose this topic</span>
+                  </button>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* ── 3. INTERACTIVE DAILY STUDY SCHEDULE & 7-DAY RHYTHM ── */}
+      <div className={cn(
+        "p-6 sm:p-8 rounded-3xl border relative overflow-hidden backdrop-blur-xl shadow-2xl space-y-6",
+        isLight
+          ? "bg-white/90 border-slate-200 shadow-slate-200/50"
+          : "bg-[#0b0e24]/90 border-indigo-500/25 shadow-[0_8px_32px_rgba(0,0,0,0.5),0_0_35px_rgba(99,102,241,0.1)]"
+      )}>
+        {/* Top Header & Routine Mode Selector */}
+        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 border-b border-white/10 pb-5">
+          <div className="space-y-1">
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 text-xs font-bold uppercase tracking-wider">
+              <Clock className="w-3.5 h-3.5 text-cyan-400" />
+              <span>Time-Blocked Daily Routine • {aiPlan.answers.dailyHours} Hours/Day</span>
+            </div>
+            <h2 className="text-xl sm:text-2xl lg:text-3xl font-display font-extrabold text-white tracking-tight">
+              Interactive Daily Study Schedule
+            </h2>
+            <p className={cn("text-xs sm:text-sm", isLight ? "text-slate-600" : "text-white/60")}>
+              Structured time-blocking designed for maximum retention, numerical stamina, and zero burnout.
+            </p>
+          </div>
+
+          {/* Morning vs Evening Lifestyle Selector */}
+          <div className="flex items-center gap-1.5 p-1.5 rounded-2xl bg-white/[0.04] border border-white/10 self-start lg:self-auto">
+            <button
+              type="button"
+              onClick={() => handleToggleSchedulePref('MORNING')}
+              className={cn(
+                "px-3.5 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all cursor-pointer",
+                schedulePref === 'MORNING'
+                  ? "bg-amber-500/20 border border-amber-500/40 text-amber-300 shadow-[0_0_15px_rgba(245,158,11,0.25)]"
+                  : "text-white/60 hover:text-white"
+              )}
+            >
+              <Sunrise className="w-3.5 h-3.5 text-amber-400" />
+              <span>Morning Routine</span>
+            </button>
+
+            <button
+              type="button"
+              onClick={() => handleToggleSchedulePref('EVENING')}
+              className={cn(
+                "px-3.5 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all cursor-pointer",
+                schedulePref === 'EVENING'
+                  ? "bg-indigo-500/25 border border-indigo-500/40 text-indigo-300 shadow-[0_0_15px_rgba(99,102,241,0.25)]"
+                  : "text-white/60 hover:text-white"
+              )}
+            >
+              <Sunset className="w-3.5 h-3.5 text-indigo-400" />
+              <span>Evening / Post-School</span>
+            </button>
+          </div>
+        </div>
+
+        {/* 7-Day Day Selector Bar */}
+        <div className="space-y-2">
+          <div className="flex items-center justify-between text-xs">
+            <span className="font-bold text-white/50 uppercase tracking-wider">
+              Select Day Roadmap:
+            </span>
+            <span className="font-mono text-cyan-400 font-bold">
+              {activeDayPlan?.dayName} Focus: {activeDayPlan?.theme}
+            </span>
+          </div>
+
+          <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-2">
+            {sevenDaySchedule.map((d) => {
+              const isSelected = selectedScheduleDay === d.dayNumber;
+              return (
+                <button
+                  key={d.dayNumber}
+                  type="button"
+                  onClick={() => setSelectedScheduleDay(d.dayNumber)}
+                  className={cn(
+                    "p-3 rounded-2xl border text-left transition-all cursor-pointer flex flex-col justify-between min-h-[76px] group",
+                    isSelected
+                      ? "bg-cyan-500/15 border-cyan-400 text-cyan-300 shadow-[0_0_20px_rgba(6,182,212,0.25)]"
+                      : "bg-white/[0.03] border-white/8 hover:border-white/20 text-white/70 hover:bg-white/[0.06]"
+                  )}
+                >
+                  <div className="flex items-center justify-between w-full">
+                    <span className={cn("text-[11px] font-bold", isSelected ? "text-cyan-300" : "text-white")}>
+                      {d.dayLabel}
+                    </span>
+                    <span className="text-[9px] font-mono opacity-50">#{d.dayNumber}</span>
+                  </div>
+                  <span className="text-[10px] truncate block opacity-70 mt-1">
+                    {d.focusSubject}
+                  </span>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Selected Day Theme & Objective Banner */}
+        {activeDayPlan && (
+          <div className={cn(
+            "p-4 rounded-2xl border flex flex-col sm:flex-row sm:items-center justify-between gap-4",
+            isLight ? "bg-slate-50 border-slate-200" : "bg-white/[0.02] border-white/8"
+          )}>
+            <div className="space-y-1">
+              <div className="flex items-center gap-2">
+                <span className="text-xs font-bold px-2 py-0.5 rounded bg-cyan-500/20 text-cyan-300 border border-cyan-500/30">
+                  {activeDayPlan.dayLabel}
+                </span>
+                <h3 className="text-sm sm:text-base font-bold text-white">
+                  {activeDayPlan.theme}
+                </h3>
+              </div>
+              <p className="text-xs text-white/60 leading-relaxed">
+                {activeDayPlan.targetObjective}
+              </p>
+            </div>
+
+            {/* Daily Completion Progress */}
+            <div className="shrink-0 space-y-1.5 min-w-[180px]">
+              <div className="flex justify-between text-xs font-mono">
+                <span className="text-white/50">Day Progress</span>
+                <span className="font-bold text-cyan-400">{activeDayProgress.percent}% ({activeDayProgress.completedMins}m / {activeDayProgress.totalMins}m)</span>
+              </div>
+              <div className="w-full h-2 rounded-full bg-white/10 overflow-hidden">
+                <div
+                  className="h-full bg-gradient-to-r from-cyan-400 via-teal-400 to-emerald-400 transition-all duration-300"
+                  style={{ width: `${activeDayProgress.percent}%` }}
+                />
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Active Day Slots List */}
+        <div className="space-y-3">
+          {activeSlots.map((slot) => {
+            const isDone = !!slotStates[slot.id];
+            const isWeakSurgery = slot.focusType === 'WEAK_SURGERY';
+            const isNumerical = slot.focusType === 'NUMERICAL_DRILL';
+            const isNcert = slot.focusType === 'NCERT_MEMORIZE';
+            const isPyq = slot.focusType === 'MOCK_PYQ';
+
+            return (
+              <div
+                key={slot.id}
+                className={cn(
+                  "p-4 sm:p-5 rounded-2xl border transition-all flex flex-col md:flex-row md:items-center justify-between gap-4 group",
+                  isDone
+                    ? "bg-emerald-950/15 border-emerald-500/30 opacity-80"
+                    : isWeakSurgery
+                    ? "bg-rose-950/15 border-rose-500/25 hover:border-rose-400/40"
+                    : isNumerical
+                    ? "bg-indigo-950/15 border-indigo-500/25 hover:border-indigo-400/40"
+                    : isNcert
+                    ? "bg-emerald-950/15 border-emerald-500/25 hover:border-emerald-400/40"
+                    : "bg-white/[0.02] border-white/8 hover:border-white/20"
+                )}
+              >
+                {/* Slot Details */}
+                <div className="flex items-start gap-3.5 flex-1 min-w-0">
+                  {/* Slot Checkbox */}
+                  <button
+                    type="button"
+                    onClick={() => handleToggleSlot(slot.id)}
+                    className={cn(
+                      "w-6 h-6 rounded-lg border flex items-center justify-center shrink-0 mt-0.5 transition-all cursor-pointer",
+                      isDone
+                        ? "border-emerald-400 bg-emerald-400 text-slate-950 font-bold shadow-[0_0_10px_rgba(16,185,129,0.3)]"
+                        : "border-white/20 hover:border-cyan-400 bg-white/[0.03]"
+                    )}
+                    title={isDone ? "Mark slot pending" : "Mark slot completed"}
+                  >
+                    {isDone && <Check className="w-4 h-4 stroke-[3]" />}
+                  </button>
+
+                  <div className="space-y-1.5 flex-1 min-w-0">
+                    <div className="flex flex-wrap items-center gap-2">
+                      <span className="text-[11px] font-mono font-bold px-2 py-0.5 rounded bg-white/10 text-white/90">
+                        {slot.timeSlot}
+                      </span>
+                      <span className="text-[10px] font-mono text-cyan-400 font-bold px-2 py-0.5 rounded bg-cyan-500/10 border border-cyan-500/20">
+                        {slot.durationMinutes} Mins
+                      </span>
+                      <span className={cn(
+                        "text-[9.5px] font-bold px-2 py-0.5 rounded uppercase",
+                        isWeakSurgery ? "bg-rose-500/20 text-rose-300" :
+                        isNumerical ? "bg-indigo-500/20 text-indigo-300" :
+                        isNcert ? "bg-emerald-500/20 text-emerald-300" :
+                        isPyq ? "bg-amber-500/20 text-amber-300" : "bg-white/10 text-white/70"
+                      )}>
+                        {slot.focusType.replace('_', ' ')}
+                      </span>
+                    </div>
+
+                    <h4 className={cn("text-sm sm:text-base font-bold", isDone ? "line-through text-white/50" : "text-white")}>
+                      {slot.title}
+                    </h4>
+
+                    <p className={cn("text-xs leading-relaxed", isLight ? "text-slate-600" : "text-white/65")}>
+                      {slot.description}
+                    </p>
+
+                    <div className="flex items-center gap-2 pt-0.5 text-xs text-white/50">
+                      <span className="font-semibold text-white/70">Subject: {slot.subject}</span>
+                      <span>•</span>
+                      <span className="font-mono text-cyan-300/80">Target: {slot.targetChapter}</span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Action CTA Button */}
+                <div className="flex items-center gap-2.5 shrink-0 self-end md:self-center">
+                  <button
+                    type="button"
+                    onClick={() => onNavigate?.(slot.route)}
+                    className="px-4 py-2.5 rounded-xl font-bold text-xs bg-white/[0.08] hover:bg-white/15 border border-white/15 text-white transition-all flex items-center gap-1.5 cursor-pointer shadow-sm"
+                  >
+                    <span>{slot.routeLabel}</span>
+                    <ArrowRight className="w-3.5 h-3.5 text-cyan-400" />
+                  </button>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* ── 4. THE ACTION-ORIENTED CORE: TODAY'S ACTION MISSION ── */}
       <div className={cn(
         "p-6 sm:p-8 rounded-3xl border relative overflow-hidden group transition-all duration-300 shadow-2xl",
         dailyCompleted 
@@ -1405,7 +1912,7 @@ export function PathToIISER({
         </div>
       </div>
 
-      <Footer onNavigate={onNavigate} />
+      <Footer />
     </div>
   );
 }

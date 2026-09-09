@@ -36,6 +36,8 @@ export interface WeakArea {
   accuracy: number;       // actual accuracy %
   priorityScore: number;  // 0–99, higher = more urgent
   potentialGain: number;  // estimated marks gain
+  chapter?: string;
+  concept?: string;
 }
 
 export interface RoadmapTask {

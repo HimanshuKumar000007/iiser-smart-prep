@@ -23,6 +23,47 @@ export interface WeeklyChecklistItem {
   targetLabel?: string;
 }
 
+export interface DailyTimeSlot {
+  id: string;
+  timeSlot: string; // e.g. "06:00 AM – 07:30 AM"
+  period: 'MORNING' | 'AFTERNOON' | 'EVENING' | 'NIGHT';
+  title: string;
+  durationMinutes: number;
+  subject: string;
+  focusType: 'WEAK_SURGERY' | 'NUMERICAL_DRILL' | 'NCERT_MEMORIZE' | 'ERROR_LOGBOOK' | 'MOCK_PYQ';
+  description: string;
+  targetChapter: string;
+  route: string;
+  routeLabel: string;
+}
+
+export interface DaySchedulePlan {
+  dayNumber: number;
+  dayLabel: string; // e.g. "Day 1 (Mon)"
+  dayName: string;  // e.g. "Monday"
+  theme: string;
+  focusSubject: string;
+  targetObjective: string;
+  morningSlots: DailyTimeSlot[];
+  eveningSlots: DailyTimeSlot[];
+}
+
+export interface WeakAreaDiagnosis {
+  id: string;
+  subject: string;
+  chapter: string;
+  topic?: string;
+  accuracyPct?: number;
+  errorCount?: number;
+  totalAttempts?: number;
+  urgency: 'CRITICAL' | 'HIGH' | 'MODERATE';
+  reason: string;
+  markImpact: string;
+  route: string;
+  routeLabel: string;
+  isRealData: boolean;
+}
+
 export interface ResolvedLessonRoute {
   lessonId?: string;
   lessonTitle?: string;
@@ -77,6 +118,8 @@ export interface AiGeneratedStudyPlan {
   }[];
   weeklyChecklist: WeeklyChecklistItem[];
   aiMentorTips: string[];
+  sevenDaySchedule?: DaySchedulePlan[];
+  fallbackWeakAreas?: WeakAreaDiagnosis[];
 }
 
 export const TARGET_INSTITUTES = [
@@ -197,12 +240,61 @@ export const TARGET_AIRS = [
 const LOCAL_STORAGE_KEY = 'smartprep_ai_study_plan';
 const CHECKLIST_STORAGE_KEY = 'smartprep_weekly_checklist';
 const DAILY_ACTION_STORAGE_KEY = 'smartprep_daily_action_done';
+const DAILY_SLOT_STORAGE_KEY = 'smartprep_daily_slots_done';
+const SCHEDULE_PREF_STORAGE_KEY = 'smartprep_schedule_preference';
+
+export function getSavedSchedulePreference(): 'MORNING' | 'EVENING' {
+  try {
+    const pref = localStorage.getItem(SCHEDULE_PREF_STORAGE_KEY);
+    return pref === 'EVENING' ? 'EVENING' : 'MORNING';
+  } catch {
+    return 'MORNING';
+  }
+}
+
+export function saveSchedulePreference(pref: 'MORNING' | 'EVENING'): void {
+  try {
+    localStorage.setItem(SCHEDULE_PREF_STORAGE_KEY, pref);
+  } catch {}
+}
+
+export function getSavedSlotStates(): Record<string, boolean> {
+  try {
+    const raw = localStorage.getItem(DAILY_SLOT_STORAGE_KEY);
+    return raw ? JSON.parse(raw) : {};
+  } catch {
+    return {};
+  }
+}
+
+export function saveSlotState(slotKey: string, completed: boolean): void {
+  try {
+    const current = getSavedSlotStates();
+    current[slotKey] = completed;
+    localStorage.setItem(DAILY_SLOT_STORAGE_KEY, JSON.stringify(current));
+  } catch {}
+}
 
 export function getStoredAiStudyPlan(): AiGeneratedStudyPlan | null {
   try {
     const raw = localStorage.getItem(LOCAL_STORAGE_KEY);
     if (!raw) return null;
-    return JSON.parse(raw);
+    const plan: AiGeneratedStudyPlan = JSON.parse(raw);
+
+    // Auto-enrich existing plan if missing the 7-day schedule or fallback weak areas
+    let modified = false;
+    if (!plan.sevenDaySchedule || plan.sevenDaySchedule.length === 0) {
+      plan.sevenDaySchedule = generate7DaySchedule(plan.answers);
+      modified = true;
+    }
+    if (!plan.fallbackWeakAreas || plan.fallbackWeakAreas.length === 0) {
+      plan.fallbackWeakAreas = getSynthesizedWeakAreas(plan.answers);
+      modified = true;
+    }
+    if (modified) {
+      saveAiStudyPlan(plan);
+    }
+    return plan;
   } catch {
     return null;
   }
@@ -439,6 +531,493 @@ export function resolveLessonTarget(chapterQuery?: string, subjectHint?: string)
     route: 'smart_lessons',
     label: 'Smart Lessons'
   };
+}
+
+// ── 7-Day Actionable Schedule Generator ──────────────────────────────────
+export function generate7DaySchedule(answers: AiOnboardingAnswers): DaySchedulePlan[] {
+  const { stream, weakSubject, strongSubject, weakTopicHurdle, dailyHours } = answers;
+
+  // Derive secondary subjects
+  const allSubs = ['Physics', 'Chemistry', 'Mathematics', 'Biology'];
+  const remainingSubs = allSubs.filter(s => s !== weakSubject && s !== strongSubject);
+  const midSub1 = remainingSubs[0] || 'Chemistry';
+  const midSub2 = remainingSubs[1] || 'Physics';
+
+  // Specific target chapters based on stream & hurdle
+  const hurdleTarget = resolveLessonTarget(weakTopicHurdle, weakSubject);
+
+  // High yield blueprint target
+  const blueprintChap = stream === 'PCB' 
+    ? 'Matrices & Determinants' 
+    : stream === 'PCM' 
+    ? 'Genetics & Molecular Inheritance' 
+    : 'Chemical Bonding & Molecular Structure';
+  const blueprintTarget = resolveLessonTarget(blueprintChap, stream === 'PCB' ? 'Mathematics' : stream === 'PCM' ? 'Biology' : 'Chemistry');
+
+  const daysData = [
+    {
+      dayNumber: 1,
+      dayLabel: 'Day 1 (Mon)',
+      dayName: 'Monday',
+      theme: 'Hurdle Surgery & Baseline Clarity',
+      focusSubject: weakSubject,
+      targetObjective: `Tackle your primary roadblock: ${weakTopicHurdle}. Solidify foundational formulas and eliminate conceptual fear.`
+    },
+    {
+      dayNumber: 2,
+      dayLabel: 'Day 2 (Tue)',
+      dayName: 'Tuesday',
+      theme: 'Numerical Speed & Derivation Mastery',
+      focusSubject: strongSubject,
+      targetObjective: `Capitalize on your strength in ${strongSubject}. Solve high-difficulty multi-step numerical questions under timed pressure.`
+    },
+    {
+      dayNumber: 3,
+      dayLabel: 'Day 3 (Wed)',
+      dayName: 'Wednesday',
+      theme: 'Strategic Blueprint High-Yield Sprint',
+      focusSubject: stream === 'PCB' ? 'Mathematics' : (stream === 'PCM' ? 'Biology' : midSub1),
+      targetObjective: stream === 'PCB' 
+        ? 'Non-Calculus Math shortcut: Master Matrices, Determinants, and Vector lines for 25+ bonus marks.'
+        : (stream === 'PCM' ? 'NCERT Biology rapid pass: Capture 30+ marks in 15 mins via Genetics & Ecology.' : 'Master cross-disciplinary physical chemistry and thermodynamic equilibria.')
+    },
+    {
+      dayNumber: 4,
+      dayLabel: 'Day 4 (Thu)',
+      dayName: 'Thursday',
+      theme: 'Mechanism Clarity & Conceptual Traps',
+      focusSubject: midSub1,
+      targetObjective: `Identify deceptive options and Section A negative-marking traps in ${midSub1}. Focus on core mechanisms and exceptions.`
+    },
+    {
+      dayNumber: 5,
+      dayLabel: 'Day 5 (Fri)',
+      dayName: 'Friday',
+      theme: 'Authentic IAT PYQ Marathon',
+      focusSubject: 'All PCMB',
+      targetObjective: 'Solve 15 official IISER Aptitude Test past questions from 2019-2024. Understand the exact examiner testing patterns.'
+    },
+    {
+      dayNumber: 6,
+      dayLabel: 'Day 6 (Sat)',
+      dayName: 'Saturday',
+      theme: 'Timed Sectional Simulation & Stamina',
+      focusSubject: `${weakSubject} & ${strongSubject}`,
+      targetObjective: 'Strict 60-minute timed sprint with negative marking penalty simulation. Train decision speed: attempt vs skip.'
+    },
+    {
+      dayNumber: 7,
+      dayLabel: 'Day 7 (Sun)',
+      dayName: 'Sunday',
+      theme: 'Zero-Backlog Audit & Error Logbook',
+      focusSubject: 'Revision & Error Analysis',
+      targetObjective: 'Deep audit of all questions solved incorrectly this week. Review formula flashcards and consolidate mistake notebook.'
+    }
+  ];
+
+  return daysData.map((d) => {
+    const morningSlots: DailyTimeSlot[] = [];
+    const eveningSlots: DailyTimeSlot[] = [];
+
+    if (dailyHours <= 3) {
+      // 2 balanced slots (90m + 90m = 3 hrs)
+      morningSlots.push(
+        {
+          id: `slot_d${d.dayNumber}_m1`,
+          timeSlot: '06:00 AM – 07:30 AM',
+          period: 'MORNING',
+          title: `Deep Focus: ${d.theme}`,
+          durationMinutes: 90,
+          subject: d.focusSubject,
+          focusType: d.dayNumber === 1 ? 'WEAK_SURGERY' : (d.dayNumber === 5 ? 'MOCK_PYQ' : 'NUMERICAL_DRILL'),
+          description: d.targetObjective,
+          targetChapter: d.dayNumber === 1 ? weakTopicHurdle : (d.dayNumber === 3 ? blueprintChap : `${d.focusSubject} Core`),
+          route: d.dayNumber === 1 ? hurdleTarget.route : (d.dayNumber === 3 ? blueprintTarget.route : (d.dayNumber === 5 ? 'pyqs' : `smart_lessons:${d.focusSubject}`)),
+          routeLabel: d.dayNumber === 5 ? 'Open PYQ Hub' : 'Launch Drill'
+        },
+        {
+          id: `slot_d${d.dayNumber}_m2`,
+          timeSlot: '07:45 AM – 09:15 AM',
+          period: 'MORNING',
+          title: 'Active Solving & Quick Error Review',
+          durationMinutes: 90,
+          subject: d.dayNumber % 2 === 0 ? weakSubject : strongSubject,
+          focusType: 'ERROR_LOGBOOK',
+          description: 'Solve 15 practice questions and log doubts into your error notebook for instant retention.',
+          targetChapter: `${d.focusSubject} Practice Set`,
+          route: 'ai_doubt_solver',
+          routeLabel: 'Ask AI Tutor'
+        }
+      );
+
+      eveningSlots.push(
+        {
+          id: `slot_d${d.dayNumber}_e1`,
+          timeSlot: '05:30 PM – 07:00 PM',
+          period: 'EVENING',
+          title: `After-School Focus: ${d.theme}`,
+          durationMinutes: 90,
+          subject: d.focusSubject,
+          focusType: d.dayNumber === 1 ? 'WEAK_SURGERY' : (d.dayNumber === 5 ? 'MOCK_PYQ' : 'NUMERICAL_DRILL'),
+          description: d.targetObjective,
+          targetChapter: d.dayNumber === 1 ? weakTopicHurdle : (d.dayNumber === 3 ? blueprintChap : `${d.focusSubject} Core`),
+          route: d.dayNumber === 1 ? hurdleTarget.route : (d.dayNumber === 3 ? blueprintTarget.route : (d.dayNumber === 5 ? 'pyqs' : `smart_lessons:${d.focusSubject}`)),
+          routeLabel: d.dayNumber === 5 ? 'Open PYQ Hub' : 'Launch Drill'
+        },
+        {
+          id: `slot_d${d.dayNumber}_e2`,
+          timeSlot: '08:00 PM – 09:30 PM',
+          period: 'NIGHT',
+          title: 'Timed Numerical Solving & Flashcards',
+          durationMinutes: 90,
+          subject: d.dayNumber % 2 === 0 ? weakSubject : strongSubject,
+          focusType: 'ERROR_LOGBOOK',
+          description: 'Timed questions and revision of formula sheets before wrapping up the day.',
+          targetChapter: `${d.focusSubject} Practice Set`,
+          route: 'ai_doubt_solver',
+          routeLabel: 'Ask AI Tutor'
+        }
+      );
+    } else if (dailyHours <= 6) {
+      // 3-4 slots (approx 5 hrs total: 90m + 90m + 75m + 45m = 300m = 5 hrs)
+      morningSlots.push(
+        {
+          id: `slot_d${d.dayNumber}_m1`,
+          timeSlot: '06:00 AM – 07:30 AM',
+          period: 'MORNING',
+          title: `Slot 1: High-Energy Focus on ${d.focusSubject}`,
+          durationMinutes: 90,
+          subject: d.focusSubject,
+          focusType: d.dayNumber === 1 ? 'WEAK_SURGERY' : 'NUMERICAL_DRILL',
+          description: d.targetObjective,
+          targetChapter: d.dayNumber === 1 ? weakTopicHurdle : `${d.focusSubject} Core`,
+          route: d.dayNumber === 1 ? hurdleTarget.route : `smart_lessons:${d.focusSubject}`,
+          routeLabel: 'Open Lesson'
+        },
+        {
+          id: `slot_d${d.dayNumber}_m2`,
+          timeSlot: '07:45 AM – 09:15 AM',
+          period: 'MORNING',
+          title: `Slot 2: Active Problem Solving & Derivations`,
+          durationMinutes: 90,
+          subject: d.dayNumber % 2 === 0 ? strongSubject : midSub1,
+          focusType: 'NUMERICAL_DRILL',
+          description: 'Solve 18–20 multi-step problems with full scratchpad derivations.',
+          targetChapter: 'Derivations & Numerical Drills',
+          route: `smart_lessons:${d.dayNumber % 2 === 0 ? strongSubject : midSub1}`,
+          routeLabel: 'Solve Practice Set'
+        },
+        {
+          id: `slot_d${d.dayNumber}_m3`,
+          timeSlot: '02:00 PM – 03:15 PM',
+          period: 'AFTERNOON',
+          title: `Slot 3: Blueprint & NCERT Precision`,
+          durationMinutes: 75,
+          subject: stream === 'PCB' ? 'Mathematics' : (stream === 'PCM' ? 'Biology' : midSub2),
+          focusType: 'NCERT_MEMORIZE',
+          description: stream === 'PCB' ? 'Formula drill on Matrices & Vector algebra.' : (stream === 'PCM' ? 'Read NCERT Biology summaries line-by-line.' : 'Physical & inorganic chemistry flashcards.'),
+          targetChapter: stream === 'PCB' ? 'Matrices & Determinants' : 'High-Yield Theory',
+          route: stream === 'PCB' ? blueprintTarget.route : (stream === 'PCM' ? blueprintTarget.route : `smart_lessons:${midSub2}`),
+          routeLabel: 'Open Theory'
+        },
+        {
+          id: `slot_d${d.dayNumber}_m4`,
+          timeSlot: '08:30 PM – 09:15 PM',
+          period: 'NIGHT',
+          title: `Slot 4: Error Notebook & Spaced Repetition`,
+          durationMinutes: 45,
+          subject: 'All Subjects',
+          focusType: 'ERROR_LOGBOOK',
+          description: 'Log all missed questions into your Mistake Notebook and ask AI Tutor to clarify lingering doubts.',
+          targetChapter: 'Daily Error Surgery',
+          route: 'ai_doubt_solver',
+          routeLabel: 'Ask AI Tutor'
+        }
+      );
+
+      eveningSlots.push(
+        {
+          id: `slot_d${d.dayNumber}_e1`,
+          timeSlot: '04:30 PM – 06:00 PM',
+          period: 'AFTERNOON',
+          title: `Slot 1: Hurdle Surgery & Fresh Start`,
+          durationMinutes: 90,
+          subject: d.focusSubject,
+          focusType: d.dayNumber === 1 ? 'WEAK_SURGERY' : 'NUMERICAL_DRILL',
+          description: d.targetObjective,
+          targetChapter: d.dayNumber === 1 ? weakTopicHurdle : `${d.focusSubject} Core`,
+          route: d.dayNumber === 1 ? hurdleTarget.route : `smart_lessons:${d.focusSubject}`,
+          routeLabel: 'Open Lesson'
+        },
+        {
+          id: `slot_d${d.dayNumber}_e2`,
+          timeSlot: '06:30 PM – 08:00 PM',
+          period: 'EVENING',
+          title: `Slot 2: Speed Drills & Formula Derivations`,
+          durationMinutes: 90,
+          subject: d.dayNumber % 2 === 0 ? strongSubject : midSub1,
+          focusType: 'NUMERICAL_DRILL',
+          description: 'Solve 18–20 multi-step problems with scratchpad derivations.',
+          targetChapter: 'Derivations & Numerical Drills',
+          route: `smart_lessons:${d.dayNumber % 2 === 0 ? strongSubject : midSub1}`,
+          routeLabel: 'Solve Practice Set'
+        },
+        {
+          id: `slot_d${d.dayNumber}_e3`,
+          timeSlot: '08:45 PM – 10:00 PM',
+          period: 'NIGHT',
+          title: `Slot 3: Blueprint & NCERT Precision`,
+          durationMinutes: 75,
+          subject: stream === 'PCB' ? 'Mathematics' : (stream === 'PCM' ? 'Biology' : midSub2),
+          focusType: 'NCERT_MEMORIZE',
+          description: stream === 'PCB' ? 'Formula drill on Matrices & Vector algebra.' : (stream === 'PCM' ? 'Read NCERT Biology summaries line-by-line.' : 'Physical & inorganic chemistry flashcards.'),
+          targetChapter: stream === 'PCB' ? 'Matrices & Determinants' : 'High-Yield Theory',
+          route: stream === 'PCB' ? blueprintTarget.route : (stream === 'PCM' ? blueprintTarget.route : `smart_lessons:${midSub2}`),
+          routeLabel: 'Open Theory'
+        },
+        {
+          id: `slot_d${d.dayNumber}_e4`,
+          timeSlot: '10:15 PM – 11:00 PM',
+          period: 'NIGHT',
+          title: `Slot 4: Error Notebook & Spaced Repetition`,
+          durationMinutes: 45,
+          subject: 'All Subjects',
+          focusType: 'ERROR_LOGBOOK',
+          description: 'Log all missed questions into your Mistake Notebook and ask AI Tutor to clarify lingering doubts.',
+          targetChapter: 'Daily Error Surgery',
+          route: 'ai_doubt_solver',
+          routeLabel: 'Ask AI Tutor'
+        }
+      );
+    } else {
+      // Intensive 8+ hours (120m + 120m + 90m + 90m + 60m = 480m = 8 hrs)
+      morningSlots.push(
+        {
+          id: `slot_d${d.dayNumber}_m1`,
+          timeSlot: '06:00 AM – 08:00 AM',
+          period: 'MORNING',
+          title: `Slot 1: Deep Hurdle Surgery & Derivations`,
+          durationMinutes: 120,
+          subject: d.focusSubject,
+          focusType: 'WEAK_SURGERY',
+          description: d.targetObjective,
+          targetChapter: d.dayNumber === 1 ? weakTopicHurdle : `${d.focusSubject} Advanced`,
+          route: d.dayNumber === 1 ? hurdleTarget.route : `smart_lessons:${d.focusSubject}`,
+          routeLabel: 'Deep Dive'
+        },
+        {
+          id: `slot_d${d.dayNumber}_m2`,
+          timeSlot: '08:30 AM – 10:30 AM',
+          period: 'MORNING',
+          title: `Slot 2: Advanced Numerical Marathon`,
+          durationMinutes: 120,
+          subject: strongSubject,
+          focusType: 'NUMERICAL_DRILL',
+          description: 'Solve 25+ challenging IAT/JEE-Advanced level numericals with stopwatch timing.',
+          targetChapter: `${strongSubject} Problem Set`,
+          route: `smart_lessons:${strongSubject}`,
+          routeLabel: 'Solve Set'
+        },
+        {
+          id: `slot_d${d.dayNumber}_m3`,
+          timeSlot: '02:00 PM – 03:30 PM',
+          period: 'AFTERNOON',
+          title: `Slot 3: Official PYQ & Exam Simulation`,
+          durationMinutes: 90,
+          subject: midSub1,
+          focusType: 'MOCK_PYQ',
+          description: 'Direct past paper questions analysis and elimination techniques.',
+          targetChapter: 'Official IAT PYQs',
+          route: 'pyqs',
+          routeLabel: 'Open PYQ Hub'
+        },
+        {
+          id: `slot_d${d.dayNumber}_m4`,
+          timeSlot: '04:00 PM – 05:30 PM',
+          period: 'AFTERNOON',
+          title: `Slot 4: Tactical Blueprint & Memorization`,
+          durationMinutes: 90,
+          subject: stream === 'PCB' ? 'Mathematics' : (stream === 'PCM' ? 'Biology' : midSub2),
+          focusType: 'NCERT_MEMORIZE',
+          description: stream === 'PCB' ? 'Non-Calculus Math problem drills (Matrices & Vectors).' : 'NCERT line-by-line reading & keyword recall.',
+          targetChapter: 'Strategic Advantage',
+          route: stream === 'PCB' ? blueprintTarget.route : `smart_lessons:${midSub2}`,
+          routeLabel: 'Open Blueprint'
+        },
+        {
+          id: `slot_d${d.dayNumber}_m5`,
+          timeSlot: '08:30 PM – 09:30 PM',
+          period: 'NIGHT',
+          title: `Slot 5: Error Notebook Audit & Daily Recap`,
+          durationMinutes: 60,
+          subject: 'All PCMB',
+          focusType: 'ERROR_LOGBOOK',
+          description: 'Audit incorrect questions, formula flashcards, and query AI doubt solver.',
+          targetChapter: 'Zero Backlog Surgery',
+          route: 'ai_doubt_solver',
+          routeLabel: 'Ask AI Tutor'
+        }
+      );
+
+      eveningSlots.push(
+        {
+          id: `slot_d${d.dayNumber}_e1`,
+          timeSlot: '02:30 PM – 04:30 PM',
+          period: 'AFTERNOON',
+          title: `Slot 1: Deep Hurdle Surgery & Derivations`,
+          durationMinutes: 120,
+          subject: d.focusSubject,
+          focusType: 'WEAK_SURGERY',
+          description: d.targetObjective,
+          targetChapter: d.dayNumber === 1 ? weakTopicHurdle : `${d.focusSubject} Advanced`,
+          route: d.dayNumber === 1 ? hurdleTarget.route : `smart_lessons:${d.focusSubject}`,
+          routeLabel: 'Deep Dive'
+        },
+        {
+          id: `slot_d${d.dayNumber}_e2`,
+          timeSlot: '05:00 PM – 07:00 PM',
+          period: 'EVENING',
+          title: `Slot 2: Advanced Numerical Marathon`,
+          durationMinutes: 120,
+          subject: strongSubject,
+          focusType: 'NUMERICAL_DRILL',
+          description: 'Solve 25+ challenging IAT/JEE-Advanced level numericals with stopwatch timing.',
+          targetChapter: `${strongSubject} Problem Set`,
+          route: `smart_lessons:${strongSubject}`,
+          routeLabel: 'Solve Set'
+        },
+        {
+          id: `slot_d${d.dayNumber}_e3`,
+          timeSlot: '07:30 PM – 09:00 PM',
+          period: 'NIGHT',
+          title: `Slot 3: Official PYQ & Exam Simulation`,
+          durationMinutes: 90,
+          subject: midSub1,
+          focusType: 'MOCK_PYQ',
+          description: 'Direct past paper questions analysis and elimination techniques.',
+          targetChapter: 'Official IAT PYQs',
+          route: 'pyqs',
+          routeLabel: 'Open PYQ Hub'
+        },
+        {
+          id: `slot_d${d.dayNumber}_e4`,
+          timeSlot: '09:30 PM – 11:00 PM',
+          period: 'NIGHT',
+          title: `Slot 4: Tactical Blueprint & Memorization`,
+          durationMinutes: 90,
+          subject: stream === 'PCB' ? 'Mathematics' : (stream === 'PCM' ? 'Biology' : midSub2),
+          focusType: 'NCERT_MEMORIZE',
+          description: stream === 'PCB' ? 'Non-Calculus Math problem drills (Matrices & Vectors).' : 'NCERT line-by-line reading & keyword recall.',
+          targetChapter: 'Strategic Advantage',
+          route: stream === 'PCB' ? blueprintTarget.route : `smart_lessons:${midSub2}`,
+          routeLabel: 'Open Blueprint'
+        },
+        {
+          id: `slot_d${d.dayNumber}_e5`,
+          timeSlot: '11:15 PM – 12:15 AM',
+          period: 'NIGHT',
+          title: `Slot 5: Error Notebook Audit & Daily Recap`,
+          durationMinutes: 60,
+          subject: 'All PCMB',
+          focusType: 'ERROR_LOGBOOK',
+          description: 'Audit incorrect questions, formula flashcards, and query AI doubt solver.',
+          targetChapter: 'Zero Backlog Surgery',
+          route: 'ai_doubt_solver',
+          routeLabel: 'Ask AI Tutor'
+        }
+      );
+    }
+
+    return {
+      dayNumber: d.dayNumber,
+      dayLabel: d.dayLabel,
+      dayName: d.dayName,
+      theme: d.theme,
+      focusSubject: d.focusSubject,
+      targetObjective: d.targetObjective,
+      morningSlots,
+      eveningSlots
+    };
+  });
+}
+
+// ── Synthesized Weak Area Diagnostic Hub (Fallback for New Users) ───────
+export function getSynthesizedWeakAreas(answers: AiOnboardingAnswers): WeakAreaDiagnosis[] {
+  const { weakSubject, weakTopicHurdle, stream } = answers;
+  const hurdleTarget = resolveLessonTarget(weakTopicHurdle, weakSubject);
+
+  const card1: WeakAreaDiagnosis = {
+    id: 'diag_hurdle',
+    subject: weakSubject,
+    chapter: weakTopicHurdle || `${weakSubject} Core Principles`,
+    topic: 'Identified Primary Bottleneck',
+    urgency: 'CRITICAL',
+    reason: `Diagnosed as your highest-anxiety hurdle during calibration. Historically costs candidates 12–16 marks in IAT due to formula hesitation under timed pressure.`,
+    markImpact: '+16 Marks at Stake',
+    route: hurdleTarget.route,
+    routeLabel: hurdleTarget.lessonTitle ? `Fix ${hurdleTarget.lessonTitle}` : `Master ${weakSubject}`,
+    isRealData: false
+  };
+
+  let card2: WeakAreaDiagnosis;
+  if (stream === 'PCB') {
+    const mathTarget = resolveLessonTarget('Matrices & Determinants', 'Mathematics');
+    card2 = {
+      id: 'diag_stream_trap',
+      subject: 'Mathematics',
+      chapter: 'Matrices, Determinants & 3D Vectors',
+      topic: 'Non-Calculus Scoring Trap',
+      urgency: 'HIGH',
+      reason: '78% of PCB candidates leave Math completely blank, surrendering 60 potential marks. Mastering algebra & determinants recovers 24+ marks easily.',
+      markImpact: '+24 Marks Potential',
+      route: mathTarget.route,
+      routeLabel: 'Open Math Blueprint',
+      isRealData: false
+    };
+  } else if (stream === 'PCM') {
+    const bioTarget = resolveLessonTarget('Genetics & Molecular Inheritance', 'Biology');
+    card2 = {
+      id: 'diag_stream_trap',
+      subject: 'Biology',
+      chapter: 'Genetics, Evolution & Ecology',
+      topic: 'Direct NCERT Factual Retrieval',
+      urgency: 'HIGH',
+      reason: 'PCM students often over-solve complex math and ignore easy NCERT Biology questions that take only 20 seconds each with zero calculation.',
+      markImpact: '+28 Marks Potential',
+      route: bioTarget.route,
+      routeLabel: 'Open NCERT Bio Fast-Track',
+      isRealData: false
+    };
+  } else {
+    const chemTarget = resolveLessonTarget('Organic Chemistry: Some Basic Principles and Techniques', 'Chemistry');
+    card2 = {
+      id: 'diag_stream_trap',
+      subject: 'Chemistry',
+      chapter: 'Organic Reaction Mechanisms (SN1/SN2, Aldol)',
+      topic: 'Multi-Step Synthesis Trap',
+      urgency: 'HIGH',
+      reason: 'IAT tests electronic effects and stereochemistry with deceptive distractors. Candidates lose marks by confusing nucleophilic attack pathways.',
+      markImpact: '+16 Marks Potential',
+      route: chemTarget.route,
+      routeLabel: 'Master Mechanisms',
+      isRealData: false
+    };
+  }
+
+  const card3: WeakAreaDiagnosis = {
+    id: 'diag_negative_marking',
+    subject: 'All Subjects',
+    chapter: 'Negative Marking Elimination in Section A',
+    topic: 'Careless Error Audit',
+    urgency: 'MODERATE',
+    reason: 'Eliminating just 3 wild guesses per paper saves 15 marks (+3 correct equivalent), vaulting your rank by 120+ spots in IISER cutoffs.',
+    markImpact: '+15 Net Marks Saved',
+    route: 'ai_doubt_solver',
+    routeLabel: 'Ask AI Tutor Pacing Strategy',
+    isRealData: false
+  };
+
+  return [card1, card2, card3];
 }
 
 // ── Smart Fallback & Deterministic Plan Generator ─────────────────────────
@@ -703,6 +1282,9 @@ export function buildDeterministicStudyPlan(answers: AiOnboardingAnswers, userNa
     `🧠 Consistent Habit: Studying ${dailyHours} hours every single day beats cramming 12 hours once a week. Your active study streak is your greatest asset.`
   ];
 
+  const sevenDaySchedule = generate7DaySchedule(answers);
+  const fallbackWeakAreas = getSynthesizedWeakAreas(answers);
+
   return {
     id: planId,
     createdAt: new Date().toISOString(),
@@ -713,7 +1295,9 @@ export function buildDeterministicStudyPlan(answers: AiOnboardingAnswers, userNa
     weeklyHourlyAllocation,
     phases,
     weeklyChecklist,
-    aiMentorTips
+    aiMentorTips,
+    sevenDaySchedule,
+    fallbackWeakAreas
   };
 }
 
