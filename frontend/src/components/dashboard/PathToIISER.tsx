@@ -16,7 +16,6 @@ import {
   Star,
   Trophy,
   TrendingUp,
-  TrendingDown,
   Compass,
   Flag,
   Sparkles,
@@ -44,7 +43,12 @@ import {
   ShieldAlert,
   Crosshair,
   BarChart3,
-  Activity
+  Activity,
+  X,
+  Info,
+  Lock,
+  Unlock,
+  ExternalLink
 } from 'lucide-react';
 import { cn } from '../../lib/utils';
 import { Footer } from '../layout/Footer';
@@ -63,6 +67,7 @@ import {
   getStoredAiStudyPlan,
   saveAiStudyPlan,
   generateAiStudyPlan,
+  buildDeterministicStudyPlan,
   isDailyActionCompleted,
   setDailyActionCompleted,
   getSavedChecklistState,
@@ -75,6 +80,8 @@ import {
   saveSchedulePreference,
   getSavedSlotStates,
   saveSlotState,
+  getSavedMissionSteps,
+  saveMissionStep,
   generate7DaySchedule,
   getSynthesizedWeakAreas
 } from './aiPathGenerator';
@@ -98,38 +105,46 @@ export function PathToIISER({
   const isLight = theme === 'light';
 
   // ── Plan & Calibration State ───────────────────────────────────────────
-  const [aiPlan, setAiPlan] = useState<AiGeneratedStudyPlan | null>(() => {
-    const p = getStoredAiStudyPlan();
-    if (!p) return null;
-    // Sanitize any raw markdown headers that may have leaked in earlier versions
-    if (p.aiMentorTips && Array.isArray(p.aiMentorTips)) {
-      p.aiMentorTips = p.aiMentorTips.map((tip, idx) => {
-        if (tip.includes('Headline:') || tip.includes('Golden Tips') || tip.startsWith('*') || tip.endsWith('**')) {
-          const defaults = [
-            `Focus on ${p.answers.weakSubject}: Every +4 marks in ${p.answers.weakSubject} boosts your IAT rank by 80+ positions. Target high-probability formula questions first.`,
-            `180-Min Pacing: Divide exam time: Chemistry (35m) → Biology (30m) → Physics (55m) → Math (50m) → Final Review (10m).`,
-            `Zero-Error Habit: In Section A, eliminate careless negative marks to secure your Top 100 AIR at ${p.answers.targetInstitute}.`
-          ];
-          return defaults[idx % defaults.length];
-        }
-        return tip;
-      });
-    }
-    if (p.headlineStrategy && (p.headlineStrategy.includes('Headline:') || p.headlineStrategy.startsWith('*'))) {
-      p.headlineStrategy = `Tailored ${p.answers.dailyHours} hrs/day roadmap for ${p.answers.targetInstitute}. Maximizing ${p.answers.strongSubject} speed while executing targeted surgery on ${p.answers.weakSubject}.`;
+  const [aiPlan, setAiPlan] = useState<AiGeneratedStudyPlan>(() => {
+    let p = getStoredAiStudyPlan();
+    if (!p) {
+      const defaultAnswers: AiOnboardingAnswers = {
+        targetInstitute: 'IISc Bangalore',
+        targetYear: '2027',
+        stream: 'PCB',
+        currentStage: 'STARTING',
+        strongSubject: 'Biology',
+        weakSubject: 'Mathematics',
+        weakTopicHurdle: 'Matrices, Determinants & System of Equations',
+        dailyHours: 5,
+        targetAir: 'Top 100 AIR'
+      };
+      p = buildDeterministicStudyPlan(defaultAnswers, 'Himanshu');
+      saveAiStudyPlan(p);
+    } else {
+      // Ensure target institute reflects onboarding selection
+      if (!p.answers.targetInstitute || p.answers.targetInstitute === 'IISER Pune') {
+        p.answers.targetInstitute = 'IISc Bangalore';
+        p.answers.stream = p.answers.stream || 'PCB';
+        p.answers.dailyHours = p.answers.dailyHours || 5;
+        p.answers.targetAir = p.answers.targetAir || 'Top 100 AIR';
+        saveAiStudyPlan(p);
+      }
     }
     return p;
   });
-  const [isCalibrating, setIsCalibrating] = useState<boolean>(() => !getStoredAiStudyPlan());
+
+  const [isCalibrating, setIsCalibrating] = useState<boolean>(false);
   const [isGenerating, setIsGenerating] = useState<boolean>(false);
   const [generationStepText, setGenerationStepText] = useState<string>('Analyzing your academic stream...');
+  const [showPriorityModal, setShowPriorityModal] = useState<boolean>(false);
 
   // ── Onboarding Wizard Answers ──────────────────────────────────────────
   const [wizardStep, setWizardStep] = useState<number>(1);
   const [wizardAnswers, setWizardAnswers] = useState<AiOnboardingAnswers>(() => {
-    const existing = getStoredAiStudyPlan()?.answers;
+    const existing = aiPlan?.answers;
     return existing || {
-      targetInstitute: 'IISER Pune',
+      targetInstitute: 'IISc Bangalore',
       targetYear: '2027',
       stream: 'PCB',
       currentStage: 'STARTING',
@@ -143,12 +158,23 @@ export function PathToIISER({
 
   // ── Interactive Action States ──────────────────────────────────────────
   const [dailyCompleted, setDailyCompleted] = useState<boolean>(() => {
-    const p = getStoredAiStudyPlan();
-    return p ? isDailyActionCompleted(p.id) : false;
+    return aiPlan ? isDailyActionCompleted(aiPlan.id) : false;
   });
 
   const [checklist, setChecklist] = useState<Record<string, boolean>>(() => getSavedChecklistState());
   const [activePhaseTab, setActivePhaseTab] = useState<string>('PHASE_1');
+
+  // ── Mission Sub-Steps State ───────────────────────────────────────────
+  const [missionStepsState, setMissionStepsState] = useState<Record<string, boolean>>(() => getSavedMissionSteps());
+
+  const handleToggleMissionStep = (stepId: string) => {
+    setMissionStepsState(prev => {
+      const nextVal = !prev[stepId];
+      const next = { ...prev, [stepId]: nextVal };
+      saveMissionStep(stepId, nextVal);
+      return next;
+    });
+  };
 
   // ── SLS Live Intelligence Integration ─────────────────────────────────
   const {
@@ -197,61 +223,7 @@ export function PathToIISER({
     return schedulePref === 'MORNING' ? activeDayPlan.morningSlots : activeDayPlan.eveningSlots;
   }, [activeDayPlan, schedulePref]);
 
-  const activeDayProgress = useMemo(() => {
-    if (!activeSlots || activeSlots.length === 0) return { completedMins: 0, totalMins: 0, percent: 0, completedCount: 0 };
-    let total = 0;
-    let completed = 0;
-    let count = 0;
-    for (const slot of activeSlots) {
-      total += slot.durationMinutes;
-      if (slotStates[slot.id]) {
-        completed += slot.durationMinutes;
-        count++;
-      }
-    }
-    const pct = total > 0 ? Math.round((completed / total) * 100) : 0;
-    return { completedMins: completed, totalMins: total, percent: pct, completedCount: count };
-  }, [activeSlots, slotStates]);
-
-  // ── Where You Need Work (Diagnosed Urgency Hub) Memo ───────────────────
-  const diagnosedWeakAreas = useMemo<WeakAreaDiagnosis[]>(() => {
-    if (hasSlsData && weaknessAnalysis && weaknessAnalysis.weakChapters && weaknessAnalysis.weakChapters.length > 0) {
-      return weaknessAnalysis.weakChapters.slice(0, 3).map((wc, idx) => {
-        const chapterName = wc.chapterTitle || wc.chapterId;
-        const target = resolveLessonTarget(chapterName, wc.subject);
-        const acc = Math.round((wc.accuracy || 0) * 100);
-        const total = wc.questionsAttempted || wc.totalQuestions || wc.attempts || 0;
-        const incorrect = wc.incorrectCount || 0;
-        const urgency: 'CRITICAL' | 'HIGH' | 'MODERATE' = 
-          wc.severity === 'critical' ? 'CRITICAL' : (wc.severity === 'high' ? 'HIGH' : (acc < 50 ? 'HIGH' : 'MODERATE'));
-        return {
-          id: `sls_${wc.chapterId || idx}`,
-          subject: wc.subject,
-          chapter: chapterName,
-          topic: (wc.reasons && wc.reasons[0]) || 'High Error Frequency',
-          accuracyPct: acc,
-          errorCount: incorrect,
-          totalAttempts: total,
-          urgency,
-          reason: `Detected from your live quiz attempts. Accuracy is ${acc}% with ${incorrect} incorrect answers across ${total} questions.`,
-          markImpact: urgency === 'CRITICAL' ? '+16 Marks at Stake' : '+12 Marks at Stake',
-          route: target.route,
-          routeLabel: target.lessonTitle ? `Practice ${target.lessonTitle}` : `Open ${wc.subject}`,
-          isRealData: true
-        };
-      });
-    }
-
-    if (aiPlan?.fallbackWeakAreas && aiPlan.fallbackWeakAreas.length > 0) {
-      return aiPlan.fallbackWeakAreas;
-    }
-    if (aiPlan?.answers) {
-      return getSynthesizedWeakAreas(aiPlan.answers);
-    }
-    return [];
-  }, [hasSlsData, weaknessAnalysis, aiPlan]);
-
-  // Days left dynamic countdown
+  // Days left dynamic countdown (~271 days to June 2027)
   const daysUntilExam = useMemo(() => {
     const EXAM_DATE = new Date('2027-06-07T00:00:00');
     const today = new Date();
@@ -348,9 +320,9 @@ export function PathToIISER({
   }
 
   // ══════════════════════════════════════════════════════════════════════════
-  // 2. INTERACTIVE ONBOARDING QUESTIONNAIRE WIZARD
+  // 2. INTERACTIVE ONBOARDING / CALIBRATION WIZARD
   // ══════════════════════════════════════════════════════════════════════════
-  if (isCalibrating || !aiPlan) {
+  if (isCalibrating) {
     return (
       <div className="max-w-4xl mx-auto w-full space-y-6 flex-1 mt-2 lg:mt-4 pb-20 animate-in fade-in duration-300">
         
@@ -371,19 +343,17 @@ export function PathToIISER({
                 Calibrate Your Path to IISER
               </h1>
               <p className={cn("text-xs sm:text-sm mt-1", isLight ? "text-slate-600" : "text-white/60")}>
-                Answer 6 quick questions so the AI can craft your exact stream-specific scoring blueprint.
+                Update your stream, dream institute, study commitment, or weak areas to adjust your roadmap.
               </p>
             </div>
 
-            {aiPlan && (
-              <button
-                type="button"
-                onClick={() => setIsCalibrating(false)}
-                className="self-start sm:self-auto text-xs px-3 py-1.5 rounded-xl border border-white/10 hover:border-white/20 text-white/60 hover:text-white transition-all cursor-pointer"
-              >
-                Cancel & View Existing Plan
-              </button>
-            )}
+            <button
+              type="button"
+              onClick={() => setIsCalibrating(false)}
+              className="self-start sm:self-auto text-xs px-3 py-1.5 rounded-xl border border-white/10 hover:border-white/20 text-white/60 hover:text-white transition-all cursor-pointer"
+            >
+              Cancel & View Existing Plan
+            </button>
           </div>
 
           {/* 6-Step Indicator Pills */}
@@ -422,15 +392,15 @@ export function PathToIISER({
             })}
           </div>
 
-          {/* ── STEP 1: TARGET INSTITUTE ─────────────────────────────────── */}
+          {/* ── STEP 1: TARGET INSTITUTE ── */}
           {wizardStep === 1 && (
             <div className="space-y-4 animate-in fade-in duration-200">
               <div className="space-y-1">
                 <h3 className="text-base sm:text-lg font-bold text-white">
-                  1. Which Premier Institute is your dream destination?
+                  1. Which Premier Institute is your target destination?
                 </h3>
                 <p className="text-xs text-white/50">
-                  Target selection configures the composite marks and ranking threshold required in IAT 2027.
+                  Target selection determines the composite marks and percentile threshold required in IAT 2027.
                 </p>
               </div>
 
@@ -450,23 +420,19 @@ export function PathToIISER({
                     >
                       <div className="space-y-1">
                         <div className="flex items-center gap-2">
-                          <span className={cn("font-bold text-sm sm:text-base", isSelected ? "text-cyan-200" : "text-white")}>
+                          <span className={cn("font-bold text-sm sm:text-base", isSelected ? "text-cyan-300" : "text-white")}>
                             {inst.name}
                           </span>
-                          <span className="text-[9.5px] px-2 py-0.5 rounded-full bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 font-bold">
+                          <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-white/10 text-white/70">
                             {inst.badge}
                           </span>
                         </div>
-                        <p className="text-xs text-white/50 leading-relaxed">
-                          {inst.tag}
-                        </p>
-                        <span className="text-[10px] font-mono text-cyan-400/80 block pt-0.5">
-                          {inst.rank}
-                        </span>
+                        <p className="text-xs text-white/50">{inst.tag}</p>
+                        <span className="text-[11px] font-mono text-cyan-400 font-semibold block">{inst.rank}</span>
                       </div>
 
                       <div className={cn(
-                        "w-5 h-5 rounded-full border flex items-center justify-center shrink-0 mt-1 transition-all",
+                        "w-5 h-5 rounded-full border flex items-center justify-center shrink-0 transition-all",
                         isSelected ? "border-cyan-400 bg-cyan-400 text-slate-950 font-bold" : "border-white/20"
                       )}>
                         {isSelected && <Check className="w-3.5 h-3.5 stroke-[3]" />}
@@ -478,54 +444,48 @@ export function PathToIISER({
             </div>
           )}
 
-          {/* ── STEP 2: STREAM & BACKGROUND ─────────────────────────────── */}
+          {/* ── STEP 2: STREAM ── */}
           {wizardStep === 2 && (
             <div className="space-y-4 animate-in fade-in duration-200">
               <div className="space-y-1">
                 <h3 className="text-base sm:text-lg font-bold text-white">
-                  2. What is your Academic Stream / Background?
+                  2. What is your Academic Stream / Subject Background?
                 </h3>
                 <p className="text-xs text-white/50">
-                  Crucial for designing your non-core subject tactical blueprint (e.g. PCB Math vs PCM Bio).
+                  Allows SmartPrep to formulate your 4th-subject scoring strategy (e.g. Non-Calculus Math for PCB).
                 </p>
               </div>
 
-              <div className="grid grid-cols-1 gap-3 pt-2">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
                 {STREAMS.map((s) => {
                   const isSelected = wizardAnswers.stream === s.id;
                   return (
                     <div
                       key={s.id}
-                      onClick={() => setWizardAnswers(prev => ({ 
-                        ...prev, 
-                        stream: s.id,
-                        // Update weak subject sensible default
-                        weakSubject: s.id === 'PCB' ? 'Mathematics' : (s.id === 'PCM' ? 'Biology' : prev.weakSubject)
-                      }))}
+                      onClick={() => setWizardAnswers(prev => ({ ...prev, stream: s.id }))}
                       className={cn(
-                        "p-4 rounded-2xl border transition-all cursor-pointer flex items-center justify-between gap-4 text-left group",
+                        "p-4 rounded-2xl border transition-all cursor-pointer text-left flex items-start justify-between gap-3 group",
                         isSelected
-                          ? "bg-indigo-500/20 border-indigo-400 shadow-[0_0_20px_rgba(99,102,241,0.25)]"
-                          : "bg-white/[0.03] border-white/10 hover:border-indigo-500/40 hover:bg-white/[0.06]"
+                          ? "bg-cyan-500/15 border-cyan-400 shadow-[0_0_20px_rgba(6,182,212,0.2)]"
+                          : "bg-white/[0.03] border-white/10 hover:border-cyan-500/40 hover:bg-white/[0.06]"
                       )}
                     >
                       <div className="space-y-1">
-                        <div className="flex items-center gap-2.5">
-                          <span className={cn("font-bold text-sm sm:text-base", isSelected ? "text-indigo-200" : "text-white")}>
+                        <div className="flex items-center gap-2">
+                          <span className={cn("font-bold text-sm sm:text-base", isSelected ? "text-cyan-300" : "text-white")}>
                             {s.title}
                           </span>
-                          <span className="text-[10px] px-2 py-0.5 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-300 font-bold">
+                          <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-cyan-500/20 text-cyan-300 border border-cyan-500/30">
                             {s.tag}
                           </span>
                         </div>
-                        <p className="text-xs text-white/50">
-                          {s.desc}
-                        </p>
+                        <p className="text-xs text-white/50">{s.subtitle}</p>
+                        <p className="text-[11px] text-white/70 pt-1 leading-relaxed">{s.desc}</p>
                       </div>
 
                       <div className={cn(
                         "w-5 h-5 rounded-full border flex items-center justify-center shrink-0 transition-all",
-                        isSelected ? "border-indigo-400 bg-indigo-400 text-slate-950 font-bold" : "border-white/20"
+                        isSelected ? "border-cyan-400 bg-cyan-400 text-slate-950 font-bold" : "border-white/20"
                       )}>
                         {isSelected && <Check className="w-3.5 h-3.5 stroke-[3]" />}
                       </div>
@@ -536,15 +496,15 @@ export function PathToIISER({
             </div>
           )}
 
-          {/* ── STEP 3: CURRENT PREPARATION STAGE ───────────────────────── */}
+          {/* ── STEP 3: CURRENT STAGE ── */}
           {wizardStep === 3 && (
             <div className="space-y-4 animate-in fade-in duration-200">
               <div className="space-y-1">
                 <h3 className="text-base sm:text-lg font-bold text-white">
-                  3. Where are you currently in your IAT syllabus?
+                  3. Where are you currently in your preparation?
                 </h3>
                 <p className="text-xs text-white/50">
-                  Determines your starting phase: Foundation, Concept Mastery, or Mock Sprint.
+                  Configures your baseline phase and question difficulty weighting.
                 </p>
               </div>
 
@@ -558,26 +518,25 @@ export function PathToIISER({
                       className={cn(
                         "p-5 rounded-2xl border transition-all cursor-pointer flex flex-col justify-between text-left group min-h-[140px]",
                         isSelected
-                          ? "bg-cyan-500/15 border-cyan-400 shadow-[0_0_20px_rgba(6,182,212,0.25)]"
-                          : "bg-white/[0.03] border-white/10 hover:border-cyan-500/40 hover:bg-white/[0.06]"
+                          ? "bg-indigo-500/20 border-indigo-400 shadow-[0_0_20px_rgba(99,102,241,0.25)]"
+                          : "bg-white/[0.03] border-white/10 hover:border-indigo-500/40 hover:bg-white/[0.06]"
                       )}
                     >
                       <div className="space-y-2">
-                        <div className="flex items-center justify-between">
-                          <span className="text-2xl">{st.icon}</span>
-                          <div className={cn(
-                            "w-5 h-5 rounded-full border flex items-center justify-center transition-all",
-                            isSelected ? "border-cyan-400 bg-cyan-400 text-slate-950 font-bold" : "border-white/20"
-                          )}>
-                            {isSelected && <Check className="w-3.5 h-3.5 stroke-[3]" />}
-                          </div>
-                        </div>
-                        <h4 className={cn("font-bold text-sm", isSelected ? "text-cyan-200" : "text-white")}>
+                        <div className="text-2xl">{st.icon}</div>
+                        <h4 className={cn("font-bold text-sm sm:text-base", isSelected ? "text-indigo-300" : "text-white")}>
                           {st.title}
                         </h4>
-                        <p className="text-xs text-white/50 leading-relaxed">
-                          {st.desc}
-                        </p>
+                        <p className="text-xs text-white/50 leading-relaxed">{st.desc}</p>
+                      </div>
+
+                      <div className="flex justify-end pt-2">
+                        <div className={cn(
+                          "w-5 h-5 rounded-full border flex items-center justify-center transition-all",
+                          isSelected ? "border-indigo-400 bg-indigo-400 text-slate-950 font-bold" : "border-white/20"
+                        )}>
+                          {isSelected && <Check className="w-3.5 h-3.5 stroke-[3]" />}
+                        </div>
                       </div>
                     </div>
                   );
@@ -586,15 +545,15 @@ export function PathToIISER({
             </div>
           )}
 
-          {/* ── STEP 4: SUBJECT PROFILE & SPECIFIC HURDLE ────────────────── */}
+          {/* ── STEP 4: SUBJECT BALANCE & HURDLES ── */}
           {wizardStep === 4 && (
-            <div className="space-y-5 animate-in fade-in duration-200">
+            <div className="space-y-6 animate-in fade-in duration-200">
               <div className="space-y-1">
                 <h3 className="text-base sm:text-lg font-bold text-white">
-                  4. Your Strongest vs Weakest Subject Area
+                  4. Identify your Strongest and Weakest Subjects
                 </h3>
                 <p className="text-xs text-white/50">
-                  We will reinforce your strength for speed while scheduling targeted surgery for your hurdle.
+                  Used to balance daily hours and pinpoint topics requiring high-yield focus.
                 </p>
               </div>
 
@@ -630,7 +589,7 @@ export function PathToIISER({
               <div className="space-y-2 pt-2">
                 <label className="text-xs font-bold uppercase tracking-wider text-rose-400 flex items-center gap-1.5">
                   <AlertCircle className="w-3.5 h-3.5 text-rose-400" />
-                  Your Weakest / Highest Anxiety Subject:
+                  Your Weakest / Highest Growth Subject:
                 </label>
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
                   {SUBJECT_OPTIONS.map((sub) => {
@@ -662,7 +621,7 @@ export function PathToIISER({
               <div className="space-y-2 pt-2">
                 <label className="text-xs font-bold uppercase tracking-wider text-amber-400 flex items-center gap-1.5">
                   <Zap className="w-3.5 h-3.5 text-amber-400" />
-                  Specific Topic / Hurdle in {wizardAnswers.weakSubject}:
+                  Specific Topic / Focus Area in {wizardAnswers.weakSubject}:
                 </label>
                 <div className="space-y-2">
                   {(WEAKNESS_HURDLES[wizardAnswers.weakSubject] || []).map((hurdle) => {
@@ -693,7 +652,7 @@ export function PathToIISER({
             </div>
           )}
 
-          {/* ── STEP 5: DAILY STUDY HOURS ───────────────────────────────── */}
+          {/* ── STEP 5: DAILY STUDY HOURS ── */}
           {wizardStep === 5 && (
             <div className="space-y-4 animate-in fade-in duration-200">
               <div className="space-y-1">
@@ -701,7 +660,7 @@ export function PathToIISER({
                   5. How many hours can you dedicate to self-study each day?
                 </h3>
                 <p className="text-xs text-white/50">
-                  Consistency is paramount. We will distribute these hours to ensure you never miss revision.
+                  Consistency is paramount. We will distribute these hours to ensure balanced progress.
                 </p>
               </div>
 
@@ -745,7 +704,7 @@ export function PathToIISER({
             </div>
           )}
 
-          {/* ── STEP 6: TARGET AIR / AIM ─────────────────────────────────── */}
+          {/* ── STEP 6: TARGET AIR ── */}
           {wizardStep === 6 && (
             <div className="space-y-4 animate-in fade-in duration-200">
               <div className="space-y-1">
@@ -753,7 +712,7 @@ export function PathToIISER({
                   6. What is your Target AIR and Score Ambition?
                 </h3>
                 <p className="text-xs text-white/50">
-                  Calculates minimum safe sectional cutoffs and sets question accuracy thresholds.
+                  Sets sectional cutoffs and score requirements for your roadmap.
                 </p>
               </div>
 
@@ -832,7 +791,7 @@ export function PathToIISER({
                 className="px-6 py-3 rounded-xl text-xs sm:text-sm font-bold bg-gradient-to-r from-cyan-400 to-indigo-500 hover:from-cyan-300 hover:to-indigo-400 text-slate-950 shadow-[0_0_30px_rgba(6,182,212,0.4)] flex items-center gap-2 cursor-pointer transform hover:scale-[1.02] active:scale-[0.98] transition-all"
               >
                 <Sparkles className="w-4 h-4 text-slate-950" />
-                <span>Generate My AI Study Plan</span>
+                <span>Generate My Updated Roadmap</span>
                 <ArrowRight className="w-4 h-4 text-slate-950" />
               </button>
             )}
@@ -845,33 +804,102 @@ export function PathToIISER({
   }
 
   // ══════════════════════════════════════════════════════════════════════════
-  // 3. ACTION-ORIENTED AI STUDY PLAN DASHBOARD VIEW
+  // 3. MAIN REDESIGNED ROADMAP VIEW (12-SECTION STRICT HIERARCHY)
   // ══════════════════════════════════════════════════════════════════════════
+
+  // Calculations for Today's Mission Sub-Steps
+  const subSteps = aiPlan.dailyAction.subSteps || [];
+  const completedSubStepsCount = subSteps.filter(s => !!missionStepsState[s.id]).length;
+  const subStepsPercent = subSteps.length > 0 ? Math.round((completedSubStepsCount / subSteps.length) * 100) : 0;
+
+  // Real or Diagnostic Accuracy for Current Focus
+  const focusSubject = aiPlan.answers.weakSubject || 'Mathematics';
+  const focusTopic = aiPlan.answers.weakTopicHurdle || 'Matrices & Determinants';
+  const focusTarget = resolveLessonTarget(focusTopic, focusSubject);
+
+  // Check SLS real attempts for the focus topic
+  const matchingSlsChapter = weaknessAnalysis?.weakChapters?.find(
+    wc => (wc.chapterTitle || '').toLowerCase().includes('matri') ||
+          (wc.chapterTitle || '').toLowerCase().includes(focusTopic.toLowerCase().slice(0, 6))
+  );
+  const realAttempts = matchingSlsChapter ? (matchingSlsChapter.questionsAttempted || matchingSlsChapter.attempts || 0) : 0;
+  const realAccuracy = matchingSlsChapter && realAttempts > 0 
+    ? Math.max(0, Math.min(100, Math.round((matchingSlsChapter.accuracy || 0) * 100))) 
+    : null;
+
+  // Active Phase Data
   const activePhase = aiPlan.phases.find(p => p.id === activePhaseTab) || aiPlan.phases[0];
+
+  // Checklist Calculations
   const checklistTotal = aiPlan.weeklyChecklist.length;
   const checklistCompletedCount = aiPlan.weeklyChecklist.filter(c => checklist[c.id]).length;
   const checklistPercent = checklistTotal > 0 ? Math.round((checklistCompletedCount / checklistTotal) * 100) : 0;
-  const dailyTarget = resolveLessonTarget(aiPlan.dailyAction.targetChapter || aiPlan.dailyAction.title, aiPlan.dailyAction.subject);
 
   return (
-    <div className="max-w-6xl mx-auto w-full space-y-6 flex-1 mt-2 lg:mt-4 pb-32 lg:pb-12 animate-in fade-in duration-400">
+    <div className="max-w-5xl mx-auto w-full space-y-7 flex-1 mt-2 lg:mt-4 pb-28 lg:pb-12 animate-in fade-in duration-300">
 
-      {/* ── 1. HERO BANNER WITH TARGET INSTITUTE & RE-CALIBRATE ── */}
+      {/* ── 1. PAGE HEADER (Breadcrumbs, Title, Subtitle, Edit Path) ── */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pt-1">
+        <div className="space-y-1">
+          <nav className="flex items-center gap-2 text-xs font-mono text-white/50">
+            <button 
+              type="button" 
+              onClick={() => onNavigate?.('dashboard')} 
+              className="hover:text-cyan-400 transition-colors cursor-pointer"
+            >
+              Dashboard
+            </button>
+            <span>/</span>
+            <span className="text-cyan-300 font-semibold">My Path</span>
+          </nav>
+          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-display font-black text-white tracking-tight">
+            My Path to IISER
+          </h1>
+          <p className={cn("text-xs sm:text-sm", isLight ? "text-slate-600" : "text-white/60")}>
+            Your personalized preparation roadmap for IISER IAT 2027.
+          </p>
+        </div>
+
+        <button
+          type="button"
+          onClick={() => {
+            setWizardStep(1);
+            setIsCalibrating(true);
+          }}
+          className={cn(
+            "self-start sm:self-auto px-4 py-2 rounded-xl text-xs font-semibold flex items-center gap-2 transition-all cursor-pointer border shadow-sm",
+            isLight 
+              ? "bg-white hover:bg-slate-50 border-slate-200 text-slate-700 hover:text-cyan-700" 
+              : "bg-white/[0.04] border-white/10 hover:border-cyan-500/40 text-white/80 hover:text-white hover:bg-white/[0.08]"
+          )}
+        >
+          <RotateCcw className="w-3.5 h-3.5 text-cyan-400" />
+          <span>Edit Path</span>
+        </button>
+      </div>
+
+      {/* ── 2. YOUR GOAL (PERSONALIZED USER SUMMARY CARD) ── */}
       <div className={cn(
-        "relative overflow-hidden rounded-[2.5rem] border p-6 sm:p-8 lg:p-10 shadow-2xl backdrop-blur-xl",
-        isLight 
-          ? "bg-white/90 border-slate-200 shadow-slate-200/50" 
-          : "bg-[#090b1c]/90 border-indigo-500/20 shadow-[0_8px_32px_rgba(0,0,0,0.5),0_0_30px_rgba(99,102,241,0.08)]"
+        "relative overflow-hidden rounded-3xl border p-6 sm:p-7 shadow-2xl backdrop-blur-xl",
+        isLight
+          ? "bg-white/95 border-slate-200 shadow-slate-200/50"
+          : "bg-[#0b0e24]/95 border-indigo-500/25 shadow-[0_8px_32px_rgba(0,0,0,0.5),0_0_30px_rgba(99,102,241,0.08)]"
       )}>
         <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/10 via-cyan-500/5 to-transparent pointer-events-none" />
-        <div className="absolute top-0 right-0 w-[450px] h-[450px] bg-cyan-500/15 blur-[120px] rounded-full pointer-events-none mix-blend-screen opacity-50 translate-x-1/3 -translate-y-1/3" />
 
-        <div className="relative z-10 space-y-6">
-          {/* Top Pill & Re-calibrate Button */}
-          <div className="flex flex-wrap items-center justify-between gap-3">
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-xs font-bold text-cyan-300">
-              <Sparkles className="w-3.5 h-3.5 text-cyan-400" />
-              <span>AI CALIBRATED ROADMAP • IISER IAT 2027</span>
+        <div className="relative z-10 space-y-5">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-white/10 pb-4">
+            <div>
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-300 text-[11px] font-mono font-bold uppercase tracking-wider mb-2">
+                <Target className="w-3.5 h-3.5 text-cyan-400" />
+                <span>Your Personalized Target</span>
+              </div>
+              <h2 className="text-xl sm:text-2xl font-display font-extrabold text-white tracking-tight">
+                Target College: <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-teal-300 to-indigo-300">{aiPlan.answers.targetInstitute}</span>
+              </h2>
+              <p className="text-xs text-white/50 mt-0.5">
+                Based on your selected goal and study preferences during onboarding.
+              </p>
             </div>
 
             <button
@@ -880,295 +908,361 @@ export function PathToIISER({
                 setWizardStep(1);
                 setIsCalibrating(true);
               }}
-              className={cn(
-                "px-3.5 py-1.5 rounded-xl text-xs font-semibold flex items-center gap-2 transition-all cursor-pointer border shadow-sm",
-                isLight 
-                  ? "bg-white hover:bg-slate-50 border-slate-200 text-slate-700 hover:text-cyan-700" 
-                  : "bg-white/[0.05] border-white/10 hover:border-cyan-500/40 text-white/80 hover:text-white hover:bg-white/[0.08]"
-              )}
-              title="Retake onboarding to modify your daily study hours, target college, or weak subjects"
+              className="self-start sm:self-auto inline-flex items-center gap-1 text-xs font-semibold text-cyan-400 hover:text-cyan-300 hover:underline cursor-pointer"
             >
-              <RotateCcw className="w-3.5 h-3.5 text-cyan-400" />
-              <span>Re-calibrate Plan</span>
+              <span>Edit Path</span>
+              <ArrowRight className="w-3.5 h-3.5" />
             </button>
           </div>
 
-          {/* Title & Headline Strategy */}
-          <div className="space-y-2 max-w-3xl">
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-display font-extrabold text-white tracking-tight leading-tight">
-              My Path to <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-teal-300 to-indigo-400">{aiPlan.answers.targetInstitute}</span>
-            </h1>
-            <p className={cn("text-sm sm:text-base leading-relaxed font-medium", isLight ? "text-slate-600" : "text-white/70")}>
-              {aiPlan.headlineStrategy}
-            </p>
-          </div>
-
-          {/* 4 Metric Badges in 2x2 or 4-col Grid */}
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 pt-2">
-            <div className={cn(
-              "p-4 rounded-2xl border transition-all space-y-1.5",
-              isLight 
-                ? "bg-indigo-50/70 border-indigo-200/80 text-slate-900" 
-                : "bg-indigo-950/30 border-indigo-500/25 shadow-[inset_0_1px_0_rgba(255,255,255,0.06)]"
-            )}>
-              <div className="flex items-center justify-between">
-                <span className={cn("text-[10px] uppercase font-bold tracking-wider", isLight ? "text-indigo-600" : "text-indigo-400")}>
-                  Exam Target
-                </span>
-                <Calendar className="w-3.5 h-3.5 text-indigo-400" />
-              </div>
-              <p className="font-bold text-sm sm:text-base text-white">IISER IAT 2027</p>
-              <span className="text-xs font-mono font-bold text-cyan-400 block">{daysUntilExam} Days Left</span>
+          {/* 5 Data Badges: College, Exam, Goal, Commitment, Stream */}
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
+            {/* Target College */}
+            <div className="p-3.5 rounded-2xl bg-white/[0.03] border border-white/8 space-y-1">
+              <span className="text-[10px] font-bold uppercase tracking-wider text-cyan-400 block">Target College</span>
+              <p className="font-bold text-sm text-white truncate">{aiPlan.answers.targetInstitute}</p>
+              <span className="text-[11px] text-white/50 block font-mono">Elite Choice</span>
             </div>
 
-            <div className={cn(
-              "p-4 rounded-2xl border transition-all space-y-1.5",
-              isLight 
-                ? "bg-cyan-50/70 border-cyan-200/80 text-slate-900" 
-                : "bg-cyan-950/30 border-cyan-500/25 shadow-[inset_0_1px_0_rgba(255,255,255,0.06)]"
-            )}>
-              <div className="flex items-center justify-between">
-                <span className={cn("text-[10px] uppercase font-bold tracking-wider", isLight ? "text-cyan-700" : "text-cyan-400")}>
-                  Target College
-                </span>
-                <GraduationCap className="w-3.5 h-3.5 text-cyan-400" />
-              </div>
-              <p className="font-bold text-sm sm:text-base text-white">{aiPlan.answers.targetInstitute}</p>
-              <span className="text-xs text-indigo-300 font-semibold block">
-                {TARGET_INSTITUTES.find(i => i.id === aiPlan.answers.targetInstitute)?.rank || '#1 Campus'}
-              </span>
+            {/* Exam & Days Left */}
+            <div className="p-3.5 rounded-2xl bg-white/[0.03] border border-white/8 space-y-1">
+              <span className="text-[10px] font-bold uppercase tracking-wider text-indigo-400 block">Exam Target</span>
+              <p className="font-bold text-sm text-white">IISER IAT 2027</p>
+              <span className="text-[11px] text-cyan-400 font-mono font-bold block">{daysUntilExam} Days Left</span>
             </div>
 
-            <div className={cn(
-              "p-4 rounded-2xl border transition-all space-y-1.5",
-              isLight 
-                ? "bg-amber-50/70 border-amber-200/80 text-slate-900" 
-                : "bg-amber-950/30 border-amber-500/25 shadow-[inset_0_1px_0_rgba(255,255,255,0.06)]"
-            )}>
-              <div className="flex items-center justify-between">
-                <span className={cn("text-[10px] uppercase font-bold tracking-wider", isLight ? "text-amber-700" : "text-amber-400")}>
-                  Stream & Habit
-                </span>
-                <Flame className="w-3.5 h-3.5 text-amber-400" />
-              </div>
-              <p className="font-bold text-sm sm:text-base text-white">{aiPlan.answers.stream}</p>
-              <span className="text-xs text-amber-300 font-semibold block">{aiPlan.answers.dailyHours} Hours / day</span>
+            {/* Goal & Score */}
+            <div className="p-3.5 rounded-2xl bg-white/[0.03] border border-white/8 space-y-1">
+              <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-400 block">Target Aim</span>
+              <p className="font-bold text-sm text-white">{aiPlan.answers.targetAir}</p>
+              <span className="text-[11px] text-emerald-400 font-bold block">180+/240 Marks</span>
             </div>
 
-            <div className={cn(
-              "p-4 rounded-2xl border transition-all space-y-1.5",
-              isLight 
-                ? "bg-emerald-50/70 border-emerald-200/80 text-slate-900" 
-                : "bg-emerald-950/30 border-emerald-500/25 shadow-[inset_0_1px_0_rgba(255,255,255,0.06)]"
-            )}>
-              <div className="flex items-center justify-between">
-                <span className={cn("text-[10px] uppercase font-bold tracking-wider", isLight ? "text-emerald-700" : "text-emerald-400")}>
-                  Goal Aim
-                </span>
-                <Trophy className="w-3.5 h-3.5 text-emerald-400" />
-              </div>
-              <p className="font-bold text-sm sm:text-base text-white">{aiPlan.answers.targetAir}</p>
-              <span className="text-xs text-emerald-400 font-bold block">
-                {TARGET_AIRS.find(a => a.id === aiPlan.answers.targetAir)?.score || '160+ Marks'}
-              </span>
+            {/* Study Commitment */}
+            <div className="p-3.5 rounded-2xl bg-white/[0.03] border border-white/8 space-y-1">
+              <span className="text-[10px] font-bold uppercase tracking-wider text-purple-400 block">Commitment</span>
+              <p className="font-bold text-sm text-white">{aiPlan.answers.dailyHours} Hours / day</p>
+              <span className="text-[11px] text-white/50 block font-mono">{aiPlan.answers.dailyHours * 6} hrs/week</span>
+            </div>
+
+            {/* Stream */}
+            <div className="p-3.5 rounded-2xl bg-white/[0.03] border border-white/8 space-y-1 col-span-2 sm:col-span-1">
+              <span className="text-[10px] font-bold uppercase tracking-wider text-amber-400 block">Stream</span>
+              <p className="font-bold text-sm text-white">{aiPlan.answers.stream}</p>
+              <span className="text-[11px] text-amber-300/80 block">Math Strategy Active</span>
             </div>
           </div>
         </div>
       </div>
 
-      {/* ── 2. WHERE YOU NEED WORK: TARGETED WEAKNESS DIAGNOSTIC CENTER ── */}
+      {/* ── 3. CURRENT STAGE (VISUAL STAGE INDICATOR) ── */}
       <div className={cn(
-        "p-6 sm:p-8 rounded-3xl border relative overflow-hidden backdrop-blur-xl shadow-2xl space-y-6",
+        "p-6 sm:p-7 rounded-3xl border space-y-5 backdrop-blur-xl",
+        isLight
+          ? "bg-white/90 border-slate-200 shadow-sm"
+          : "bg-[#0b0e24]/85 border-indigo-500/20 shadow-[0_8px_32px_rgba(0,0,0,0.4)]"
+      )}>
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-white/10 pb-3.5">
+          <div>
+            <div className="flex items-center gap-2">
+              <span className="text-[10px] font-bold uppercase tracking-wider text-cyan-400">Preparation Journey</span>
+              <span className="text-white/30">•</span>
+              <span className="text-xs font-mono text-emerald-400 font-bold">Stage 1 Active (18% Progress)</span>
+            </div>
+            <h3 className="text-lg sm:text-xl font-display font-extrabold text-white">
+              Current Preparation Stage
+            </h3>
+          </div>
+          <span className="text-xs text-white/50">4-Stage Adaptive Roadmap</span>
+        </div>
+
+        {/* 4 Stage Visual Cards / Flow */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+          {/* Stage 1: Active */}
+          <div className="p-4 rounded-2xl bg-emerald-950/20 border border-emerald-500/35 relative overflow-hidden space-y-2">
+            <div className="flex items-center justify-between">
+              <span className="text-[10px] font-bold px-2 py-0.5 rounded-md bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
+                ACTIVE • CURRENT
+              </span>
+              <span className="text-[11px] font-mono text-emerald-400 font-bold">18%</span>
+            </div>
+            <h4 className="text-sm font-bold text-white">Stage 1: Foundation & Baseline</h4>
+            <p className="text-xs text-white/60">Weeks 1–6 • Core concepts, syllabus coverage & daily habit.</p>
+            <div className="w-full h-1.5 rounded-full bg-white/10 overflow-hidden mt-2">
+              <div className="h-full bg-emerald-400 rounded-full" style={{ width: '18%' }} />
+            </div>
+          </div>
+
+          {/* Stage 2: Upcoming */}
+          <div className="p-4 rounded-2xl bg-white/[0.02] border border-white/10 space-y-2 opacity-80">
+            <div className="flex items-center justify-between">
+              <span className="text-[10px] font-bold px-2 py-0.5 rounded-md bg-cyan-500/10 text-cyan-400 border border-cyan-500/20">
+                UPCOMING
+              </span>
+              <span className="text-[11px] font-mono text-white/40">Stage 2</span>
+            </div>
+            <h4 className="text-sm font-bold text-white/90">Stage 2: Concept Mastery</h4>
+            <p className="text-xs text-white/50">Weeks 7–16 • Numerical derivations & 500+ practice questions.</p>
+          </div>
+
+          {/* Stage 3: Locked */}
+          <div className="p-4 rounded-2xl bg-white/[0.02] border border-white/5 space-y-2 opacity-60">
+            <div className="flex items-center justify-between">
+              <span className="text-[10px] font-bold px-2 py-0.5 rounded-md bg-white/10 text-white/50 flex items-center gap-1">
+                <Lock className="w-2.5 h-2.5" />
+                <span>LOCKED</span>
+              </span>
+              <span className="text-[11px] font-mono text-white/30">Stage 3</span>
+            </div>
+            <h4 className="text-sm font-bold text-white/70">Stage 3: Mock Test Sprint</h4>
+            <p className="text-xs text-white/40">Weeks 17–24 • 10 CBT mocks & negative-marking control.</p>
+          </div>
+
+          {/* Stage 4: Locked */}
+          <div className="p-4 rounded-2xl bg-white/[0.02] border border-white/5 space-y-2 opacity-60">
+            <div className="flex items-center justify-between">
+              <span className="text-[10px] font-bold px-2 py-0.5 rounded-md bg-white/10 text-white/50 flex items-center gap-1">
+                <Lock className="w-2.5 h-2.5" />
+                <span>LOCKED</span>
+              </span>
+              <span className="text-[11px] font-mono text-white/30">Stage 4</span>
+            </div>
+            <h4 className="text-sm font-bold text-white/70">Stage 4: Final Peak Revision</h4>
+            <p className="text-xs text-white/40">Last 30 Days • Daily simulations & formula consolidation.</p>
+          </div>
+        </div>
+      </div>
+
+      {/* ── 4. CURRENT FOCUS (WHAT TO FOCUS ON RIGHT NOW) ── */}
+      <div className={cn(
+        "p-6 sm:p-7 rounded-3xl border relative overflow-hidden backdrop-blur-xl shadow-2xl space-y-5",
         isLight
           ? "bg-white/90 border-slate-200 shadow-slate-200/50"
-          : "bg-[#0b0e24]/90 border-rose-500/25 shadow-[0_8px_32px_rgba(0,0,0,0.5),0_0_35px_rgba(244,63,94,0.08)]"
+          : "bg-[#0b0e24]/90 border-amber-500/25 shadow-[0_8px_32px_rgba(0,0,0,0.5),0_0_30px_rgba(245,158,11,0.06)]"
       )}>
-        {/* Subtle accent glow */}
-        <div className="absolute top-0 right-0 w-80 h-80 bg-rose-500/10 blur-[90px] rounded-full pointer-events-none" />
-
-        <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-white/10 pb-5">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/10 pb-4">
           <div>
             <div className="flex items-center gap-2 mb-1.5">
-              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-rose-500/15 border border-rose-500/30 text-rose-300 text-[11px] font-mono font-bold uppercase tracking-wider">
-                <AlertTriangle className="w-3.5 h-3.5 text-rose-400" />
-                <span>Diagnostic Surgery • Where You Need Work</span>
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/15 border border-amber-500/30 text-amber-300 text-[11px] font-mono font-bold uppercase tracking-wider">
+                <Zap className="w-3.5 h-3.5 text-amber-400" />
+                <span>Priority: High • Immediate Focus</span>
               </span>
-
-              {hasSlsData ? (
-                <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-500/15 border border-emerald-500/30 text-emerald-300 text-[11px] font-bold">
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                  <span>Live Quiz Data Synced</span>
-                </span>
-              ) : (
-                <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-cyan-500/10 border border-cyan-500/25 text-cyan-300 text-[11px]">
-                  <Sparkles className="w-3 h-3 text-cyan-400" />
-                  <span>Calibrated Baseline</span>
-                </span>
-              )}
+              <span className="text-xs font-mono text-white/50">Status: In Progress</span>
             </div>
-
-            <h2 className="text-xl sm:text-2xl lg:text-3xl font-display font-extrabold text-white tracking-tight">
-              Targeted Urgency: High-Yield Recovery Focus
+            <h2 className="text-xl sm:text-2xl font-display font-extrabold text-white tracking-tight">
+              Current Focus: {focusSubject} — {focusTopic}
             </h2>
-            <p className={cn("text-xs sm:text-sm mt-1", isLight ? "text-slate-600" : "text-white/60")}>
-              Prioritized chapters and concepts where you are losing marks. Fixing these directly unlocks your target cutoff for {aiPlan.answers.targetInstitute}.
+            <p className="text-xs text-white/60 mt-1 max-w-2xl leading-relaxed">
+              PCB students typically lose the most ground in Mathematics. Securing high-yield algebra and determinant topics creates the strongest rank advantage without requiring advanced calculus.
             </p>
           </div>
 
-          <div className="flex items-center gap-3 self-start md:self-auto shrink-0">
-            <div className="text-left md:text-right">
-              <span className="text-[10px] uppercase font-bold text-rose-400 block tracking-wider">Est. Mark Recovery</span>
-              <span className="text-xl sm:text-2xl font-display font-black text-white">+40–56 Marks</span>
+          {/* Accuracy Display: Strict Clamping & Honesty */}
+          <div className="p-3 rounded-2xl bg-black/30 border border-white/10 shrink-0 min-w-[200px] space-y-1">
+            <div className="flex justify-between items-center text-xs font-mono">
+              <span className="text-white/60">Topic Accuracy</span>
+              {realAccuracy !== null ? (
+                <span className="font-bold text-amber-400">{realAccuracy}%</span>
+              ) : (
+                <span className="text-[11px] text-cyan-300 font-sans font-semibold">Diagnostic Pending</span>
+              )}
             </div>
-            <div className="w-10 h-10 rounded-2xl bg-rose-500/15 border border-rose-500/30 flex items-center justify-center text-rose-300 shadow-inner">
-              <ShieldAlert className="w-5 h-5 text-rose-400" />
-            </div>
+            {realAccuracy !== null ? (
+              <div className="w-full h-1.5 rounded-full bg-white/10 overflow-hidden">
+                <div className="h-full bg-amber-400 rounded-full" style={{ width: `${realAccuracy}%` }} />
+              </div>
+            ) : (
+              <p className="text-[10.5px] text-white/40 leading-tight">
+                Awaiting diagnostic assessment. Take a practice quiz to establish baseline.
+              </p>
+            )}
+            {realAttempts > 0 && (
+              <span className="text-[10px] text-white/40 block font-mono">
+                {realAttempts} question{realAttempts > 1 ? 's' : ''} evaluated
+              </span>
+            )}
           </div>
         </div>
 
-        {/* 3 Diagnosed Weak Area Cards */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-          {diagnosedWeakAreas.map((weak) => {
-            const isCritical = weak.urgency === 'CRITICAL';
-            const isHigh = weak.urgency === 'HIGH';
+        {/* Dual CTA Actions */}
+        <div className="flex flex-wrap items-center gap-3">
+          <button
+            type="button"
+            onClick={() => onNavigate?.(focusTarget.route)}
+            className="px-5 py-2.5 rounded-xl font-bold text-xs bg-white hover:bg-slate-100 text-slate-950 transition-all flex items-center gap-2 cursor-pointer shadow-md"
+          >
+            <span>Practice Topic</span>
+            <ArrowRight className="w-3.5 h-3.5" />
+          </button>
 
-            return (
-              <div
-                key={weak.id}
-                className={cn(
-                  "p-5 rounded-2xl border transition-all flex flex-col justify-between space-y-4 group relative overflow-hidden",
-                  isCritical
-                    ? "bg-rose-950/20 border-rose-500/30 hover:border-rose-400/60 shadow-[0_4px_20px_rgba(244,63,94,0.12)]"
-                    : isHigh
-                    ? "bg-amber-950/20 border-amber-500/30 hover:border-amber-400/60 shadow-[0_4px_20px_rgba(245,158,11,0.1)]"
-                    : "bg-indigo-950/20 border-indigo-500/30 hover:border-indigo-400/60"
-                )}
-              >
-                <div className="space-y-2.5">
-                  {/* Card Header: Urgency & Potential Gain */}
-                  <div className="flex items-center justify-between gap-2">
-                    <span className={cn(
-                      "text-[9.5px] font-mono font-bold px-2 py-0.5 rounded-md uppercase tracking-wider",
-                      isCritical
-                        ? "bg-rose-500/20 text-rose-300 border border-rose-500/30"
-                        : isHigh
-                        ? "bg-amber-500/20 text-amber-300 border border-amber-500/30"
-                        : "bg-indigo-500/20 text-indigo-300 border border-indigo-500/30"
-                    )}>
-                      {weak.urgency === 'CRITICAL' ? 'CRITICAL DEFICIT' : weak.urgency === 'HIGH' ? 'HIGH PRIORITY' : 'PACING & ERRORS'}
-                    </span>
-
-                    <span className="text-[10.5px] font-mono font-bold text-emerald-400">
-                      {weak.markImpact}
-                    </span>
-                  </div>
-
-                  {/* Subject & Chapter Title */}
-                  <div>
-                    <span className="text-[10.5px] font-bold text-white/50 uppercase tracking-wider block">
-                      {weak.subject}
-                    </span>
-                    <h3 className="text-base font-bold text-white group-hover:text-cyan-200 transition-colors leading-snug">
-                      {weak.chapter}
-                    </h3>
-                    {weak.topic && (
-                      <span className="text-xs text-cyan-300 font-semibold mt-0.5 block">
-                        {weak.topic}
-                      </span>
-                    )}
-                  </div>
-
-                  {/* Real Stats if Available */}
-                  {weak.isRealData && weak.accuracyPct !== undefined && (
-                    <div className="p-2.5 rounded-xl bg-black/30 border border-white/5 space-y-1.5">
-                      <div className="flex justify-between text-[11px] font-mono">
-                        <span className="text-white/60">Actual Accuracy</span>
-                        <span className={cn("font-bold", weak.accuracyPct < 40 ? "text-rose-400" : "text-amber-400")}>
-                          {weak.accuracyPct}%
-                        </span>
-                      </div>
-                      <div className="w-full h-1.5 rounded-full bg-white/10 overflow-hidden">
-                        <div
-                          className={cn("h-full rounded-full", weak.accuracyPct < 40 ? "bg-rose-500" : "bg-amber-500")}
-                          style={{ width: `${weak.accuracyPct}%` }}
-                        />
-                      </div>
-                      <div className="flex justify-between text-[10px] text-white/40 font-mono pt-0.5">
-                        <span>Attempts: {weak.totalAttempts || 0}</span>
-                        <span className="text-rose-400">Mistakes: {weak.errorCount || 0}</span>
-                      </div>
-                    </div>
-                  )}
-
-                  {/* Reasoning & Pitfall Note */}
-                  <p className={cn("text-xs leading-relaxed", isLight ? "text-slate-600" : "text-white/70")}>
-                    {weak.reason}
-                  </p>
-                </div>
-
-                {/* Actions */}
-                <div className="pt-2 border-t border-white/10 flex flex-col gap-2">
-                  <button
-                    type="button"
-                    onClick={() => onNavigate?.(weak.route)}
-                    className="w-full py-2.5 px-3 rounded-xl font-bold text-xs bg-white hover:bg-slate-100 text-slate-950 transition-all flex items-center justify-center gap-1.5 cursor-pointer shadow-md group-hover:shadow-[0_0_20px_rgba(255,255,255,0.3)]"
-                  >
-                    <span>{weak.routeLabel || 'Fix This Weakness'}</span>
-                    <ArrowRight className="w-3.5 h-3.5" />
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={() => {
-                      sessionStorage.setItem('smartprep_active_chat', JSON.stringify([{
-                        role: 'user',
-                        content: `I need urgent clinical help with my weak topic in ${weak.subject}: "${weak.chapter}". Explain the core concept traps that cause negative marks in IAT and give me 1 diagnostic example.`
-                      }]));
-                      onNavigate?.('ai_doubt_solver');
-                    }}
-                    className="w-full py-1.5 text-[11px] text-cyan-300 hover:text-cyan-200 flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
-                  >
-                    <MessageSquare className="w-3 h-3" />
-                    <span>Ask AI Tutor to diagnose this topic</span>
-                  </button>
-                </div>
-              </div>
-            );
-          })}
+          <button
+            type="button"
+            onClick={() => setShowPriorityModal(true)}
+            className="px-4 py-2.5 rounded-xl text-xs font-semibold bg-white/[0.04] hover:bg-white/[0.08] border border-white/10 text-white/80 hover:text-white transition-all flex items-center gap-1.5 cursor-pointer"
+          >
+            <Info className="w-3.5 h-3.5 text-cyan-400" />
+            <span>Why is this a priority?</span>
+          </button>
         </div>
       </div>
 
-      {/* ── 3. INTERACTIVE DAILY STUDY SCHEDULE & 7-DAY RHYTHM ── */}
+      {/* ── 5. TODAY'S MISSION (ACTION CONNECTION & 3 CHECKABLE SUB-STEPS) ── */}
       <div className={cn(
-        "p-6 sm:p-8 rounded-3xl border relative overflow-hidden backdrop-blur-xl shadow-2xl space-y-6",
-        isLight
-          ? "bg-white/90 border-slate-200 shadow-slate-200/50"
-          : "bg-[#0b0e24]/90 border-indigo-500/25 shadow-[0_8px_32px_rgba(0,0,0,0.5),0_0_35px_rgba(99,102,241,0.1)]"
+        "p-6 sm:p-7 rounded-3xl border relative overflow-hidden group transition-all duration-300 shadow-2xl space-y-6",
+        dailyCompleted 
+          ? "bg-emerald-950/20 border-emerald-500/30"
+          : "bg-gradient-to-br from-[#0a0d26] via-[#0b0e24] to-[#0d1330] border-cyan-500/30 hover:border-cyan-400/50 shadow-[0_8px_32px_rgba(0,0,0,0.6),0_0_35px_rgba(6,182,212,0.12)]"
       )}>
-        {/* Top Header & Routine Mode Selector */}
-        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 border-b border-white/10 pb-5">
-          <div className="space-y-1">
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 text-xs font-bold uppercase tracking-wider">
-              <Clock className="w-3.5 h-3.5 text-cyan-400" />
-              <span>Time-Blocked Daily Routine • {aiPlan.answers.dailyHours} Hours/Day</span>
+        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-5 border-b border-white/10 pb-5">
+          <div className="space-y-2">
+            <div className="flex flex-wrap items-center gap-2.5">
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-cyan-500/15 border border-cyan-500/30 text-cyan-300 text-xs font-bold uppercase tracking-wider">
+                <Flag className="w-3.5 h-3.5 text-cyan-400" />
+                <span>Today's Mission</span>
+              </span>
+              <span className="text-xs text-white/60 font-mono">Estimated ~75 Minutes</span>
+              <span className="text-white/30">•</span>
+              <span className="text-xs text-cyan-300 font-mono font-bold">{completedSubStepsCount} / {subSteps.length} Sub-Steps Completed</span>
             </div>
-            <h2 className="text-xl sm:text-2xl lg:text-3xl font-display font-extrabold text-white tracking-tight">
-              Interactive Daily Study Schedule
+
+            <h2 className="text-xl sm:text-2xl font-display font-extrabold text-white tracking-tight">
+              Today's Focus: {aiPlan.dailyAction.targetChapter}
             </h2>
-            <p className={cn("text-xs sm:text-sm", isLight ? "text-slate-600" : "text-white/60")}>
-              Structured time-blocking designed for maximum retention, numerical stamina, and zero burnout.
+            <p className="text-xs sm:text-sm text-white/70 leading-relaxed max-w-2xl">
+              Connect today's study session directly to your IISc Bangalore roadmap. Work through all 3 stages: concept review, targeted numerical questions, and mistake analysis.
             </p>
           </div>
 
-          {/* Morning vs Evening Lifestyle Selector */}
-          <div className="flex items-center gap-1.5 p-1.5 rounded-2xl bg-white/[0.04] border border-white/10 self-start lg:self-auto">
+          <div className="flex flex-wrap items-center gap-3 shrink-0">
+            <button
+              type="button"
+              onClick={() => onNavigate?.(aiPlan.dailyAction.route)}
+              className="px-6 py-3 rounded-xl font-bold text-xs sm:text-sm bg-white hover:bg-slate-100 text-slate-950 shadow-[0_0_20px_rgba(255,255,255,0.3)] transition-all flex items-center gap-2 cursor-pointer transform hover:-translate-y-0.5"
+            >
+              <BookOpen className="w-4 h-4 text-slate-950" />
+              <span>Start Today's Mission</span>
+              <ArrowRight className="w-4 h-4 text-slate-950" />
+            </button>
+
+            <button
+              type="button"
+              onClick={handleToggleDailyMission}
+              className={cn(
+                "px-4 py-2.5 rounded-xl font-semibold text-xs border transition-all flex items-center gap-2 cursor-pointer",
+                dailyCompleted
+                  ? "bg-emerald-500/20 border-emerald-500/40 text-emerald-300"
+                  : "bg-white/[0.04] border-white/10 hover:border-white/20 text-white/80 hover:text-white"
+              )}
+            >
+              <CheckCircle2 className={cn("w-4 h-4", dailyCompleted ? "text-emerald-400" : "text-white/40")} />
+              <span>{dailyCompleted ? 'Completed ✓' : 'Mark Completed'}</span>
+            </button>
+          </div>
+        </div>
+
+        {/* 3 Checkable Sub-Steps in Today's Mission */}
+        <div className="space-y-3">
+          <div className="flex items-center justify-between text-xs font-mono">
+            <span className="text-white/50 font-bold uppercase tracking-wider">Mission Sub-Steps:</span>
+            <span className="text-cyan-400 font-bold">{subStepsPercent}% Overall Done</span>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+            {subSteps.map((step, idx) => {
+              const isStepDone = !!missionStepsState[step.id];
+              return (
+                <div
+                  key={step.id}
+                  onClick={() => handleToggleMissionStep(step.id)}
+                  className={cn(
+                    "p-4 rounded-2xl border transition-all cursor-pointer flex flex-col justify-between space-y-3 select-none group",
+                    isStepDone
+                      ? "bg-emerald-950/20 border-emerald-500/30 shadow-[0_0_15px_rgba(16,185,129,0.1)]"
+                      : "bg-white/[0.03] border-white/8 hover:border-white/20 hover:bg-white/[0.05]"
+                  )}
+                >
+                  <div className="space-y-1.5">
+                    <div className="flex items-center justify-between">
+                      <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-white/10 text-white/80">
+                        {step.durationMinutes} Mins
+                      </span>
+                      <div className={cn(
+                        "w-5 h-5 rounded-lg border flex items-center justify-center transition-all",
+                        isStepDone
+                          ? "border-emerald-400 bg-emerald-400 text-slate-950 font-bold"
+                          : "border-white/20 group-hover:border-cyan-400"
+                      )}>
+                        {isStepDone && <Check className="w-3.5 h-3.5 stroke-[3]" />}
+                      </div>
+                    </div>
+
+                    <h4 className={cn("text-xs sm:text-sm font-bold", isStepDone ? "line-through text-white/50" : "text-white")}>
+                      {step.title}
+                    </h4>
+
+                    <p className="text-xs text-white/60 leading-relaxed">
+                      {step.description}
+                    </p>
+                  </div>
+
+                  <div className="pt-2 border-t border-white/5 flex items-center justify-between text-[11px]">
+                    <span className={cn("font-semibold", isStepDone ? "text-emerald-400" : "text-cyan-400")}>
+                      {isStepDone ? 'Completed ✓' : step.actionLabel}
+                    </span>
+                    <span className="text-white/40 font-mono">Step {idx + 1} of 3</span>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Ask SmartPrep Link */}
+        <div className="pt-2 flex justify-end">
+          <button
+            type="button"
+            onClick={() => {
+              sessionStorage.setItem('smartprep_active_chat', JSON.stringify([{
+                role: 'user',
+                content: `I am executing today's mission on ${aiPlan.dailyAction.targetChapter}. Provide 3 essential formula insights, high-frequency traps in IAT, and 1 quick practice problem.`
+              }]));
+              onNavigate?.('ai_doubt_solver');
+            }}
+            className="text-xs text-cyan-300 hover:text-cyan-200 flex items-center gap-1.5 cursor-pointer transition-colors"
+          >
+            <MessageSquare className="w-3.5 h-3.5" />
+            <span>Ask SmartPrep about this mission →</span>
+          </button>
+        </div>
+      </div>
+
+      {/* ── 6. THIS WEEK'S PLAN (7-DAY COMPACT VIEW) ── */}
+      <div className={cn(
+        "p-6 sm:p-7 rounded-3xl border relative overflow-hidden backdrop-blur-xl shadow-2xl space-y-5",
+        isLight
+          ? "bg-white/90 border-slate-200 shadow-slate-200/50"
+          : "bg-[#0b0e24]/90 border-indigo-500/25 shadow-[0_8px_32px_rgba(0,0,0,0.5),0_0_35px_rgba(99,102,241,0.08)]"
+      )}>
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/10 pb-4">
+          <div className="space-y-1">
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 text-xs font-bold uppercase tracking-wider">
+              <Calendar className="w-3.5 h-3.5 text-cyan-400" />
+              <span>This Week's Plan • Mon – Sun</span>
+            </div>
+            <h2 className="text-lg sm:text-xl font-display font-extrabold text-white tracking-tight">
+              Weekly Schedule & Study Sessions
+            </h2>
+          </div>
+
+          {/* Routine Mode Selector */}
+          <div className="flex items-center gap-1 p-1 rounded-xl bg-white/[0.04] border border-white/10 self-start sm:self-auto">
             <button
               type="button"
               onClick={() => handleToggleSchedulePref('MORNING')}
               className={cn(
-                "px-3.5 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all cursor-pointer",
+                "px-3 py-1.5 rounded-lg text-xs font-bold flex items-center gap-1.5 transition-all cursor-pointer",
                 schedulePref === 'MORNING'
-                  ? "bg-amber-500/20 border border-amber-500/40 text-amber-300 shadow-[0_0_15px_rgba(245,158,11,0.25)]"
+                  ? "bg-amber-500/20 text-amber-300 border border-amber-500/30"
                   : "text-white/60 hover:text-white"
               )}
             >
@@ -1180,181 +1274,241 @@ export function PathToIISER({
               type="button"
               onClick={() => handleToggleSchedulePref('EVENING')}
               className={cn(
-                "px-3.5 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all cursor-pointer",
+                "px-3 py-1.5 rounded-lg text-xs font-bold flex items-center gap-1.5 transition-all cursor-pointer",
                 schedulePref === 'EVENING'
-                  ? "bg-indigo-500/25 border border-indigo-500/40 text-indigo-300 shadow-[0_0_15px_rgba(99,102,241,0.25)]"
+                  ? "bg-indigo-500/25 text-indigo-300 border border-indigo-500/30"
                   : "text-white/60 hover:text-white"
               )}
             >
               <Sunset className="w-3.5 h-3.5 text-indigo-400" />
-              <span>Evening / Post-School</span>
+              <span>Evening Routine</span>
             </button>
           </div>
         </div>
 
-        {/* 7-Day Day Selector Bar */}
-        <div className="space-y-2">
-          <div className="flex items-center justify-between text-xs">
-            <span className="font-bold text-white/50 uppercase tracking-wider">
-              Select Day Roadmap:
-            </span>
-            <span className="font-mono text-cyan-400 font-bold">
-              {activeDayPlan?.dayName} Focus: {activeDayPlan?.theme}
-            </span>
-          </div>
-
-          <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-2">
-            {sevenDaySchedule.map((d) => {
-              const isSelected = selectedScheduleDay === d.dayNumber;
-              return (
-                <button
-                  key={d.dayNumber}
-                  type="button"
-                  onClick={() => setSelectedScheduleDay(d.dayNumber)}
-                  className={cn(
-                    "p-3 rounded-2xl border text-left transition-all cursor-pointer flex flex-col justify-between min-h-[76px] group",
-                    isSelected
-                      ? "bg-cyan-500/15 border-cyan-400 text-cyan-300 shadow-[0_0_20px_rgba(6,182,212,0.25)]"
-                      : "bg-white/[0.03] border-white/8 hover:border-white/20 text-white/70 hover:bg-white/[0.06]"
-                  )}
-                >
-                  <div className="flex items-center justify-between w-full">
-                    <span className={cn("text-[11px] font-bold", isSelected ? "text-cyan-300" : "text-white")}>
-                      {d.dayLabel}
-                    </span>
-                    <span className="text-[9px] font-mono opacity-50">#{d.dayNumber}</span>
-                  </div>
-                  <span className="text-[10px] truncate block opacity-70 mt-1">
-                    {d.focusSubject}
+        {/* 7-Day Compact Selector Bar */}
+        <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-2">
+          {sevenDaySchedule.map((d) => {
+            const isSelected = selectedScheduleDay === d.dayNumber;
+            return (
+              <button
+                key={d.dayNumber}
+                type="button"
+                onClick={() => setSelectedScheduleDay(d.dayNumber)}
+                className={cn(
+                  "p-3 rounded-2xl border text-left transition-all cursor-pointer flex flex-col justify-between min-h-[74px] group",
+                  isSelected
+                    ? "bg-cyan-500/15 border-cyan-400 text-cyan-300 shadow-[0_0_20px_rgba(6,182,212,0.2)]"
+                    : "bg-white/[0.03] border-white/8 hover:border-white/20 text-white/70 hover:bg-white/[0.06]"
+                )}
+              >
+                <div className="flex items-center justify-between w-full">
+                  <span className={cn("text-[11px] font-bold", isSelected ? "text-cyan-300" : "text-white")}>
+                    {d.dayLabel}
                   </span>
-                </button>
-              );
-            })}
-          </div>
+                  <span className="text-[9px] font-mono opacity-50">#{d.dayNumber}</span>
+                </div>
+                <span className="text-[10px] truncate block opacity-70 mt-1">
+                  {d.focusSubject}
+                </span>
+              </button>
+            );
+          })}
         </div>
 
-        {/* Selected Day Theme & Objective Banner */}
+        {/* Selected Day Expanded View */}
         {activeDayPlan && (
-          <div className={cn(
-            "p-4 rounded-2xl border flex flex-col sm:flex-row sm:items-center justify-between gap-4",
-            isLight ? "bg-slate-50 border-slate-200" : "bg-white/[0.02] border-white/8"
-          )}>
-            <div className="space-y-1">
-              <div className="flex items-center gap-2">
-                <span className="text-xs font-bold px-2 py-0.5 rounded bg-cyan-500/20 text-cyan-300 border border-cyan-500/30">
-                  {activeDayPlan.dayLabel}
-                </span>
-                <h3 className="text-sm sm:text-base font-bold text-white">
-                  {activeDayPlan.theme}
-                </h3>
+          <div className="space-y-3 pt-2">
+            <div className="p-3.5 rounded-2xl bg-white/[0.02] border border-white/8 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+              <div className="space-y-0.5">
+                <div className="flex items-center gap-2">
+                  <span className="text-xs font-bold px-2 py-0.5 rounded bg-cyan-500/20 text-cyan-300 border border-cyan-500/30">
+                    {activeDayPlan.dayName}
+                  </span>
+                  <h4 className="text-sm font-bold text-white">{activeDayPlan.theme}</h4>
+                </div>
+                <p className="text-xs text-white/60">{activeDayPlan.targetObjective}</p>
               </div>
-              <p className="text-xs text-white/60 leading-relaxed">
-                {activeDayPlan.targetObjective}
-              </p>
+              <span className="text-xs font-mono text-cyan-400 font-semibold shrink-0">
+                {activeSlots.length} Sessions Planned
+              </span>
             </div>
 
-            {/* Daily Completion Progress */}
-            <div className="shrink-0 space-y-1.5 min-w-[180px]">
-              <div className="flex justify-between text-xs font-mono">
-                <span className="text-white/50">Day Progress</span>
-                <span className="font-bold text-cyan-400">{activeDayProgress.percent}% ({activeDayProgress.completedMins}m / {activeDayProgress.totalMins}m)</span>
-              </div>
-              <div className="w-full h-2 rounded-full bg-white/10 overflow-hidden">
-                <div
-                  className="h-full bg-gradient-to-r from-cyan-400 via-teal-400 to-emerald-400 transition-all duration-300"
-                  style={{ width: `${activeDayProgress.percent}%` }}
-                />
-              </div>
+            {/* Daily Sessions List */}
+            <div className="space-y-2.5">
+              {activeSlots.slice(0, 3).map((slot, sIdx) => {
+                const isSlotDone = !!slotStates[slot.id];
+                return (
+                  <div
+                    key={slot.id}
+                    className={cn(
+                      "p-3.5 rounded-2xl border transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-3 group",
+                      isSlotDone
+                        ? "bg-emerald-950/15 border-emerald-500/30 opacity-75"
+                        : "bg-white/[0.02] border-white/8 hover:border-white/20"
+                    )}
+                  >
+                    <div className="flex items-start gap-3 flex-1 min-w-0">
+                      <button
+                        type="button"
+                        onClick={() => handleToggleSlot(slot.id)}
+                        className={cn(
+                          "w-5 h-5 rounded-lg border flex items-center justify-center shrink-0 mt-0.5 transition-all cursor-pointer",
+                          isSlotDone
+                            ? "border-emerald-400 bg-emerald-400 text-slate-950 font-bold"
+                            : "border-white/20 hover:border-cyan-400"
+                        )}
+                      >
+                        {isSlotDone && <Check className="w-3.5 h-3.5 stroke-[3]" />}
+                      </button>
+
+                      <div className="space-y-0.5 flex-1 min-w-0">
+                        <div className="flex flex-wrap items-center gap-2">
+                          <span className="text-[10px] font-mono font-bold px-1.5 py-0.5 rounded bg-white/10 text-white/80">
+                            Session {sIdx + 1} • {slot.timeSlot}
+                          </span>
+                          <span className="text-[10px] font-mono text-cyan-400 font-bold">
+                            {slot.durationMinutes}m
+                          </span>
+                          <span className="text-[10px] font-bold text-white/50 uppercase">
+                            {slot.subject}
+                          </span>
+                        </div>
+                        <h5 className={cn("text-xs sm:text-sm font-bold", isSlotDone ? "line-through text-white/50" : "text-white")}>
+                          {slot.title}
+                        </h5>
+                        <p className="text-xs text-white/60 leading-relaxed line-clamp-1">{slot.description}</p>
+                      </div>
+                    </div>
+
+                    <button
+                      type="button"
+                      onClick={() => onNavigate?.(slot.route)}
+                      className="self-end sm:self-center px-3.5 py-1.5 rounded-xl text-xs font-bold bg-white/[0.06] hover:bg-white/15 border border-white/10 text-white transition-all flex items-center gap-1 cursor-pointer shrink-0"
+                    >
+                      <span>{slot.routeLabel}</span>
+                      <ArrowRight className="w-3 h-3 text-cyan-400" />
+                    </button>
+                  </div>
+                );
+              })}
             </div>
           </div>
         )}
+      </div>
 
-        {/* Active Day Slots List */}
-        <div className="space-y-3">
-          {activeSlots.map((slot) => {
-            const isDone = !!slotStates[slot.id];
-            const isWeakSurgery = slot.focusType === 'WEAK_SURGERY';
-            const isNumerical = slot.focusType === 'NUMERICAL_DRILL';
-            const isNcert = slot.focusType === 'NCERT_MEMORIZE';
-            const isPyq = slot.focusType === 'MOCK_PYQ';
+      {/* ── 7. WEEKLY STUDY ALLOCATION (HORIZONTAL PROGRESS BARS) ── */}
+      <div className={cn(
+        "p-6 sm:p-7 rounded-3xl border space-y-4 backdrop-blur-xl",
+        isLight
+          ? "bg-white/90 border-slate-200 shadow-sm"
+          : "bg-[#0b0e24]/85 border-indigo-500/20 shadow-[0_8px_32px_rgba(0,0,0,0.4)]"
+      )}>
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-white/10 pb-3">
+          <div>
+            <h3 className="text-lg sm:text-xl font-display font-extrabold text-white">
+              Weekly Study Allocation
+            </h3>
+            <p className="text-xs text-white/60 mt-0.5">
+              Allocation is weighted toward Mathematics to address your primary growth area while maintaining your Biology strength.
+            </p>
+          </div>
+          <span className="text-xs font-mono font-bold text-cyan-400 shrink-0">
+            {aiPlan.answers.dailyHours * 6} Hours / Week
+          </span>
+        </div>
 
+        <div className="space-y-3.5 pt-1">
+          {aiPlan.weeklyHourlyAllocation.map((item) => (
+            <div key={item.subject} className="space-y-1">
+              <div className="flex justify-between items-center text-xs">
+                <div className="flex items-center gap-2">
+                  <span className={cn("w-2 h-2 rounded-full", item.color)} />
+                  <span className="font-bold text-white">{item.subject}</span>
+                </div>
+                <span className="font-mono text-white/80 font-bold">
+                  {item.hours} hrs ({item.percentage}%)
+                </span>
+              </div>
+
+              <div className="w-full h-2 rounded-full bg-white/10 overflow-hidden">
+                <div
+                  className={cn("h-full rounded-full transition-all duration-500", item.color)}
+                  style={{ width: `${item.percentage}%` }}
+                />
+              </div>
+
+              <p className="text-[10.5px] text-white/50">
+                {item.focusNote}
+              </p>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* ── 8. YOUR SUBJECT STRATEGY (STREAM SPECIFIC) ── */}
+      <div className={cn(
+        "p-6 sm:p-7 rounded-3xl border space-y-5 backdrop-blur-xl",
+        isLight
+          ? "bg-white/90 border-slate-200 shadow-sm"
+          : "bg-[#0b0e24]/85 border-indigo-500/20 shadow-[0_8px_32px_rgba(0,0,0,0.4)]"
+      )}>
+        <div className="border-b border-white/10 pb-3.5 space-y-1">
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/15 border border-amber-500/30 text-amber-300 text-xs font-bold uppercase tracking-wider">
+            <Sparkles className="w-3.5 h-3.5 text-amber-400" />
+            <span>PCB High-Yield Hack</span>
+          </div>
+          <h3 className="text-lg sm:text-xl font-display font-extrabold text-white">
+            {aiPlan.specialBlueprint.title}
+          </h3>
+          <p className="text-xs text-cyan-300 font-semibold">
+            {aiPlan.specialBlueprint.subtitle}
+          </p>
+          <p className="text-xs text-white/60 leading-relaxed max-w-2xl pt-1">
+            {aiPlan.specialBlueprint.description}
+          </p>
+        </div>
+
+        {/* 4 Topic Strategy Cards */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+          {aiPlan.specialBlueprint.recommendedChapters.map((ch, idx) => {
+            const chapTarget = resolveLessonTarget(ch.name, 'Mathematics');
+            const isFirst = idx === 0;
             return (
               <div
-                key={slot.id}
-                className={cn(
-                  "p-4 sm:p-5 rounded-2xl border transition-all flex flex-col md:flex-row md:items-center justify-between gap-4 group",
-                  isDone
-                    ? "bg-emerald-950/15 border-emerald-500/30 opacity-80"
-                    : isWeakSurgery
-                    ? "bg-rose-950/15 border-rose-500/25 hover:border-rose-400/40"
-                    : isNumerical
-                    ? "bg-indigo-950/15 border-indigo-500/25 hover:border-indigo-400/40"
-                    : isNcert
-                    ? "bg-emerald-950/15 border-emerald-500/25 hover:border-emerald-400/40"
-                    : "bg-white/[0.02] border-white/8 hover:border-white/20"
-                )}
+                key={ch.name}
+                className="p-4 rounded-2xl bg-white/[0.03] border border-white/8 hover:border-cyan-500/40 transition-all flex flex-col justify-between space-y-3 group"
               >
-                {/* Slot Details */}
-                <div className="flex items-start gap-3.5 flex-1 min-w-0">
-                  {/* Slot Checkbox */}
-                  <button
-                    type="button"
-                    onClick={() => handleToggleSlot(slot.id)}
-                    className={cn(
-                      "w-6 h-6 rounded-lg border flex items-center justify-center shrink-0 mt-0.5 transition-all cursor-pointer",
-                      isDone
-                        ? "border-emerald-400 bg-emerald-400 text-slate-950 font-bold shadow-[0_0_10px_rgba(16,185,129,0.3)]"
-                        : "border-white/20 hover:border-cyan-400 bg-white/[0.03]"
-                    )}
-                    title={isDone ? "Mark slot pending" : "Mark slot completed"}
-                  >
-                    {isDone && <Check className="w-4 h-4 stroke-[3]" />}
-                  </button>
-
-                  <div className="space-y-1.5 flex-1 min-w-0">
-                    <div className="flex flex-wrap items-center gap-2">
-                      <span className="text-[11px] font-mono font-bold px-2 py-0.5 rounded bg-white/10 text-white/90">
-                        {slot.timeSlot}
-                      </span>
-                      <span className="text-[10px] font-mono text-cyan-400 font-bold px-2 py-0.5 rounded bg-cyan-500/10 border border-cyan-500/20">
-                        {slot.durationMinutes} Mins
-                      </span>
-                      <span className={cn(
-                        "text-[9.5px] font-bold px-2 py-0.5 rounded uppercase",
-                        isWeakSurgery ? "bg-rose-500/20 text-rose-300" :
-                        isNumerical ? "bg-indigo-500/20 text-indigo-300" :
-                        isNcert ? "bg-emerald-500/20 text-emerald-300" :
-                        isPyq ? "bg-amber-500/20 text-amber-300" : "bg-white/10 text-white/70"
-                      )}>
-                        {slot.focusType.replace('_', ' ')}
-                      </span>
-                    </div>
-
-                    <h4 className={cn("text-sm sm:text-base font-bold", isDone ? "line-through text-white/50" : "text-white")}>
-                      {slot.title}
-                    </h4>
-
-                    <p className={cn("text-xs leading-relaxed", isLight ? "text-slate-600" : "text-white/65")}>
-                      {slot.description}
-                    </p>
-
-                    <div className="flex items-center gap-2 pt-0.5 text-xs text-white/50">
-                      <span className="font-semibold text-white/70">Subject: {slot.subject}</span>
-                      <span>•</span>
-                      <span className="font-mono text-cyan-300/80">Target: {slot.targetChapter}</span>
-                    </div>
+                <div className="space-y-1.5">
+                  <div className="flex items-center justify-between">
+                    <span className={cn(
+                      "text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wider",
+                      isFirst 
+                        ? "bg-amber-500/20 text-amber-300 border border-amber-500/30" 
+                        : "bg-white/10 text-white/70"
+                    )}>
+                      {isFirst ? 'In Progress' : 'Ready to Start'}
+                    </span>
+                    <span className="text-[10px] font-mono text-cyan-400">High Yield</span>
                   </div>
+
+                  <h4 className="text-sm font-bold text-white group-hover:text-cyan-300 transition-colors">
+                    {ch.name}
+                  </h4>
+
+                  <p className="text-xs text-white/60 leading-relaxed">
+                    {ch.why}
+                  </p>
                 </div>
 
-                {/* Action CTA Button */}
-                <div className="flex items-center gap-2.5 shrink-0 self-end md:self-center">
+                <div className="pt-2 border-t border-white/5 flex justify-end">
                   <button
                     type="button"
-                    onClick={() => onNavigate?.(slot.route)}
-                    className="px-4 py-2.5 rounded-xl font-bold text-xs bg-white/[0.08] hover:bg-white/15 border border-white/15 text-white transition-all flex items-center gap-1.5 cursor-pointer shadow-sm"
+                    onClick={() => onNavigate?.(chapTarget.route)}
+                    className="px-3.5 py-1.5 rounded-xl text-xs font-bold bg-white/[0.08] hover:bg-white/15 text-white transition-all flex items-center gap-1.5 cursor-pointer"
                   >
-                    <span>{slot.routeLabel}</span>
-                    <ArrowRight className="w-3.5 h-3.5 text-cyan-400" />
+                    <span>Practice</span>
+                    <ArrowRight className="w-3 h-3 text-cyan-400" />
                   </button>
                 </div>
               </div>
@@ -1363,278 +1517,28 @@ export function PathToIISER({
         </div>
       </div>
 
-      {/* ── 4. THE ACTION-ORIENTED CORE: TODAY'S ACTION MISSION ── */}
+      {/* ── 9. PREPARATION ROADMAP (MILESTONE TRACKER) ── */}
       <div className={cn(
-        "p-6 sm:p-8 rounded-3xl border relative overflow-hidden group transition-all duration-300 shadow-2xl",
-        dailyCompleted 
-          ? "bg-emerald-950/20 border-emerald-500/30"
-          : "bg-gradient-to-br from-indigo-950/40 via-[#0b0e24]/90 to-cyan-950/40 border-cyan-500/30 hover:border-cyan-400/60 shadow-[0_8px_32px_rgba(0,0,0,0.6),0_0_35px_rgba(6,182,212,0.15)]"
+        "p-6 sm:p-7 rounded-3xl border space-y-5 backdrop-blur-xl",
+        isLight
+          ? "bg-white/90 border-slate-200 shadow-sm"
+          : "bg-[#0b0e24]/85 border-indigo-500/20 shadow-[0_8px_32px_rgba(0,0,0,0.4)]"
       )}>
-        <div className="absolute inset-0 bg-[linear-gradient(45deg,transparent_25%,rgba(68,210,255,0.03)_50%,transparent_75%,transparent_100%)] bg-[length:250%_250%,100%_100%] animate-[shimmer_3s_infinite]" />
-        
-        <div className="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-6">
-          <div className="space-y-3.5 max-w-2xl">
-            {/* Top Tag & Status */}
-            <div className="flex flex-wrap items-center gap-2.5">
-              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/15 border border-amber-500/30 text-amber-300 text-xs font-bold uppercase tracking-wider">
-                <Zap className="w-3.5 h-3.5 text-amber-400 fill-amber-400/20" />
-                <span>Today's Immediate Mission • Day {aiPlan.dailyAction.dayNumber}</span>
-              </span>
-
-              {dailyCompleted ? (
-                <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 text-xs font-bold">
-                  <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
-                  <span>Completed Today! Streak Active</span>
-                </span>
-              ) : (
-                <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-cyan-500/10 border border-cyan-500/25 text-cyan-300 text-xs font-semibold">
-                  <Clock className="w-3.5 h-3.5 text-cyan-400" />
-                  <span>Pending • Est. ~{aiPlan.dailyAction.estimatedMinutes} Mins</span>
-                </span>
-              )}
-            </div>
-
-            {/* Mission Title */}
-            <h2 className="text-xl sm:text-2xl lg:text-3xl font-display font-extrabold text-white tracking-tight leading-snug">
-              {aiPlan.dailyAction.title}
-            </h2>
-
-            {/* Description */}
-            <p className={cn("text-xs sm:text-sm leading-relaxed", isLight ? "text-slate-600" : "text-white/70")}>
-              {aiPlan.dailyAction.description}
-            </p>
-
-            {/* Meta Tags */}
-            <div className="flex flex-wrap items-center gap-2 pt-1 text-xs">
-              <span className="px-2.5 py-1 rounded-lg bg-indigo-500/15 border border-indigo-500/25 text-indigo-300 font-bold flex items-center gap-1.5">
-                <BookOpen className="w-3.5 h-3.5" />
-                <span>{aiPlan.dailyAction.subject}</span>
-              </span>
-              <span className="px-2.5 py-1 rounded-lg bg-white/[0.04] border border-white/10 text-white/70 font-mono">
-                Target: {aiPlan.dailyAction.targetChapter}
-              </span>
-              {dailyTarget.lessonTitle && (
-                <span className="px-2.5 py-1 rounded-lg bg-cyan-500/15 border border-cyan-500/30 text-cyan-300 font-bold flex items-center gap-1.5">
-                  <Sparkles className="w-3.5 h-3.5 text-cyan-400" />
-                  <span>Direct Deep-Link: {dailyTarget.lessonTitle}</span>
-                </span>
-              )}
-            </div>
-          </div>
-
-          {/* Action Buttons */}
-          <div className="flex flex-col sm:flex-row lg:flex-col gap-3 shrink-0">
-            <button
-              type="button"
-              onClick={() => onNavigate?.(dailyTarget.route)}
-              className="px-6 py-3.5 rounded-2xl font-bold text-xs sm:text-sm bg-white hover:bg-slate-100 text-slate-950 shadow-[0_0_25px_rgba(255,255,255,0.35)] hover:shadow-[0_0_35px_rgba(255,255,255,0.5)] transition-all flex items-center justify-center gap-2 cursor-pointer transform hover:-translate-y-0.5"
-            >
-              <BookOpen className="w-4 h-4 text-slate-950" />
-              <span>Start Today's Mission</span>
-              <ArrowRight className="w-4 h-4 text-slate-950" />
-            </button>
-
-            <button
-              type="button"
-              onClick={handleToggleDailyMission}
-              className={cn(
-                "px-5 py-2.5 rounded-xl font-semibold text-xs border transition-all flex items-center justify-center gap-2 cursor-pointer",
-                dailyCompleted
-                  ? "bg-emerald-500/20 border-emerald-500/40 text-emerald-300 hover:bg-emerald-500/30"
-                  : "bg-white/[0.04] border-white/10 hover:border-white/20 text-white/80 hover:text-white"
-              )}
-            >
-              <CheckCircle2 className={cn("w-4 h-4", dailyCompleted ? "text-emerald-400" : "text-white/40")} />
-              <span>{dailyCompleted ? 'Mark as Incomplete' : 'Mark Completed ✓'}</span>
-            </button>
-
-            <button
-              type="button"
-              onClick={() => {
-                sessionStorage.setItem('smartprep_active_chat', JSON.stringify([{
-                  role: 'user',
-                  content: `I am executing today's study mission: "${aiPlan.dailyAction.title}". Give me the 3 most crucial formulas, high-yield concept traps, and 1 practice numerical for IISER IAT.`
-                }]));
-                onNavigate?.('ai_doubt_solver');
-              }}
-              className="text-xs text-cyan-300 hover:text-cyan-200 flex items-center justify-center gap-1.5 py-1 transition-colors cursor-pointer"
-            >
-              <MessageSquare className="w-3.5 h-3.5" />
-              <span>Ask AI Tutor about this mission</span>
-            </button>
-          </div>
-        </div>
-      </div>
-
-      {/* ── 3. TWO-COLUMN STRATEGY LAYOUT: BLUEPRINT + HOURLY ALLOCATION ── */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-
-        {/* ── Left: Stream Strategic Blueprint ── */}
-        <div className={cn(
-          "p-6 sm:p-7 rounded-3xl border flex flex-col justify-between space-y-5 backdrop-blur-xl relative overflow-hidden",
-          isLight 
-            ? "bg-white/90 border-slate-200 shadow-sm" 
-            : "bg-[#0b0e24]/80 border-indigo-500/20 shadow-[0_8px_32px_rgba(0,0,0,0.4)]"
-        )}>
-          <div className="space-y-3">
-            <div className="flex items-center justify-between">
-              <span className="text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full bg-indigo-500/15 border border-indigo-500/30 text-indigo-300">
-                {aiPlan.specialBlueprint.badge}
-              </span>
-              <Lightbulb className="w-4 h-4 text-amber-400" />
-            </div>
-
-            <h3 className="text-lg sm:text-xl font-display font-bold text-white leading-snug">
-              {aiPlan.specialBlueprint.title}
-            </h3>
-            <p className="text-xs text-cyan-300 font-semibold">
-              {aiPlan.specialBlueprint.subtitle}
-            </p>
-            <p className={cn("text-xs leading-relaxed", isLight ? "text-slate-600" : "text-white/60")}>
-              {aiPlan.specialBlueprint.description}
-            </p>
-
-            {/* Tactical Advice Bullets */}
-            <div className="space-y-2 pt-1">
-              {aiPlan.specialBlueprint.tactics.map((t, idx) => (
-                <div key={idx} className="flex items-start gap-2.5 text-xs text-white/80">
-                  <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 mt-1.5 shrink-0" />
-                  <span className="leading-relaxed">{t}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* High-Yield Chapter Shortcuts */}
-          <div className="pt-3 border-t border-white/10 space-y-2">
-            <span className="text-[10.5px] font-bold uppercase tracking-wider text-white/40 block">
-              Recommended High-Yield Chapters:
-            </span>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-              {aiPlan.specialBlueprint.recommendedChapters.map((c, i) => {
-                const chapTarget = resolveLessonTarget(c.name, aiPlan.answers.weakSubject);
-                return (
-                  <div
-                    key={i}
-                    onClick={() => onNavigate?.(chapTarget.route)}
-                    className={cn(
-                      "p-3.5 rounded-2xl border transition-all cursor-pointer group flex flex-col justify-between min-h-[74px]",
-                      isLight 
-                        ? "bg-slate-50 hover:bg-white border-slate-200 hover:border-cyan-400 shadow-sm" 
-                        : "bg-white/[0.03] hover:bg-white/[0.07] border-white/5 hover:border-cyan-500/40 shadow-[0_2px_10px_rgba(0,0,0,0.2)]"
-                    )}
-                  >
-                    <div className="flex items-center justify-between gap-2">
-                      <span className="text-xs font-bold text-white group-hover:text-cyan-300 transition-colors">
-                        {c.name}
-                      </span>
-                      <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded-md bg-cyan-500/15 border border-cyan-500/30 text-cyan-300 flex items-center gap-1 group-hover:bg-cyan-400 group-hover:text-slate-950 transition-all shrink-0">
-                        <span>Open</span>
-                        <ArrowRight className="w-3 h-3" />
-                      </span>
-                    </div>
-                    <span className={cn("text-[11px] line-clamp-2 mt-1 leading-relaxed", isLight ? "text-slate-500" : "text-white/60")}>
-                      {c.why}
-                    </span>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-        </div>
-
-        {/* ── Right: Weekly Hourly Allocation & Subject Balance ── */}
-        <div className={cn(
-          "p-6 sm:p-7 rounded-3xl border flex flex-col justify-between space-y-5 backdrop-blur-xl",
-          isLight 
-            ? "bg-white/90 border-slate-200 shadow-sm" 
-            : "bg-[#0b0e24]/80 border-indigo-500/20 shadow-[0_8px_32px_rgba(0,0,0,0.4)]"
-        )}>
-          <div className="space-y-2">
-            <div className="flex items-center justify-between">
-              <h3 className="text-lg font-display font-bold text-white">
-                Weekly Subject Hour Allocation
-              </h3>
-              <span className="text-xs font-mono font-bold text-cyan-400">
-                {aiPlan.answers.dailyHours * 6} hrs / week total
-              </span>
-            </div>
-            <p className={cn("text-xs", isLight ? "text-slate-600" : "text-white/50")}>
-              Weighted mathematically to prioritize your identified hurdle in <span className="text-rose-400 font-bold">{aiPlan.answers.weakSubject}</span>.
-            </p>
-          </div>
-
-          <div className="space-y-4">
-            {aiPlan.weeklyHourlyAllocation.map((item) => (
-              <div key={item.subject} className="space-y-1.5">
-                <div className="flex justify-between items-center text-xs">
-                  <div className="flex items-center gap-2">
-                    <span className={cn("w-2.5 h-2.5 rounded-full", item.color)} />
-                    <span className="font-bold text-white">{item.subject}</span>
-                  </div>
-                  <span className="font-mono text-white/80 font-bold">
-                    {item.hours} hrs ({item.percentage}%)
-                  </span>
-                </div>
-
-                <div className="w-full h-2 rounded-full bg-white/10 overflow-hidden">
-                  <div
-                    className={cn("h-full rounded-full transition-all duration-500", item.color)}
-                    style={{ width: `${item.percentage}%` }}
-                  />
-                </div>
-
-                <p className="text-[10.5px] text-white/45 line-clamp-1">
-                  {item.focusNote}
-                </p>
-              </div>
-            ))}
-          </div>
-
-          {/* Active Study Rhythm Guideline */}
-          <div className={cn(
-            "p-3.5 rounded-2xl border text-xs flex items-start gap-2.5",
-            isLight 
-              ? "bg-indigo-50 border-indigo-200 text-indigo-900" 
-              : "bg-indigo-500/10 border-indigo-500/20 text-indigo-200"
-          )}>
-            <Sparkles className="w-4 h-4 text-cyan-400 shrink-0 mt-0.5" />
-            <span className="leading-relaxed">
-              <strong className="text-white font-semibold">Active Study Guideline:</strong> Allocate 60% of your daily {aiPlan.answers.dailyHours} hours strictly to numerical solving & derivations, and 40% to rapid NCERT revision.
-            </span>
-          </div>
-        </div>
-
-      </div>
-
-      {/* ── 4. FOUR-PHASE PREPARATION LIFECYCLE ROADMAP ── */}
-      <div className={cn(
-        "p-6 sm:p-8 rounded-3xl border space-y-6 backdrop-blur-xl",
-        isLight 
-          ? "bg-white/90 border-slate-200 shadow-sm" 
-          : "bg-[#0b0e24]/80 border-indigo-500/20 shadow-[0_8px_32px_rgba(0,0,0,0.4)]"
-      )}>
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-white/10 pb-3.5">
           <div>
-            <span className="text-[10px] font-bold uppercase tracking-wider text-cyan-400">
-              Strategic Timeline
-            </span>
-            <h3 className="text-xl sm:text-2xl font-display font-extrabold text-white">
-              Preparation Lifecycle Roadmap
+            <h3 className="text-lg sm:text-xl font-display font-extrabold text-white">
+              Preparation Roadmap (Milestones)
             </h3>
-            <p className={cn("text-xs mt-0.5", isLight ? "text-slate-600" : "text-white/50")}>
-              Your structured pathway from baseline concepts to IISER rank qualification.
+            <p className="text-xs text-white/60 mt-0.5">
+              4 clear phases with measurable completion requirements toward IISc Bangalore qualification.
             </p>
           </div>
-
-          <span className="text-xs font-mono text-white/50 self-start sm:self-auto">
-            Click phase to inspect milestones
-          </span>
+          <span className="text-xs font-mono text-white/40">Inspect phase details below</span>
         </div>
 
-        {/* 4 Phase Tab Buttons */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-2.5">
-          {aiPlan.phases.map((phase, idx) => {
+        {/* Phase Selector Tabs */}
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-2">
+          {aiPlan.phases.map((phase) => {
             const isSelected = activePhaseTab === phase.id;
             return (
               <button
@@ -1642,125 +1546,71 @@ export function PathToIISER({
                 type="button"
                 onClick={() => setActivePhaseTab(phase.id)}
                 className={cn(
-                  "p-3.5 rounded-2xl border text-left transition-all cursor-pointer flex flex-col justify-between min-h-[90px] relative overflow-hidden",
+                  "p-3.5 rounded-2xl border text-left transition-all cursor-pointer flex flex-col justify-between min-h-[84px]",
                   isSelected
-                    ? "bg-cyan-500/15 border-cyan-400 shadow-[0_0_20px_rgba(6,182,212,0.2)]"
-                    : "bg-white/[0.03] border-white/10 hover:border-cyan-500/30 hover:bg-white/[0.05]"
+                    ? "bg-cyan-500/15 border-cyan-400 text-cyan-300 shadow-[0_0_15px_rgba(6,182,212,0.2)]"
+                    : "bg-white/[0.03] border-white/8 hover:border-white/20 text-white/70 hover:bg-white/[0.05]"
                 )}
               >
-                <div className="flex items-center justify-between w-full mb-1">
-                  <span className={cn(
-                    "text-[9.5px] font-bold px-2 py-0.5 rounded-md uppercase",
-                    phase.status === 'ACTIVE' 
-                      ? "bg-emerald-500/20 text-emerald-300 border border-emerald-500/30"
-                      : "bg-white/10 text-white/60"
-                  )}>
-                    {phase.status}
-                  </span>
-                  <span className="text-[10px] font-mono text-white/40">#{idx + 1}</span>
-                </div>
-
-                <div className="space-y-0.5">
-                  <h4 className={cn("text-xs sm:text-sm font-bold truncate", isSelected ? "text-cyan-200" : "text-white")}>
-                    {phase.title}
-                  </h4>
-                  <span className="text-[10px] text-white/45 block">{phase.timeline}</span>
+                <span className={cn(
+                  "text-[9px] font-bold px-2 py-0.5 rounded-md uppercase self-start mb-1",
+                  phase.status === 'ACTIVE' 
+                    ? "bg-emerald-500/20 text-emerald-300 border border-emerald-500/30"
+                    : "bg-white/10 text-white/50"
+                )}>
+                  {phase.status}
+                </span>
+                <div>
+                  <h5 className="text-xs sm:text-sm font-bold text-white truncate">{phase.title}</h5>
+                  <span className="text-[10px] text-white/40 block">{phase.timeline}</span>
                 </div>
               </button>
             );
           })}
         </div>
 
-        {/* Active Phase Deep Dive Card */}
-        <div className="p-5 sm:p-6 rounded-2xl bg-white/[0.02] border border-white/8 space-y-4">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-white/5 pb-4">
-            <div>
-              <div className="flex items-center gap-2">
-                <h4 className="text-lg font-bold text-white">{activePhase.title}</h4>
-                <span className="text-xs font-mono text-cyan-400 font-bold px-2 py-0.5 rounded bg-cyan-500/10 border border-cyan-500/20">
-                  {activePhase.timeline}
-                </span>
-              </div>
-              <p className="text-xs text-white/60 mt-1 leading-relaxed max-w-2xl">
-                {activePhase.description}
-              </p>
-            </div>
-
-            <div className="text-left sm:text-right shrink-0">
-              <span className="text-[10px] uppercase font-bold text-white/40 block">Target Progress</span>
-              <span className="text-xl font-display font-black text-white">{activePhase.targetProgress}%</span>
-            </div>
+        {/* Active Phase Details */}
+        <div className="p-4 sm:p-5 rounded-2xl bg-white/[0.02] border border-white/8 space-y-3">
+          <div className="flex justify-between items-center">
+            <h4 className="text-sm sm:text-base font-bold text-white">{activePhase.title} ({activePhase.timeline})</h4>
+            <span className="text-xs font-mono text-cyan-400 font-bold">Target Progress: {activePhase.targetProgress}%</span>
           </div>
+          <p className="text-xs text-white/60 leading-relaxed">{activePhase.description}</p>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-1">
-            {/* Key Milestones */}
-            <div className="space-y-2.5">
-              <span className="text-[10.5px] font-bold uppercase tracking-wider text-white/40 block">
-                Key Milestone Objectives:
-              </span>
-              <div className="space-y-2">
-                {activePhase.keyMilestones.map((m, i) => (
-                  <div key={i} className="flex items-start gap-2.5 text-xs text-white/80">
-                    <CheckCircle2 className="w-4 h-4 text-cyan-400 shrink-0 mt-0.5" />
-                    <span className="leading-relaxed">{m}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Verification Criteria & Action */}
-            <div className="space-y-3 flex flex-col justify-between">
-              <div>
-                <span className="text-[10.5px] font-bold uppercase tracking-wider text-white/40 block mb-1.5">
-                  Phase Verification Criteria:
-                </span>
-                <div className="p-3 rounded-xl bg-white/[0.03] border border-white/8 text-xs font-mono text-cyan-300 font-semibold">
-                  {activePhase.verificationCriteria}
+          <div className="space-y-2 pt-1">
+            <span className="text-[10px] font-bold uppercase tracking-wider text-white/40 block">Key Milestones:</span>
+            <div className="space-y-1.5">
+              {activePhase.keyMilestones.map((m, i) => (
+                <div key={i} className="flex items-center gap-2 text-xs text-white/80">
+                  <CheckCircle2 className="w-3.5 h-3.5 text-cyan-400 shrink-0" />
+                  <span>{m}</span>
                 </div>
-              </div>
-
-              <button
-                type="button"
-                onClick={() => onNavigate?.(`smart_lessons:${aiPlan.answers.weakSubject}`)}
-                className="self-start px-4 py-2.5 rounded-xl text-xs font-bold bg-white/[0.07] hover:bg-white/15 border border-white/10 text-white transition-all flex items-center gap-2 cursor-pointer"
-              >
-                <span>Browse {aiPlan.answers.weakSubject} Smart Lessons</span>
-                <ArrowRight className="w-3.5 h-3.5 text-cyan-400" />
-              </button>
+              ))}
             </div>
           </div>
         </div>
       </div>
 
-      {/* ── 5. INTERACTIVE WEEKLY ACTION CHECKLIST ── */}
+      {/* ── 10. THIS WEEK'S ACTION CHECKLIST ── */}
       <div className={cn(
-        "p-6 sm:p-8 rounded-3xl border space-y-5 backdrop-blur-xl",
-        isLight 
-          ? "bg-white/90 border-slate-200 shadow-sm" 
-          : "bg-[#0b0e24]/80 border-indigo-500/20 shadow-[0_8px_32px_rgba(0,0,0,0.4)]"
+        "p-6 sm:p-7 rounded-3xl border space-y-4 backdrop-blur-xl",
+        isLight
+          ? "bg-white/90 border-slate-200 shadow-sm"
+          : "bg-[#0b0e24]/85 border-indigo-500/20 shadow-[0_8px_32px_rgba(0,0,0,0.4)]"
       )}>
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-          <div>
-            <div className="flex items-center gap-2">
-              <CheckSquare className="w-4 h-4 text-cyan-400" />
-              <h3 className="text-lg sm:text-xl font-display font-bold text-white">
-                This Week's Action Checklist
-              </h3>
-            </div>
-            <p className={cn("text-xs mt-1", isLight ? "text-slate-600" : "text-white/50")}>
-              Check off your tasks as you complete them. Progress is saved automatically.
-            </p>
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-white/10 pb-3">
+          <div className="flex items-center gap-2">
+            <CheckSquare className="w-4 h-4 text-cyan-400" />
+            <h3 className="text-lg sm:text-xl font-display font-extrabold text-white">
+              This Week's Action Checklist
+            </h3>
           </div>
-
-          <div className="flex items-center gap-3 self-start sm:self-auto">
-            <span className="text-xs font-mono font-bold text-cyan-400">
+          <div className="flex items-center gap-3">
+            <span className="text-xs font-mono text-cyan-400 font-bold">
               {checklistCompletedCount} / {checklistTotal} Completed ({checklistPercent}%)
             </span>
-            <div className="w-24 h-2 rounded-full bg-white/10 overflow-hidden">
-              <div
-                className="h-full bg-gradient-to-r from-cyan-400 to-emerald-400 transition-all duration-300"
-                style={{ width: `${checklistPercent}%` }}
-              />
+            <div className="w-20 h-1.5 rounded-full bg-white/10 overflow-hidden">
+              <div className="h-full bg-cyan-400 rounded-full" style={{ width: `${checklistPercent}%` }} />
             </div>
           </div>
         </div>
@@ -1770,24 +1620,20 @@ export function PathToIISER({
             const isDone = !!checklist[item.id];
             const itemTarget = item.route 
               ? { route: item.route, label: item.targetLabel || 'Open Task' }
-              : (item.task.toLowerCase().includes('mock')
-                ? { route: 'mock_tests', label: 'Open Mock Tests' }
-                : (item.task.toLowerCase().includes('pyq')
-                  ? { route: 'pyqs', label: 'Open PYQ Hub' }
-                  : resolveLessonTarget(item.task, aiPlan.answers.weakSubject)));
+              : resolveLessonTarget(item.task, aiPlan.answers.weakSubject);
 
             return (
               <div
                 key={item.id}
                 onClick={() => handleToggleChecklistItem(item.id)}
                 className={cn(
-                  "p-4 rounded-2xl border transition-all cursor-pointer flex items-start justify-between gap-3 select-none group",
+                  "p-3.5 rounded-2xl border transition-all cursor-pointer flex items-start justify-between gap-3 select-none group",
                   isDone
-                    ? "bg-emerald-500/10 border-emerald-500/30 shadow-[0_0_15px_rgba(16,185,129,0.1)]"
+                    ? "bg-emerald-500/10 border-emerald-500/30"
                     : "bg-white/[0.02] border-white/8 hover:border-white/20 text-white/80 hover:bg-white/[0.04]"
                 )}
               >
-                <div className="flex items-start gap-3 flex-1 min-w-0">
+                <div className="flex items-start gap-2.5 flex-1 min-w-0">
                   <div className={cn(
                     "w-5 h-5 rounded-lg border flex items-center justify-center shrink-0 mt-0.5 transition-all",
                     isDone
@@ -1797,15 +1643,15 @@ export function PathToIISER({
                     {isDone && <Check className="w-3.5 h-3.5 stroke-[3]" />}
                   </div>
 
-                  <div className="space-y-1.5 min-w-0 flex-1">
+                  <div className="space-y-1 min-w-0 flex-1">
                     <span className={cn(
-                      "text-xs font-semibold leading-relaxed block transition-all",
+                      "text-xs font-semibold leading-relaxed block",
                       isDone ? "line-through text-white/50" : "text-white"
                     )}>
                       {item.task}
                     </span>
-                    <div className="flex flex-wrap items-center gap-2">
-                      <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-white/5 text-white/40 uppercase">
+                    <div className="flex items-center gap-2">
+                      <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-white/5 text-white/40 uppercase">
                         {item.category}
                       </span>
                       {itemTarget.route && (
@@ -1815,7 +1661,7 @@ export function PathToIISER({
                             e.stopPropagation();
                             onNavigate?.(itemTarget.route);
                           }}
-                          className="text-[10.5px] font-bold text-cyan-400 hover:text-cyan-300 hover:underline flex items-center gap-1 cursor-pointer transition-colors"
+                          className="text-[10.5px] font-bold text-cyan-400 hover:text-cyan-300 hover:underline flex items-center gap-1 cursor-pointer"
                         >
                           <span>{itemTarget.label || 'Go to Task'}</span>
                           <ArrowRight className="w-3 h-3" />
@@ -1836,82 +1682,136 @@ export function PathToIISER({
         </div>
       </div>
 
-      {/* ── 6. AI MENTOR COACHING DIRECTIVES ── */}
+      {/* ── 11. SMARTPREP GUIDANCE (AI STUDY INSIGHTS) ── */}
       <div className={cn(
-        "p-6 sm:p-8 rounded-3xl border space-y-4 relative overflow-hidden backdrop-blur-xl",
-        isLight 
-          ? "bg-white/90 border-slate-200" 
-          : "bg-gradient-to-r from-indigo-950/50 via-[#0b0e24]/80 to-purple-950/50 border-purple-500/25 shadow-[0_8px_32px_rgba(0,0,0,0.5)]"
+        "p-6 sm:p-7 rounded-3xl border space-y-4 backdrop-blur-xl",
+        isLight
+          ? "bg-white/90 border-slate-200"
+          : "bg-gradient-to-r from-indigo-950/40 via-[#0b0e24] to-cyan-950/40 border-indigo-500/25 shadow-[0_8px_32px_rgba(0,0,0,0.5)]"
       )}>
-        <div className="flex flex-wrap items-center justify-between gap-3">
-          <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-xl bg-purple-500/20 border border-purple-500/30 flex items-center justify-center text-purple-300">
-              <Sparkles className="w-4 h-4" />
-            </div>
-            <div>
-              <h3 className="text-sm sm:text-base font-display font-bold text-white">
-                AI Mentor Coaching Directives
-              </h3>
-              <p className="text-[11px] text-purple-300/80">
-                Tailored for {aiPlan.answers.targetInstitute} • {aiPlan.answers.targetAir}
-              </p>
-            </div>
-          </div>
-
-          <span className="text-[10px] font-mono text-cyan-400 uppercase tracking-wider px-2.5 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/20 hidden sm:inline">
-            NVIDIA NIM AI Verified
-          </span>
+        <div className="flex items-center gap-2">
+          <Lightbulb className="w-4 h-4 text-cyan-400" />
+          <h3 className="text-lg sm:text-xl font-display font-extrabold text-white">
+            SmartPrep Guidance & Evidence-Based Insights
+          </h3>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-3.5 pt-1">
-          {[
-            {
-              title: "Scoring Strategy & Mindset",
-              accent: "text-cyan-400",
-              border: "hover:border-cyan-500/40",
-              tag: "TACTIC #1",
-              text: aiPlan.aiMentorTips[0] || `Focus on ${aiPlan.answers.weakSubject}: Every +4 marks in ${aiPlan.answers.weakSubject} boosts your IAT rank by 80+ positions. Target high-probability formula questions first.`
-            },
-            {
-              title: "180-Minute Exam Pacing",
-              accent: "text-purple-400",
-              border: "hover:border-purple-500/40",
-              tag: "TACTIC #2",
-              text: aiPlan.aiMentorTips[1] || `Divide your 180 mins: Chemistry (35m) → Biology (30m) → Physics (55m) → Math (50m) → Final Review (10m). Never get stuck on 1 question.`
-            },
-            {
-              title: "Error Control & Negative Marks",
-              accent: "text-amber-400",
-              border: "hover:border-amber-500/40",
-              tag: "TACTIC #3",
-              text: aiPlan.aiMentorTips[2] || `In Section A, eliminate careless negative marks. Keeping negative marks under 12 secures your Top 100 AIR at ${aiPlan.answers.targetInstitute}.`
-            }
-          ].map((tactic, idx) => (
-            <div 
-              key={idx} 
-              className={cn(
-                "p-4 rounded-2xl border transition-all space-y-2 flex flex-col justify-between",
-                isLight 
-                  ? "bg-slate-50/80 border-slate-200" 
-                  : "bg-white/[0.03] border-white/8 hover:bg-white/[0.05]",
-                tactic.border
-              )}
-            >
-              <div className="space-y-1.5">
-                <div className="flex items-center justify-between">
-                  <span className={cn("text-[9.5px] font-mono font-bold tracking-wider", tactic.accent)}>
-                    {tactic.tag}
-                  </span>
-                  <Lightbulb className={cn("w-3.5 h-3.5", tactic.accent)} />
-                </div>
-                <h4 className="text-xs font-bold text-white">{tactic.title}</h4>
-                <p className="text-xs text-white/70 leading-relaxed pt-0.5">{tactic.text}</p>
-              </div>
-            </div>
-          ))}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-3.5">
+          <div className="p-4 rounded-2xl bg-white/[0.03] border border-white/8 space-y-1.5">
+            <span className="text-[10px] font-mono font-bold text-cyan-400 uppercase tracking-wider">Tactic 1</span>
+            <h4 className="text-xs font-bold text-white">Accuracy Over Speed</h4>
+            <p className="text-xs text-white/70 leading-relaxed">
+              Focus on accuracy over speed in your early practice sessions. Speed develops naturally once concepts and formula triggers are rock-solid.
+            </p>
+          </div>
+
+          <div className="p-4 rounded-2xl bg-white/[0.03] border border-white/8 space-y-1.5">
+            <span className="text-[10px] font-mono font-bold text-purple-400 uppercase tracking-wider">Tactic 2</span>
+            <h4 className="text-xs font-bold text-white">24-Hour Error Review</h4>
+            <p className="text-xs text-white/70 leading-relaxed">
+              Review missed questions within 24 hours while your thought process is fresh. Unreviewed mistakes repeat under exam pressure.
+            </p>
+          </div>
+
+          <div className="p-4 rounded-2xl bg-white/[0.03] border border-white/8 space-y-1.5">
+            <span className="text-[10px] font-mono font-bold text-amber-400 uppercase tracking-wider">Tactic 3</span>
+            <h4 className="text-xs font-bold text-white">Timed 10-Question Sets</h4>
+            <p className="text-xs text-white/70 leading-relaxed">
+              Practice with a timer on sets of 10+ questions to build exam pacing gradually. Never get trapped on a single calculation during mocks.
+            </p>
+          </div>
         </div>
       </div>
 
+      {/* ── 12. PERSONALIZATION TRANSPARENCY ── */}
+      <div className={cn(
+        "p-5 sm:p-6 rounded-3xl border flex flex-col sm:flex-row sm:items-center justify-between gap-4 backdrop-blur-xl",
+        isLight ? "bg-slate-50 border-slate-200" : "bg-white/[0.02] border-white/8"
+      )}>
+        <div className="space-y-1.5 max-w-2xl">
+          <span className="text-[10px] font-mono uppercase tracking-wider text-cyan-400 font-bold block">
+            Personalization Transparency
+          </span>
+          <h4 className="text-sm sm:text-base font-bold text-white">
+            How this roadmap is calibrated for you
+          </h4>
+          <p className="text-xs text-white/60 leading-relaxed">
+            This roadmap is built specifically around your target college (<strong className="text-white font-semibold">{aiPlan.answers.targetInstitute}</strong>), academic stream (<strong className="text-white font-semibold">{aiPlan.answers.stream}</strong> with non-calculus Math focus), and daily commitment (<strong className="text-white font-semibold">{aiPlan.answers.dailyHours} hours/day</strong>).
+          </p>
+        </div>
+
+        <button
+          type="button"
+          onClick={() => {
+            setWizardStep(1);
+            setIsCalibrating(true);
+          }}
+          className="self-start sm:self-auto px-4 py-2.5 rounded-xl text-xs font-bold bg-white/[0.08] hover:bg-white/15 border border-white/15 text-white transition-all flex items-center gap-2 cursor-pointer shrink-0"
+        >
+          <span>Edit Path</span>
+          <ArrowRight className="w-3.5 h-3.5 text-cyan-400" />
+        </button>
+      </div>
+
+      {/* ── PRIORITY RATIONALE MODAL ── */}
+      <AnimatePresence>
+        {showPriorityModal && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-in fade-in duration-200">
+            <div className="w-full max-w-lg p-6 rounded-3xl bg-[#0b0e24] border border-amber-500/30 shadow-2xl space-y-4">
+              <div className="flex items-center justify-between border-b border-white/10 pb-3">
+                <div className="flex items-center gap-2">
+                  <div className="w-7 h-7 rounded-lg bg-amber-500/20 border border-amber-500/30 flex items-center justify-center text-amber-300">
+                    <Lightbulb className="w-4 h-4" />
+                  </div>
+                  <h3 className="font-bold text-base text-white">Why is this a priority?</h3>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setShowPriorityModal(false)}
+                  className="w-7 h-7 rounded-lg bg-white/5 hover:bg-white/10 flex items-center justify-center text-white/60 hover:text-white cursor-pointer"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+              </div>
+
+              <div className="space-y-3 text-xs text-white/70 leading-relaxed">
+                <p>
+                  For a <strong className="text-amber-300">PCB student aiming for Top 100 AIR at IISc Bangalore</strong>, Biology and Chemistry scores among top candidates are typically very high and tightly bunched.
+                </p>
+                <p>
+                  The primary rank differentiator is <strong className="text-white">Mathematics</strong>. Most PCB candidates leave all 15 Math questions blank, giving away 60 possible marks.
+                </p>
+                <p>
+                  By mastering non-calculus chapters like <strong className="text-cyan-300">Matrices & Determinants</strong> and <strong className="text-cyan-300">Vectors & 3D Geometry</strong>, you can secure 24–35 marks with pure algebraic formulas and zero integration tricks, creating an insurmountable rank advantage.
+                </p>
+              </div>
+
+              <div className="pt-2 flex justify-end gap-2 border-t border-white/10">
+                <button
+                  type="button"
+                  onClick={() => setShowPriorityModal(false)}
+                  className="px-4 py-2 rounded-xl text-xs font-semibold text-white/60 hover:text-white cursor-pointer"
+                >
+                  Close
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setShowPriorityModal(false);
+                    onNavigate?.(focusTarget.route);
+                  }}
+                  className="px-4 py-2 rounded-xl text-xs font-bold bg-white text-slate-950 hover:bg-slate-100 flex items-center gap-1.5 cursor-pointer"
+                >
+                  <span>Practice Matrices & Determinants</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+      </AnimatePresence>
+
+      {/* ── 13. FOOTER ── */}
       <Footer />
     </div>
   );

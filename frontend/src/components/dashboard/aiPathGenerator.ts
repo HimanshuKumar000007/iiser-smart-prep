@@ -90,6 +90,14 @@ export interface AiGeneratedStudyPlan {
     targetLessonTitle?: string;
     route: string;
     completed: boolean;
+    subSteps?: {
+      id: string;
+      title: string;
+      durationMinutes: number;
+      type: 'CONCEPT_REVIEW' | 'TARGETED_PRACTICE' | 'ERROR_REVIEW';
+      description: string;
+      actionLabel: string;
+    }[];
   };
   specialBlueprint: {
     title: string;
@@ -123,6 +131,7 @@ export interface AiGeneratedStudyPlan {
 }
 
 export const TARGET_INSTITUTES = [
+  { id: 'IISc Bangalore', name: 'IISc Bangalore', rank: 'Global #1 in India', tag: 'Accepts IAT for BS Research', badge: 'Elite Choice' },
   { id: 'IISER Pune', name: 'IISER Pune', rank: '#1 Ranked', tag: 'Premier Research Campus', badge: 'Top Choice' },
   { id: 'IISER Kolkata', name: 'IISER Kolkata', rank: '#2 Ranked', tag: 'Excellence in Physical & Earth Sciences', badge: 'Premier' },
   { id: 'IISER Mohali', name: 'IISER Mohali', rank: '#3 Ranked', tag: 'High-Energy Physics & Structural Bio', badge: 'Premier' },
@@ -130,7 +139,6 @@ export const TARGET_INSTITUTES = [
   { id: 'IISER Thiruvananthapuram', name: 'IISER TVM', rank: 'Pristine Campus', tag: 'Chemical Ecology & Quantum Tech', badge: 'Specialized' },
   { id: 'IISER Tirupati', name: 'IISER Tirupati', rank: 'Modern Labs', tag: 'Genomics & Material Science', badge: 'Emerging' },
   { id: 'IISER Berhampur', name: 'IISER Berhampur', rank: 'Coastal Research', tag: 'Marine Bio & Fundamental Physics', badge: 'Emerging' },
-  { id: 'IISc Bangalore', name: 'IISc Bangalore', rank: 'Global #1 in India', tag: 'Accepts IAT for BS Research', badge: 'Elite' },
 ];
 
 export const STREAMS = [
@@ -242,6 +250,7 @@ const CHECKLIST_STORAGE_KEY = 'smartprep_weekly_checklist';
 const DAILY_ACTION_STORAGE_KEY = 'smartprep_daily_action_done';
 const DAILY_SLOT_STORAGE_KEY = 'smartprep_daily_slots_done';
 const SCHEDULE_PREF_STORAGE_KEY = 'smartprep_schedule_preference';
+const MISSION_STEPS_STORAGE_KEY = 'smartprep_mission_steps_done';
 
 export function getSavedSchedulePreference(): 'MORNING' | 'EVENING' {
   try {
@@ -275,6 +284,52 @@ export function saveSlotState(slotKey: string, completed: boolean): void {
   } catch {}
 }
 
+export function getSavedMissionSteps(): Record<string, boolean> {
+  try {
+    const raw = localStorage.getItem(MISSION_STEPS_STORAGE_KEY);
+    return raw ? JSON.parse(raw) : {};
+  } catch {
+    return {};
+  }
+}
+
+export function saveMissionStep(stepId: string, completed: boolean): void {
+  try {
+    const current = getSavedMissionSteps();
+    current[stepId] = completed;
+    localStorage.setItem(MISSION_STEPS_STORAGE_KEY, JSON.stringify(current));
+  } catch {}
+}
+
+export function getDefaultMissionSubSteps(chapter: string, subject: string) {
+  return [
+    {
+      id: 'step_concept_review',
+      title: 'Concept & Formula Review',
+      durationMinutes: 30,
+      type: 'CONCEPT_REVIEW' as const,
+      description: `Deep-read key definitions, high-yield formulas, and theorem conditions in ${chapter}.`,
+      actionLabel: 'Review Concepts'
+    },
+    {
+      id: 'step_targeted_practice',
+      title: 'Targeted IAT Question Drill',
+      durationMinutes: 30,
+      type: 'TARGETED_PRACTICE' as const,
+      description: `Solve 10–12 foundational and previous-year questions with focused accuracy.`,
+      actionLabel: 'Practice Questions'
+    },
+    {
+      id: 'step_error_review',
+      title: 'Mistake Analysis & Doubt Surgery',
+      durationMinutes: 15,
+      type: 'ERROR_REVIEW' as const,
+      description: `Log incorrect questions, note the core conceptual reason, and query AI doubt solver.`,
+      actionLabel: 'Error Surgery'
+    }
+  ];
+}
+
 export function getStoredAiStudyPlan(): AiGeneratedStudyPlan | null {
   try {
     const raw = localStorage.getItem(LOCAL_STORAGE_KEY);
@@ -289,6 +344,10 @@ export function getStoredAiStudyPlan(): AiGeneratedStudyPlan | null {
     }
     if (!plan.fallbackWeakAreas || plan.fallbackWeakAreas.length === 0) {
       plan.fallbackWeakAreas = getSynthesizedWeakAreas(plan.answers);
+      modified = true;
+    }
+    if (!plan.dailyAction.subSteps || plan.dailyAction.subSteps.length === 0) {
+      plan.dailyAction.subSteps = getDefaultMissionSubSteps(plan.dailyAction.targetChapter || 'Foundations', plan.dailyAction.subject || 'Subject');
       modified = true;
     }
     if (modified) {
@@ -1153,19 +1212,21 @@ export function buildDeterministicStudyPlan(answers: AiOnboardingAnswers, userNa
 
   // 4. Today's Immediate Action Mission
   const resolvedTarget = resolveLessonTarget(weakTopicHurdle, weakSubject);
+  const targetChapName = weakTopicHurdle || resolvedTarget.lessonTitle || `${weakSubject} Fundamentals`;
   const dailyAction = {
     id: 'mission_day_1',
     dayNumber: 1,
-    title: `Day 1 Priority: Master ${weakTopicHurdle || resolvedTarget.lessonTitle || 'Core Foundations'}`,
+    title: `Day 1 Priority: Master ${targetChapName}`,
     subject: weakSubject,
     actionType: 'SMART_LESSON',
     description: `Complete the core concept review and solve 15 targeted IAT practice questions to tackle your primary hurdle in ${weakSubject}.`,
-    estimatedMinutes: 60,
-    targetChapter: weakTopicHurdle || `${weakSubject} Fundamentals`,
+    estimatedMinutes: 75,
+    targetChapter: targetChapName,
     targetLessonId: resolvedTarget.lessonId,
     targetLessonTitle: resolvedTarget.lessonTitle,
     route: resolvedTarget.route,
-    completed: false
+    completed: false,
+    subSteps: getDefaultMissionSubSteps(targetChapName, weakSubject)
   };
 
   // 5. Four Strategic Lifecycle Phases
