@@ -107,10 +107,54 @@ const SUBJECT_OPTIONS = [
   { key: 'BIOLOGY' as SubjectFocus, label: 'Biology', shortLabel: 'Bio', icon: Dna, color: 'text-emerald-400' },
 ];
 
+// ── Safe math cleaning utility ───────────────────────────────────────
+function cleanMath(raw: string): string {
+  if (!raw) return '';
+  let m = raw.trim();
+
+  // Strip accidental outer math delimiters if nested
+  m = m.replace(/^(\\\[|\\\(|\$\$|\$)+/, '');
+  m = m.replace(/(\\\]|\\\)|\$\$|\$)+$/, '');
+  m = m.trim();
+
+  // Fix common LLM LaTeX glitches:
+  // 1. Replace "\\ \\ " or "\\ \\" with just "\\" (stray backslash between line breaks)
+  m = m.replace(/\\\\\s*\\\s+/g, '\\\\ ');
+
+  // 2. Remove any dangling trailing backslash (odd number of trailing backslashes)
+  while (/(^|[^\\])(\\\\)*\\$/.test(m)) {
+    m = m.slice(0, -1).trim();
+  }
+  return m;
+}
+
+// ── Content preprocessor for robust Markdown & LaTeX rendering ───────
+function preprocessContent(content: string): string {
+  if (!content) return '';
+  let s = content;
+
+  // 1. Normalize multi-escaped delimiters:
+  // e.g. "\\[" -> "\[", "\\]" -> "\]", "\\(" -> "\(", "\\)" -> "\)"
+  s = s.replace(/\\+(\[|\]|\(|\))/g, '\\$1');
+
+  // 2. Remove isolated stray backslash lines (e.g. lines that are just "\" or "\\ ")
+  s = s.replace(/(^|\n)[ \t]*\\+[ \t]*(\n|$)/g, '$1$2');
+
+  // 3. For raw matrix / equation environments not already inside \[ or $$, wrap them in display math
+  if (!s.includes('\\[') && !s.includes('$$')) {
+    s = s.replace(/(\\begin\{(?:vmatrix|pmatrix|bmatrix|matrix|align|equation)\*?\}[\s\S]*?\\end\{(?:vmatrix|pmatrix|bmatrix|matrix|align|equation)\*?\}(?:\s*=[^$\n]+)?)/g, '\n\n\\[\n$1\n\\]\n\n');
+  }
+
+  return s;
+}
+
 // ── Safe KaTeX math token renderer ───────────────────────────────────
 function MathToken({ math, display = false }: { math: string; display?: boolean }) {
+  const cleaned = cleanMath(math);
+  if (!cleaned) return null;
+
   try {
-    const html = katex.renderToString(math.trim(), {
+    const html = katex.renderToString(cleaned, {
       displayMode: display,
       throwOnError: false,
       trust: true,
@@ -130,7 +174,7 @@ function MathToken({ math, display = false }: { math: string; display?: boolean 
   } catch {
     return (
       <span className="font-mono text-cyan-300 text-xs px-1 bg-cyan-950/40 rounded">
-        {math}
+        {cleaned}
       </span>
     );
   }
@@ -220,17 +264,17 @@ function renderInline(text: string, keyPrefix = ''): React.ReactNode[] {
 
     // Display math
     if ((part.startsWith('$$') && part.endsWith('$$')) || (part.startsWith('\\[') && part.endsWith('\\]'))) {
-      const math = part.slice(2, -2).trim();
+      const math = cleanMath(part.slice(2, -2));
       return <MathToken key={key} math={math} display={true} />;
     }
 
     // Inline math: \(...\) or $...$
     if (part.startsWith('\\(') && part.endsWith('\\)')) {
-      const math = part.slice(2, -2).trim();
+      const math = cleanMath(part.slice(2, -2));
       return <MathToken key={key} math={math} display={false} />;
     }
     if (part.startsWith('$') && part.endsWith('$')) {
-      const math = part.slice(1, -1).trim();
+      const math = cleanMath(part.slice(1, -1));
       return <MathToken key={key} math={math} display={false} />;
     }
 
@@ -271,9 +315,11 @@ function renderInline(text: string, keyPrefix = ''): React.ReactNode[] {
 export function FormattedAnswer({ content }: { content: string }) {
   if (!content) return null;
 
+  const sanitizedContent = preprocessContent(content);
+
   // Split into code blocks, multiline display math, and normal lines
   const blockRegex = /(```[\s\S]*?```|\$\$[\s\S]*?\$\$|\\\[[\s\S]*?\\\])/g;
-  const rawBlocks = content.split(blockRegex);
+  const rawBlocks = sanitizedContent.split(blockRegex);
 
   const elements: React.ReactNode[] = [];
   let blockCounter = 0;
@@ -292,7 +338,7 @@ export function FormattedAnswer({ content }: { content: string }) {
 
     // B. Display Math
     if ((block.startsWith('$$') && block.endsWith('$$')) || (block.startsWith('\\[') && block.endsWith('\\]'))) {
-      const math = block.slice(2, -2).trim();
+      const math = cleanMath(block.slice(2, -2));
       elements.push(<MathToken key={`dm-${blockCounter++}`} math={math} display={true} />);
       return;
     }
@@ -451,6 +497,9 @@ export function FormattedAnswer({ content }: { content: string }) {
       }
 
       // Normal paragraph
+      if (trimmed === '\\' || trimmed === '\\\\' || trimmed === '\\\\\\') {
+        return;
+      }
       elements.push(
         <p key={`p-${blockCounter++}`} className="my-1 text-sm sm:text-[15px] leading-relaxed text-white/90">
           {renderInline(line, `p-t-${blockCounter}`)}
