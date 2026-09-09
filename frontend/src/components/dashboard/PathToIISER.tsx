@@ -1331,10 +1331,10 @@ export function PathToIISER({
                 <button
                   type="button"
                   onClick={() => {
-                    sessionStorage.setItem('smartprep_active_chat', JSON.stringify([{
-                      role: 'user',
-                      content: `I am executing today's mission on ${aiPlan.dailyAction.targetChapter}. Provide 3 essential formula insights, high-frequency traps in IAT, and 1 quick practice problem.`
-                    }]));
+                    const promptText = `I am executing today's mission on ${aiPlan.dailyAction.targetChapter}. Provide 3 essential formula insights, high-frequency traps in IAT, and 1 quick practice problem.`;
+                    try {
+                      sessionStorage.setItem('smartprep_pending_prompt', promptText);
+                    } catch {}
                     onNavigate?.('ai_doubt_solver');
                   }}
                   className="text-xs text-cyan-300 hover:text-cyan-200 flex items-center gap-1.5 cursor-pointer transition-colors"
@@ -1405,7 +1405,14 @@ export function PathToIISER({
 
                         <button
                           type="button"
-                          onClick={() => onNavigate?.(slot.route)}
+                          onClick={() => {
+                            if (slot.route === 'ai_doubt_solver') {
+                              try {
+                                sessionStorage.setItem('smartprep_pending_prompt', `I am working on ${slot.subject}: ${slot.title}. ${slot.description}. Please provide step-by-step guidance, formulas, and IAT traps.`);
+                              } catch {}
+                            }
+                            onNavigate?.(slot.route);
+                          }}
                           className="self-end sm:self-center px-3.5 py-1.5 rounded-xl text-xs font-bold bg-white/[0.06] hover:bg-white/15 border border-white/10 text-white transition-all flex items-center gap-1 cursor-pointer shrink-0"
                         >
                           <span>{slot.routeLabel}</span>
@@ -1485,7 +1492,14 @@ export function PathToIISER({
 
                     <button
                       type="button"
-                      onClick={() => onNavigate?.(slot.route)}
+                      onClick={() => {
+                        if (slot.route === 'ai_doubt_solver') {
+                          try {
+                            sessionStorage.setItem('smartprep_pending_prompt', `I am working on ${slot.subject}: ${slot.title}. ${slot.description}. Please provide step-by-step guidance, formulas, and IAT traps.`);
+                          } catch {}
+                        }
+                        onNavigate?.(slot.route);
+                      }}
                       className="self-end sm:self-center px-3.5 py-1.5 rounded-xl text-xs font-bold bg-white/[0.06] hover:bg-white/15 border border-white/10 text-white transition-all flex items-center gap-1 cursor-pointer shrink-0"
                     >
                       <span>{slot.routeLabel}</span>

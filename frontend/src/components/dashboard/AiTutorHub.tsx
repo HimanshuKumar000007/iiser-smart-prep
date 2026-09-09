@@ -500,6 +500,7 @@ export function AiTutorHub({
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const hasAutoExecutedRef = useRef<boolean>(false);
 
   // Auto-scroll to bottom
   useEffect(() => {
@@ -528,20 +529,26 @@ export function AiTutorHub({
     }, 50);
   };
 
-  const handleSendMessage = async (customQuery?: string) => {
-    const q = (customQuery || inputVal).trim();
-    if (!q || isLoading) return;
-
-    const newMsgs: Message[] = [...messages, { role: 'user', content: q }];
-    setMessages(newMsgs);
-    setInputVal('');
+  const executeStreamForMessages = async (baseMsgs: Message[]) => {
+    if (isLoading || baseMsgs.length === 0) return;
     setIsLoading(true);
 
-    // Add placeholder for streaming response
-    setMessages([...newMsgs, { role: 'assistant', content: '' }]);
+    // If the last message is already an assistant placeholder with empty content, use it;
+    // otherwise append a new assistant placeholder for streaming.
+    const lastIsAssistant = baseMsgs[baseMsgs.length - 1].role === 'assistant';
+    const msgsWithPlaceholder: Message[] = lastIsAssistant
+      ? baseMsgs
+      : [...baseMsgs, { role: 'assistant', content: '' }];
 
-    const messagesPayload = newMsgs.map((m, idx) => {
-      if (m.role === 'user' && idx === newMsgs.length - 1 && subjectFilter !== 'ALL') {
+    setMessages(msgsWithPlaceholder);
+
+    // Filter out trailing empty assistant placeholder for the request payload
+    const payloadMsgs = msgsWithPlaceholder.filter((m, idx) => 
+      !(m.role === 'assistant' && idx === msgsWithPlaceholder.length - 1 && !m.content)
+    );
+
+    const messagesPayload = payloadMsgs.map((m, idx) => {
+      if (m.role === 'user' && idx === payloadMsgs.length - 1 && subjectFilter !== 'ALL') {
         return {
           role: m.role,
           content: `[Subject: ${subjectFilter}] ${m.content}`
@@ -632,6 +639,43 @@ export function AiTutorHub({
       setIsLoading(false);
     }
   };
+
+  const handleSendMessage = async (customQuery?: string) => {
+    const q = (customQuery || inputVal).trim();
+    if (!q || isLoading) return;
+
+    const newMsgs: Message[] = [...messages, { role: 'user', content: q }];
+    setInputVal('');
+    executeStreamForMessages(newMsgs);
+  };
+
+  // Auto-execute pending prompt or unfinished user query on mount
+  useEffect(() => {
+    if (hasAutoExecutedRef.current) return;
+    hasAutoExecutedRef.current = true;
+
+    // Check 1: Explicit pending prompt passed via sessionStorage
+    try {
+      const pendingPrompt = sessionStorage.getItem('smartprep_pending_prompt');
+      if (pendingPrompt && pendingPrompt.trim()) {
+        sessionStorage.removeItem('smartprep_pending_prompt');
+        const query = pendingPrompt.trim();
+        // If messages already ends with this exact unanswered user message, stream directly for messages
+        if (messages.length > 0 && messages[messages.length - 1].role === 'user' && messages[messages.length - 1].content === query) {
+          executeStreamForMessages(messages);
+        } else {
+          executeStreamForMessages([...messages, { role: 'user', content: query }]);
+        }
+        return;
+      }
+    } catch {}
+
+    // Check 2: If the restored messages array ends with an unanswered user message
+    // (e.g. user navigated from "My Path", or page refreshed while prompt was awaiting reply)
+    if (messages.length > 0 && messages[messages.length - 1].role === 'user') {
+      executeStreamForMessages(messages);
+    }
+  }, []);
 
   const handleClearChat = () => {
     setMessages([]);
