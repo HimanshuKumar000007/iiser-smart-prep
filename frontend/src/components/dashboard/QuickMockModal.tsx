@@ -111,9 +111,9 @@ export function QuickMockModal({ subject, isPro, onNavigate, onClose, onStartMoc
 
   // Manage body class to hide MobileNav bottom bar
   useEffect(() => {
-    document.body.classList.add('quick-mock-modal-open');
+    document.body.classList.add('quick-mock-modal-open', 'modal-open');
     return () => {
-      document.body.classList.remove('quick-mock-modal-open');
+      document.body.classList.remove('quick-mock-modal-open', 'modal-open');
     };
   }, []);
 
@@ -215,7 +215,7 @@ export function QuickMockModal({ subject, isPro, onNavigate, onClose, onStartMoc
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+    <div className="fixed inset-0 z-[70] flex items-center justify-center p-4">
       {/* Backdrop */}
       <div className="absolute inset-0 bg-black/80 backdrop-blur-sm" onClick={onClose} />
 

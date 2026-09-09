@@ -34,6 +34,14 @@ export function PYQPlayer({
   const [showSubmitModal, setShowSubmitModal] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
 
+  // Hide mobile navigation bar and disable body scroll during practice session
+  useEffect(() => {
+    document.body.classList.add('mock-test-active', 'pyq-session-active');
+    return () => {
+      document.body.classList.remove('mock-test-active', 'pyq-session-active');
+    };
+  }, []);
+
   // Active question timer
   useEffect(() => {
     const timer = setInterval(() => {

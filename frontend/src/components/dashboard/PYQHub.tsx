@@ -128,6 +128,18 @@ export function PYQHub({ onNavigate, initialTab, initialResultId, initialMockId 
     }
   }, [initialTab, initialResultId]);
 
+  // Lock body scroll and hide bottom floating navigation dock when config modal is open
+  useEffect(() => {
+    if (showConfigModal) {
+      document.body.classList.add('modal-open', 'pyq-modal-open');
+    } else {
+      document.body.classList.remove('modal-open', 'pyq-modal-open');
+    }
+    return () => {
+      document.body.classList.remove('modal-open', 'pyq-modal-open');
+    };
+  }, [showConfigModal]);
+
   // Smart Preset Handler
   const applyPreset = (preset: 'iat_section' | 'speed_sprint' | 'rank_booster' | 'mistake_fix' | 'custom') => {
     setGoalPreset(preset);
@@ -667,11 +679,10 @@ export function PYQHub({ onNavigate, initialTab, initialResultId, initialMockId 
       )}
 
       {/* CONFIGURATION DIALOG / MODAL */}
-      {/* CONFIGURATION DIALOG / MODAL */}
       {showConfigModal && (
         <div 
           className={cn(
-            "fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 overflow-y-auto transition-colors",
+            "fixed inset-0 z-[70] flex items-center justify-center p-3 sm:p-4 overflow-y-auto transition-colors",
             isLight ? "bg-slate-900/40 backdrop-blur-sm" : "bg-black/85 backdrop-blur-md"
           )}
           onClick={(e) => {
@@ -784,7 +795,7 @@ export function PYQHub({ onNavigate, initialTab, initialResultId, initialMockId 
 
             {/* 3. Scrollable Tab Content */}
             <div className={cn(
-              "p-5 overflow-y-auto space-y-4 text-xs transition-colors",
+              "p-5 overflow-y-auto flex-1 min-h-0 space-y-4 text-xs transition-colors",
               isLight ? "bg-white text-slate-800" : "bg-[#0A0C16] text-white/80"
             )}>
               

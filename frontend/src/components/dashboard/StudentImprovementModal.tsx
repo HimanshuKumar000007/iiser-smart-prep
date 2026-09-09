@@ -92,6 +92,18 @@ export function StudentImprovementModal({
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
 
+  // Lock body scroll and hide bottom floating navigation dock when modal is open
+  useEffect(() => {
+    if (isOpen) {
+      document.body.classList.add('modal-open');
+    } else {
+      document.body.classList.remove('modal-open');
+    }
+    return () => {
+      document.body.classList.remove('modal-open');
+    };
+  }, [isOpen]);
+
   // Clean friendly greeting name
   const formatName = (raw: string) => {
     if (!raw || raw === 'Aspirant') return 'Aspirant';

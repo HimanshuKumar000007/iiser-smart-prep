@@ -38,12 +38,12 @@ export function MobileNav({
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={() => setIsStudyMenuOpen(false)}
-            className="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 lg:hidden mobile-nav-backdrop"
+            className="fixed inset-0 bg-black/60 backdrop-blur-sm z-30 lg:hidden mobile-nav-backdrop"
           />
         )}
       </AnimatePresence>
 
-      <div className="fixed bottom-0 left-0 right-0 z-50 lg:hidden px-4 pb-6 pt-2 pointer-events-none mobile-nav-container">
+      <div className="fixed bottom-0 left-0 right-0 z-40 lg:hidden px-4 pb-6 pt-2 pointer-events-none mobile-nav-container">
         
         {/* Study Menu Popup */}
         <AnimatePresence>

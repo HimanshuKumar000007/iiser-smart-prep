@@ -129,6 +129,18 @@ export function MockTestCenter({ onNavigate, initialTab, initialResultId, initia
     fetchStats();
   }, []);
 
+  // Lock body scroll and hide bottom floating navigation dock when modal is open
+  useEffect(() => {
+    if (isModalOpen) {
+      document.body.classList.add('modal-open');
+    } else {
+      document.body.classList.remove('modal-open');
+    }
+    return () => {
+      document.body.classList.remove('modal-open');
+    };
+  }, [isModalOpen]);
+
   useEffect(() => {
     const fetchLatestAnalysis = async () => {
       if (history.length === 0) {
@@ -984,7 +996,7 @@ export function MockTestCenter({ onNavigate, initialTab, initialResultId, initia
       {/* START MOCK MODAL - Simple Implementation */}
       <AnimatePresence>
         {isModalOpen && selectedMock && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+          <div className="fixed inset-0 z-[70] flex items-center justify-center p-4">
             <motion.div 
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}

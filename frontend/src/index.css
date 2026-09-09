@@ -923,16 +923,27 @@
   }
 }
 
-/* Hide Mobile Navigation elements when a Mock Test is active */
+/* Hide Mobile Navigation elements when a Mock Test or PYQ Session is active or any modal is open */
 body.mock-test-active .mobile-nav-container,
-body.mock-test-active .mobile-nav-backdrop {
+body.mock-test-active .mobile-nav-backdrop,
+body.pyq-session-active .mobile-nav-container,
+body.pyq-session-active .mobile-nav-backdrop,
+body.quick-mock-modal-open .mobile-nav-container,
+body.quick-mock-modal-open .mobile-nav-backdrop,
+body.pyq-modal-open .mobile-nav-container,
+body.pyq-modal-open .mobile-nav-backdrop,
+body.modal-open .mobile-nav-container,
+body.modal-open .mobile-nav-backdrop {
   display: none !important;
+  pointer-events: none !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
 }
 
-/* Hide Mobile Navigation elements when a Quick Mock selection modal is open */
-body.quick-mock-modal-open .mobile-nav-container,
-body.quick-mock-modal-open .mobile-nav-backdrop {
-  display: none !important;
+/* Prevent screen scroll behind open modal */
+body.pyq-modal-open,
+body.modal-open {
+  overflow: hidden !important;
 }
 
 /* Prevent screen scroll and hide Mobile Navigation when AI Tutor is active */
