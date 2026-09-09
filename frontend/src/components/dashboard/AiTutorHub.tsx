@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, memo } from 'react';
+import React, { useState, useEffect, useRef, memo, useCallback } from 'react';
 import { 
   Sparkles, 
   Send, 
@@ -519,6 +519,146 @@ export const FormattedAnswer = memo(function FormattedAnswer({ content }: { cont
   );
 });
 
+interface MessageBubbleProps {
+  msg: Message;
+  idx: number;
+  isLight: boolean;
+  isLoading: boolean;
+  isLast: boolean;
+  copiedIdx: number | null;
+  onCopy: (text: string, idx: number) => void;
+  onFollowUp: (text: string) => void;
+}
+
+const MessageBubble = memo(function MessageBubble({
+  msg,
+  idx,
+  isLight,
+  isLoading,
+  isLast,
+  copiedIdx,
+  onCopy,
+  onFollowUp
+}: MessageBubbleProps) {
+  const isUser = msg.role === 'user';
+  return (
+    <div
+      className={cn(
+        "flex gap-3.5",
+        isUser ? "justify-end" : "justify-start"
+      )}
+    >
+      {/* Assistant Avatar */}
+      {!isUser && (
+        <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-cyan-500 via-indigo-600 to-purple-600 flex items-center justify-center text-white shrink-0 mt-1 shadow-[0_0_15px_rgba(6,182,212,0.4)] border border-white/15">
+          <Sparkles className="w-4 h-4" />
+        </div>
+      )}
+
+      {/* Content Box */}
+      <div className={cn(
+        "flex flex-col",
+        isUser ? "items-end max-w-[85%]" : "flex-1 max-w-[92%]"
+      )}>
+        {isUser ? (
+          <div className={cn(
+            "px-4 py-3 rounded-2xl rounded-tr-xs text-sm font-medium leading-relaxed border shadow-md",
+            isLight 
+              ? "bg-indigo-600 text-white border-indigo-500" 
+              : "bg-gradient-to-r from-indigo-600/90 to-purple-600/90 text-white border-indigo-400/30 shadow-[0_4px_20px_rgba(99,102,241,0.25)]"
+          )}>
+            {msg.content}
+          </div>
+        ) : (
+          <div className={cn(
+            "w-full rounded-2xl border p-4 sm:p-5 transition-all",
+            isLight 
+              ? "bg-white border-slate-200 text-slate-900 shadow-sm" 
+              : "bg-[#0d122b]/85 border-indigo-500/20 text-white/95 backdrop-blur-xl shadow-[0_8px_32px_rgba(0,0,0,0.4)]"
+          )}>
+            {/* Assistant Header Info inside card */}
+            <div className="flex items-center justify-between pb-3 border-b border-white/[0.06] mb-3">
+              <div className="flex items-center gap-2">
+                <span className="font-bold text-xs text-white">SmartPrep AI Tutor</span>
+                <span className="text-[10px] font-mono text-purple-300 bg-purple-500/10 border border-purple-500/20 px-1.5 py-0.5 rounded">
+                  NVIDIA Llama 3.2
+                </span>
+              </div>
+
+              {msg.content && (!isLoading || !isLast) && (
+                <button
+                  type="button"
+                  onClick={() => onCopy(msg.content, idx)}
+                  className="flex items-center gap-1 text-[11px] text-white/50 hover:text-white transition-colors cursor-pointer"
+                  title="Copy response"
+                >
+                  {copiedIdx === idx ? (
+                    <>
+                      <Check className="w-3.5 h-3.5 text-emerald-400" />
+                      <span className="text-emerald-400">Copied</span>
+                    </>
+                  ) : (
+                    <>
+                      <Copy className="w-3.5 h-3.5" />
+                      <span>Copy</span>
+                    </>
+                  )}
+                </button>
+              )}
+            </div>
+
+            {/* Response content */}
+            {msg.content ? (
+              <FormattedAnswer content={msg.content} />
+            ) : (
+              <div className="flex items-center gap-3 text-xs text-cyan-300 py-3">
+                <span className="w-2.5 h-2.5 rounded-full bg-cyan-400 animate-ping shadow-[0_0_10px_rgba(6,182,212,0.8)]" />
+                <span className="font-mono">Synthesizing step-by-step explanation with NVIDIA AI NIM...</span>
+              </div>
+            )}
+
+            {/* Minimal follow-up pills */}
+            {msg.content && (!isLoading || !isLast) && (
+              <div className="flex flex-wrap items-center gap-2 pt-4 mt-2 border-t border-white/[0.06] text-xs">
+                <button
+                  type="button"
+                  onClick={() => onFollowUp("Can you explain this simpler with a real-world analogy?")}
+                  className="px-2.5 py-1 rounded-full bg-white/[0.04] border border-white/10 hover:border-cyan-500/30 text-white/70 hover:text-white transition-all cursor-pointer flex items-center gap-1"
+                >
+                  <span>🔍 Explain simpler with analogy</span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => onFollowUp("Give me 1 challenging practice MCQ on this topic with +4/-1 marking.")}
+                  className="px-2.5 py-1 rounded-full bg-white/[0.04] border border-white/10 hover:border-purple-500/30 text-white/70 hover:text-white transition-all cursor-pointer flex items-center gap-1"
+                >
+                  <span>🎯 Practice MCQ (+4 / -1)</span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => onFollowUp("Summarize the key formulas and high-yield traps for IISER IAT on this topic.")}
+                  className="px-2.5 py-1 rounded-full bg-white/[0.04] border border-white/10 hover:border-amber-500/30 text-white/70 hover:text-white transition-all cursor-pointer flex items-center gap-1"
+                >
+                  <span>📐 Key formulas & traps</span>
+                </button>
+              </div>
+            )}
+          </div>
+        )}
+      </div>
+
+      {/* User Avatar */}
+      {isUser && (
+        <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-indigo-500 to-purple-500 flex items-center justify-center text-white text-xs font-bold shrink-0 mt-1 shadow-sm">
+          H
+        </div>
+      )}
+    </div>
+  );
+});
+
 export function AiTutorHub({ 
   onNavigate,
   dashboardData 
@@ -548,16 +688,23 @@ export function AiTutorHub({
   const [showSubjectMenu, setShowSubjectMenu] = useState(false);
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const messagesContainerRef = useRef<HTMLDivElement>(null);
+  const isNearBottomRef = useRef<boolean>(true);
   const inputRef = useRef<HTMLInputElement>(null);
   const hasAutoExecutedRef = useRef<boolean>(false);
 
-  // Auto-scroll to bottom
+  const handleMessagesScroll = (e: React.UIEvent<HTMLDivElement>) => {
+    const el = e.currentTarget;
+    const isAtBottom = el.scrollHeight - el.scrollTop - el.clientHeight <= 140;
+    isNearBottomRef.current = isAtBottom;
+  };
+
+  // Auto-scroll when new message is added or on initial render
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-    try {
-      sessionStorage.setItem('smartprep_active_chat', JSON.stringify(messages));
-    } catch {}
-  }, [messages, isLoading]);
+    if (isNearBottomRef.current && messagesContainerRef.current) {
+      messagesContainerRef.current.scrollTop = messagesContainerRef.current.scrollHeight;
+    }
+  }, [messages.length]);
 
   // Focus input on mount
   useEffect(() => {
@@ -648,6 +795,7 @@ export function AiTutorHub({
       const reader = res.body.getReader();
       const decoder = new TextDecoder();
       let streamed = '';
+      let lastRenderTime = 0;
 
       while (true) {
         const { done, value } = await reader.read();
@@ -665,16 +813,39 @@ export function AiTutorHub({
               const delta = data.choices?.[0]?.delta?.content || '';
               if (delta) {
                 streamed += delta;
-                setMessages(prev => {
-                  const arr = [...prev];
-                  arr[arr.length - 1] = { role: 'assistant', content: streamed };
-                  return arr;
-                });
+                const now = performance.now();
+                if (now - lastRenderTime > 60) {
+                  lastRenderTime = now;
+                  const currentText = streamed;
+                  setMessages(prev => {
+                    const arr = [...prev];
+                    arr[arr.length - 1] = { role: 'assistant', content: currentText };
+                    return arr;
+                  });
+                  if (isNearBottomRef.current && messagesContainerRef.current) {
+                    messagesContainerRef.current.scrollTop = messagesContainerRef.current.scrollHeight;
+                  }
+                }
               }
             } catch {}
           }
         }
       }
+
+      // Final flush to guarantee full answer is displayed
+      setMessages(prev => {
+        const arr = [...prev];
+        arr[arr.length - 1] = { role: 'assistant', content: streamed };
+        return arr;
+      });
+      if (isNearBottomRef.current && messagesContainerRef.current) {
+        messagesContainerRef.current.scrollTop = messagesContainerRef.current.scrollHeight;
+      }
+      try {
+        const finalChat = [...msgsWithPlaceholder];
+        finalChat[finalChat.length - 1] = { role: 'assistant', content: streamed };
+        sessionStorage.setItem('smartprep_active_chat', JSON.stringify(finalChat));
+      } catch {}
     } catch (err: any) {
       setMessages(prev => {
         const arr = [...prev];
@@ -689,14 +860,23 @@ export function AiTutorHub({
     }
   };
 
-  const handleSendMessage = async (customQuery?: string) => {
+  const handleSendMessage = useCallback(async (customQuery?: string) => {
     const q = (customQuery || inputVal).trim();
     if (!q || isLoading) return;
 
     const newMsgs: Message[] = [...messages, { role: 'user', content: q }];
     setInputVal('');
+    isNearBottomRef.current = true;
+    try {
+      sessionStorage.setItem('smartprep_active_chat', JSON.stringify(newMsgs));
+    } catch {}
+    setTimeout(() => {
+      if (messagesContainerRef.current) {
+        messagesContainerRef.current.scrollTop = messagesContainerRef.current.scrollHeight;
+      }
+    }, 20);
     executeStreamForMessages(newMsgs);
-  };
+  }, [inputVal, isLoading, messages, subjectFilter, dashboardData]);
 
   // Auto-execute pending prompt or unfinished user query on mount
   useEffect(() => {
@@ -733,11 +913,11 @@ export function AiTutorHub({
     } catch {}
   };
 
-  const handleCopy = (text: string, idx: number) => {
+  const handleCopy = useCallback((text: string, idx: number) => {
     navigator.clipboard.writeText(text);
     setCopiedIdx(idx);
     setTimeout(() => setCopiedIdx(null), 2000);
-  };
+  }, []);
 
   const activeSubjectOption = SUBJECT_OPTIONS.find(s => s.key === subjectFilter) || SUBJECT_OPTIONS[0];
   const ActiveSubjectIcon = activeSubjectOption.icon;
@@ -1166,7 +1346,11 @@ export function AiTutorHub({
           <div className="flex-1 flex flex-col h-full overflow-hidden">
             
             {/* Messages Thread */}
-            <div className="flex-1 overflow-y-auto px-3 sm:px-6 py-3 sm:py-6 custom-scrollbar">
+            <div 
+              ref={messagesContainerRef}
+              onScroll={handleMessagesScroll}
+              className="flex-1 overflow-y-auto px-3 sm:px-6 py-3 sm:py-6 custom-scrollbar"
+            >
               <div className="max-w-3xl mx-auto w-full space-y-4 sm:space-y-6">
                 
                 {/* Mobile-only session header bar */}
@@ -1186,122 +1370,19 @@ export function AiTutorHub({
                   </button>
                 </div>
 
-                {messages.map((msg, idx) => {
-                  const isUser = msg.role === 'user';
-                  return (
-                    <div
-                      key={idx}
-                      className={cn(
-                        "flex gap-3.5",
-                        isUser ? "justify-end" : "justify-start"
-                      )}
-                    >
-                      {/* Assistant Avatar */}
-                      {!isUser && (
-                        <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-cyan-500 via-indigo-600 to-purple-600 flex items-center justify-center text-white shrink-0 mt-1 shadow-[0_0_15px_rgba(6,182,212,0.4)] border border-white/15">
-                          <Sparkles className="w-4 h-4" />
-                        </div>
-                      )}
-
-                      {/* Content Box */}
-                      <div className={cn(
-                        "flex flex-col",
-                        isUser ? "items-end max-w-[85%]" : "flex-1 max-w-[92%]"
-                      )}>
-                        {isUser ? (
-                          <div className={cn(
-                            "px-4 py-3 rounded-2xl rounded-tr-xs text-sm font-medium leading-relaxed border shadow-md",
-                            isLight 
-                              ? "bg-indigo-600 text-white border-indigo-500" 
-                              : "bg-gradient-to-r from-indigo-600/90 to-purple-600/90 text-white border-indigo-400/30 shadow-[0_4px_20px_rgba(99,102,241,0.25)]"
-                          )}>
-                            {msg.content}
-                          </div>
-                        ) : (
-                          <div className={cn(
-                            "w-full rounded-2xl border p-4 sm:p-5 transition-all",
-                            isLight 
-                              ? "bg-white border-slate-200 text-slate-900 shadow-sm" 
-                              : "bg-[#0d122b]/85 border-indigo-500/20 text-white/95 backdrop-blur-xl shadow-[0_8px_32px_rgba(0,0,0,0.4)]"
-                          )}>
-                            {/* Assistant Header Info inside card */}
-                            <div className="flex items-center justify-between pb-3 border-b border-white/[0.06] mb-3">
-                              <div className="flex items-center gap-2">
-                                <span className="font-bold text-xs text-white">SmartPrep AI Tutor</span>
-                                <span className="text-[10px] font-mono text-purple-300 bg-purple-500/10 border border-purple-500/20 px-1.5 py-0.5 rounded">
-                                  NVIDIA Llama 3.2
-                                </span>
-                              </div>
-
-                              {msg.content && !isLoading && (
-                                <button
-                                  onClick={() => handleCopy(msg.content, idx)}
-                                  className="flex items-center gap-1 text-[11px] text-white/50 hover:text-white transition-colors cursor-pointer"
-                                  title="Copy response"
-                                >
-                                  {copiedIdx === idx ? (
-                                    <>
-                                      <Check className="w-3.5 h-3.5 text-emerald-400" />
-                                      <span className="text-emerald-400">Copied</span>
-                                    </>
-                                  ) : (
-                                    <>
-                                      <Copy className="w-3.5 h-3.5" />
-                                      <span>Copy</span>
-                                    </>
-                                  )}
-                                </button>
-                              )}
-                            </div>
-
-                            {/* Response content */}
-                            {msg.content ? (
-                              <FormattedAnswer content={msg.content} />
-                            ) : (
-                              <div className="flex items-center gap-3 text-xs text-cyan-300 py-3">
-                                <span className="w-2.5 h-2.5 rounded-full bg-cyan-400 animate-ping shadow-[0_0_10px_rgba(6,182,212,0.8)]" />
-                                <span className="font-mono">Synthesizing step-by-step explanation with NVIDIA AI NIM...</span>
-                              </div>
-                            )}
-
-                            {/* Minimal follow-up pills */}
-                            {msg.content && !isLoading && (
-                              <div className="flex flex-wrap items-center gap-2 pt-4 mt-2 border-t border-white/[0.06] text-xs">
-                                <button
-                                  onClick={() => handleSendMessage("Can you explain this simpler with a real-world analogy?")}
-                                  className="px-2.5 py-1 rounded-full bg-white/[0.04] border border-white/10 hover:border-cyan-500/30 text-white/70 hover:text-white transition-all cursor-pointer flex items-center gap-1"
-                                >
-                                  <span>🔍 Explain simpler with analogy</span>
-                                </button>
-
-                                <button
-                                  onClick={() => handleSendMessage("Give me 1 challenging practice MCQ on this topic with +4/-1 marking.")}
-                                  className="px-2.5 py-1 rounded-full bg-white/[0.04] border border-white/10 hover:border-purple-500/30 text-white/70 hover:text-white transition-all cursor-pointer flex items-center gap-1"
-                                >
-                                  <span>🎯 Practice MCQ (+4 / -1)</span>
-                                </button>
-
-                                <button
-                                  onClick={() => handleSendMessage("Summarize the key formulas and high-yield traps for IISER IAT on this topic.")}
-                                  className="px-2.5 py-1 rounded-full bg-white/[0.04] border border-white/10 hover:border-amber-500/30 text-white/70 hover:text-white transition-all cursor-pointer flex items-center gap-1"
-                                >
-                                  <span>📐 Key formulas & traps</span>
-                                </button>
-                              </div>
-                            )}
-                          </div>
-                        )}
-                      </div>
-
-                      {/* User Avatar */}
-                      {isUser && (
-                        <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-indigo-500 to-purple-500 flex items-center justify-center text-white text-xs font-bold shrink-0 mt-1 shadow-sm">
-                          H
-                        </div>
-                      )}
-                    </div>
-                  );
-                })}
+                {messages.map((msg, idx) => (
+                  <MessageBubble
+                    key={idx}
+                    msg={msg}
+                    idx={idx}
+                    isLight={isLight}
+                    isLoading={isLoading}
+                    isLast={idx === messages.length - 1}
+                    copiedIdx={copiedIdx}
+                    onCopy={handleCopy}
+                    onFollowUp={handleSendMessage}
+                  />
+                ))}
                 <div ref={messagesEndRef} />
               </div>
             </div>

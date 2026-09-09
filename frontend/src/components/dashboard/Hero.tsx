@@ -349,16 +349,20 @@ export function Hero({ onNavigate, dashboardData: data, loading, actionPlan: pla
   const [isChatting, setIsChatting] = useState<boolean>(() => chatMessages.length > 0);
   const [isStreaming, setIsStreaming] = useState<boolean>(false);
   const inlineChatEndRef = useRef<HTMLDivElement>(null);
+  const chatContainerRef = useRef<HTMLDivElement>(null);
+  const isChatNearBottomRef = useRef<boolean>(true);
   const inlineInputRef = useRef<HTMLInputElement>(null);
 
+  const handleChatScroll = (e: React.UIEvent<HTMLDivElement>) => {
+    const el = e.currentTarget;
+    isChatNearBottomRef.current = el.scrollHeight - el.scrollTop - el.clientHeight <= 80;
+  };
+
   useEffect(() => {
-    if (isChatting) {
-      inlineChatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    if (isChatting && chatContainerRef.current && isChatNearBottomRef.current) {
+      chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
     }
-    try {
-      sessionStorage.setItem('smartprep_active_chat', JSON.stringify(chatMessages));
-    } catch {}
-  }, [chatMessages, isChatting, isStreaming]);
+  }, [chatMessages.length, isChatting]);
 
   const handleSendInlineChat = async (queryText?: string) => {
     const q = (queryText || '').trim();
@@ -368,6 +372,15 @@ export function Hero({ onNavigate, dashboardData: data, loading, actionPlan: pla
     setChatMessages(newMsgs);
     setIsChatting(true);
     setIsStreaming(true);
+    isChatNearBottomRef.current = true;
+    try {
+      sessionStorage.setItem('smartprep_active_chat', JSON.stringify(newMsgs));
+    } catch {}
+    setTimeout(() => {
+      if (chatContainerRef.current) {
+        chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+      }
+    }, 20);
 
     // Append placeholder for assistant
     setChatMessages([...newMsgs, { role: 'assistant', content: '' }]);
@@ -424,7 +437,7 @@ export function Hero({ onNavigate, dashboardData: data, loading, actionPlan: pla
               if (delta) {
                 fullAns += delta;
                 const now = performance.now();
-                if (now - lastRenderTime > 50) {
+                if (now - lastRenderTime > 60) {
                   lastRenderTime = now;
                   const currentText = fullAns;
                   setChatMessages(prev => {
@@ -432,6 +445,9 @@ export function Hero({ onNavigate, dashboardData: data, loading, actionPlan: pla
                     updated[updated.length - 1] = { role: 'assistant', content: currentText };
                     return updated;
                   });
+                  if (isChatNearBottomRef.current && chatContainerRef.current) {
+                    chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+                  }
                 }
               }
             } catch {}
@@ -445,6 +461,13 @@ export function Hero({ onNavigate, dashboardData: data, loading, actionPlan: pla
         updated[updated.length - 1] = { role: 'assistant', content: fullAns };
         return updated;
       });
+      if (isChatNearBottomRef.current && chatContainerRef.current) {
+        chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+      }
+      try {
+        const finalChat = [...newMsgs, { role: 'assistant' as const, content: fullAns }];
+        sessionStorage.setItem('smartprep_active_chat', JSON.stringify(finalChat));
+      } catch {}
     } catch (err: any) {
       setChatMessages(prev => {
         const updated = [...prev];
@@ -967,7 +990,11 @@ export function Hero({ onNavigate, dashboardData: data, loading, actionPlan: pla
               </div>
 
               {/* Scrollable messages */}
-              <div className="flex-1 overflow-y-auto max-h-[210px] space-y-2.5 pr-1 custom-scrollbar">
+              <div 
+                ref={chatContainerRef}
+                onScroll={handleChatScroll}
+                className="flex-1 overflow-y-auto max-h-[210px] space-y-2.5 pr-1 custom-scrollbar"
+              >
                 {chatMessages.map((msg, idx) => (
                   <ChatMessageItem
                     key={idx}
