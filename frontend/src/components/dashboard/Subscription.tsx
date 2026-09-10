@@ -16,110 +16,31 @@ export function Subscription({ returnTo, onNavigate }: SubscriptionProps) {
   const isLight = theme === 'light';
   const [loadingPlan, setLoadingPlan] = useState<string | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
-  const [selectedMobilePlan, setSelectedMobilePlan] = useState<'monthly' | 'six_month' | 'annual'>('annual');
-
-  // Independence Day Sale Window: Aug 15 to Aug 19, 2026 23:59:59 IST
-  const SALE_END_MS = new Date('2026-08-19T23:59:59+05:30').getTime();
-  const [saleTimeRemaining, setSaleTimeRemaining] = useState<string>('');
-  const [isSaleActive, setIsSaleActive] = useState<boolean>(() => {
-    const now = Date.now();
-    return now <= SALE_END_MS && now >= new Date('2026-08-15T00:00:00+05:30').getTime();
-  });
-
-  React.useEffect(() => {
-    const updateCountdown = () => {
-      const now = Date.now();
-      const distance = SALE_END_MS - now;
-      if (distance <= 0) {
-        setIsSaleActive(false);
-        setSaleTimeRemaining('');
-      } else {
-        setIsSaleActive(true);
-        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-        setSaleTimeRemaining(`${String(days).padStart(2, '0')}d ${String(hours).padStart(2, '0')}h ${String(minutes).padStart(2, '0')}m ${String(seconds).padStart(2, '0')}s`);
-      }
-    };
-    updateCountdown();
-    const interval = setInterval(updateCountdown, 1000);
-    return () => clearInterval(interval);
-  }, [SALE_END_MS]);
 
   const PLANS = [
     {
-      id: 'monthly',
-      name: 'Pro Monthly',
-      price: 399,
-      originalPrice: null,
-      period: 'month',
-      savings: null,
-      savingsText: '',
-      popular: false,
-      isSale: false,
-      ctaLabel: 'Get 1 Month Pro',
-      description: 'Flexible access for focused preparation.',
-      features: [
-        '45+ Full-Length IAT Pattern Mocks',
-        'Unlimited Chapter-wise Quick Mocks',
-        'Premium Concept Notes with Advanced Practice Questions',
-        'Real IAT PYQ Exam Simulation with Detailed Solutions',
-        'Personalized Smart Coach V2',
-        'Advanced Performance & Readiness Insights',
-        'Personalized Daily Action Plans',
-        'Smart Revision Recommendations'
-      ]
-    },
-    {
-      id: 'six_month',
-      name: 'Pro Premium',
-      price: 499,
-      originalPrice: null,
-      period: '6 months',
-      savings: isSaleActive ? null : 'MOST POPULAR',
-      savingsText: 'Save ₹1,895 vs monthly',
-      popular: !isSaleActive,
-      isSale: false,
-      ctaLabel: 'Start 6 Month Pro',
-      description: 'Popular choice for semester-long syllabus prep.',
-      features: [
-        '45+ Full-Length IAT Pattern Mocks',
-        'Unlimited Chapter-wise Quick Mocks',
-        'Premium Concept Notes with Advanced Practice Questions',
-        'Real IAT PYQ Exam Simulation with Detailed Solutions',
-        'Personalized Smart Coach V2',
-        'Advanced Performance & Readiness Insights',
-        'Personalized Daily Action Plans',
-        'Smart Revision Recommendations',
-        'Priority Academic email support',
-        'Adaptive Spaced Revision planner'
-      ]
-    },
-    {
       id: 'annual',
-      name: 'Pro Annual',
-      price: isSaleActive ? 699 : 899,
-      originalPrice: isSaleActive ? 899 : null,
-      period: '1 year',
-      savings: isSaleActive ? '🇮🇳 ₹200 OFF' : 'BEST VALUE',
-      savingsText: isSaleActive ? '🎉 Independence Day Offer: Save ₹200 extra!' : 'Save ₹3,889 vs monthly',
-      popular: isSaleActive || true,
-      isSale: isSaleActive,
-      ctaLabel: isSaleActive ? 'Claim ₹699 Pro Annual' : 'Get Annual Pro',
-      description: 'Complete peace of mind for the entire admission cycle.',
+      name: 'IAT 2027 Pro All-Access',
+      price: 599,
+      originalPrice: 899,
+      period: 'until IAT 2027',
+      savings: '33% OFF',
+      savingsText: '🎉 Save ₹300 (Flat 33% Discount) — Complete Access Until IAT 2027 Exam Day!',
+      popular: true,
+      isSale: true,
+      ctaLabel: 'Unlock Full Access for ₹599',
+      description: 'The definitive all-in-one preparation ecosystem powered by Our Latest AI. One-time payment, zero recurring fees.',
       features: [
-        '45+ Full-Length IAT Pattern Mocks',
-        'Unlimited Chapter-wise Quick Mocks',
-        'Premium Concept Notes with Advanced Practice Questions',
-        'Real IAT PYQ Exam Simulation with Detailed Solutions',
-        'Personalized Smart Coach V2',
-        'Advanced Performance & Readiness Insights',
-        'Personalized Daily Action Plans',
-        'Smart Revision Recommendations',
-        'Priority Academic email support',
-        'Adaptive Spaced Revision planner',
-        'Personal study schedule audit & plan'
+        '⚡ Our Latest AI: 24/7 AI Doubt Solver 2.0 (Step-by-step PCMB explanations)',
+        '🤖 Our Latest AI: Smart Coach V2 & Instant Weakness Diagnostic Engine',
+        '📅 Our Latest AI: Adaptive Spaced Revision & Daily Personalized Roadmap',
+        '45+ Full-Length IAT Pattern Mocks (Real TCS iON Interface simulation)',
+        'Unlimited Chapter-wise Quick Mocks with detailed explanations',
+        '15+ Years Real IAT Solved PYQ Simulator with deep analysis',
+        'Premium NCERT+ Concept Notes & Advanced High-Yield Practice Banks',
+        'Accurate All-India Rank Prediction & Chapter Accuracy Analytics',
+        'Priority Academic Support & Personal Study Schedule Audit',
+        'Valid Until IAT 2027 — No monthly renewals or surprise expirations'
       ]
     }
   ];
@@ -289,112 +210,136 @@ export function Subscription({ returnTo, onNavigate }: SubscriptionProps) {
       >
         {plan.isSale ? (
           <div className="absolute top-0 right-0">
-            <span className="inline-block bg-gradient-to-r from-amber-500 to-rose-500 text-white text-[10px] uppercase font-extrabold tracking-wider px-3 py-1 rounded-bl-xl shadow-sm">
-              🇮🇳 Sale: ₹200 OFF
+            <span className="inline-block bg-gradient-to-r from-amber-500 to-rose-500 text-white text-[10px] uppercase font-extrabold tracking-wider px-3.5 py-1.5 rounded-bl-xl shadow-sm">
+              🔥 33% OFF (Save ₹300)
             </span>
           </div>
-        ) : plan.popular && (
+        ) : (
           <div className="absolute top-0 right-0">
             <span className="inline-block bg-indigo-500 text-white text-[10px] uppercase font-bold tracking-wider px-3 py-1 rounded-bl-xl">
-              Most Popular
+              Best Value
             </span>
           </div>
         )}
 
         <div className="space-y-4 mb-6">
           <div className="flex items-center justify-between gap-2">
-            <h3 className={cn("text-xl sm:text-2xl font-bold font-display", isLight ? "text-slate-900" : "text-white")}>{plan.name}</h3>
+            <h3 className={cn("text-2xl sm:text-3xl font-bold font-display", isLight ? "text-slate-900" : "text-white")}>{plan.name}</h3>
             {plan.savings && (
-              <span className={cn(
-                "px-2 py-0.5 rounded-md text-[10px] font-bold uppercase tracking-wider border whitespace-nowrap",
-                plan.isSale
-                  ? 'bg-amber-500/20 text-amber-400 border-amber-500/30'
-                  : 'bg-indigo-500/20 text-indigo-300 border-indigo-500/30'
-              )}>
+              <span className="px-2.5 py-1 rounded-md text-[11px] font-extrabold uppercase tracking-wider border whitespace-nowrap bg-emerald-500/20 text-emerald-400 border-emerald-500/30">
                 {plan.savings}
               </span>
             )}
           </div>
-          <p className={cn("text-xs min-h-[32px]", isLight ? "text-slate-500" : "text-slate-400")}>{plan.description}</p>
-          <div className="flex items-baseline gap-1.5">
+          <p className={cn("text-xs sm:text-sm", isLight ? "text-slate-500" : "text-slate-400")}>{plan.description}</p>
+          
+          <div className="flex flex-wrap items-baseline gap-2 pt-1">
             {plan.originalPrice && (
-              <span className="text-xl line-through text-slate-500 opacity-70">₹{plan.originalPrice}</span>
+              <span className="text-2xl line-through text-slate-400 dark:text-slate-500 font-mono">₹{plan.originalPrice}</span>
             )}
             <span className={cn(
-              "text-4xl sm:text-5xl font-extrabold tracking-tight",
-              plan.isSale ? 'text-amber-500' : isLight ? "text-slate-900" : "text-white"
+              "text-5xl sm:text-6xl font-extrabold tracking-tight font-mono",
+              isLight ? "text-indigo-600" : "text-cyan-400"
             )}>
               ₹{plan.price}
             </span>
-            <span className={cn("text-xs", isLight ? "text-slate-500" : "text-slate-400")}>/ {plan.period}</span>
+            <span className={cn("text-xs sm:text-sm font-semibold uppercase tracking-wider px-2 py-0.5 rounded-full border", isLight ? "bg-slate-100 border-slate-200 text-slate-700" : "bg-white/10 border-white/15 text-cyan-300")}>
+              {plan.period}
+            </span>
           </div>
+
           {plan.savingsText && (
             <p className={cn("text-xs font-semibold", isLight ? "text-emerald-600" : "text-emerald-400")}>{plan.savingsText}</p>
           )}
-          {plan.isSale && saleTimeRemaining && (
-            <div className="p-2 rounded-lg bg-amber-500/10 border border-amber-500/20 text-amber-400 text-[11px] font-semibold flex items-center gap-1.5">
-              <span>⏳ Offer ends in:</span>
-              <span className="font-mono font-bold text-amber-300">{saleTimeRemaining}</span>
+
+          {/* Micro-cost breakdown */}
+          <div className={cn("p-2.5 rounded-xl border flex items-center gap-2 text-xs font-medium", isLight ? "bg-amber-50 border-amber-200 text-amber-900" : "bg-amber-500/10 border-amber-500/20 text-amber-300")}>
+            <span>☕</span>
+            <span><strong>Just ₹1.64 / day:</strong> Less than half a cup of tea to secure your IISER seat!</span>
+          </div>
+
+          {/* American Sales Marketing Value Stack Box */}
+          <div className={cn("p-4 rounded-xl border space-y-2 text-xs", isLight ? "bg-indigo-50/70 border-indigo-200/80 text-slate-700" : "bg-indigo-950/30 border-indigo-500/25 text-slate-300")}>
+            <div className="flex justify-between items-center font-semibold">
+              <span>Total Standalone Real Value:</span>
+              <span className="line-through text-slate-400 font-mono font-bold">₹13,994</span>
             </div>
-          )}
+            <div className="flex justify-between items-center font-bold">
+              <span className="text-emerald-600 dark:text-emerald-400">Your Price Today (33% Discount):</span>
+              <span className="text-emerald-600 dark:text-emerald-400 font-mono font-extrabold text-sm">₹599</span>
+            </div>
+            <p className="text-[11px] text-slate-500 dark:text-slate-400 border-t border-indigo-500/20 pt-1.5">
+              🛡️ Complete access until IAT 2027 • Zero monthly renewals • Powered by Our Latest AI
+            </p>
+          </div>
         </div>
 
-        {/* CTA (on mobile, CTA is ABOVE feature list; on desktop, it's at the bottom) */}
-        {isMobile && renderCTAButton(plan, isCurrentPlan)}
+        {/* CTA Button */}
+        {renderCTAButton(plan, isCurrentPlan)}
 
         <hr className={cn("my-6", isLight ? "border-slate-100" : "border-white/5")} />
 
         {/* Features List */}
-        <ul className="space-y-3.5 mb-8 flex-grow">
-          {plan.features.map((feature: string, idx: number) => (
-            <li key={idx} className={cn("flex items-start gap-2.5 text-xs", isLight ? "text-slate-600" : "text-slate-300")}>
-              <Check className={cn("w-4 h-4 shrink-0 mt-0.5", isLight ? "text-emerald-600" : "text-emerald-400")} />
-              <span>{feature}</span>
-            </li>
-          ))}
-        </ul>
+        <div className="space-y-2 mb-4">
+          <h4 className={cn("text-xs font-bold uppercase tracking-wider", isLight ? "text-slate-500" : "text-white/50")}>
+            Everything Included in IAT 2027 Pro Pass:
+          </h4>
+          <ul className="space-y-3 flex-grow">
+            {plan.features.map((feature: string, idx: number) => {
+              const isAiFeature = feature.includes('Our Latest AI');
+              return (
+                <li key={idx} className={cn(
+                  "flex items-start gap-2.5 text-xs sm:text-sm leading-relaxed p-1.5 rounded-lg transition-colors",
+                  isAiFeature
+                    ? isLight ? "bg-indigo-50/80 font-semibold text-indigo-950 border border-indigo-100" : "bg-cyan-500/10 font-semibold text-cyan-200 border border-cyan-500/20"
+                    : isLight ? "text-slate-600" : "text-slate-300"
+                )}>
+                  <Check className={cn("w-4 h-4 shrink-0 mt-0.5", isAiFeature ? "text-cyan-500" : isLight ? "text-emerald-600" : "text-emerald-400")} />
+                  <span>{feature}</span>
+                </li>
+              );
+            })}
+          </ul>
+        </div>
 
-        {/* CTA (on desktop, CTA is at the bottom) */}
-        {!isMobile && renderCTAButton(plan, isCurrentPlan)}
+        {/* Bottom CTA on desktop */}
+        <div className="pt-2">
+          {renderCTAButton(plan, isCurrentPlan)}
+        </div>
       </div>
     );
   }
 
   return (
     <div className="space-y-8 px-4 py-6 sm:p-6 max-w-7xl mx-auto pb-36 lg:pb-8 w-full box-sizing-border-box overflow-x-hidden min-w-0">
-      {/* Independence Day Sale Notice Banner */}
-      {isSaleActive && (
-        <div className={cn(
-          "relative overflow-hidden rounded-2xl border flex flex-col transition-all shadow-md",
-          isLight
-            ? "bg-white border-amber-200 text-slate-800 shadow-[0_4px_20px_rgba(245,158,11,0.08)]"
-            : "bg-gradient-to-r from-slate-900 via-amber-950/30 to-slate-900 border-amber-500/30 text-white shadow-[0_0_30px_rgba(245,158,11,0.1)]"
-        )}>
-          <div className="h-1 w-full bg-gradient-to-r from-[#FF671F] via-white to-[#046A38]" />
-          <div className="p-4 sm:p-5 flex flex-col sm:flex-row items-center justify-between gap-4">
-            <div className="flex items-center gap-3">
-              <span className="text-2xl">🇮🇳</span>
-              <div>
-                <div className="flex items-center gap-2">
-                  <span className="text-xs font-bold uppercase tracking-wider text-amber-500 bg-amber-500/10 px-2 py-0.5 rounded border border-amber-500/20">
-                    Independence Day Special
-                  </span>
-                  <span className="text-xs font-bold text-emerald-600 dark:text-emerald-400">Flat ₹200 OFF</span>
-                </div>
-                <p className="text-xs text-slate-600 dark:text-slate-300 mt-1">
-                  Get full 1-Year Pro access for just <strong>₹699</strong> (regular ₹899). Price automatically reverts after 4 days.
-                </p>
+      {/* IAT 2027 Admission Cycle Special Notice Banner */}
+      <div className={cn(
+        "relative overflow-hidden rounded-2xl border flex flex-col transition-all shadow-md",
+        isLight
+          ? "bg-white border-amber-200 text-slate-800 shadow-[0_4px_20px_rgba(245,158,11,0.08)]"
+          : "bg-gradient-to-r from-slate-900 via-amber-950/30 to-slate-900 border-amber-500/30 text-white shadow-[0_0_30px_rgba(245,158,11,0.1)]"
+      )}>
+        <div className="h-1 w-full bg-gradient-to-r from-amber-500 via-indigo-500 to-cyan-400" />
+        <div className="p-4 sm:p-5 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div className="flex items-center gap-3">
+            <span className="text-2xl">🔥</span>
+            <div>
+              <div className="flex items-center gap-2">
+                <span className="text-xs font-bold uppercase tracking-wider text-amber-500 bg-amber-500/10 px-2 py-0.5 rounded border border-amber-500/20">
+                  IAT 2027 Admission Cycle Special
+                </span>
+                <span className="text-xs font-bold text-emerald-600 dark:text-emerald-400">Flat 33% OFF</span>
               </div>
+              <p className="text-xs text-slate-600 dark:text-slate-300 mt-1">
+                Get full Pro access powered by <strong>Our Latest AI</strong> for just <strong>₹599</strong> (regular ₹899). Guaranteed access until IAT 2027!
+              </p>
             </div>
-            {saleTimeRemaining && (
-              <div className="shrink-0 flex items-center gap-2 bg-black/70 border border-white/10 px-3.5 py-2 rounded-xl text-xs font-mono font-bold text-yellow-300">
-                <span className="text-white/70">Ends in:</span>
-                <span>{saleTimeRemaining}</span>
-              </div>
-            )}
+          </div>
+          <div className="shrink-0 flex items-center gap-2 bg-black/70 border border-white/10 px-3.5 py-2 rounded-xl text-xs font-mono font-bold text-yellow-300">
+            <span>⚡ Access Valid Until IAT 2027</span>
           </div>
         </div>
-      )}
+      </div>
 
       {/* Header Banner */}
       <div className={cn(
@@ -423,7 +368,7 @@ export function Subscription({ returnTo, onNavigate }: SubscriptionProps) {
           "max-w-xl mx-auto text-sm sm:text-base leading-relaxed",
           isLight ? "text-slate-600" : "text-slate-400"
         )}>
-          Unlock smarter IAT preparation with premium practice, PYQs, analytics and personalized guidance.
+          Unlock smarter IAT preparation with premium practice, PYQs, analytics and personalized guidance powered by Our Latest AI.
         </p>
 
         {returnTo && (
@@ -489,65 +434,10 @@ export function Subscription({ returnTo, onNavigate }: SubscriptionProps) {
         </div>
       )}
 
-      {/* Mobile Plan Selector Segmented Switch */}
-      <div className={cn(
-        "flex lg:hidden w-full max-w-sm mx-auto p-1 rounded-xl border items-center justify-between transition-colors",
-        isLight
-          ? "bg-slate-100 border-slate-200/80"
-          : "bg-slate-950 border-white/5"
-      )}>
-        <button
-          onClick={() => setSelectedMobilePlan('monthly')}
-          className={cn(
-            "flex-1 py-2.5 text-xs font-semibold rounded-lg transition-all cursor-pointer",
-            selectedMobilePlan === 'monthly'
-              ? 'bg-indigo-600 text-white shadow-md'
-              : isLight
-                ? 'text-slate-500 hover:text-slate-900'
-                : 'text-slate-400 hover:text-white'
-          )}
-        >
-          1 Month
-        </button>
-        <button
-          onClick={() => setSelectedMobilePlan('six_month')}
-          className={cn(
-            "flex-1 py-2.5 text-xs font-semibold rounded-lg transition-all cursor-pointer",
-            selectedMobilePlan === 'six_month'
-              ? 'bg-indigo-600 text-white shadow-md'
-              : isLight
-                ? 'text-slate-500 hover:text-slate-900'
-                : 'text-slate-400 hover:text-white'
-          )}
-        >
-          6 Months
-        </button>
-        <button
-          onClick={() => setSelectedMobilePlan('annual')}
-          className={cn(
-            "flex-1 py-2.5 text-xs font-semibold rounded-lg transition-all cursor-pointer",
-            selectedMobilePlan === 'annual'
-              ? 'bg-indigo-600 text-white shadow-md'
-              : isLight
-                ? 'text-slate-500 hover:text-slate-900'
-                : 'text-slate-400 hover:text-white'
-          )}
-        >
-          1 Year
-        </button>
-      </div>
-
-      {/* Desktop Pricing Grid */}
-      <div className="hidden lg:grid grid-cols-3 gap-8">
+      {/* Single All-Access Hero Pricing Card */}
+      <div className="max-w-2xl mx-auto w-full">
         {PLANS.map((plan) => (
           <PricingCard key={plan.id} plan={plan} isMobile={false} />
-        ))}
-      </div>
-
-      {/* Mobile Pricing Card */}
-      <div className="block lg:hidden w-full">
-        {PLANS.filter(p => p.id === selectedMobilePlan).map((plan) => (
-          <PricingCard key={plan.id} plan={plan} isMobile={true} />
         ))}
       </div>
 
@@ -599,20 +489,20 @@ export function Subscription({ returnTo, onNavigate }: SubscriptionProps) {
         <div className="max-w-3xl mx-auto space-y-4">
           {[
             {
-              q: "Can I change my plan later?",
-              a: "Yes, you can upgrade to a longer duration plan at any time. Contact support to calculate your pro-rata adjustments."
+              q: "How long is my access valid for?",
+              a: "Your access is valid through the entire IAT 2027 admission cycle (until exam day in July 2027). You get complete, continuous preparation without any monthly renewals or unexpected lockouts."
             },
             {
-              q: "What happens when my subscription expires?",
-              a: "Your account will return to the free tier. You will lose access to premium mocks, notes, and analytics, but your history and progress will remain saved."
+              q: "Why is there only one unified plan now?",
+              a: "We removed short-term 1-month and 6-month plans to eliminate choice paralysis and prevent subscriptions from expiring right before exam season. One investment of ₹599 covers your entire journey until IAT 2027."
             },
             {
-              q: "Is my payment secure?",
-              a: "Absolutely. All transactions are securely processed via Razorpay, a PCI-DSS certified gateway. We never store your card details."
+              q: "What is included with 'Our Latest AI'?",
+              a: "You get 24/7 access to our Latest AI Doubt Solver 2.0 (instant step-by-step PCMB explanations), Smart Coach V2 for automated weakness detection, and an adaptive daily study roadmap that schedules spaced revisions."
             },
             {
-              q: "Do I keep my learning progress after expiry?",
-              a: "Yes. Your mock attempts, lesson progress, and weak area analysis are safely retained. They will reactivate immediately when you subscribe again."
+              q: "Is my payment secure and are there recurring fees?",
+              a: "This is a strictly one-time payment of ₹599. There are zero hidden fees, zero recurring auto-debits, and all transactions are processed via Razorpay with bank-grade 256-bit encryption."
             }
           ].map((faq, i) => (
             <div key={i} className={cn(

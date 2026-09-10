@@ -611,8 +611,8 @@
 
     <!-- Top Announcement Urgency Bar -->
     <div class="top-announcement">
-        <span>⚡ <strong>IISER IAT 2027 Mock Batch Active:</strong> Pro Access starting at ₹399/mo or ₹499 (6 Months).</span>
-        <a href="#" onclick="openUpgradeModal()">View Pro Plans &rarr;</a>
+        <span>⚡ <strong>IISER IAT 2027 All-Access Batch:</strong> Complete Pro Access with Our Latest AI until IAT 2027 for just ₹599 (33% OFF).</span>
+        <a href="#" onclick="openUpgradeModal()">View Pro Plan &rarr;</a>
     </div>
 
     <!-- Floating Navigation Header -->
@@ -764,7 +764,7 @@
                         <li>✓ 100% verified step-by-step AI derivations for every question</li>
                         <li>✓ Exact TCS iON CBT screen layout, palette &amp; timer</li>
                         <li>✓ Automated weak-area diagnostic (Physics, Chem, Math, Bio)</li>
-                        <li>✓ Starts at ₹399/mo or ₹499 for 6 months (Complete Prep)</li>
+                        <li>✓ Pro All-Access: Flat ₹599 until IAT 2027 (33% Discount) with Our Latest AI</li>
                     </ul>
                 </div>
             </div>
@@ -928,49 +928,26 @@
         <div class="modal-card">
             <div style="position: absolute; top: 1rem; right: 1rem; cursor: pointer; color: var(--text-light);" onclick="closeUpgradeModal()">&times;</div>
             <div style="font-size:2rem;margin-bottom:0.5rem;">🔓</div>
-            <h2 style="font-family:'Outfit',sans-serif;font-size:1.5rem;font-weight:800;color:#fff;margin-bottom:0.35rem;">Choose Your Pro Plan</h2>
-            <p style="color:var(--text-muted);font-size:0.88rem;margin-bottom:1.25rem;">Unlock 45+ Mocks, PYQs, AI Step-by-Step Solutions &amp; Rank Predictor.</p>
+            <h2 style="font-family:'Outfit',sans-serif;font-size:1.5rem;font-weight:800;color:#fff;margin-bottom:0.35rem;">IAT 2027 Pro All-Access Pass</h2>
+            <p style="color:var(--text-muted);font-size:0.88rem;margin-bottom:1.25rem;">Unlock 45+ Mocks, PYQs, Our Latest AI Step-by-Step Solutions &amp; Rank Predictor — Valid Until IAT 2027.</p>
 
-            <!-- Pricing Selector Cards inside Modal -->
-            <div style="display:flex;flex-direction:column;gap:0.75rem;margin-bottom:1.25rem;text-align:left;">
-                <div onclick="selectPlan('six_month')" id="plan-six_month" style="background:rgba(99,102,241,0.15);border:2px solid #6366f1;border-radius:14px;padding:1rem;cursor:pointer;position:relative;">
-                    <span style="position:absolute;top:-10px;right:12px;background:#6366f1;color:#fff;font-size:0.68rem;font-weight:800;padding:2px 8px;border-radius:100px;text-transform:uppercase;">MOST POPULAR</span>
-                    <div style="display:flex;justify-content:space-between;align-items:center;">
-                        <div>
-                            <strong style="color:#fff;font-size:0.95rem;">Pro Premium (6 Months)</strong>
-                            <div style="font-size:0.78rem;color:#34d399;font-weight:600;">Complete Exam Cycle Prep</div>
-                        </div>
-                        <div style="text-align:right;">
-                            <span style="font-size:1.4rem;font-weight:800;color:#fff;">₹499</span>
-                            <span style="font-size:0.7rem;color:var(--text-light);display:block;">total</span>
-                        </div>
+            <!-- Single Plan Hero inside Modal -->
+            <div id="plan-annual" onclick="selectPlan('annual')" style="background:rgba(99,102,241,0.15);border:2px solid #6366f1;border-radius:16px;padding:1.2rem;margin-bottom:1.25rem;text-align:left;position:relative;cursor:pointer;">
+                <span style="position:absolute;top:-10px;right:12px;background:linear-gradient(135deg,#f59e0b,#ef4444);color:#fff;font-size:0.68rem;font-weight:800;padding:3px 10px;border-radius:100px;text-transform:uppercase;">33% OFF • SAVE ₹300</span>
+                <div style="display:flex;justify-content:space-between;align-items:center;">
+                    <div>
+                        <strong style="color:#fff;font-size:1.05rem;display:block;">Target IAT 2027 All-Access</strong>
+                        <div style="font-size:0.8rem;color:#34d399;font-weight:700;margin-top:2px;">⚡ Powered by Our Latest AI</div>
+                        <div style="font-size:0.75rem;color:var(--text-muted);margin-top:2px;">Valid Until IAT 2027 • No monthly renewals</div>
+                    </div>
+                    <div style="text-align:right;">
+                        <span style="font-size:0.95rem;color:#94a3b8;text-decoration:line-through;display:block;">₹899</span>
+                        <span style="font-size:1.8rem;font-weight:900;color:#38bdf8;font-family:'JetBrains Mono',monospace;">₹599</span>
+                        <span style="font-size:0.7rem;color:var(--text-light);display:block;">one-time fee</span>
                     </div>
                 </div>
-
-                <div onclick="selectPlan('monthly')" id="plan-monthly" style="background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:14px;padding:0.9rem;cursor:pointer;">
-                    <div style="display:flex;justify-content:space-between;align-items:center;">
-                        <div>
-                            <strong style="color:#fff;font-size:0.9rem;">Pro Monthly (1 Month)</strong>
-                            <div style="font-size:0.75rem;color:var(--text-muted);">Flexible access</div>
-                        </div>
-                        <div style="text-align:right;">
-                            <span style="font-size:1.25rem;font-weight:800;color:#fff;">₹399</span>
-                            <span style="font-size:0.7rem;color:var(--text-light);display:block;">/ month</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div onclick="selectPlan('annual')" id="plan-annual" style="background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:14px;padding:0.9rem;cursor:pointer;">
-                    <div style="display:flex;justify-content:space-between;align-items:center;">
-                        <div>
-                            <strong style="color:#fff;font-size:0.9rem;">Pro Annual (1 Year)</strong>
-                            <div style="font-size:0.75rem;color:#a855f7;font-weight:600;">Best Value &bull; Full Year</div>
-                        </div>
-                        <div style="text-align:right;">
-                            <span style="font-size:1.25rem;font-weight:800;color:#fff;">₹899</span>
-                            <span style="font-size:0.7rem;color:var(--text-light);display:block;">/ year</span>
-                        </div>
-                    </div>
+                <div style="margin-top:0.75rem;padding-top:0.65rem;border-top:1px solid rgba(255,255,255,0.08);font-size:0.75rem;color:#fcd34d;display:flex;align-items:center;gap:4px;">
+                    <span>☕</span> Just ₹1.64 / day — Less than half a cup of tea!
                 </div>
             </div>
 
@@ -1023,22 +1000,15 @@
     <script src="/config.js"></script>
     <script>
         const token = localStorage.getItem("IAT_TOKEN");
-        let selectedPlanId = 'six_month'; // Default most popular plan
+        let selectedPlanId = 'annual'; // IAT 2027 Pro Pass
 
         function selectPlan(planId) {
-            selectedPlanId = planId;
-            ['monthly', 'six_month', 'annual'].forEach(p => {
-                const el = document.getElementById(`plan-${p}`);
-                if (el) {
-                    if (p === planId) {
-                        el.style.border = '2px solid #6366f1';
-                        el.style.background = 'rgba(99,102,241,0.15)';
-                    } else {
-                        el.style.border = '1px solid var(--border)';
-                        el.style.background = 'rgba(255,255,255,0.03)';
-                    }
-                }
-            });
+            selectedPlanId = planId || 'annual';
+            const el = document.getElementById('plan-annual');
+            if (el) {
+                el.style.border = '2px solid #6366f1';
+                el.style.background = 'rgba(99,102,241,0.15)';
+            }
         }
 
         function isProUser() {

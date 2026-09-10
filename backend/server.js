@@ -127,19 +127,22 @@ function authMiddleware(req, res, next) {
 }
 
 const PLANS = {
-  monthly: { amount: 399, durationDays: 30, description: "Pro Plan — 1 Month" },
-  six_month: { amount: 499, durationDays: 180, description: "Pro Plan — 6 Months" },
-  annual: { amount: 899, durationDays: 365, description: "Pro Plan — 1 Year" }
+  monthly: { amount: 399, durationDays: 30, description: "Pro Plan — 1 Month (Legacy)" },
+  six_month: { amount: 499, durationDays: 180, description: "Pro Plan — 6 Months (Legacy)" },
+  annual: { amount: 599, durationDays: 365, description: "Pro Plan — Valid Until IAT 2027" }
 };
 
 function getEffectivePlan(planId) {
   const basePlan = PLANS[planId];
   if (!basePlan) return null;
 
+  const isAnnual = planId === "annual";
   return {
     ...basePlan,
-    originalAmount: basePlan.amount,
-    isSale: false
+    amount: isAnnual ? 599 : basePlan.amount,
+    originalAmount: isAnnual ? 899 : basePlan.amount,
+    discountPercent: isAnnual ? 33 : 0,
+    isSale: isAnnual
   };
 }
 
@@ -369,7 +372,7 @@ app.post("/api/create-order", authMiddleware, async (req, res) => {
   try {
     const userId = req.user.id;
     const userEmail = req.user.email;
-    const { planId = "six_month" } = req.body;
+    const { planId = "annual" } = req.body;
 
     if (!userId || !userEmail) {
       return res.status(400).json({ error: "User identity missing from token. Please log out and log back in." });
@@ -381,7 +384,7 @@ app.post("/api/create-order", authMiddleware, async (req, res) => {
     }
 
     const options = {
-      amount: plan.amount * 100, // paise (e.g. 69900 paise during sale for annual)
+      amount: plan.amount * 100, // paise (e.g. 59900 paise for IAT 2027 annual plan)
       currency: "INR",
       receipt: "receipt_" + Date.now(),
       notes: {
@@ -453,8 +456,8 @@ app.post("/api/verify-payment", authMiddleware, async (req, res) => {
     }
 
     // 1. Fetch order details from Razorpay to get the canonical planId securely
-    let planId = "six_month";
-    let paymentAmount = 129900;
+    let planId = "annual";
+    let paymentAmount = 59900;
     let currency = "INR";
     try {
       const order = await razorpay.orders.fetch(razorpay_order_id);
@@ -471,8 +474,14 @@ app.post("/api/verify-payment", authMiddleware, async (req, res) => {
       console.warn("Could not fetch order from Razorpay, falling back to defaults:", rzpErr.message);
     }
 
-    const plan = PLANS[planId] || PLANS.six_month;
-    const durationMs = plan.durationDays * 24 * 60 * 60 * 1000;
+    const plan = PLANS[planId] || PLANS.annual;
+    let durationMs = plan.durationDays * 24 * 60 * 60 * 1000;
+    // Guaranteed access until IAT 2027 (at least July 15, 2027) for annual plan
+    const iat2027Target = new Date("2027-07-15T23:59:59+05:30").getTime();
+    const nowMs = Date.now();
+    if (planId === "annual" && (nowMs + durationMs < iat2027Target)) {
+      durationMs = iat2027Target - nowMs;
+    }
 
     // 2. Fetch current user plan details to support extension on renewal
     const { data: currentUser, error: fetchErr } = await supabase

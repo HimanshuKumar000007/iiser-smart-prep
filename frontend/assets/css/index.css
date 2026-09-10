@@ -1763,6 +1763,330 @@ nav {
   }
 }
 
+/* ============ AMERICAN SALES MARKETING PRICING SHOWCASE ============ */
+.pricing-master-wrap {
+  max-width: 980px;
+  margin: 0 auto 3.5rem;
+}
+.pricing-top-ribbon {
+  background: linear-gradient(135deg, rgba(245, 158, 11, 0.15), rgba(79, 124, 255, 0.15));
+  border: 1px solid rgba(245, 158, 11, 0.35);
+  border-bottom: none;
+  border-radius: var(--radius) var(--radius) 0 0;
+  padding: 0.75rem 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+.pricing-top-ribbon .ribbon-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.78rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #f59e0b;
+}
+.pricing-top-ribbon .ribbon-save {
+  font-size: 0.8rem;
+  font-weight: 800;
+  color: var(--green);
+  background: rgba(5, 150, 105, 0.12);
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  border: 1px solid rgba(5, 150, 105, 0.25);
+}
+.pricing-master-card {
+  background: var(--panel);
+  border: 1px solid rgba(139, 92, 246, 0.35);
+  border-radius: 0 0 var(--radius) var(--radius);
+  box-shadow: 0 25px 70px -15px rgba(79, 124, 255, 0.18);
+  padding: 2.5rem;
+  display: grid;
+  grid-template-columns: 1.05fr 1fr;
+  gap: 2.5rem;
+  position: relative;
+  overflow: hidden;
+}
+.pricing-master-card::before {
+  content: "";
+  position: absolute;
+  top: -80px;
+  left: -80px;
+  width: 280px;
+  height: 280px;
+  background: radial-gradient(circle, rgba(79, 124, 255, 0.12), transparent 70%);
+  pointer-events: none;
+}
+.pricing-col-left {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.pricing-col-right {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.master-plan-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: var(--grad-primary);
+  color: #fff;
+  font-size: 0.72rem;
+  font-weight: 800;
+  padding: 0.3rem 0.9rem;
+  border-radius: 9999px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 0.85rem;
+  width: fit-content;
+}
+.master-plan-title {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 1.85rem;
+  font-weight: 800;
+  color: var(--text);
+  line-height: 1.2;
+  margin-bottom: 0.5rem;
+}
+.master-plan-sub {
+  font-size: 0.88rem;
+  color: var(--text-dim);
+  line-height: 1.5;
+  margin-bottom: 1.4rem;
+}
+.master-price-row {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin-bottom: 0.75rem;
+}
+.master-price-old {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: var(--text-faint);
+  text-decoration: line-through;
+  opacity: 0.75;
+}
+.master-price-curr {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 3.2rem;
+  font-weight: 900;
+  color: var(--blue);
+  line-height: 1;
+}
+.master-discount-tag {
+  background: rgba(220, 38, 38, 0.12);
+  color: #ef4444;
+  border: 1px solid rgba(220, 38, 38, 0.3);
+  font-size: 0.78rem;
+  font-weight: 800;
+  padding: 0.25rem 0.65rem;
+  border-radius: 8px;
+  text-transform: uppercase;
+}
+.master-period-tag {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--text-dim);
+}
+.master-micro-cost {
+  background: rgba(245, 158, 11, 0.08);
+  border: 1px solid rgba(245, 158, 11, 0.22);
+  color: #b45309;
+  border-radius: var(--radius-sm);
+  padding: 0.65rem 0.95rem;
+  font-size: 0.82rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+html.dark .master-micro-cost {
+  color: #fbbf24;
+}
+.btn-master-cta {
+  padding: 1.1rem 1.75rem;
+  font-size: 1.05rem;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  box-shadow: 0 12px 35px -5px rgba(79, 124, 255, 0.45);
+  transition: transform 0.2s, box-shadow 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+.btn-master-cta:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 16px 40px -5px rgba(79, 124, 255, 0.6);
+}
+.master-trust-row {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  margin-top: 1rem;
+  font-size: 0.75rem;
+  color: var(--text-faint);
+  text-align: center;
+}
+.master-social-proof {
+  margin-top: 1.25rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-dim);
+}
+/* Right column: Value Stack */
+.value-stack-head {
+  font-size: 0.82rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-faint);
+  margin-bottom: 0.85rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.value-stack-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  margin-bottom: 1.25rem;
+}
+.value-stack-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.65rem 0.85rem;
+  border-radius: var(--radius-sm);
+  background: var(--panel-2);
+  border: 1px solid var(--border);
+  font-size: 0.82rem;
+}
+.value-stack-item.ai-highlight {
+  background: linear-gradient(135deg, rgba(8, 145, 178, 0.08), rgba(79, 124, 255, 0.08));
+  border: 1px solid rgba(8, 145, 178, 0.3);
+  color: var(--text);
+  font-weight: 700;
+}
+.value-stack-item .item-val {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.76rem;
+  font-weight: 700;
+  color: var(--text-faint);
+  flex-shrink: 0;
+}
+.value-stack-total-box {
+  background: rgba(5, 150, 105, 0.08);
+  border: 1px solid rgba(5, 150, 105, 0.25);
+  border-radius: var(--radius-sm);
+  padding: 0.85rem 1rem;
+  font-size: 0.82rem;
+}
+.value-stack-total-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.35rem;
+  font-weight: 600;
+  color: var(--text-dim);
+}
+.value-stack-total-row strong {
+  color: var(--green);
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.95rem;
+}
+/* American Sales Marketing Architecture Section */
+.american-framework-section {
+  margin-top: 3.5rem;
+  padding-top: 2.5rem;
+  border-top: 1px solid var(--border);
+}
+.framework-head {
+  text-align: center;
+  max-width: 680px;
+  margin: 0 auto 2rem;
+}
+.framework-head h3 {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 1.45rem;
+  font-weight: 800;
+  color: var(--text);
+  margin-bottom: 0.45rem;
+}
+.framework-head p {
+  font-size: 0.85rem;
+  color: var(--text-dim);
+}
+.framework-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.25rem;
+}
+.framework-card {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 1.35rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  transition: transform 0.25s, border-color 0.25s;
+}
+.framework-card:hover {
+  transform: translateY(-3px);
+  border-color: rgba(79, 124, 255, 0.3);
+}
+.framework-card .card-icon {
+  font-size: 1.6rem;
+  line-height: 1;
+}
+.framework-card h4 {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 0.98rem;
+  font-weight: 700;
+  color: var(--text);
+}
+.framework-card p {
+  font-size: 0.78rem;
+  color: var(--text-dim);
+  line-height: 1.55;
+}
+
+@media (max-width: 900px) {
+  .pricing-master-card {
+    grid-template-columns: 1fr;
+    padding: 1.75rem;
+    gap: 2rem;
+  }
+  .framework-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (max-width: 580px) {
+  .framework-grid {
+    grid-template-columns: 1fr;
+  }
+  .master-price-curr {
+    font-size: 2.6rem;
+  }
+}
+
 /* ============ FINAL CTA ============ */
 .final-cta {
   text-align: center;
