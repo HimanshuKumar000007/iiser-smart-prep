@@ -49,7 +49,8 @@ import {
   Info,
   Lock,
   Unlock,
-  ExternalLink
+  ExternalLink,
+  Cloud
 } from 'lucide-react';
 import { cn } from '../../lib/utils';
 import { Footer } from '../layout/Footer';
@@ -84,7 +85,9 @@ import {
   getSavedMissionSteps,
   saveMissionStep,
   generate7DaySchedule,
-  getSynthesizedWeakAreas
+  getSynthesizedWeakAreas,
+  fetchCloudStudyPlan,
+  syncStudyPlanToCloud
 } from './aiPathGenerator';
 
 interface PathToIISERProps {
@@ -218,6 +221,47 @@ export function PathToIISER({
   const [selectedScheduleDay, setSelectedScheduleDay] = useState<number>(1);
   const [schedulePref, setSchedulePref] = useState<'MORNING' | 'EVENING'>(() => getSavedSchedulePreference());
   const [slotStates, setSlotStates] = useState<Record<string, boolean>>(() => getSavedSlotStates());
+  const [cloudSynced, setCloudSynced] = useState<boolean>(false);
+  const [isSyncing, setIsSyncing] = useState<boolean>(false);
+
+  // ── Auto-load cloud study plan on mount across devices ───────────────────
+  useEffect(() => {
+    let isMounted = true;
+    async function loadCloudPlan() {
+      const token = typeof localStorage !== 'undefined' ? localStorage.getItem('IAT_TOKEN') : null;
+      if (!token) return;
+
+      setIsSyncing(true);
+      try {
+        const cloudData = await fetchCloudStudyPlan();
+        if (cloudData && cloudData.plan && isMounted) {
+          setAiPlan(cloudData.plan);
+          setWizardAnswers({ ...cloudData.plan.answers });
+          if (cloudData.checklist) setChecklist(cloudData.checklist);
+          if (cloudData.missionSteps) setMissionStepsState(cloudData.missionSteps);
+          if (cloudData.dailySlots) setSlotStates(cloudData.dailySlots);
+          if (cloudData.schedulePref) setSchedulePref(cloudData.schedulePref);
+          setCloudSynced(true);
+        }
+      } catch (err) {
+        console.warn('[PathToIISER] Cloud plan load notice:', err);
+      } finally {
+        if (isMounted) setIsSyncing(false);
+      }
+    }
+    loadCloudPlan();
+    return () => { isMounted = false; };
+  }, []);
+
+  // Enhanced Edit Path launcher: always pre-fills with active roadmap answers
+  const handleOpenEditPath = (step: number = 1) => {
+    if (aiPlan?.answers) {
+      setWizardAnswers({ ...aiPlan.answers });
+    }
+    setWizardStep(step);
+    setIsCalibrating(true);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
   const handleToggleSlot = (slotId: string) => {
     setSlotStates(prev => {
@@ -289,6 +333,9 @@ export function PathToIISER({
       setAiPlan(newPlan);
       setIsGenerating(false);
       setIsCalibrating(false);
+      setCloudSynced(true);
+      // Immediately push complete plan to Supabase
+      syncStudyPlanToCloud(newPlan, checklist, missionStepsState, slotStates, schedulePref);
       window.scrollTo({ top: 0, behavior: 'smooth' });
     } catch (err) {
       clearInterval(interval);
@@ -879,16 +926,14 @@ export function PathToIISER({
 
         <button
           type="button"
-          onClick={() => {
-            setWizardStep(1);
-            setIsCalibrating(true);
-          }}
+          onClick={() => handleOpenEditPath(1)}
           className={cn(
             "self-start sm:self-auto px-4 py-2 rounded-xl text-xs font-semibold flex items-center gap-2 transition-all cursor-pointer border shadow-sm",
             isLight 
               ? "bg-white hover:bg-slate-50 border-slate-200 text-slate-700 hover:text-cyan-700" 
               : "bg-white/[0.04] border-white/10 hover:border-cyan-500/40 text-white/80 hover:text-white hover:bg-white/[0.08]"
           )}
+          title="Edit target college, stream, hours, or score ambition"
         >
           <RotateCcw className="w-3.5 h-3.5 text-cyan-400" />
           <span>Edit Path</span>
@@ -915,6 +960,15 @@ export function PathToIISER({
                 <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-purple-500/15 border border-purple-500/30 text-purple-300 text-[10.5px] font-mono font-bold">
                   <Sparkles className="w-3 h-3 text-purple-400 animate-pulse" />
                   <span>SmartPrep AI Active</span>
+                </div>
+                <div className={cn(
+                  "inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10.5px] font-mono font-bold transition-all",
+                  cloudSynced
+                    ? "bg-emerald-500/15 border border-emerald-500/30 text-emerald-300 shadow-[0_0_10px_rgba(16,185,129,0.15)]"
+                    : "bg-cyan-500/10 border border-cyan-500/20 text-cyan-300"
+                )} title="Your plan and progress automatically persist across all devices">
+                  <Cloud className={cn("w-3 h-3", cloudSynced ? "text-emerald-400" : "text-cyan-400", isSyncing && "animate-pulse")} />
+                  <span>{cloudSynced ? "Synced Across Devices" : "Cloud Sync Ready"}</span>
                 </div>
               </div>
               <h2 className={cn(
@@ -949,11 +1003,9 @@ export function PathToIISER({
 
               <button
                 type="button"
-                onClick={() => {
-                  setWizardStep(1);
-                  setIsCalibrating(true);
-                }}
-                className="inline-flex items-center gap-1 text-xs font-semibold text-cyan-400 hover:text-cyan-300 hover:underline cursor-pointer px-2 py-1.5"
+                onClick={() => handleOpenEditPath(1)}
+                className="inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-xl bg-cyan-500/10 hover:bg-cyan-500/20 border border-cyan-500/30 hover:border-cyan-400 text-cyan-300 transition-all cursor-pointer shadow-sm"
+                title="Edit your personalized target college, stream, or study hours"
               >
                 <span>Edit Path</span>
                 <ArrowRight className="w-3.5 h-3.5" />
@@ -963,37 +1015,84 @@ export function PathToIISER({
 
           {/* 6 Data Badges: College, Exam, Goal, Commitment, Stream, AI Strategy */}
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
-            {/* Target College */}
-            <div className={cn("p-3.5 rounded-2xl border space-y-1", isLight ? "bg-slate-50/80 border-slate-200" : "bg-white/[0.03] border-white/8")}>
-              <span className="text-[10px] font-bold uppercase tracking-wider text-cyan-400 block">Target College</span>
+            {/* Target College (Interactive Edit Shortcut) */}
+            <div 
+              onClick={() => handleOpenEditPath(1)}
+              title="Click to edit Target College"
+              className={cn(
+                "p-3.5 rounded-2xl border space-y-1 transition-all cursor-pointer group",
+                isLight ? "bg-slate-50/80 border-slate-200 hover:border-cyan-400" : "bg-white/[0.03] border-white/8 hover:border-cyan-500/40 hover:bg-white/[0.06]"
+              )}
+            >
+              <div className="flex items-center justify-between">
+                <span className="text-[10px] font-bold uppercase tracking-wider text-cyan-400 block">Target College</span>
+                <span className="text-[9px] text-cyan-400/60 opacity-0 group-hover:opacity-100 transition-opacity">Edit ✎</span>
+              </div>
               <p className={cn("font-bold text-sm truncate", isLight ? "text-slate-900" : "text-white")}>{aiPlan.answers.targetInstitute}</p>
               <span className={cn("text-[11px] block font-mono", isLight ? "text-slate-500" : "text-white/50")}>Elite Choice</span>
             </div>
 
             {/* Exam & Days Left */}
-            <div className={cn("p-3.5 rounded-2xl border space-y-1", isLight ? "bg-slate-50/80 border-slate-200" : "bg-white/[0.03] border-white/8")}>
+            <div 
+              onClick={() => handleOpenEditPath(1)}
+              title="Click to view roadmap timeline"
+              className={cn(
+                "p-3.5 rounded-2xl border space-y-1 transition-all cursor-pointer group",
+                isLight ? "bg-slate-50/80 border-slate-200 hover:border-indigo-400" : "bg-white/[0.03] border-white/8 hover:border-indigo-500/40 hover:bg-white/[0.06]"
+              )}
+            >
               <span className="text-[10px] font-bold uppercase tracking-wider text-indigo-400 block">Exam Target</span>
               <p className={cn("font-bold text-sm", isLight ? "text-slate-900" : "text-white")}>IISER IAT 2027</p>
               <span className="text-[11px] text-cyan-400 font-mono font-bold block">{daysUntilExam} Days Left</span>
             </div>
 
-            {/* Goal & Score */}
-            <div className={cn("p-3.5 rounded-2xl border space-y-1", isLight ? "bg-slate-50/80 border-slate-200" : "bg-white/[0.03] border-white/8")}>
-              <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-400 block">Target Aim</span>
+            {/* Goal & Score (Interactive Edit Shortcut) */}
+            <div 
+              onClick={() => handleOpenEditPath(6)}
+              title="Click to edit Target AIR and Score Ambition"
+              className={cn(
+                "p-3.5 rounded-2xl border space-y-1 transition-all cursor-pointer group",
+                isLight ? "bg-slate-50/80 border-slate-200 hover:border-emerald-400" : "bg-white/[0.03] border-white/8 hover:border-emerald-500/40 hover:bg-white/[0.06]"
+              )}
+            >
+              <div className="flex items-center justify-between">
+                <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-400 block">Target Aim</span>
+                <span className="text-[9px] text-emerald-400/60 opacity-0 group-hover:opacity-100 transition-opacity">Edit ✎</span>
+              </div>
               <p className={cn("font-bold text-sm", isLight ? "text-slate-900" : "text-white")}>{aiPlan.answers.targetAir}</p>
               <span className="text-[11px] text-emerald-400 font-bold block">180+/240 Marks</span>
             </div>
 
-            {/* Study Commitment */}
-            <div className={cn("p-3.5 rounded-2xl border space-y-1", isLight ? "bg-slate-50/80 border-slate-200" : "bg-white/[0.03] border-white/8")}>
-              <span className="text-[10px] font-bold uppercase tracking-wider text-purple-400 block">Commitment</span>
+            {/* Study Commitment (Interactive Edit Shortcut) */}
+            <div 
+              onClick={() => handleOpenEditPath(5)}
+              title="Click to edit Daily Study Commitment"
+              className={cn(
+                "p-3.5 rounded-2xl border space-y-1 transition-all cursor-pointer group",
+                isLight ? "bg-slate-50/80 border-slate-200 hover:border-purple-400" : "bg-white/[0.03] border-white/8 hover:border-purple-500/40 hover:bg-white/[0.06]"
+              )}
+            >
+              <div className="flex items-center justify-between">
+                <span className="text-[10px] font-bold uppercase tracking-wider text-purple-400 block">Commitment</span>
+                <span className="text-[9px] text-purple-400/60 opacity-0 group-hover:opacity-100 transition-opacity">Edit ✎</span>
+              </div>
               <p className={cn("font-bold text-sm", isLight ? "text-slate-900" : "text-white")}>{aiPlan.answers.dailyHours} Hours / day</p>
               <span className={cn("text-[11px] block font-mono", isLight ? "text-slate-500" : "text-white/50")}>{aiPlan.answers.dailyHours * 6} hrs/week</span>
             </div>
 
-            {/* Stream */}
-            <div className={cn("p-3.5 rounded-2xl border space-y-1", isLight ? "bg-slate-50/80 border-slate-200" : "bg-white/[0.03] border-white/8")}>
-              <span className="text-[10px] font-bold uppercase tracking-wider text-amber-400 block">Stream</span>
+            {/* Stream (Interactive Edit Shortcut) */}
+            <div 
+              onClick={() => handleOpenEditPath(2)}
+              title="Click to edit Academic Stream"
+              className={cn(
+                "p-3.5 rounded-2xl border space-y-1 transition-all cursor-pointer group",
+                isLight ? "bg-slate-50/80 border-slate-200 hover:border-amber-400" : "bg-white/[0.03] border-white/8 hover:border-amber-500/40 hover:bg-white/[0.06]"
+              )}
+            >
+              <div className="flex items-center justify-between">
+                <span className="text-[10px] font-bold uppercase tracking-wider text-amber-400 block">Stream</span>
+                <span className="text-[9px] text-amber-400/60 opacity-0 group-hover:opacity-100 transition-opacity">Edit ✎</span>
+              </div>
               <p className={cn("font-bold text-sm", isLight ? "text-slate-900" : "text-white")}>{aiPlan.answers.stream}</p>
               <span className="text-[11px] text-amber-300/80 block">Math Strategy Active</span>
             </div>
@@ -1926,10 +2025,7 @@ export function PathToIISER({
 
         <button
           type="button"
-          onClick={() => {
-            setWizardStep(1);
-            setIsCalibrating(true);
-          }}
+          onClick={() => handleOpenEditPath(1)}
           className="self-start sm:self-auto px-4 py-2.5 rounded-xl text-xs font-bold bg-white/[0.08] hover:bg-white/15 border border-white/15 text-white transition-all flex items-center gap-2 cursor-pointer shrink-0"
         >
           <span>Edit Path</span>

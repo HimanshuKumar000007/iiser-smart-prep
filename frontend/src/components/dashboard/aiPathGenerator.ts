@@ -252,6 +252,128 @@ const DAILY_SLOT_STORAGE_KEY = 'smartprep_daily_slots_done';
 const SCHEDULE_PREF_STORAGE_KEY = 'smartprep_schedule_preference';
 const MISSION_STEPS_STORAGE_KEY = 'smartprep_mission_steps_done';
 
+const API_BASE =
+  (import.meta as any).env?.VITE_API_URL ??
+  ((import.meta as any).env?.DEV ? 'http://localhost:5000' : 'https://api.iisersmartprep.space');
+
+let cloudSyncTimer: any = null;
+
+/**
+ * Persist the active plan and its interactive progress states to Supabase.
+ */
+export async function syncStudyPlanToCloud(
+  plan?: AiGeneratedStudyPlan,
+  checklist?: Record<string, boolean>,
+  missionSteps?: Record<string, boolean>,
+  dailySlots?: Record<string, boolean>,
+  schedulePref?: 'MORNING' | 'EVENING'
+): Promise<boolean> {
+  const token = typeof localStorage !== 'undefined' ? localStorage.getItem('IAT_TOKEN') : null;
+  if (!token) return false;
+
+  const targetPlan = plan || getStoredAiStudyPlan();
+  if (!targetPlan) return false;
+
+  try {
+    const payload = {
+      plan: targetPlan,
+      checklist: checklist ?? getSavedChecklistState(),
+      missionSteps: missionSteps ?? getSavedMissionSteps(),
+      dailySlots: dailySlots ?? getSavedSlotStates(),
+      schedulePref: schedulePref ?? getSavedSchedulePreference()
+    };
+
+    const res = await fetch(`${API_BASE}/api/user/study-plan`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+      body: JSON.stringify(payload)
+    });
+
+    if (!res.ok) return false;
+    const data = await res.json();
+    return !!data.success;
+  } catch (err) {
+    console.warn('[Cloud Study Plan] Background sync notice:', err);
+    return false;
+  }
+}
+
+/**
+ * Debounced background sync trigger so rapid checkbox clicks don't spam the network.
+ */
+export function triggerDebouncedCloudSync(plan?: AiGeneratedStudyPlan): void {
+  if (cloudSyncTimer) clearTimeout(cloudSyncTimer);
+  cloudSyncTimer = setTimeout(() => {
+    syncStudyPlanToCloud(plan);
+  }, 1200);
+}
+
+export interface CloudStudyPlanResponse {
+  plan: AiGeneratedStudyPlan | null;
+  checklist?: Record<string, boolean>;
+  missionSteps?: Record<string, boolean>;
+  dailySlots?: Record<string, boolean>;
+  schedulePref?: 'MORNING' | 'EVENING';
+  updatedAt?: string;
+  cloudSynced: boolean;
+}
+
+/**
+ * Fetch the user's latest cloud-stored study plan on device login / startup.
+ */
+export async function fetchCloudStudyPlan(): Promise<CloudStudyPlanResponse | null> {
+  const token = typeof localStorage !== 'undefined' ? localStorage.getItem('IAT_TOKEN') : null;
+  if (!token) return null;
+
+  try {
+    const res = await fetch(`${API_BASE}/api/user/study-plan`, {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
+
+    if (!res.ok) return null;
+    const data = await res.json();
+    if (!data.success || !data.exists || !data.plan) {
+      return null;
+    }
+
+    const cloudPlan: AiGeneratedStudyPlan = data.plan;
+
+    // Cache locally for instant 0ms startup on next load
+    saveAiStudyPlan(cloudPlan, false);
+
+    if (data.checklist) {
+      localStorage.setItem(CHECKLIST_STORAGE_KEY, JSON.stringify(data.checklist));
+    }
+    if (data.missionSteps) {
+      localStorage.setItem(MISSION_STEPS_STORAGE_KEY, JSON.stringify(data.missionSteps));
+    }
+    if (data.dailySlots) {
+      localStorage.setItem(DAILY_SLOT_STORAGE_KEY, JSON.stringify(data.dailySlots));
+    }
+    if (data.schedulePref) {
+      localStorage.setItem(SCHEDULE_PREF_STORAGE_KEY, data.schedulePref);
+    }
+
+    return {
+      plan: cloudPlan,
+      checklist: data.checklist,
+      missionSteps: data.missionSteps,
+      dailySlots: data.dailySlots,
+      schedulePref: data.schedulePref,
+      updatedAt: data.updatedAt,
+      cloudSynced: true
+    };
+  } catch (err) {
+    console.warn('[Cloud Study Plan] Failed to fetch cloud plan (using local cache):', err);
+    return null;
+  }
+}
+
 export function getSavedSchedulePreference(): 'MORNING' | 'EVENING' {
   try {
     const pref = localStorage.getItem(SCHEDULE_PREF_STORAGE_KEY);
@@ -264,6 +386,7 @@ export function getSavedSchedulePreference(): 'MORNING' | 'EVENING' {
 export function saveSchedulePreference(pref: 'MORNING' | 'EVENING'): void {
   try {
     localStorage.setItem(SCHEDULE_PREF_STORAGE_KEY, pref);
+    triggerDebouncedCloudSync();
   } catch {}
 }
 
@@ -281,6 +404,7 @@ export function saveSlotState(slotKey: string, completed: boolean): void {
     const current = getSavedSlotStates();
     current[slotKey] = completed;
     localStorage.setItem(DAILY_SLOT_STORAGE_KEY, JSON.stringify(current));
+    triggerDebouncedCloudSync();
   } catch {}
 }
 
@@ -298,6 +422,7 @@ export function saveMissionStep(stepId: string, completed: boolean): void {
     const current = getSavedMissionSteps();
     current[stepId] = completed;
     localStorage.setItem(MISSION_STEPS_STORAGE_KEY, JSON.stringify(current));
+    triggerDebouncedCloudSync();
   } catch {}
 }
 
@@ -351,7 +476,7 @@ export function getStoredAiStudyPlan(): AiGeneratedStudyPlan | null {
       modified = true;
     }
     if (modified) {
-      saveAiStudyPlan(plan);
+      saveAiStudyPlan(plan, false);
     }
     return plan;
   } catch {
@@ -359,9 +484,12 @@ export function getStoredAiStudyPlan(): AiGeneratedStudyPlan | null {
   }
 }
 
-export function saveAiStudyPlan(plan: AiGeneratedStudyPlan): void {
+export function saveAiStudyPlan(plan: AiGeneratedStudyPlan, syncToCloud: boolean = true): void {
   try {
     localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(plan));
+    if (syncToCloud) {
+      triggerDebouncedCloudSync(plan);
+    }
   } catch (err) {
     console.error('Failed to save study plan:', err);
   }

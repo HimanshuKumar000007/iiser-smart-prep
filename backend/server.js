@@ -1182,6 +1182,109 @@ app.post("/api/update-profile", authMiddleware, async (req, res) => {
   }
 });
 
+// ==============================================================================
+// 🎯 USER STUDY PLAN CLOUD SYNC APIS (Cross-Device Persistence)
+// ==============================================================================
+app.get("/api/user/study-plan", authMiddleware, async (req, res) => {
+  try {
+    let userId = req.user.id || req.user.userId;
+    if (!userId && req.user.email) {
+      const { data: u } = await supabase.from("users").select("id").eq("email", req.user.email).maybeSingle();
+      if (u) userId = u.id;
+    }
+
+    if (!userId) {
+      return res.status(401).json({ error: "Unauthorized: User ID not found" });
+    }
+
+    const { data, error } = await supabase
+      .from("user_study_plans")
+      .select("*")
+      .eq("user_id", userId)
+      .maybeSingle();
+
+    if (error) {
+      // If table doesn't exist yet or other DB notice, return gracefully
+      console.warn("[study-plan GET] DB notice:", error.message);
+      return res.json({ success: true, plan: null, exists: false, notice: error.message });
+    }
+
+    if (!data) {
+      return res.json({ success: true, plan: null, exists: false });
+    }
+
+    res.json({
+      success: true,
+      exists: true,
+      plan: data.plan_data,
+      checklist: data.checklist_state || {},
+      missionSteps: data.mission_steps || {},
+      dailySlots: data.daily_slots || {},
+      schedulePref: data.schedule_preference || "MORNING",
+      updatedAt: data.updated_at
+    });
+  } catch (err) {
+    console.error("[study-plan GET] error:", err);
+    res.status(500).json({ error: "Failed to retrieve study plan", details: err.message });
+  }
+});
+
+app.post("/api/user/study-plan", authMiddleware, async (req, res) => {
+  try {
+    let userId = req.user.id || req.user.userId;
+    if (!userId && req.user.email) {
+      const { data: u } = await supabase.from("users").select("id").eq("email", req.user.email).maybeSingle();
+      if (u) userId = u.id;
+    }
+
+    if (!userId) {
+      return res.status(401).json({ error: "Unauthorized: User ID not found" });
+    }
+
+    const { plan, checklist, missionSteps, dailySlots, schedulePref } = req.body;
+    if (!plan || typeof plan !== "object") {
+      return res.status(400).json({ error: "Invalid payload: plan object is required" });
+    }
+
+    const upsertPayload = {
+      user_id: userId,
+      plan_data: plan,
+      checklist_state: checklist || {},
+      mission_steps: missionSteps || {},
+      daily_slots: dailySlots || {},
+      schedule_preference: schedulePref || "MORNING",
+      updated_at: new Date().toISOString()
+    };
+
+    const { data, error } = await supabase
+      .from("user_study_plans")
+      .upsert(upsertPayload, { onConflict: "user_id" })
+      .select()
+      .maybeSingle();
+
+    if (error) {
+      console.warn("[study-plan POST] DB notice:", error.message);
+      // If table is missing, return 200 with cloudSynced: false so client doesn't break
+      return res.json({
+        success: true,
+        cloudSynced: false,
+        notice: "Table pending migration: " + error.message,
+        updatedAt: upsertPayload.updated_at
+      });
+    }
+
+    res.json({
+      success: true,
+      cloudSynced: true,
+      message: "Study plan synced successfully to cloud",
+      updatedAt: upsertPayload.updated_at
+    });
+  } catch (err) {
+    console.error("[study-plan POST] error:", err);
+    res.status(500).json({ error: "Failed to save study plan", details: err.message });
+  }
+});
+
 // =======================
 // 👤 GET USER INFO API
 // =======================
