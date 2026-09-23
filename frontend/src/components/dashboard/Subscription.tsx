@@ -85,7 +85,7 @@ export function Subscription({ returnTo, onNavigate }: SubscriptionProps) {
         currency: orderData.currency,
         order_id: orderData.order_id,
         name: "IISER Smart Prep",
-        description: `Pro Plan — ${selectedPlanId === 'monthly' ? '1 Month' : selectedPlanId === 'six_month' ? '6 Months' : '1 Year'}`,
+        description: `Pro Plan — ${selectedPlanId === 'annual' ? 'Valid Until IAT 2027' : selectedPlanId === 'monthly' ? '1 Month' : '6 Months'}`,
         image: "https://iisersmartprep.space/apple-touch-icon.png",
         
         handler: async function (response: any) {

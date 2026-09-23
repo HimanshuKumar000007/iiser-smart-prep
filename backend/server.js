@@ -643,8 +643,8 @@ app.post("/api/razorpay-webhook", async (req, res) => {
         return res.status(200).send("OK");
       }
 
-      const planId = payment.notes?.planId || "six_month";
-      const plan = PLANS[planId] || PLANS.six_month;
+      const planId = payment.notes?.planId || "annual";
+      const plan = PLANS[planId] || PLANS.annual;
       const durationMs = plan.durationDays * 24 * 60 * 60 * 1000;
 
       // Query current plan_expiry
