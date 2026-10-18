@@ -21,14 +21,14 @@ export function Subscription({ returnTo, onNavigate }: SubscriptionProps) {
     {
       id: 'annual',
       name: 'IAT 2027 Pro All-Access',
-      price: 599,
-      originalPrice: 899,
+      price: 899,
+      originalPrice: 1499,
       period: 'until IAT 2027',
-      savings: '33% OFF',
-      savingsText: '🎉 Save ₹300 (Flat 33% Discount) — Complete Access Until IAT 2027 Exam Day!',
+      savings: '40% OFF',
+      savingsText: '🎉 Save ₹600 (Flat 40% Discount) — Complete Access Until IAT 2027 Exam Day!',
       popular: true,
       isSale: true,
-      ctaLabel: 'Unlock Full Access for ₹599',
+      ctaLabel: 'Unlock Full Access for ₹899',
       description: 'The definitive all-in-one preparation ecosystem powered by Our Latest AI. One-time payment, zero recurring fees.',
       features: [
         '⚡ Our Latest AI: 24/7 AI Doubt Solver 2.0 (Step-by-step PCMB explanations)',
@@ -211,7 +211,7 @@ export function Subscription({ returnTo, onNavigate }: SubscriptionProps) {
         {plan.isSale ? (
           <div className="absolute top-0 right-0">
             <span className="inline-block bg-gradient-to-r from-amber-500 to-rose-500 text-white text-[10px] uppercase font-extrabold tracking-wider px-3.5 py-1.5 rounded-bl-xl shadow-sm">
-              🔥 33% OFF (Save ₹300)
+              🔥 40% OFF (Save ₹600)
             </span>
           </div>
         ) : (
@@ -255,7 +255,7 @@ export function Subscription({ returnTo, onNavigate }: SubscriptionProps) {
           {/* Micro-cost breakdown */}
           <div className={cn("p-2.5 rounded-xl border flex items-center gap-2 text-xs font-medium", isLight ? "bg-amber-50 border-amber-200 text-amber-900" : "bg-amber-500/10 border-amber-500/20 text-amber-300")}>
             <span>☕</span>
-            <span><strong>Just ₹1.64 / day:</strong> Less than half a cup of tea to secure your IISER seat!</span>
+            <span><strong>Just ₹2.46 / day:</strong> Less than half a cup of tea to secure your IISER seat!</span>
           </div>
 
           {/* American Sales Marketing Value Stack Box */}
@@ -265,8 +265,8 @@ export function Subscription({ returnTo, onNavigate }: SubscriptionProps) {
               <span className="line-through text-slate-400 font-mono font-bold">₹13,994</span>
             </div>
             <div className="flex justify-between items-center font-bold">
-              <span className="text-emerald-600 dark:text-emerald-400">Your Price Today (33% Discount):</span>
-              <span className="text-emerald-600 dark:text-emerald-400 font-mono font-extrabold text-sm">₹599</span>
+              <span className="text-emerald-600 dark:text-emerald-400">Your Price Today (40% Discount):</span>
+              <span className="text-emerald-600 dark:text-emerald-400 font-mono font-extrabold text-sm">₹899</span>
             </div>
             <p className="text-[11px] text-slate-500 dark:text-slate-400 border-t border-indigo-500/20 pt-1.5">
               🛡️ Complete access until IAT 2027 • Zero monthly renewals • Powered by Our Latest AI
@@ -328,10 +328,10 @@ export function Subscription({ returnTo, onNavigate }: SubscriptionProps) {
                 <span className="text-xs font-bold uppercase tracking-wider text-amber-500 bg-amber-500/10 px-2 py-0.5 rounded border border-amber-500/20">
                   IAT 2027 Admission Cycle Special
                 </span>
-                <span className="text-xs font-bold text-emerald-600 dark:text-emerald-400">Flat 33% OFF</span>
+                <span className="text-xs font-bold text-emerald-600 dark:text-emerald-400">Flat 40% OFF</span>
               </div>
               <p className="text-xs text-slate-600 dark:text-slate-300 mt-1">
-                Get full Pro access powered by <strong>Our Latest AI</strong> for just <strong>₹599</strong> (regular ₹899). Guaranteed access until IAT 2027!
+                Get full Pro access powered by <strong>Our Latest AI</strong> for just <strong>₹899</strong> (regular ₹1,499). Guaranteed access until IAT 2027!
               </p>
             </div>
           </div>
@@ -494,7 +494,7 @@ export function Subscription({ returnTo, onNavigate }: SubscriptionProps) {
             },
             {
               q: "Why is there only one unified plan now?",
-              a: "We removed short-term 1-month and 6-month plans to eliminate choice paralysis and prevent subscriptions from expiring right before exam season. One investment of ₹599 covers your entire journey until IAT 2027."
+              a: "We removed short-term 1-month and 6-month plans to eliminate choice paralysis and prevent subscriptions from expiring right before exam season. One investment of ₹899 covers your entire journey until IAT 2027."
             },
             {
               q: "What is included with 'Our Latest AI'?",
@@ -502,7 +502,7 @@ export function Subscription({ returnTo, onNavigate }: SubscriptionProps) {
             },
             {
               q: "Is my payment secure and are there recurring fees?",
-              a: "This is a strictly one-time payment of ₹599. There are zero hidden fees, zero recurring auto-debits, and all transactions are processed via Razorpay with bank-grade 256-bit encryption."
+              a: "This is a strictly one-time payment of ₹899. There are zero hidden fees, zero recurring auto-debits, and all transactions are processed via Razorpay with bank-grade 256-bit encryption."
             }
           ].map((faq, i) => (
             <div key={i} className={cn(

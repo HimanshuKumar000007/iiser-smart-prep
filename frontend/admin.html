@@ -1,8 +1,9 @@
-<!DOCTYPE html>
-<html>
-
-<head>
-    <title>Admin Dashboard</title>
+<!doctype html>
+<html lang="en" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Dashboard — IISER SmartPrep</title>
 
     <!-- Favicon Setup -->
     <link rel="icon" href="/favicon.ico">
@@ -10,89 +11,15 @@
     <link rel="icon" href="/favicon.svg" type="image/svg+xml">
     <link rel="apple-touch-icon" href="/apple-touch-icon.png">
     <link rel="manifest" href="/site.webmanifest">
-    <meta name="theme-color" content="#000000">
+    <meta name="theme-color" content="#070a10">
 
-    <!-- Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-WHHM4FTNHG"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag() { dataLayer.push(arguments); }
-        gtag('js', new Date());
-        gtag('config', 'G-WHHM4FTNHG');
-    </script>
-</head>
-
-<body>
-
-    <h2>Admin Dashboard</h2>
-    <table border="1" cellpadding="8">
-        <thead>
-            <tr>
-                <th>Email</th>
-                <th>Plan</th>
-                <th>Role</th>
-                <th>Action</th>
-            </tr>
-        </thead>
-        <tbody id="users"></tbody>
-    </table>
-
-    <script src="/config.js"></script>
-    <script>
-        const token = localStorage.getItem("IAT_TOKEN");
-
-        // 🔒 PROTECT ADMIN PAGE
-        fetch("https://api.iisersmartprep.space/api/me", {
-            headers: { Authorization: "Bearer " + token }
-        })
-            .then(res => res.json())
-            .then(user => {
-                if (user.role !== "admin") {
-                    alert("Access denied");
-                    window.location.href = '/index.html';
-                }
-            });
-
-        async function loadUsers() {
-            const res = await fetch("https://api.iisersmartprep.space/api/admin/users", {
-                headers: { Authorization: "Bearer " + token }
-            });
-
-            const users = await res.json();
-            const tbody = document.getElementById("users");
-
-            users.forEach(u => {
-                const tr = document.createElement("tr");
-                tr.innerHTML = `
-      <td>${u.email}</td>
-      <td>${u.plan}</td>
-      <td>${u.role}</td>
-      <td>
-        <button onclick="setPlan('${u.email}', 'PRO')">PRO</button>
-        <button onclick="setPlan('${u.email}', 'FREE')">FREE</button>
-      </td>
-    `;
-                tbody.appendChild(tr);
-            });
-        }
-
-        async function setPlan(email, plan) {
-            await fetch("https://api.iisersmartprep.space/api/admin/set-plan", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: "Bearer " + token
-                },
-                body: JSON.stringify({ email, plan })
-            });
-
-            alert("Updated!");
-            location.reload();
-        }
-
-        loadUsers();
-    </script>
-
-</body>
-
+    <!-- Google Fonts: Space Grotesk, Inter & JetBrains Mono -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,300..800;1,14..32,300..800&family=JetBrains+Mono:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  </head>
+  <body class="bg-[#070a10] text-slate-100 antialiased selection:bg-indigo-500/30 selection:text-indigo-200 min-h-screen">
+    <div id="admin-root"></div>
+    <script type="module" src="/src/admin/main.tsx"></script>
+  </body>
 </html>

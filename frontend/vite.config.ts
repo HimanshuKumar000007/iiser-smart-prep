@@ -16,6 +16,9 @@ export default defineConfig(() => {
             if (url.pathname === '/dashboard-react/index.html') {
               req.url = '/dashboard-react.html' + url.search;
             }
+            if (url.pathname === '/admin' || url.pathname === '/admin/' || url.pathname === '/admin/index.html') {
+              req.url = '/admin.html' + url.search;
+            }
             next();
           });
         }

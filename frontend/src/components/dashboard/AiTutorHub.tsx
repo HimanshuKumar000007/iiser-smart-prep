@@ -35,67 +35,18 @@ interface Message {
 
 type SubjectFocus = 'ALL' | 'PHYSICS' | 'CHEMISTRY' | 'MATHEMATICS' | 'BIOLOGY';
 
-interface QuickStarter {
-  icon: typeof Atom;
-  title: string;
-  subtitle: string;
-  tag: string;
-  tagColor: string;
-  glowColor: string;
-  iconBg: string;
-  iconColor: string;
-  starterText: string;
-  subject: SubjectFocus;
-}
-
-const QUICK_STARTERS: QuickStarter[] = [
+const TRY_ASKING_PROMPTS = [
   {
-    icon: Atom,
-    tag: "PHYSICS • DERIVATIONS",
-    tagColor: "text-cyan-400 bg-cyan-500/10 border-cyan-500/30",
-    glowColor: "hover:border-cyan-500/50 hover:shadow-[0_0_30px_rgba(6,182,212,0.18)]",
-    iconBg: "bg-cyan-500/15 border border-cyan-500/30",
-    iconColor: "text-cyan-400",
-    title: "Solve a Physics numerical with derivations",
-    subtitle: "Lenz's Law, EM Induction, Rotational dynamics with step-by-step calculus",
-    starterText: "Solve this Physics numerical with step-by-step derivations: ",
-    subject: 'PHYSICS'
+    label: "Why does the electric field inside a conductor become zero?",
+    subject: 'PHYSICS' as SubjectFocus
   },
   {
-    icon: FlaskConical,
-    tag: "CHEMISTRY • MECHANISMS",
-    tagColor: "text-amber-400 bg-amber-500/10 border-amber-500/30",
-    glowColor: "hover:border-amber-500/50 hover:shadow-[0_0_30px_rgba(245,158,11,0.18)]",
-    iconBg: "bg-amber-500/15 border border-amber-500/30",
-    iconColor: "text-amber-400",
-    title: "Explain organic or inorganic mechanisms",
-    subtitle: "SN1 vs SN2, carbocation stability, stereochemistry inversion & IAT traps",
-    starterText: "Explain the reaction mechanism step-by-step for: ",
-    subject: 'CHEMISTRY'
+    label: "How can I identify the rate-determining step in a reaction?",
+    subject: 'CHEMISTRY' as SubjectFocus
   },
   {
-    icon: Calculator,
-    tag: "MATHEMATICS • 3D & CALCULUS",
-    tagColor: "text-purple-400 bg-purple-500/10 border-purple-500/30",
-    glowColor: "hover:border-purple-500/50 hover:shadow-[0_0_30px_rgba(168,85,247,0.18)]",
-    iconBg: "bg-purple-500/15 border border-purple-500/30",
-    iconColor: "text-purple-400",
-    title: "Derive 3D geometry or integration formulas",
-    subtitle: "Shortest distance between skew lines, vector planes & tricky definite integrals",
-    starterText: "Derive the mathematical formula step-by-step for: ",
-    subject: 'MATHEMATICS'
-  },
-  {
-    icon: Dna,
-    tag: "BIOLOGY • GENETICS & ENERGETICS",
-    tagColor: "text-emerald-400 bg-emerald-500/10 border-emerald-500/30",
-    glowColor: "hover:border-emerald-500/50 hover:shadow-[0_0_30px_rgba(16,185,129,0.18)]",
-    iconBg: "bg-emerald-500/15 border border-emerald-500/30",
-    iconColor: "text-emerald-400",
-    title: "Genetics & bioenergetics problem solving",
-    subtitle: "Hardy-Weinberg equilibrium (p, q vs p², 2pq), Krebs cycle & ATP yields",
-    starterText: "Explain and solve this genetics / bioenergetics problem: ",
-    subject: 'BIOLOGY'
+    label: "Explain the difference between mitosis and meiosis.",
+    subject: 'BIOLOGY' as SubjectFocus
   }
 ];
 
@@ -685,13 +636,18 @@ export function AiTutorHub({
   const [copiedIdx, setCopiedIdx] = useState<number | null>(null);
   const [deepThink, setDeepThink] = useState(true);
   const [subjectFilter, setSubjectFilter] = useState<SubjectFocus>('ALL');
-  const [showSubjectMenu, setShowSubjectMenu] = useState(false);
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const messagesContainerRef = useRef<HTMLDivElement>(null);
   const isNearBottomRef = useRef<boolean>(true);
-  const inputRef = useRef<HTMLInputElement>(null);
+  const inputRef = useRef<HTMLTextAreaElement>(null);
   const hasAutoExecutedRef = useRef<boolean>(false);
+
+  const handleTextareaChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setInputVal(e.target.value);
+    e.target.style.height = 'auto';
+    e.target.style.height = `${Math.min(e.target.scrollHeight, 180)}px`;
+  };
 
   const handleMessagesScroll = (e: React.UIEvent<HTMLDivElement>) => {
     const el = e.currentTarget;
@@ -710,20 +666,6 @@ export function AiTutorHub({
   useEffect(() => {
     inputRef.current?.focus();
   }, []);
-
-  const handleStarterClick = (item: QuickStarter) => {
-    setInputVal(item.starterText);
-    if (item.subject) {
-      setSubjectFilter(item.subject);
-    }
-    setTimeout(() => {
-      if (inputRef.current) {
-        inputRef.current.focus();
-        const len = item.starterText.length;
-        inputRef.current.setSelectionRange(len, len);
-      }
-    }, 50);
-  };
 
   const executeStreamForMessages = async (baseMsgs: Message[]) => {
     if (isLoading || baseMsgs.length === 0) return;
@@ -866,6 +808,9 @@ export function AiTutorHub({
 
     const newMsgs: Message[] = [...messages, { role: 'user', content: q }];
     setInputVal('');
+    if (inputRef.current) {
+      inputRef.current.style.height = 'auto';
+    }
     isNearBottomRef.current = true;
     try {
       sessionStorage.setItem('smartprep_active_chat', JSON.stringify(newMsgs));
@@ -919,39 +864,55 @@ export function AiTutorHub({
     setTimeout(() => setCopiedIdx(null), 2000);
   }, []);
 
-  const activeSubjectOption = SUBJECT_OPTIONS.find(s => s.key === subjectFilter) || SUBJECT_OPTIONS[0];
-  const ActiveSubjectIcon = activeSubjectOption.icon;
+  // Diagnostic Learning Insights Computation
+  const hasLearningData = Boolean(dashboardData && (dashboardData.total_attempts || 0) > 0);
+
+  // Derive strongest subject from recorded performance
+  const strongestSubject = dashboardData?.subject_performance
+    ?.filter(s => (s.attempts || 0) > 0)
+    ?.sort((a, b) => (b.accuracy || 0) - (a.accuracy || 0))[0]?.subject;
+
+  // Derive weakest topic or area
+  const weakestAreaItem = dashboardData?.weakAreas?.[0];
+  const weakestSubject = dashboardData?.subject_performance
+    ?.filter(s => (s.attempts || 0) > 0)
+    ?.sort((a, b) => (a.accuracy || 0) - (b.accuracy || 0))[0]?.subject;
+
+  const weakTopic = weakestAreaItem?.chapter || weakestAreaItem?.subject || weakestSubject || null;
+  const strongTopic = strongestSubject || null;
 
   return (
     <div className={cn(
       "w-full h-full flex flex-col relative overflow-hidden select-none transition-colors duration-200",
-      isLight ? "bg-[#f8fafc] text-slate-900" : "bg-[#060814] text-white"
+      isLight ? "bg-[#f8fafc] text-slate-900" : "bg-[#070914] text-[#F8FAFC]"
     )}>
       
-      {/* ── AMBIENT CYBER-SPACE GLOWS (Matching SmartPrep App Atmosphere) ── */}
+      {/* ── AMBIENT CYBER-SPACE GLOWS (Restrained & Scientific) ── */}
       {!isLight && (
         <>
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[700px] h-[320px] bg-indigo-600/12 rounded-full blur-[130px] pointer-events-none" />
-          <div className="absolute top-24 right-[-100px] w-[450px] h-[350px] bg-cyan-500/10 rounded-full blur-[110px] pointer-events-none" />
-          <div className="absolute bottom-10 left-[-100px] w-[500px] h-[350px] bg-purple-600/10 rounded-full blur-[120px] pointer-events-none" />
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[650px] h-[260px] bg-[#7657FF]/10 rounded-full blur-[130px] pointer-events-none" />
+          <div className="absolute top-32 right-[-80px] w-[400px] h-[300px] bg-[#22D3EE]/8 rounded-full blur-[110px] pointer-events-none" />
+          <div className="absolute bottom-10 left-[-80px] w-[450px] h-[300px] bg-[#7657FF]/8 rounded-full blur-[120px] pointer-events-none" />
           <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(255,255,255,0.015)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.015)_1px,transparent_1px)] bg-[size:4rem_4rem] pointer-events-none opacity-40" />
         </>
       )}
 
-      {/* ── TOP APP HEADER (Desktop Only — Mobile is handled seamlessly by App.tsx) ── */}
+      {/* ── TOP APP NAVIGATION BAR (Desktop Only — Mobile is handled seamlessly by App.tsx) ── */}
       <header className={cn(
         "hidden lg:flex h-16 px-6 items-center justify-between relative z-30 shrink-0 border-b transition-colors",
-        isLight ? "bg-white/80 border-slate-200/80 backdrop-blur-md" : "bg-[#080b1a]/85 border-white/[0.07] backdrop-blur-xl"
+        isLight 
+          ? "bg-white/90 border-slate-200/90 backdrop-blur-md" 
+          : "bg-[#070914]/90 border-[rgba(148,163,184,0.14)] backdrop-blur-xl"
       )}>
         {/* Left: Back to Dashboard & Brand Identity */}
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2.5 sm:gap-3">
           <button
             onClick={() => onNavigate?.('dashboard')}
             className={cn(
               "px-2.5 py-1.5 rounded-xl text-xs font-semibold flex items-center gap-1.5 transition-all cursor-pointer border",
               isLight 
                 ? "bg-slate-100 hover:bg-slate-200 text-slate-700 border-slate-200" 
-                : "bg-white/[0.04] border-white/10 hover:border-cyan-500/40 text-white/70 hover:text-white"
+                : "bg-[#141C32]/80 border-[rgba(148,163,184,0.14)] hover:border-[#22D3EE]/40 text-[#94A3B8] hover:text-[#F8FAFC]"
             )}
             title="Return to Dashboard"
           >
@@ -959,78 +920,67 @@ export function AiTutorHub({
             <span className="hidden sm:inline">Dashboard</span>
           </button>
 
-          <div className="h-4 w-px bg-white/10 hidden sm:block" />
+          <div className={cn("h-4 w-px", isLight ? "bg-slate-200" : "bg-[rgba(148,163,184,0.14)]")} />
 
-          {/* AI Tutor Title & Badge */}
+          {/* AI Tutor Title & Exam Badge */}
           <div className="flex items-center gap-2">
-            <div className="w-7 h-7 rounded-lg bg-gradient-to-tr from-indigo-500 to-cyan-400 flex items-center justify-center text-white shadow-[0_0_15px_rgba(6,182,212,0.4)]">
+            <div className="w-7 h-7 rounded-xl bg-gradient-to-tr from-[#7657FF] to-[#22D3EE] flex items-center justify-center text-white shadow-[0_0_14px_rgba(118,87,255,0.4)]">
               <Sparkles className="w-3.5 h-3.5" />
             </div>
-            <div className="flex items-center gap-2">
-              <span className="font-bold text-sm tracking-tight text-white hidden sm:inline">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:gap-2">
+              <span className={cn("font-bold text-sm tracking-tight", isLight ? "text-slate-900" : "text-[#F8FAFC]")}>
                 SmartPrep AI Tutor
               </span>
-              <span className="border border-cyan-500/30 bg-cyan-500/10 text-cyan-400 text-[9px] font-bold px-1.5 py-0.5 rounded">
-                IAT 2027
+              <span className="border border-[#22D3EE]/30 bg-[#22D3EE]/10 text-[#22D3EE] text-[9px] font-bold px-1.5 py-0.5 rounded w-fit">
+                IISER IAT 2027
               </span>
             </div>
           </div>
         </div>
 
-        {/* Center: Live Status & Performance Synced Indicator */}
-        <div className="hidden md:flex items-center gap-2.5">
+        {/* Right: Genuine Live Status, Model & Action */}
+        <div className="flex items-center gap-2">
           <div className={cn(
-            "flex items-center gap-2 px-3 py-1 rounded-full text-xs shadow-sm border",
+            "hidden sm:flex items-center gap-2 px-3 py-1 rounded-full text-xs border",
             isLight 
-              ? "bg-slate-100/90 border-slate-200 text-slate-700" 
-              : "bg-[#0e1330]/80 border-indigo-500/20 text-white/80"
+              ? "bg-slate-100 border-slate-200 text-slate-700" 
+              : "bg-[#0F1528] border-[rgba(148,163,184,0.14)] text-[#94A3B8]"
           )}>
-            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse shadow-[0_0_8px_rgba(52,211,153,0.8)]" />
-            <span className={cn("text-[11px] font-semibold", isLight ? "text-emerald-700" : "text-emerald-300")}>Live AI Active</span>
-            <span className={isLight ? "text-slate-300" : "text-white/20"}>•</span>
-            <span className={cn("text-[10px] font-mono", isLight ? "text-purple-700" : "text-purple-300")}>NVIDIA NIM</span>
+            <span className="w-2 h-2 rounded-full bg-[#34D399] animate-pulse shadow-[0_0_8px_rgba(52,211,153,0.8)]" />
+            <span className="text-[11px] font-semibold text-[#F8FAFC]">Live AI</span>
+            <span className="opacity-30">•</span>
+            <span className="text-[10px] font-mono text-[#7657FF] font-semibold">NVIDIA NIM • Llama 3.2</span>
           </div>
 
           {dashboardData && (
             <div 
               className={cn(
-                "flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium border transition-all",
+                "hidden md:flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium border",
                 isLight 
-                  ? "bg-cyan-50 border-cyan-200 text-cyan-800 shadow-sm" 
-                  : "bg-cyan-950/40 border-cyan-500/30 text-cyan-300 shadow-[0_0_12px_rgba(6,182,212,0.15)]"
+                  ? "bg-cyan-50 border-cyan-200 text-cyan-800" 
+                  : "bg-[#0F1528] border-[rgba(148,163,184,0.14)] text-[#22D3EE]"
               )}
-              title={`Real-time stats synced with AI tutor: ${Math.round(dashboardData.accuracy || 0)}% overall accuracy across ${dashboardData.total_attempts || 0} questions attempted.`}
             >
-              <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse" />
-              <span className={isLight ? "text-slate-600 font-normal" : "text-white/60 font-normal"}>Stats Synced:</span>
-              <span className={cn("font-bold", isLight ? "text-cyan-900" : "text-white")}>{Math.round(dashboardData.accuracy || 0)}% Acc</span>
-              <span className={isLight ? "text-slate-300" : "text-white/20"}>•</span>
-              <span className="font-bold text-cyan-400">{dashboardData.total_attempts || 0} Qs</span>
-              {dashboardData.weakAreas?.[0] && (
-                <>
-                  <span className={isLight ? "text-slate-300" : "text-white/20 hidden xl:inline"}>•</span>
-                  <span className="text-amber-400 font-medium hidden xl:inline">Focus: {dashboardData.weakAreas[0].subject}</span>
-                </>
-              )}
+              <span className="opacity-60 text-[11px]">Sync:</span>
+              <span className="font-bold text-[11px]">{Math.round(dashboardData.accuracy || 0)}% Acc</span>
+              <span className="opacity-30">•</span>
+              <span className="font-bold text-[11px]">{dashboardData.total_attempts || 0} Qs</span>
             </div>
           )}
-        </div>
 
-        {/* Right: Actions */}
-        <div className="flex items-center gap-2">
           {messages.length > 0 && (
             <button
               onClick={handleClearChat}
               className={cn(
-                "px-3 py-1.5 rounded-xl text-xs font-semibold flex items-center gap-1.5 transition-all cursor-pointer border",
+                "px-2.5 sm:px-3 py-1.5 rounded-xl text-xs font-semibold flex items-center gap-1.5 transition-all cursor-pointer border",
                 isLight 
                   ? "bg-slate-100 hover:bg-rose-50 text-slate-600 hover:text-rose-600 border-slate-200" 
-                  : "bg-white/[0.04] border-white/10 hover:border-rose-500/30 text-white/60 hover:text-rose-400"
+                  : "bg-[#141C32] border-[rgba(148,163,184,0.14)] hover:border-rose-500/30 text-[#94A3B8] hover:text-rose-400"
               )}
               title="Start a new chat"
             >
               <Trash2 className="w-3.5 h-3.5" />
-              <span>New Session</span>
+              <span className="hidden sm:inline">New Chat</span>
             </button>
           )}
         </div>
@@ -1041,305 +991,291 @@ export function AiTutorHub({
 
         {/* ── 1. EMPTY / WELCOME STATE ── */}
         {messages.length === 0 ? (
-          <div className="flex-1 min-h-0 overflow-y-auto custom-scrollbar overscroll-contain flex flex-col items-center justify-start sm:justify-center px-3.5 sm:px-4 max-w-3xl mx-auto w-full pt-3 sm:pt-6 pb-6 sm:pb-8">
+          <div className="flex-1 min-h-0 overflow-y-auto custom-scrollbar overscroll-contain flex flex-col items-center justify-start px-4 max-w-4xl mx-auto w-full pt-6 sm:pt-10 pb-12">
             
-            {/* Jewel Icon & Title */}
-            <div className="text-center mb-4 sm:mb-7 space-y-2 sm:space-y-3">
-              <div className="inline-flex items-center justify-center relative mb-0.5 sm:mb-1">
-                <div className="w-11 h-11 sm:w-14 sm:h-14 rounded-2xl bg-gradient-to-tr from-indigo-600 via-purple-600 to-cyan-400 flex items-center justify-center text-white shadow-[0_0_25px_rgba(6,182,212,0.4)] border border-white/20">
-                  <Sparkles className="w-5 h-5 sm:w-7 sm:h-7 text-white" />
-                </div>
-                <div className="absolute -bottom-1 -right-1 w-5 h-5 sm:w-6 sm:h-6 rounded-lg bg-[#0b0e24] border border-cyan-400/50 flex items-center justify-center text-cyan-300 shadow-md">
-                  <Atom className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
+            {/* ── HERO SECTION ── */}
+            <div className="text-center mb-6 sm:mb-8 space-y-2">
+              <div className="inline-flex items-center justify-center relative mb-1">
+                <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-gradient-to-tr from-[#7657FF] via-indigo-500 to-[#22D3EE] p-[1px] shadow-[0_0_25px_rgba(118,87,255,0.35)]">
+                  <div className={cn("w-full h-full rounded-2xl flex items-center justify-center", isLight ? "bg-white" : "bg-[#0F1528]")}>
+                    <Sparkles className="w-6 h-6 text-[#22D3EE]" />
+                  </div>
                 </div>
               </div>
 
-              <h1 className="text-xl sm:text-4xl font-bold tracking-tight text-white">
-                Where should we begin?
+              <h1 className={cn(
+                "text-2xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight",
+                isLight ? "text-slate-900" : "text-[#F8FAFC]"
+              )}>
+                Your Personal Science Tutor
               </h1>
-              <p className="text-[11.5px] sm:text-sm text-white/60 max-w-xs sm:max-w-md mx-auto leading-relaxed">
-                Step-by-step numerical derivations, mechanisms & concept clarity tailored for the <span className="text-cyan-400 font-semibold">IISER Aptitude Test</span>.
+              <p className={cn(
+                "text-xs sm:text-sm max-w-md sm:max-w-lg mx-auto leading-relaxed",
+                isLight ? "text-slate-600" : "text-[#94A3B8]"
+              )}>
+                Explore concepts, solve difficult problems, and master the science behind every answer.
+              </p>
+              <p className={cn(
+                "text-xs font-semibold tracking-wide",
+                isLight ? "text-indigo-600" : "text-[#22D3EE]"
+              )}>
+                Built for IISER IAT &amp; NEST preparation.
               </p>
             </div>
 
-            {/* Premium Glowing Capsule Input Bar */}
-            <div className="w-full relative mb-3 sm:mb-5">
+            {/* ── AI QUESTION COMPOSER CARD ── */}
+            <div className="w-full relative mb-3 sm:mb-4">
               <form
                 onSubmit={(e) => {
                   e.preventDefault();
                   handleSendMessage();
                 }}
                 className={cn(
-                  "relative flex items-center rounded-full border transition-all duration-300 shadow-2xl pl-2.5 sm:pl-3 pr-2 py-1.5 sm:py-2.5",
+                  "relative flex flex-col rounded-2xl sm:rounded-3xl border transition-all duration-300 shadow-2xl p-3 sm:p-4 gap-3",
                   isLight 
-                    ? "bg-white border-slate-300 focus-within:border-cyan-500 focus-within:shadow-[0_4px_24px_rgba(6,182,212,0.2)]" 
-                    : "bg-[#0d122b]/90 border-indigo-500/30 hover:border-indigo-500/50 focus-within:border-cyan-400 focus-within:bg-[#101638] shadow-[0_8px_32px_rgba(0,0,0,0.5),0_0_20px_rgba(99,102,241,0.15)] focus-within:shadow-[0_8px_32px_rgba(0,0,0,0.6),0_0_35px_rgba(6,182,212,0.3)]"
+                    ? "bg-white border-slate-200/90 shadow-[0_4px_24px_rgba(15,23,42,0.06)] focus-within:border-[#7657FF] focus-within:shadow-[0_4px_28px_rgba(118,87,255,0.18)]" 
+                    : "bg-[#0F1528] border-[rgba(148,163,184,0.14)] hover:border-[rgba(148,163,184,0.22)] focus-within:border-[#7657FF]/60 focus-within:bg-[#141C32] shadow-[0_8px_32px_rgba(0,0,0,0.5),0_0_25px_rgba(118,87,255,0.12)] backdrop-blur-xl"
                 )}
               >
-                {/* Left: Subject Focus Selector Pill */}
-                <div className="relative">
-                  <button
-                    type="button"
-                    onClick={() => setShowSubjectMenu(!showSubjectMenu)}
-                    className={cn(
-                      "px-2 sm:px-2.5 py-1 sm:py-1.5 rounded-full text-xs font-semibold flex items-center gap-1 sm:gap-1.5 transition-all cursor-pointer mr-1.5 sm:mr-2 shrink-0 border",
-                      isLight
-                        ? "bg-slate-100 hover:bg-slate-200 text-slate-800 border-slate-200"
-                        : "bg-white/[0.07] border-white/10 hover:border-cyan-500/40 text-white/80 hover:text-white"
-                    )}
-                    title="Filter by subject"
-                  >
-                    <ActiveSubjectIcon className={cn("w-3.5 h-3.5", activeSubjectOption.color)} />
-                    <span className="hidden sm:inline">{activeSubjectOption.shortLabel}</span>
-                    <ChevronDown className="w-3 h-3 text-white/40" />
-                  </button>
-
-                  {/* Dropdown Menu */}
-                  {showSubjectMenu && (
-                    <div className="absolute left-0 top-10 sm:top-11 w-48 rounded-2xl bg-[#0e1330] border border-indigo-500/30 shadow-[0_12px_40px_rgba(0,0,0,0.7)] p-1.5 z-50 space-y-1 backdrop-blur-xl">
-                      <div className="px-2.5 py-1 text-[10px] font-bold tracking-wider text-white/40 uppercase">
-                        Select Subject Focus
-                      </div>
-                      {SUBJECT_OPTIONS.map((sub) => {
-                        const Icon = sub.icon;
-                        const isSelected = subjectFilter === sub.key;
-                        return (
-                          <button
-                            key={sub.key}
-                            type="button"
-                            onClick={() => {
-                              setSubjectFilter(sub.key);
-                              setShowSubjectMenu(false);
-                            }}
-                            className={cn(
-                              "w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-medium text-left transition-all cursor-pointer",
-                              isSelected 
-                                ? "bg-cyan-500/20 text-cyan-300 font-bold border border-cyan-500/30 shadow-sm" 
-                                : "text-white/70 hover:text-white hover:bg-white/[0.06]"
-                            )}
-                          >
-                            <Icon className={cn("w-4 h-4", sub.color)} />
-                            <span>{sub.label}</span>
-                          </button>
-                        );
-                      })}
-                    </div>
-                  )}
-                </div>
-
-                {/* Input Text Box */}
-                <input
+                {/* Multi-line Autosizing Textarea */}
+                <textarea
                   ref={inputRef}
-                  type="text"
+                  rows={2}
                   value={inputVal}
-                  onChange={(e) => setInputVal(e.target.value)}
-                  placeholder={
-                    subjectFilter === 'ALL'
-                      ? "Ask any PCMB doubt or problem..."
-                      : `Ask any ${subjectFilter.toLowerCase()} question...`
-                  }
+                  onChange={handleTextareaChange}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' && !e.shiftKey) {
+                      e.preventDefault();
+                      handleSendMessage();
+                    }
+                  }}
+                  placeholder="Ask a Physics question, derive a formula, explain a Chemistry mechanism, or paste a problem…"
                   className={cn(
-                    "w-full bg-transparent outline-none text-xs sm:text-sm text-white placeholder-white/40 min-w-0",
-                    isLight ? "text-slate-900 placeholder-slate-400" : "text-white placeholder-white/40"
+                    "w-full bg-transparent outline-none resize-none text-sm sm:text-base leading-relaxed max-h-[180px] custom-scrollbar px-1",
+                    isLight ? "text-slate-900 placeholder:text-slate-400" : "text-[#F8FAFC] placeholder:text-[#94A3B8]/60"
                   )}
+                  aria-label="Question composer input"
                 />
 
-                {/* Right Controls: Think toggle + Send Button */}
-                <div className="flex items-center gap-1 sm:gap-2 ml-1 sm:ml-2 shrink-0">
-                  <button
-                    type="button"
-                    onClick={() => setDeepThink(!deepThink)}
-                    className={cn(
-                      "flex items-center gap-1 px-2 sm:px-2.5 py-1 rounded-full text-xs font-medium transition-all cursor-pointer border",
-                      deepThink 
-                        ? "bg-purple-500/20 text-purple-300 border-purple-500/40 shadow-[0_0_12px_rgba(168,85,247,0.3)]" 
-                        : "text-white/40 hover:text-white border-transparent hover:bg-white/5"
-                    )}
-                    title="Deep Step-by-Step Reasoning Mode"
-                  >
-                    <Brain className="w-3.5 h-3.5" />
-                    <span className="hidden sm:inline">Think</span>
-                  </button>
+                {/* Bottom Integrated Toolbar */}
+                <div className="flex items-center justify-between gap-2 pt-2 border-t border-[rgba(148,163,184,0.1)] flex-wrap">
+                  {/* Left: Segmented Subject Selector & Think Toggle */}
+                  <div className="flex items-center gap-1.5 flex-wrap">
+                    {SUBJECT_OPTIONS.map((sub) => {
+                      const Icon = sub.icon;
+                      const isSelected = subjectFilter === sub.key;
+                      return (
+                        <button
+                          key={sub.key}
+                          type="button"
+                          onClick={() => setSubjectFilter(sub.key)}
+                          className={cn(
+                            "px-2.5 py-1 rounded-full text-xs font-semibold flex items-center gap-1.5 transition-all cursor-pointer border select-none",
+                            isSelected
+                              ? (isLight
+                                  ? "bg-slate-900 text-white border-slate-900 shadow-sm"
+                                  : "bg-[#7657FF]/25 text-[#F8FAFC] border-[#7657FF]/50 shadow-[0_0_12px_rgba(118,87,255,0.3)] font-bold")
+                              : (isLight
+                                  ? "bg-slate-100 text-slate-600 hover:bg-slate-200 border-slate-200"
+                                  : "bg-[#141C32]/70 text-[#94A3B8] hover:text-[#F8FAFC] hover:bg-[#141C32] border-[rgba(148,163,184,0.1)]")
+                          )}
+                          aria-label={`Filter by ${sub.label}`}
+                        >
+                          <Icon className={cn("w-3 h-3", isSelected ? (isLight ? "text-white" : "text-[#22D3EE]") : sub.color)} />
+                          <span>{sub.shortLabel}</span>
+                        </button>
+                      );
+                    })}
 
-                  <button
-                    type="submit"
-                    disabled={!inputVal.trim() || isLoading}
-                    className={cn(
-                      "w-8 h-8 sm:w-9 sm:h-9 rounded-full flex items-center justify-center transition-all duration-200 cursor-pointer shrink-0",
-                      inputVal.trim() && !isLoading
-                        ? "bg-[#00b8db] hover:bg-[#00caef] text-slate-950 font-bold shadow-[0_0_18px_rgba(0,184,219,0.45)] hover:scale-105 active:scale-95"
-                        : "bg-white/10 text-white/30 cursor-not-allowed"
-                    )}
-                    title="Send Query (Enter)"
-                  >
-                    <ArrowUp className="w-4 h-4" />
-                  </button>
+                    <div className="h-4 w-px bg-white/10 mx-0.5 hidden sm:block" />
+
+                    {/* Think Mode Reasoning Toggle */}
+                    <button
+                      type="button"
+                      onClick={() => setDeepThink(!deepThink)}
+                      className={cn(
+                        "flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold transition-all cursor-pointer border select-none",
+                        deepThink 
+                          ? (isLight
+                              ? "bg-purple-100 text-purple-700 border-purple-300 shadow-sm"
+                              : "bg-[#7657FF]/25 text-[#7657FF] border-[#7657FF]/40 shadow-[0_0_12px_rgba(118,87,255,0.3)]")
+                          : (isLight
+                              ? "text-slate-400 hover:text-slate-700 border-slate-200 hover:bg-slate-50"
+                              : "text-[#94A3B8]/60 hover:text-[#F8FAFC] border-[rgba(148,163,184,0.1)] hover:bg-[#141C32]")
+                      )}
+                      title="Deep step-by-step reasoning for derivations & complex proofs"
+                      aria-pressed={deepThink}
+                    >
+                      <Brain className={cn("w-3.5 h-3.5", deepThink ? "text-[#7657FF]" : "")} />
+                      <span>Think</span>
+                    </button>
+                  </div>
+
+                  {/* Right: Enter hint & Action Send Button */}
+                  <div className="flex items-center gap-2 ml-auto">
+                    <span className="hidden sm:inline text-[11px] text-[#94A3B8]/50 font-mono">
+                      Shift+Enter for newline
+                    </span>
+                    <button
+                      type="submit"
+                      disabled={!inputVal.trim() || isLoading}
+                      className={cn(
+                        "w-8 h-8 sm:w-9 sm:h-9 rounded-full flex items-center justify-center transition-all duration-200 cursor-pointer shrink-0",
+                        inputVal.trim() && !isLoading
+                          ? "bg-gradient-to-tr from-[#7657FF] to-[#22D3EE] hover:opacity-90 text-white font-bold shadow-[0_0_18px_rgba(118,87,255,0.5)] hover:scale-105 active:scale-95"
+                          : "bg-white/10 text-white/30 cursor-not-allowed"
+                      )}
+                      title="Send Prompt (Enter)"
+                      aria-label="Send question"
+                    >
+                      <ArrowUp className="w-4 h-4" />
+                    </button>
+                  </div>
                 </div>
               </form>
             </div>
 
-            {/* Quick Subject Focus Chips (Mobile friendly) */}
-            <div className="w-full flex items-center gap-1.5 overflow-x-auto no-scrollbar pb-1 mb-3.5 sm:mb-5">
-              {SUBJECT_OPTIONS.map((sub) => {
-                const Icon = sub.icon;
-                const isSelected = subjectFilter === sub.key;
-                return (
+            {/* ── TRY ASKING (First-time user experience) ── */}
+            <div className="w-full mb-5">
+              <div className="flex items-center gap-2 mb-2 px-1">
+                <span className={cn("text-[11px] font-bold tracking-wider uppercase", isLight ? "text-slate-500" : "text-[#94A3B8]")}>
+                  Try asking
+                </span>
+              </div>
+
+              <div className="flex flex-wrap gap-2">
+                {TRY_ASKING_PROMPTS.map((item, idx) => (
                   <button
-                    key={sub.key}
+                    key={idx}
                     type="button"
-                    onClick={() => setSubjectFilter(sub.key)}
+                    onClick={() => {
+                      setSubjectFilter(item.subject);
+                      handleSendMessage(item.label);
+                    }}
                     className={cn(
-                      "px-2.5 py-1 rounded-full text-[11px] font-medium flex items-center gap-1.5 transition-all shrink-0 cursor-pointer border",
-                      isSelected
-                        ? "bg-cyan-500/20 text-cyan-300 border-cyan-500/40 shadow-[0_0_12px_rgba(6,182,212,0.2)] font-bold"
-                        : "bg-white/[0.04] text-white/60 border-white/5 hover:text-white hover:bg-white/10"
+                      "text-xs px-3 py-1.5 rounded-xl border transition-all duration-200 cursor-pointer flex items-center gap-2 text-left group",
+                      isLight
+                        ? "bg-white hover:bg-slate-50 border-slate-200 text-slate-700 hover:border-indigo-400 hover:text-indigo-600 shadow-xs"
+                        : "bg-[#0F1528] hover:bg-[#141C32] border-[rgba(148,163,184,0.14)] hover:border-[#22D3EE]/50 text-[#94A3B8] hover:text-[#F8FAFC] shadow-sm"
                     )}
                   >
-                    <Icon className={cn("w-3 h-3", isSelected ? "text-cyan-400" : sub.color)} />
-                    <span>{sub.label}</span>
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#22D3EE] opacity-60 group-hover:opacity-100 group-hover:scale-125 transition-all" />
+                    <span>{item.label}</span>
                   </button>
-                );
-              })}
+                ))}
+              </div>
             </div>
 
-            {/* ── Dynamic Student-Specific Diagnostic Prompts (Based on real performance) ── */}
-            {dashboardData && (
-              <div className="w-full mb-3.5 sm:mb-4 p-3 sm:p-3.5 rounded-2xl bg-indigo-500/[0.07] border border-indigo-500/20 backdrop-blur-sm">
-                <div className="flex items-center justify-between gap-2 mb-2">
-                  <span className="text-[10px] sm:text-[10.5px] font-bold uppercase tracking-wider text-cyan-400 flex items-center gap-1.5 truncate">
-                    <Sparkles className="w-3.5 h-3.5 text-cyan-400 shrink-0" />
-                    <span className="truncate">AI Prep Insights</span>
-                  </span>
-                  <span className={cn("text-[10px] font-mono shrink-0", isLight ? "text-slate-500" : "text-white/60")}>
-                    {Math.round(dashboardData.accuracy || 0)}% Acc • {dashboardData.total_attempts || 0} Qs
-                  </span>
-                </div>
-                <div className="flex flex-wrap sm:flex-nowrap items-center gap-2">
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setInputVal("Analyze my current test preparation and overall accuracy across subjects. What are my top 3 risks for IISER IAT 2027 and how should I fix them?");
-                      inputRef.current?.focus();
-                    }}
-                    className={cn(
-                      "text-[11px] px-3 py-1.5 rounded-xl border transition-all cursor-pointer flex items-center gap-1.5 font-medium flex-1 sm:flex-initial justify-center sm:justify-start whitespace-nowrap",
-                      isLight 
-                        ? "bg-white hover:bg-cyan-50 border-slate-200 text-slate-700 hover:text-cyan-700 hover:border-cyan-300 shadow-sm" 
-                        : "bg-white/[0.04] hover:bg-cyan-500/10 border-white/10 text-white/85 hover:text-cyan-300 hover:border-cyan-500/30"
-                    )}
-                  >
-                    <Zap className="w-3 h-3 text-cyan-400 shrink-0" />
-                    <span>Analyze Prep & Risks</span>
-                  </button>
+            {/* ── YOUR LEARNING INSIGHTS CARD ── */}
+            {hasLearningData ? (
+              <div className={cn(
+                "w-full mb-6 p-4 rounded-2xl border transition-all",
+                isLight
+                  ? "bg-white border-slate-200/90 shadow-sm"
+                  : "bg-[#0F1528] border-[rgba(148,163,184,0.14)] shadow-lg"
+              )}>
+                <div className="flex items-center justify-between gap-3 flex-wrap mb-3.5">
+                  <div className="flex items-center gap-2">
+                    <div className="w-7 h-7 rounded-lg bg-[#7657FF]/15 border border-[#7657FF]/30 flex items-center justify-center text-[#7657FF]">
+                      <Target className="w-4 h-4" />
+                    </div>
+                    <h3 className={cn("text-xs font-bold uppercase tracking-wider", isLight ? "text-slate-800" : "text-[#F8FAFC]")}>
+                      Your Learning Insights
+                    </h3>
+                    <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-[#22D3EE]/10 border border-[#22D3EE]/30 text-[#22D3EE]">
+                      Diagnostic Sync
+                    </span>
+                  </div>
 
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setInputVal("Give me a personalized daily study plan for today to boost my IAT readiness score and maintain my streak.");
-                      inputRef.current?.focus();
-                    }}
-                    className={cn(
-                      "text-[11px] px-3 py-1.5 rounded-xl border transition-all cursor-pointer flex items-center gap-1.5 font-medium flex-1 sm:flex-initial justify-center sm:justify-start whitespace-nowrap",
-                      isLight 
-                        ? "bg-white hover:bg-purple-50 border-slate-200 text-slate-700 hover:text-purple-700 shadow-sm" 
-                        : "bg-white/[0.04] hover:bg-purple-500/10 border-white/10 text-white/85 hover:text-purple-300 hover:border-purple-500/30"
-                    )}
-                  >
-                    <BookOpen className="w-3 h-3 text-purple-400 shrink-0" />
-                    <span>Daily Study Plan</span>
-                  </button>
-
-                  {dashboardData.weakAreas?.[0] && (
+                  {weakTopic && (
                     <button
                       type="button"
                       onClick={() => {
-                        const weak = dashboardData.weakAreas[0];
-                        setInputVal(`Generate a 3-question high-yield IAT diagnostic quiz on my weakest area: "${weak.chapter || weak.subject}" (${Math.round(weak.accuracy)}% accuracy) with step-by-step derivations and traps.`);
-                        inputRef.current?.focus();
+                        const prompt = `Generate a targeted 3-question IAT drill on "${weakTopic}" with step-by-step derivations, traps, and shortcuts.`;
+                        handleSendMessage(prompt);
                       }}
                       className={cn(
-                        "text-[11px] px-3 py-1.5 rounded-xl border transition-all cursor-pointer flex items-center gap-1.5 font-medium w-full sm:w-auto justify-center sm:justify-start whitespace-nowrap",
-                        isLight 
-                          ? "bg-amber-50 hover:bg-amber-100 border-amber-200 text-amber-900 shadow-sm" 
-                          : "bg-amber-500/10 hover:bg-amber-500/20 border-amber-500/30 text-amber-300"
+                        "px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 border ml-auto",
+                        isLight
+                          ? "bg-indigo-50 hover:bg-indigo-100 text-indigo-700 border-indigo-200"
+                          : "bg-[#7657FF]/15 hover:bg-[#7657FF]/25 text-[#22D3EE] hover:text-white border-[#7657FF]/30 hover:border-[#22D3EE]/40 shadow-sm"
                       )}
                     >
-                      <Target className="w-3 h-3 text-amber-400 shrink-0" />
-                      <span>Quiz: {dashboardData.weakAreas[0].subject}</span>
+                      <span>Practice Weak Area: {weakTopic}</span>
+                      <ArrowRight className="w-3.5 h-3.5" />
                     </button>
                   )}
                 </div>
+
+                {/* Metric Grid */}
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+                  <div className={cn("p-2.5 rounded-xl border", isLight ? "bg-slate-50 border-slate-200" : "bg-[#141C32]/70 border-[rgba(148,163,184,0.1)]")}>
+                    <span className={cn("text-[10px] block font-medium", isLight ? "text-slate-500" : "text-[#94A3B8]")}>Questions Attempted</span>
+                    <span className={cn("text-base font-bold mt-0.5 block", isLight ? "text-slate-900" : "text-[#F8FAFC]")}>
+                      {dashboardData?.total_attempts ?? 0}
+                    </span>
+                  </div>
+
+                  <div className={cn("p-2.5 rounded-xl border", isLight ? "bg-slate-50 border-slate-200" : "bg-[#141C32]/70 border-[rgba(148,163,184,0.1)]")}>
+                    <span className={cn("text-[10px] block font-medium", isLight ? "text-slate-500" : "text-[#94A3B8]")}>Overall Accuracy</span>
+                    <span className={cn("text-base font-bold mt-0.5 block text-[#34D399]")}>
+                      {Math.round(dashboardData?.accuracy ?? 0)}%
+                    </span>
+                  </div>
+
+                  <div className={cn("p-2.5 rounded-xl border", isLight ? "bg-slate-50 border-slate-200" : "bg-[#141C32]/70 border-[rgba(148,163,184,0.1)]")}>
+                    <span className={cn("text-[10px] block font-medium", isLight ? "text-slate-500" : "text-[#94A3B8]")}>Strongest Topic</span>
+                    <span className={cn("text-xs font-semibold mt-1 block truncate", isLight ? "text-slate-900" : "text-[#22D3EE]")}>
+                      {strongTopic || "Gathering data"}
+                    </span>
+                  </div>
+
+                  <div className={cn("p-2.5 rounded-xl border", isLight ? "bg-slate-50 border-slate-200" : "bg-[#141C32]/70 border-[rgba(148,163,184,0.1)]")}>
+                    <span className={cn("text-[10px] block font-medium", isLight ? "text-slate-500" : "text-[#94A3B8]")}>Weakest Topic</span>
+                    <span className={cn("text-xs font-semibold mt-1 block truncate", isLight ? "text-slate-900" : "text-[#FBBF24]")}>
+                      {weakTopic || "None detected"}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            ) : (
+              /* Empty State for New User without data */
+              <div className={cn(
+                "w-full mb-6 p-4 sm:p-5 rounded-2xl border flex items-center justify-between gap-4 flex-wrap",
+                isLight
+                  ? "bg-white border-slate-200/90 shadow-sm"
+                  : "bg-[#0F1528] border-[rgba(148,163,184,0.14)] shadow-lg"
+              )}>
+                <div className="flex items-center gap-3 min-w-0">
+                  <div className="w-10 h-10 rounded-xl bg-[#7657FF]/15 border border-[#7657FF]/30 flex items-center justify-center text-[#7657FF] shrink-0">
+                    <Brain className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <h4 className={cn("text-sm font-bold", isLight ? "text-slate-900" : "text-[#F8FAFC]")}>
+                      Your learning journey starts here
+                    </h4>
+                    <p className={cn("text-xs mt-0.5", isLight ? "text-slate-500" : "text-[#94A3B8]")}>
+                      Ask your first question or complete a practice set to build your personalized learning insights.
+                    </p>
+                  </div>
+                </div>
+
+                <button
+                  type="button"
+                  onClick={() => onNavigate?.('smart_lessons')}
+                  className={cn(
+                    "px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 border shrink-0 ml-auto",
+                    isLight
+                      ? "bg-slate-900 text-white hover:bg-slate-800 border-slate-900"
+                      : "bg-gradient-to-r from-[#7657FF] to-[#22D3EE] text-white border-transparent hover:opacity-95 shadow-[0_0_15px_rgba(118,87,255,0.3)]"
+                  )}
+                >
+                  <span>Start Practicing</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </button>
               </div>
             )}
-
-            {/* ── 4 HIGH-YIELD CARDS (2x2 Grid Matching SmartPrep App Card Aesthetics) ── */}
-            <div className="w-full space-y-2.5">
-              <div className="flex items-center justify-between px-1">
-                <span className="text-[10.5px] sm:text-[11px] font-bold tracking-wider uppercase text-white/50 flex items-center gap-1.5">
-                  <Lightbulb className="w-3.5 h-3.5 text-amber-400" />
-                  High-Yield IAT Study Starters
-                </span>
-                <span className="text-[10px] text-white/40 font-mono hidden sm:inline">
-                  Click to prefill • Type specific problem • Press Enter
-                </span>
-                <span className="text-[10px] text-cyan-400/80 font-medium sm:hidden">
-                  Tap to ask
-                </span>
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 sm:gap-3 w-full">
-                {QUICK_STARTERS.map((item, idx) => {
-                  const Icon = item.icon;
-                  return (
-                    <button
-                      key={idx}
-                      type="button"
-                      onClick={() => handleStarterClick(item)}
-                      className={cn(
-                        "p-3 sm:p-4 rounded-xl sm:rounded-2xl border transition-all duration-300 cursor-pointer flex flex-col justify-between group text-left relative overflow-hidden",
-                        isLight
-                          ? "bg-white border-slate-200 hover:border-cyan-400 shadow-sm hover:shadow-md"
-                          : "bg-[#0c1024]/80 border-white/[0.08] hover:bg-[#101533] shadow-[0_4px_20px_rgba(0,0,0,0.3)]",
-                        item.glowColor
-                      )}
-                    >
-                      {/* Top Row: Icon + Tag + Arrow */}
-                      <div className="flex items-center justify-between w-full mb-2 sm:mb-2.5">
-                        <div className="flex items-center gap-2">
-                          <div className={cn("w-7 h-7 sm:w-8 sm:h-8 rounded-lg sm:rounded-xl flex items-center justify-center shrink-0 shadow-sm", item.iconBg, item.iconColor)}>
-                            <Icon className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-                          </div>
-                          <span className={cn("text-[8.5px] sm:text-[9.5px] font-bold px-1.5 sm:px-2 py-0.5 rounded-full border", item.tagColor)}>
-                            {item.tag}
-                          </span>
-                        </div>
-
-                        <div className="w-6 h-6 rounded-full bg-white/[0.04] border border-white/5 flex items-center justify-center text-white/40 group-hover:text-white group-hover:bg-white/10 group-hover:translate-x-0.5 transition-all">
-                          <ArrowRight className="w-3 h-3" />
-                        </div>
-                      </div>
-
-                      {/* Title & Subtitle */}
-                      <div>
-                        <h4 className={cn(
-                          "text-xs sm:text-sm font-semibold transition-colors leading-snug",
-                          isLight ? "text-slate-900 group-hover:text-cyan-700" : "text-white group-hover:text-cyan-200"
-                        )}>
-                          {item.title}
-                        </h4>
-                        <p className={cn(
-                          "text-[10.5px] sm:text-[11px] mt-0.5 sm:mt-1 line-clamp-2 leading-relaxed",
-                          isLight ? "text-slate-500" : "text-white/50"
-                        )}>
-                          {item.subtitle}
-                        </p>
-                      </div>
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
-
+            {/* End of Empty State Content */}
           </div>
         ) : (
           /* ── 2. ACTIVE CONVERSATION STATE (Super-Premium Stream) ── */
@@ -1397,12 +1333,12 @@ export function AiTutorHub({
               </div>
             </div>
 
-            {/* Pinned Bottom Input Capsule (Fixed firmly at bottom of viewport, no mobile nav overlap) */}
+            {/* Pinned Bottom Input Capsule (Modern Generative AI Composer Card) */}
             <div className={cn(
-              "px-3 sm:px-4 pt-2 pb-3 sm:pb-4 shrink-0 border-t z-20 transition-colors",
+              "px-3 sm:px-6 pt-2 pb-3 sm:pb-5 shrink-0 border-t z-20 transition-colors",
               isLight 
-                ? "bg-white/95 border-slate-200/80 shadow-[0_-4px_16px_rgba(15,23,42,0.04)]" 
-                : "bg-[#060814]/95 border-white/5 backdrop-blur-md shadow-[0_-4px_20px_rgba(0,0,0,0.5)]"
+                ? "bg-white/95 border-slate-200/80 shadow-[0_-4px_20px_rgba(15,23,42,0.04)]" 
+                : "bg-[#070914]/95 border-[rgba(148,163,184,0.14)] backdrop-blur-md shadow-[0_-4px_25px_rgba(0,0,0,0.6)]"
             )}>
               <div className="max-w-3xl mx-auto w-full">
                 <form
@@ -1411,114 +1347,111 @@ export function AiTutorHub({
                     handleSendMessage();
                   }}
                   className={cn(
-                    "relative flex items-center rounded-full border transition-all duration-300 shadow-2xl pl-2.5 sm:pl-3 pr-2 py-1.5 sm:py-2.5",
+                    "relative flex flex-col rounded-2xl sm:rounded-3xl border transition-all duration-300 shadow-xl p-2.5 sm:p-3.5 gap-2",
                     isLight 
-                      ? "bg-white border-slate-300 focus-within:border-cyan-500 focus-within:shadow-[0_4px_24px_rgba(6,182,212,0.2)]" 
-                      : "bg-[#0d122b]/95 border-indigo-500/30 hover:border-indigo-500/50 focus-within:border-cyan-400 focus-within:bg-[#101638] shadow-[0_8px_32px_rgba(0,0,0,0.5),0_0_20px_rgba(99,102,241,0.15)] focus-within:shadow-[0_8px_32px_rgba(0,0,0,0.6),0_0_35px_rgba(6,182,212,0.3)] backdrop-blur-xl"
+                      ? "bg-white border-slate-300 focus-within:border-[#7657FF] focus-within:shadow-[0_4px_24px_rgba(118,87,255,0.18)]" 
+                      : "bg-[#0F1528] border-[rgba(148,163,184,0.14)] hover:border-[rgba(148,163,184,0.22)] focus-within:border-[#7657FF]/60 focus-within:bg-[#141C32] shadow-[0_8px_32px_rgba(0,0,0,0.5),0_0_20px_rgba(118,87,255,0.12)] backdrop-blur-xl"
                   )}
                 >
-                  {/* Subject selector */}
-                  <div className="relative">
-                    <button
-                      type="button"
-                      onClick={() => setShowSubjectMenu(!showSubjectMenu)}
-                      className={cn(
-                        "px-2 sm:px-2.5 py-1 sm:py-1.5 rounded-full text-xs font-semibold flex items-center gap-1 sm:gap-1.5 transition-all cursor-pointer mr-1.5 sm:mr-2 shrink-0 border",
-                        isLight
-                          ? "bg-slate-100 hover:bg-slate-200 text-slate-800 border-slate-200"
-                          : "bg-white/[0.07] border-white/10 hover:border-cyan-500/40 text-white/80 hover:text-white"
-                      )}
-                      title="Filter by subject"
-                    >
-                      <ActiveSubjectIcon className={cn("w-3.5 h-3.5", activeSubjectOption.color)} />
-                      <span className="hidden sm:inline">{activeSubjectOption.shortLabel}</span>
-                      <ChevronDown className="w-3 h-3 text-white/40" />
-                    </button>
-
-                    {showSubjectMenu && (
-                      <div className="absolute left-0 bottom-12 w-48 rounded-2xl bg-[#0e1330] border border-indigo-500/30 shadow-[0_12px_40px_rgba(0,0,0,0.7)] p-1.5 z-50 space-y-1 backdrop-blur-xl">
-                        <div className="px-2.5 py-1 text-[10px] font-bold tracking-wider text-white/40 uppercase">
-                          Select Subject Focus
-                        </div>
-                        {SUBJECT_OPTIONS.map((sub) => {
-                          const Icon = sub.icon;
-                          const isSelected = subjectFilter === sub.key;
-                          return (
-                            <button
-                              key={sub.key}
-                              type="button"
-                              onClick={() => {
-                                setSubjectFilter(sub.key);
-                                setShowSubjectMenu(false);
-                              }}
-                              className={cn(
-                                "w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-medium text-left transition-all cursor-pointer",
-                                isSelected 
-                                  ? "bg-cyan-500/20 text-cyan-300 font-bold border border-cyan-500/30 shadow-sm" 
-                                  : "text-white/70 hover:text-white hover:bg-white/[0.06]"
-                              )}
-                            >
-                              <Icon className={cn("w-4 h-4", sub.color)} />
-                              <span>{sub.label}</span>
-                            </button>
-                          );
-                        })}
-                      </div>
-                    )}
-                  </div>
-
-                  {/* Text Input */}
-                  <input
+                  {/* Multi-line Autosizing Textarea */}
+                  <textarea
                     ref={inputRef}
-                    type="text"
+                    rows={1}
                     value={inputVal}
-                    onChange={(e) => setInputVal(e.target.value)}
+                    onChange={handleTextareaChange}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' && !e.shiftKey) {
+                        e.preventDefault();
+                        handleSendMessage();
+                      }
+                    }}
                     placeholder={
                       subjectFilter === 'ALL'
-                        ? "Ask follow-up question..."
-                        : `Ask any ${subjectFilter.toLowerCase()} follow-up...`
+                        ? "Ask follow-up doubt, derive formula, or paste problem... (Press Enter to send)"
+                        : `Ask ${subjectFilter.toLowerCase()} follow-up... (Press Enter to send)`
                     }
                     className={cn(
-                      "w-full bg-transparent outline-none text-xs sm:text-sm text-white placeholder-white/40 min-w-0",
-                      isLight ? "text-slate-900 placeholder-slate-400" : "text-white placeholder-white/40"
+                      "w-full bg-transparent outline-none resize-none text-xs sm:text-sm leading-relaxed max-h-[160px] custom-scrollbar px-1",
+                      isLight ? "text-slate-900 placeholder:text-slate-400" : "text-[#F8FAFC] placeholder:text-[#94A3B8]/60"
                     )}
+                    aria-label="Follow up query input"
                   />
 
-                  {/* Right controls */}
-                  <div className="flex items-center gap-1 sm:gap-2 ml-1 sm:ml-2 shrink-0">
-                    <button
-                      type="button"
-                      onClick={() => setDeepThink(!deepThink)}
-                      className={cn(
-                        "flex items-center gap-1 px-2 sm:px-2.5 py-1 rounded-full text-xs font-medium transition-all cursor-pointer border",
-                        deepThink 
-                          ? "bg-purple-500/20 text-purple-300 border-purple-500/40 shadow-[0_0_12px_rgba(168,85,247,0.3)]" 
-                          : "text-white/40 hover:text-white border-transparent hover:bg-white/5"
-                      )}
-                      title="Deep Step-by-Step Reasoning Mode"
-                    >
-                      <Brain className="w-3.5 h-3.5" />
-                      <span className="hidden sm:inline">Think</span>
-                    </button>
+                  {/* Bottom Integrated Toolbar */}
+                  <div className="flex items-center justify-between gap-2 pt-1.5 border-t border-[rgba(148,163,184,0.1)] flex-wrap">
+                    {/* Left: Integrated Subject Pills & Deep Think */}
+                    <div className="flex items-center gap-1.5 flex-wrap">
+                      {SUBJECT_OPTIONS.map((sub) => {
+                        const Icon = sub.icon;
+                        const isSelected = subjectFilter === sub.key;
+                        return (
+                          <button
+                            key={sub.key}
+                            type="button"
+                            onClick={() => setSubjectFilter(sub.key)}
+                            className={cn(
+                              "px-2 py-0.5 rounded-full text-[11px] font-semibold flex items-center gap-1 transition-all cursor-pointer border select-none",
+                              isSelected
+                                ? (isLight
+                                    ? "bg-slate-900 text-white border-slate-900 shadow-sm"
+                                    : "bg-[#7657FF]/25 text-[#F8FAFC] border-[#7657FF]/50 shadow-[0_0_10px_rgba(118,87,255,0.25)] font-bold")
+                                : (isLight
+                                    ? "bg-slate-100 text-slate-600 hover:bg-slate-200 border-slate-200"
+                                    : "bg-[#141C32]/70 text-[#94A3B8] hover:text-[#F8FAFC] hover:bg-[#141C32] border-[rgba(148,163,184,0.1)]")
+                            )}
+                          >
+                            <Icon className={cn("w-2.5 h-2.5", isSelected ? (isLight ? "text-white" : "text-[#22D3EE]") : sub.color)} />
+                            <span>{sub.shortLabel}</span>
+                          </button>
+                        );
+                      })}
 
-                    <button
-                      type="submit"
-                      disabled={!inputVal.trim() || isLoading}
-                      className={cn(
-                        "w-8 h-8 sm:w-9 sm:h-9 rounded-full flex items-center justify-center transition-all duration-200 cursor-pointer shrink-0",
-                        inputVal.trim() && !isLoading
-                          ? "bg-[#00b8db] hover:bg-[#00caef] text-slate-950 font-bold shadow-[0_0_18px_rgba(0,184,219,0.45)] hover:scale-105 active:scale-95"
-                          : "bg-white/10 text-white/30 cursor-not-allowed"
-                      )}
-                      title="Send Query"
-                    >
-                      <ArrowUp className="w-4 h-4" />
-                    </button>
+                      <div className="h-3 w-px bg-white/10 mx-0.5 hidden sm:block" />
+
+                      {/* Think Toggle */}
+                      <button
+                        type="button"
+                        onClick={() => setDeepThink(!deepThink)}
+                        className={cn(
+                          "flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-semibold transition-all cursor-pointer border select-none",
+                          deepThink 
+                            ? (isLight
+                                ? "bg-purple-100 text-purple-700 border-purple-300 shadow-sm"
+                                : "bg-[#7657FF]/25 text-[#7657FF] border-[#7657FF]/40 shadow-[0_0_10px_rgba(118,87,255,0.25)]")
+                            : (isLight
+                                ? "text-slate-400 hover:text-slate-700 border-slate-200 hover:bg-slate-50"
+                                : "text-[#94A3B8]/60 hover:text-[#F8FAFC] border-[rgba(148,163,184,0.1)] hover:bg-[#141C32]")
+                        )}
+                        title="Deep step-by-step reasoning"
+                        aria-pressed={deepThink}
+                      >
+                        <Brain className={cn("w-3 h-3", deepThink ? "text-[#7657FF]" : "")} />
+                        <span>Think</span>
+                      </button>
+                    </div>
+
+                    {/* Right: Send Button */}
+                    <div className="flex items-center gap-1.5 ml-auto">
+                      <button
+                        type="submit"
+                        disabled={!inputVal.trim() || isLoading}
+                        className={cn(
+                          "w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center transition-all duration-200 cursor-pointer shrink-0",
+                          inputVal.trim() && !isLoading
+                            ? "bg-gradient-to-tr from-[#7657FF] to-[#22D3EE] hover:opacity-90 text-white font-bold shadow-[0_0_15px_rgba(118,87,255,0.45)] hover:scale-105 active:scale-95"
+                            : "bg-white/10 text-white/30 cursor-not-allowed"
+                        )}
+                        title="Send Query (Enter)"
+                        aria-label="Send follow up"
+                      >
+                        <ArrowUp className="w-3.5 h-3.5" />
+                      </button>
+                    </div>
                   </div>
                 </form>
 
-                <p className="text-center text-[10px] text-white/40 mt-2">
-                  SmartPrep AI Tutor is powered by NVIDIA NIM & Llama 3.2. Verify calculations with NCERT & standard references.
+                <p className="text-center text-[10px] text-[#94A3B8]/50 mt-1.5">
+                  SmartPrep AI Tutor powered by NVIDIA NIM &amp; Llama 3.2 • Verify calculations with standard IISER references.
                 </p>
               </div>
             </div>
