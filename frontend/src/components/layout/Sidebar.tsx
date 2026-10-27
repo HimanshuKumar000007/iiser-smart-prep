@@ -10,7 +10,6 @@ import {
   Calendar,
   Sparkles,
   Crosshair,
-  MessageSquare,
   MessageSquareQuote,
   Settings,
   Sliders,
@@ -45,7 +44,6 @@ const navSections: NavSection[] = [
       { id: 'path', icon: Map, label: 'My Path to IISER' },
       { id: 'smart_lessons', icon: BookOpen, label: 'Smart Lessons' },
       { id: 'pyqs', icon: History, label: 'PYQs' },
-      { id: 'community', icon: MessageSquare, label: 'Community' },
       { id: 'mock_tests', icon: FileCheck, label: 'Mock Tests', badge: '45+ Tests' },
     ]
   },
@@ -149,8 +147,7 @@ export function Sidebar({
                 const isActive = item.id === currentView || 
                   (item.id === 'smart_lessons' && currentView.startsWith('smart_lessons')) ||
                   (item.id === 'mock_tests' && currentView.startsWith('mock_tests')) ||
-                  (item.id === 'pyqs' && currentView.startsWith('pyqs')) ||
-                  (item.id === 'community' && currentView.startsWith('community'));
+                  (item.id === 'pyqs' && currentView.startsWith('pyqs'));
 
                 return (
                   <button
@@ -158,11 +155,6 @@ export function Sidebar({
                     onClick={() => {
                       if (item.id === 'ai_doubt_solver') {
                         onNavigate?.('ai_doubt_solver');
-                        onClose?.();
-                        return;
-                      }
-                      if (item.id === 'community') {
-                        onNavigate?.('community');
                         onClose?.();
                         return;
                       }

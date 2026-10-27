@@ -32,7 +32,7 @@ import { PerformanceInsights } from './components/dashboard/PerformanceInsights'
 import { AiTutorHub } from './components/dashboard/AiTutorHub';
 import { SmartLesson } from './components/dashboard/SmartLesson';
 import { SmartLessonsHub } from './components/dashboard/SmartLessonsHub';
-import { Community } from './components/dashboard/Community';
+
 import { Settings } from './components/dashboard/Settings';
 import { Support } from './components/dashboard/Support';
 import { Feedback } from './components/dashboard/Feedback';
@@ -89,7 +89,7 @@ function DashboardApp() {
     const params = new URLSearchParams(window.location.search);
     const returnToParam = params.get('returnTo');
     if (returnToParam && !entitlement.loading) {
-      const allowedViews = ['dashboard', 'path', 'smart_lessons', 'mock_tests', 'pyqs', 'analytics', 'community', 'subscription', 'settings', 'support', 'feedback', 'contact', 'terms', 'privacy'];
+      const allowedViews = ['dashboard', 'path', 'smart_lessons', 'mock_tests', 'pyqs', 'analytics', 'subscription', 'settings', 'support', 'feedback', 'contact', 'terms', 'privacy'];
       const isValid = allowedViews.some(v => returnToParam === v || returnToParam.startsWith(v + ':') || returnToParam.startsWith(v + '/'));
       
       if (isValid) {
@@ -418,10 +418,11 @@ function DashboardApp() {
                 onNavigate={handleNavigate} 
               />
             );
-          })() : (currentView === 'community' || currentView.startsWith('community')) ? (
-            <Community onNavigate={handleNavigate} />
-          ) : currentView === 'settings' ? (
+          })() : currentView === 'settings' ? (
             <Settings onNavigate={handleNavigate} />
+
+
+
           ) : currentView === 'support' ? (
             <Support onNavigate={handleNavigate} />
           ) : (currentView === 'feedback' || currentView === 'feedback_full') ? (

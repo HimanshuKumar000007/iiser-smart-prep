@@ -132,7 +132,7 @@ function authMiddleware(req, res, next) {
 const PLANS = {
   monthly: { amount: 399, durationDays: 30, description: "Pro Plan — 1 Month (Legacy)" },
   six_month: { amount: 499, durationDays: 180, description: "Pro Plan — 6 Months (Legacy)" },
-  annual: { amount: 899, durationDays: 365, description: "Pro Plan — Valid Until IAT 2027" }
+  annual: { amount: 599, durationDays: 365, description: "Pro Plan — Valid Until IAT 2027" }
 };
 
 function getEffectivePlan(planId) {
@@ -142,9 +142,9 @@ function getEffectivePlan(planId) {
   const isAnnual = planId === "annual";
   return {
     ...basePlan,
-    amount: isAnnual ? 899 : basePlan.amount,
-    originalAmount: isAnnual ? 1499 : basePlan.amount,
-    discountPercent: isAnnual ? 40 : 0,
+    amount: isAnnual ? 599 : basePlan.amount,
+    originalAmount: isAnnual ? 899 : basePlan.amount,
+    discountPercent: isAnnual ? 33 : 0,
     isSale: isAnnual
   };
 }
@@ -387,7 +387,7 @@ app.post("/api/create-order", authMiddleware, async (req, res) => {
     }
 
     const options = {
-      amount: plan.amount * 100, // paise (e.g. 89900 paise for IAT 2027 annual plan)
+      amount: plan.amount * 100, // paise (e.g. 59900 paise for IAT 2027 annual plan)
       currency: "INR",
       receipt: "receipt_" + Date.now(),
       notes: {
@@ -460,7 +460,7 @@ app.post("/api/verify-payment", authMiddleware, async (req, res) => {
 
     // 1. Fetch order details from Razorpay to get the canonical planId securely
     let planId = "annual";
-    let paymentAmount = 89900;
+    let paymentAmount = 59900;
     let currency = "INR";
     try {
       const order = await razorpay.orders.fetch(razorpay_order_id);
