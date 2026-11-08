@@ -25,6 +25,9 @@
   <meta property="og:title" content="Login & Sign Up | IISER SmartPrep">
   <meta property="og:description" content="AI-Powered IISER IAT 2027 Preparation Platform">
   <meta name="theme-color" content="#f8fafc">
+  <!-- Google Identity Services (One Tap & Google Sign-In) -->
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+
 
   <!-- Fonts & Icons -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -445,6 +448,43 @@
         padding: 2rem 1.5rem;
       }
     }
+
+    /* Google Auth Button & Divider */
+    .google-auth-wrapper {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      margin-top: 0.5rem;
+      min-height: 44px;
+    }
+    .google-btn-container {
+      width: 100% !important;
+      display: flex;
+      justify-content: center;
+    }
+    .google-btn-container > div {
+      margin: 0 auto !important;
+    }
+    .auth-divider {
+      display: flex;
+      align-items: center;
+      margin: 1.15rem 0 1.25rem 0;
+      color: var(--text-light);
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+    }
+    .auth-divider::before, .auth-divider::after {
+      content: "";
+      flex: 1;
+      height: 1px;
+      background: var(--border-light);
+    }
+    .auth-divider span {
+      padding: 0 0.85rem;
+      text-transform: uppercase;
+    }
   </style>
 
   <!-- Google Analytics -->
@@ -512,6 +552,11 @@
           <h2>Welcome Back 👋</h2>
           <p>Log in to access your practice dashboard</p>
         </div>
+        <!-- Google Sign-In Button -->
+        <div class="google-auth-wrapper">
+          <div id="google-btn-login" class="google-btn-container"></div>
+        </div>
+        <div class="auth-divider"><span>or continue with email</span></div>
         <form id="loginForm" onsubmit="handleLogin(event)">
           <div class="form-group">
             <label>Email Address</label>
@@ -547,6 +592,11 @@
           <h2>Create Free Account ✨</h2>
           <p>Join the smartest way to prepare for IAT 2027</p>
         </div>
+        <!-- Google Sign-Up Button -->
+        <div class="google-auth-wrapper">
+          <div id="google-btn-signup" class="google-btn-container"></div>
+        </div>
+        <div class="auth-divider"><span>or register with email</span></div>
         <form id="signupForm" onsubmit="handleSignup(event)">
           <div class="form-group">
             <label>Full Name</label>
@@ -613,6 +663,7 @@
       document.getElementById('tab-signup').classList.toggle('active', !isLogin);
       document.getElementById('panel-login').style.display  = isLogin ? 'block' : 'none';
       document.getElementById('panel-signup').style.display = isLogin ? 'none' : 'block';
+      setTimeout(renderGoogleButtons, 50);
     }
 
     function togglePwd(id, btn) {
@@ -782,6 +833,157 @@
         setLoading('signup-btn','signup-spin','signup-btn-text', false, 'Create Free Account →');
       }
     }
+
+
+    // ==========================================
+    // 🌐 GOOGLE IDENTITY SERVICES (GIS) AUTH
+    // ==========================================
+    const GOOGLE_CLIENT = (typeof GOOGLE_CLIENT_ID !== 'undefined' && GOOGLE_CLIENT_ID)
+      ? GOOGLE_CLIENT_ID
+      : '789129344852-5tavad9unkkjt0dvoa55bs7b5fv8e0ge.apps.googleusercontent.com';
+
+    let googleAuthInitialized = false;
+
+    function renderGoogleButtons() {
+      if (!window.google || !window.google.accounts || !window.google.accounts.id) return;
+
+      if (!googleAuthInitialized) {
+        google.accounts.id.initialize({
+          client_id: GOOGLE_CLIENT,
+          callback: handleGoogleCredentialResponse,
+          auto_select: false,
+          cancel_on_tap_outside: true
+        });
+        googleAuthInitialized = true;
+      }
+
+      // Render Login Button
+      const loginSlot = document.getElementById('google-btn-login');
+      if (loginSlot && loginSlot.offsetParent !== null) {
+        loginSlot.innerHTML = '';
+        google.accounts.id.renderButton(loginSlot, {
+          type: 'standard',
+          shape: 'rectangular',
+          theme: 'outline',
+          text: 'continue_with',
+          size: 'large',
+          logo_alignment: 'left',
+          width: Math.min(loginSlot.offsetWidth || 340, 380)
+        });
+      }
+
+      // Render Signup Button
+      const signupSlot = document.getElementById('google-btn-signup');
+      if (signupSlot && signupSlot.offsetParent !== null) {
+        signupSlot.innerHTML = '';
+        google.accounts.id.renderButton(signupSlot, {
+          type: 'standard',
+          shape: 'rectangular',
+          theme: 'outline',
+          text: 'signup_with',
+          size: 'large',
+          logo_alignment: 'left',
+          width: Math.min(signupSlot.offsetWidth || 340, 380)
+        });
+      }
+    }
+
+    // Initialize GIS when DOM & Google library are ready
+    function setupGoogleAuth() {
+      if (window.google && window.google.accounts) {
+        renderGoogleButtons();
+      } else {
+        let attempts = 0;
+        const interval = setInterval(() => {
+          attempts++;
+          if (window.google && window.google.accounts) {
+            clearInterval(interval);
+            renderGoogleButtons();
+          } else if (attempts > 30) {
+            clearInterval(interval);
+          }
+        }, 150);
+      }
+    }
+
+    async function handleGoogleCredentialResponse(response) {
+      if (!response || !response.credential) return;
+
+      hideMsg('login-error');
+      hideMsg('signup-error');
+
+      const isSignupActive = document.getElementById('panel-signup').style.display !== 'none';
+      const activeErrorId = isSignupActive ? 'signup-error' : 'login-error';
+
+      showMsg(activeErrorId, 'Verifying Google authentication...', 'info');
+
+      try {
+        const res = await fetch(`${API_BASE}/auth/google`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ credential: response.credential })
+        });
+
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || 'Google sign-in failed.');
+
+        clearOldProgressData();
+        localStorage.setItem('IAT_TOKEN', data.token);
+
+        const userName = data.user?.name || data.name || (data.user?.email || '').split('@')[0];
+        const userEmail = data.user?.email || '';
+
+        if (userName) localStorage.setItem('currentUser', userName);
+        if (userEmail) localStorage.setItem('currentUserEmail', userEmail);
+
+        if (data.isNewUser) {
+          localStorage.setItem('smartprep_is_new_signup', 'true');
+          localStorage.setItem('smartprep_feedback_shown_v2', 'true');
+          localStorage.setItem('smartprep_feedback_dismissed', 'true');
+          if (userEmail) {
+            localStorage.setItem(`smartprep_feedback_shown_v2_${userEmail}`, 'true');
+            localStorage.setItem(`smartprep_feedback_dismissed_${userEmail}`, 'true');
+          }
+        } else {
+          localStorage.removeItem('smartprep_is_new_signup');
+          localStorage.setItem('smartprep_is_existing_user', 'true');
+          const currentLoginCount = parseInt(localStorage.getItem('smartprep_login_count') || '0', 10);
+          localStorage.setItem('smartprep_login_count', String(currentLoginCount + 1));
+        }
+
+        const resolvedPlan = (data.plan || data.user?.plan || 'FREE').toUpperCase();
+        localStorage.setItem('IAT_PLAN', resolvedPlan);
+        localStorage.setItem('IAT_PLAN_SYNCED_AT', String(Date.now()));
+
+        if (window.smartPrepAnalytics) {
+          try {
+            window.smartPrepAnalytics.identify(userEmail, {
+              $email: userEmail,
+              $name: userName,
+              Plan: resolvedPlan,
+              'Auth Method': 'google',
+              'Last Login': new Date().toISOString()
+            });
+            window.smartPrepAnalytics.track(data.isNewUser ? 'User Signed Up' : 'User Logged In', { method: 'google' });
+            window.smartPrepAnalytics.track(data.isNewUser ? 'Sign Up' : 'Login', { method: 'google' });
+          } catch (_) {}
+        }
+
+        showMsg(activeErrorId, '🎉 Success! Redirecting to dashboard...', 'success');
+        const redirect = new URLSearchParams(window.location.search).get('redirect');
+        setTimeout(() => {
+          window.location.href = redirect ? decodeURIComponent(redirect) : 'dashboard-react/index.html';
+        }, 500);
+
+      } catch (err) {
+        console.error('Google Auth Failed:', err);
+        showMsg(activeErrorId, err.message || 'Google sign-in failed. Please try again.', 'error');
+      }
+    }
+
+    // Call on page load
+    window.addEventListener('DOMContentLoaded', setupGoogleAuth);
+    window.addEventListener('load', renderGoogleButtons);
 
     function clearOldProgressData() {
       const preserveKeys = [

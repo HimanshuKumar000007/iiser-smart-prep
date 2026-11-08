@@ -85,7 +85,8 @@ app.get("/api/config", (req, res) => {
   res.setHeader("Access-Control-Allow-Methods", "GET");
 
   res.json({
-    razorpayKey: process.env.RAZORPAY_KEY_ID
+    razorpayKey: process.env.RAZORPAY_KEY_ID,
+    googleClientId: process.env.GOOGLE_CLIENT_ID || "789129344852-5tavad9unkkjt0dvoa55bs7b5fv8e0ge.apps.googleusercontent.com"
   });
 });
 
@@ -820,6 +821,161 @@ app.post("/api/login", loginRateLimiter, async (req, res) => {
     res.status(500).json({ error: "Login failed" });
   }
 });
+
+// =======================
+// 🌐 GOOGLE AUTH API (Login & Signup)
+// =======================
+const handleGoogleAuth = async (req, res) => {
+  try {
+    const { credential } = req.body;
+
+    if (!credential) {
+      return res.status(400).json({ error: "Google credential token is required." });
+    }
+
+    // 1️⃣ Verify Google ID Token with Google's public tokeninfo endpoint
+    const googleVerifyUrl = `https://oauth2.googleapis.com/tokeninfo?id_token=${encodeURIComponent(credential)}`;
+    const googleRes = await fetch(googleVerifyUrl);
+
+    if (!googleRes.ok) {
+      return res.status(401).json({ error: "Invalid Google credential token." });
+    }
+
+    const payload = await googleRes.json();
+
+    // Verify audience matches expected Client ID
+    const expectedClientId = process.env.GOOGLE_CLIENT_ID || "789129344852-5tavad9unkkjt0dvoa55bs7b5fv8e0ge.apps.googleusercontent.com";
+    if (payload.aud !== expectedClientId) {
+      console.warn("Google token audience mismatch:", payload.aud, "vs expected:", expectedClientId);
+      return res.status(401).json({ error: "Google token audience mismatch." });
+    }
+
+    const email = (payload.email || "").toLowerCase().trim();
+    if (!email) {
+      return res.status(400).json({ error: "Google account does not have a valid email address." });
+    }
+
+    const googleName = payload.name || payload.given_name || email.split("@")[0];
+
+    // 2️⃣ Check if user already exists
+    const { data: users, error: selectError } = await supabase
+      .from("users")
+      .select("id, name, email, plan, is_pro, plan_expiry, created_at")
+      .eq("email", email)
+      .limit(1);
+
+    if (selectError) {
+      console.error("Supabase user select error:", selectError);
+      return res.status(500).json({ error: "Database error during authentication." });
+    }
+
+    let user = users && users.length > 0 ? users[0] : null;
+    let isNewUser = false;
+
+    // 3️⃣ If user does not exist, create a new record in users table
+    if (!user) {
+      isNewUser = true;
+      const randomPassword = crypto.randomBytes(32).toString("hex");
+      const hashedPassword = await bcrypt.hash(randomPassword, 10);
+
+      const { data: newUser, error: insertError } = await supabase
+        .from("users")
+        .insert([
+          {
+            name: googleName,
+            email: email,
+            password: hashedPassword,
+            plan: "FREE",
+            plan_expiry: null
+          }
+        ])
+        .select("id, name, email, plan, is_pro, plan_expiry, created_at")
+        .single();
+
+      if (insertError) {
+        console.error("Supabase user creation error:", insertError);
+        return res.status(500).json({ error: "Failed to create user account with Google." });
+      }
+
+      user = newUser;
+    } else {
+      // If user exists but has no name set, update with Google name
+      if (!user.name && googleName) {
+        await supabase
+          .from("users")
+          .update({ name: googleName })
+          .eq("id", user.id);
+        user.name = googleName;
+      }
+    }
+
+    // 4️⃣ Evaluate Pro status
+    const rawPlan = (user.plan || "").toUpperCase();
+    const isProPlan = rawPlan === "PRO" || rawPlan === "MONTHLY" || rawPlan === "SIX_MONTH" || rawPlan === "ANNUAL";
+    const isPro = user.is_pro === true || isProPlan;
+    const now = new Date();
+
+    let status = "FREE";
+    let hasExpired = false;
+    let daysRemaining = 0;
+
+    if (isPro) {
+      if (user.plan_expiry) {
+        const expiry = new Date(user.plan_expiry);
+        if (expiry.getTime() > now.getTime()) {
+          status = "ACTIVE";
+          daysRemaining = Math.max(0, Math.ceil((expiry.getTime() - now.getTime()) / (24 * 60 * 60 * 1000)));
+        } else {
+          status = "EXPIRED";
+          hasExpired = true;
+        }
+      } else {
+        status = "ACTIVE";
+        daysRemaining = 9999;
+      }
+    }
+
+    const resolvedPlan = (isPro && !hasExpired) ? "PRO" : "FREE";
+
+    // 5️⃣ Sign standard 7-day JWT token
+    const token = jwt.sign(
+      {
+        id: user.id,
+        name: user.name || googleName,
+        email: user.email,
+        plan: resolvedPlan
+      },
+      process.env.JWT_SECRET,
+      { expiresIn: "7d" }
+    );
+
+    res.json({
+      message: isNewUser ? "Signup successful" : "Login successful",
+      token,
+      plan: resolvedPlan,
+      isNewUser,
+      user: {
+        id: user.id,
+        name: user.name || googleName,
+        email: user.email,
+        plan: resolvedPlan,
+        is_pro: isPro && !hasExpired,
+        planId: user.plan || null,
+        planExpiry: user.plan_expiry || null,
+        status,
+        daysRemaining
+      }
+    });
+
+  } catch (err) {
+    console.error("Google Auth error:", err);
+    res.status(500).json({ error: "Google authentication failed. Please try again." });
+  }
+};
+
+app.post("/api/auth/google", loginRateLimiter, handleGoogleAuth);
+app.post("/api/google-login", loginRateLimiter, handleGoogleAuth);
+
 
 // =======================
 // 📬 CONTACT US API

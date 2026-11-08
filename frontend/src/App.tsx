@@ -124,67 +124,8 @@ function DashboardApp() {
 
   const [isImprovementModalOpen, setIsImprovementModalOpen] = useState(false);
 
-  // Interactive Student Improvement & Feedback Modal:
-  // 1. NEVER appears to new users who signed up.
-  // 2. Shows ONLY to EXISTING logged-in users.
-  // 3. Shows ONLY ONCE ever — never appears again whether filled, skipped, closed (✕), or ESC.
-  useEffect(() => {
-    const token = localStorage.getItem('IAT_TOKEN');
-    if (!token) return; // Only for authenticated users
-
-    const email = localStorage.getItem('currentUserEmail') || '';
-
-    // 🛑 RULE 1: NEVER show to brand new signups
-    const isNewSignup = 
-      localStorage.getItem('smartprep_is_new_signup') === 'true' ||
-      localStorage.getItem('smartprep_user_type') === 'new';
-
-    if (isNewSignup) {
-      // Permanently block for this user
-      localStorage.setItem('smartprep_feedback_shown_v2', 'true');
-      localStorage.setItem('smartprep_feedback_dismissed', 'true');
-      if (email) {
-        localStorage.setItem(`smartprep_feedback_shown_v2_${email}`, 'true');
-        localStorage.setItem(`smartprep_feedback_dismissed_${email}`, 'true');
-      }
-      return;
-    }
-
-    // 🎯 RULE 2: ONLY show to EXISTING users who logged in
-    const isExistingUser = 
-      localStorage.getItem('smartprep_is_existing_user') === 'true' ||
-      parseInt(localStorage.getItem('smartprep_login_count') || '0', 10) >= 1;
-
-    if (!isExistingUser) return;
-
-    // 🔒 RULE 3: ONLY ONCE ever! If already shown, filled, skipped, or closed -> NEVER appear again
-    const alreadyHandled = 
-      localStorage.getItem('smartprep_feedback_shown_v2') === 'true' ||
-      localStorage.getItem('smartprep_feedback_dismissed') === 'true' ||
-      localStorage.getItem('smartprep_improvement_feedback_v1') === 'dismissed' ||
-      localStorage.getItem('smartprep_improvement_feedback_v1') === 'submitted' ||
-      (email ? (
-        localStorage.getItem(`smartprep_feedback_shown_v2_${email}`) === 'true' ||
-        localStorage.getItem(`smartprep_feedback_dismissed_${email}`) === 'true'
-      ) : false);
-
-    if (alreadyHandled) return;
-
-    // Immediately mark as handled so it can NEVER trigger again on refresh or tab switch
-    localStorage.setItem('smartprep_feedback_shown_v2', 'true');
-    localStorage.setItem('smartprep_feedback_dismissed', 'true');
-    if (email) {
-      localStorage.setItem(`smartprep_feedback_shown_v2_${email}`, 'true');
-      localStorage.setItem(`smartprep_feedback_dismissed_${email}`, 'true');
-    }
-
-    // Smooth delay after dashboard mount
-    const timer = setTimeout(() => {
-      setIsImprovementModalOpen(true);
-    }, 1500);
-
-    return () => clearTimeout(timer);
-  }, []);
+  // Automatic unprompted popup completely disabled.
+  // The improvement wishlist modal now only opens on explicit user action (e.g. clicking 'Feedback' in footer).
 
   const handleNavigateRaw = (view: string) => {
     if (view === 'feedback') {
