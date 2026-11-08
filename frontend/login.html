@@ -449,8 +449,12 @@
       }
     }
 
-    /* Google Auth Button & Divider */
-    .google-auth-wrapper {
+    /* Google Auth Button & Divider (Hidden for now - can be re-enabled later) */
+    .google-auth-wrapper,
+    .auth-divider {
+      display: none !important;
+    }
+    .google-auth-wrapper-hidden {
       display: flex;
       justify-content: center;
       align-items: center;
@@ -553,10 +557,10 @@
           <p>Log in to access your practice dashboard</p>
         </div>
         <!-- Google Sign-In Button -->
-        <div class="google-auth-wrapper">
+        <div class="google-auth-wrapper" style="display: none !important;">
           <div id="google-btn-login" class="google-btn-container"></div>
         </div>
-        <div class="auth-divider"><span>or continue with email</span></div>
+        <div class="auth-divider" style="display: none !important;"><span>or continue with email</span></div>
         <form id="loginForm" onsubmit="handleLogin(event)">
           <div class="form-group">
             <label>Email Address</label>
@@ -593,10 +597,10 @@
           <p>Join the smartest way to prepare for IAT 2027</p>
         </div>
         <!-- Google Sign-Up Button -->
-        <div class="google-auth-wrapper">
+        <div class="google-auth-wrapper" style="display: none !important;">
           <div id="google-btn-signup" class="google-btn-container"></div>
         </div>
-        <div class="auth-divider"><span>or register with email</span></div>
+        <div class="auth-divider" style="display: none !important;"><span>or register with email</span></div>
         <form id="signupForm" onsubmit="handleSignup(event)">
           <div class="form-group">
             <label>Full Name</label>
