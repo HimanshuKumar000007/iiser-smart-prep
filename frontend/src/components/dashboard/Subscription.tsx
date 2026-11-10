@@ -258,7 +258,7 @@ export function Subscription({ returnTo, onNavigate }: SubscriptionProps) {
             <span><strong>Just ₹1.64 / day:</strong> Less than half a cup of tea to secure your IISER seat!</span>
           </div>
 
-          {/* All-Inclusive Pass Summary Box */}
+          {/* American Sales Marketing Value Stack Box */}
           <div className={cn("p-4 rounded-xl border space-y-2 text-xs", isLight ? "bg-indigo-50/70 border-indigo-200/80 text-slate-700" : "bg-indigo-950/30 border-indigo-500/25 text-slate-300")}>
             <div className="flex justify-between items-center font-semibold">
               <span>Total Standalone Real Value:</span>
@@ -494,7 +494,7 @@ export function Subscription({ returnTo, onNavigate }: SubscriptionProps) {
             },
             {
               q: "Why is there only one unified plan now?",
-              a: "We removed short-term 1-month and 6-month plans to ensure your access never expires mid-preparation. One investment of ₹599 covers your entire journey until IAT 2027."
+              a: "We removed short-term 1-month and 6-month plans to eliminate choice paralysis and prevent subscriptions from expiring right before exam season. One investment of ₹599 covers your entire journey until IAT 2027."
             },
             {
               q: "What is included with 'Our Latest AI'?",
