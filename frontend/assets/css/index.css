@@ -2144,6 +2144,95 @@ footer {
   border-color: var(--border-strong);
   transform: translateY(-2px);
 }
+/* ============ BIG FOOTER BRAND WORDMARK (AI FIESTA STYLE) ============ */
+.footer-big-wordmark {
+  display: block;
+  text-align: center;
+  text-decoration: none;
+  user-select: none;
+  cursor: pointer;
+  overflow: hidden;
+  white-space: nowrap;
+  width: 100%;
+  margin: 3.5rem 0 1rem;
+  padding-bottom: 0.2rem;
+  line-height: 0.86;
+  mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0.75) 55%, rgba(0, 0, 0, 0) 100%);
+  -webkit-mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0.75) 55%, rgba(0, 0, 0, 0) 100%);
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), filter 0.3s ease;
+}
+
+.footer-big-wordmark:hover {
+  transform: translateY(-3px);
+  filter: brightness(1.2);
+}
+
+.footer-big-wordmark span {
+  display: inline-block;
+  font-family: 'Outfit', 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  font-size: clamp(2.2rem, 9.8vw, 10.8rem);
+  font-weight: 900;
+  letter-spacing: -0.045em;
+  line-height: 0.86;
+  white-space: nowrap;
+  background: linear-gradient(
+    180deg,
+    rgba(15, 23, 42, 0.45) 0%,
+    rgba(15, 23, 42, 0.20) 48%,
+    rgba(15, 23, 42, 0) 90%
+  );
+  background-clip: text;
+  -webkit-background-clip: text;
+  text-fill-color: transparent;
+  -webkit-text-fill-color: transparent;
+  transition: all 0.35s ease;
+}
+
+.footer-big-wordmark:hover span {
+  background: linear-gradient(
+    180deg,
+    rgba(79, 124, 255, 0.65) 0%,
+    rgba(139, 92, 246, 0.35) 48%,
+    rgba(34, 211, 238, 0) 90%
+  );
+  background-clip: text;
+  -webkit-background-clip: text;
+  text-fill-color: transparent;
+  -webkit-text-fill-color: transparent;
+}
+
+html.dark .footer-big-wordmark span {
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.35) 0%,
+    rgba(255, 255, 255, 0.14) 48%,
+    rgba(255, 255, 255, 0) 90%
+  );
+  background-clip: text;
+  -webkit-background-clip: text;
+  text-fill-color: transparent;
+  -webkit-text-fill-color: transparent;
+}
+
+html.dark .footer-big-wordmark:hover span {
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.55) 0%,
+    rgba(139, 92, 246, 0.38) 48%,
+    rgba(34, 211, 238, 0) 90%
+  );
+  background-clip: text;
+  -webkit-background-clip: text;
+  text-fill-color: transparent;
+  -webkit-text-fill-color: transparent;
+}
+
+@media (max-width: 600px) {
+  .footer-big-wordmark {
+    margin: 2rem 0 0.75rem;
+  }
+}
+
 .footer-bottom {
   border-top: 1px solid var(--border);
   padding-top: 1.6rem;
