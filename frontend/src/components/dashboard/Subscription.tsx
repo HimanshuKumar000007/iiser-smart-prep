@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useEntitlement } from '../../hooks/useEntitlement';
-import { Sparkles, Check, ShieldCheck, AlertCircle, Calendar, CreditCard, Loader2 } from 'lucide-react';
+import { Check, ShieldCheck, AlertCircle, Calendar, CreditCard, Loader2 } from 'lucide-react';
 import { cn } from '../../lib/utils';
 import { useTheme } from '../../context/ThemeContext';
 import { Analytics } from '../../lib/analytics';
@@ -312,77 +312,17 @@ export function Subscription({ returnTo, onNavigate }: SubscriptionProps) {
 
   return (
     <div className="space-y-8 px-4 py-6 sm:p-6 max-w-7xl mx-auto pb-36 lg:pb-8 w-full box-sizing-border-box overflow-x-hidden min-w-0">
-      {/* IAT 2027 Admission Cycle Special Notice Banner */}
-      <div className={cn(
-        "relative overflow-hidden rounded-2xl border flex flex-col transition-all shadow-md",
-        isLight
-          ? "bg-white border-amber-200 text-slate-800 shadow-[0_4px_20px_rgba(245,158,11,0.08)]"
-          : "bg-gradient-to-r from-slate-900 via-amber-950/30 to-slate-900 border-amber-500/30 text-white shadow-[0_0_30px_rgba(245,158,11,0.1)]"
-      )}>
-        <div className="h-1 w-full bg-gradient-to-r from-amber-500 via-indigo-500 to-cyan-400" />
-        <div className="p-4 sm:p-5 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <div className="flex items-center gap-3">
-            <span className="text-2xl">🔥</span>
-            <div>
-              <div className="flex items-center gap-2">
-                <span className="text-xs font-bold uppercase tracking-wider text-amber-500 bg-amber-500/10 px-2 py-0.5 rounded border border-amber-500/20">
-                  IAT 2027 Admission Cycle Special
-                </span>
-                <span className="text-xs font-bold text-emerald-600 dark:text-emerald-400">Flat 33% OFF</span>
-              </div>
-              <p className="text-xs text-slate-600 dark:text-slate-300 mt-1">
-                Get full Pro access powered by <strong>Our Latest AI</strong> for just <strong>₹599</strong> (regular ₹899). Guaranteed access until IAT 2027!
-              </p>
-            </div>
-          </div>
-          <div className="shrink-0 flex items-center gap-2 bg-black/70 border border-white/10 px-3.5 py-2 rounded-xl text-xs font-mono font-bold text-yellow-300">
-            <span>⚡ Access Valid Until IAT 2027</span>
-          </div>
-        </div>
-      </div>
-
-      {/* Header Banner */}
-      <div className={cn(
-        "relative overflow-hidden rounded-2xl border px-4 py-8 md:p-12 text-center space-y-4 transition-colors",
-        isLight
-          ? "bg-gradient-to-r from-indigo-50 via-indigo-100/70 to-indigo-50 border-slate-200/80 shadow-[0_8px_30px_rgba(15,23,42,0.02)]"
-          : "bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 border-white/5"
-      )}>
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(99,102,241,0.08),transparent_70%)] pointer-events-none" />
+      {returnTo && (
         <div className={cn(
-          "inline-flex items-center gap-2 px-3 py-1 rounded-full text-[10px] sm:text-xs font-semibold uppercase tracking-wider",
+          "flex items-center gap-2.5 px-4 py-3 rounded-xl text-xs font-medium max-w-2xl mx-auto border transition-all",
           isLight
-            ? "bg-indigo-600/10 border border-indigo-600/20 text-indigo-700"
-            : "bg-indigo-500/10 border border-indigo-500/30 text-indigo-300"
+            ? "bg-indigo-50 border-indigo-200 text-indigo-900"
+            : "bg-indigo-500/10 border-indigo-500/25 text-indigo-300"
         )}>
-          <Sparkles className="w-3.5 h-3.5" />
-          Elevate Your Preparation
+          <AlertCircle className={cn("w-4 h-4 shrink-0", isLight ? "text-indigo-600" : "text-indigo-400")} />
+          <span><strong>{returnTo.replace('_', ' ').replace('/', '').toUpperCase()}</strong> requires Pro access. Upgrade below to unlock full access.</span>
         </div>
-        <h1 className={cn(
-          "text-3xl sm:text-4xl md:text-5xl font-display font-extrabold tracking-tight leading-tight",
-          isLight ? "text-slate-900" : "text-white"
-        )} style={{ fontSize: 'clamp(28px, 6.5vw, 48px)' }}>
-          Get SmartPrep <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-cyan-600 dark:from-cyan-400 dark:to-indigo-400">Pro Access</span>
-        </h1>
-        <p className={cn(
-          "max-w-xl mx-auto text-sm sm:text-base leading-relaxed",
-          isLight ? "text-slate-600" : "text-slate-400"
-        )}>
-          Unlock smarter IAT preparation with premium practice, PYQs, analytics and personalized guidance powered by Our Latest AI.
-        </p>
-
-        {returnTo && (
-          <div className={cn(
-            "inline-flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-medium max-w-md mx-auto transition-all border",
-            isLight
-              ? "bg-indigo-600/10 border-indigo-600/15 text-indigo-700"
-              : "bg-indigo-500/10 border-indigo-500/20 text-indigo-300"
-          )}>
-            <AlertCircle className={cn("w-3.5 h-3.5 shrink-0", isLight ? "text-indigo-600" : "text-indigo-400")} />
-            <span>{returnTo.replace('_', ' ').replace('/', '').toUpperCase()} requires Pro access</span>
-          </div>
-        )}
-      </div>
+      )}
 
       {/* Subscription Status Block */}
       {isPro && (
