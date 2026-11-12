@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useEntitlement } from '../../hooks/useEntitlement';
-import { Check, ShieldCheck, AlertCircle, Calendar, CreditCard, Loader2 } from 'lucide-react';
+import { Sparkles, Check, ShieldCheck, AlertCircle, Calendar, CreditCard, Loader2 } from 'lucide-react';
 import { cn } from '../../lib/utils';
 import { useTheme } from '../../context/ThemeContext';
 import { Analytics } from '../../lib/analytics';
@@ -312,17 +312,25 @@ export function Subscription({ returnTo, onNavigate }: SubscriptionProps) {
 
   return (
     <div className="space-y-8 px-4 py-6 sm:p-6 max-w-7xl mx-auto pb-36 lg:pb-8 w-full box-sizing-border-box overflow-x-hidden min-w-0">
-      {returnTo && (
-        <div className={cn(
-          "flex items-center gap-2.5 px-4 py-3 rounded-xl text-xs font-medium max-w-2xl mx-auto border transition-all",
-          isLight
-            ? "bg-indigo-50 border-indigo-200 text-indigo-900"
-            : "bg-indigo-500/10 border-indigo-500/25 text-indigo-300"
-        )}>
-          <AlertCircle className={cn("w-4 h-4 shrink-0", isLight ? "text-indigo-600" : "text-indigo-400")} />
-          <span><strong>{returnTo.replace('_', ' ').replace('/', '').toUpperCase()}</strong> requires Pro access. Upgrade below to unlock full access.</span>
-        </div>
-      )}
+      <div className={cn(
+        "flex items-center justify-center gap-2.5 px-5 py-3 rounded-2xl text-xs sm:text-sm font-semibold max-w-2xl mx-auto border transition-all shadow-sm text-center",
+        isLight
+          ? "bg-indigo-50/80 border-indigo-200 text-indigo-950 shadow-indigo-100/40"
+          : "bg-indigo-500/10 border-indigo-500/25 text-indigo-200 shadow-[0_0_20px_rgba(99,102,241,0.08)]"
+      )}>
+        <Sparkles className="w-4 h-4 shrink-0 text-indigo-500 dark:text-cyan-400" />
+        <span>
+          {returnTo ? (
+            <>
+              Upgrade to Pro to unlock <span className="text-indigo-600 dark:text-cyan-300 font-bold">{returnTo.replace(/_/g, ' ').replace(/\//g, '').toUpperCase()}</span> &amp; full access for IAT 2027.
+            </>
+          ) : (
+            <>
+              Upgrade to Pro to unlock complete preparation for IAT 2027.
+            </>
+          )}
+        </span>
+      </div>
 
       {/* Subscription Status Block */}
       {isPro && (
