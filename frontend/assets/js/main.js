@@ -192,7 +192,7 @@
         }
         // --- Exam Countdown Timer ---
         (function () {
-            const examDate = new Date('2026-06-15T09:30:00+05:30').getTime();
+            const examDate = new Date('2027-06-15T09:30:00+05:30').getTime();
             function updateCountdown() {
                 const now = new Date().getTime();
                 const diff = examDate - now;
@@ -258,7 +258,7 @@
             "Diya from Lucknow unlocked the PlannerPro",
             "Vihaan just finished the Biology Chapter Test",
             "Ananya from Mohali asked for a revision plan",
-            "Dev from Patna purchased the IAT 2026 Pass",
+            "Dev from Patna purchased the IAT 2027 Pass",
             "Saanvi from Thiruvananthapuram scored 95% in Logic",
             "Aarav from Noida improved from Rank 1200 to 850",
             "Myra just solved 50 Physics PYQs",

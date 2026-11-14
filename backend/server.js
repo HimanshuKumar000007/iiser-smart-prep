@@ -1740,8 +1740,8 @@ app.post("/api/ai-chat", async (req, res) => {
     ];
 
     // ── Call NVIDIA AI (or DeepSeek fallback) ─────────
-    const nvidiaKey = process.env.NVIDIA_API_KEY || "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";
-    const nvidiaModel = process.env.NVIDIA_MODEL || "meta/llama-3.2-11b-vision-instruct";
+    const nvidiaKey = process.env.NVIDIA_API_KEY || "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";
+    const nvidiaModel = process.env.NVIDIA_MODEL || "meta/llama-3.2-90b-vision-instruct";
 
     const isNvidia = !!nvidiaKey && nvidiaKey.startsWith("nvapi-");
     const apiUrl = isNvidia 

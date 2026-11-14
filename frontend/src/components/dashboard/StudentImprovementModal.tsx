@@ -274,7 +274,7 @@ export function StudentImprovementModal({
             </span>
             <span className={cn('text-xs', isLight ? 'text-neutral-300' : 'text-neutral-700')}>•</span>
             <span className={cn('text-xs font-mono', isLight ? 'text-neutral-500' : 'text-neutral-400')}>
-              IISER IAT 2026/27
+              IISER IAT 2027
             </span>
           </div>
 

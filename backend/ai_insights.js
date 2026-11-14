@@ -10,7 +10,7 @@ module.exports = function(app, authMiddleware) {
             if (!prompt) return res.status(400).json({ error: "Prompt required" });
 
             // Check if API key is present
-            const nvidiaKey = process.env.NVIDIA_API_KEY || "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";
+            const nvidiaKey = process.env.NVIDIA_API_KEY || "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";
             const deepseekKey = process.env.DEEPSEEK_API_KEY;
             const isNvidia = !!nvidiaKey && nvidiaKey.startsWith("nvapi-");
             const apiKey = isNvidia ? nvidiaKey : deepseekKey;
@@ -25,7 +25,7 @@ module.exports = function(app, authMiddleware) {
             const apiUrl = isNvidia 
                 ? "https://integrate.api.nvidia.com/v1/chat/completions" 
                 : "https://api.deepseek.com/v1/chat/completions";
-            const model = isNvidia ? (process.env.NVIDIA_MODEL || "meta/llama-3.2-11b-vision-instruct") : "deepseek-chat";
+            const model = isNvidia ? (process.env.NVIDIA_MODEL || "meta/llama-3.2-90b-vision-instruct") : "deepseek-chat";
 
             const response = await fetch(apiUrl, {
                 method: "POST",
