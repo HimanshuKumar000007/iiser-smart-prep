@@ -532,7 +532,7 @@ const MessageBubble = memo(function MessageBubble({
               <div className="flex items-center gap-2">
                 <span className="font-bold text-xs text-white">SmartPrep AI Tutor</span>
                 <span className="text-[10px] font-mono text-purple-300 bg-purple-500/10 border border-purple-500/20 px-1.5 py-0.5 rounded">
-                  NVIDIA Llama 3.2
+                  NVIDIA AI NIM
                 </span>
               </div>
 

@@ -25,7 +25,7 @@ module.exports = function(app, authMiddleware) {
             const apiUrl = isNvidia 
                 ? "https://integrate.api.nvidia.com/v1/chat/completions" 
                 : "https://api.deepseek.com/v1/chat/completions";
-            const model = isNvidia ? (process.env.NVIDIA_MODEL || "meta/llama-3.2-90b-vision-instruct") : "deepseek-chat";
+            const model = isNvidia ? (process.env.NVIDIA_MODEL || "nvidia/nemotron-3.5-bolt-e4b") : "deepseek-chat";
 
             const response = await fetch(apiUrl, {
                 method: "POST",

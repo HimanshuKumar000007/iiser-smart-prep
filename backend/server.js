@@ -1741,7 +1741,7 @@ app.post("/api/ai-chat", async (req, res) => {
 
     // ── Call NVIDIA AI (or DeepSeek fallback) ─────────
     const nvidiaKey = process.env.NVIDIA_API_KEY || "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";
-    const nvidiaModel = process.env.NVIDIA_MODEL || "meta/llama-3.2-90b-vision-instruct";
+    const nvidiaModel = process.env.NVIDIA_MODEL || "nvidia/nemotron-3.5-bolt-e4b";
 
     const isNvidia = !!nvidiaKey && nvidiaKey.startsWith("nvapi-");
     const apiUrl = isNvidia 
